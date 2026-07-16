@@ -1,0 +1,48 @@
+{
+  "name": "@codeai/cads-variables",
+  "version": "0.1.0",
+  "description": "CADS design variables — color, typography, spacing/shape, effects, and generated MUI theme",
+  "type": "module",
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./variables.css": "./dist/variables.css",
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js"
+    },
+    "./data/color-system.json": "./src/data/codeAiColorSystem.json"
+  },
+  "files": [
+    "dist",
+    "src/data"
+  ],
+  "scripts": {
+    "generate": "node src/scripts/generate-variables.mjs",
+    "build": "pnpm run generate && tsup",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@mui/material": "^9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mui/material": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@mui/material": "^9.2.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3"
+  }
+}

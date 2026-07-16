@@ -1,0 +1,28 @@
+{
+  "name": "cads",
+  "private": true,
+  "version": "0.1.0",
+  "description": "CodeAI Design System (CADS) — variables, MUI-wrapped React components, docs, and AI/Figma parity tooling",
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' run build",
+    "build:variables": "pnpm --filter @codeai/cads-variables run build",
+    "build:react": "pnpm --filter @codeai/cads-react run build",
+    "dev:docs": "pnpm --filter @codeai/cads-docs run dev",
+    "build:docs": "pnpm --filter @codeai/cads-docs run build",
+    "typecheck": "pnpm -r --filter './packages/*' run typecheck",
+    "generate:variables": "pnpm --filter @codeai/cads-variables run generate",
+    "figma:sync": "pnpm --filter @codeai/cads-figma-sync run sync",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "clean": "pnpm -r exec rm -rf dist .turbo"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.1",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,3207 @@
+{
+  "brand": "codeAi",
+  "collections": [
+    {
+      "id": "neutral",
+      "name": "neutral"
+    },
+    {
+      "id": "brand",
+      "name": "brand"
+    },
+    {
+      "id": "sentiment",
+      "name": "sentiment"
+    }
+  ],
+  "families": [
+    {
+      "id": "neutral::base",
+      "collectionId": "neutral",
+      "name": "base",
+      "stepped": false,
+      "steps": [
+        {
+          "id": "neutral::base::white",
+          "step": "white",
+          "hex": "#FFFFFF"
+        },
+        {
+          "id": "neutral::base::black",
+          "step": "black",
+          "hex": "#121212"
+        },
+        {
+          "id": "neutral::base::true-black",
+          "step": "true-black",
+          "hex": "#000000"
+        }
+      ]
+    },
+    {
+      "id": "neutral::black-alpha",
+      "collectionId": "neutral",
+      "name": "black-alpha",
+      "steps": [
+        {
+          "id": "neutral::black-alpha::5",
+          "step": "5",
+          "hex": "#1212120D"
+        },
+        {
+          "id": "neutral::black-alpha::10",
+          "step": "10",
+          "hex": "#1212121A"
+        },
+        {
+          "id": "neutral::black-alpha::20",
+          "step": "20",
+          "hex": "#12121233"
+        },
+        {
+          "id": "neutral::black-alpha::30",
+          "step": "30",
+          "hex": "#1212124D"
+        },
+        {
+          "id": "neutral::black-alpha::40",
+          "step": "40",
+          "hex": "#12121266"
+        },
+        {
+          "id": "neutral::black-alpha::50",
+          "step": "50",
+          "hex": "#12121280"
+        },
+        {
+          "id": "neutral::black-alpha::60",
+          "step": "60",
+          "hex": "#12121299"
+        },
+        {
+          "id": "neutral::black-alpha::70",
+          "step": "70",
+          "hex": "#121212B2"
+        },
+        {
+          "id": "neutral::black-alpha::80",
+          "step": "80",
+          "hex": "#121212CC"
+        },
+        {
+          "id": "neutral::black-alpha::90",
+          "step": "90",
+          "hex": "#121212E5"
+        },
+        {
+          "id": "neutral::black-alpha::95",
+          "step": "95",
+          "hex": "#121212F2"
+        }
+      ]
+    },
+    {
+      "id": "neutral::white-alpha",
+      "collectionId": "neutral",
+      "name": "white-alpha",
+      "steps": [
+        {
+          "id": "neutral::white-alpha::5",
+          "step": "5",
+          "hex": "#FFFFFF0D"
+        },
+        {
+          "id": "neutral::white-alpha::10",
+          "step": "10",
+          "hex": "#FFFFFF1A"
+        },
+        {
+          "id": "neutral::white-alpha::20",
+          "step": "20",
+          "hex": "#FFFFFF33"
+        },
+        {
+          "id": "neutral::white-alpha::30",
+          "step": "30",
+          "hex": "#FFFFFF4D"
+        },
+        {
+          "id": "neutral::white-alpha::40",
+          "step": "40",
+          "hex": "#FFFFFF66"
+        },
+        {
+          "id": "neutral::white-alpha::50",
+          "step": "50",
+          "hex": "#FFFFFF80"
+        },
+        {
+          "id": "neutral::white-alpha::60",
+          "step": "60",
+          "hex": "#FFFFFF99"
+        },
+        {
+          "id": "neutral::white-alpha::70",
+          "step": "70",
+          "hex": "#FFFFFFB2"
+        },
+        {
+          "id": "neutral::white-alpha::80",
+          "step": "80",
+          "hex": "#FFFFFFCC"
+        },
+        {
+          "id": "neutral::white-alpha::90",
+          "step": "90",
+          "hex": "#FFFFFFE5"
+        },
+        {
+          "id": "neutral::white-alpha::95",
+          "step": "95",
+          "hex": "#FFFFFFF2"
+        }
+      ]
+    },
+    {
+      "id": "neutral::gray",
+      "collectionId": "neutral",
+      "name": "gray",
+      "steps": [
+        {
+          "id": "neutral::gray::5",
+          "step": "5",
+          "hex": "#F1F2F4"
+        },
+        {
+          "id": "neutral::gray::10",
+          "step": "10",
+          "hex": "#DBDDE2"
+        },
+        {
+          "id": "neutral::gray::20",
+          "step": "20",
+          "hex": "#CCD1D7"
+        },
+        {
+          "id": "neutral::gray::30",
+          "step": "30",
+          "hex": "#B7BCC2"
+        },
+        {
+          "id": "neutral::gray::40",
+          "step": "40",
+          "hex": "#9EA5AD"
+        },
+        {
+          "id": "neutral::gray::50",
+          "step": "50",
+          "hex": "#87909A"
+        },
+        {
+          "id": "neutral::gray::60",
+          "step": "60",
+          "hex": "#6E7782"
+        },
+        {
+          "id": "neutral::gray::70",
+          "step": "70",
+          "hex": "#596069"
+        },
+        {
+          "id": "neutral::gray::80",
+          "step": "80",
+          "hex": "#4B5258"
+        },
+        {
+          "id": "neutral::gray::90",
+          "step": "90",
+          "hex": "#363B40"
+        },
+        {
+          "id": "neutral::gray::95",
+          "step": "95",
+          "hex": "#282B2F"
+        }
+      ]
+    },
+    {
+      "id": "brand::teal",
+      "collectionId": "brand",
+      "name": "purple",
+      "steps": [
+        {
+          "id": "brand::teal::5",
+          "step": "5",
+          "hex": "#E4E2F8"
+        },
+        {
+          "id": "brand::teal::10",
+          "step": "10",
+          "hex": "#CAC6F5"
+        },
+        {
+          "id": "brand::teal::20",
+          "step": "20",
+          "hex": "#ACA8EA"
+        },
+        {
+          "id": "brand::teal::30",
+          "step": "30",
+          "hex": "#928CEF"
+        },
+        {
+          "id": "brand::teal::40",
+          "step": "40",
+          "hex": "#6F67D9"
+        },
+        {
+          "id": "brand::teal::50",
+          "step": "50",
+          "hex": "#4C42CF"
+        },
+        {
+          "id": "brand::teal::60",
+          "step": "60",
+          "hex": "#4238C4"
+        },
+        {
+          "id": "brand::teal::70",
+          "step": "70",
+          "hex": "#3228B7"
+        },
+        {
+          "id": "brand::teal::80",
+          "step": "80",
+          "hex": "#2B1E9F"
+        },
+        {
+          "id": "brand::teal::90",
+          "step": "90",
+          "hex": "#1D1590"
+        },
+        {
+          "id": "brand::teal::95",
+          "step": "95",
+          "hex": "#1F1976"
+        }
+      ]
+    },
+    {
+      "id": "sentiment::error",
+      "collectionId": "sentiment",
+      "name": "error",
+      "steps": [
+        {
+          "id": "sentiment::error::5",
+          "step": "5",
+          "hex": "#FBD5D5"
+        },
+        {
+          "id": "sentiment::error::10",
+          "step": "10",
+          "hex": "#FAC2C2"
+        },
+        {
+          "id": "sentiment::error::20",
+          "step": "20",
+          "hex": "#F69898"
+        },
+        {
+          "id": "sentiment::error::30",
+          "step": "30",
+          "hex": "#F37272"
+        },
+        {
+          "id": "sentiment::error::40",
+          "step": "40",
+          "hex": "#EF4848"
+        },
+        {
+          "id": "sentiment::error::50",
+          "step": "50",
+          "hex": "#EB1414"
+        },
+        {
+          "id": "sentiment::error::60",
+          "step": "60",
+          "hex": "#D31212"
+        },
+        {
+          "id": "sentiment::error::70",
+          "step": "70",
+          "hex": "#B30F0F"
+        },
+        {
+          "id": "sentiment::error::80",
+          "step": "80",
+          "hex": "#8D0C0C"
+        },
+        {
+          "id": "sentiment::error::90",
+          "step": "90",
+          "hex": "#6C0909"
+        },
+        {
+          "id": "sentiment::error::95",
+          "step": "95",
+          "hex": "#620202"
+        }
+      ]
+    },
+    {
+      "id": "sentiment::warning",
+      "collectionId": "sentiment",
+      "name": "warning",
+      "steps": [
+        {
+          "id": "sentiment::warning::5",
+          "step": "5",
+          "hex": "#FFF3D1"
+        },
+        {
+          "id": "sentiment::warning::10",
+          "step": "10",
+          "hex": "#FFECB8"
+        },
+        {
+          "id": "sentiment::warning::20",
+          "step": "20",
+          "hex": "#FFE08A"
+        },
+        {
+          "id": "sentiment::warning::30",
+          "step": "30",
+          "hex": "#FFD35C"
+        },
+        {
+          "id": "sentiment::warning::40",
+          "step": "40",
+          "hex": "#FDC835"
+        },
+        {
+          "id": "sentiment::warning::50",
+          "step": "50",
+          "hex": "#F5C000"
+        },
+        {
+          "id": "sentiment::warning::60",
+          "step": "60",
+          "hex": "#EDAF02"
+        },
+        {
+          "id": "sentiment::warning::70",
+          "step": "70",
+          "hex": "#CF8E02"
+        },
+        {
+          "id": "sentiment::warning::80",
+          "step": "80",
+          "hex": "#B27A01"
+        },
+        {
+          "id": "sentiment::warning::90",
+          "step": "90",
+          "hex": "#885D02"
+        },
+        {
+          "id": "sentiment::warning::95",
+          "step": "95",
+          "hex": "#654500"
+        }
+      ]
+    },
+    {
+      "id": "sentiment::success",
+      "collectionId": "sentiment",
+      "name": "success",
+      "steps": [
+        {
+          "id": "sentiment::success::5",
+          "step": "5",
+          "hex": "#CCF1D0"
+        },
+        {
+          "id": "sentiment::success::10",
+          "step": "10",
+          "hex": "#B7E6BD"
+        },
+        {
+          "id": "sentiment::success::20",
+          "step": "20",
+          "hex": "#9BE3A3"
+        },
+        {
+          "id": "sentiment::success::30",
+          "step": "30",
+          "hex": "#7CDB87"
+        },
+        {
+          "id": "sentiment::success::40",
+          "step": "40",
+          "hex": "#4FCF5D"
+        },
+        {
+          "id": "sentiment::success::50",
+          "step": "50",
+          "hex": "#34BD43"
+        },
+        {
+          "id": "sentiment::success::60",
+          "step": "60",
+          "hex": "#2DA43A"
+        },
+        {
+          "id": "sentiment::success::70",
+          "step": "70",
+          "hex": "#258830"
+        },
+        {
+          "id": "sentiment::success::80",
+          "step": "80",
+          "hex": "#1F7028"
+        },
+        {
+          "id": "sentiment::success::90",
+          "step": "90",
+          "hex": "#17541E"
+        },
+        {
+          "id": "sentiment::success::95",
+          "step": "95",
+          "hex": "#003F25"
+        }
+      ]
+    },
+    {
+      "id": "sentiment::information",
+      "collectionId": "sentiment",
+      "name": "information",
+      "steps": [
+        {
+          "id": "sentiment::information::5",
+          "step": "5",
+          "hex": "#D5EFFF"
+        },
+        {
+          "id": "sentiment::information::10",
+          "step": "10",
+          "hex": "#B8E5FF"
+        },
+        {
+          "id": "sentiment::information::20",
+          "step": "20",
+          "hex": "#94D7FF"
+        },
+        {
+          "id": "sentiment::information::30",
+          "step": "30",
+          "hex": "#6FCAFF"
+        },
+        {
+          "id": "sentiment::information::40",
+          "step": "40",
+          "hex": "#38B3FF"
+        },
+        {
+          "id": "sentiment::information::50",
+          "step": "50",
+          "hex": "#0099F3"
+        },
+        {
+          "id": "sentiment::information::60",
+          "step": "60",
+          "hex": "#0082E5"
+        },
+        {
+          "id": "sentiment::information::70",
+          "step": "70",
+          "hex": "#1570D1"
+        },
+        {
+          "id": "sentiment::information::80",
+          "step": "80",
+          "hex": "#0855B2"
+        },
+        {
+          "id": "sentiment::information::90",
+          "step": "90",
+          "hex": "#0B43A3"
+        },
+        {
+          "id": "sentiment::information::95",
+          "step": "95",
+          "hex": "#06338D"
+        }
+      ]
+    },
+    {
+      "id": "brand::strawberry",
+      "collectionId": "brand",
+      "name": "pink",
+      "steps": [
+        {
+          "id": "brand::strawberry::5",
+          "step": "5",
+          "hex": "#FBDAE8"
+        },
+        {
+          "id": "brand::strawberry::10",
+          "step": "10",
+          "hex": "#F3C3D8"
+        },
+        {
+          "id": "brand::strawberry::20",
+          "step": "20",
+          "hex": "#EEA1C3"
+        },
+        {
+          "id": "brand::strawberry::30",
+          "step": "30",
+          "hex": "#F07FB0"
+        },
+        {
+          "id": "brand::strawberry::40",
+          "step": "40",
+          "hex": "#EB5895"
+        },
+        {
+          "id": "brand::strawberry::50",
+          "step": "50",
+          "hex": "#E11970"
+        },
+        {
+          "id": "brand::strawberry::60",
+          "step": "60",
+          "hex": "#CE035B"
+        },
+        {
+          "id": "brand::strawberry::70",
+          "step": "70",
+          "hex": "#B5004F"
+        },
+        {
+          "id": "brand::strawberry::80",
+          "step": "80",
+          "hex": "#A10448"
+        },
+        {
+          "id": "brand::strawberry::90",
+          "step": "90",
+          "hex": "#8D003D"
+        },
+        {
+          "id": "brand::strawberry::95",
+          "step": "95",
+          "hex": "#7D0C3D"
+        }
+      ]
+    },
+    {
+      "id": "brand::orange",
+      "collectionId": "brand",
+      "name": "orange",
+      "steps": [
+        {
+          "id": "brand::orange::5",
+          "step": "5",
+          "hex": "#FFE3CE"
+        },
+        {
+          "id": "brand::orange::10",
+          "step": "10",
+          "hex": "#FFD2B3"
+        },
+        {
+          "id": "brand::orange::20",
+          "step": "20",
+          "hex": "#FFBD8A"
+        },
+        {
+          "id": "brand::orange::30",
+          "step": "30",
+          "hex": "#FFA868"
+        },
+        {
+          "id": "brand::orange::40",
+          "step": "40",
+          "hex": "#FF8B38"
+        },
+        {
+          "id": "brand::orange::50",
+          "step": "50",
+          "hex": "#F46800"
+        },
+        {
+          "id": "brand::orange::60",
+          "step": "60",
+          "hex": "#D15900"
+        },
+        {
+          "id": "brand::orange::70",
+          "step": "70",
+          "hex": "#B34800"
+        },
+        {
+          "id": "brand::orange::80",
+          "step": "80",
+          "hex": "#942F00"
+        },
+        {
+          "id": "brand::orange::90",
+          "step": "90",
+          "hex": "#701C00"
+        },
+        {
+          "id": "brand::orange::95",
+          "step": "95",
+          "hex": "#611D00"
+        }
+      ]
+    }
+  ],
+  "semanticCollections": [
+    {
+      "id": "background",
+      "name": "Background"
+    },
+    {
+      "id": "text",
+      "name": "Text"
+    },
+    {
+      "id": "borders",
+      "name": "Borders"
+    }
+  ],
+  "semanticSubGroups": [
+    {
+      "id": "neutral",
+      "name": "Neutral"
+    },
+    {
+      "id": "brand",
+      "name": "Brand"
+    },
+    {
+      "id": "sentiment",
+      "name": "Sentiment"
+    },
+    {
+      "id": "accent",
+      "name": "Accent"
+    },
+    {
+      "id": "accent-2",
+      "name": "accent"
+    },
+    {
+      "id": "state",
+      "name": "state"
+    }
+  ],
+  "semanticFamilies": [
+    {
+      "id": "neutral",
+      "name": "neutral"
+    },
+    {
+      "id": "teal",
+      "name": "purple"
+    },
+    {
+      "id": "strawberry",
+      "name": "pink"
+    },
+    {
+      "id": "orange",
+      "name": "orange"
+    },
+    {
+      "id": "error",
+      "name": "error"
+    },
+    {
+      "id": "warning",
+      "name": "warning"
+    },
+    {
+      "id": "success",
+      "name": "success"
+    },
+    {
+      "id": "info",
+      "name": "info"
+    },
+    {
+      "id": "alpha",
+      "name": "alpha"
+    },
+    {
+      "id": "alpha-2",
+      "name": "alpha"
+    },
+    {
+      "id": "state",
+      "name": "state"
+    },
+    {
+      "id": "pink",
+      "name": "pink"
+    },
+    {
+      "id": "orange-2",
+      "name": "orange"
+    },
+    {
+      "id": "pink-2",
+      "name": "pink"
+    },
+    {
+      "id": "orange-3",
+      "name": "orange"
+    },
+    {
+      "id": "selected",
+      "name": "selected"
+    },
+    {
+      "id": "selected-2",
+      "name": "selected"
+    },
+    {
+      "id": "selected-3",
+      "name": "selected"
+    },
+    {
+      "id": "disabled",
+      "name": "disabled"
+    },
+    {
+      "id": "disabled-2",
+      "name": "disabled"
+    },
+    {
+      "id": "disabled-3",
+      "name": "disabled"
+    },
+    {
+      "id": "focused",
+      "name": "focused"
+    }
+  ],
+  "semanticFamilySubGroups": {
+    "neutral": "neutral",
+    "teal": "brand",
+    "strawberry": "accent-2",
+    "orange": "accent-2",
+    "error": "sentiment",
+    "warning": "sentiment",
+    "success": "sentiment",
+    "info": "sentiment",
+    "alpha": "neutral",
+    "alpha-2": "neutral",
+    "state": "accent-2",
+    "pink": "accent-2",
+    "orange-2": "accent-2",
+    "pink-2": "accent-2",
+    "orange-3": "accent-2",
+    "selected": "state",
+    "selected-2": "state",
+    "selected-3": "state",
+    "disabled": "state",
+    "disabled-2": "state",
+    "disabled-3": "state",
+    "focused": "state"
+  },
+  "primitiveFamilyOrders": {
+    "neutral": [
+      "neutral::base",
+      "neutral::gray",
+      "neutral::black-alpha",
+      "neutral::white-alpha"
+    ],
+    "brand": [
+      "brand::teal",
+      "brand::strawberry",
+      "brand::orange"
+    ],
+    "sentiment": [
+      "sentiment::error",
+      "sentiment::warning",
+      "sentiment::success",
+      "sentiment::information"
+    ],
+    "accent": []
+  },
+  "semantics": [
+    {
+      "id": "background/neutral/primary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "primary",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
+        "dark": "#121212"
+      }
+    },
+    {
+      "id": "background/neutral/primary-inverse",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "primary-inverse",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "background/neutral/secondary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "secondary",
+      "ref": {
+        "light": "neutral::gray::5",
+        "dark": "neutral::gray::95"
+      },
+      "fallbackHex": {
+        "light": "#F1F2F4",
+        "dark": "#282B2F"
+      }
+    },
+    {
+      "id": "background/neutral/tertiary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "tertiary",
+      "ref": {
+        "light": "neutral::gray::10",
+        "dark": "neutral::gray::90"
+      },
+      "fallbackHex": {
+        "light": "#DBDDE2",
+        "dark": "#363B40"
+      }
+    },
+    {
+      "id": "background/neutral/quaternary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "quaternary",
+      "ref": {
+        "light": "neutral::gray::20",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCD1D7",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/neutral/quinary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "quinary",
+      "ref": {
+        "light": "neutral::gray::30",
+        "dark": "neutral::gray::70"
+      },
+      "fallbackHex": {
+        "light": "#B7BCC2",
+        "dark": "#596069"
+      }
+    },
+    {
+      "id": "background/neutral/senary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "senary",
+      "ref": {
+        "light": "neutral::gray::50",
+        "dark": "neutral::gray::50"
+      },
+      "fallbackHex": {
+        "light": "#87909A",
+        "dark": "#87909A"
+      }
+    },
+    {
+      "id": "background/neutral/septenary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "septenary",
+      "ref": {
+        "light": "neutral::gray::70",
+        "dark": "neutral::gray::30"
+      },
+      "fallbackHex": {
+        "light": "#596069",
+        "dark": "#B7BCC2"
+      }
+    },
+    {
+      "id": "background/neutral/octonary",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "octonary",
+      "ref": {
+        "light": "neutral::gray::80",
+        "dark": "neutral::gray::20"
+      },
+      "fallbackHex": {
+        "light": "#4B5258",
+        "dark": "#CCD1D7"
+      }
+    },
+    {
+      "id": "background/neutral/white-fixed",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "white-fixed",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "background/neutral/black-fixed",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "black-fixed",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#121212"
+      }
+    },
+    {
+      "id": "background/neutral/true-base",
+      "surface": "background",
+      "familyKey": "neutral",
+      "role": "true-base",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::true-black"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#000000"
+      }
+    },
+    {
+      "id": "background/brand/purple/primary",
+      "surface": "background",
+      "familyKey": "teal",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::50",
+        "dark": "brand::teal::50"
+      },
+      "fallbackHex": {
+        "light": "#4C42CF",
+        "dark": "#4C42CF"
+      }
+    },
+    {
+      "id": "background/brand/purple/light",
+      "surface": "background",
+      "familyKey": "teal",
+      "role": "light",
+      "ref": {
+        "light": "brand::teal::5",
+        "dark": "brand::teal::95"
+      },
+      "fallbackHex": {
+        "light": "#E4E2F8",
+        "dark": "#1F1976"
+      }
+    },
+    {
+      "id": "background/brand/purple/mid",
+      "surface": "background",
+      "familyKey": "teal",
+      "role": "mid",
+      "ref": {
+        "light": "brand::teal::20",
+        "dark": "brand::teal::80"
+      },
+      "fallbackHex": {
+        "light": "#ACA8EA",
+        "dark": "#2B1E9F"
+      }
+    },
+    {
+      "id": "background/brand/purple/strong",
+      "surface": "background",
+      "familyKey": "teal",
+      "role": "strong",
+      "ref": {
+        "light": "brand::teal::80",
+        "dark": "brand::teal::40"
+      },
+      "fallbackHex": {
+        "light": "#2B1E9F",
+        "dark": "#6F67D9"
+      },
+      "comments": {
+        "dark": "Strong variables are mostly used for hover states, in dark mode they invert and become lighter. They fail 4.5:1 contrast with labels, but we only need the default state to pass."
+      }
+    },
+    {
+      "id": "background/pink/primary",
+      "surface": "background",
+      "familyKey": "strawberry",
+      "role": "primary",
+      "ref": {
+        "light": "brand::strawberry::50",
+        "dark": "brand::strawberry::50"
+      },
+      "fallbackHex": {
+        "light": "#E11970",
+        "dark": "#E11970"
+      }
+    },
+    {
+      "id": "background/pink/mid",
+      "surface": "background",
+      "familyKey": "strawberry",
+      "role": "mid",
+      "ref": {
+        "light": "brand::strawberry::30",
+        "dark": "brand::strawberry::80"
+      },
+      "fallbackHex": {
+        "light": "#F07FB0",
+        "dark": "#A10448"
+      }
+    },
+    {
+      "id": "background/pink/strong",
+      "surface": "background",
+      "familyKey": "strawberry",
+      "role": "strong",
+      "ref": {
+        "light": "brand::strawberry::70",
+        "dark": "brand::strawberry::40"
+      },
+      "fallbackHex": {
+        "light": "#B5004F",
+        "dark": "#EB5895"
+      }
+    },
+    {
+      "id": "background/orange/primary",
+      "surface": "background",
+      "familyKey": "orange",
+      "role": "primary",
+      "ref": {
+        "light": "brand::orange::50",
+        "dark": "brand::orange::50"
+      },
+      "fallbackHex": {
+        "light": "#F46800",
+        "dark": "#F46800"
+      },
+      "comments": {
+        "light": "The Run button orange is an intentional a11y exception. It fails 4.5:1 contrast with white labels but we are keeping it for its deep user association with \"run\" (and Blockly's run blocks)."
+      }
+    },
+    {
+      "id": "background/orange/mid",
+      "surface": "background",
+      "familyKey": "orange",
+      "role": "mid",
+      "ref": {
+        "light": "brand::orange::30",
+        "dark": "brand::orange::80"
+      },
+      "fallbackHex": {
+        "light": "#FFA868",
+        "dark": "#942F00"
+      }
+    },
+    {
+      "id": "background/orange/strong",
+      "surface": "background",
+      "familyKey": "orange",
+      "role": "strong",
+      "ref": {
+        "light": "brand::orange::70",
+        "dark": "brand::orange::40"
+      },
+      "fallbackHex": {
+        "light": "#B34800",
+        "dark": "#FF8B38"
+      }
+    },
+    {
+      "id": "background/error/primary",
+      "surface": "background",
+      "familyKey": "error",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::error::50",
+        "dark": "sentiment::error::50"
+      },
+      "fallbackHex": {
+        "light": "#EB1414",
+        "dark": "#EB1414"
+      }
+    },
+    {
+      "id": "background/error/light",
+      "surface": "background",
+      "familyKey": "error",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::error::5",
+        "dark": "sentiment::error::95"
+      },
+      "fallbackHex": {
+        "light": "#FBD5D5",
+        "dark": "#620202"
+      }
+    },
+    {
+      "id": "background/error/mid",
+      "surface": "background",
+      "familyKey": "error",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::error::30",
+        "dark": "sentiment::error::80"
+      },
+      "fallbackHex": {
+        "light": "#F37272",
+        "dark": "#8D0C0C"
+      }
+    },
+    {
+      "id": "background/error/strong",
+      "surface": "background",
+      "familyKey": "error",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::error::70",
+        "dark": "sentiment::error::40"
+      },
+      "fallbackHex": {
+        "light": "#B30F0F",
+        "dark": "#EF4848"
+      }
+    },
+    {
+      "id": "background/warning/primary",
+      "surface": "background",
+      "familyKey": "warning",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::warning::50",
+        "dark": "sentiment::warning::50"
+      },
+      "fallbackHex": {
+        "light": "#F5C000",
+        "dark": "#F5C000"
+      }
+    },
+    {
+      "id": "background/warning/light",
+      "surface": "background",
+      "familyKey": "warning",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::warning::5",
+        "dark": "sentiment::warning::95"
+      },
+      "fallbackHex": {
+        "light": "#FFF3D1",
+        "dark": "#654500"
+      }
+    },
+    {
+      "id": "background/warning/mid",
+      "surface": "background",
+      "familyKey": "warning",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::warning::30",
+        "dark": "sentiment::warning::80"
+      },
+      "fallbackHex": {
+        "light": "#FFD35C",
+        "dark": "#B27A01"
+      }
+    },
+    {
+      "id": "background/warning/strong",
+      "surface": "background",
+      "familyKey": "warning",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::warning::70",
+        "dark": "sentiment::warning::40"
+      },
+      "fallbackHex": {
+        "light": "#CF8E02",
+        "dark": "#FDC835"
+      }
+    },
+    {
+      "id": "background/success/primary",
+      "surface": "background",
+      "familyKey": "success",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::success::70",
+        "dark": "sentiment::success::70"
+      },
+      "fallbackHex": {
+        "light": "#258830",
+        "dark": "#258830"
+      },
+      "comments": {
+        "light": "Bumped to level 70 (brand-guideline primary is 50) so white labels pass 4.5:1; strong sits at 90.",
+        "dark": "Level 70 is preserved for success even in dark mode to continue to pass 4.5:1 contrast with white labels, we intentionally don't invert to avoid black labels."
+      }
+    },
+    {
+      "id": "background/success/light",
+      "surface": "background",
+      "familyKey": "success",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "sentiment::success::95"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#003F25"
+      }
+    },
+    {
+      "id": "background/success/mid",
+      "surface": "background",
+      "familyKey": "success",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::success::30",
+        "dark": "sentiment::success::80"
+      },
+      "fallbackHex": {
+        "light": "#7CDB87",
+        "dark": "#1F7028"
+      }
+    },
+    {
+      "id": "background/success/strong",
+      "surface": "background",
+      "familyKey": "success",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::success::90",
+        "dark": "sentiment::success::60"
+      },
+      "fallbackHex": {
+        "light": "#17541E",
+        "dark": "#2DA43A"
+      },
+      "comments": {
+        "dark": "Bc success is at level 70, we maintain the relative hover rule by setting the strong to 60."
+      }
+    },
+    {
+      "id": "background/info/primary",
+      "surface": "background",
+      "familyKey": "info",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::information::70",
+        "dark": "sentiment::information::70"
+      },
+      "fallbackHex": {
+        "light": "#1570D1",
+        "dark": "#1570D1"
+      },
+      "comments": {
+        "light": "Bumped to level 70 (brand-guideline primary is 50) so white labels pass 4.5:1; strong sits at 90.",
+        "dark": "Level 70 is preserved for info even in dark mode to continue to pass 4.5:1 contrast with white labels, we intentionally don't invert to avoid black labels."
+      }
+    },
+    {
+      "id": "background/info/light",
+      "surface": "background",
+      "familyKey": "info",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::information::5",
+        "dark": "sentiment::information::95"
+      },
+      "fallbackHex": {
+        "light": "#D5EFFF",
+        "dark": "#06338D"
+      }
+    },
+    {
+      "id": "background/info/mid",
+      "surface": "background",
+      "familyKey": "info",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::information::30",
+        "dark": "sentiment::information::80"
+      },
+      "fallbackHex": {
+        "light": "#6FCAFF",
+        "dark": "#0855B2"
+      }
+    },
+    {
+      "id": "background/info/strong",
+      "surface": "background",
+      "familyKey": "info",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::information::90",
+        "dark": "sentiment::information::60"
+      },
+      "fallbackHex": {
+        "light": "#0B43A3",
+        "dark": "#0082E5"
+      },
+      "comments": {
+        "dark": "Bc info is at level 70, we maintain the relative hover rule by setting the strong to 60."
+      }
+    },
+    {
+      "id": "borders/neutral/primary",
+      "surface": "borders",
+      "familyKey": "neutral",
+      "role": "primary",
+      "ref": {
+        "light": "neutral::gray::20",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCD1D7",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/neutral/secondary",
+      "surface": "borders",
+      "familyKey": "neutral",
+      "role": "secondary",
+      "ref": {
+        "light": "neutral::gray::40",
+        "dark": "neutral::gray::60"
+      },
+      "fallbackHex": {
+        "light": "#9EA5AD",
+        "dark": "#6E7782"
+      }
+    },
+    {
+      "id": "borders/neutral/solid",
+      "surface": "borders",
+      "familyKey": "neutral",
+      "role": "solid",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "borders/brand/purple/primary",
+      "surface": "borders",
+      "familyKey": "teal",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::50",
+        "dark": "brand::teal::50"
+      },
+      "fallbackHex": {
+        "light": "#4C42CF",
+        "dark": "#4C42CF"
+      },
+      "comments": {
+        "dark": "Primary borders of all colors stay at level 50 in dark mode since contrast only needs 3:1."
+      }
+    },
+    {
+      "id": "borders/brand/purple/light",
+      "surface": "borders",
+      "familyKey": "teal",
+      "role": "light",
+      "ref": {
+        "light": "brand::teal::5",
+        "dark": "brand::teal::90"
+      },
+      "fallbackHex": {
+        "light": "#E4E2F8",
+        "dark": "#1D1590"
+      }
+    },
+    {
+      "id": "borders/brand/purple/strong",
+      "surface": "borders",
+      "familyKey": "teal",
+      "role": "strong",
+      "ref": {
+        "light": "brand::teal::70",
+        "dark": "brand::teal::30"
+      },
+      "fallbackHex": {
+        "light": "#3228B7",
+        "dark": "#928CEF"
+      }
+    },
+    {
+      "id": "borders/error/primary",
+      "surface": "borders",
+      "familyKey": "error",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::error::50",
+        "dark": "sentiment::error::50"
+      },
+      "fallbackHex": {
+        "light": "#EB1414",
+        "dark": "#EB1414"
+      }
+    },
+    {
+      "id": "borders/error/light",
+      "surface": "borders",
+      "familyKey": "error",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::error::10",
+        "dark": "sentiment::error::90"
+      },
+      "fallbackHex": {
+        "light": "#FAC2C2",
+        "dark": "#6C0909"
+      }
+    },
+    {
+      "id": "borders/error/strong",
+      "surface": "borders",
+      "familyKey": "error",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::error::70",
+        "dark": "sentiment::error::30"
+      },
+      "fallbackHex": {
+        "light": "#B30F0F",
+        "dark": "#F37272"
+      }
+    },
+    {
+      "id": "borders/warning/primary",
+      "surface": "borders",
+      "familyKey": "warning",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::warning::50",
+        "dark": "sentiment::warning::50"
+      },
+      "fallbackHex": {
+        "light": "#F5C000",
+        "dark": "#F5C000"
+      }
+    },
+    {
+      "id": "borders/warning/light",
+      "surface": "borders",
+      "familyKey": "warning",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::warning::10",
+        "dark": "sentiment::warning::90"
+      },
+      "fallbackHex": {
+        "light": "#FFECB8",
+        "dark": "#885D02"
+      }
+    },
+    {
+      "id": "borders/warning/strong",
+      "surface": "borders",
+      "familyKey": "warning",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::warning::70",
+        "dark": "sentiment::warning::30"
+      },
+      "fallbackHex": {
+        "light": "#CF8E02",
+        "dark": "#FFD35C"
+      }
+    },
+    {
+      "id": "borders/success/primary",
+      "surface": "borders",
+      "familyKey": "success",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::success::50",
+        "dark": "sentiment::success::50"
+      },
+      "fallbackHex": {
+        "light": "#34BD43",
+        "dark": "#34BD43"
+      },
+      "comments": {
+        "light": "Stays at level 50 (unlike the bumped background primary at 70) since border contrast only needs 3:1."
+      }
+    },
+    {
+      "id": "borders/success/light",
+      "surface": "borders",
+      "familyKey": "success",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::success::10",
+        "dark": "sentiment::success::90"
+      },
+      "fallbackHex": {
+        "light": "#B7E6BD",
+        "dark": "#17541E"
+      }
+    },
+    {
+      "id": "borders/success/strong",
+      "surface": "borders",
+      "familyKey": "success",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::success::70",
+        "dark": "sentiment::success::30"
+      },
+      "fallbackHex": {
+        "light": "#258830",
+        "dark": "#7CDB87"
+      }
+    },
+    {
+      "id": "borders/info/primary",
+      "surface": "borders",
+      "familyKey": "info",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::information::50",
+        "dark": "sentiment::information::50"
+      },
+      "fallbackHex": {
+        "light": "#0099F3",
+        "dark": "#0099F3"
+      },
+      "comments": {
+        "light": "Stays at level 50 (unlike the bumped background primary at 70) since border contrast only needs 3:1."
+      }
+    },
+    {
+      "id": "borders/info/light",
+      "surface": "borders",
+      "familyKey": "info",
+      "role": "light",
+      "ref": {
+        "light": "sentiment::information::10",
+        "dark": "sentiment::information::90"
+      },
+      "fallbackHex": {
+        "light": "#B8E5FF",
+        "dark": "#0B43A3"
+      }
+    },
+    {
+      "id": "borders/info/strong",
+      "surface": "borders",
+      "familyKey": "info",
+      "role": "strong",
+      "ref": {
+        "light": "sentiment::information::70",
+        "dark": "sentiment::information::30"
+      },
+      "fallbackHex": {
+        "light": "#1570D1",
+        "dark": "#6FCAFF"
+      }
+    },
+    {
+      "id": "text/neutral/primary",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "primary",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/neutral/secondary",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "secondary",
+      "ref": {
+        "light": "neutral::gray::90",
+        "dark": "neutral::gray::5"
+      },
+      "fallbackHex": {
+        "light": "#363B40",
+        "dark": "#F1F2F4"
+      }
+    },
+    {
+      "id": "text/neutral/tertiary",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "tertiary",
+      "ref": {
+        "light": "neutral::gray::80",
+        "dark": "neutral::gray::10"
+      },
+      "fallbackHex": {
+        "light": "#4B5258",
+        "dark": "#DBDDE2"
+      }
+    },
+    {
+      "id": "text/neutral/quaternary",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "quaternary",
+      "ref": {
+        "light": "neutral::gray::70",
+        "dark": "neutral::gray::20"
+      },
+      "fallbackHex": {
+        "light": "#596069",
+        "dark": "#CCD1D7"
+      }
+    },
+    {
+      "id": "text/neutral/placeholder",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "placeholder",
+      "ref": {
+        "light": "neutral::gray::40",
+        "dark": "neutral::gray::60"
+      },
+      "fallbackHex": {
+        "light": "#9EA5AD",
+        "dark": "#6E7782"
+      }
+    },
+    {
+      "id": "text/neutral/primary-inverse",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "primary-inverse",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
+        "dark": "#121212"
+      }
+    },
+    {
+      "id": "text/neutral/white-fixed",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "white-fixed",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/neutral/black-fixed",
+      "surface": "text",
+      "familyKey": "neutral",
+      "role": "black-fixed",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#121212"
+      }
+    },
+    {
+      "id": "text/brand/purple/primary",
+      "surface": "text",
+      "familyKey": "teal",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::50",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#4C42CF",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/brand/purple/secondary",
+      "surface": "text",
+      "familyKey": "teal",
+      "role": "secondary",
+      "ref": {
+        "light": "brand::teal::70",
+        "dark": "brand::teal::5"
+      },
+      "fallbackHex": {
+        "light": "#3228B7",
+        "dark": "#E4E2F8"
+      }
+    },
+    {
+      "id": "text/brand/purple/primary-fixed",
+      "surface": "text",
+      "familyKey": "teal",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "brand::teal::50",
+        "dark": "brand::teal::30"
+      },
+      "fallbackHex": {
+        "light": "#4C42CF",
+        "dark": "#928CEF"
+      }
+    },
+    {
+      "id": "text/error/primary",
+      "surface": "text",
+      "familyKey": "error",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::error::50",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#EB1414",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/error/secondary",
+      "surface": "text",
+      "familyKey": "error",
+      "role": "secondary",
+      "ref": {
+        "light": "sentiment::error::70",
+        "dark": "sentiment::error::5"
+      },
+      "fallbackHex": {
+        "light": "#B30F0F",
+        "dark": "#FBD5D5"
+      }
+    },
+    {
+      "id": "text/error/primary-fixed",
+      "surface": "text",
+      "familyKey": "error",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "sentiment::error::50",
+        "dark": "sentiment::error::30"
+      },
+      "fallbackHex": {
+        "light": "#EB1414",
+        "dark": "#F37272"
+      }
+    },
+    {
+      "id": "text/warning/primary",
+      "surface": "text",
+      "familyKey": "warning",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::warning::50",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#F5C000",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/warning/secondary",
+      "surface": "text",
+      "familyKey": "warning",
+      "role": "secondary",
+      "ref": {
+        "light": "sentiment::warning::90",
+        "dark": "sentiment::warning::5"
+      },
+      "fallbackHex": {
+        "light": "#885D02",
+        "dark": "#FFF3D1"
+      }
+    },
+    {
+      "id": "text/warning/primary-fixed",
+      "surface": "text",
+      "familyKey": "warning",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "sentiment::warning::50",
+        "dark": "sentiment::warning::30"
+      },
+      "fallbackHex": {
+        "light": "#F5C000",
+        "dark": "#FFD35C"
+      }
+    },
+    {
+      "id": "text/success/primary",
+      "surface": "text",
+      "familyKey": "success",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::success::70",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#258830",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/success/secondary",
+      "surface": "text",
+      "familyKey": "success",
+      "role": "secondary",
+      "ref": {
+        "light": "sentiment::success::90",
+        "dark": "sentiment::success::5"
+      },
+      "fallbackHex": {
+        "light": "#17541E",
+        "dark": "#CCF1D0"
+      }
+    },
+    {
+      "id": "text/success/primary-fixed",
+      "surface": "text",
+      "familyKey": "success",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "sentiment::success::70",
+        "dark": "sentiment::success::30"
+      },
+      "fallbackHex": {
+        "light": "#258830",
+        "dark": "#7CDB87"
+      }
+    },
+    {
+      "id": "text/info/primary",
+      "surface": "text",
+      "familyKey": "info",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::information::70",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#1570D1",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/info/secondary",
+      "surface": "text",
+      "familyKey": "info",
+      "role": "secondary",
+      "ref": {
+        "light": "sentiment::information::90",
+        "dark": "sentiment::information::5"
+      },
+      "fallbackHex": {
+        "light": "#0B43A3",
+        "dark": "#D5EFFF"
+      }
+    },
+    {
+      "id": "text/info/primary-fixed",
+      "surface": "text",
+      "familyKey": "info",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "sentiment::information::70",
+        "dark": "sentiment::information::30"
+      },
+      "fallbackHex": {
+        "light": "#1570D1",
+        "dark": "#6FCAFF"
+      }
+    },
+    {
+      "id": "background/alpha/5",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "5",
+      "ref": {
+        "light": "neutral::black-alpha::5",
+        "dark": "neutral::white-alpha::5"
+      },
+      "fallbackHex": {
+        "light": "#1212120D",
+        "dark": "#FFFFFF0D"
+      }
+    },
+    {
+      "id": "background/alpha/10",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "10",
+      "ref": {
+        "light": "neutral::black-alpha::10",
+        "dark": "neutral::white-alpha::10"
+      },
+      "fallbackHex": {
+        "light": "#1212121A",
+        "dark": "#FFFFFF1A"
+      }
+    },
+    {
+      "id": "background/alpha/20",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "20",
+      "ref": {
+        "light": "neutral::black-alpha::20",
+        "dark": "neutral::white-alpha::20"
+      },
+      "fallbackHex": {
+        "light": "#12121233",
+        "dark": "#FFFFFF33"
+      }
+    },
+    {
+      "id": "background/alpha/30",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "30",
+      "ref": {
+        "light": "neutral::black-alpha::30",
+        "dark": "neutral::white-alpha::30"
+      },
+      "fallbackHex": {
+        "light": "#1212124D",
+        "dark": "#FFFFFF4D"
+      }
+    },
+    {
+      "id": "background/alpha/40",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "40",
+      "ref": {
+        "light": "neutral::black-alpha::40",
+        "dark": "neutral::white-alpha::40"
+      },
+      "fallbackHex": {
+        "light": "#12121266",
+        "dark": "#FFFFFF66"
+      }
+    },
+    {
+      "id": "background/alpha/50",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "50",
+      "ref": {
+        "light": "neutral::black-alpha::50",
+        "dark": "neutral::white-alpha::50"
+      },
+      "fallbackHex": {
+        "light": "#12121280",
+        "dark": "#FFFFFF80"
+      }
+    },
+    {
+      "id": "background/alpha/60",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "60",
+      "ref": {
+        "light": "neutral::black-alpha::60",
+        "dark": "neutral::white-alpha::60"
+      },
+      "fallbackHex": {
+        "light": "#12121299",
+        "dark": "#FFFFFF99"
+      }
+    },
+    {
+      "id": "background/alpha/70",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "70",
+      "ref": {
+        "light": "neutral::black-alpha::70",
+        "dark": "neutral::white-alpha::70"
+      },
+      "fallbackHex": {
+        "light": "#121212B2",
+        "dark": "#FFFFFFB2"
+      }
+    },
+    {
+      "id": "background/alpha/80",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "80",
+      "ref": {
+        "light": "neutral::black-alpha::80",
+        "dark": "neutral::white-alpha::80"
+      },
+      "fallbackHex": {
+        "light": "#121212CC",
+        "dark": "#FFFFFFCC"
+      }
+    },
+    {
+      "id": "background/alpha/90",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "90",
+      "ref": {
+        "light": "neutral::black-alpha::90",
+        "dark": "neutral::white-alpha::90"
+      },
+      "fallbackHex": {
+        "light": "#121212E5",
+        "dark": "#FFFFFFE5"
+      }
+    },
+    {
+      "id": "background/alpha/95",
+      "surface": "background",
+      "familyKey": "alpha-2",
+      "role": "95",
+      "ref": {
+        "light": "neutral::black-alpha::95",
+        "dark": "neutral::white-alpha::95"
+      },
+      "fallbackHex": {
+        "light": "#121212F2",
+        "dark": "#FFFFFFF2"
+      }
+    },
+    {
+      "id": "background/pink/light",
+      "surface": "background",
+      "familyKey": "strawberry",
+      "role": "light",
+      "ref": {
+        "light": "brand::strawberry::5",
+        "dark": "brand::strawberry::95"
+      },
+      "fallbackHex": {
+        "light": "#FBDAE8",
+        "dark": "#7D0C3D"
+      }
+    },
+    {
+      "id": "background/orange/light",
+      "surface": "background",
+      "familyKey": "orange",
+      "role": "light",
+      "ref": {
+        "light": "brand::orange::5",
+        "dark": "brand::orange::95"
+      },
+      "fallbackHex": {
+        "light": "#FFE3CE",
+        "dark": "#611D00"
+      }
+    },
+    {
+      "id": "text/pink/primary",
+      "surface": "text",
+      "familyKey": "pink",
+      "role": "primary",
+      "ref": {
+        "light": "brand::strawberry::50",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#E11970",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "text/orange/primary",
+      "surface": "text",
+      "familyKey": "orange-2",
+      "role": "primary",
+      "ref": {
+        "light": "brand::orange::50",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#F46800",
+        "dark": "#FFFFFF"
+      },
+      "comments": {
+        "light": "Orange text intentionally keeps the true brand-guideline level-50 value instead of bumping for contrast"
+      }
+    },
+    {
+      "id": "borders/pink/primary",
+      "surface": "borders",
+      "familyKey": "pink-2",
+      "role": "primary",
+      "ref": {
+        "light": "brand::strawberry::50",
+        "dark": "brand::strawberry::50"
+      },
+      "fallbackHex": {
+        "light": "#E11970",
+        "dark": "#E11970"
+      }
+    },
+    {
+      "id": "borders/orange/primary",
+      "surface": "borders",
+      "familyKey": "orange-3",
+      "role": "primary",
+      "ref": {
+        "light": "brand::orange::50",
+        "dark": "brand::orange::50"
+      },
+      "fallbackHex": {
+        "light": "#F46800",
+        "dark": "#F46800"
+      }
+    },
+    {
+      "id": "background/selected/primary",
+      "surface": "background",
+      "familyKey": "selected",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::80",
+        "dark": "sentiment::success::5"
+      },
+      "fallbackHex": {
+        "light": "#2B1E9F",
+        "dark": "#CCF1D0"
+      },
+      "comments": {
+        "light": "Selected state is mode-inverted and cross-family by design: brand fill + seafoam text in light, seafoam fill + navy text in dark.",
+        "dark": "Selected state is mode-inverted and cross-family by design: brand fill + seafoam text in light, seafoam fill + navy text in dark."
+      }
+    },
+    {
+      "id": "background/selected/strong",
+      "surface": "background",
+      "familyKey": "selected",
+      "role": "strong",
+      "ref": {
+        "light": "brand::teal::95",
+        "dark": "sentiment::success::20"
+      },
+      "fallbackHex": {
+        "light": "#1F1976",
+        "dark": "#9BE3A3"
+      }
+    },
+    {
+      "id": "text/pink/strong",
+      "surface": "text",
+      "familyKey": "pink",
+      "role": "strong",
+      "ref": {
+        "light": "brand::strawberry::70",
+        "dark": "brand::strawberry::5"
+      },
+      "fallbackHex": {
+        "light": "#B5004F",
+        "dark": "#FBDAE8"
+      }
+    },
+    {
+      "id": "text/pink/primary-fixed",
+      "surface": "text",
+      "familyKey": "pink",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "brand::strawberry::50",
+        "dark": "brand::strawberry::30"
+      },
+      "fallbackHex": {
+        "light": "#E11970",
+        "dark": "#F07FB0"
+      }
+    },
+    {
+      "id": "text/orange/strong",
+      "surface": "text",
+      "familyKey": "orange-2",
+      "role": "strong",
+      "ref": {
+        "light": "brand::orange::70",
+        "dark": "brand::orange::5"
+      },
+      "fallbackHex": {
+        "light": "#B34800",
+        "dark": "#FFE3CE"
+      }
+    },
+    {
+      "id": "text/orange/primary-fixed",
+      "surface": "text",
+      "familyKey": "orange-2",
+      "role": "primary-fixed",
+      "ref": {
+        "light": "brand::orange::50",
+        "dark": "brand::orange::30"
+      },
+      "fallbackHex": {
+        "light": "#F46800",
+        "dark": "#FFA868"
+      }
+    },
+    {
+      "id": "text/selected/primary",
+      "surface": "text",
+      "familyKey": "selected-2",
+      "role": "primary",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "brand::teal::95"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#1F1976"
+      },
+      "comments": {
+        "light": "Selected state text pairs with background and border-state-selected — always use the two together.",
+        "dark": "Pairs with background-state-selected — always use the two together."
+      }
+    },
+    {
+      "id": "borders/pink/light",
+      "surface": "borders",
+      "familyKey": "pink-2",
+      "role": "light",
+      "ref": {
+        "light": "brand::strawberry::10",
+        "dark": "brand::strawberry::90"
+      },
+      "fallbackHex": {
+        "light": "#F3C3D8",
+        "dark": "#8D003D"
+      }
+    },
+    {
+      "id": "borders/orange/light",
+      "surface": "borders",
+      "familyKey": "orange-3",
+      "role": "light",
+      "ref": {
+        "light": "brand::orange::10",
+        "dark": "brand::orange::90"
+      },
+      "fallbackHex": {
+        "light": "#FFD2B3",
+        "dark": "#701C00"
+      }
+    },
+    {
+      "id": "borders/orange/strong",
+      "surface": "borders",
+      "familyKey": "orange-3",
+      "role": "strong",
+      "ref": {
+        "light": "brand::orange::70",
+        "dark": "brand::orange::30"
+      },
+      "fallbackHex": {
+        "light": "#B34800",
+        "dark": "#FFA868"
+      }
+    },
+    {
+      "id": "borders/pink/strong",
+      "surface": "borders",
+      "familyKey": "pink-2",
+      "role": "strong",
+      "ref": {
+        "light": "brand::strawberry::70",
+        "dark": "brand::strawberry::30"
+      },
+      "fallbackHex": {
+        "light": "#B5004F",
+        "dark": "#F07FB0"
+      }
+    },
+    {
+      "id": "borders/brand/purple/mid",
+      "surface": "borders",
+      "familyKey": "teal",
+      "role": "mid",
+      "ref": {
+        "light": "brand::teal::20",
+        "dark": "brand::teal::70"
+      },
+      "fallbackHex": {
+        "light": "#ACA8EA",
+        "dark": "#3228B7"
+      }
+    },
+    {
+      "id": "borders/error/mid",
+      "surface": "borders",
+      "familyKey": "error",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::error::20",
+        "dark": "sentiment::error::70"
+      },
+      "fallbackHex": {
+        "light": "#F69898",
+        "dark": "#B30F0F"
+      }
+    },
+    {
+      "id": "borders/warning/mid",
+      "surface": "borders",
+      "familyKey": "warning",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::warning::30",
+        "dark": "sentiment::warning::70"
+      },
+      "fallbackHex": {
+        "light": "#FFD35C",
+        "dark": "#CF8E02"
+      }
+    },
+    {
+      "id": "borders/success/mid",
+      "surface": "borders",
+      "familyKey": "success",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::success::30",
+        "dark": "sentiment::success::70"
+      },
+      "fallbackHex": {
+        "light": "#7CDB87",
+        "dark": "#258830"
+      }
+    },
+    {
+      "id": "borders/info/mid",
+      "surface": "borders",
+      "familyKey": "info",
+      "role": "mid",
+      "ref": {
+        "light": "sentiment::information::30",
+        "dark": "sentiment::information::70"
+      },
+      "fallbackHex": {
+        "light": "#6FCAFF",
+        "dark": "#1570D1"
+      }
+    },
+    {
+      "id": "borders/pink/mid",
+      "surface": "borders",
+      "familyKey": "pink-2",
+      "role": "mid",
+      "ref": {
+        "light": "brand::strawberry::30",
+        "dark": "brand::strawberry::70"
+      },
+      "fallbackHex": {
+        "light": "#F07FB0",
+        "dark": "#B5004F"
+      }
+    },
+    {
+      "id": "borders/orange/mid",
+      "surface": "borders",
+      "familyKey": "orange-3",
+      "role": "mid",
+      "ref": {
+        "light": "brand::orange::30",
+        "dark": "brand::orange::70"
+      },
+      "fallbackHex": {
+        "light": "#FFA868",
+        "dark": "#B34800"
+      }
+    },
+    {
+      "id": "borders/selected/primary",
+      "surface": "borders",
+      "familyKey": "selected-3",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::80",
+        "dark": "sentiment::success::5"
+      },
+      "fallbackHex": {
+        "light": "#2B1E9F",
+        "dark": "#CCF1D0"
+      },
+      "comments": {
+        "light": "Border state selected strong and primary intentionally match the background state color."
+      }
+    },
+    {
+      "id": "borders/selected/strong",
+      "surface": "borders",
+      "familyKey": "selected-3",
+      "role": "strong",
+      "ref": {
+        "light": "brand::teal::95",
+        "dark": "sentiment::success::20"
+      },
+      "fallbackHex": {
+        "light": "#1F1976",
+        "dark": "#9BE3A3"
+      }
+    },
+    {
+      "id": "background/disabled/neutral",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "neutral",
+      "ref": {
+        "light": "neutral::gray::20",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCD1D7",
+        "dark": "#4B5258"
+      },
+      "comments": {
+        "light": "Matches background-neutral-quaternary by value today, but disabled intent is decoupled so the state can be restyled independently."
+      }
+    },
+    {
+      "id": "background/disabled/brand",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "brand",
+      "ref": {
+        "light": "brand::teal::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#E4E2F8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/error",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "error",
+      "ref": {
+        "light": "sentiment::error::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBD5D5",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/warning",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "warning",
+      "ref": {
+        "light": "sentiment::warning::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFF3D1",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/success",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "success",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/info",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "info",
+      "ref": {
+        "light": "sentiment::information::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#D5EFFF",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/pink",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "pink",
+      "ref": {
+        "light": "brand::strawberry::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBDAE8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/disabled/orange",
+      "surface": "background",
+      "familyKey": "disabled",
+      "role": "orange",
+      "ref": {
+        "light": "brand::orange::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFE3CE",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/neutral",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "neutral",
+      "ref": {
+        "light": "neutral::gray::20",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCD1D7",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/neutral-inverse",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "neutral-inverse",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
+        "dark": "#121212"
+      },
+      "comments": {
+        "light": "Single inverse for the whole disabled family: label color for solid-fill disabled elements of any color; pair with the matching background/disabled/<color>. Outline disabled elements use text/disabled/<color> instead."
+      }
+    },
+    {
+      "id": "text/disabled/brand",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "brand",
+      "ref": {
+        "light": "brand::teal::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#E4E2F8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/error",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "error",
+      "ref": {
+        "light": "sentiment::error::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBD5D5",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/warning",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "warning",
+      "ref": {
+        "light": "sentiment::warning::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFF3D1",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/success",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "success",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/info",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "info",
+      "ref": {
+        "light": "sentiment::information::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#D5EFFF",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/pink",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "pink",
+      "ref": {
+        "light": "brand::strawberry::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBDAE8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "text/disabled/orange",
+      "surface": "text",
+      "familyKey": "disabled-2",
+      "role": "orange",
+      "ref": {
+        "light": "brand::orange::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFE3CE",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/neutral",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "neutral",
+      "ref": {
+        "light": "neutral::gray::20",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCD1D7",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/brand",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "brand",
+      "ref": {
+        "light": "brand::teal::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#E4E2F8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/error",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "error",
+      "ref": {
+        "light": "sentiment::error::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBD5D5",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/warning",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "warning",
+      "ref": {
+        "light": "sentiment::warning::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFF3D1",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/success",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "success",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/info",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "info",
+      "ref": {
+        "light": "sentiment::information::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#D5EFFF",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/pink",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "pink",
+      "ref": {
+        "light": "brand::strawberry::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FBDAE8",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "borders/disabled/orange",
+      "surface": "borders",
+      "familyKey": "disabled-3",
+      "role": "orange",
+      "ref": {
+        "light": "brand::orange::5",
+        "dark": "neutral::gray::80"
+      },
+      "fallbackHex": {
+        "light": "#FFE3CE",
+        "dark": "#4B5258"
+      }
+    },
+    {
+      "id": "background/selected/primary-inverse",
+      "surface": "background",
+      "familyKey": "selected",
+      "role": "primary-inverse",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "brand::teal::80"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#2B1E9F"
+      }
+    },
+    {
+      "id": "borders/focused/inverse",
+      "surface": "borders",
+      "familyKey": "focused",
+      "role": "inverse",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "brand::teal::50"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#4C42CF"
+      }
+    },
+    {
+      "id": "borders/focused/primary",
+      "surface": "borders",
+      "familyKey": "focused",
+      "role": "primary",
+      "ref": {
+        "light": "brand::teal::50",
+        "dark": "brand::teal::30"
+      },
+      "fallbackHex": {
+        "light": "#4C42CF",
+        "dark": "#928CEF"
+      }
+    },
+    {
+      "id": "borders/selected/primary-inverse",
+      "surface": "borders",
+      "familyKey": "selected-3",
+      "role": "primary-inverse",
+      "ref": {
+        "light": "sentiment::success::5",
+        "dark": "brand::teal::80"
+      },
+      "fallbackHex": {
+        "light": "#CCF1D0",
+        "dark": "#2B1E9F"
+      }
+    },
+    {
+      "id": "text/selected/primary-inverse",
+      "surface": "text",
+      "familyKey": "selected-2",
+      "role": "primary-inverse",
+      "ref": {
+        "light": "brand::teal::95",
+        "dark": "sentiment::success::5"
+      },
+      "fallbackHex": {
+        "light": "#1F1976",
+        "dark": "#CCF1D0"
+      }
+    }
+  ],
+  "semanticFamilyOrders": {
+    "background::neutral": [
+      "neutral",
+      "alpha-2"
+    ],
+    "background::brand": [
+      "teal"
+    ],
+    "background::sentiment": [
+      "error",
+      "warning",
+      "success",
+      "info"
+    ],
+    "text::neutral": [
+      "neutral"
+    ],
+    "text::brand": [
+      "teal"
+    ],
+    "text::sentiment": [
+      "error",
+      "warning",
+      "success",
+      "info"
+    ],
+    "borders::neutral": [
+      "neutral"
+    ],
+    "borders::brand": [
+      "teal"
+    ],
+    "borders::sentiment": [
+      "error",
+      "warning",
+      "success",
+      "info"
+    ],
+    "background::accent-2": [
+      "strawberry",
+      "orange"
+    ],
+    "text::accent-2": [
+      "pink",
+      "orange-2"
+    ],
+    "borders::accent-2": [
+      "pink-2",
+      "orange-3"
+    ],
+    "background::state": [
+      "selected",
+      "disabled"
+    ],
+    "text::state": [
+      "selected-2",
+      "disabled-2"
+    ],
+    "borders::state": [
+      "selected-3",
+      "focused",
+      "disabled-3"
+    ]
+  },
+  "semanticTokenOrders": {
+    "background::neutral": [
+      "primary",
+      "secondary",
+      "tertiary",
+      "quaternary",
+      "quinary",
+      "senary",
+      "septenary",
+      "octonary",
+      "primary-inverse",
+      "white-fixed",
+      "black-fixed",
+      "true-base"
+    ],
+    "background::teal": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::strawberry": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::orange": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::error": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::warning": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::success": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::info": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "background::alpha-2": [
+      "5",
+      "10",
+      "20",
+      "30",
+      "40",
+      "50",
+      "60",
+      "70",
+      "80",
+      "90",
+      "95"
+    ],
+    "background::selected": [
+      "primary",
+      "primary-inverse",
+      "strong"
+    ],
+    "text::neutral": [
+      "primary",
+      "secondary",
+      "tertiary",
+      "quaternary",
+      "placeholder",
+      "primary-inverse",
+      "white-fixed",
+      "black-fixed"
+    ],
+    "text::teal": [
+      "primary",
+      "secondary",
+      "primary-fixed"
+    ],
+    "text::error": [
+      "primary",
+      "secondary",
+      "primary-fixed"
+    ],
+    "text::warning": [
+      "primary",
+      "secondary",
+      "primary-fixed"
+    ],
+    "text::success": [
+      "primary",
+      "secondary",
+      "primary-fixed"
+    ],
+    "text::info": [
+      "primary",
+      "secondary",
+      "primary-fixed"
+    ],
+    "text::pink": [
+      "primary",
+      "strong",
+      "primary-fixed"
+    ],
+    "text::orange-2": [
+      "primary",
+      "strong",
+      "primary-fixed"
+    ],
+    "text::selected-2": [
+      "primary",
+      "primary-inverse"
+    ],
+    "borders::neutral": [
+      "primary",
+      "secondary",
+      "solid"
+    ],
+    "borders::teal": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::error": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::warning": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::success": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::info": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::pink-2": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::orange-3": [
+      "primary",
+      "light",
+      "mid",
+      "strong"
+    ],
+    "borders::selected-3": [
+      "primary",
+      "primary-inverse",
+      "strong"
+    ],
+    "background::disabled": [
+      "neutral",
+      "brand",
+      "error",
+      "warning",
+      "success",
+      "info",
+      "pink",
+      "orange"
+    ],
+    "borders::disabled-3": [
+      "neutral",
+      "brand",
+      "error",
+      "warning",
+      "success",
+      "info",
+      "pink",
+      "orange"
+    ],
+    "text::disabled-2": [
+      "neutral",
+      "neutral-inverse",
+      "brand",
+      "error",
+      "warning",
+      "success",
+      "info",
+      "pink",
+      "orange"
+    ],
+    "borders::focused": [
+      "primary",
+      "inverse"
+    ]
+  }
+}

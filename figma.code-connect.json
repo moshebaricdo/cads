@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/figma/code-connect/main/cli/src/connect/figma.config.json",
+  "documentUrl": "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-",
+  "fileKey": "DGekOeToRVifvFAhfqpeC1",
+  "mappings": [
+    {
+      "componentName": "Button",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Button } from \"@codeai/cads-react\";\n\n<Button variant=\"primary\" tone=\"brand\" size=\"m\">{label}</Button>",
+      "note": "Fill figmaNodeId / componentKey when mapping is confirmed in Figma. Used as local Code Connect substitute (no Enterprise publish)."
+    },
+    {
+      "componentName": "TextField",
+      "source": "@codeai/cads-react",
+      "snippet": "import { TextField } from \"@codeai/cads-react\";\n\n<TextField label=\"{label}\" size=\"m\" />"
+    },
+    {
+      "componentName": "Checkbox",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Checkbox } from \"@codeai/cads-react\";\n\n<Checkbox label=\"{label}\" />"
+    },
+    {
+      "componentName": "Radio",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Radio } from \"@codeai/cads-react\";\n\n<Radio label=\"{label}\" value=\"{value}\" />"
+    },
+    {
+      "componentName": "Tag",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Tag } from \"@codeai/cads-react\";\n\n<Tag tone=\"neutral\" label=\"{label}\" />"
+    },
+    {
+      "componentName": "Tooltip",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\"><Button>{label}</Button></Tooltip>"
+    }
+  ]
+}

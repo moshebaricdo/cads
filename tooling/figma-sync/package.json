@@ -1,0 +1,14 @@
+{
+  "name": "@codeai/cads-figma-sync",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Figma → CADS variables sync (values, mappings, naming, structure)",
+  "scripts": {
+    "sync": "node src/sync.mjs",
+    "sync:apply": "node src/sync.mjs --apply"
+  },
+  "dependencies": {
+    "@codeai/cads-variables": "workspace:*"
+  }
+}

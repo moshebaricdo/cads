@@ -1,0 +1,40 @@
+@import "@codeai/cads-variables/variables.css";
+@import "@codeai/cads-react/icons/fonts.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--ds-text-neutral-primary);
+  background: var(--ds-background-neutral-primary);
+}
+
+a {
+  color: var(--ds-text-brand-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xs);
+}
+
+pre {
+  background: var(--ds-background-neutral-secondary);
+  border: 1px solid var(--ds-border-neutral-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  overflow: auto;
+}
