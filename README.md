@@ -11,6 +11,17 @@ Standalone design-system platform for CodeAI: Figma-anchored **variables**, MUI-
 
 **Design source of truth:** [CADS Figma file](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-) (`fileKey: DGekOeToRVifvFAhfqpeC1`).
 
+## For humans & agents starting here
+
+| Doc | Purpose |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | **Start here** — decisions, Lab2 sibling relationship, Figma tooling, commands |
+| [`docs/STATUS.md`](docs/STATUS.md) | What’s done / what’s next |
+| [`docs/PLATFORM_PLAN.md`](docs/PLATFORM_PLAN.md) | Full platform plan (architecture, phases, resolved decisions) |
+| [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) | High-fidelity prototyping with the packages |
+
+**Lab2 sandbox** (typical path `../web-lab-prototype`) is a **consumer only** — parity UI at `#/design-system/cads`. Do not treat its `App*` atoms as the CADS component source of truth.
+
 ## Quick start
 
 ```bash
@@ -56,6 +67,15 @@ import { FaIcon } from "@codeai/cads-react/icons";
 | `pnpm typecheck` | Typecheck packages |
 | `pnpm figma:sync` | Diff Figma variables vs snapshot and report/apply (needs `FIGMA_ACCESS_TOKEN`) |
 | `pnpm dev:docs` | Run the docs site |
+
+## Environment
+
+```bash
+cp .env.example .env
+# Set FIGMA_ACCESS_TOKEN for headless `pnpm figma:sync` (optional until you sync).
+```
+
+Interactive Figma work (screenshots, Desktop Bridge MCP): open **Figma Desktop Bridge** in Figma Desktop while the CADS file is open. See `.env.example` and `AGENTS.md`.
 
 ## License
 

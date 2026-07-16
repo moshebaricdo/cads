@@ -1,0 +1,10 @@
+---
+description: Require reading AGENTS.md before CADS work
+alwaysApply: true
+---
+
+# CADS agent entry
+
+Before making changes, read **`AGENTS.md`** at the repo root (decisions, Lab2 sibling relationship, Figma tooling). For priorities see **`docs/STATUS.md`**. For the full plan see **`docs/PLATFORM_PLAN.md`**.
+
+Do not treat Lab2 `App*` components as the design-system source of truth. Spec from the CADS Figma file (`DGekOeToRVifvFAhfqpeC1`).
