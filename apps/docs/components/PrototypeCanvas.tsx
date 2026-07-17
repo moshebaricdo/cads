@@ -39,29 +39,30 @@ const textStyles: Record<
     fontFamily: "var(--font-heading)",
     fontSize: "var(--text-heading-xl)",
     fontWeight: 500,
-    lineHeight: "var(--line-height-heading)",
+    lineHeight: "var(--leading-heading-xl)",
+    letterSpacing: "var(--tracking-heading-display)",
   },
   headingMedium: {
     fontFamily: "var(--font-heading)",
     fontSize: "var(--text-heading-lg)",
     fontWeight: 500,
-    lineHeight: "var(--line-height-heading)",
+    lineHeight: "var(--leading-heading-lg)",
   },
   headingSmall: {
     fontFamily: "var(--font-heading)",
     fontSize: "var(--text-heading-sm)",
     fontWeight: 500,
-    lineHeight: "var(--line-height-heading)",
+    lineHeight: "var(--leading-heading-sm)",
   },
   body: {
     fontFamily: "var(--font-body)",
     fontSize: "var(--text-body-md)",
-    lineHeight: "var(--line-height-body)",
+    lineHeight: "var(--leading-body-md)",
   },
   bodySmall: {
     fontFamily: "var(--font-body)",
     fontSize: "var(--text-body-sm)",
-    lineHeight: "var(--line-height-body)",
+    lineHeight: "var(--leading-body-sm)",
   },
 };
 
