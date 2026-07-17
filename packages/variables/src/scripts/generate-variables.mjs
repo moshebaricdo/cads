@@ -80,6 +80,7 @@ const NON_COLOR = {
   "--radius-sm": "6px",
   "--radius-md": "8px",
   "--radius-lg": "10px",
+  "--radius-xl": "12px",
   "--radius-round": "999px",
   "--space-xxs": "8px",
   "--space-xs": "16px",

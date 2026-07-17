@@ -53,6 +53,7 @@ export const shape = {
   radiusSm: "6px",
   radiusMd: "8px",
   radiusLg: "10px",
+  radiusXl: "12px",
   radiusRound: "999px",
 } as const;
 
@@ -142,6 +143,7 @@ export function nonColorCssVars(): Record<string, string> {
     "--radius-sm": shape.radiusSm,
     "--radius-md": shape.radiusMd,
     "--radius-lg": shape.radiusLg,
+    "--radius-xl": shape.radiusXl,
     "--radius-round": shape.radiusRound,
     "--space-xxs": spacing.xxs,
     "--space-xs": spacing.xs,

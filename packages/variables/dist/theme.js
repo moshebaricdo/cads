@@ -6,7 +6,7 @@ import {
   shape,
   spacing,
   typography
-} from "./chunk-GV45RMBS.js";
+} from "./chunk-WIC77WFW.js";
 
 // src/theme.ts
 import { createTheme } from "@mui/material/styles";

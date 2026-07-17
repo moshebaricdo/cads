@@ -8,7 +8,7 @@ import {
   shape,
   spacing,
   typography
-} from "./chunk-GV45RMBS.js";
+} from "./chunk-WIC77WFW.js";
 
 // src/index.ts
 var CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
