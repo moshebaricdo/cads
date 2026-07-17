@@ -1,0 +1,8 @@
+/* Solid-only FA face — use when regular/brands glyphs are not needed. */
+@font-face {
+  font-family: "Font Awesome 7 Pro";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("./fonts/font-awesome-7-pro-solid-900.otf") format("opentype");
+}

@@ -1,4 +1,5 @@
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import { createCadsTheme } from "@codeai/cads-variables/theme";
 import type { ReactNode } from "react";
 import { useMemo } from "react";

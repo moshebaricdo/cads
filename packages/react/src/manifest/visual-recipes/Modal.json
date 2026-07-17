@@ -1,0 +1,229 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Modal",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "2190:8284",
+    "componentKey": "0fe4d86d9d16ed81da4f995fc1e8fae90f7cf0e5",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "type": [
+        "default",
+        "verticalImage",
+        "horizontalImage"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "maxWidth": "800",
+        "headerPadding": "18 20 18 24",
+        "bodyPadding": "24",
+        "footerPadding": "18 20 18 24",
+        "radius": "12"
+      }
+    },
+    "layout": {
+      "padding": "24",
+      "gap": "18",
+      "borderWidth": "1",
+      "radius": "12px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-heading-lg)",
+      "weight": "600",
+      "lineHeight": "var(--leading-heading-lg)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "16"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "type": "default",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "scrim": "black-alpha-80",
+        "shadow": "var(--shadow-lg)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=default",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "type",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "modal-default-light",
+        "figmaNodeId": "2190:8284",
+        "figmaVariant": "type=default",
+        "mode": "light",
+        "props": {
+          "type": "default",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 420,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "maxWidth": "800",
+          "radius": "12"
+        },
+        "expectedVariables": [
+          "--radius-xl",
+          "--shadow-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-modal-default-light.png",
+        "figmaScreenshot": "captures/figma-modal-set.png"
+      },
+      {
+        "id": "modal-vertical-light",
+        "figmaNodeId": "2190:8284",
+        "figmaVariant": "type=verticalImage",
+        "mode": "light",
+        "props": {
+          "type": "verticalImage",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 560,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "imageHeight": "200"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-modal-vertical-light.png",
+        "figmaScreenshot": "captures/figma-modal-set.png"
+      },
+      {
+        "id": "modal-horizontal-light",
+        "figmaNodeId": "2190:8284",
+        "figmaVariant": "type=horizontalImage",
+        "mode": "light",
+        "props": {
+          "type": "horizontalImage",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 480,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "imageMin": "200"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-modal-horizontal-light.png",
+        "figmaScreenshot": "captures/figma-modal-set.png"
+      },
+      {
+        "id": "modal-default-dark",
+        "figmaNodeId": "2190:8284",
+        "figmaVariant": "type=default",
+        "mode": "dark",
+        "props": {
+          "type": "default",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 420,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "12"
+        },
+        "expectedVariables": [
+          "--shadow-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-modal-default-dark.png",
+        "figmaScreenshot": "captures/figma-modal-set.png"
+      },
+      {
+        "id": "modal-primary-only-light",
+        "figmaNodeId": "2190:8284",
+        "figmaVariant": "type=default",
+        "mode": "light",
+        "props": {
+          "type": "default",
+          "hasSecondaryAction": false,
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-modal-primary-only-light.png",
+        "figmaScreenshot": "captures/figma-modal-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

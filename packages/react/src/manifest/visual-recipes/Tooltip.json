@@ -1,0 +1,241 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Tooltip",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "1990:7125",
+    "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "Figma update",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "caretPlacement": [
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "padding": "4 12",
+        "gap": "8",
+        "radius": "6",
+        "maxWidth": "256",
+        "width": "hug"
+      }
+    },
+    "layout": {
+      "padding": "4/12",
+      "gap": "8",
+      "borderWidth": "0",
+      "radius": "6px",
+      "overlap": "0",
+      "triggerGapWithCaret": "4",
+      "triggerGapWithoutCaret": "6"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-body-sm)",
+      "weight": "400",
+      "lineHeight": "var(--leading-body-sm)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "14"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "caretPlacement": "top",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary-inverse)",
+        "text": "var(--text-neutral-primary-inverse)",
+        "shadow": "var(--shadow-md)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "caretPlacement=top",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "caretPlacement",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "tooltip-top-icon-light",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=top",
+        "mode": "light",
+        "props": {
+          "caretPlacement": "top",
+          "startIcon": true,
+          "hasCaret": true,
+          "title": "Tooltip"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6",
+          "padding": "4 12"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse",
+          "--shadow-md"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-top-icon-light.png",
+        "figmaScreenshot": "captures/figma-tooltip-set.png"
+      },
+      {
+        "id": "tooltip-bottom-light",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=bottom",
+        "mode": "light",
+        "props": {
+          "caretPlacement": "bottom",
+          "startIcon": false,
+          "hasCaret": true,
+          "title": "Tooltip"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-bottom-light.png",
+        "figmaScreenshot": "captures/figma-tooltip-set.png"
+      },
+      {
+        "id": "tooltip-left-light",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=left",
+        "mode": "light",
+        "props": {
+          "caretPlacement": "left",
+          "startIcon": true,
+          "hasCaret": true,
+          "title": "Tooltip"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 220,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-left-light.png",
+        "figmaScreenshot": "captures/figma-tooltip-set.png"
+      },
+      {
+        "id": "tooltip-right-dark",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=right",
+        "mode": "dark",
+        "props": {
+          "caretPlacement": "right",
+          "startIcon": true,
+          "hasCaret": true,
+          "title": "Tooltip"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 220,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-right-dark.png",
+        "figmaScreenshot": "captures/figma-tooltip-set.png"
+      },
+      {
+        "id": "tooltip-no-caret-light",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=top",
+        "mode": "light",
+        "props": {
+          "caretPlacement": "top",
+          "hasCaret": false,
+          "startIcon": false,
+          "title": "Tooltip"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-no-caret-light.png",
+        "figmaScreenshot": "captures/figma-tooltip-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

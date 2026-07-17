@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -565,14 +566,25 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const triggerId = `cads-dropdown-trigger-${reactId}`;
     // State (not only ref) so Popper re-renders when the trigger mounts —
     // required for defaultOpen / controlled open on first paint.
+    // Ignore null ref callbacks (React Strict Mode remount) so we don't keep
+    // open=true with a cleared anchor and a missing menu.
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const setAnchor = useCallback((node: HTMLButtonElement | null) => {
+      if (!node) return;
       anchorRef.current = node;
-      setAnchorEl(node);
+      setAnchorEl((prev) => (prev === node ? prev : node));
     }, []);
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const open = openProp ?? uncontrolledOpen;
+
+    useLayoutEffect(() => {
+      if (!open) return;
+      const node =
+        anchorRef.current ??
+        (document.getElementById(triggerId) as HTMLButtonElement | null);
+      if (node) setAnchor(node);
+    }, [open, triggerId, setAnchor]);
     /** Keyboard / pointer highlight index; -1 = none (avoid a stuck “hover”). */
     const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -793,7 +805,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             width: isChecklist ? "max-content" : undefined,
             minWidth: isChecklist ? "max-content" : isInput ? 180 : 120,
             // Icon menus: 4px vertical padding. Checklist: options list owns
-            // the bottom padding (pb 4) above the Action Row divider.
+            // the vertical padding (pt/pb 4; pb sits above the Action Row).
             py: isChecklist ? 0 : "4px",
           }}
         >
@@ -801,7 +813,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             style={{
               display: "flex",
               flexDirection: "column",
-              // Figma Options List: pb 4 on checklist before Action Row.
+              // Figma Options List: pt/pb 4 on checklist (pb sits above Action Row).
+              paddingTop: isChecklist ? 4 : 0,
               paddingBottom: isChecklist ? 4 : 0,
             }}
             onMouseLeave={() => setActiveIndex(-1)}

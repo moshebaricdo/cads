@@ -1,0 +1,373 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Tabs",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16496:3371",
+    "componentKey": "b49fe2d463645f88551c83bd8bff0ab56fcde35e",
+    "relatedNodeIds": [
+      "6240:7203"
+    ],
+    "relatedComponentKeys": [
+      "6bdc7c7da3d1d1193ec90ba2bf1d52c03cf01e39"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "type": [
+        "primary",
+        "secondary"
+      ],
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "isCurrent"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "primaryHeight": 48,
+        "secondaryHeight": 32,
+        "primaryGap": 20,
+        "secondaryGap": 4,
+        "fontSize": "18/16",
+        "padYPrimary": 10,
+        "padXSecondary": 12
+      },
+      "medium": {
+        "primaryHeight": 40,
+        "secondaryHeight": 28,
+        "primaryGap": 18,
+        "secondaryGap": 4,
+        "fontSize": "16/14",
+        "padYPrimary": 6,
+        "padXSecondary": 10
+      },
+      "small": {
+        "primaryHeight": 32,
+        "secondaryHeight": 24,
+        "primaryGap": 16,
+        "secondaryGap": 4,
+        "fontSize": "14/12",
+        "padYPrimary": 6,
+        "padXSecondary": 8
+      },
+      "extraSmall": {
+        "primaryHeight": 24,
+        "secondaryHeight": 20,
+        "primaryGap": 14,
+        "secondaryGap": 2,
+        "fontSize": "12/10",
+        "padYPrimary": 4,
+        "padXSecondary": 6
+      }
+    },
+    "layout": {
+      "padding": "type/size scaled",
+      "gap": "type/size scaled",
+      "borderWidth": "primary underline 2px selected; secondary 1px neutral; group bottom 1px",
+      "radius": "secondary: top corners var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "weight": "600",
+      "size": "size-scaled",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "type": "primary",
+        "isCurrent": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-quaternary)"
+      },
+      "figmaVariant": "primary inactive"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "isCurrent": false,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-primary)"
+      },
+      "figmaVariant": "primary inactive hover"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "isCurrent": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "underline": "var(--border-selected-primary)"
+      },
+      "figmaVariant": "primary current"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "isCurrent": true,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "underline": "var(--border-selected-strong)"
+      },
+      "figmaVariant": "primary current hover"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "isCurrent": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-quaternary)",
+        "background": "var(--background-neutral-secondary)",
+        "border": "var(--border-neutral-primary)"
+      },
+      "figmaVariant": "secondary inactive"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "isCurrent": false,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-primary)",
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-primary)"
+      },
+      "figmaVariant": "secondary inactive hover"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "isCurrent": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)"
+      },
+      "figmaVariant": "secondary current"
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "type",
+      "size",
+      "selected",
+      "state",
+      "mode",
+      "icon"
+    ],
+    "cases": [
+      {
+        "id": "tabs-large-primary-light",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=primary, size=large",
+        "mode": "light",
+        "props": {
+          "type": "primary",
+          "size": "large"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 48
+        },
+        "expectedVariables": [
+          "--border-selected-primary",
+          "--text-selected-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-large-primary-light",
+        "referenceScreenshot": "captures/figma-tabs-group.png",
+        "browserScreenshot": "captures/browser-tabs-large-primary-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-medium-secondary-light",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=secondary, size=medium",
+        "mode": "light",
+        "props": {
+          "type": "secondary",
+          "size": "medium"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 28
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-medium-secondary-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-medium-secondary-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-small-primary-icons-light",
+        "figmaNodeId": "6240:7203",
+        "figmaVariant": "size=small, type=primary",
+        "mode": "light",
+        "props": {
+          "type": "primary",
+          "size": "small",
+          "withIcons": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-small-primary-icons-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-small-primary-icons-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-xs-secondary-light",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=secondary, size=extraSmall",
+        "mode": "light",
+        "props": {
+          "type": "secondary",
+          "size": "extraSmall"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 64,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 20
+        },
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-xs-secondary-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-xs-secondary-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-large-primary-dark",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=primary, size=large",
+        "mode": "dark",
+        "props": {
+          "type": "primary",
+          "size": "large"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-large-primary-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-large-primary-dark.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-large-primary-hover-light",
+        "figmaNodeId": "6240:7203",
+        "figmaVariant": "primary inactive hover",
+        "mode": "light",
+        "props": {
+          "type": "primary",
+          "size": "large"
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 480,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-large-primary-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-large-primary-hover-light.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error / 0 warn / 0 escalate",
+    "typecheck": "pnpm typecheck — pass",
+    "build": "pnpm build — pass",
+    "docsBuild": "pnpm build:docs — pass",
+    "correctionPasses": [
+      "FaIcon alias home→house (Figma shortcode; FA glyph house)",
+      "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
+      "Link hover textDecoration:none to beat docs global a:hover underline",
+      "Fixture root CSS: neutralize docs a:hover underline under [data-cads-fixture-root]",
+      "Primary underline + secondary contained (gap 4/2) + icons + dark selected mint + hover captures vs figma-tabs-group.png"
+    ]
+  }
+}

@@ -1,0 +1,367 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Alert",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "2133:4160",
+    "componentKey": "dbe516b76486882d3508633715c5e4e999c183db",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "relatedComponentKeys": [
+      "c492ad784f39078a3067dde33f2be223d6e30903"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "figma-update",
+    "previousRecipe": "Alert.json (shape-sm radius, 2026-07-17)",
+    "figmaChanges": [
+      "Surface radius changed from 4px to shape/md (8px) for every size and sentiment."
+    ]
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "sentiment": [
+        "brand",
+        "pink",
+        "success",
+        "error",
+        "warning",
+        "info",
+        "neutral"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "minHeight": "56",
+        "padding": "14 14 14 16",
+        "gap": "16",
+        "radius": "8"
+      },
+      "medium": {
+        "minHeight": "48",
+        "padding": "12 12 12 14",
+        "gap": "16"
+      },
+      "small": {
+        "minHeight": "42",
+        "padding": "10 10 10 12",
+        "gap": "14"
+      },
+      "extraSmall": {
+        "minHeight": "34",
+        "padding": "8 8 8 10",
+        "gap": "14"
+      }
+    },
+    "layout": {
+      "padding": "size-scaled",
+      "gap": "size-scaled",
+      "borderWidth": "1",
+      "radius": "var(--radius-md) / 8px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled body",
+      "weight": "400",
+      "lineHeight": "size-scaled body"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "sentiment": "brand",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-brand-mid)",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-brand-primary-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=large, sentiment=brand",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "sentiment",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "alert-large-brand-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "sentiment": "brand",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minHeight": "56",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-brand-light",
+          "--border-brand-mid"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-large-brand-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-large-brand-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-medium-success-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "sentiment": "success",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minHeight": "48"
+        },
+        "expectedVariables": [
+          "--background-success-light",
+          "--border-success-mid"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-medium-success-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-medium-success-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-small-error-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "sentiment": "error",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 90,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minHeight": "42"
+        },
+        "expectedVariables": [
+          "--background-error-light",
+          "--border-error-mid"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-small-error-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-small-error-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-xs-warning-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "sentiment": "warning",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minHeight": "34"
+        },
+        "expectedVariables": [
+          "--background-warning-light",
+          "--border-warning-mid"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-xs-warning-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-xs-warning-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-large-info-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "sentiment": "info",
+          "hasIcon": true,
+          "hasAction": false,
+          "isDismissible": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minHeight": "56"
+        },
+        "expectedVariables": [
+          "--background-info-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-large-info-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-large-info-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-medium-pink-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "sentiment": "pink",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-accent-pink-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-medium-pink-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-medium-pink-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-medium-neutral-light",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "sentiment": "neutral",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-medium-neutral-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-medium-neutral-light.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      },
+      {
+        "id": "alert-large-brand-dark",
+        "figmaNodeId": "2133:4160",
+        "figmaVariant": "",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "sentiment": "brand",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 560,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Alert/alert-large-brand-dark",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-alert-large-brand-dark.png",
+        "figmaScreenshot": "captures/figma-alert-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass (BUILD_ID present)",
+    "correctionPasses": [
+      "Playwright batch capture of all coverage fixtures; geometry within ~2px of Figma (font metrics)",
+      "Figma set screenshots committed under captures/figma-*-set.png",
+      "2026-07-17 shape/md update: fresh Figma context and exact large-brand node confirm 8px; browser computed border-radius is 8px"
+    ]
+  }
+}

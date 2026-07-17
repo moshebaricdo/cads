@@ -3686,6 +3686,8 @@ export type FaIconName = keyof typeof FA_PRO_SOLID_CODEPOINTS;
  */
 export const FA_ICON_ALIASES: Record<string, FaIconName> = {
   smile: "face-smile",
+  /** Figma Breadcrumbs / Links shortcode; FA glyph is `house`. */
+  home: "house",
 };
 
 export function resolveFaIconName(name: string): FaIconName | undefined {

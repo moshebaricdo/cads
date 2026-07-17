@@ -1,0 +1,289 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Breadcrumbs",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16381:3339",
+    "componentKey": "43afede0abfd158d2c740e2801b46d13e570a8d0",
+    "relatedNodeIds": [
+      "6862:5619",
+      "2434:9333",
+      "16398:927"
+    ],
+    "relatedComponentKeys": [
+      "316cd105723e39b3784ddea7d5a376d2200f0276",
+      "4dd84636f0acaca75cb5ec10b2619bc8a27017bf",
+      "cf5fe5c10ba6e9963eb4415d3527518d282e58fe"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "isCurrent"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "linkGap": "10px",
+        "trailGap": "6px",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "iconPx": "16px",
+        "sepBox": "28px"
+      },
+      "medium": {
+        "linkGap": "8px",
+        "trailGap": "4px",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "iconPx": "14px",
+        "sepBox": "26px"
+      },
+      "small": {
+        "linkGap": "6px",
+        "trailGap": "4px",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "iconPx": "12px",
+        "sepBox": "24px"
+      },
+      "extraSmall": {
+        "linkGap": "6px",
+        "trailGap": "2px",
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "iconPx": "10px",
+        "sepBox": "24px"
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "size-scaled trail gap",
+      "borderWidth": "0",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "weight": "600",
+      "size": "size-scaled",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "separator": "chevron-right",
+      "overflow": "ellipsis",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "isCurrent": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-quaternary)",
+        "icon": "var(--text-neutral-quaternary)"
+      },
+      "figmaVariant": "isCurrent=No, state=default"
+    },
+    {
+      "when": {
+        "isCurrent": false,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-secondary)",
+        "icon": "var(--text-neutral-secondary)"
+      },
+      "figmaVariant": "isCurrent=No, state=hover"
+    },
+    {
+      "when": {
+        "isCurrent": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary-inverse)"
+      },
+      "figmaVariant": "isCurrent=Yes"
+    },
+    {
+      "when": {
+        "isCurrent": false,
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "figmaVariant": "state=disabled"
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "current",
+      "icon",
+      "overflow",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "breadcrumbs-large-default-light",
+        "figmaNodeId": "16381:3339",
+        "figmaVariant": "size=large",
+        "mode": "light",
+        "props": {
+          "size": "large"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-quaternary",
+          "--text-selected-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Breadcrumbs&case=breadcrumbs-large-default-light",
+        "referenceScreenshot": "captures/figma-breadcrumbs-set.png",
+        "browserScreenshot": "captures/browser-breadcrumbs-large-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "breadcrumbs-medium-overflow-light",
+        "figmaNodeId": "16381:3339",
+        "figmaVariant": "size=medium",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "maxItems": 3,
+          "itemsBeforeCollapse": 1,
+          "itemsAfterCollapse": 2
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Breadcrumbs&case=breadcrumbs-medium-overflow-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-breadcrumbs-medium-overflow-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "breadcrumbs-small-icon-home-light",
+        "figmaNodeId": "6862:5619",
+        "figmaVariant": "size=small",
+        "mode": "light",
+        "props": {
+          "size": "small"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Breadcrumbs&case=breadcrumbs-small-icon-home-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-breadcrumbs-small-icon-home-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "breadcrumbs-xs-default-light",
+        "figmaNodeId": "16381:3339",
+        "figmaVariant": "size=extraSmall",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Breadcrumbs&case=breadcrumbs-xs-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-breadcrumbs-xs-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "breadcrumbs-large-default-dark",
+        "figmaNodeId": "16381:3339",
+        "figmaVariant": "size=large",
+        "mode": "dark",
+        "props": {
+          "size": "large"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Breadcrumbs&case=breadcrumbs-large-default-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-breadcrumbs-large-default-dark.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error / 0 warn / 0 escalate",
+    "typecheck": "pnpm typecheck — pass",
+    "build": "pnpm build — pass",
+    "docsBuild": "pnpm build:docs — pass",
+    "correctionPasses": [
+      "FaIcon alias home→house (Figma shortcode; FA glyph house)",
+      "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
+      "Link hover textDecoration:none to beat docs global a:hover underline",
+      "Fixture root CSS: neutralize docs a:hover underline under [data-cads-fixture-root]",
+      "Overflow (maxItems) + home icon + current selected token captures vs figma-breadcrumbs-set.png"
+    ]
+  }
+}

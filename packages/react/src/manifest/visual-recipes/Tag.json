@@ -1,0 +1,337 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Tag",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16433:2625",
+    "componentKey": "e4a964357b1eaedfab777db89058ccb4d528ec1c",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "relatedComponentKeys": [
+      "c492ad784f39078a3067dde33f2be223d6e30903"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small"
+      ],
+      "color": [
+        "neutral",
+        "brand",
+        "pink",
+        "orange",
+        "success",
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "height": "28",
+        "paddingInline": "10",
+        "gap": "8"
+      },
+      "medium": {
+        "height": "24",
+        "paddingInline": "8",
+        "gap": "6"
+      },
+      "small": {
+        "height": "20",
+        "paddingInline": "6",
+        "gap": "6"
+      }
+    },
+    "layout": {
+      "padding": "size-scaled",
+      "gap": "size-scaled",
+      "borderWidth": "1",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "600",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "color": "neutral",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=large, color=neutral",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "color",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "tag-large-neutral-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "neutral",
+          "startIcon": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "28",
+          "radius": "6"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary",
+          "--border-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-large-neutral-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-large-neutral-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-medium-brand-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "brand",
+          "startIcon": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "24"
+        },
+        "expectedVariables": [
+          "--background-brand-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-medium-brand-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-medium-brand-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-small-success-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "color": "success",
+          "startIcon": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "20"
+        },
+        "expectedVariables": [
+          "--background-success-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-small-success-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-small-success-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-large-pink-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "pink",
+          "startIcon": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 220,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-accent-pink-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-large-pink-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-large-pink-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-medium-orange-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "orange",
+          "startIcon": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-accent-orange-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-medium-orange-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-medium-orange-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-large-error-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "error",
+          "startIcon": true,
+          "endIcon": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 220,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-error-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-large-error-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-large-error-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-medium-warning-light",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "warning",
+          "startIcon": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-warning-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-medium-warning-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-medium-warning-light.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      },
+      {
+        "id": "tag-large-info-dark",
+        "figmaNodeId": "16433:2625",
+        "figmaVariant": "",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "color": "info",
+          "startIcon": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-info-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Tag/tag-large-info-dark",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tag-large-info-dark.png",
+        "figmaScreenshot": "captures/figma-tag-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass (BUILD_ID present)",
+    "correctionPasses": [
+      "Playwright batch capture of all coverage fixtures; geometry within ~2px of Figma (font metrics)",
+      "Figma set screenshots committed under captures/figma-*-set.png"
+    ]
+  }
+}

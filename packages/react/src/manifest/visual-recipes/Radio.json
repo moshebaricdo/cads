@@ -1,0 +1,768 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Radio",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "4675:6352",
+    "componentKey": "dae7e8825645a8ec83b8593ab666788be4593ab8",
+    "relatedNodeIds": [
+      "13257:411"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "Pilot stub \u2192 full Figma Radio Button + Label / Radio Buttons Block mapping"
+    ]
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "labelStyle": [
+        "thin",
+        "thick"
+      ],
+      "checked": [
+        false,
+        true
+      ],
+      "disabled": [
+        false,
+        true
+      ]
+    },
+    "designOnly": [
+      "state",
+      "selected"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "box": "22px",
+        "dot": "10px",
+        "gap": "8px",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "controlPaddingTop": "2px"
+      },
+      "medium": {
+        "box": "20px",
+        "dot": "8px",
+        "gap": "8px",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "controlPaddingTop": "2px"
+      },
+      "small": {
+        "box": "18px",
+        "dot": "8px",
+        "gap": "6px",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "controlPaddingTop": "2px"
+      },
+      "extraSmall": {
+        "box": "16px",
+        "dot": "7px",
+        "gap": "6px",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "controlPaddingTop": "0"
+      }
+    },
+    "layout": {
+      "padding": "0 (circle); labeled control +2px top on L/M/S, 0 on XS",
+      "gap": "8px L/M, 6px S/XS",
+      "borderWidth": "2px",
+      "radius": "var(--radius-round)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "thin=400 / thick=600",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "n/a (custom circle + dot)",
+      "size": "box/dot size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "selected": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)",
+        "dot": "n/a"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=*, state=default, selected=no",
+      "notes": [
+        "Unselected default hollow circle"
+      ]
+    },
+    {
+      "when": {
+        "selected": false,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover, selected=no",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "focus": "FOCUS_RING (2px surface + 2px --border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus, selected=no",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press, selected=no",
+      "notes": [
+        "Press unselected uses selected-primary border per Figma"
+      ]
+    },
+    {
+      "when": {
+        "selected": false,
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled, selected=no",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-selected-primary)",
+        "dot": "var(--background-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=default, selected=yes",
+      "notes": [
+        "NOT a filled selected square \u2014 white fill + selected ring + inner dot"
+      ]
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-selected-strong)",
+        "dot": "var(--background-selected-strong)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover, selected=yes",
+      "notes": [
+        "get_variable_defs on 13257:736: white fill (not brand-light); selected-strong border/dot"
+      ]
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-selected-primary)",
+        "dot": "var(--background-selected-primary)",
+        "focus": "FOCUS_RING"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus, selected=yes",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-selected-primary)",
+        "dot": "var(--background-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press, selected=yes",
+      "notes": [
+        "Press selected uses brand-light fill"
+      ]
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "dot": "var(--background-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled, selected=yes",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "labelStyle",
+      "selected",
+      "state",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "radio-large-thin-unselected-default-light",
+        "figmaNodeId": "4675:6353",
+        "figmaVariant": "size=large, labelStyle=thin",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "labelStyle": "thin",
+          "label": "Radio button",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px",
+          "gap": "8px",
+          "borderWidth": "2px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-solid",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-label.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-thick-unselected-default-light",
+        "figmaNodeId": "11985:2320",
+        "figmaVariant": "size=large, labelStyle=thick",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "labelStyle": "thick",
+          "label": "Radio button",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fontWeight": "600"
+        },
+        "expectedVariables": [
+          "--font-weight-semibold"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-label.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-medium-thin-unselected-default-light",
+        "figmaNodeId": "4675:6356",
+        "figmaVariant": "size=medium, labelStyle=thin",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "labelStyle": "thin",
+          "label": "Radio button",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "20px",
+          "dot": "8px"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-label.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-small-thin-unselected-default-light",
+        "figmaNodeId": "4675:6371",
+        "figmaVariant": "size=small, labelStyle=thin",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "labelStyle": "thin",
+          "label": "Radio button",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "18px",
+          "gap": "6px"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-label.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-xs-thick-unselected-default-light",
+        "figmaNodeId": "11985:2353",
+        "figmaVariant": "size=extraSmall, labelStyle=thick",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "labelStyle": "thick",
+          "label": "Radio button",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "16px",
+          "dot": "7px",
+          "gap": "6px"
+        },
+        "expectedVariables": [
+          "--font-weight-semibold"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-label.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-default-light",
+        "figmaNodeId": "13257:721",
+        "figmaVariant": "size=large, state=default, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px",
+          "dot": "10px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-selected-primary",
+          "--background-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-unselected-hover-light",
+        "figmaNodeId": "13257:602",
+        "figmaVariant": "size=large, state=hover, selected=no",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-light",
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-hover-light",
+        "figmaNodeId": "13257:736",
+        "figmaVariant": "size=large, state=hover, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-selected-strong",
+          "--background-selected-strong"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-selected-hover.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-unselected-focus-light",
+        "figmaNodeId": "15894:365",
+        "figmaVariant": "size=large, state=focus, selected=no",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-focused-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-focus-light",
+        "figmaNodeId": "15894:367",
+        "figmaVariant": "size=large, state=focus, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-selected-primary",
+          "--border-focused-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-unselected-press-light",
+        "figmaNodeId": "13257:706",
+        "figmaVariant": "size=large, state=press, selected=no",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false
+        },
+        "state": "press",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-light",
+          "--border-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-press-light",
+        "figmaNodeId": "13257:742",
+        "figmaVariant": "size=large, state=press, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true
+        },
+        "state": "press",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-light",
+          "--border-selected-primary",
+          "--background-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-unselected-disabled-light",
+        "figmaNodeId": "13257:708",
+        "figmaVariant": "size=large, state=disabled, selected=no",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-disabled-neutral"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-disabled-light",
+        "figmaNodeId": "13257:748",
+        "figmaVariant": "size=large, state=disabled, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "dot": "10px"
+        },
+        "expectedVariables": [
+          "--border-disabled-neutral",
+          "--background-disabled-neutral"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-medium-selected-default-light",
+        "figmaNodeId": "13257:833",
+        "figmaVariant": "size=medium, state=default, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "20px",
+          "dot": "8px"
+        },
+        "expectedVariables": [
+          "--border-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-xs-selected-default-light",
+        "figmaNodeId": "13257:941",
+        "figmaVariant": "size=extraSmall, state=default, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "16px",
+          "dot": "7px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "radio-large-selected-default-dark",
+        "figmaNodeId": "13257:721",
+        "figmaVariant": "size=large, state=default, selected=yes",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px",
+          "dot": "10px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-selected-primary",
+          "--background-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-radio-block.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
+    "correctionPasses": [
+      "Verified selected = neutral fill + selected ring + inner dot vs Figma 13257:411",
+      "Captured radio-medium-selected fixture; sizes 22/20/18/16"
+    ]
+  }
+}

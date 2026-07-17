@@ -1,0 +1,403 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Link",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "3480:5546",
+    "componentKey": "87b099a460c3dad155731d3983e7ccfecefc5975",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall",
+        "extraExtraSmall"
+      ],
+      "type": [
+        "primary",
+        "secondary"
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "gap": "8px",
+        "iconPx": "18px"
+      },
+      "medium": {
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "gap": "8px",
+        "iconPx": "14px"
+      },
+      "small": {
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "gap": "6px",
+        "iconPx": "12px"
+      },
+      "extraSmall": {
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "gap": "4px",
+        "iconPx": "10px"
+      },
+      "extraExtraSmall": {
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "gap": "4px",
+        "iconPx": "10px"
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "size-scaled",
+      "borderWidth": "0",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "weight": "600",
+      "size": "size-scaled body",
+      "lineHeight": "size-scaled body"
+    },
+    "icon": {
+      "family": "solid",
+      "name": "up-right-from-square",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "type": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-brand-primary)",
+        "icon": "var(--text-brand-primary)",
+        "focus": "FOCUS_RING"
+      },
+      "figmaVariant": "type=primary, state=default"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-brand-secondary)",
+        "icon": "var(--text-brand-secondary)"
+      },
+      "figmaVariant": "type=primary, state=hover"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-brand-secondary)",
+        "icon": "var(--text-brand-secondary)"
+      },
+      "figmaVariant": "type=primary, state=press"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "state": "visited",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-brand-secondary)",
+        "icon": "var(--text-brand-secondary)"
+      },
+      "figmaVariant": "type=primary, state=visited"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "figmaVariant": "type=primary, state=disabled"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-primary)"
+      },
+      "figmaVariant": "type=secondary, state=default"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-tertiary)",
+        "icon": "var(--text-neutral-secondary)",
+        "notes": "Figma: text tertiary, icon secondary on hover"
+      },
+      "figmaVariant": "type=secondary, state=hover"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "figmaVariant": "type=secondary, state=disabled"
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "type",
+      "state",
+      "mode",
+      "isExternal"
+    ],
+    "cases": [
+      {
+        "id": "link-large-primary-default-external-light",
+        "figmaNodeId": "3480:5545",
+        "figmaVariant": "size=large, state=default, type=primary",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "type": "primary",
+          "isExternal": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 28,
+          "gap": 8
+        },
+        "expectedVariables": [
+          "--text-brand-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-large-primary-default-external-light",
+        "referenceScreenshot": "captures/figma-link-set.png",
+        "browserScreenshot": "captures/browser-link-large-primary-default-external-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-medium-primary-hover-light",
+        "figmaNodeId": "3480:5581",
+        "figmaVariant": "size=medium, state=hover, type=primary",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "type": "primary",
+          "isExternal": true
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-brand-secondary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-medium-primary-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-medium-primary-hover-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-small-primary-focus-light",
+        "figmaNodeId": "3480:5602",
+        "figmaVariant": "size=small, state=focus, type=primary",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "type": "primary",
+          "isExternal": true
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-focused-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-small-primary-focus-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-small-primary-focus-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-xs-secondary-default-light",
+        "figmaNodeId": "3480:5726",
+        "figmaVariant": "size=extraSmall, state=default, type=secondary",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "type": "secondary",
+          "isExternal": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-xs-secondary-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-xs-secondary-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-xxs-primary-default-noicon-light",
+        "figmaNodeId": "15805:74",
+        "figmaVariant": "size=extraExtraSmall, state=default, type=primary",
+        "mode": "light",
+        "props": {
+          "size": "extraExtraSmall",
+          "type": "primary",
+          "isExternal": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 16
+        },
+        "expectedVariables": [
+          "--text-brand-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-xxs-primary-default-noicon-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-xxs-primary-default-noicon-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-large-primary-disabled-light",
+        "figmaNodeId": "3480:5567",
+        "figmaVariant": "size=large, state=disabled, type=primary",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "type": "primary",
+          "isExternal": true,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-disabled-neutral"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-large-primary-disabled-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-large-primary-disabled-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "link-medium-primary-default-dark",
+        "figmaNodeId": "3480:5579",
+        "figmaVariant": "size=medium, state=default, type=primary",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "type": "primary",
+          "isExternal": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 240,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-brand-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Link&case=link-medium-primary-default-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-link-medium-primary-default-dark.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error / 0 warn / 0 escalate",
+    "typecheck": "pnpm typecheck — pass",
+    "build": "pnpm build — pass",
+    "docsBuild": "pnpm build:docs — pass",
+    "correctionPasses": [
+      "FaIcon alias home→house (Figma shortcode; FA glyph house)",
+      "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
+      "Link hover textDecoration:none to beat docs global a:hover underline",
+      "Fixture root CSS: neutralize docs a:hover underline under [data-cads-fixture-root]",
+      "Hover/focus/disabled/xxs/dark captures vs figma-link-set.png"
+    ]
+  }
+}

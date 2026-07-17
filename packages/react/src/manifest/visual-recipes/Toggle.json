@@ -1,0 +1,771 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Toggle",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "327:2151",
+    "componentKey": "13f4f08ad10787f9c7c557c0139b200f4d8864a8",
+    "relatedNodeIds": [
+      "8841:5569"
+    ],
+    "relatedComponentKeys": [
+      "9e957e7fd931d5d068ffecb6f68531d9ebd5ce7c"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "labelPlacement": [
+        "left",
+        "right"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "isOn"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "track": "52\u00d726",
+        "handle": "22",
+        "iconPx": "16",
+        "iconSlot": "14",
+        "paddingOn": "8 2",
+        "paddingOff": "2 9",
+        "labelGap": "8px",
+        "labelType": "body/lg"
+      },
+      "medium": {
+        "track": "48\u00d724",
+        "handle": "20",
+        "iconPx": "14",
+        "iconSlot": "14",
+        "paddingOn": "8 2",
+        "paddingOff": "2 8",
+        "labelGap": "8px",
+        "labelType": "body/md"
+      },
+      "small": {
+        "track": "44\u00d722",
+        "handle": "18",
+        "iconPx": "12",
+        "iconSlot": "10",
+        "paddingOn": "8 2",
+        "paddingOff": "2 8",
+        "labelGap": "8px",
+        "labelType": "body/sm"
+      },
+      "extraSmall": {
+        "track": "40\u00d720",
+        "handle": "16",
+        "iconPx": "10",
+        "iconSlot": "10",
+        "paddingOn": "7 2",
+        "paddingOff": "2 8",
+        "labelGap": "6px",
+        "labelType": "body/xs"
+      }
+    },
+    "layout": {
+      "padding": "2px track pad; handle slides via absolute left; icons in fixed left/right slots",
+      "gap": "size-scaled label gap",
+      "borderWidth": "0 (press on uses inset 2px selected-strong)",
+      "radius": "var(--radius-round)",
+      "overlap": "0",
+      "motion": "handle left --duration-medium --easing-emphasized; icons opacity --duration-short"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled body",
+      "weight": "400",
+      "lineHeight": "size-scaled body"
+    },
+    "icon": {
+      "family": "solid",
+      "names": [
+        "check",
+        "xmark"
+      ],
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "isOn": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-selected-primary)",
+        "handle": "var(--background-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=on, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": true,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-selected-strong)",
+        "handle": "var(--background-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=on, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": true,
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-selected-strong)",
+        "border": "var(--border-selected-strong)",
+        "handle": "var(--background-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=on, state=press",
+      "notes": [
+        "Figma press uses 2px border matching selected-strong fill; code uses inset box-shadow to avoid layout shift."
+      ]
+    },
+    {
+      "when": {
+        "isOn": true,
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-selected-primary)",
+        "handle": "var(--background-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary)",
+        "focus": "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=on, state=focus",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-neutral-septenary)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=off, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": false,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-neutral-octonary)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=off, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": false,
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-neutral-octonary)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=off, state=press",
+      "notes": []
+    },
+    {
+      "when": {
+        "isOn": false,
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-neutral-septenary)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-neutral-primary-inverse)",
+        "focus": "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=off, state=focus",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "track": "var(--background-disabled-neutral)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled",
+      "notes": [
+        "Same disabled chrome for on and off; only icon (check vs xmark) and handle position differ."
+      ]
+    },
+    {
+      "when": {
+        "isOn": true,
+        "state": "default",
+        "mode": "dark"
+      },
+      "variables": {
+        "track": "var(--background-selected-primary)",
+        "handle": "var(--background-selected-primary-inverse)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=on, state=default (dark)",
+      "notes": [
+        "Semantic variables swap under .dark; no separate Figma dark component set inspected."
+      ]
+    },
+    {
+      "when": {
+        "isOn": false,
+        "state": "default",
+        "mode": "dark"
+      },
+      "variables": {
+        "track": "var(--background-neutral-septenary)",
+        "handle": "var(--background-neutral-primary)",
+        "icon": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "isOn=off, state=default (dark)",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "labelPlacement",
+      "isOn",
+      "state",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "toggle-large-off-label-left-light",
+        "figmaNodeId": "327:2135",
+        "figmaVariant": "size=large, labelPlacement=left",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Label",
+          "labelPlacement": "left",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726",
+          "handle": "22",
+          "labelGap": "8px"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)",
+          "var(--background-neutral-primary)",
+          "var(--text-neutral-primary-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-off-label-left-light",
+        "referenceScreenshot": "captures/figma-toggle-label.png",
+        "browserScreenshot": "captures/browser-toggle-large-off-label-left-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-off-label-right-light",
+        "figmaNodeId": "680:2214",
+        "figmaVariant": "size=large, labelPlacement=right",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Label",
+          "labelPlacement": "right",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726",
+          "labelGap": "8px"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-off-label-right-light",
+        "referenceScreenshot": "captures/figma-toggle-label.png",
+        "browserScreenshot": "captures/browser-toggle-large-off-label-right-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-medium-off-label-left-light",
+        "figmaNodeId": "16256:808",
+        "figmaVariant": "size=medium, labelPlacement=left",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "label": "Label",
+          "labelPlacement": "left",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "48\u00d724",
+          "handle": "20"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-medium-off-label-left-light",
+        "referenceScreenshot": "captures/figma-toggle-label.png",
+        "browserScreenshot": "captures/browser-toggle-medium-off-label-left-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-small-off-label-left-light",
+        "figmaNodeId": "16256:838",
+        "figmaVariant": "size=small, labelPlacement=left",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "label": "Label",
+          "labelPlacement": "left",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "44\u00d722",
+          "handle": "18"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-small-off-label-left-light",
+        "referenceScreenshot": "captures/figma-toggle-label.png",
+        "browserScreenshot": "captures/browser-toggle-small-off-label-left-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-xs-off-label-left-light",
+        "figmaNodeId": "16265:858",
+        "figmaVariant": "size=extraSmall, labelPlacement=left",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "label": "Label",
+          "labelPlacement": "left",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 200,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "40\u00d720",
+          "handle": "16",
+          "labelGap": "6px"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-xs-off-label-left-light",
+        "referenceScreenshot": "captures/figma-toggle-label.png",
+        "browserScreenshot": "captures/browser-toggle-xs-off-label-left-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-on-default-light",
+        "figmaNodeId": "8841:5564",
+        "figmaVariant": "size=large, state=default, isOn=on",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726",
+          "handle": "22"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)",
+          "var(--background-selected-primary-inverse)",
+          "var(--text-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-on-default-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-large-on-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-off-default-light",
+        "figmaNodeId": "8841:5844",
+        "figmaVariant": "size=large, state=default, isOn=off",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)",
+          "var(--background-neutral-primary)",
+          "var(--text-neutral-primary-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-off-default-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-large-off-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-medium-on-hover-light",
+        "figmaNodeId": "8859:1692",
+        "figmaVariant": "size=medium, state=hover, isOn=on",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "checked": true,
+          "aria-label": "Toggle"
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "48\u00d724"
+        },
+        "expectedVariables": [
+          "var(--background-selected-strong)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-medium-on-hover-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-medium-on-hover-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-small-off-press-light",
+        "figmaNodeId": "8859:1765",
+        "figmaVariant": "size=small, state=press, isOn=off",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "checked": false,
+          "aria-label": "Toggle"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "44\u00d722"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-octonary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-small-off-press-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-small-off-press-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-on-focus-light",
+        "figmaNodeId": "16212:3225",
+        "figmaVariant": "size=large, state=focus, isOn=on",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "aria-label": "Toggle"
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 140,
+          "height": 100,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726",
+          "focusRing": "double 2+4"
+        },
+        "expectedVariables": [
+          "var(--border-focused-primary)",
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-on-focus-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-large-on-focus-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-on-disabled-light",
+        "figmaNodeId": "8841:5825",
+        "figmaVariant": "size=large, state=disabled, isOn=on",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "disabled": true,
+          "aria-label": "Toggle"
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726"
+        },
+        "expectedVariables": [
+          "var(--background-disabled-neutral)",
+          "var(--background-neutral-primary)",
+          "var(--text-disabled-neutral-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-on-disabled-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-large-on-disabled-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-large-off-disabled-light",
+        "figmaNodeId": "8841:5853",
+        "figmaVariant": "size=large, state=disabled, isOn=off",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false,
+          "disabled": true,
+          "aria-label": "Toggle"
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "52\u00d726"
+        },
+        "expectedVariables": [
+          "var(--background-disabled-neutral)",
+          "var(--text-disabled-neutral-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-off-disabled-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-large-off-disabled-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-xs-on-default-light",
+        "figmaNodeId": "8859:1814",
+        "figmaVariant": "size=extraSmall, state=default, isOn=on",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "checked": true,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "40\u00d720",
+          "handle": "16",
+          "paddingOn": "7 2"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-xs-on-default-light",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-xs-on-default-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-medium-on-default-dark",
+        "figmaNodeId": "8859:1686",
+        "figmaVariant": "size=medium, state=default, isOn=on",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "checked": true,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "48\u00d724"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)",
+          "var(--background-selected-primary-inverse)",
+          "var(--text-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-medium-on-default-dark",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-medium-on-default-dark.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "toggle-medium-off-default-dark",
+        "figmaNodeId": "8859:1689",
+        "figmaVariant": "size=medium, state=default, isOn=off",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "checked": false,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "48\u00d724"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)",
+          "var(--text-neutral-primary-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-medium-off-default-dark",
+        "referenceScreenshot": "captures/figma-toggle-block.png",
+        "browserScreenshot": "captures/browser-toggle-medium-off-default-dark.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "id": "press-border-via-inset-shadow",
+      "figmaBehavior": "On+press uses 2px solid border/state/selected/strong on the track (same color as fill).",
+      "codeBehavior": "Inset box-shadow 2px selected-strong on :active when checked.",
+      "reason": "Avoids layout shift vs transparent reserved border; visually identical when border color equals fill.",
+      "owner": "agent",
+      "affectedCases": [
+        "toggle-large-on-default-light",
+        "toggle-medium-on-hover-light"
+      ]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
+    "correctionPasses": [
+      "CDP measured large on track 52\u00d726, handle 22, mint handle + check (selected tokens)",
+      "labelPlacement corrected: left = label left / switch right (Figma axis was inverted)",
+      "Handle slide + icon crossfade (no snap); XS checkbox/radio top offset removed",
+      "Captured fixtures vs Figma 8841:5569 / 327:2151"
+    ]
+  }
+}

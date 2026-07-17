@@ -1,0 +1,253 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Popover",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16426:681",
+    "componentKey": "b524d42ecd329068d1cfa45de2b79e874f9f6cf0",
+    "relatedNodeIds": [
+      "16421:393",
+      "6368:7269"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "content": [
+        "textOnly",
+        "textImage",
+        "custom"
+      ],
+      "caretPlacement": [
+        "bottomLeft",
+        "bottomCenter",
+        "topCenter",
+        "leftCenter",
+        "rightCenter"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "width": "300",
+        "minWidth": "300",
+        "maxWidth": "500",
+        "padding": "20",
+        "gap": "16",
+        "radius": "10"
+      }
+    },
+    "layout": {
+      "padding": "20",
+      "gap": "16",
+      "borderWidth": "1",
+      "radius": "10px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-body-lg)",
+      "weight": "600",
+      "lineHeight": "var(--leading-body-lg)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "12"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "content": "textOnly",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)",
+        "shadow": "var(--shadow-md)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "content=textOnly",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "content",
+      "caretPlacement",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "popover-text-bottom-left-light",
+        "figmaNodeId": "16426:681",
+        "figmaVariant": "caretPlacement=bottomLeft",
+        "mode": "light",
+        "props": {
+          "content": "textOnly",
+          "caretPlacement": "bottomLeft",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 280,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300",
+          "radius": "10",
+          "padding": "20"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--shadow-md",
+          "--radius-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-popover-text-bottom-left-light.png",
+        "figmaScreenshot": "captures/figma-popover-set.png"
+      },
+      {
+        "id": "popover-text-image-light",
+        "figmaNodeId": "16421:393",
+        "figmaVariant": "content=textImage",
+        "mode": "light",
+        "props": {
+          "content": "textImage",
+          "caretPlacement": "bottomCenter",
+          "hasCaret": false,
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300",
+          "radius": "10"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-popover-text-image-light.png",
+        "figmaScreenshot": "captures/figma-popover-set.png"
+      },
+      {
+        "id": "popover-custom-light",
+        "figmaNodeId": "16421:393",
+        "figmaVariant": "content=custom",
+        "mode": "light",
+        "props": {
+          "content": "custom",
+          "hasCaret": false,
+          "surfaceOnly": true,
+          "customContent": "Popover with custom content"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300",
+          "radius": "10"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-popover-custom-light.png",
+        "figmaScreenshot": "captures/figma-popover-set.png"
+      },
+      {
+        "id": "popover-top-center-dark",
+        "figmaNodeId": "16426:681",
+        "figmaVariant": "caretPlacement=topCenter",
+        "mode": "dark",
+        "props": {
+          "content": "textOnly",
+          "caretPlacement": "topCenter",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 280,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300",
+          "radius": "10"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-popover-top-center-dark.png",
+        "figmaScreenshot": "captures/figma-popover-set.png"
+      },
+      {
+        "id": "popover-no-stepper-light",
+        "figmaNodeId": "16426:681",
+        "figmaVariant": "caretPlacement=bottomCenter",
+        "mode": "light",
+        "props": {
+          "content": "textOnly",
+          "caretPlacement": "bottomCenter",
+          "hasStepper": false,
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 260,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-popover-no-stepper-light.png",
+        "figmaScreenshot": "captures/figma-popover-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

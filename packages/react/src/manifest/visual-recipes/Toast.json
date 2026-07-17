@@ -1,0 +1,325 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Toast",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "10587:14942",
+    "componentKey": "29c36f3d7ec051b81e7dc42a724d9097a680f2ee",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "relatedComponentKeys": [
+      "c492ad784f39078a3067dde33f2be223d6e30903"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "figma-update",
+    "previousRecipe": "Toast.json (shape-sm radius, 2026-07-17)",
+    "figmaChanges": [
+      "Surface radius changed from 4px to shape/md (8px) for every sentiment."
+    ]
+  },
+  "axes": {
+    "public": {
+      "sentiment": [
+        "primary",
+        "pink",
+        "success",
+        "error",
+        "warning",
+        "info",
+        "neutral"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "width": "300",
+        "padding": "12 12 12 14",
+        "gap": "16",
+        "radius": "8"
+      }
+    },
+    "layout": {
+      "padding": "12/14",
+      "gap": "16",
+      "borderWidth": "1",
+      "radius": "var(--radius-md) / 8px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-body-md)",
+      "weight": "400",
+      "lineHeight": "var(--leading-body-md)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "16"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "sentiment": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-brand-mid)",
+        "shadow": "var(--shadow-lg)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=primary",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "sentiment",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "toast-primary-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "primary",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "300",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-brand-light",
+          "--shadow-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-primary-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-primary-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-success-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "success",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-success-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-success-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-success-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-error-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "error",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-error-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-error-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-error-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-warning-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "warning",
+          "hasIcon": true,
+          "hasAction": false,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-warning-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-warning-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-warning-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-info-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "info",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-info-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-info-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-info-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-pink-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "pink",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-accent-pink-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-pink-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-pink-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-neutral-light",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "light",
+        "props": {
+          "sentiment": "neutral",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-neutral-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-neutral-light.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      },
+      {
+        "id": "toast-primary-dark",
+        "figmaNodeId": "10587:14942",
+        "figmaVariant": "",
+        "mode": "dark",
+        "props": {
+          "sentiment": "primary",
+          "hasIcon": true,
+          "hasAction": true,
+          "isDismissible": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-light"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toast/toast-primary-dark",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-toast-primary-dark.png",
+        "figmaScreenshot": "captures/figma-toast-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass (BUILD_ID present)",
+    "correctionPasses": [
+      "Playwright batch capture of all coverage fixtures; geometry within ~2px of Figma (font metrics)",
+      "Figma set screenshots committed under captures/figma-*-set.png",
+      "2026-07-17 shape/md update: fresh Figma context and exact primary node confirm 8px; browser computed border-radius is 8px"
+    ]
+  }
+}

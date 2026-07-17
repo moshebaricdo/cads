@@ -1,0 +1,197 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Drawer",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "10708:17779",
+    "componentKey": "b2cd3a35f20d344f38d677d0dfd992d64f503b87",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "type": [
+        "textOnly",
+        "customContent"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "padding": "40 10 48",
+        "gap": "24"
+      }
+    },
+    "layout": {
+      "padding": "40/10/48",
+      "gap": "24",
+      "borderWidth": "1",
+      "radius": "0",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-heading-lg)",
+      "weight": "600",
+      "lineHeight": "var(--leading-heading-lg)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "16"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "type": "textOnly",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "var(--border-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=textOnly",
+      "notes": [
+        "Elevation is --shadow-md with Y offsets inverted (cast upward above the bottom sheet)."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "type",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "drawer-text-light",
+        "figmaNodeId": "10708:17779",
+        "figmaVariant": "type=textOnly",
+        "mode": "light",
+        "props": {
+          "type": "textOnly",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 900,
+          "height": 320,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "paddingTop": "40",
+          "paddingBottom": "48"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-drawer-text-light.png",
+        "figmaScreenshot": "captures/figma-drawer-set.png"
+      },
+      {
+        "id": "drawer-custom-light",
+        "figmaNodeId": "10708:17779",
+        "figmaVariant": "type=customContent",
+        "mode": "light",
+        "props": {
+          "type": "customContent",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 900,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "10"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--radius-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-drawer-custom-light.png",
+        "figmaScreenshot": "captures/figma-drawer-set.png"
+      },
+      {
+        "id": "drawer-text-dark",
+        "figmaNodeId": "10708:17779",
+        "figmaVariant": "type=textOnly",
+        "mode": "dark",
+        "props": {
+          "type": "textOnly",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 900,
+          "height": 320,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-drawer-text-dark.png",
+        "figmaScreenshot": "captures/figma-drawer-set.png"
+      },
+      {
+        "id": "drawer-no-desc-light",
+        "figmaNodeId": "10708:17779",
+        "figmaVariant": "type=textOnly",
+        "mode": "light",
+        "props": {
+          "type": "textOnly",
+          "hasDescription": false,
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 900,
+          "height": 280,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-drawer-no-desc-light.png",
+        "figmaScreenshot": "captures/figma-drawer-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

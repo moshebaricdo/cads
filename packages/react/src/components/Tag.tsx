@@ -1,96 +1,133 @@
-import Chip, { type ChipProps } from "@mui/material/Chip";
-import { forwardRef } from "react";
+import Box from "@mui/material/Box";
+import { forwardRef, type ReactNode } from "react";
 import { FaIcon } from "../icons/FaIcon";
 import type { FaIconName } from "../icons/faProRegularCodepoints";
+import { TAG_SIZE } from "../shared/controlSize";
+import {
+  messagingChrome,
+  resolveMessagingIconName,
+  type MessagingSentiment,
+} from "../shared/messagingSentiment";
+import { CloseIconButton } from "./CloseIconButton";
 
-export type TagTone =
-  | "neutral"
-  | "brand"
-  | "success"
-  | "warning"
-  | "error"
-  | "info";
-export type TagSize = "medium" | "small";
+/** Figma Tag `color` axis. */
+export type TagColor = Exclude<MessagingSentiment, "primary">;
+export type TagSize = "large" | "medium" | "small";
 
-export interface TagProps extends Omit<ChipProps, "color" | "size" | "icon"> {
+export interface TagProps {
   /**
-   * Semantic tone.
+   * Figma `color`.
    * @default "neutral"
    */
-  tone?: TagTone;
+  color?: TagColor;
   /**
-   * @default "medium"
+   * @default "large"
    */
   size?: TagSize;
-  iconName?: FaIconName;
+  /** Figma `labelText`. */
+  label?: ReactNode;
+  /**
+   * @default true
+   */
+  startIcon?: boolean;
+  /**
+   * @default false
+   */
+  endIcon?: boolean;
+  startIconName?: FaIconName | (string & {});
+  endIconName?: FaIconName | (string & {});
+  /**
+   * Figma `isDismissible`.
+   * @default false
+   */
+  isDismissible?: boolean;
+  onClose?: () => void;
+  className?: string;
 }
 
-const TONE_STYLES: Record<
-  TagTone,
-  { bg: string; color: string; border: string }
-> = {
-  neutral: {
-    bg: "var(--background-neutral-secondary)",
-    color: "var(--text-neutral-primary)",
-    border: "var(--border-neutral-primary)",
-  },
-  brand: {
-    bg: "var(--background-brand-light)",
-    color: "var(--text-brand-primary)",
-    border: "var(--border-brand-primary)",
-  },
-  success: {
-    bg: "var(--background-success-light)",
-    color: "var(--text-success-primary)",
-    border: "var(--border-success-primary)",
-  },
-  warning: {
-    bg: "var(--background-warning-light)",
-    color: "var(--text-warning-primary)",
-    border: "var(--border-warning-primary)",
-  },
-  error: {
-    bg: "var(--background-error-light)",
-    color: "var(--text-error-primary)",
-    border: "var(--border-error-primary)",
-  },
-  info: {
-    bg: "var(--background-info-light)",
-    color: "var(--text-info-primary)",
-    border: "var(--border-info-primary)",
-  },
-};
-
 /**
- * CADS Tag (Chip) — compact labeled badge with optional icon.
- * Spec source: CADS Figma Tag / Chip component set.
+ * CADS Tag — compact status / category label (not selectable Chip).
+ * Spec: Figma Tag `16433:2625` / key `e4a964357b1eaedfab777db89058ccb4d528ec1c`.
  */
 export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
-  { tone = "neutral", size = "medium", iconName, label, sx, ...rest },
+  {
+    color = "neutral",
+    size = "large",
+    label = "Tag",
+    startIcon = true,
+    endIcon = false,
+    startIconName = "face-smile",
+    endIconName = "face-smile",
+    isDismissible = false,
+    onClose,
+    className,
+  },
   ref,
 ) {
-  const t = TONE_STYLES[tone];
+  const dims = TAG_SIZE[size];
+  const chrome = messagingChrome(color);
+  const startName = resolveMessagingIconName(startIconName);
+  const endName = resolveMessagingIconName(endIconName);
+
   return (
-    <Chip
+    <Box
       ref={ref}
-      label={label}
-      size={size === "small" ? "small" : "medium"}
-      icon={
-        iconName ? <FaIcon name={iconName} size="extraSmall" /> : undefined
-      }
+      className={className}
+      data-cads-component="Tag"
       sx={{
-        height: size === "small" ? "1.25rem" : "1.5rem",
-        borderRadius: "var(--radius-round)",
-        backgroundColor: t.bg,
-        color: t.color,
-        border: `1px solid ${t.border}`,
+        display: "inline-flex",
+        alignItems: "center",
+        boxSizing: "border-box",
+        height: dims.height,
+        paddingInline: dims.paddingInline,
+        paddingBlock: dims.paddingBlock,
+        gap: dims.gap,
+        borderRadius: "var(--radius-sm)",
+        border: `1px solid ${chrome.border}`,
+        backgroundColor: chrome.background,
+        color: chrome.label,
         fontFamily: "var(--font-body)",
-        fontSize: "var(--text-body-xs)",
-        fontWeight: "var(--font-weight-medium)",
-        "& .MuiChip-icon": { color: "inherit", marginLeft: "0.375rem" },
-        ...((sx as object) ?? {}),
+        fontSize: dims.fontSize,
+        lineHeight: dims.lineHeight,
+        fontWeight: "var(--font-weight-semibold)",
+        whiteSpace: "nowrap",
       }}
-      {...rest}
-    />
+    >
+      <Box
+        sx={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: dims.contentGap,
+          minWidth: 0,
+        }}
+      >
+        {startIcon ? (
+          <FaIcon name={startName} fontSize={dims.iconPx} aria-hidden />
+        ) : null}
+        <Box component="span" sx={{ minWidth: 0 }}>
+          {label}
+        </Box>
+        {endIcon ? (
+          <FaIcon name={endName} fontSize={dims.iconPx} aria-hidden />
+        ) : null}
+      </Box>
+      {isDismissible ? (
+        <CloseIconButton
+          size={
+            size === "large"
+              ? "medium"
+              : size === "medium"
+                ? "small"
+                : "extraSmall"
+          }
+          color={color === "neutral" ? "secondary" : color}
+          onClick={onClose}
+          sx={{ width: dims.closeWidth }}
+        />
+      ) : null}
+    </Box>
   );
 });
+
+/** @deprecated Use `TagColor`. Kept for transitional imports from the stub API. */
+export type TagTone = TagColor;

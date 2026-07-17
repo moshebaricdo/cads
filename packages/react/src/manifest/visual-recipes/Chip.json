@@ -1,0 +1,484 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Chip",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "5881:2187",
+    "componentKey": "388cba2ed6150b2a9b448f1895ed2f04ca90edb2",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "color": [
+        "primary",
+        "secondary"
+      ],
+      "labelStyle": [
+        "thick",
+        "thin"
+      ],
+      "selected": [
+        false,
+        true
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "height": "48",
+        "paddingInline": "20",
+        "gap": "10"
+      },
+      "medium": {
+        "height": "40",
+        "paddingInline": "16",
+        "gap": "8"
+      },
+      "small": {
+        "height": "32",
+        "paddingInline": "12",
+        "gap": "6"
+      },
+      "extraSmall": {
+        "height": "24",
+        "paddingInline": "8",
+        "gap": "4"
+      }
+    },
+    "layout": {
+      "padding": "size matrix",
+      "gap": "size matrix",
+      "borderWidth": "1px",
+      "radius": "round",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "body by size",
+      "weight": "600 thick / 400 thin",
+      "lineHeight": "body"
+    },
+    "icon": {
+      "family": "Font Awesome 7 Pro",
+      "size": "size matrix"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "selected": false,
+        "color": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=no, color=primary, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "color": "secondary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=no, color=secondary, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "color": "primary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=no, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "color": "primary",
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-selected-primary)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=no, state=press",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=yes, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=yes, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "border": "var(--border-selected-strong)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=yes, state=press",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": false,
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=no, state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": true,
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "text": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=yes, state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "focus": "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "color",
+      "labelStyle",
+      "selected",
+      "state",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "chip-large-primary-unselected-light",
+        "figmaNodeId": "5881:2344",
+        "figmaVariant": "size=large, color=primary, selected=no",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "primary",
+          "labelStyle": "thick",
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "48"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-solid)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-large-primary-unselected-light",
+        "referenceScreenshot": "captures/figma-chip-large-primary-unselected.png",
+        "browserScreenshot": "captures/browser-chip-large-primary-unselected.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-large-primary-selected-light",
+        "figmaNodeId": "5881:2190",
+        "figmaVariant": "size=large, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "selected": true,
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "48"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-large-primary-selected-light",
+        "referenceScreenshot": "captures/figma-chip-large-selected.png",
+        "browserScreenshot": "captures/browser-chip-large-selected.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-medium-secondary-unselected-light",
+        "figmaNodeId": "5881:2269",
+        "figmaVariant": "size=medium, color=secondary",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "secondary",
+          "labelStyle": "thin",
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "40"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-secondary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-medium-secondary-unselected-light",
+        "referenceScreenshot": "captures/figma-chip-large-primary-unselected.png",
+        "browserScreenshot": "captures/browser-chip-medium-secondary-unselected.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-small-primary-selected-light",
+        "figmaNodeId": "5881:2194",
+        "figmaVariant": "size=small, selected=yes",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "selected": true,
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 140,
+          "height": 64,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "32"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-small-primary-selected-light",
+        "referenceScreenshot": "captures/figma-chip-large-selected.png",
+        "browserScreenshot": "captures/browser-chip-small-primary-selected.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-xs-primary-unselected-light",
+        "figmaNodeId": "5881:2378",
+        "figmaVariant": "size=extraSmall",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 56,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "24"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-solid)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-xs-primary-unselected-light",
+        "referenceScreenshot": "captures/figma-chip-large-primary-unselected.png",
+        "browserScreenshot": "captures/browser-chip-xs-primary-unselected.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-large-primary-disabled-light",
+        "figmaNodeId": "5881:2335",
+        "figmaVariant": "size=large, state=disabled",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Chips",
+          "disabled": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "48"
+        },
+        "expectedVariables": [
+          "var(--border-disabled-neutral)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-large-primary-disabled-light",
+        "referenceScreenshot": "captures/figma-chip-large-primary-unselected.png",
+        "browserScreenshot": "captures/browser-chip-large-primary-disabled.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-large-selected-focus-light",
+        "figmaNodeId": "15949:1206",
+        "figmaVariant": "size=large, selected=yes, state=focus",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "selected": true,
+          "label": "Chips"
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "48"
+        },
+        "expectedVariables": [
+          "var(--border-focused-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-large-selected-focus-light",
+        "referenceScreenshot": "captures/figma-chip-large-selected.png",
+        "browserScreenshot": "captures/browser-chip-large-selected-focus.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-medium-selected-dark",
+        "figmaNodeId": "5881:2192",
+        "figmaVariant": "size=medium, selected=yes",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "selected": true,
+          "label": "Chips"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "height": "40"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Chip/chip-medium-selected-dark",
+        "referenceScreenshot": "captures/figma-chip-large-selected.png",
+        "browserScreenshot": "captures/browser-chip-medium-selected-dark.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": [
+      "Slider: removed MUI thumb ::before resting shadow to match Knob default",
+      "ChipGroup: matrix case uses all-unselected; separate selected coverage case"
+    ]
+  }
+}

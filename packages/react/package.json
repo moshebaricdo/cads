@@ -10,6 +10,11 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "*.css",
+    "./src/icons/fonts.css",
+    "./dist/icons/fonts.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -23,16 +28,26 @@
       "types": "./dist/manifest/cads.manifest.d.ts",
       "import": "./dist/manifest/cads.manifest.js"
     },
-    "./icons/fonts.css": "./src/icons/fonts.css"
+    "./icons/fonts.css": "./src/icons/fonts.css",
+    "./icons/fonts-solid.css": "./src/icons/fonts-solid.css",
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    },
+    "./theme/*": {
+      "types": "./dist/theme/*.d.ts",
+      "import": "./dist/theme/*.js"
+    }
   },
   "files": [
     "dist",
     "src/icons/fonts",
     "src/icons/fonts.css",
+    "src/icons/fonts-solid.css",
     "src/manifest"
   ],
   "scripts": {
-    "build": "tsup && node scripts/copy-assets.mjs",
+    "build": "tsup && node scripts/fix-esm-extensions.mjs && node scripts/copy-assets.mjs",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build"
   },

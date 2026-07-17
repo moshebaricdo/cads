@@ -1,0 +1,687 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Checkbox",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "252:2038",
+    "componentKey": "503f333f3195d96aa1659225c533b00567e90863",
+    "relatedNodeIds": [
+      "13257:1875"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "Parity rebuild of pilot stub from Figma Checkbox + Label (252:2038) and Checkbox block (13257:1875)."
+    ]
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "labelStyle": [
+        "thin",
+        "thick"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "status"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "box": "22px",
+        "iconPx": "14px",
+        "gap": "8px",
+        "fontSize": "18px",
+        "lineHeight": "28px"
+      },
+      "medium": {
+        "box": "20px",
+        "iconPx": "12px",
+        "gap": "8px",
+        "fontSize": "16px",
+        "lineHeight": "24px"
+      },
+      "small": {
+        "box": "18px",
+        "iconPx": "10px",
+        "gap": "6px",
+        "fontSize": "14px",
+        "lineHeight": "22px"
+      },
+      "extraSmall": {
+        "box": "16px",
+        "iconPx": "10px",
+        "gap": "6px",
+        "fontSize": "12px",
+        "lineHeight": "18px"
+      }
+    },
+    "layout": {
+      "padding": "0 (box); 2px top offset when labeled on L/M/S, 0 on XS",
+      "gap": "8px (L/M) / 6px (S/XS)",
+      "borderWidth": "2px",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "thin=400 / thick=600",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled (14/12/10/10)",
+      "glyphs": {
+        "selected": "check",
+        "indeterminate": "dash (Figma FA shortcode; not minus)"
+      }
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "status": "unselected",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)",
+        "icon": "",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=unselected, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "unselected",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=unselected, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "unselected",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "border": "var(--border-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=unselected, state=pressed",
+      "notes": [
+        "Figma small pressed unselected binds border/brand/primary once; L/M/XS use border/state/selected/primary. Code uses selected-primary for all sizes."
+      ]
+    },
+    {
+      "when": {
+        "status": "unselected",
+        "state": "focused",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "focus": "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=unselected, state=focused",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "unselected",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=unselected, state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "selected",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=selected, state=default",
+      "notes": [
+        "Selected chrome uses selected tokens, never brand fills."
+      ]
+    },
+    {
+      "when": {
+        "status": "selected",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "border": "var(--border-selected-strong)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=selected, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "selected",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "border": "var(--border-selected-strong)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=selected, state=pressed",
+      "notes": [
+        "Figma pressed selected matches hover selected (selected-strong)."
+      ]
+    },
+    {
+      "when": {
+        "status": "selected",
+        "state": "focused",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "icon": "var(--text-selected-primary)",
+        "focus": "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=selected, state=focused",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "selected",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "border": "var(--border-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=selected, state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "indeterminate",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "status=indeterminate, state=default",
+      "notes": [
+        "Indeterminate chrome matches selected; glyph is FA solid dash."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "labelStyle",
+      "status",
+      "state",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "checkbox-large-thin-unselected-light",
+        "figmaNodeId": "251:1997",
+        "figmaVariant": "size=large, labelStyle=thin",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "labelStyle": "thin",
+          "label": "Checkbox",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px",
+          "gap": "8px",
+          "borderWidth": "2px",
+          "radius": "var(--radius-sm)"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-solid",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-label-set.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-thick-selected-light",
+        "figmaNodeId": "11985:3741",
+        "figmaVariant": "size=large, labelStyle=thick + block status=selected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "labelStyle": "thick",
+          "label": "Checkbox",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px",
+          "iconPx": "14px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--border-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-selected.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-medium-thin-indeterminate-light",
+        "figmaNodeId": "13257:2317",
+        "figmaVariant": "size=medium, state=default, status=indeterminate",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "labelStyle": "thin",
+          "label": "Checkbox",
+          "indeterminate": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "20px",
+          "iconPx": "12px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--border-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-indeterminate.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-small-thick-unselected-light",
+        "figmaNodeId": "11985:3771",
+        "figmaVariant": "size=small, labelStyle=thick",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "labelStyle": "thick",
+          "label": "Checkbox",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "18px",
+          "gap": "6px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-label-set.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-xs-thin-selected-light",
+        "figmaNodeId": "13257:2546",
+        "figmaVariant": "size=extraSmall, state=default, status=selected",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "labelStyle": "thin",
+          "label": "Checkbox",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "16px",
+          "iconPx": "10px",
+          "gap": "6px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--border-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-block-matrix.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-selected-disabled-light",
+        "figmaNodeId": "13257:2214",
+        "figmaVariant": "size=large, state=disabled, status=selected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": true,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-disabled-neutral",
+          "--border-disabled-neutral",
+          "--text-disabled-neutral-inverse"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-disabled-selected.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-unselected-disabled-light",
+        "figmaNodeId": "13257:2212",
+        "figmaVariant": "size=large, state=disabled, status=unselected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": false,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-disabled-neutral"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-block-matrix.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-unselected-hover-light",
+        "figmaNodeId": "13257:2164",
+        "figmaVariant": "size=large, state=hover, status=unselected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": false
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-brand-light",
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-hover-unselected.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-selected-hover-light",
+        "figmaNodeId": "13257:2166",
+        "figmaVariant": "size=large, state=hover, status=selected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": true
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-selected-strong",
+          "--border-selected-strong",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-block-matrix.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-selected-focus-light",
+        "figmaNodeId": "13257:2224",
+        "figmaVariant": "size=large, state=focused, status=selected",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": true
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--border-selected-primary",
+          "--border-focused-primary",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-focused-selected.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-thin-unselected-dark",
+        "figmaNodeId": "251:1997",
+        "figmaVariant": "size=large, labelStyle=thin",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "labelStyle": "thin",
+          "label": "Checkbox",
+          "checked": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-solid",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-label-set.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "checkbox-large-selected-dark",
+        "figmaNodeId": "13257:1937",
+        "figmaVariant": "size=large, state=default, status=selected",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "label": "Checkbox",
+          "checked": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "box": "22px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--border-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "",
+        "referenceScreenshot": "captures/figma-checkbox-large-selected.png",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "id": "checkbox-small-pressed-unselected-border",
+      "figma": "size=small pressed unselected uses border/brand/primary once; L/M/XS use border/state/selected/primary.",
+      "code": "All sizes use --border-selected-primary for unselected pressed.",
+      "reason": "Treat small brand-primary binding as Figma inconsistency; majority recipe is selected-primary.",
+      "owner": "parity-agent",
+      "cases": [
+        "checkbox-large-unselected-hover-light"
+      ]
+    },
+    {
+      "id": "checkbox-indeterminate-glyph-dash",
+      "figma": "Indeterminate glyph shortcode is FA solid 'dash'.",
+      "code": "FaIcon name=\"dash\" (not minus).",
+      "reason": "Match Figma FA shortcode; dash exists in @codeai/cads-react/icons.",
+      "owner": "parity-agent",
+      "cases": [
+        "checkbox-medium-thin-indeterminate-light"
+      ]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
+    "correctionPasses": [
+      "Inline glyph colors beat MUI sx \u2014 switched Checkbox to CSS custom properties on root",
+      "Recaptured selected medium fixture after fix; compared to Figma 13257:1875 / 252:2038"
+    ]
+  }
+}

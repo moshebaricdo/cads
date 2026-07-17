@@ -1,0 +1,233 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Dialog",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "3453:3938",
+    "componentKey": "75feff93418c9804cbd3075e8a7f85bce1a5ff1e",
+    "relatedNodeIds": [
+      "6368:7269"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "type": [
+        "default",
+        "iconTop",
+        "customContent"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": {
+        "minWidth": "630",
+        "maxWidth": "800",
+        "padding": "40 56",
+        "gap": "28",
+        "radius": "12"
+      }
+    },
+    "layout": {
+      "padding": "40/56",
+      "gap": "28",
+      "borderWidth": "1",
+      "radius": "12px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-heading)",
+      "size": "var(--text-heading-xl)",
+      "weight": "600",
+      "lineHeight": "var(--leading-heading-xl)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "32"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "type": "default",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "scrim": "black-alpha-80",
+        "shadow": "var(--shadow-lg)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=default",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "type",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "dialog-default-light",
+        "figmaNodeId": "3453:3938",
+        "figmaVariant": "type=default",
+        "mode": "light",
+        "props": {
+          "type": "default",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 760,
+          "height": 420,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "minWidth": "630",
+          "radius": "12",
+          "padding": "40 56"
+        },
+        "expectedVariables": [
+          "--radius-xl",
+          "--shadow-lg",
+          "--font-heading"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-dialog-default-light.png",
+        "figmaScreenshot": "captures/figma-dialog-set.png"
+      },
+      {
+        "id": "dialog-icon-top-light",
+        "figmaNodeId": "3453:3938",
+        "figmaVariant": "type=iconTop",
+        "mode": "light",
+        "props": {
+          "type": "iconTop",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 760,
+          "height": 460,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "topIcon": "64"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--radius-round"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-dialog-icon-top-light.png",
+        "figmaScreenshot": "captures/figma-dialog-set.png"
+      },
+      {
+        "id": "dialog-custom-light",
+        "figmaNodeId": "3453:3938",
+        "figmaVariant": "type=customContent",
+        "mode": "light",
+        "props": {
+          "type": "customContent",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 760,
+          "height": 280,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "padding": "30",
+          "radius": "12"
+        },
+        "expectedVariables": [
+          "--radius-xl"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-dialog-custom-light.png",
+        "figmaScreenshot": "captures/figma-dialog-set.png"
+      },
+      {
+        "id": "dialog-default-dark",
+        "figmaNodeId": "3453:3938",
+        "figmaVariant": "type=default",
+        "mode": "dark",
+        "props": {
+          "type": "default",
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 760,
+          "height": 420,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "12"
+        },
+        "expectedVariables": [
+          "--shadow-lg"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-dialog-default-dark.png",
+        "figmaScreenshot": "captures/figma-dialog-set.png"
+      },
+      {
+        "id": "dialog-primary-only-light",
+        "figmaNodeId": "3453:3938",
+        "figmaVariant": "type=default",
+        "mode": "light",
+        "props": {
+          "type": "default",
+          "hasSecondaryAction": false,
+          "surfaceOnly": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 760,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-dialog-primary-only-light.png",
+        "figmaScreenshot": "captures/figma-dialog-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

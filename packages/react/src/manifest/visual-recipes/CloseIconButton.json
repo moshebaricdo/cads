@@ -1,0 +1,390 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "CloseIconButton",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "6368:7269",
+    "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "figma-update",
+    "previousRecipe": "CloseIconButton.json (pre-orange, 2026-07-17)",
+    "figmaChanges": [
+      "Added color=orange across all sizes and interaction states.",
+      "Swapped default/press and hover semantic variables for brand, pink, success, error, and info; added orange strong/default and primary/hover.",
+      "Warning hover now uses --text-warning-primary instead of --text-neutral-primary."
+    ]
+  },
+  "axes": {
+    "public": {
+      "size": ["large", "medium", "small", "extraSmall"],
+      "color": [
+        "primary",
+        "secondary",
+        "brand",
+        "pink",
+        "orange",
+        "success",
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "designOnly": ["state"],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": { "width": "24", "height": "24", "icon": "16" },
+      "medium": { "width": "18", "height": "18", "icon": "14" },
+      "small": { "width": "18", "height": "18", "icon": "12" },
+      "extraSmall": { "width": "13", "height": "13", "icon": "10" }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "0",
+      "borderWidth": "0",
+      "radius": "4px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Font Awesome Pro Solid",
+      "size": "size-scaled",
+      "weight": "900",
+      "lineHeight": "1.25"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "large 16 / medium 14 / small 12 / extraSmall 10"
+    }
+  },
+  "recipes": [
+    {
+      "when": { "color": "primary", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-primary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=large, state=default, color=primary",
+      "notes": []
+    },
+    {
+      "when": { "color": "secondary", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-quaternary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=secondary",
+      "notes": []
+    },
+    {
+      "when": { "color": "brand", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-brand-secondary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=brand",
+      "notes": []
+    },
+    {
+      "when": { "color": "pink", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-accent-pink-strong)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=pink",
+      "notes": []
+    },
+    {
+      "when": { "color": "orange", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-accent-orange-strong)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=orange",
+      "notes": []
+    },
+    {
+      "when": { "color": "success", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-success-secondary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=success",
+      "notes": []
+    },
+    {
+      "when": { "color": "error", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-error-secondary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=error",
+      "notes": []
+    },
+    {
+      "when": { "color": "warning", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-warning-secondary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=warning",
+      "notes": []
+    },
+    {
+      "when": { "color": "info", "state": "default", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-info-secondary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, state=default, color=info",
+      "notes": []
+    },
+    {
+      "when": { "color": "all", "state": "hover", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "color-specific primary",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover",
+      "notes": [
+        "Primary and secondary swap neutral primary/quaternary on hover.",
+        "Brand, pink, orange, success, error, warning, and info use their primary semantic text variables."
+      ]
+    },
+    {
+      "when": { "color": "all", "state": "press", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "default color (secondary/strong semantic variable)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["size", "color", "state", "mode"],
+    "cases": [
+      {
+        "id": "close-large-primary-default-light",
+        "figmaNodeId": "10925:18708",
+        "figmaVariant": "size=large, state=default, color=primary",
+        "mode": "light",
+        "props": { "size": "large", "color": "primary" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "24", "height": "24", "icon": "16" },
+        "expectedVariables": ["--text-neutral-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-large-primary-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-medium-secondary-hover-light",
+        "figmaNodeId": "6368:40988",
+        "figmaVariant": "size=medium, state=hover, color=secondary",
+        "mode": "light",
+        "props": { "size": "medium", "color": "secondary" },
+        "state": "hover",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "14" },
+        "expectedVariables": ["--text-neutral-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-medium-secondary-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-small-brand-focus-light",
+        "figmaNodeId": "16726:26699",
+        "figmaVariant": "size=small, state=focus, color=brand",
+        "mode": "light",
+        "props": { "size": "small", "color": "brand" },
+        "state": "focus",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "12" },
+        "expectedVariables": ["--text-brand-secondary", "--border-focused-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-small-brand-focus-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-xs-pink-press-light",
+        "figmaNodeId": "16726:26759",
+        "figmaVariant": "size=extraSmall, state=press, color=pink",
+        "mode": "light",
+        "props": { "size": "extraSmall", "color": "pink" },
+        "state": "press",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "13", "height": "13", "icon": "10" },
+        "expectedVariables": ["--text-accent-pink-strong"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-xs-pink-press-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-large-success-default-light",
+        "figmaNodeId": "16726:26841",
+        "figmaVariant": "size=large, state=default, color=success",
+        "mode": "light",
+        "props": { "size": "large", "color": "success" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "24", "height": "24", "icon": "16" },
+        "expectedVariables": ["--text-success-secondary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-large-success-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-medium-error-hover-light",
+        "figmaNodeId": "16726:26901",
+        "figmaVariant": "size=medium, state=hover, color=error",
+        "mode": "light",
+        "props": { "size": "medium", "color": "error" },
+        "state": "hover",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "14" },
+        "expectedVariables": ["--text-error-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-medium-error-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-small-warning-default-dark",
+        "figmaNodeId": "16726:26953",
+        "figmaVariant": "size=small, state=default, color=warning",
+        "mode": "dark",
+        "props": { "size": "small", "color": "warning" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "12" },
+        "expectedVariables": ["--text-warning-secondary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-small-warning-default-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-xs-info-focus-dark",
+        "figmaNodeId": "16726:27011",
+        "figmaVariant": "size=extraSmall, state=focus, color=info",
+        "mode": "dark",
+        "props": { "size": "extraSmall", "color": "info" },
+        "state": "focus",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "13", "height": "13", "icon": "10" },
+        "expectedVariables": ["--text-info-secondary", "--border-focused-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-xs-info-focus-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-medium-orange-hover-light",
+        "figmaNodeId": "16740:27378",
+        "figmaVariant": "size=medium, state=hover, color=orange",
+        "mode": "light",
+        "props": { "size": "medium", "color": "orange" },
+        "state": "hover",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "14" },
+        "expectedVariables": ["--text-accent-orange-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-medium-orange-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "close-medium-warning-hover-light",
+        "figmaNodeId": "16726:26965",
+        "figmaVariant": "size=medium, state=hover, color=warning",
+        "mode": "light",
+        "props": { "size": "medium", "color": "warning" },
+        "state": "hover",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": "18", "height": "18", "icon": "14" },
+        "expectedVariables": ["--text-warning-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-medium-warning-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error, 0 warn, 0 escalate (2026-07-17)",
+    "typecheck": "pnpm typecheck → pass",
+    "build": "pnpm build:react → pass",
+    "docsBuild": "pnpm build:docs → pass",
+    "correctionPasses": [
+      "Refreshed exact-node Figma reference 16726:26965 for warning hover.",
+      "Browser fixture confirmed 18px geometry, 14px glyph, hover state, and rgb(245, 192, 0) from --text-warning-primary."
+    ]
+  }
+}

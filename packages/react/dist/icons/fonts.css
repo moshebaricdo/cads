@@ -1,9 +1,10 @@
 /* Font Awesome 7 — internal CADS distribution only */
+/* swap: avoid FOIT while ~2MB of OTFs download */
 @font-face {
   font-family: "Font Awesome 7 Pro";
   font-style: normal;
   font-weight: 900;
-  font-display: block;
+  font-display: swap;
   src: url("./fonts/font-awesome-7-pro-solid-900.otf") format("opentype");
 }
 
@@ -11,7 +12,7 @@
   font-family: "Font Awesome 7 Pro";
   font-style: normal;
   font-weight: 400;
-  font-display: block;
+  font-display: swap;
   src: url("./fonts/font-awesome-7-pro-regular-400.otf") format("opentype");
 }
 
@@ -19,6 +20,6 @@
   font-family: "Font Awesome 7 Brands";
   font-style: normal;
   font-weight: 400;
-  font-display: block;
+  font-display: swap;
   src: url("./fonts/Font Awesome 7 Brands-Regular-400.otf") format("opentype");
 }

@@ -1,0 +1,263 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "ChipGroup",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "15953:3568",
+    "componentKey": "65c61f6f006c06e27b293ca8f5e573d650c69c06",
+    "relatedNodeIds": [
+      "5881:2187",
+      "15857:99804"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "color": [
+        "primary",
+        "secondary"
+      ],
+      "labelStyle": [
+        "thick",
+        "thin"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "chipGap": "8"
+      },
+      "medium": {
+        "chipGap": "6"
+      },
+      "small": {
+        "chipGap": "6"
+      },
+      "extraSmall": {
+        "chipGap": "4"
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "chip gap by size",
+      "borderWidth": "n/a",
+      "radius": "n/a",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "Field Wrapper by size",
+      "weight": "label semibold",
+      "lineHeight": "body"
+    },
+    "icon": {
+      "family": "Font Awesome",
+      "size": "helper icon by size"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "color": "primary",
+        "mode": "light"
+      },
+      "variables": {
+        "chipBorder": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "color=primary",
+      "notes": []
+    },
+    {
+      "when": {
+        "color": "secondary",
+        "mode": "light"
+      },
+      "variables": {
+        "chipBorder": "var(--border-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "color=secondary",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "color",
+      "labelStyle",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "chip-group-medium-primary-thick-light",
+        "figmaNodeId": "15953:3819",
+        "figmaVariant": "size=medium, color=primary, labelStyle=thick",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "primary",
+          "labelStyle": "thick"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 140,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "chipGap": "6"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-solid)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#ChipGroup/chip-group-medium-primary-thick-light",
+        "referenceScreenshot": "captures/figma-chip-group-medium-primary-thick.png",
+        "browserScreenshot": "captures/browser-chip-group-medium-primary-thick.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-group-large-secondary-thin-light",
+        "figmaNodeId": "15953:3629",
+        "figmaVariant": "size=large, color=secondary, labelStyle=thin",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "secondary",
+          "labelStyle": "thin"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 160,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "chipGap": "8"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-secondary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#ChipGroup/chip-group-large-secondary-thin-light",
+        "referenceScreenshot": "captures/figma-chip-group-medium-primary-thick.png",
+        "browserScreenshot": "captures/browser-chip-group-large-secondary-thin.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-group-small-primary-thick-light",
+        "figmaNodeId": "15953:3971",
+        "figmaVariant": "size=small, color=primary",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "color": "primary"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "chipGap": "6"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-solid)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#ChipGroup/chip-group-small-primary-thick-light",
+        "referenceScreenshot": "captures/figma-chip-group-medium-primary-thick.png",
+        "browserScreenshot": "captures/browser-chip-group-small-primary-thick.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-group-medium-primary-thick-dark",
+        "figmaNodeId": "15953:3819",
+        "figmaVariant": "size=medium, color=primary",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "color": "primary"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 140,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "chipGap": "6"
+        },
+        "expectedVariables": [
+          "var(--border-neutral-solid)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#ChipGroup/chip-group-medium-primary-thick-dark",
+        "referenceScreenshot": "captures/figma-chip-group-medium-primary-thick.png",
+        "browserScreenshot": "captures/browser-chip-group-medium-primary-thick-dark.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "chip-group-medium-primary-selected-light",
+        "figmaNodeId": "15953:3819",
+        "figmaVariant": "size=medium + selected chip",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "primary",
+          "defaultValue": [
+            "a"
+          ]
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 140,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "chipGap": "6"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#ChipGroup/chip-group-medium-primary-selected-light",
+        "referenceScreenshot": "captures/figma-chip-group-medium-primary-thick.png",
+        "browserScreenshot": "captures/browser-chip-group-medium-primary-selected.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": [
+      "Slider: removed MUI thumb ::before resting shadow to match Knob default",
+      "ChipGroup: matrix case uses all-unselected; separate selected coverage case",
+      "ChipGroup first-chip thicker border in screenshots: DOM borders identical 1px (AA); also in Figma ref"
+    ]
+  }
+}

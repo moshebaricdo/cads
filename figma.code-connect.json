@@ -11,6 +11,13 @@
       "snippet": "import { Button } from \"@codeai/cads-react\";\n\n<Button variant=\"contained\" color=\"primary\" size=\"medium\">{label}</Button>"
     },
     {
+      "componentName": "CloseIconButton",
+      "figmaNodeId": "6368:7269",
+      "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+      "source": "@codeai/cads-react",
+      "snippet": "import { CloseIconButton } from \"@codeai/cads-react\";\n\n<CloseIconButton size=\"medium\" color=\"secondary\" onClick={onClose} />"
+    },
+    {
       "componentName": "SegmentedButton",
       "figmaNodeId": "8027:2099",
       "componentKey": "bf599e1bc1d1e651be6aab5bf90ac6a7c26dcfd1",
@@ -47,23 +54,129 @@
     },
     {
       "componentName": "Checkbox",
+      "figmaNodeId": "252:2038",
+      "componentKey": "503f333f3195d96aa1659225c533b00567e90863",
       "source": "@codeai/cads-react",
-      "snippet": "import { Checkbox } from \"@codeai/cads-react\";\n\n<Checkbox label=\"{label}\" />"
+      "snippet": "import { Checkbox } from \"@codeai/cads-react\";\n\n<Checkbox label=\"{label}\" size=\"medium\" labelStyle=\"thin\" />"
     },
     {
       "componentName": "Radio",
+      "figmaNodeId": "4675:6352",
+      "componentKey": "dae7e8825645a8ec83b8593ab666788be4593ab8",
       "source": "@codeai/cads-react",
-      "snippet": "import { Radio } from \"@codeai/cads-react\";\n\n<Radio label=\"{label}\" value=\"{value}\" />"
+      "snippet": "import { Radio } from \"@codeai/cads-react\";\n\n<Radio label=\"{label}\" value=\"{value}\" size=\"medium\" labelStyle=\"thin\" />"
+    },
+    {
+      "componentName": "Toggle",
+      "figmaNodeId": "327:2151",
+      "componentKey": "13f4f08ad10787f9c7c557c0139b200f4d8864a8",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Toggle } from \"@codeai/cads-react\";\n\n<Toggle label=\"{label}\" labelPlacement=\"left\" size=\"medium\" />"
+    },
+    {
+      "componentName": "Slider",
+      "figmaNodeId": "16344:15611",
+      "componentKey": "7659dd566886ab8e61de1cf5c73ff039928b6553",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Slider } from \"@codeai/cads-react\";\n\n<Slider label=\"{label}\" size=\"medium\" defaultValue={50} showControls width={300} />"
+    },
+    {
+      "componentName": "Chip",
+      "figmaNodeId": "5881:2187",
+      "componentKey": "388cba2ed6150b2a9b448f1895ed2f04ca90edb2",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Chip } from \"@codeai/cads-react\";\n\n<Chip label=\"{label}\" size=\"medium\" color=\"primary\" labelStyle=\"thick\" />"
+    },
+    {
+      "componentName": "ChipGroup",
+      "figmaNodeId": "15953:3568",
+      "componentKey": "65c61f6f006c06e27b293ca8f5e573d650c69c06",
+      "source": "@codeai/cads-react",
+      "snippet": "import { ChipGroup } from \"@codeai/cads-react\";\n\n<ChipGroup label=\"{label}\" options={[{ value: \"a\", label: \"A\" }, { value: \"b\", label: \"B\" }]} defaultValue={[\"a\"]} />"
+    },
+    {
+      "componentName": "Link",
+      "figmaNodeId": "3480:5546",
+      "componentKey": "87b099a460c3dad155731d3983e7ccfecefc5975",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Link } from \"@codeai/cads-react\";\n\n<Link href=\"{href}\" type=\"primary\" size=\"medium\" isExternal>{label}</Link>"
+    },
+    {
+      "componentName": "Breadcrumbs",
+      "figmaNodeId": "16381:3339",
+      "componentKey": "43afede0abfd158d2c740e2801b46d13e570a8d0",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Breadcrumbs } from \"@codeai/cads-react\";\n\n<Breadcrumbs size=\"medium\" items={[{ label: \"Home\", href: \"/\", iconName: \"home\" }, { label: \"{label}\", current: true }]} />"
+    },
+    {
+      "componentName": "Tabs",
+      "figmaNodeId": "16496:3371",
+      "componentKey": "b49fe2d463645f88551c83bd8bff0ab56fcde35e",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Tabs } from \"@codeai/cads-react\";\n\n<Tabs type=\"primary\" size=\"medium\" defaultValue=\"a\" items={[{ value: \"a\", label: \"Tab Label\" }, { value: \"b\", label: \"Tab Label\" }]} />"
+    },
+    {
+      "componentName": "Alert",
+      "figmaNodeId": "2133:4160",
+      "componentKey": "dbe516b76486882d3508633715c5e4e999c183db",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Alert } from \"@codeai/cads-react\";\n\n<Alert sentiment=\"brand\" size=\"medium\">{message}</Alert>"
+    },
+    {
+      "componentName": "Toast",
+      "figmaNodeId": "10587:14942",
+      "componentKey": "29c36f3d7ec051b81e7dc42a724d9097a680f2ee",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Toast } from \"@codeai/cads-react\";\n\n<Toast sentiment=\"primary\">{message}</Toast>"
+    },
+    {
+      "componentName": "NotificationBanner",
+      "figmaNodeId": "10618:632",
+      "componentKey": "5f158e59f1188b62d671448be304f22d3a7bde42",
+      "source": "@codeai/cads-react",
+      "snippet": "import { NotificationBanner } from \"@codeai/cads-react\";\n\n<NotificationBanner sentiment=\"brand\" fillStyle=\"none\" title=\"{title}\" description=\"{description}\" />"
     },
     {
       "componentName": "Tag",
+      "figmaNodeId": "16433:2625",
+      "componentKey": "e4a964357b1eaedfab777db89058ccb4d528ec1c",
       "source": "@codeai/cads-react",
-      "snippet": "import { Tag } from \"@codeai/cads-react\";\n\n<Tag tone=\"neutral\" label=\"{label}\" />"
+      "snippet": "import { Tag } from \"@codeai/cads-react\";\n\n<Tag color=\"neutral\" size=\"medium\" label=\"{label}\" />"
     },
     {
       "componentName": "Tooltip",
+      "figmaNodeId": "1990:7125",
+      "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
       "source": "@codeai/cads-react",
-      "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\"><Button>{label}</Button></Tooltip>"
+      "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\" caretPlacement=\"top\"><Button>{label}</Button></Tooltip>"
+    },
+    {
+      "componentName": "Popover",
+      "figmaNodeId": "16426:681",
+      "componentKey": "b524d42ecd329068d1cfa45de2b79e874f9f6cf0",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Popover } from \"@codeai/cads-react\";\n\n<Popover content=\"textOnly\" title=\"{title}\" body=\"{body}\" surfaceOnly />"
+    },
+    {
+      "componentName": "Drawer",
+      "figmaNodeId": "10708:17779",
+      "componentKey": "b2cd3a35f20d344f38d677d0dfd992d64f503b87",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Drawer } from \"@codeai/cads-react\";\n\n<Drawer type=\"textOnly\" title=\"{title}\" description=\"{description}\" open />"
+    },
+    {
+      "componentName": "Dialog",
+      "figmaNodeId": "3453:3938",
+      "componentKey": "75feff93418c9804cbd3075e8a7f85bce1a5ff1e",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Dialog } from \"@codeai/cads-react\";\n\n<Dialog type=\"default\" title=\"{title}\" description=\"{description}\" open />"
+    },
+    {
+      "componentName": "Modal",
+      "figmaNodeId": "2190:8284",
+      "componentKey": "0fe4d86d9d16ed81da4f995fc1e8fae90f7cf0e5",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Modal } from \"@codeai/cads-react\";\n\n<Modal type=\"default\" title=\"{title}\" open>{body}</Modal>"
     }
   ]
 }

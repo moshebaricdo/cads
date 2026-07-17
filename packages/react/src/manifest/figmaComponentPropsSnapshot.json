@@ -1,7 +1,7 @@
 {
   "fileKey": "DGekOeToRVifvFAhfqpeC1",
   "fileUrl": "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-",
-  "fetchedAt": "2026-07-16",
+  "fetchedAt": "2026-07-17",
   "source": "figma-mcp get_metadata \u2014 variant axes parsed from COMPONENT symbol names",
   "notes": [
     "Interaction axes (state) are design recipes, not React props \u2014 implement via CSS :hover/:focus/:active/disabled.",
@@ -90,6 +90,74 @@
         "focus",
         "pressed",
         "disabled"
+      ]
+    },
+    {
+      "cadsName": "CloseIconButton",
+      "figmaName": "Close Icon Button",
+      "nodeId": "6368:7269",
+      "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+      "symbolCount": 144,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "color": [
+          "brand",
+          "error",
+          "info",
+          "orange",
+          "pink",
+          "primary",
+          "secondary",
+          "success",
+          "warning"
+        ],
+        "state": [
+          "default",
+          "focus",
+          "hover",
+          "press"
+        ]
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers need to disable a close action when its host component is disabled."
+        },
+        {
+          "name": "onClick",
+          "category": "event",
+          "reason": "Invokes the host component's close or dismiss behavior."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "The icon-only action requires an accessible name; code defaults it to Close."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "pressed",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma has no disabled variant; code uses the shared disabled neutral text variable for native button disabled behavior."
       ]
     },
     {
@@ -695,6 +763,1881 @@
         "disabled"
       ],
       "escalate": []
+    },
+    {
+      "cadsName": "Checkbox",
+      "figmaName": "Checkbox + Label",
+      "nodeId": "252:2038",
+      "componentKey": "503f333f3195d96aa1659225c533b00567e90863",
+      "symbolCount": 8,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "labelStyle": [
+          "thick",
+          "thin"
+        ]
+      },
+      "related": {
+        "checkboxBlock": {
+          "figmaName": "Checkbox",
+          "nodeId": "13257:1875",
+          "componentKey": "3f026982c964b46ca62aab9efcee3a18e12310c3",
+          "notes": "Building block with size \u00d7 state \u00d7 status (unselected|selected|indeterminate). Prefer + Label publicly."
+        }
+      },
+      "designOnlyAxes": [
+        "state",
+        "status"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "labelStyle": "labelStyle",
+        "state": null,
+        "status": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property Text#252:0 on Checkbox + Label."
+        },
+        {
+          "name": "checked",
+          "category": "controlled-state",
+          "reason": "Maps block status=selected vs unselected for controlled usage."
+        },
+        {
+          "name": "indeterminate",
+          "category": "controlled-state",
+          "reason": "Maps block status=indeterminate."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "defaultChecked",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial selected status."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports checked changes."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Radio",
+      "figmaName": "Radio Button + Label",
+      "nodeId": "4675:6352",
+      "componentKey": "dae7e8825645a8ec83b8593ab666788be4593ab8",
+      "symbolCount": 8,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "labelStyle": [
+          "thick",
+          "thin"
+        ]
+      },
+      "related": {
+        "radioBlock": {
+          "figmaName": "Radio Buttons Block",
+          "nodeId": "13257:411",
+          "componentKey": "a0976858102d86735eb2ef82d3a1efd8f8972ec4",
+          "notes": "Building block with size \u00d7 state \u00d7 selected. Prefer + Label publicly."
+        }
+      },
+      "designOnlyAxes": [
+        "state",
+        "selected"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "labelStyle": "labelStyle",
+        "state": null,
+        "selected": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property Text#260:41 on Radio Button + Label."
+        },
+        {
+          "name": "checked",
+          "category": "controlled-state",
+          "reason": "Maps block selected=yes/no for controlled usage."
+        },
+        {
+          "name": "value",
+          "category": "content",
+          "reason": "Native radio value for grouping."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports selection changes."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Toggle",
+      "figmaName": "Toggle + Label",
+      "nodeId": "327:2151",
+      "componentKey": "13f4f08ad10787f9c7c557c0139b200f4d8864a8",
+      "symbolCount": 8,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "labelPlacement": [
+          "left",
+          "right"
+        ]
+      },
+      "related": {
+        "toggleBlock": {
+          "figmaName": "Toggle",
+          "nodeId": "8841:5569",
+          "componentKey": "9e957e7fd931d5d068ffecb6f68531d9ebd5ce7c",
+          "notes": "Building block with size \u00d7 state \u00d7 isOn. Prefer + Label publicly."
+        }
+      },
+      "designOnlyAxes": [
+        "state",
+        "isOn"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "labelPlacement": "labelPlacement",
+        "state": null,
+        "isOn": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property labelText#327:41 on Toggle + Label."
+        },
+        {
+          "name": "checked",
+          "category": "controlled-state",
+          "reason": "Maps block isOn=on/off for controlled usage."
+        },
+        {
+          "name": "defaultChecked",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial on/off."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports on/off changes."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name when the optional label is omitted."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Slider",
+      "figmaName": "Slider",
+      "nodeId": "16344:15611",
+      "componentKey": "7659dd566886ab8e61de1cf5c73ff039928b6553",
+      "symbolCount": 12,
+      "variantProperties": {
+        "labelSize": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "error"
+        ]
+      },
+      "related": {
+        "sliderKnob": {
+          "figmaName": "Slider Knob",
+          "nodeId": "16336:13274",
+          "componentKey": "6548f0f89bb01390ce2b273756df118b9fb7a694",
+          "variantProperties": {
+            "state": [
+              "default",
+              "hover",
+              "focus",
+              "press",
+              "error",
+              "disabled"
+            ]
+          },
+          "designOnlyAxes": [
+            "state"
+          ],
+          "notes": "Thumb chrome; interaction states are CSS recipes on the public Slider."
+        },
+        "sliderBar": {
+          "figmaName": "Slider Bar",
+          "nodeId": "16342:13347",
+          "componentKey": "e5f37ae87fd1f9e92967e6942f11ece4cb3358c9",
+          "variantProperties": {
+            "percentFilled": [
+              "100% (side)",
+              "75% (side)",
+              "50% (side)",
+              "25% (side)",
+              "0% (both)",
+              "-50% (center)",
+              "-100% (center)",
+              "+50% (center)",
+              "+100% (center)"
+            ],
+            "startsFrom": [
+              "side",
+              "center"
+            ],
+            "state": [
+              "default",
+              "error",
+              "disabled"
+            ]
+          },
+          "designOnlyAxes": [
+            "percentFilled",
+            "state"
+          ],
+          "notes": "Track fill geometry. percentFilled is a Figma demo axis; code uses numeric value."
+        },
+        "sliderStepper": {
+          "figmaName": "Slider Stepper",
+          "nodeId": "16344:14959",
+          "componentKey": "6b0a02539c86256c305835a6a401d7df535fdf14",
+          "variantProperties": {
+            "stepCount": [
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "state": [
+              "default",
+              "disabled"
+            ]
+          },
+          "notes": "Optional tick labels under the track when showStepper is true."
+        }
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "labelSize": "size",
+        "state": null,
+        "showControls": "showControls",
+        "showStepper": "showStepper",
+        "showHelper": "showHelper",
+        "showDisplayValue": "showDisplayValue",
+        "showLabelRow": "showLabelRow"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property labelText on Slider."
+        },
+        {
+          "name": "displayValue",
+          "category": "content",
+          "reason": "Maps Figma text property displayValue."
+        },
+        {
+          "name": "helperText",
+          "category": "content",
+          "reason": "Maps Figma text property helperText."
+        },
+        {
+          "name": "helperIconName",
+          "category": "content",
+          "reason": "Maps Figma helperIcon instance by CADS icon name."
+        },
+        {
+          "name": "sentiment",
+          "category": "controlled-state",
+          "reason": "Maps field-level state=error vs default; disabled is a separate prop."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Numeric slider value; replaces Figma Bar percentFilled demo axis."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial value. Defaults 50 (side) or 0 (center)."
+        },
+        {
+          "name": "min",
+          "category": "controlled-state",
+          "reason": "Range minimum. Defaults 0 (side) or -100 (center bipolar)."
+        },
+        {
+          "name": "max",
+          "category": "controlled-state",
+          "reason": "Range maximum. Defaults 100 for side and center."
+        },
+        {
+          "name": "step",
+          "category": "controlled-state",
+          "reason": "Step increment for continuous or discrete sliding."
+        },
+        {
+          "name": "startsFrom",
+          "category": "layout",
+          "reason": "Maps related Slider Bar startsFrom=side|center. Center is bipolar around 0."
+        },
+        {
+          "name": "width",
+          "category": "layout",
+          "reason": "Layout control (default 300px matches Figma symbol width). Not a Figma variant axis."
+        },
+        {
+          "name": "fullWidth",
+          "category": "layout",
+          "reason": "Layout control (100% of parent). Not a Figma variant axis."
+        },
+        {
+          "name": "stepCount",
+          "category": "composition",
+          "reason": "Maps related Slider Stepper stepCount when showStepper is true."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports value changes to React consumers."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name when the optional label row is hidden."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "error",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Chip",
+      "figmaName": "Chip",
+      "nodeId": "5881:2187",
+      "componentKey": "388cba2ed6150b2a9b448f1895ed2f04ca90edb2",
+      "symbolCount": 160,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "state": [
+          "default",
+          "hover",
+          "focus",
+          "press",
+          "disabled"
+        ],
+        "color": [
+          "primary",
+          "secondary"
+        ],
+        "labelStyle": [
+          "thick",
+          "thin"
+        ],
+        "selected": [
+          "no",
+          "yes"
+        ]
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color",
+        "labelStyle": "labelStyle",
+        "selected": "selected",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property label#266:0."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Maps Figma startIcon name text property."
+        },
+        {
+          "name": "endIconName",
+          "category": "content",
+          "reason": "Maps Figma endIcon name text property."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "onClick",
+          "category": "event",
+          "reason": "Reports activation for selectable chips."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name override when label content is decorative."
+        },
+        {
+          "name": "startIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean startIcon#15970:363."
+        },
+        {
+          "name": "endIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean endIcon#15970:242."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma color=selected (n/a) couples to selected=yes; code uses selected boolean + selected tokens only."
+      ]
+    },
+    {
+      "cadsName": "ChipGroup",
+      "figmaName": "Chip Group",
+      "nodeId": "15953:3568",
+      "componentKey": "65c61f6f006c06e27b293ca8f5e573d650c69c06",
+      "symbolCount": 16,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "color": [
+          "primary",
+          "secondary"
+        ],
+        "labelStyle": [
+          "thick",
+          "thin"
+        ]
+      },
+      "related": {
+        "chip": {
+          "figmaName": "Chip",
+          "nodeId": "5881:2187",
+          "componentKey": "388cba2ed6150b2a9b448f1895ed2f04ca90edb2",
+          "notes": "Atom used inside the group wrap; preferred public API is ChipGroup."
+        },
+        "fieldWrapper": {
+          "figmaName": "Field Wrapper",
+          "nodeId": "15857:99804",
+          "notes": "Chip Group composes Field Wrapper for label + helper chrome."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color",
+        "labelStyle": "labelStyle"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps nested Field Wrapper label."
+        },
+        {
+          "name": "helperText",
+          "category": "content",
+          "reason": "Maps nested Field Wrapper helper text."
+        },
+        {
+          "name": "helperIconName",
+          "category": "content",
+          "reason": "Maps nested Field Wrapper helper icon."
+        },
+        {
+          "name": "showHelper",
+          "category": "composition",
+          "reason": "Consumers may hide helper chrome."
+        },
+        {
+          "name": "options",
+          "category": "content",
+          "reason": "Code models repeated Chip instances as option data."
+        },
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Multi-select selected values; Figma Chip selected axis is derived per option."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial multi-select."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports selected value array changes."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Disables all chips in the group."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name for the chip group."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Link",
+      "figmaName": "Link",
+      "nodeId": "3480:5546",
+      "componentKey": "87b099a460c3dad155731d3983e7ccfecefc5975",
+      "pageId": "1829:7067",
+      "symbolCount": 60,
+      "variantProperties": {
+        "size": [
+          "large",
+          "medium",
+          "small",
+          "extraSmall",
+          "extraExtraSmall"
+        ],
+        "state": [
+          "default",
+          "hover",
+          "focus",
+          "press",
+          "disabled",
+          "visited"
+        ],
+        "type": [
+          "primary",
+          "secondary"
+        ]
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "type": "type",
+        "state": null,
+        "isExternal": "isExternal"
+      },
+      "booleanProps": {
+        "isExternal": {
+          "figma": "isExternal#11340:0",
+          "default": true
+        }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "React supplies the visible link label as children."
+        },
+        {
+          "name": "href",
+          "category": "content",
+          "reason": "Native anchor destination; Figma has no URL axis."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers select the Figma disabled state semantically."
+        },
+        {
+          "name": "target",
+          "category": "content",
+          "reason": "Window targeting for external links (often paired with isExternal)."
+        },
+        {
+          "name": "rel",
+          "category": "content",
+          "reason": "Security/rel attributes for external anchors."
+        },
+        {
+          "name": "onClick",
+          "category": "event",
+          "reason": "Optional click handler for SPA / button-like usage."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled",
+        "visited"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma axis is `type` (primary|secondary), not color.",
+        "extraExtraSmall is Link-only (body/xxs 10/16); not on ControlSize.",
+        "Visited maps to CSS :visited (primary\u2192brand-secondary; secondary\u2192neutral-tertiary)."
+      ]
+    },
+    {
+      "cadsName": "Breadcrumbs",
+      "figmaName": "Breadcrumbs",
+      "nodeId": "16381:3339",
+      "componentKey": "43afede0abfd158d2c740e2801b46d13e570a8d0",
+      "pageId": "1899:7107",
+      "symbolCount": 4,
+      "variantProperties": {
+        "size": [
+          "large",
+          "medium",
+          "small",
+          "extraSmall"
+        ]
+      },
+      "related": {
+        "breadcrumbLinks": {
+          "figmaName": "Breadcrumb Links",
+          "nodeId": "6862:5619",
+          "componentKey": "316cd105723e39b3784ddea7d5a376d2200f0276",
+          "variantProperties": {
+            "size": [
+              "large",
+              "medium",
+              "small",
+              "extraSmall"
+            ],
+            "state": [
+              "default",
+              "hover",
+              "focus",
+              "press",
+              "disabled"
+            ],
+            "isCurrent": [
+              "No",
+              "Yes"
+            ],
+            "iconOnly": [
+              "no",
+              "yes"
+            ]
+          },
+          "designOnlyAxes": [
+            "state",
+            "isCurrent"
+          ],
+          "notes": "Internal building block; public API maps items[].current / iconOnly / optional iconName on any crumb (not first-only home)."
+        },
+        "breadcrumbSeparators": {
+          "figmaName": "Breadcrumb Separators",
+          "nodeId": "2434:9333",
+          "componentKey": "4dd84636f0acaca75cb5ec10b2619bc8a27017bf",
+          "notes": "Internal chevron-right separator sized with trail."
+        },
+        "breadcrumbOverflow": {
+          "figmaName": "Breadcrumb Overflow",
+          "nodeId": "16398:927",
+          "componentKey": "cf5fe5c10ba6e9963eb4415d3527518d282e58fe",
+          "notes": "Ellipsis overflow control composed with Dropdown; opens menu of truncated items on click."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "items",
+          "category": "content",
+          "reason": "Code-idiomatic trail of crumb objects replacing Figma slot composition."
+        },
+        {
+          "name": "maxItems",
+          "category": "layout",
+          "reason": "MUI-compatible. Triggers Breadcrumb Overflow when trail exceeds visible count. Default 8."
+        },
+        {
+          "name": "itemsBeforeCollapse",
+          "category": "layout",
+          "reason": "MUI-compatible. Crumbs kept before Overflow ellipsis. Default 1."
+        },
+        {
+          "name": "itemsAfterCollapse",
+          "category": "layout",
+          "reason": "MUI-compatible. Crumbs kept after Overflow ellipsis. Default 1 (Figma composition shows 2)."
+        },
+        {
+          "name": "expandText",
+          "category": "accessibility",
+          "reason": "Accessible name for Overflow trigger (MUI expandText). Default 'Show path'."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name for the breadcrumb nav."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Accepted: slot-vs-items: Accepted code-idiomatic composition (same pattern as SegmentedButton options). (figma: Breadcrumbs uses a scoped slot of Links/Separators/Overflow.; code: Public API uses items[] + maxItems/itemsBeforeCollapse/itemsAfterCollapse; separators/overflow are composed internally.)",
+        "Overflow opens a dropdown of truncated pages (Figma), not MUI's in-place expand-all."
+      ]
+    },
+    {
+      "cadsName": "Tabs",
+      "figmaName": "Tab Group",
+      "nodeId": "16496:3371",
+      "componentKey": "b49fe2d463645f88551c83bd8bff0ab56fcde35e",
+      "pageId": "296:1662",
+      "symbolCount": 8,
+      "variantProperties": {
+        "type": [
+          "primary",
+          "secondary"
+        ],
+        "size": [
+          "large",
+          "medium",
+          "small",
+          "extraSmall"
+        ]
+      },
+      "related": {
+        "tabItem": {
+          "figmaName": "Tab Item",
+          "nodeId": "6240:7203",
+          "componentKey": "6bdc7c7da3d1d1193ec90ba2bf1d52c03cf01e39",
+          "symbolCount": 160,
+          "variantProperties": {
+            "size": [
+              "large",
+              "medium",
+              "small",
+              "extraSmall"
+            ],
+            "type": [
+              "primary",
+              "secondary"
+            ],
+            "state": [
+              "default",
+              "hover",
+              "focus",
+              "press",
+              "disabled"
+            ],
+            "iconOnly": [
+              "No",
+              "Yes"
+            ],
+            "isCurrent": [
+              "no",
+              "yes"
+            ]
+          },
+          "designOnlyAxes": [
+            "state",
+            "isCurrent"
+          ],
+          "notes": "Building block only \u2014 do not export standalone Tab Item as public API."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "type": "type",
+        "size": "size"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "items",
+          "category": "content",
+          "reason": "Code-idiomatic list of tab descriptors (label/icons/dismissible) replacing slot instances."
+        },
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Maps Tab Item isCurrent for the selected tab."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial selected tab."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports selected tab value changes."
+        },
+        {
+          "name": "onItemDismiss",
+          "category": "event",
+          "reason": "Maps Tab Item isDismissible close affordance."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name for the tablist."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Accepted: isCurrent-vs-value: Accepted \u2014 do not expose isCurrent on public Tabs API. (figma: Tab Item exposes isCurrent per instance.; code: Tab Group owns selection via value/defaultValue like SegmentedButton.)"
+      ]
+    },
+    {
+      "cadsName": "Alert",
+      "figmaName": "Alert",
+      "nodeId": "2133:4160",
+      "componentKey": "dbe516b76486882d3508633715c5e4e999c183db",
+      "symbolCount": 28,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "sentiment": [
+          "brand",
+          "pink",
+          "success",
+          "error",
+          "warning",
+          "info",
+          "neutral"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed inside Alert when isDismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "sentiment": "sentiment"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Maps Figma text property alertText."
+        },
+        {
+          "name": "hasIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasIcon."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Maps Figma text alertIcon / custom icon override."
+        },
+        {
+          "name": "hasAction",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasAction."
+        },
+        {
+          "name": "actionLabel",
+          "category": "content",
+          "reason": "Label for the composed outlined secondary Button (always required when hasAction)."
+        },
+        {
+          "name": "actionStartIconName",
+          "category": "content",
+          "reason": "Optional start icon on the locked action Button."
+        },
+        {
+          "name": "actionEndIconName",
+          "category": "content",
+          "reason": "Optional end icon on the locked action Button."
+        },
+        {
+          "name": "onAction",
+          "category": "event",
+          "reason": "Action button click handler."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Maps Figma boolean isDismissible."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss control click handler."
+        },
+        {
+          "name": "fullWidth",
+          "category": "layout",
+          "reason": "Stretch alert to parent width (default true)."
+        },
+        {
+          "name": "role",
+          "category": "accessibility",
+          "reason": "ARIA role for the alert surface."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Action Button is locked to outlined secondary; size maps large\u2192medium, medium\u2192small, small/XS\u2192extraSmall."
+      ]
+    },
+    {
+      "cadsName": "Toast",
+      "figmaName": "Toast",
+      "nodeId": "10587:14942",
+      "componentKey": "29c36f3d7ec051b81e7dc42a724d9097a680f2ee",
+      "symbolCount": 7,
+      "variantProperties": {
+        "sentiment": [
+          "primary",
+          "pink",
+          "success",
+          "error",
+          "warning",
+          "info",
+          "neutral"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed inside Toast when isDismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "sentiment": "sentiment"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Maps Figma text property toastText."
+        },
+        {
+          "name": "hasIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasIcon."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Maps Figma text toastIcon / custom icon override."
+        },
+        {
+          "name": "hasAction",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasAction."
+        },
+        {
+          "name": "actionLabel",
+          "category": "content",
+          "reason": "Label for the composed outlined secondary Button (always required when hasAction)."
+        },
+        {
+          "name": "actionStartIconName",
+          "category": "content",
+          "reason": "Optional start icon on the locked action Button."
+        },
+        {
+          "name": "actionEndIconName",
+          "category": "content",
+          "reason": "Optional end icon on the locked action Button."
+        },
+        {
+          "name": "onAction",
+          "category": "event",
+          "reason": "Action button click handler."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Maps Figma boolean isDismissible."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss control click handler."
+        },
+        {
+          "name": "role",
+          "category": "accessibility",
+          "reason": "ARIA role for the toast surface."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma Toast sentiment=primary maps to brand chrome tokens (Alert/Banner use brand).",
+        "Action Button is locked to outlined secondary at small size."
+      ]
+    },
+    {
+      "cadsName": "NotificationBanner",
+      "figmaName": "Notification Banner",
+      "nodeId": "10618:632",
+      "componentKey": "5f158e59f1188b62d671448be304f22d3a7bde42",
+      "symbolCount": 14,
+      "variantProperties": {
+        "sentiment": [
+          "brand",
+          "pink",
+          "success",
+          "error",
+          "warning",
+          "info",
+          "neutral"
+        ],
+        "fillStyle": [
+          "none",
+          "color"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when isDismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "sentiment": "sentiment",
+        "fillStyle": "fillStyle"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma text property titleText."
+        },
+        {
+          "name": "description",
+          "category": "content",
+          "reason": "Maps Figma text property descriptionText."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Maps Figma text property iconName."
+        },
+        {
+          "name": "hasPrimaryAction",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasPrimaryAction."
+        },
+        {
+          "name": "hasSecondaryAction",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasSecondaryAction."
+        },
+        {
+          "name": "primaryActionLabel",
+          "category": "content",
+          "reason": "Label for primary Button."
+        },
+        {
+          "name": "secondaryActionLabel",
+          "category": "content",
+          "reason": "Label for secondary Button."
+        },
+        {
+          "name": "onPrimaryAction",
+          "category": "event",
+          "reason": "Primary action click handler."
+        },
+        {
+          "name": "onSecondaryAction",
+          "category": "event",
+          "reason": "Secondary action click handler."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Maps Figma boolean isDismissible."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss control click handler."
+        },
+        {
+          "name": "fullWidth",
+          "category": "layout",
+          "reason": "Stretch banner to parent width (default true)."
+        },
+        {
+          "name": "role",
+          "category": "accessibility",
+          "reason": "ARIA role for the banner region."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "title and description are required content props (Figma titleText / descriptionText)."
+      ]
+    },
+    {
+      "cadsName": "Tag",
+      "figmaName": "Tag",
+      "nodeId": "16433:2625",
+      "componentKey": "e4a964357b1eaedfab777db89058ccb4d528ec1c",
+      "symbolCount": 24,
+      "variantProperties": {
+        "size": [
+          "large",
+          "medium",
+          "small"
+        ],
+        "color": [
+          "brand",
+          "neutral",
+          "pink",
+          "orange",
+          "success",
+          "error",
+          "warning",
+          "info"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when isDismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Figma text property labelText."
+        },
+        {
+          "name": "startIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean startIcon."
+        },
+        {
+          "name": "endIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean endIcon."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Maps Figma text startIconName."
+        },
+        {
+          "name": "endIconName",
+          "category": "content",
+          "reason": "Maps Figma text endIconName."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Maps Figma boolean isDismissible."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss control click handler."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Replaced stub Tag tone API with Figma color axis (includes pink/orange)."
+      ]
+    },
+    {
+      "cadsName": "Tooltip",
+      "figmaName": "Tooltip",
+      "nodeId": "1990:7125",
+      "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
+      "pageId": "1831:7070",
+      "symbolCount": 4,
+      "variantProperties": {
+        "caretPlacement": [
+          "bottom",
+          "top",
+          "right",
+          "left"
+        ]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "caretPlacement": "caretPlacement"
+      },
+      "booleanProps": {
+        "hasCaret": {
+          "figma": "hasCaret#11291:0",
+          "default": true
+        },
+        "startIcon": {
+          "figma": "startIcon#16417:5",
+          "default": true
+        }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma text property text."
+        },
+        {
+          "name": "children",
+          "category": "composition",
+          "reason": "Trigger element that receives hover/focus."
+        },
+        {
+          "name": "hasCaret",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasCaret."
+        },
+        {
+          "name": "startIcon",
+          "category": "composition",
+          "reason": "Maps Figma boolean startIcon."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Maps Figma text iconName."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled visibility for fixtures/tests."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma startIcon defaults true; code defaults false so short text tooltips stay compact unless opted in.",
+        "Single placement axis is caretPlacement (Figma); no separate MUI placement prop."
+      ]
+    },
+    {
+      "cadsName": "Popover",
+      "figmaName": "Popover",
+      "nodeId": "16426:681",
+      "componentKey": "b524d42ecd329068d1cfa45de2b79e874f9f6cf0",
+      "pageId": "1897:7072",
+      "symbolCount": 12,
+      "variantProperties": {
+        "caretPlacement": [
+          "bottomLeft",
+          "bottomCenter",
+          "bottomRight",
+          "topLeft",
+          "topCenter",
+          "topRight",
+          "leftTop",
+          "leftCenter",
+          "leftBottom",
+          "rightTop",
+          "rightCenter",
+          "rightBottom"
+        ]
+      },
+      "related": {
+        "popoverCore": {
+          "figmaName": "Popover Core",
+          "nodeId": "16421:393",
+          "componentKey": "fd92669ea0ca99032fb0015773546ec204c201ff",
+          "notes": "Content surface composed inside Popover; content axis from Core."
+        },
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when dismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "caretPlacement": "caretPlacement",
+        "hasCaret": "hasCaret"
+      },
+      "booleanProps": {
+        "hasCaret": {
+          "figma": "hasCaret#16426:20",
+          "default": true
+        }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "content",
+          "category": "composition",
+          "reason": "Maps Figma Popover Core content axis (textOnly|textImage|custom)."
+        },
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma titleText."
+        },
+        {
+          "name": "body",
+          "category": "content",
+          "reason": "Maps Figma bodyText."
+        },
+        {
+          "name": "image",
+          "category": "content",
+          "reason": "Image slot for content=textImage."
+        },
+        {
+          "name": "customContent",
+          "category": "content",
+          "reason": "Maps Figma customContent slot."
+        },
+        {
+          "name": "hasActionRow",
+          "category": "composition",
+          "reason": "Maps Figma hasActionRow."
+        },
+        {
+          "name": "hasStepper",
+          "category": "composition",
+          "reason": "Maps Figma hasStepper."
+        },
+        {
+          "name": "stepperText",
+          "category": "content",
+          "reason": "Maps Figma stepperText."
+        },
+        {
+          "name": "hasPrimaryAction",
+          "category": "composition",
+          "reason": "Maps Figma hasPrimaryAction."
+        },
+        {
+          "name": "hasSecondaryAction",
+          "category": "composition",
+          "reason": "Maps Figma hasSecondaryAction."
+        },
+        {
+          "name": "primaryActionLabel",
+          "category": "content",
+          "reason": "Primary action Button label (Figma default Next)."
+        },
+        {
+          "name": "secondaryActionLabel",
+          "category": "content",
+          "reason": "Secondary action Button label (Figma default Back)."
+        },
+        {
+          "name": "onPrimaryAction",
+          "category": "event",
+          "reason": "Primary action click handler."
+        },
+        {
+          "name": "onSecondaryAction",
+          "category": "event",
+          "reason": "Secondary action click handler."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Maps Figma isDismissible."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss control click handler."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled open for anchored mode."
+        },
+        {
+          "name": "defaultOpen",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial open."
+        },
+        {
+          "name": "onOpenChange",
+          "category": "event",
+          "reason": "Open state change callback."
+        },
+        {
+          "name": "children",
+          "category": "composition",
+          "reason": "Optional trigger element or custom content."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/docs: render surface without Popper."
+        },
+        {
+          "name": "hasCaret",
+          "category": "composition",
+          "reason": "Maps Figma hasCaret."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Public Popover merges Figma Popover (caret) + Popover Core (content). Popover Core is not a public export."
+      ]
+    },
+    {
+      "cadsName": "Drawer",
+      "figmaName": "Drawer",
+      "nodeId": "10708:17779",
+      "componentKey": "b2cd3a35f20d344f38d677d0dfd992d64f503b87",
+      "pageId": "10588:29164",
+      "symbolCount": 2,
+      "variantProperties": {
+        "type": [
+          "customContent",
+          "textOnly"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when dismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "type": "type"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma titleText."
+        },
+        {
+          "name": "description",
+          "category": "content",
+          "reason": "Maps Figma descriptionText."
+        },
+        {
+          "name": "hasDescription",
+          "category": "composition",
+          "reason": "Maps Figma hasDescription."
+        },
+        {
+          "name": "hasActionRow",
+          "category": "composition",
+          "reason": "Maps Figma hasActionRow."
+        },
+        {
+          "name": "primaryActionLabel",
+          "category": "content",
+          "reason": "Primary Button label."
+        },
+        {
+          "name": "secondaryActionLabel",
+          "category": "content",
+          "reason": "Secondary Button label."
+        },
+        {
+          "name": "onPrimaryAction",
+          "category": "event",
+          "reason": "Primary action handler."
+        },
+        {
+          "name": "onSecondaryAction",
+          "category": "event",
+          "reason": "Secondary action handler."
+        },
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Maps Figma customContent slot."
+        },
+        {
+          "name": "isDismissible",
+          "category": "composition",
+          "reason": "Close control visibility (always present in Figma)."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss handler."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled open for MUI Drawer."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/docs: render panel without portal."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Bottom sheet without page dimming (hideBackdrop)."
+      ]
+    },
+    {
+      "cadsName": "Dialog",
+      "figmaName": "Dialog",
+      "nodeId": "3453:3938",
+      "componentKey": "75feff93418c9804cbd3075e8a7f85bce1a5ff1e",
+      "pageId": "1973:812",
+      "symbolCount": 3,
+      "variantProperties": {
+        "type": [
+          "default",
+          "iconTop",
+          "customContent"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when dismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "type": "type"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma titleText."
+        },
+        {
+          "name": "description",
+          "category": "content",
+          "reason": "Maps Figma descriptionText."
+        },
+        {
+          "name": "hasImage",
+          "category": "composition",
+          "reason": "Maps Figma hasImage."
+        },
+        {
+          "name": "image",
+          "category": "content",
+          "reason": "Optional illustration slot when hasImage."
+        },
+        {
+          "name": "topIconName",
+          "category": "content",
+          "reason": "Maps Figma topIconName for type=iconTop."
+        },
+        {
+          "name": "hasSecondaryAction",
+          "category": "composition",
+          "reason": "Maps Figma hasSecondaryAction."
+        },
+        {
+          "name": "primaryActionLabel",
+          "category": "content",
+          "reason": "Primary Button label."
+        },
+        {
+          "name": "secondaryActionLabel",
+          "category": "content",
+          "reason": "Secondary Button label."
+        },
+        {
+          "name": "onPrimaryAction",
+          "category": "event",
+          "reason": "Primary action handler."
+        },
+        {
+          "name": "onSecondaryAction",
+          "category": "event",
+          "reason": "Secondary action handler."
+        },
+        {
+          "name": "isDismissable",
+          "category": "composition",
+          "reason": "Maps Figma isDismissable."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss handler."
+        },
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Maps Figma customContent slot."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled open for MUI Dialog."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/docs: render surface with scrim, no portal."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Spelling isDismissable matches Figma (not isDismissible).",
+        "Scrim uses fixed black 80% (Figma neutral/black-alpha/80), not theme-flipping alpha."
+      ]
+    },
+    {
+      "cadsName": "Modal",
+      "figmaName": "Modal",
+      "nodeId": "2190:8284",
+      "componentKey": "0fe4d86d9d16ed81da4f995fc1e8fae90f7cf0e5",
+      "pageId": "274:1824",
+      "symbolCount": 3,
+      "variantProperties": {
+        "type": [
+          "default",
+          "verticalImage",
+          "horizontalImage"
+        ]
+      },
+      "related": {
+        "closeIconButton": {
+          "figmaName": "Close Icon Button",
+          "nodeId": "6368:7269",
+          "componentKey": "c492ad784f39078a3067dde33f2be223d6e30903",
+          "notes": "Dismiss control composed when dismissible."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "type": "type"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma titleText."
+        },
+        {
+          "name": "body",
+          "category": "content",
+          "reason": "Body copy for image layouts."
+        },
+        {
+          "name": "image",
+          "category": "content",
+          "reason": "Maps Figma imageSlot."
+        },
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Maps Figma customContent for type=default."
+        },
+        {
+          "name": "hasSecondaryAction",
+          "category": "composition",
+          "reason": "Maps Figma hasSecondaryAction."
+        },
+        {
+          "name": "primaryActionLabel",
+          "category": "content",
+          "reason": "Primary Button label."
+        },
+        {
+          "name": "secondaryActionLabel",
+          "category": "content",
+          "reason": "Secondary Button label."
+        },
+        {
+          "name": "onPrimaryAction",
+          "category": "event",
+          "reason": "Primary action handler."
+        },
+        {
+          "name": "onSecondaryAction",
+          "category": "event",
+          "reason": "Secondary action handler."
+        },
+        {
+          "name": "isDismissable",
+          "category": "composition",
+          "reason": "Maps Figma isDismissable."
+        },
+        {
+          "name": "onClose",
+          "category": "event",
+          "reason": "Dismiss handler."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled open for MUI Dialog."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/docs: render surface with scrim, no portal."
+        }
+      ],
+      "stateRecipes": [
+        "default"
+      ],
+      "escalate": [],
+      "notes": [
+        "Richer than Dialog: header bar + body + footer actions; image layouts for media-heavy flows."
+      ]
     }
   ]
 }

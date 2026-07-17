@@ -1,0 +1,342 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Slider",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16344:15611",
+    "componentKey": "7659dd566886ab8e61de1cf5c73ff039928b6553",
+    "relatedNodeIds": [
+      "16336:13274",
+      "16342:13347",
+      "16344:14959"
+    ],
+    "relatedComponentKeys": [
+      "6548f0f89bb01390ce2b273756df118b9fb7a694",
+      "e5f37ae87fd1f9e92967e6942f11ece4cb3358c9",
+      "6b0a02539c86256c305835a6a401d7df535fdf14"
+    ],
+    "retrievedAt": "2026-07-17",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "sentiment": [
+        "default",
+        "error"
+      ],
+      "showControls": [
+        true,
+        false
+      ],
+      "showStepper": [
+        true,
+        false
+      ],
+      "startsFrom": [
+        "side",
+        "center"
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "track": "6px height",
+      "knob": "16px",
+      "controlButton": "24px"
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "10px stack (label↔bar, bar↔stepper) / 6px controls / 8px helper pb",
+      "borderWidth": "1px rail / 2px knob",
+      "radius": "4px bar / round knob",
+      "overlap": "± buttons overflow short track row; stepper inset 30px when controls"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "labelSize matrix",
+      "weight": "label semibold / value regular",
+      "lineHeight": "body"
+    },
+    "icon": {
+      "family": "Font Awesome",
+      "size": "helper + control icons"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "sentiment": "default",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "filled": "var(--background-selected-primary)",
+        "railBorder": "var(--border-neutral-secondary)",
+        "knobBorder": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "sentiment": "error",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "filled": "var(--background-error-primary)",
+        "railBorder": "var(--border-error-primary)",
+        "knobBorder": "var(--border-error-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=error",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "filled": "var(--background-disabled-neutral)",
+        "railBorder": "var(--border-disabled-neutral)",
+        "knobBorder": "var(--border-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "knobState": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "knobFill": "var(--background-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "knob state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "knobState": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "focus": "FOCUS_RING"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "knob state=focus",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "sentiment",
+      "showControls",
+      "showStepper",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "slider-large-default-controls-light",
+        "figmaNodeId": "16351:17578",
+        "figmaVariant": "labelSize=large, state=default",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "showControls": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16",
+          "trackHeight": "6"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-large-default-controls-light",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-large-default-controls.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "slider-medium-default-light",
+        "figmaNodeId": "16351:19858",
+        "figmaVariant": "labelSize=medium, state=default",
+        "mode": "light",
+        "props": {
+          "size": "medium"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-medium-default-light",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-medium-default.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "slider-small-error-light",
+        "figmaNodeId": "16351:20028",
+        "figmaVariant": "labelSize=small, state=error",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "sentiment": "error"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16"
+        },
+        "expectedVariables": [
+          "var(--border-error-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-small-error-light",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-small-error.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "slider-xs-disabled-light",
+        "figmaNodeId": "16351:20249",
+        "figmaVariant": "labelSize=extraSmall, state=disabled",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "disabled": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16"
+        },
+        "expectedVariables": [
+          "var(--border-disabled-neutral)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-xs-disabled-light",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-xs-disabled.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "slider-medium-stepper-light",
+        "figmaNodeId": "16351:19858",
+        "figmaVariant": "labelSize=medium + stepper",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "showControls": true,
+          "showStepper": true,
+          "showHelper": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16",
+          "stackGap": "10",
+          "controlOffset": "30",
+          "stepperAlign": "track ends (not under ± buttons)"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-medium-stepper-light",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-medium-stepper.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "slider-medium-default-dark",
+        "figmaNodeId": "16351:19858",
+        "figmaVariant": "labelSize=medium, state=default",
+        "mode": "dark",
+        "props": {
+          "size": "medium"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "knob": "16"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Slider/slider-medium-default-dark",
+        "referenceScreenshot": "captures/figma-slider-large-default.png",
+        "browserScreenshot": "captures/browser-slider-medium-default-dark.png",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": [
+      "Slider: removed MUI thumb ::before resting shadow to match Knob default",
+      "ChipGroup: matrix case uses all-unselected; separate selected coverage case",
+      "Slider: stepper as sibling row with 30px control offsets (not MUI marks); short track row so ± buttons overflow into 10px stack gap",
+      "Slider: thumb travel inset by half-knob (margin on MUI box); rail extended full-bleed so bar stays label-aligned / tight to ±; end ticks match thumb min/max"
+    ]
+  }
+}
