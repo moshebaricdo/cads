@@ -3,7 +3,12 @@
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 import {
   Button,
+  SegmentedButton,
+  IconToggle,
+  FieldWrapper,
+  TextInput,
   TextField,
+  Dropdown,
   Checkbox,
   Radio,
   Tag,
@@ -13,7 +18,12 @@ import { FaIcon } from "@codeai/cads-react/icons";
 
 const scope = {
   Button,
+  SegmentedButton,
+  IconToggle,
+  FieldWrapper,
+  TextInput,
   TextField,
+  Dropdown,
   Checkbox,
   Radio,
   Tag,
@@ -26,7 +36,7 @@ export function LivePlayground({ code }: { code: string }) {
     <LiveProvider code={code} scope={scope} noInline={false}>
       <div
         style={{
-          border: "1px solid var(--ds-border-neutral-primary)",
+          border: "1px solid var(--border-neutral-primary)",
           borderRadius: "var(--radius-md)",
           overflow: "hidden",
         }}
@@ -34,7 +44,7 @@ export function LivePlayground({ code }: { code: string }) {
         <div
           style={{
             padding: 24,
-            background: "var(--ds-background-neutral-primary)",
+            background: "var(--background-neutral-primary)",
             minHeight: 80,
             display: "flex",
             alignItems: "center",
@@ -46,8 +56,8 @@ export function LivePlayground({ code }: { code: string }) {
         </div>
         <div
           style={{
-            borderTop: "1px solid var(--ds-border-neutral-primary)",
-            background: "var(--ds-background-neutral-secondary)",
+            borderTop: "1px solid var(--border-neutral-primary)",
+            background: "var(--background-neutral-secondary)",
           }}
         >
           <LiveEditor
@@ -61,11 +71,11 @@ export function LivePlayground({ code }: { code: string }) {
         </div>
         <LiveError
           style={{
-            color: "var(--ds-text-error-primary)",
+            color: "var(--text-error-primary)",
             padding: 12,
             fontSize: 13,
             margin: 0,
-            background: "var(--ds-background-error-light)",
+            background: "var(--background-error-light)",
           }}
         />
       </div>

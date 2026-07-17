@@ -1,141 +1,267 @@
 import MuiButton, { type ButtonProps as MuiButtonProps } from "@mui/material/Button";
 import { forwardRef, type ReactNode } from "react";
-import { FaIcon, type FaIconSize } from "../icons/FaIcon";
+import { FaIcon } from "../icons/FaIcon";
 import type { FaIconName } from "../icons/faProRegularCodepoints";
+import {
+  BUTTON_SIZE,
+  FOCUS_RING,
+  TRANSITION_COLORS,
+  type ControlSize,
+} from "../shared/controlSize";
 
-/** CADS button visual variants (Figma component set). */
-export type ButtonVariant = "primary" | "secondary" | "tertiary";
-/** Brand / chrome tones. */
-export type ButtonTone = "brand" | "neutral" | "white" | "destructive";
-/** Shared control height scale L–XS. */
-export type ButtonSize = "l" | "m" | "s" | "xs";
+/** Figma Button `variant` — contained / outlined / text. */
+export type ButtonVariant = "contained" | "outlined" | "text";
+/** Figma Button `color`. */
+export type ButtonColor = "primary" | "secondary" | "tertiary" | "error";
+/** Figma size scale. */
+export type ButtonSize = ControlSize;
 
 export interface ButtonProps
-  extends Omit<MuiButtonProps, "variant" | "color" | "size"> {
+  extends Omit<
+    MuiButtonProps,
+    "variant" | "color" | "size" | "startIcon" | "endIcon"
+  > {
   /**
-   * Visual style.
-   * @default "secondary"
+   * Visual style (Figma: contained | outlined | text).
+   * @default "contained"
    */
   variant?: ButtonVariant;
   /**
-   * Color tone.
-   * @default "neutral"
+   * Color intent (Figma: primary | secondary | tertiary | error).
+   * Tertiary is only valid for `variant="text"` + icon-only; other combos
+   * fall back to secondary with a development warning.
+   * @default "primary"
    */
-  tone?: ButtonTone;
+  color?: ButtonColor;
   /**
-   * Control height: L 48 / M 40 / S 32 / XS 24.
-   * @default "m"
+   * Control height: large 48 / medium 40 / small 32 / extraSmall 24.
+   * @default "medium"
    */
   size?: ButtonSize;
-  /** Font Awesome Pro icon name (solid). */
-  iconName?: FaIconName;
-  iconPosition?: "start" | "end";
+  /** Force icon-only square geometry (also inferred when no children). */
+  iconOnly?: boolean;
+  /**
+   * Font Awesome Pro icon at the start (kebab-case).
+   * Figma shortcode `smile` is accepted (alias of `face-smile`).
+   */
+  startIconName?: FaIconName | (string & {});
+  /**
+   * Font Awesome Pro icon at the end (kebab-case).
+   * Figma shortcode `smile` is accepted (alias of `face-smile`).
+   */
+  endIconName?: FaIconName | (string & {});
   fullWidth?: boolean;
   children?: ReactNode;
 }
 
-const SIZE_MAP: Record<ButtonSize, "large" | "medium" | "small"> = {
-  l: "large",
-  m: "medium",
-  s: "small",
-  xs: "small",
+/** Recipes for primary | secondary | error (and tertiary text+iconOnly). */
+type ColorRecipe = {
+  filledBg: string;
+  filledBgHover: string;
+  filledBgPressed: string;
+  filledFg: string;
+  filledDisabledBg: string;
+  /** Contained disabled label sits on a solid fill → inverse text. */
+  filledDisabledFg: string;
+  outlinedBorder: string;
+  outlinedFg: string;
+  outlinedHoverBg: string;
+  outlinedPressedBg: string;
+  outlinedDisabledBorder: string;
+  outlinedDisabledFg: string;
+  textFg: string;
+  textFgPressed: string;
+  textHoverBg: string;
+  textPressedBg: string;
+  textDisabledFg: string;
 };
 
-const ICON_SIZE: Record<ButtonSize, FaIconSize> = {
-  l: "l",
-  m: "m",
-  s: "s",
-  xs: "xs",
-};
+/**
+ * Figma: tertiary gray styling exists only for text + iconOnly.
+ * Contained/outlined (and labeled text) fall back to secondary.
+ */
+function resolveColor(
+  color: ButtonColor,
+  variant: ButtonVariant,
+  iconOnly: boolean,
+): Exclude<ButtonColor, "tertiary"> | "tertiary" {
+  if (color !== "tertiary") return color;
+  if (variant === "text" && iconOnly) return "tertiary";
 
-const HEIGHT: Record<ButtonSize, string> = {
-  l: "var(--control-height-l)",
-  m: "var(--control-height-m)",
-  s: "var(--control-height-s)",
-  xs: "var(--control-height-xs)",
-};
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. ` +
+        `Falling back to color="secondary" for variant="${variant}"${iconOnly ? "" : " (labeled)"}.`,
+    );
+  }
+  return "secondary";
+}
 
-function toneStyles(variant: ButtonVariant, tone: ButtonTone) {
-  const brand = {
-    bg: "var(--ds-background-brand-primary)",
-    bgHover: "var(--ds-background-brand-strong)",
-    text: "var(--ds-text-neutral-white-fixed)",
-    border: "var(--ds-border-brand-primary)",
-  };
-  const neutral = {
-    bg: "var(--ds-background-neutral-secondary)",
-    bgHover: "var(--ds-background-neutral-tertiary)",
-    text: "var(--ds-text-neutral-primary)",
-    border: "var(--ds-border-neutral-primary)",
-  };
-  const white = {
-    bg: "var(--ds-background-neutral-white-fixed)",
-    bgHover: "var(--ds-background-neutral-secondary)",
-    text: "var(--ds-text-neutral-primary)",
-    border: "var(--ds-border-neutral-primary)",
-  };
-  const destructive = {
-    bg: "var(--ds-background-error-primary)",
-    bgHover: "var(--ds-background-error-strong)",
-    text: "var(--ds-text-neutral-white-fixed)",
-    border: "var(--ds-border-error-primary)",
-  };
+function colorRecipe(
+  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
+): ColorRecipe {
+  switch (color) {
+    case "primary":
+      return {
+        // Contained primary → brand fill
+        filledBg: "var(--background-brand-primary)",
+        filledBgHover: "var(--background-brand-strong)",
+        filledBgPressed: "var(--background-brand-primary)",
+        filledFg: "var(--text-neutral-white-fixed)",
+        filledDisabledBg: "var(--background-disabled-brand)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        // Outlined primary → solid border
+        outlinedBorder: "var(--border-neutral-solid)",
+        outlinedFg: "var(--text-neutral-primary)",
+        outlinedHoverBg: "var(--background-neutral-tertiary)",
+        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedDisabledBorder: "var(--border-disabled-neutral)",
+        outlinedDisabledFg: "var(--text-disabled-neutral)",
+        textFg: "var(--text-brand-primary)",
+        textFgPressed: "var(--text-brand-secondary)",
+        textHoverBg: "var(--background-brand-light)",
+        textPressedBg: "var(--background-brand-light)",
+        textDisabledFg: "var(--text-disabled-brand)",
+      };
+    case "error":
+      return {
+        filledBg: "var(--background-error-primary)",
+        filledBgHover: "var(--background-error-strong)",
+        filledBgPressed: "var(--background-error-primary)",
+        filledFg: "var(--text-neutral-white-fixed)",
+        filledDisabledBg: "var(--background-disabled-error)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        outlinedBorder: "var(--border-error-primary)",
+        outlinedFg: "var(--text-error-primary)",
+        outlinedHoverBg: "var(--background-error-light)",
+        outlinedPressedBg: "var(--background-error-light)",
+        outlinedDisabledBorder: "var(--border-disabled-error)",
+        outlinedDisabledFg: "var(--text-disabled-error)",
+        textFg: "var(--text-error-primary)",
+        textFgPressed: "var(--text-error-secondary)",
+        textHoverBg: "var(--background-error-light)",
+        textPressedBg: "var(--background-error-light)",
+        textDisabledFg: "var(--text-disabled-error)",
+      };
+    case "tertiary":
+      // Only reached for text + iconOnly (gray / quaternary styling).
+      return {
+        filledBg: "var(--background-neutral-secondary)",
+        filledBgHover: "var(--background-neutral-tertiary)",
+        filledBgPressed: "var(--background-neutral-secondary)",
+        filledFg: "var(--text-neutral-primary)",
+        filledDisabledBg: "var(--background-disabled-neutral)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        outlinedBorder: "var(--border-neutral-secondary)",
+        outlinedFg: "var(--text-neutral-quaternary)",
+        outlinedHoverBg: "var(--background-neutral-quaternary)",
+        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedDisabledBorder: "var(--border-disabled-neutral)",
+        outlinedDisabledFg: "var(--text-disabled-neutral)",
+        textFg: "var(--text-neutral-quaternary)",
+        textFgPressed: "var(--text-neutral-quaternary)",
+        textHoverBg: "var(--background-neutral-quaternary)",
+        textPressedBg: "var(--background-neutral-quaternary)",
+        textDisabledFg: "var(--text-disabled-neutral)",
+      };
+    case "secondary":
+    default:
+      return {
+        // Contained secondary → primary-inverse fill
+        filledBg: "var(--background-neutral-primary-inverse)",
+        filledBgHover: "var(--background-neutral-octonary)",
+        filledBgPressed: "var(--background-neutral-primary-inverse)",
+        filledFg: "var(--text-neutral-primary-inverse)",
+        filledDisabledBg: "var(--background-disabled-neutral)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        outlinedBorder: "var(--border-neutral-secondary)",
+        outlinedFg: "var(--text-neutral-primary)",
+        outlinedHoverBg: "var(--background-neutral-tertiary)",
+        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedDisabledBorder: "var(--border-disabled-neutral)",
+        outlinedDisabledFg: "var(--text-disabled-neutral)",
+        textFg: "var(--text-neutral-primary)",
+        textFgPressed: "var(--text-neutral-tertiary)",
+        textHoverBg: "var(--background-neutral-quaternary)",
+        textPressedBg: "var(--background-neutral-quaternary)",
+        textDisabledFg: "var(--text-disabled-neutral)",
+      };
+  }
+}
 
-  const palette =
-    tone === "brand"
-      ? brand
-      : tone === "white"
-        ? white
-        : tone === "destructive"
-          ? destructive
-          : neutral;
+function variantStyles(
+  variant: ButtonVariant,
+  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
+) {
+  const c = colorRecipe(color);
 
-  if (variant === "primary") {
+  if (variant === "contained") {
     return {
-      backgroundColor: palette.bg,
-      color: palette.text,
+      backgroundColor: c.filledBg,
+      color: c.filledFg,
       border: "1px solid transparent",
-      "&:hover": { backgroundColor: palette.bgHover },
+      "&:hover": { backgroundColor: c.filledBgHover },
+      "&:active": { backgroundColor: c.filledBgPressed },
+      "&.Mui-disabled": {
+        backgroundColor: c.filledDisabledBg,
+        color: c.filledDisabledFg,
+        opacity: 1,
+        // Icons must inherit inverse disabled text on solid fills.
+        "& .MuiButton-startIcon, & .MuiButton-endIcon, & [data-fa-icon]": {
+          color: c.filledDisabledFg,
+        },
+      },
     };
   }
-  if (variant === "secondary") {
+
+  if (variant === "outlined") {
     return {
-      backgroundColor: "transparent",
-      color:
-        tone === "brand"
-          ? "var(--ds-text-brand-primary)"
-          : tone === "destructive"
-            ? "var(--ds-text-error-primary)"
-            : "var(--ds-text-neutral-primary)",
-      border: `1px solid ${palette.border}`,
-      "&:hover": { backgroundColor: "var(--ds-background-neutral-secondary)" },
+      backgroundColor: "var(--background-neutral-primary)",
+      color: c.outlinedFg,
+      border: `1px solid ${c.outlinedBorder}`,
+      "&:hover": { backgroundColor: c.outlinedHoverBg },
+      "&:active": {
+        backgroundColor: c.outlinedPressedBg,
+        color: c.outlinedFg,
+      },
+      "&.Mui-disabled": {
+        backgroundColor: "var(--background-neutral-primary)",
+        color: c.outlinedDisabledFg,
+        borderColor: c.outlinedDisabledBorder,
+        opacity: 1,
+      },
     };
   }
+
   return {
     backgroundColor: "transparent",
-    color:
-      tone === "brand"
-        ? "var(--ds-text-brand-primary)"
-        : tone === "destructive"
-          ? "var(--ds-text-error-primary)"
-          : "var(--ds-text-neutral-primary)",
+    color: c.textFg,
     border: "1px solid transparent",
-    "&:hover": { backgroundColor: "var(--ds-background-neutral-secondary)" },
+    "&:hover": { backgroundColor: c.textHoverBg },
+    "&:active": {
+      backgroundColor: c.textPressedBg,
+      color: c.textFgPressed,
+    },
+    "&.Mui-disabled": {
+      color: c.textDisabledFg,
+      opacity: 1,
+    },
   };
 }
 
 /**
- * CADS Button — MUI Button wrapped with CADS variants, tones, and size scale.
- * Spec source: CADS Figma Button component set.
+ * CADS Button — MUI Button wrapped with Figma-parity variants, colors, and sizes.
+ * Spec: CADS Figma Button `15724:18791` / key `2507b18076b4066c6ff738539115b36a798fd707`.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
     {
-      variant = "secondary",
-      tone = "neutral",
-      size = "m",
-      iconName,
-      iconPosition = "start",
+      variant = "contained",
+      color = "primary",
+      size = "medium",
+      iconOnly: iconOnlyProp,
+      startIconName,
+      endIconName,
       children,
       sx,
       disabled,
@@ -143,8 +269,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) {
-    const icon = iconName ? (
-      <FaIcon name={iconName} size={ICON_SIZE[size]} />
+    const dims = BUTTON_SIZE[size];
+    const iconOnly =
+      iconOnlyProp ??
+      (!children && Boolean(startIconName || endIconName));
+    const resolvedColor = resolveColor(color, variant, iconOnly);
+
+    const startIcon = startIconName ? (
+      <FaIcon name={startIconName} fontSize={dims.iconPx} />
+    ) : null;
+    const endIcon = endIconName ? (
+      <FaIcon name={endIconName} fontSize={dims.iconPx} />
     ) : null;
 
     return (
@@ -152,35 +287,36 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disableElevation
         disabled={disabled}
-        size={SIZE_MAP[size]}
-        startIcon={icon && iconPosition === "start" ? icon : undefined}
-        endIcon={icon && iconPosition === "end" ? icon : undefined}
+        startIcon={!iconOnly && startIcon ? startIcon : undefined}
+        endIcon={!iconOnly && endIcon ? endIcon : undefined}
         sx={{
-          minWidth: children ? undefined : HEIGHT[size],
-          height: HEIGHT[size],
-          paddingInline: size === "xs" ? "8px" : size === "s" ? "12px" : "16px",
+          minWidth: dims.height,
+          width: iconOnly ? dims.height : undefined,
+          height: dims.height,
+          paddingInline: iconOnly ? dims.iconOnlyPadding : dims.paddingInline,
+          paddingBlock: iconOnly ? dims.iconOnlyPadding : dims.paddingBlock,
+          gap: iconOnly ? 0 : dims.gap,
           borderRadius: "var(--radius-sm)",
           fontFamily: "var(--font-body)",
           fontWeight: "var(--font-weight-semibold)",
-          fontSize:
-            size === "xs" || size === "s"
-              ? "var(--text-body-xs)"
-              : "var(--text-body-sm)",
+          fontSize: dims.fontSize,
+          lineHeight: dims.lineHeight,
           textTransform: "none",
           boxShadow: "none",
+          boxSizing: "border-box",
+          transition: TRANSITION_COLORS,
+          "& .MuiButton-startIcon, & .MuiButton-endIcon": {
+            margin: 0,
+          },
           "&.Mui-focusVisible": {
-            outline: "2px solid var(--ds-border-focused-primary)",
-            outlineOffset: "2px",
+            boxShadow: FOCUS_RING,
           },
-          "&.Mui-disabled": {
-            opacity: 0.5,
-          },
-          ...toneStyles(variant, tone),
+          ...variantStyles(variant, resolvedColor),
           ...((sx as object) ?? {}),
         }}
         {...rest}
       >
-        {children}
+        {iconOnly ? startIcon || endIcon : children}
       </MuiButton>
     );
   },

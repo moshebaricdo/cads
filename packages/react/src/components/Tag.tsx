@@ -10,7 +10,7 @@ export type TagTone =
   | "warning"
   | "error"
   | "info";
-export type TagSize = "m" | "s";
+export type TagSize = "medium" | "small";
 
 export interface TagProps extends Omit<ChipProps, "color" | "size" | "icon"> {
   /**
@@ -19,7 +19,7 @@ export interface TagProps extends Omit<ChipProps, "color" | "size" | "icon"> {
    */
   tone?: TagTone;
   /**
-   * @default "m"
+   * @default "medium"
    */
   size?: TagSize;
   iconName?: FaIconName;
@@ -30,34 +30,34 @@ const TONE_STYLES: Record<
   { bg: string; color: string; border: string }
 > = {
   neutral: {
-    bg: "var(--ds-background-neutral-secondary)",
-    color: "var(--ds-text-neutral-primary)",
-    border: "var(--ds-border-neutral-primary)",
+    bg: "var(--background-neutral-secondary)",
+    color: "var(--text-neutral-primary)",
+    border: "var(--border-neutral-primary)",
   },
   brand: {
-    bg: "var(--ds-background-brand-light)",
-    color: "var(--ds-text-brand-primary)",
-    border: "var(--ds-border-brand-primary)",
+    bg: "var(--background-brand-light)",
+    color: "var(--text-brand-primary)",
+    border: "var(--border-brand-primary)",
   },
   success: {
-    bg: "var(--ds-background-success-light)",
-    color: "var(--ds-text-success-primary)",
-    border: "var(--ds-border-success-primary)",
+    bg: "var(--background-success-light)",
+    color: "var(--text-success-primary)",
+    border: "var(--border-success-primary)",
   },
   warning: {
-    bg: "var(--ds-background-warning-light)",
-    color: "var(--ds-text-warning-primary)",
-    border: "var(--ds-border-warning-primary)",
+    bg: "var(--background-warning-light)",
+    color: "var(--text-warning-primary)",
+    border: "var(--border-warning-primary)",
   },
   error: {
-    bg: "var(--ds-background-error-light)",
-    color: "var(--ds-text-error-primary)",
-    border: "var(--ds-border-error-primary)",
+    bg: "var(--background-error-light)",
+    color: "var(--text-error-primary)",
+    border: "var(--border-error-primary)",
   },
   info: {
-    bg: "var(--ds-background-info-light)",
-    color: "var(--ds-text-info-primary)",
-    border: "var(--ds-border-info-primary)",
+    bg: "var(--background-info-light)",
+    color: "var(--text-info-primary)",
+    border: "var(--border-info-primary)",
   },
 };
 
@@ -66,7 +66,7 @@ const TONE_STYLES: Record<
  * Spec source: CADS Figma Tag / Chip component set.
  */
 export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
-  { tone = "neutral", size = "m", iconName, label, sx, ...rest },
+  { tone = "neutral", size = "medium", iconName, label, sx, ...rest },
   ref,
 ) {
   const t = TONE_STYLES[tone];
@@ -74,10 +74,12 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
     <Chip
       ref={ref}
       label={label}
-      size={size === "s" ? "small" : "medium"}
-      icon={iconName ? <FaIcon name={iconName} size="xs" /> : undefined}
+      size={size === "small" ? "small" : "medium"}
+      icon={
+        iconName ? <FaIcon name={iconName} size="extraSmall" /> : undefined
+      }
       sx={{
-        height: size === "s" ? "20px" : "24px",
+        height: size === "small" ? "1.25rem" : "1.5rem",
         borderRadius: "var(--radius-round)",
         backgroundColor: t.bg,
         color: t.color,
@@ -85,7 +87,7 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
         fontFamily: "var(--font-body)",
         fontSize: "var(--text-body-xs)",
         fontWeight: "var(--font-weight-medium)",
-        "& .MuiChip-icon": { color: "inherit", marginLeft: "6px" },
+        "& .MuiChip-icon": { color: "inherit", marginLeft: "0.375rem" },
         ...((sx as object) ?? {}),
       }}
       {...rest}

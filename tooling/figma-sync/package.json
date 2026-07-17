@@ -6,7 +6,8 @@
   "description": "Figma → CADS variables sync (values, mappings, naming, structure)",
   "scripts": {
     "sync": "node src/sync.mjs",
-    "sync:apply": "node src/sync.mjs --apply"
+    "sync:apply": "node src/sync.mjs --apply",
+    "audit-props": "node src/audit-component-props.mjs"
   },
   "dependencies": {
     "@codeai/cads-variables": "workspace:*"

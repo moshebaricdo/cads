@@ -1,7 +1,7 @@
 import * as react from 'react';
 import { CSSProperties } from 'react';
-import { F as FaIconName } from '../faProRegularCodepoints-Bm2_kbhk.js';
-export { g as getFaCodepoint } from '../faProRegularCodepoints-Bm2_kbhk.js';
+import { F as FaIconName } from '../faProRegularCodepoints-DVbgUpNH.js';
+export { a as FA_ICON_ALIASES, g as getFaCodepoint, i as isFaIconName, r as resolveFaIconName } from '../faProRegularCodepoints-DVbgUpNH.js';
 
 /**
  * Unicode codepoints (hex, no "0x") for every glyph in the Font Awesome 7 Brands font.
@@ -564,22 +564,39 @@ declare const FA_BRANDS_CODEPOINTS: {
 type FaBrandIconName = keyof typeof FA_BRANDS_CODEPOINTS;
 declare function getFaBrandCodepoint(name: FaBrandIconName): string;
 
-type FaIconSize = "inherit" | "xs" | "s" | "m" | "l";
-type FaIconFamily = "solid" | "brands";
+type FaIconSize = "inherit" | "extraSmall" | "small" | "medium" | "large"
+/** @deprecated Prefer `extraSmall` */
+ | "xs"
+/** @deprecated Prefer `small` */
+ | "s"
+/** @deprecated Prefer `medium` */
+ | "m"
+/** @deprecated Prefer `large` */
+ | "l";
+type FaIconFamily = "solid" | "regular" | "brands";
 interface FaIconProps {
-    /** FA icon name (kebab-case), e.g. `arrow-right`, `python` (brands). */
-    name: FaIconName | FaBrandIconName;
+    /**
+     * FA icon name (kebab-case), e.g. `arrow-right`, `face-smile`.
+     * Figma shortcode `smile` is accepted as an alias for `face-smile`.
+     */
+    name: FaIconName | FaBrandIconName | (string & {});
     family?: FaIconFamily;
     className?: string;
     /** Visible label for screen readers; when set, `aria-hidden` is not applied. */
     title?: string;
     size?: FaIconSize;
+    /** Override glyph size (e.g. Figma button icon px). */
+    fontSize?: string;
     style?: CSSProperties;
 }
 /**
- * Renders a glyph from the licensed Font Awesome 7 webfont (Pro Solid or Brands).
+ * Renders a glyph from the licensed Font Awesome 7 webfont
+ * (Pro Solid / Pro Regular / Brands).
  * Import `@codeai/cads-react/icons/fonts.css` once at app root.
+ *
+ * Unknown names render nothing (no throw) so playgrounds stay resilient
+ * while typing shortcodes.
  */
-declare function FaIcon({ name, family, className, title, size, style, }: FaIconProps): react.JSX.Element;
+declare function FaIcon({ name, family, className, title, size, fontSize: fontSizeProp, style, }: FaIconProps): react.JSX.Element | null;
 
 export { type FaBrandIconName, FaIcon, type FaIconFamily, FaIconName, type FaIconProps, type FaIconSize, getFaBrandCodepoint };

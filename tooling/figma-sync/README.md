@@ -27,3 +27,15 @@ Canonical Figma file: `DGekOeToRVifvFAhfqpeC1`.
 Snapshot path: `packages/variables/src/data/figmaVariablesSnapshot.json`.
 
 Applying REST diffs into `codeAiColorSystem.json` (full ColorSystem rewrite) is intentionally staged — use this tool for fetch/rename detection, then update the ColorSystem document (or Lab2 color sandbox export) before regenerating.
+
+## Component prop audit (Actions pilot)
+
+Compares `cadsManifest` to the committed Figma variant-axis snapshot:
+
+```bash
+pnpm figma:audit-props
+pnpm figma:audit-props -- --strict   # fail on error/escalate
+```
+
+Snapshot: `packages/react/src/manifest/figmaComponentPropsSnapshot.json`
+Agent workflow: [`.cursor/skills/cads-parity-qa/SKILL.md`](../../.cursor/skills/cads-parity-qa/SKILL.md)

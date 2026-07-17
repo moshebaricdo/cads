@@ -1,0 +1,388 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Dropdown",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "15857:100676",
+    "componentKey": "d3660d988bcb4702c24ce921128e32cadb6618db",
+    "relatedNodeIds": [
+      "964:10677",
+      "971:4280",
+      "896:3791",
+      "15857:99804"
+    ],
+    "retrievedAt": "2026-07-16",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "role": [
+        "input",
+        "action"
+      ],
+      "menuType": [
+        "icon",
+        "checklist"
+      ],
+      "menuPlacement": [
+        "bottomLeft",
+        "bottomRight",
+        "topLeft",
+        "topRight"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "open"
+    ],
+    "restrictedCombinations": [
+      {
+        "when": {
+          "role": "action",
+          "menuType": "checklist"
+        },
+        "reason": "Figma public Dropdown set has no action+checklist symbols; checklist is input-only."
+      }
+    ]
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "triggerHeight": "48px",
+        "itemPaddingBlock": "10px",
+        "itemGap": "12px",
+        "iconSlot": "28px"
+      },
+      "medium": {
+        "triggerHeight": "40px",
+        "itemPaddingBlock": "8px",
+        "itemGap": "12px",
+        "iconSlot": "24px"
+      },
+      "small": {
+        "triggerHeight": "32px",
+        "itemPaddingBlock": "5px",
+        "itemGap": "8px",
+        "iconSlot": "20px"
+      },
+      "extraSmall": {
+        "triggerHeight": "24px",
+        "itemPaddingBlock": "2px",
+        "itemGap": "4px",
+        "iconSlot": "16px"
+      }
+    },
+    "layout": {
+      "padding": "size-scaled",
+      "gap": "4px",
+      "borderWidth": "1px",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "400",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "role": "input",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)",
+        "menuBorder": "var(--border-neutral-primary)",
+        "menuShadow": "var(--shadow-md)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "role=input",
+      "notes": [
+        "Input trigger is Dropdown Button (outlined-like)."
+      ]
+    },
+    {
+      "when": {
+        "role": "action",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-primary)",
+        "text": "var(--text-neutral-white-fixed)",
+        "menuBorder": "var(--border-neutral-primary)",
+        "menuShadow": "var(--shadow-md)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "role=action",
+      "notes": [
+        "Action trigger reuses CADS Button."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "selected",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "text": "var(--text-selected-primary)",
+        "checkboxFill": "var(--background-selected-primary-inverse)",
+        "checkboxIcon": "var(--text-selected-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=yes",
+      "notes": [
+        "Selected chrome uses selected tokens, never brand fills."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "iconError",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-error-primary)",
+        "icon": "var(--text-error-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "itemType=iconError",
+      "notes": [
+        "Destructive action item."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "role",
+      "menuType",
+      "menuPlacement",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "dropdown-large-input-icon-bottomleft-light",
+        "figmaNodeId": "15857:100677",
+        "figmaVariant": "size=large, role=input, menuType=icon, menuPlacement=bottomLeft",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "role": "input",
+          "menuType": "icon",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "triggerHeight": "48px"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid",
+          "--shadow-md",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-large-input-icon-bottomleft-light",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-large-input-icon-bottomleft-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-medium-input-checklist-bottomright-light",
+        "figmaNodeId": "15872:105773",
+        "figmaVariant": "size=medium, role=input, menuType=checklist, menuPlacement=bottomRight",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "role": "input",
+          "menuType": "checklist",
+          "menuPlacement": "bottomRight",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-neutral-primary",
+          "--background-selected-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-medium-input-checklist-bottomright-light",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "captures/browser-dropdown-checklist.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-large-action-icon-bottomleft-light",
+        "figmaNodeId": "15872:108962",
+        "figmaVariant": "size=large, role=action, menuType=icon, menuPlacement=bottomLeft",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "role": "action",
+          "menuType": "icon",
+          "menuPlacement": "bottomLeft",
+          "label": "Button",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "triggerHeight": "48px"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--text-error-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-large-action-icon-bottomleft-light",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "captures/browser-dropdown-action.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-small-input-icon-topleft-light",
+        "figmaNodeId": "15872:106758",
+        "figmaVariant": "size=small, role=input, menuType=icon, menuPlacement=topLeft",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "role": "input",
+          "menuType": "icon",
+          "menuPlacement": "topLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "triggerHeight": "32px"
+        },
+        "expectedVariables": [
+          "--shadow-md"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-small-input-icon-topleft-light",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-small-input-icon-topleft-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-xs-action-icon-topright-light",
+        "figmaNodeId": "15872:109007",
+        "figmaVariant": "size=extraSmall, role=action, menuType=icon, menuPlacement=topRight",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "role": "action",
+          "menuType": "icon",
+          "menuPlacement": "topRight",
+          "label": "Button",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 320,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "triggerHeight": "24px"
+        },
+        "expectedVariables": [
+          "--background-brand-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-xs-action-icon-topright-light",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-xs-action-icon-topright-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-large-input-icon-bottomleft-dark",
+        "figmaNodeId": "15857:100677",
+        "figmaVariant": "size=large, role=input, menuType=icon, menuPlacement=bottomLeft",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "role": "input",
+          "menuType": "icon",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-large-input-icon-bottomleft-dark&mode=dark",
+        "referenceScreenshot": "captures/figma-dropdown-large-input.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-large-input-icon-bottomleft-dark&mode=dark",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn (info: state-recipes)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
+    "correctionPasses": [
+      "Removed Grow + disablePortal=false\u2192true so fixture transition:none and capture regions keep the menu",
+      "Fixed Popper anchorEl via callback state so defaultOpen opens on first paint",
+      "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791"
+    ]
+  }
+}

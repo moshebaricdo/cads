@@ -1,4 +1,4 @@
-import type { CadsPropDef } from "@codeai/cads-react";
+import type { CadsPropDef } from "@codeai/cads-react/manifest";
 
 export function PropsTable({ props }: { props: CadsPropDef[] }) {
   return (
@@ -16,9 +16,9 @@ export function PropsTable({ props }: { props: CadsPropDef[] }) {
               key={h}
               style={{
                 textAlign: "left",
-                borderBottom: "1px solid var(--ds-border-neutral-primary)",
+                borderBottom: "1px solid var(--border-neutral-primary)",
                 padding: "8px 12px",
-                color: "var(--ds-text-neutral-secondary)",
+                color: "var(--text-neutral-secondary)",
                 fontWeight: 600,
               }}
             >
@@ -30,17 +30,17 @@ export function PropsTable({ props }: { props: CadsPropDef[] }) {
       <tbody>
         {props.map((p) => (
           <tr key={p.name}>
-            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--ds-border-neutral-primary)" }}>
+            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--border-neutral-primary)" }}>
               <code>{p.name}</code>
               {p.required ? " *" : ""}
             </td>
-            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--ds-border-neutral-primary)" }}>
+            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--border-neutral-primary)" }}>
               <code>{p.type}</code>
             </td>
-            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--ds-border-neutral-primary)" }}>
+            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--border-neutral-primary)" }}>
               {p.default ? <code>{p.default}</code> : "—"}
             </td>
-            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--ds-border-neutral-primary)" }}>
+            <td style={{ padding: "8px 12px", borderBottom: "1px solid var(--border-neutral-primary)" }}>
               {p.description ?? "—"}
             </td>
           </tr>

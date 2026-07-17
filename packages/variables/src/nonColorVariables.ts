@@ -76,10 +76,32 @@ export const elevation = {
 } as const;
 
 export const controlHeights = {
+  large: "48px",
+  medium: "40px",
+  small: "32px",
+  extraSmall: "24px",
+  /** @deprecated Prefer `large` */
   l: "48px",
+  /** @deprecated Prefer `medium` */
   m: "40px",
+  /** @deprecated Prefer `small` */
   s: "32px",
+  /** @deprecated Prefer `extraSmall` */
   xs: "24px",
+} as const;
+
+/**
+ * Motion / transition variables.
+ * Figma has no duration/easing collection yet — these are a small CADS set for
+ * control chrome (hover/press fills, borders). Focus rings use short so they
+ * don't feel lagged.
+ */
+export const motion = {
+  durationInstant: "0ms",
+  durationShort: "150ms",
+  durationMedium: "200ms",
+  easingStandard: "cubic-bezier(0.4, 0, 0.2, 1)",
+  easingEmphasized: "cubic-bezier(0.2, 0, 0, 1)",
 } as const;
 
 /** Flat CSS custom-property map for non-color variables. */
@@ -132,10 +154,20 @@ export function nonColorCssVars(): Record<string, string> {
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,
-    "--control-height-l": controlHeights.l,
-    "--control-height-m": controlHeights.m,
-    "--control-height-s": controlHeights.s,
-    "--control-height-xs": controlHeights.xs,
+    "--control-height-large": controlHeights.large,
+    "--control-height-medium": controlHeights.medium,
+    "--control-height-small": controlHeights.small,
+    "--control-height-extra-small": controlHeights.extraSmall,
+    "--control-height-l": controlHeights.large,
+    "--control-height-m": controlHeights.medium,
+    "--control-height-s": controlHeights.small,
+    "--control-height-xs": controlHeights.extraSmall,
+    "--duration-instant": motion.durationInstant,
+    "--duration-short": motion.durationShort,
+    "--duration-medium": motion.durationMedium,
+    "--easing-standard": motion.easingStandard,
+    "--easing-emphasized": motion.easingEmphasized,
+    "--transition-colors": `background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)`,
     "--font-fa-pro": '"Font Awesome 7 Pro"',
     "--font-fa-brands": '"Font Awesome 7 Brands"',
   };

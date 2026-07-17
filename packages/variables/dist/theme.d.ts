@@ -1,6 +1,6 @@
 import * as _mui_material_styles from '@mui/material/styles';
 import { ThemeOptions } from '@mui/material/styles';
-export { c as controlHeights, e as elevation, s as shape, a as spacing, t as typography } from './nonColorVariables-vwBfkEFP.js';
+export { c as controlHeights, e as elevation, m as motion, s as shape, a as spacing, t as typography } from './nonColorVariables-BXKj2HX8.js';
 
 /**
  * Base theme options. Light/dark visual switching is driven by the `.dark` class

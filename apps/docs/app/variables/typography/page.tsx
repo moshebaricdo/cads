@@ -22,7 +22,7 @@ export default function TypographyPage() {
       >
         Typography
       </h1>
-      <p style={{ color: "var(--ds-text-neutral-secondary)" }}>
+      <p style={{ color: "var(--text-neutral-secondary)" }}>
         Space Grotesk (H1–H2), Geist (body + H3–H6), Google Sans Code (mono).
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 24 }}>
@@ -31,7 +31,7 @@ export default function TypographyPage() {
             <div
               style={{
                 fontSize: "var(--text-body-xxs)",
-                color: "var(--ds-text-neutral-secondary)",
+                color: "var(--text-neutral-secondary)",
                 marginBottom: 4,
               }}
             >

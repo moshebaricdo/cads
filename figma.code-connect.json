@@ -5,14 +5,45 @@
   "mappings": [
     {
       "componentName": "Button",
+      "figmaNodeId": "15724:18791",
+      "componentKey": "2507b18076b4066c6ff738539115b36a798fd707",
       "source": "@codeai/cads-react",
-      "snippet": "import { Button } from \"@codeai/cads-react\";\n\n<Button variant=\"primary\" tone=\"brand\" size=\"m\">{label}</Button>",
-      "note": "Fill figmaNodeId / componentKey when mapping is confirmed in Figma. Used as local Code Connect substitute (no Enterprise publish)."
+      "snippet": "import { Button } from \"@codeai/cads-react\";\n\n<Button variant=\"contained\" color=\"primary\" size=\"medium\">{label}</Button>"
     },
     {
-      "componentName": "TextField",
+      "componentName": "SegmentedButton",
+      "figmaNodeId": "8027:2099",
+      "componentKey": "bf599e1bc1d1e651be6aab5bf90ac6a7c26dcfd1",
       "source": "@codeai/cads-react",
-      "snippet": "import { TextField } from \"@codeai/cads-react\";\n\n<TextField label=\"{label}\" size=\"m\" />"
+      "snippet": "import { SegmentedButton } from \"@codeai/cads-react\";\n\n<SegmentedButton aria-label=\"Options\" options={[{ value: \"a\", label: \"A\" }, { value: \"b\", label: \"B\" }]} defaultValue=\"a\" />"
+    },
+    {
+      "componentName": "IconToggle",
+      "figmaNodeId": "3710:461",
+      "componentKey": "d08929d02e63b3b286690e87d791199e4545126f",
+      "source": "@codeai/cads-react",
+      "snippet": "import { IconToggle } from \"@codeai/cads-react\";\n\n<IconToggle iconName=\"heart\" color=\"brand\" aria-label=\"Favorite\" />"
+    },
+    {
+      "componentName": "FieldWrapper",
+      "figmaNodeId": "15857:99804",
+      "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",
+      "source": "@codeai/cads-react",
+      "snippet": "import { FieldWrapper, TextInput } from \"@codeai/cads-react\";\n\n<FieldWrapper label=\"{label}\" helperText=\"{helperText}\" sentiment=\"default\"><TextInput /></FieldWrapper>"
+    },
+    {
+      "componentName": "TextInput",
+      "figmaNodeId": "16176:4884",
+      "componentKey": "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4",
+      "source": "@codeai/cads-react",
+      "snippet": "import { TextInput } from \"@codeai/cads-react\";\n\n<TextInput label=\"{label}\" size=\"medium\" placeholder=\"Placeholder\" />"
+    },
+    {
+      "componentName": "Dropdown",
+      "figmaNodeId": "15857:100676",
+      "componentKey": "d3660d988bcb4702c24ce921128e32cadb6618db",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Dropdown } from \"@codeai/cads-react\";\n\n<Dropdown role=\"input\" label=\"{label}\" options={[{ value: \"a\", label: \"Option A\" }, { value: \"b\", label: \"Option B\" }]} />"
     },
     {
       "componentName": "Checkbox",

@@ -23,11 +23,12 @@
       "types": "./dist/manifest/cads.manifest.d.ts",
       "import": "./dist/manifest/cads.manifest.js"
     },
-    "./icons/fonts.css": "./dist/icons/fonts.css"
+    "./icons/fonts.css": "./src/icons/fonts.css"
   },
   "files": [
     "dist",
     "src/icons/fonts",
+    "src/icons/fonts.css",
     "src/manifest"
   ],
   "scripts": {

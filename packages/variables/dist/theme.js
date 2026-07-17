@@ -2,10 +2,11 @@ import {
   colorVarsLight,
   controlHeights,
   elevation,
+  motion,
   shape,
   spacing,
   typography
-} from "./chunk-X5TIG6QO.js";
+} from "./chunk-GV45RMBS.js";
 
 // src/theme.ts
 import { createTheme } from "@mui/material/styles";
@@ -145,7 +146,7 @@ var cadsThemeOptions = {
           boxShadow: "none",
           "&:hover": { boxShadow: "none" },
           "&.Mui-focusVisible": {
-            outline: "2px solid var(--ds-border-focused-primary)",
+            outline: "2px solid var(--border-focused-primary)",
             outlineOffset: "2px"
           }
         },
@@ -159,7 +160,7 @@ var cadsThemeOptions = {
         root: {
           borderRadius: shape.radiusSm,
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "var(--ds-border-focused-primary)",
+            borderColor: "var(--border-focused-primary)",
             borderWidth: 2
           }
         }
@@ -168,8 +169,8 @@ var cadsThemeOptions = {
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          backgroundColor: "var(--ds-background-neutral-primary-inverse)",
-          color: "var(--ds-text-neutral-primary-inverse)",
+          backgroundColor: "var(--background-neutral-primary-inverse)",
+          color: "var(--text-neutral-primary-inverse)",
           borderRadius: shape.radiusSm,
           fontSize: typography.fontSize.bodyXs
         }
@@ -178,8 +179,8 @@ var cadsThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "var(--ds-background-neutral-primary)",
-          color: "var(--ds-text-neutral-primary)"
+          backgroundColor: "var(--background-neutral-primary)",
+          color: "var(--text-neutral-primary)"
         }
       }
     }
@@ -193,6 +194,7 @@ export {
   controlHeights,
   createCadsTheme,
   elevation,
+  motion,
   shape,
   spacing,
   typography

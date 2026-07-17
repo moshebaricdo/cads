@@ -1,4 +1,4 @@
-export { c as controlHeights, e as elevation, n as nonColorCssVars, s as shape, a as spacing, t as typography } from './nonColorVariables-vwBfkEFP.js';
+export { c as controlHeights, e as elevation, m as motion, n as nonColorCssVars, s as shape, a as spacing, t as typography } from './nonColorVariables-BXKj2HX8.js';
 
 declare const colorVarsLight: {
     readonly "background-neutral-primary": "#FFFFFF";
@@ -300,7 +300,9 @@ type ColorVarName = keyof typeof colorVarsLight;
 
 /** Figma file key for the CADS design system. */
 declare const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
-/** CSS custom-property helper: wraps a semantic name as var(--ds-…). */
-declare function ds(name: string): string;
+/** CSS custom-property helper: wraps a semantic color name as var(--…). */
+declare function cssVar(name: string): string;
+/** @deprecated Use `cssVar` — `--ds-*` prefix removed. */
+declare const ds: typeof cssVar;
 
-export { CADS_FIGMA_FILE_KEY, type ColorVarName, colorVarsDark, colorVarsLight, ds };
+export { CADS_FIGMA_FILE_KEY, type ColorVarName, colorVarsDark, colorVarsLight, cssVar, ds };

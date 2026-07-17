@@ -3680,6 +3680,24 @@ export const FA_PRO_SOLID_CODEPOINTS = {
 
 export type FaIconName = keyof typeof FA_PRO_SOLID_CODEPOINTS;
 
-export function getFaCodepoint(name: FaIconName): string {
-  return FA_PRO_SOLID_CODEPOINTS[name];
+/**
+ * Figma / designer shortcodes that map onto FA Pro names.
+ * Figma Button / Icon Toggle samples use `smile`; FA’s glyph is `face-smile`.
+ */
+export const FA_ICON_ALIASES: Record<string, FaIconName> = {
+  smile: "face-smile",
+};
+
+export function resolveFaIconName(name: string): FaIconName | undefined {
+  if (name in FA_PRO_SOLID_CODEPOINTS) return name as FaIconName;
+  return FA_ICON_ALIASES[name];
+}
+
+export function isFaIconName(name: string): name is FaIconName {
+  return resolveFaIconName(name) != null;
+}
+
+export function getFaCodepoint(name: FaIconName | string): string | undefined {
+  const resolved = resolveFaIconName(name);
+  return resolved ? FA_PRO_SOLID_CODEPOINTS[resolved] : undefined;
 }

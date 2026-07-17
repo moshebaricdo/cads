@@ -18,7 +18,7 @@ export default function HomePage() {
         style={{
           fontSize: "var(--text-body-md)",
           lineHeight: "var(--leading-body-md)",
-          color: "var(--ds-text-neutral-secondary)",
+          color: "var(--text-neutral-secondary)",
           maxWidth: 640,
         }}
       >
@@ -64,8 +64,8 @@ export default function HomePage() {
               display: "block",
               padding: 20,
               borderRadius: "var(--radius-md)",
-              border: "1px solid var(--ds-border-neutral-primary)",
-              background: "var(--ds-background-neutral-secondary)",
+              border: "1px solid var(--border-neutral-primary)",
+              background: "var(--background-neutral-secondary)",
               textDecoration: "none",
               color: "inherit",
               boxShadow: "var(--shadow-sm)",
@@ -75,7 +75,7 @@ export default function HomePage() {
               style={{
                 fontWeight: 600,
                 marginBottom: 6,
-                color: "var(--ds-text-brand-primary)",
+                color: "var(--text-brand-primary)",
               }}
             >
               {card.title}
@@ -83,7 +83,7 @@ export default function HomePage() {
             <div
               style={{
                 fontSize: "var(--text-body-sm)",
-                color: "var(--ds-text-neutral-secondary)",
+                color: "var(--text-neutral-secondary)",
               }}
             >
               {card.body}

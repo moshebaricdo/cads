@@ -2,13 +2,14 @@
  * Generated MUI theme options mapped to CADS variables.
  * Palette uses resolved light-mode hexes (MUI cannot parse CSS var() in augmentColor).
  * Runtime light/dark still comes from `@codeai/cads-variables/variables.css` + `.dark`.
- * Component wrappers should prefer `--ds-*` in `sx` for live theme switching.
+ * Component wrappers should prefer semantic CSS vars (e.g. `--background-brand-primary`) in `sx` for live theme switching.
  */
 import { createTheme, type ThemeOptions } from "@mui/material/styles";
 import { colorVarsLight } from "./generated/cssVars";
 import {
   controlHeights,
   elevation,
+  motion,
   shape,
   spacing,
   typography,
@@ -155,7 +156,7 @@ export const cadsThemeOptions: ThemeOptions = {
           boxShadow: "none",
           "&:hover": { boxShadow: "none" },
           "&.Mui-focusVisible": {
-            outline: "2px solid var(--ds-border-focused-primary)",
+            outline: "2px solid var(--border-focused-primary)",
             outlineOffset: "2px",
           },
         },
@@ -169,7 +170,7 @@ export const cadsThemeOptions: ThemeOptions = {
         root: {
           borderRadius: shape.radiusSm,
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "var(--ds-border-focused-primary)",
+            borderColor: "var(--border-focused-primary)",
             borderWidth: 2,
           },
         },
@@ -178,8 +179,8 @@ export const cadsThemeOptions: ThemeOptions = {
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          backgroundColor: "var(--ds-background-neutral-primary-inverse)",
-          color: "var(--ds-text-neutral-primary-inverse)",
+          backgroundColor: "var(--background-neutral-primary-inverse)",
+          color: "var(--text-neutral-primary-inverse)",
           borderRadius: shape.radiusSm,
           fontSize: typography.fontSize.bodyXs,
         },
@@ -188,8 +189,8 @@ export const cadsThemeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "var(--ds-background-neutral-primary)",
-          color: "var(--ds-text-neutral-primary)",
+          backgroundColor: "var(--background-neutral-primary)",
+          color: "var(--text-neutral-primary)",
         },
       },
     },
@@ -200,4 +201,4 @@ export function createCadsTheme(overrides?: ThemeOptions) {
   return createTheme(cadsThemeOptions, overrides ?? {});
 }
 
-export { controlHeights, elevation, shape, spacing, typography };
+export { controlHeights, elevation, motion, shape, spacing, typography };

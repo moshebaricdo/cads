@@ -43,11 +43,11 @@ flowchart TD
 - ColorSystem JSON + generators + Figma snapshot live under `packages/variables`
 - `tooling/figma-sync`: four drift classes (values, mappings, naming, structure) + ID-matched renames
 - Non-color: typography, spacing/shape, radii, elevation (eventually live-synced from Figma; initially ported)
-- Outputs: `variables.css` (`--ds-*`, `:root` / `.dark`), typed TS object, generated MUI theme
+- Outputs: `variables.css` (semantic color vars like `--background-brand-primary`, `:root` / `.dark`), typed TS object, generated MUI theme
 
 ## Phase 2 — Component package pilot
 
-- Wrap MUI behind CADS-named exports; style with `--ds-*`; no hardcoded hex
+- Wrap MUI behind CADS-named exports; style with semantic CSS vars (no `--ds-` prefix); no hardcoded hex
 - Pilot: Button, TextField, Checkbox, Radio, Tag, Tooltip
 - Spec from Figma component sets; Lab2 `App*` is behavioral reference only
 - Definition of done: variant/state parity with Figma, light + dark, a11y, TSDoc, manifest entry
@@ -64,6 +64,7 @@ flowchart TD
 - Docs `/llms.txt`
 - Local Code Connect map (`figma.code-connect.json` + MCP session maps) — no Enterprise publish
 - Distributable Cursor skill: `.cursor/skills/cads-prototyping`
+- Parity QA harness: `.cursor/skills/cads-parity-qa` + `figmaComponentPropsSnapshot.json` + `pnpm figma:audit-props`
 - End-to-end designer → agent → consumer prototype loop (still to run for real)
 
 ## Phase 5 — Lab2 consumption bridge

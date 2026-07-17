@@ -21,18 +21,18 @@ export function Tooltip({ children, title, ...rest }: TooltipProps) {
       slotProps={{
         tooltip: {
           sx: {
-            backgroundColor: "var(--ds-background-neutral-primary-inverse)",
-            color: "var(--ds-text-neutral-primary-inverse)",
+            backgroundColor: "var(--background-neutral-primary-inverse)",
+            color: "var(--text-neutral-primary-inverse)",
             borderRadius: "var(--radius-sm)",
             fontFamily: "var(--font-body)",
             fontSize: "var(--text-body-xs)",
-            padding: "6px 10px",
+            padding: "0.375rem 0.625rem",
             boxShadow: "var(--shadow-md)",
           },
         },
         arrow: {
           sx: {
-            color: "var(--ds-background-neutral-primary-inverse)",
+            color: "var(--background-neutral-primary-inverse)",
           },
         },
       }}

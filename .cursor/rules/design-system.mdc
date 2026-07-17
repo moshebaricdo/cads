@@ -7,10 +7,11 @@ alwaysApply: false
 
 # CADS Design System Rules
 
+- Before building or updating a CADS library component, run the `cads-parity-qa` workflow from spec pull through deterministic visual recapture; it is not an end-only checklist.
 - Import components from `@codeai/cads-react` only (icons from `@codeai/cads-react/icons`).
 - Import `@codeai/cads-variables/variables.css` once at the app root.
-- Use `--ds-*` variables directly — never hard-coded hex, never invent color aliases.
+- Use semantic color variables (e.g. `--background-brand-primary`) — never hard-coded hex, never invent color aliases, never use a `--ds-` prefix.
 - Brand tokens for CTAs/links; selected tokens for filled selected chrome; focused for focus rings.
 - Prefer CADS typography variables (`--font-heading`, `--text-body-*`, etc.) over raw px.
-- Control heights via component `size` props (L/M/S/XS) — do not invent heights.
+- Control heights via component `size` props (`large` / `medium` / `small` / `extraSmall`) — do not invent heights.
 - Consult `cadsManifest` before adding or inventing props.

@@ -1,0 +1,700 @@
+{
+  "fileKey": "DGekOeToRVifvFAhfqpeC1",
+  "fileUrl": "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-",
+  "fetchedAt": "2026-07-16",
+  "source": "figma-mcp get_metadata \u2014 variant axes parsed from COMPONENT symbol names",
+  "notes": [
+    "Interaction axes (state) are design recipes, not React props \u2014 implement via CSS :hover/:focus/:active/disabled.",
+    "Boolean Figma values Yes/No/yes/no/on/off normalize to boolean in code.",
+    "Segmented Button page 587:1268 contains Group + Block; Group is the public API; Block is internal.",
+    "SegmentedButton: removed invented labelStyle + color (Group color=Primary only; labels always Body Semi Bold).",
+    "Code-only props carry a category and rationale so API divergences are explicit and auditable."
+  ],
+  "components": [
+    {
+      "cadsName": "Button",
+      "figmaName": "Button",
+      "nodeId": "15724:18791",
+      "componentKey": "2507b18076b4066c6ff738539115b36a798fd707",
+      "symbolCount": 380,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "variant": [
+          "contained",
+          "outlined",
+          "text"
+        ],
+        "color": [
+          "error",
+          "primary",
+          "secondary",
+          "tertiary"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "focus",
+          "hover",
+          "pressed"
+        ],
+        "iconOnly": [
+          "No",
+          "Yes"
+        ]
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "variant": "variant",
+        "color": "color",
+        "iconOnly": "iconOnly",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "React supplies the visible button label as children."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Code identifies the Figma start-icon instance by CADS icon name."
+        },
+        {
+          "name": "endIconName",
+          "category": "content",
+          "reason": "Code identifies the Figma end-icon instance by CADS icon name."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers need to select the Figma disabled state semantically."
+        },
+        {
+          "name": "fullWidth",
+          "category": "layout",
+          "reason": "Responsive consumer layouts may stretch the control without changing its Figma visual variant."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "pressed",
+        "disabled"
+      ]
+    },
+    {
+      "cadsName": "SegmentedButton",
+      "figmaName": "Segmented Button Group",
+      "nodeId": "8027:2099",
+      "componentKey": "bf599e1bc1d1e651be6aab5bf90ac6a7c26dcfd1",
+      "symbolCount": 8,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "iconOnly": [
+          "no",
+          "yes"
+        ]
+      },
+      "related": {
+        "block": {
+          "figmaName": "Segmented Button Block",
+          "variantProperties": {
+            "size": [
+              "extraSmall",
+              "large",
+              "medium",
+              "small"
+            ],
+            "position": [
+              "first",
+              "last",
+              "middle"
+            ],
+            "state": [
+              "default",
+              "disabled",
+              "focus",
+              "hover",
+              "press"
+            ],
+            "isActive": [
+              "no",
+              "yes"
+            ],
+            "iconOnly": [
+              "no",
+              "yes"
+            ]
+          },
+          "symbolCount": 240,
+          "designOnlyAxes": [
+            "state",
+            "position",
+            "isActive"
+          ],
+          "notes": "Internal building block; do not expose position/isActive as public group API."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "iconOnly": "iconOnly"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "The group derives each internal Block isActive value from the selected option."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Supports an uncontrolled initial selection while preserving the group API."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports the selected option to React consumers."
+        },
+        {
+          "name": "options",
+          "category": "content",
+          "reason": "Code models the repeated Figma Block instances as option data."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers need to select the Figma disabled state semantically."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "The radiogroup requires an accessible name that is not a visual variant axis."
+        }
+      ],
+      "unmappedManifestProps": [],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "IconToggle",
+      "figmaName": "Icon Toggle",
+      "nodeId": "3710:461",
+      "componentKey": "d08929d02e63b3b286690e87d791199e4545126f",
+      "symbolCount": 200,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "focus",
+          "hover",
+          "press"
+        ],
+        "color": [
+          "brand",
+          "error",
+          "primary",
+          "secondary",
+          "success"
+        ],
+        "isOn": [
+          "off",
+          "on"
+        ]
+      },
+      "related": {
+        "labeled": {
+          "figmaName": "Icon Toggle + Label",
+          "componentKey": "c8bfea2113bc7284cb7ca4b6f407673b945098a8",
+          "notes": "Maps to IconToggle label + optional secondToggle; ensure docs playground can exercise dual toggles."
+        }
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color",
+        "isOn": "pressed",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Code identifies the nested Figma icon instance by CADS icon name."
+        },
+        {
+          "name": "defaultPressed",
+          "category": "controlled-state",
+          "reason": "Supports an uncontrolled initial value for the Figma isOn state."
+        },
+        {
+          "name": "onPressedChange",
+          "category": "event",
+          "reason": "Reports isOn changes to React consumers."
+        },
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps the visible text in the related Icon Toggle + Label set."
+        },
+        {
+          "name": "secondToggle",
+          "category": "composition",
+          "reason": "Maps the optional second instance in the related Icon Toggle + Label set."
+        },
+        {
+          "name": "exclusive",
+          "category": "controlled-state",
+          "reason": "Provides code-idiomatic mutual exclusion for a composed two-toggle control; Figma specifies visuals but not group behavior."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers need to select the Figma disabled state semantically."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Icon-only controls require an accessible name that is not a visual variant axis."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "FieldWrapper",
+      "figmaName": "Field Wrapper",
+      "nodeId": "15857:99804",
+      "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",
+      "symbolCount": 16,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "sentiment": [
+          "default",
+          "error",
+          "success",
+          "warning"
+        ]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "sentiment": "sentiment"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "React supplies the visible field label as content."
+        },
+        {
+          "name": "helperText",
+          "category": "content",
+          "reason": "React supplies helper / validation messaging text."
+        },
+        {
+          "name": "helperIconName",
+          "category": "content",
+          "reason": "Code identifies the default-sentiment helper icon by CADS icon name; sentiment overrides use fixed icons."
+        },
+        {
+          "name": "showHelper",
+          "category": "composition",
+          "reason": "Consumers may hide helper chrome while keeping the label + control slot."
+        },
+        {
+          "name": "children",
+          "category": "composition",
+          "reason": "The inputType slot nests any CADS control."
+        },
+        {
+          "name": "htmlFor",
+          "category": "accessibility",
+          "reason": "Associates the label with a control id when children are not auto-wired."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Propagates disabled styling/context to nested controls."
+        }
+      ],
+      "stateRecipes": [],
+      "escalate": []
+    },
+    {
+      "cadsName": "TextInput",
+      "figmaName": "Text Input",
+      "nodeId": "16176:4884",
+      "componentKey": "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4",
+      "symbolCount": 8,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "type": [
+          "area",
+          "field"
+        ]
+      },
+      "related": {
+        "buildingBlock": {
+          "figmaName": "Text Input Building Block",
+          "nodeId": "16146:3517",
+          "componentKey": "adac7e7bcbeece4cd3ed6f7cd77d7664ea3c9f9e",
+          "variantProperties": {
+            "size": [
+              "extraSmall",
+              "large",
+              "medium",
+              "small"
+            ],
+            "type": [
+              "area",
+              "field"
+            ],
+            "color": [
+              "primary",
+              "secondary"
+            ],
+            "state": [
+              "default",
+              "disabled",
+              "error",
+              "focus",
+              "hover",
+              "press",
+              "readOnly"
+            ],
+            "isFilled": [
+              "no",
+              "yes"
+            ]
+          },
+          "designOnlyAxes": [
+            "state",
+            "isFilled"
+          ],
+          "notes": "Internal chrome set. Public Text Input composes Field Wrapper + this building block. Figma extraSmall field height is 22px; code uses the shared 24px control height (accepted difference)."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "type": "multiline"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "color",
+          "category": "content",
+          "reason": "Maps the building-block color axis (primary solid border vs secondary soft border)."
+        },
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Maps Field Wrapper label content on the composed public Text Input."
+        },
+        {
+          "name": "helperText",
+          "category": "content",
+          "reason": "Maps Field Wrapper helper text on the composed public Text Input."
+        },
+        {
+          "name": "helperIconName",
+          "category": "content",
+          "reason": "Maps Field Wrapper default helper icon."
+        },
+        {
+          "name": "sentiment",
+          "category": "controlled-state",
+          "reason": "Maps Field Wrapper sentiment for validation messaging; error also drives the building-block error chrome."
+        },
+        {
+          "name": "showHelper",
+          "category": "composition",
+          "reason": "Consumers may hide helper chrome."
+        },
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Controlled value; also derives Figma isFilled."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial value; also derives Figma isFilled."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports value changes to React consumers."
+        },
+        {
+          "name": "placeholder",
+          "category": "content",
+          "reason": "Maps placeholder text when isFilled=no."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Selects the Figma disabled state."
+        },
+        {
+          "name": "readOnly",
+          "category": "controlled-state",
+          "reason": "Selects the Figma readOnly state."
+        },
+        {
+          "name": "error",
+          "category": "controlled-state",
+          "reason": "Convenience alias that sets sentiment=error and building-block error chrome."
+        },
+        {
+          "name": "rows",
+          "category": "layout",
+          "reason": "Multiline area height hint for textarea consumers."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "readOnly",
+        "error",
+        "disabled"
+      ],
+      "escalate": []
+    },
+    {
+      "cadsName": "Dropdown",
+      "figmaName": "Dropdown",
+      "nodeId": "15857:100676",
+      "componentKey": "d3660d988bcb4702c24ce921128e32cadb6618db",
+      "symbolCount": 48,
+      "variantProperties": {
+        "size": [
+          "extraSmall",
+          "large",
+          "medium",
+          "small"
+        ],
+        "role": [
+          "action",
+          "input"
+        ],
+        "menuType": [
+          "checklist",
+          "icon"
+        ],
+        "menuPlacement": [
+          "bottomLeft",
+          "bottomRight",
+          "topLeft",
+          "topRight"
+        ]
+      },
+      "related": {
+        "dropdownButton": {
+          "figmaName": "Dropdown Button",
+          "nodeId": "964:10677",
+          "componentKey": "761c27fdfe664fefad954bf6ecba3e8f6434642d",
+          "notes": "Internal select trigger for role=input. Do not export standalone."
+        },
+        "menuList": {
+          "figmaName": "Dropdown Menu List",
+          "nodeId": "971:4280",
+          "componentKey": "70c564795ec93c0c6877771cbb277d12698b9481",
+          "notes": "Internal menu panel. Checklist includes Select all / Clear all action row."
+        },
+        "menuItem": {
+          "figmaName": "Dropdown Menu Item",
+          "nodeId": "896:3791",
+          "componentKey": "0f55c81572c70c444efe57746a0bdd095a13633f",
+          "notes": "Internal item. Axes include role, itemType (icon|checkbox|iconError), selected, state."
+        }
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "size": "size",
+        "role": "role",
+        "menuType": "menuType",
+        "menuPlacement": "menuPlacement"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "label",
+          "category": "content",
+          "reason": "Input role Field Wrapper label / action role button label."
+        },
+        {
+          "name": "helperText",
+          "category": "content",
+          "reason": "Input role Field Wrapper helper text."
+        },
+        {
+          "name": "helperIconName",
+          "category": "content",
+          "reason": "Input role Field Wrapper helper icon."
+        },
+        {
+          "name": "sentiment",
+          "category": "controlled-state",
+          "reason": "Input role Field Wrapper validation messaging."
+        },
+        {
+          "name": "showHelper",
+          "category": "composition",
+          "reason": "Input role may hide helper chrome."
+        },
+        {
+          "name": "placeholder",
+          "category": "content",
+          "reason": "Input trigger empty-state label."
+        },
+        {
+          "name": "options",
+          "category": "content",
+          "reason": "Code models repeated Figma menu item instances as option data."
+        },
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Controlled selection for input role (string or string[] for checklist)."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial selection."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports selection changes for input role."
+        },
+        {
+          "name": "onAction",
+          "category": "event",
+          "reason": "Reports action-menu item activation for action role."
+        },
+        {
+          "name": "open",
+          "category": "controlled-state",
+          "reason": "Controlled menu open state (Figma open is design-only)."
+        },
+        {
+          "name": "defaultOpen",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial open state."
+        },
+        {
+          "name": "onOpenChange",
+          "category": "event",
+          "reason": "Reports menu open/close."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Selects the Figma disabled trigger state."
+        },
+        {
+          "name": "readOnly",
+          "category": "controlled-state",
+          "reason": "Input-role read-only trigger."
+        },
+        {
+          "name": "error",
+          "category": "controlled-state",
+          "reason": "Input-role error trigger chrome."
+        },
+        {
+          "name": "color",
+          "category": "content",
+          "reason": "Input trigger primary/secondary border; action trigger uses Button color."
+        },
+        {
+          "name": "labelStyle",
+          "category": "content",
+          "reason": "Maps Dropdown Button thick|thin label weight."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Optional start icon on the input/action trigger."
+        },
+        {
+          "name": "buttonVariant",
+          "category": "content",
+          "reason": "Action-role Button visual style (contained/outlined/text)."
+        },
+        {
+          "name": "buttonColor",
+          "category": "content",
+          "reason": "Action-role Button color."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name when label is absent (especially action menus)."
+        },
+        {
+          "name": "width",
+          "category": "layout",
+          "reason": "Input-role layout control (hug = static width from longest option/placeholder; full; or CSS length). Not a Figma variant axis."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "error",
+        "readOnly",
+        "disabled"
+      ],
+      "escalate": []
+    }
+  ]
+}

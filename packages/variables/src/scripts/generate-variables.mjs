@@ -21,27 +21,27 @@ const COLOR_SYSTEM_PATH = path.join(
 const DIST_DIR = path.join(PKG_ROOT, "dist");
 const GENERATED_DIR = path.join(PKG_ROOT, "src", "generated");
 
-const SYNTAX_LIGHT = `  --ds-syntax-attribute: #B34800;
-  --ds-syntax-comment: #69788A;
-  --ds-syntax-keyword: #4C42CF;
-  --ds-syntax-number: #0B43A3;
-  --ds-syntax-property: #B5004F;
-  --ds-syntax-punctuation: #596069;
-  --ds-syntax-selector: #1A7F85;
-  --ds-syntax-string: #1F7028;
-  --ds-syntax-tag: #3228B7;
-  --ds-syntax-value: #1570D1;`;
+const SYNTAX_LIGHT = `  --syntax-attribute: #B34800;
+  --syntax-comment: #69788A;
+  --syntax-keyword: #4C42CF;
+  --syntax-number: #0B43A3;
+  --syntax-property: #B5004F;
+  --syntax-punctuation: #596069;
+  --syntax-selector: #1A7F85;
+  --syntax-string: #1F7028;
+  --syntax-tag: #3228B7;
+  --syntax-value: #1570D1;`;
 
-const SYNTAX_DARK = `  --ds-syntax-attribute: #FFA868;
-  --ds-syntax-comment: #87909A;
-  --ds-syntax-keyword: #ACA8EA;
-  --ds-syntax-number: #94D7FF;
-  --ds-syntax-property: #F07FB0;
-  --ds-syntax-punctuation: #B7BCC2;
-  --ds-syntax-selector: #56B6C2;
-  --ds-syntax-string: #7CDB87;
-  --ds-syntax-tag: #6F67D9;
-  --ds-syntax-value: #61AFEF;`;
+const SYNTAX_DARK = `  --syntax-attribute: #FFA868;
+  --syntax-comment: #87909A;
+  --syntax-keyword: #ACA8EA;
+  --syntax-number: #94D7FF;
+  --syntax-property: #F07FB0;
+  --syntax-punctuation: #B7BCC2;
+  --syntax-selector: #56B6C2;
+  --syntax-string: #7CDB87;
+  --syntax-tag: #6F67D9;
+  --syntax-value: #61AFEF;`;
 
 /** Mirrors nonColorVariables.ts — kept inline so generate needs no TS compile. */
 const NON_COLOR = {
@@ -94,13 +94,26 @@ const NON_COLOR = {
     "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
   "--shadow-lg":
     "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)",
+  "--control-height-large": "48px",
+  "--control-height-medium": "40px",
+  "--control-height-small": "32px",
+  "--control-height-extra-small": "24px",
+  /* Aliases for prior short names — remove once consumers migrate */
   "--control-height-l": "48px",
   "--control-height-m": "40px",
   "--control-height-s": "32px",
   "--control-height-xs": "24px",
   "--font-fa-pro": '"Font Awesome 7 Pro"',
   "--font-fa-brands": '"Font Awesome 7 Brands"',
-  "--ring": "var(--ds-border-focused-primary)",
+  "--ring": "var(--border-focused-primary)",
+  /* Motion — no Figma collection yet; keep in sync with nonColorVariables.ts */
+  "--duration-instant": "0ms",
+  "--duration-short": "150ms",
+  "--duration-medium": "200ms",
+  "--easing-standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+  "--easing-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+  "--transition-colors":
+    "background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)",
 };
 
 function nonColorBlock(indent = "  ") {

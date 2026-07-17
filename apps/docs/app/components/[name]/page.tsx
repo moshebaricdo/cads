@@ -1,7 +1,7 @@
-import { cadsManifest } from "@codeai/cads-react";
+import { cadsManifest } from "@codeai/cads-react/manifest";
 import { notFound } from "next/navigation";
 import { PropsTable } from "@/components/PropsTable";
-import { LivePlayground } from "@/components/LivePlayground";
+import { InteractivePlayground } from "@/components/InteractivePlayground";
 
 export function generateStaticParams() {
   return cadsManifest.components
@@ -36,7 +36,7 @@ export default async function ComponentPage({
       >
         {component.name}
       </h1>
-      <p style={{ color: "var(--ds-text-neutral-secondary)", marginTop: 0 }}>
+      <p style={{ color: "var(--text-neutral-secondary)", marginTop: 0 }}>
         {component.description}
       </p>
       <p style={{ fontSize: "var(--text-body-sm)" }}>
@@ -50,7 +50,7 @@ export default async function ComponentPage({
       <h2 style={{ marginTop: 32, fontSize: "var(--text-heading-xs)" }}>
         Playground
       </h2>
-      <LivePlayground code={component.example} />
+      <InteractivePlayground component={component} />
 
       <h2 style={{ marginTop: 32, fontSize: "var(--text-heading-xs)" }}>
         Props
@@ -77,7 +77,7 @@ export default async function ComponentPage({
             key={v}
             style={{
               padding: "4px 8px",
-              background: "var(--ds-background-neutral-secondary)",
+              background: "var(--background-neutral-secondary)",
               borderRadius: "var(--radius-sm)",
             }}
           >

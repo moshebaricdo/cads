@@ -1,11 +1,17 @@
 import {
+  FA_ICON_ALIASES,
   FaIcon,
   getFaBrandCodepoint,
-  getFaCodepoint
-} from "../chunk-4VK5J2NK.js";
+  getFaCodepoint,
+  isFaIconName,
+  resolveFaIconName
+} from "../chunk-H7T2BEWS.js";
 export {
+  FA_ICON_ALIASES,
   FaIcon,
   getFaBrandCodepoint,
-  getFaCodepoint
+  getFaCodepoint,
+  isFaIconName,
+  resolveFaIconName
 };
 //# sourceMappingURL=index.js.map

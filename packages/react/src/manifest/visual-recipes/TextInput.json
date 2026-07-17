@@ -1,0 +1,445 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "TextInput",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "16176:4884",
+    "componentKey": "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4",
+    "relatedNodeIds": [
+      "16146:3517",
+      "15857:99804"
+    ],
+    "retrievedAt": "2026-07-16",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "multiline": [
+        false,
+        true
+      ],
+      "color": [
+        "primary",
+        "secondary"
+      ]
+    },
+    "designOnly": [
+      "state",
+      "isFilled"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "fieldHeight": "48px",
+        "areaHeight": "104px",
+        "paddingInline": "16px",
+        "paddingBlock": "10px",
+        "fontSize": "var(--text-body-lg)",
+        "lineHeight": "var(--leading-body-lg)"
+      },
+      "medium": {
+        "fieldHeight": "40px",
+        "areaHeight": "88px",
+        "paddingInline": "16px",
+        "paddingBlock": "8px",
+        "fontSize": "var(--text-body-md)",
+        "lineHeight": "var(--leading-body-md)"
+      },
+      "small": {
+        "fieldHeight": "32px",
+        "areaHeight": "76px",
+        "paddingInline": "12px",
+        "paddingBlock": "5px",
+        "fontSize": "var(--text-body-sm)",
+        "lineHeight": "var(--leading-body-sm)"
+      },
+      "extraSmall": {
+        "fieldHeight": "24px",
+        "areaHeight": "58px",
+        "paddingInline": "8px",
+        "paddingBlock": "2px",
+        "fontSize": "var(--text-body-xs)",
+        "lineHeight": "var(--leading-body-xs)"
+      }
+    },
+    "layout": {
+      "padding": "size-scaled",
+      "gap": "2px",
+      "borderWidth": "1px",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "400",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "helper-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "color": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)",
+        "placeholder": "var(--text-neutral-placeholder)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "color=primary, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "color": "secondary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)",
+        "placeholder": "var(--text-neutral-placeholder)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "color=secondary, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus",
+      "notes": [
+        "FOCUS_RING: 2px surface + 4px focused border"
+      ]
+    },
+    {
+      "when": {
+        "state": "error",
+        "mode": "light"
+      },
+      "variables": {
+        "border": "var(--border-error-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=error",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "readOnly",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-quaternary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=readOnly",
+      "notes": []
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "multiline",
+      "color",
+      "state",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "text-input-large-field-primary-default-light",
+        "figmaNodeId": "16176:4883",
+        "figmaVariant": "size=large, type=field",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "multiline": false,
+          "color": "primary",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Placeholder"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "48px"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid",
+          "--text-neutral-placeholder"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-large-field-primary-default-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-primary-default-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-medium-area-secondary-filled-light",
+        "figmaNodeId": "16176:5165",
+        "figmaVariant": "size=medium, type=area",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "multiline": true,
+          "color": "secondary",
+          "label": "Field label",
+          "value": "Filled text",
+          "rows": 3
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 200,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "areaHeight": "88px"
+        },
+        "expectedVariables": [
+          "--border-neutral-secondary",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-medium-area-secondary-filled-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-medium-area-secondary-filled-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-small-field-primary-focus-light",
+        "figmaNodeId": "16146:4090",
+        "figmaVariant": "size=small, type=field, color=primary, state=focus, isFilled=no",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "multiline": false,
+          "color": "primary",
+          "label": "Field label",
+          "placeholder": "Placeholder"
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "32px"
+        },
+        "expectedVariables": [
+          "--border-focused-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-small-field-primary-focus-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-small-field-primary-focus-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-large-field-error-light",
+        "figmaNodeId": "16178:78",
+        "figmaVariant": "size=large, type=field, color=primary, state=error, isFilled=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "color": "primary",
+          "label": "Field label",
+          "value": "Filled text",
+          "error": true,
+          "sentiment": "error",
+          "helperText": "Helper text"
+        },
+        "state": "error",
+        "viewport": {
+          "width": 360,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-error-primary",
+          "--text-error-primary-fixed"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-large-field-error-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-error-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-medium-field-readonly-light",
+        "figmaNodeId": "16146:3917",
+        "figmaVariant": "size=medium, type=field, state=readOnly",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "primary",
+          "label": "Field label",
+          "value": "Filled text",
+          "readOnly": true
+        },
+        "state": "readOnly",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--text-neutral-quaternary"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-medium-field-readonly-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-medium-field-readonly-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-xs-field-disabled-light",
+        "figmaNodeId": "16146:4114",
+        "figmaVariant": "size=extraSmall, type=field, state=disabled",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "color": "primary",
+          "label": "Field label",
+          "placeholder": "Placeholder",
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "24px"
+        },
+        "expectedVariables": [
+          "--border-disabled-neutral",
+          "--text-disabled-neutral"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-xs-field-disabled-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "captures/browser-text-input-xs-disabled.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-large-field-primary-default-dark",
+        "figmaNodeId": "16176:4883",
+        "figmaVariant": "size=large, type=field",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "multiline": false,
+          "color": "primary",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Placeholder"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-large-field-primary-default-dark&mode=dark",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-primary-default-dark&mode=dark",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "caseIds": [
+        "text-input-xs-field-disabled-light"
+      ],
+      "figmaBehavior": "Figma Text Input Building Block extraSmall field height is 22px.",
+      "codeBehavior": "CADS uses the shared control height scale at 24px (var(--control-height-extra-small)).",
+      "reason": "User-approved decision to keep the shared 24px control scale and record the Figma 22px mismatch.",
+      "decisionSource": "user 2026-07-16"
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn (info: state-recipes)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
+    "correctionPasses": [
+      "Measured large field height 48px and extraSmall 24px in fixture (browser_get_bounding_box)",
+      "Verified error border + circle-xmark helper, focus FOCUS_RING vars, secondary border, readonly/disabled chrome vs building block 16146:3517"
+    ]
+  }
+}

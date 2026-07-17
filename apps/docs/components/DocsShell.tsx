@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cadsManifest } from "@codeai/cads-react";
+import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
@@ -19,10 +19,16 @@ const NAV = [
 export function DocsShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [dark, setDark] = useState(false);
+  const isFixture = pathname?.startsWith("/fixtures") ?? false;
 
   useEffect(() => {
+    if (isFixture) return;
     document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
+  }, [dark, isFixture]);
+
+  if (isFixture) {
+    return <>{children}</>;
+  }
 
   return (
     <div
@@ -34,8 +40,8 @@ export function DocsShell({ children }: { children: ReactNode }) {
     >
       <aside
         style={{
-          borderRight: "1px solid var(--ds-border-neutral-primary)",
-          background: "var(--ds-background-neutral-secondary)",
+          borderRight: "1px solid var(--border-neutral-primary)",
+          background: "var(--background-neutral-secondary)",
           padding: "24px 16px",
           position: "sticky",
           top: 0,
@@ -55,7 +61,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           </div>
           <div
             style={{
-              color: "var(--ds-text-neutral-secondary)",
+              color: "var(--text-neutral-secondary)",
               fontSize: "var(--text-body-xs)",
             }}
           >
@@ -73,12 +79,12 @@ export function DocsShell({ children }: { children: ReactNode }) {
                 borderRadius: "var(--radius-sm)",
                 background:
                   pathname === item.href
-                    ? "var(--ds-background-selected-primary)"
+                    ? "var(--background-selected-primary)"
                     : "transparent",
                 color:
                   pathname === item.href
-                    ? "var(--ds-text-selected-primary)"
-                    : "var(--ds-text-neutral-primary)",
+                    ? "var(--text-selected-primary)"
+                    : "var(--text-neutral-primary)",
                 textDecoration: "none",
                 fontSize: "var(--text-body-sm)",
               }}
@@ -88,7 +94,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        <div style={{ marginTop: 28, marginBottom: 8, fontSize: "var(--text-body-xs)", color: "var(--ds-text-neutral-secondary)", letterSpacing: "var(--tracking-overline)", textTransform: "uppercase" }}>
+        <div style={{ marginTop: 28, marginBottom: 8, fontSize: "var(--text-body-xs)", color: "var(--text-neutral-secondary)", letterSpacing: "var(--tracking-overline)", textTransform: "uppercase" }}>
           Components
         </div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -105,11 +111,11 @@ export function DocsShell({ children }: { children: ReactNode }) {
                     padding: "6px 10px",
                     borderRadius: "var(--radius-sm)",
                     background: active
-                      ? "var(--ds-background-selected-primary)"
+                      ? "var(--background-selected-primary)"
                       : "transparent",
                     color: active
-                      ? "var(--ds-text-selected-primary)"
-                      : "var(--ds-text-neutral-primary)",
+                      ? "var(--text-selected-primary)"
+                      : "var(--text-neutral-primary)",
                     textDecoration: "none",
                     fontSize: "var(--text-body-sm)",
                   }}
@@ -128,9 +134,9 @@ export function DocsShell({ children }: { children: ReactNode }) {
             width: "100%",
             height: "var(--control-height-s)",
             borderRadius: "var(--radius-sm)",
-            border: "1px solid var(--ds-border-neutral-primary)",
-            background: "var(--ds-background-neutral-primary)",
-            color: "var(--ds-text-neutral-primary)",
+            border: "1px solid var(--border-neutral-primary)",
+            background: "var(--background-neutral-primary)",
+            color: "var(--text-neutral-primary)",
             cursor: "pointer",
             fontFamily: "var(--font-body)",
             fontSize: "var(--text-body-xs)",

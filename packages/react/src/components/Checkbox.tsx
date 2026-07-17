@@ -7,7 +7,7 @@ import { forwardRef, type ReactNode } from "react";
 export interface CheckboxProps extends Omit<MuiCheckboxProps, "size"> {
   /** Optional label rendered via FormControlLabel. */
   label?: ReactNode;
-  size?: "m" | "s";
+  size?: "medium" | "small";
 }
 
 /**
@@ -15,23 +15,23 @@ export interface CheckboxProps extends Omit<MuiCheckboxProps, "size"> {
  * Spec source: CADS Figma Checkbox component set.
  */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
-  function Checkbox({ label, size = "m", sx, ...rest }, ref) {
+  function Checkbox({ label, size = "medium", sx, ...rest }, ref) {
     const control = (
       <MuiCheckbox
         ref={ref}
-        size={size === "s" ? "small" : "medium"}
+        size={size === "small" ? "small" : "medium"}
         sx={{
-          color: "var(--ds-border-neutral-primary)",
-          padding: size === "s" ? "4px" : "8px",
+          color: "var(--border-neutral-primary)",
+          padding: size === "small" ? "0.25rem" : "0.5rem",
           "&.Mui-checked": {
-            color: "var(--ds-background-selected-primary)",
+            color: "var(--background-selected-primary)",
           },
           "&.Mui-focusVisible": {
-            outline: "2px solid var(--ds-border-focused-primary)",
+            outline: "2px solid var(--border-focused-primary)",
             outlineOffset: "2px",
           },
           "&.Mui-disabled": {
-            color: "var(--ds-background-disabled-neutral)",
+            color: "var(--background-disabled-neutral)",
           },
           ...((sx as object) ?? {}),
         }}
@@ -46,11 +46,12 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
         control={control}
         label={label}
         sx={{
-          marginLeft: 0,
+          margin: 0,
+          gap: "0.5rem",
           "& .MuiFormControlLabel-label": {
             fontFamily: "var(--font-body)",
             fontSize: "var(--text-body-sm)",
-            color: "var(--ds-text-neutral-primary)",
+            color: "var(--text-neutral-primary)",
           },
         }}
       />

@@ -3,24 +3,28 @@ import {
   colorVarsLight,
   controlHeights,
   elevation,
+  motion,
   nonColorCssVars,
   shape,
   spacing,
   typography
-} from "./chunk-X5TIG6QO.js";
+} from "./chunk-GV45RMBS.js";
 
 // src/index.ts
 var CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
-function ds(name) {
-  return `var(--ds-${name})`;
+function cssVar(name) {
+  return `var(--${name})`;
 }
+var ds = cssVar;
 export {
   CADS_FIGMA_FILE_KEY,
   colorVarsDark,
   colorVarsLight,
   controlHeights,
+  cssVar,
   ds,
   elevation,
+  motion,
   nonColorCssVars,
   shape,
   spacing,

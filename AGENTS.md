@@ -23,7 +23,7 @@ This is **not** the Lab2 sandbox and **not** the production `code-dot-org` compo
 
 1. **Figma is the design source of truth** — file `DGekOeToRVifvFAhfqpeC1` ([CADS Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-)). Code syncs from Figma; do not hand-fork a parallel palette or component API.
 2. **MUI under the hood, CADS API on top** — consumers import `Button` from `@codeai/cads-react`, never raw MUI. MUI is a regular dependency (caret-pinned major), not a peer dep.
-3. **“Variables,” not “tokens”** — package name and docs language match Figma. CSS custom properties remain `--ds-*`.
+3. **“Variables,” not “tokens”** — package name and docs language match Figma. Color CSS custom properties use semantic names without a `ds-` prefix (e.g. `--background-brand-primary`).
 4. **Icons live in `@codeai/cads-react`** — subpath `@codeai/cads-react/icons`. FA Pro fonts ship in-package (internal license only — never public npm).
 5. **Distribution** — Git-URL / `file:` installs with committed `dist/`. GitHub Packages later if needed. No public npmjs.org org required.
 6. **No Figma Enterprise Code Connect publish** — use `cadsManifest` + `figma.code-connect.json` + session MCP maps instead.
@@ -53,6 +53,7 @@ Path (typical local checkout): `../web-lab-prototype`
 | Any change | This file + [`docs/STATUS.md`](docs/STATUS.md) |
 | Architecture / roadmap | [`docs/PLATFORM_PLAN.md`](docs/PLATFORM_PLAN.md) |
 | Prototyping / AI fidelity | [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) |
+| Build/update a component (before coding through “done”) | [`.cursor/skills/cads-parity-qa/SKILL.md`](.cursor/skills/cads-parity-qa/SKILL.md) |
 | Styling rules | [`.cursor/rules/design-system.mdc`](.cursor/rules/design-system.mdc) |
 | Figma variables sync | [`tooling/figma-sync/README.md`](tooling/figma-sync/README.md) |
 | Component catalog for agents | `cadsManifest` in `@codeai/cads-react` / docs `/llms.txt` |
@@ -82,6 +83,7 @@ pnpm build
 pnpm typecheck
 pnpm dev:docs          # http://localhost:3100
 pnpm figma:sync        # needs FIGMA_ACCESS_TOKEN for live fetch
+pnpm figma:audit-props # cadsManifest ↔ Figma prop snapshot (Actions pilot)
 ```
 
 After changing `codeAiColorSystem.json` or non-color variable definitions, always regenerate and rebuild consumers.
@@ -90,9 +92,9 @@ After changing `codeAiColorSystem.json` or non-color variable definitions, alway
 
 ## Styling & component rules (summary)
 
-- Use `--ds-*` (and non-color vars like `--radius-sm`, `--space-m`) — **no hard-coded hex** in components.
+- Use semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--radius-sm`, `--space-m`) — **no hard-coded hex**, no `--ds-*` prefix.
 - Brand tokens for CTAs/links; **selected** tokens for filled selected chrome; never paint selected surfaces with brand fills.
-- Control heights via `size`: L 48 / M 40 / S 32 / XS 24.
+- Control heights via `size`: large 48 / medium 40 / small 32 / extraSmall 24.
 - Only props/variants listed in `cadsManifest` — do not invent APIs.
 - Keep docs props / variable pages generated from source (manifest or TS), not hand-written duplicates that can drift.
 

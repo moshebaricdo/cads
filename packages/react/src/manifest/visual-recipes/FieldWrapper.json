@@ -1,0 +1,321 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "FieldWrapper",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "15857:99804",
+    "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-16",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "sentiment": [
+        "default",
+        "success",
+        "warning",
+        "error"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "labelFontSize": "var(--text-body-md)",
+        "labelLineHeight": "var(--leading-body-md)",
+        "helperFontSize": "var(--text-body-md)",
+        "helperGap": "6px",
+        "helperIconPx": "16px",
+        "helperIconSlot": "18px"
+      },
+      "medium": {
+        "labelFontSize": "var(--text-body-sm)",
+        "labelLineHeight": "var(--leading-body-sm)",
+        "helperFontSize": "var(--text-body-sm)",
+        "helperGap": "4px",
+        "helperIconPx": "14px",
+        "helperIconSlot": "16px"
+      },
+      "small": {
+        "labelFontSize": "var(--text-body-xs)",
+        "labelLineHeight": "var(--leading-body-xs)",
+        "helperFontSize": "var(--text-body-xs)",
+        "helperGap": "4px",
+        "helperIconPx": "12px",
+        "helperIconSlot": "14px"
+      },
+      "extraSmall": {
+        "labelFontSize": "var(--text-body-xxs)",
+        "labelLineHeight": "var(--leading-body-xxs)",
+        "helperFontSize": "var(--text-body-xxs)",
+        "helperGap": "4px",
+        "helperIconPx": "10px",
+        "helperIconSlot": "12px"
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "2px",
+      "borderWidth": "0",
+      "radius": "0",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "var(--text-body-md)",
+      "weight": "var(--font-weight-semibold)",
+      "lineHeight": "var(--leading-body-md)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "sentiment": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-neutral-primary)",
+        "helperText": "var(--text-neutral-tertiary)",
+        "helperIcon": "var(--text-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=default",
+      "notes": [
+        "Default helper uses consumer helperIconName (Figma smile)."
+      ]
+    },
+    {
+      "when": {
+        "sentiment": "success",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-neutral-primary)",
+        "helperText": "var(--text-success-primary-fixed)",
+        "helperIcon": "var(--text-success-primary-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=success",
+      "notes": [
+        "Icon: check-circle"
+      ]
+    },
+    {
+      "when": {
+        "sentiment": "warning",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-neutral-primary)",
+        "helperText": "var(--text-neutral-tertiary)",
+        "helperIcon": "var(--text-warning-primary-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=warning",
+      "notes": [
+        "Warning icon colored; helper text stays tertiary."
+      ]
+    },
+    {
+      "when": {
+        "sentiment": "error",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-neutral-primary)",
+        "helperText": "var(--text-error-primary-fixed)",
+        "helperIcon": "var(--text-error-primary-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=error",
+      "notes": [
+        "Icon: xmark-circle / circle-xmark"
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "sentiment",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "field-wrapper-large-default-light",
+        "figmaNodeId": "15857:99803",
+        "figmaVariant": "size=large, sentiment=default",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "sentiment": "default",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "gap": "2px"
+        },
+        "expectedVariables": [
+          "--text-neutral-primary",
+          "--text-neutral-tertiary"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-light",
+        "referenceScreenshot": "captures/figma-field-wrapper.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "field-wrapper-medium-success-light",
+        "figmaNodeId": "15857:99885",
+        "figmaVariant": "size=medium, sentiment=success",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "sentiment": "success",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-success-primary-fixed"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-medium-success-light",
+        "referenceScreenshot": "captures/figma-field-wrapper.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-medium-success-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "field-wrapper-small-warning-light",
+        "figmaNodeId": "15857:100198",
+        "figmaVariant": "size=small, sentiment=warning",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "sentiment": "warning",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-warning-primary-fixed",
+          "--text-neutral-tertiary"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-small-warning-light",
+        "referenceScreenshot": "captures/figma-field-wrapper.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-small-warning-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "field-wrapper-xs-error-light",
+        "figmaNodeId": "15857:99855",
+        "figmaVariant": "size=extraSmall, sentiment=error",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "sentiment": "error",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-error-primary-fixed"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-xs-error-light",
+        "referenceScreenshot": "captures/figma-field-wrapper.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-xs-error-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "field-wrapper-large-default-dark",
+        "figmaNodeId": "15857:99803",
+        "figmaVariant": "size=large, sentiment=default",
+        "mode": "dark",
+        "props": {
+          "size": "large",
+          "sentiment": "default",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-primary",
+          "--text-neutral-tertiary"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-dark&mode=dark",
+        "referenceScreenshot": "captures/figma-field-wrapper.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-dark&mode=dark",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-16)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass (includes /fixtures/components)",
+    "correctionPasses": [
+      "Compared Field Wrapper sentiments (default/success/warning/error) + dark sentinel against Figma 15857:99804 screenshots",
+      "Warning helper text tertiary + warning icon color verified in fixture field-wrapper-small-warning-light"
+    ]
+  }
+}

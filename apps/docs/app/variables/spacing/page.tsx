@@ -22,11 +22,11 @@ export default function SpacingPage() {
               style={{
                 height: 12,
                 width: value,
-                background: "var(--ds-background-brand-primary)",
+                background: "var(--background-brand-primary)",
                 borderRadius: 2,
               }}
             />
-            <span style={{ color: "var(--ds-text-neutral-secondary)", fontSize: "var(--text-body-xs)" }}>
+            <span style={{ color: "var(--text-neutral-secondary)", fontSize: "var(--text-body-xs)" }}>
               {value}
             </span>
           </div>
@@ -41,8 +41,8 @@ export default function SpacingPage() {
               style={{
                 width: 64,
                 height: 64,
-                background: "var(--ds-background-brand-light)",
-                border: "1px solid var(--ds-border-brand-primary)",
+                background: "var(--background-brand-light)",
+                border: "1px solid var(--border-brand-primary)",
                 borderRadius: value,
               }}
             />
@@ -63,7 +63,7 @@ export default function SpacingPage() {
             style={{
               width: 120,
               height: 80,
-              background: "var(--ds-background-neutral-primary)",
+              background: "var(--background-neutral-primary)",
               borderRadius: "var(--radius-md)",
               boxShadow: value,
               display: "flex",

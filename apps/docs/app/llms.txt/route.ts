@@ -1,4 +1,4 @@
-import { cadsManifest } from "@codeai/cads-react";
+import { cadsManifest } from "@codeai/cads-react/manifest";
 
 export function GET() {
   const lines: string[] = [
@@ -12,9 +12,9 @@ export function GET() {
     "- Import components only from @codeai/cads-react (icons from @codeai/cads-react/icons).",
     "- Import variables CSS: @codeai/cads-variables/variables.css",
     "- Wrap the app in <CadsProvider>.",
-    "- Use --ds-* CSS variables only — never hard-coded hex colors.",
+    "- Use semantic color CSS variables (e.g. --background-brand-primary) — never hard-coded hex, never --ds- prefix.",
     "- Use brand tokens for CTAs; selected tokens for filled selected chrome.",
-    "- Control heights: L=48 M=40 S=32 XS=24 — use the size prop, do not invent heights.",
+    "- Control heights: large=48 medium=40 small=32 extraSmall=24 — use the size prop, do not invent heights.",
     "- Do not invent props or variants outside the manifest below.",
     "- Verify UI against Figma screenshots when implementing designer mocks.",
     "",

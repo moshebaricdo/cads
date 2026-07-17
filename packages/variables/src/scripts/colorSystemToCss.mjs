@@ -1,6 +1,7 @@
 /**
- * Resolve a ColorSystem export JSON into flat --ds-* CSS variable maps.
- * Naming must stay in sync with src/pages/design-system/colorSystemCssExport.ts
+ * Resolve a ColorSystem export JSON into flat CSS variable maps
+ * (e.g. --background-brand-primary). No --ds- prefix — matches prod / Figma
+ * semantic paths. Naming must stay in sync with Lab2 colorSystemCssExport.ts
  * (`semanticExportVarName` / FLAT_SUBGROUPS / SINGLE_FAMILY_SUBGROUPS).
  */
 
@@ -144,6 +145,6 @@ export function colorSystemToCssVarBlock(system, mode, indent = "  ") {
   const vars = resolveColorSystemToCssVars(system, mode);
   return [...vars.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([name, value]) => `${indent}--ds-${name}: ${value};`)
+    .map(([name, value]) => `${indent}--${name}: ${value};`)
     .join("\n");
 }

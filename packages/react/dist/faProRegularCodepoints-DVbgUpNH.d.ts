@@ -3678,6 +3678,13 @@ declare const FA_PRO_SOLID_CODEPOINTS: {
     readonly "zero-width-space": "5e";
 };
 type FaIconName = keyof typeof FA_PRO_SOLID_CODEPOINTS;
-declare function getFaCodepoint(name: FaIconName): string;
+/**
+ * Figma / designer shortcodes that map onto FA Pro names.
+ * Figma Button / Icon Toggle samples use `smile`; FA’s glyph is `face-smile`.
+ */
+declare const FA_ICON_ALIASES: Record<string, FaIconName>;
+declare function resolveFaIconName(name: string): FaIconName | undefined;
+declare function isFaIconName(name: string): name is FaIconName;
+declare function getFaCodepoint(name: FaIconName | string): string | undefined;
 
-export { type FaIconName as F, getFaCodepoint as g };
+export { type FaIconName as F, FA_ICON_ALIASES as a, getFaCodepoint as g, isFaIconName as i, resolveFaIconName as r };

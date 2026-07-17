@@ -12,11 +12,13 @@ export default function VariablesIndexPage() {
       >
         Variables
       </h1>
-      <p style={{ color: "var(--ds-text-neutral-secondary)" }}>
+      <p style={{ color: "var(--text-neutral-secondary)" }}>
         CADS design variables are generated from the Figma file into{" "}
         <code>@codeai/cads-variables</code>. Import{" "}
         <code>@codeai/cads-variables/variables.css</code> once at the app root.
-        Components consume <code>--ds-*</code> custom properties directly.
+        Components consume semantic color custom properties (e.g.{" "}
+        <code>--background-brand-primary</code>) directly — no{" "}
+        <code>--ds-</code> prefix.
       </p>
       <ul>
         <li>

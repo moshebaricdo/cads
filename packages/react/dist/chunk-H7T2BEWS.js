@@ -4231,42 +4231,75 @@ var FA_PRO_SOLID_CODEPOINTS = {
   "z": "5a",
   "zero-width-space": "5e"
 };
+var FA_ICON_ALIASES = {
+  smile: "face-smile"
+};
+function resolveFaIconName(name) {
+  if (name in FA_PRO_SOLID_CODEPOINTS) return name;
+  return FA_ICON_ALIASES[name];
+}
+function isFaIconName(name) {
+  return resolveFaIconName(name) != null;
+}
 function getFaCodepoint(name) {
-  return FA_PRO_SOLID_CODEPOINTS[name];
+  const resolved = resolveFaIconName(name);
+  return resolved ? FA_PRO_SOLID_CODEPOINTS[resolved] : void 0;
 }
 
 // src/icons/FaIcon.tsx
 import { jsx } from "react/jsx-runtime";
 var SIZE_PX = {
   inherit: void 0,
-  xs: "12px",
-  s: "14px",
-  m: "16px",
-  l: "20px"
+  extraSmall: "0.75rem",
+  // 12px
+  small: "0.875rem",
+  // 14px
+  medium: "1rem",
+  // 16px
+  large: "1.25rem",
+  // 20px
+  xs: "0.75rem",
+  s: "0.875rem",
+  m: "1rem",
+  l: "1.25rem"
 };
 function resolveCodepoint(name, family) {
-  return family === "brands" ? getFaBrandCodepoint(name) : getFaCodepoint(name);
+  if (family === "brands") {
+    return getFaBrandCodepoint(name);
+  }
+  return getFaCodepoint(name);
 }
 function FaIcon({
   name,
   family = "solid",
   className = "",
   title,
-  size = "m",
+  size = "medium",
+  fontSize: fontSizeProp,
   style
 }) {
   const hex = resolveCodepoint(name, family);
+  if (!hex) {
+    if (process.env.NODE_ENV !== "production") {
+      const hint = family !== "brands" && resolveFaIconName(name) == null ? ` (try a kebab-case FA name; "smile" \u2192 face-smile)` : "";
+      console.warn(`[CADS FaIcon] Unknown icon name "${name}"${hint}`);
+    }
+    return null;
+  }
   const char = String.fromCodePoint(Number.parseInt(hex, 16));
-  const fontSize = SIZE_PX[size];
+  const fontSize = fontSizeProp ?? SIZE_PX[size];
+  const fontFamily = family === "brands" ? "var(--font-fa-brands)" : "var(--font-fa-pro)";
+  const fontWeight = family === "brands" || family === "regular" ? 400 : 900;
   return /* @__PURE__ */ jsx(
     "span",
     {
       className,
       "data-fa-icon": "",
       "data-fa-family": family,
+      "data-fa-name": name,
       style: {
-        fontFamily: family === "brands" ? "var(--font-fa-brands)" : "var(--font-fa-pro)",
-        fontWeight: family === "brands" ? 400 : 900,
+        fontFamily,
+        fontWeight,
         fontStyle: "normal",
         fontSize,
         lineHeight: 1,
@@ -4286,7 +4319,10 @@ function FaIcon({
 
 export {
   getFaBrandCodepoint,
+  FA_ICON_ALIASES,
+  resolveFaIconName,
+  isFaIconName,
   getFaCodepoint,
   FaIcon
 };
-//# sourceMappingURL=chunk-4VK5J2NK.js.map
+//# sourceMappingURL=chunk-H7T2BEWS.js.map
