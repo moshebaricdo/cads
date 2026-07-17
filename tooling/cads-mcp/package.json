@@ -1,0 +1,19 @@
+{
+  "name": "@codeai/cads-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Experimental MCP adapter for CADS component discovery and constrained prototypes",
+  "bin": {
+    "cads-mcp": "./src/server.mjs"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test src/*.test.mjs"
+  },
+  "dependencies": {
+    "@codeai/cads-react": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

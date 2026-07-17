@@ -1,0 +1,80 @@
+{
+  "title": "Teacher onboarding",
+  "theme": "light",
+  "root": {
+    "type": "layout",
+    "layout": "surface",
+    "props": { "padding": "l", "gap": "m" },
+    "children": [
+      {
+        "type": "layout",
+        "layout": "inline",
+        "props": { "gap": "s", "align": "center" },
+        "children": [
+          {
+            "type": "component",
+            "component": "FaIcon",
+            "props": { "name": "graduation-cap", "size": "large", "title": "School" }
+          },
+          {
+            "type": "text",
+            "variant": "headingLarge",
+            "text": "Tell us about your school"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "variant": "body",
+        "text": "This helps us personalize your CodeAI experience."
+      },
+      {
+        "type": "component",
+        "component": "TextInput",
+        "props": {
+          "label": "School name",
+          "placeholder": "Enter your school",
+          "size": "large"
+        }
+      },
+      {
+        "type": "component",
+        "component": "Dropdown",
+        "props": {
+          "role": "input",
+          "label": "Your role",
+          "placeholder": "Select a role",
+          "width": "full",
+          "size": "large",
+          "options": [
+            { "value": "teacher", "label": "Teacher" },
+            { "value": "admin", "label": "Administrator" },
+            { "value": "coach", "label": "Instructional coach" }
+          ]
+        }
+      },
+      {
+        "type": "component",
+        "component": "Alert",
+        "props": {
+          "sentiment": "info",
+          "size": "medium",
+          "hasIcon": true
+        },
+        "children": "You can change these details later in settings."
+      },
+      {
+        "type": "component",
+        "component": "Button",
+        "props": {
+          "variant": "contained",
+          "color": "primary",
+          "size": "large",
+          "fullWidth": true,
+          "endIconName": "arrow-right"
+        },
+        "children": "Continue"
+      }
+    ]
+  }
+}
