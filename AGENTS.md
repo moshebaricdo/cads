@@ -14,6 +14,8 @@ Standalone **CodeAI Design System (CADS)** platform:
 | `packages/react` | `@codeai/cads-react` | MUI-wrapped CADS components + icons (`@codeai/cads-react/icons`) |
 | `apps/docs` | `@codeai/cads-docs` | Designer-grade docs mini-site (Next.js) |
 | `tooling/figma-sync` | `@codeai/cads-figma-sync` | Figma → variables sync |
+| `tooling/cads-artifact` | `@codeai/cads-artifact` | Claude skill + self-contained HTML artifact runtime |
+| `tooling/cads-mcp` | `@codeai/cads-mcp` | Experimental local MCP (stdio) for CADS prototypes |
 
 This is **not** the Lab2 sandbox and **not** the production `code-dot-org` component library. It is the forward-looking CADS reference implementation.
 
@@ -81,12 +83,18 @@ pnpm install
 pnpm generate:variables
 pnpm build
 pnpm typecheck
-pnpm dev:docs          # http://localhost:3100
+pnpm dev:docs          # http://localhost:3100 (Turbopack)
+pnpm build:docs        # static export → apps/docs/out (GITHUB_PAGES=true → basePath=/cads)
 pnpm figma:sync        # needs FIGMA_ACCESS_TOKEN for live fetch
 pnpm figma:audit-props # cadsManifest ↔ Figma prop snapshot (Actions pilot)
+pnpm artifact:build    # Claude skill ZIP → tooling/cads-artifact/dist/cads-prototyping.zip
 ```
 
+Docs are deployed to GitHub Pages from `main` via `.github/workflows/deploy-docs.yml` → `https://moshebaricdo.github.io/cads/`.
+
 After changing `codeAiColorSystem.json` or non-color variable definitions, always regenerate and rebuild consumers.
+
+When iterating on `@codeai/cads-react` under a live docs server: rebuild the package, then **restart** `pnpm dev:docs` (do not delete `dist/` out from under Next — that can peg CPU and hang requests). For a local static preview, prefer `pnpm build:docs` then serve `apps/docs/out`.
 
 ---
 
