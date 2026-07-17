@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -16,18 +16,147 @@ const NAV = [
   { href: "/llms.txt", label: "llms.txt" },
 ];
 
+/** Figma page / section order (file DGekOeToRVifvFAhfqpeC1). */
+const COMPONENT_SECTIONS = [
+  {
+    id: "actions",
+    label: "Actions",
+    items: [
+      { exportName: "Button", label: "Button" },
+      { exportName: "SegmentedButton", label: "Segmented Button" },
+      { exportName: "IconToggle", label: "Icon Toggle Button" },
+      { exportName: "CloseIconButton", label: "Close Icon Button" },
+    ],
+  },
+  {
+    id: "inputs",
+    label: "Inputs",
+    items: [
+      { exportName: "FieldWrapper", label: "Field Wrapper" },
+      { exportName: "TextInput", label: "Text Input" },
+      { exportName: "Dropdown", label: "Dropdown" },
+      { exportName: "Checkbox", label: "Checkbox" },
+      { exportName: "Radio", label: "Radio Button" },
+      { exportName: "Toggle", label: "Toggle" },
+      { exportName: "Slider", label: "Slider" },
+      { exportName: "Chip", label: "Chip" },
+      { exportName: "ChipGroup", label: "Chip Group" },
+    ],
+  },
+  {
+    id: "navigation",
+    label: "Navigation",
+    items: [
+      { exportName: "Link", label: "Link" },
+      { exportName: "Breadcrumbs", label: "Breadcrumbs" },
+      { exportName: "Tabs", label: "Tabs" },
+    ],
+  },
+  {
+    id: "messaging",
+    label: "Messaging",
+    items: [
+      { exportName: "Alert", label: "Alert" },
+      { exportName: "Toast", label: "Toast" },
+      { exportName: "NotificationBanner", label: "Notification Banner" },
+      { exportName: "Tag", label: "Tag" },
+    ],
+  },
+  {
+    id: "overlays",
+    label: "Overlays",
+    items: [
+      { exportName: "Tooltip", label: "Tooltip" },
+      { exportName: "Popover", label: "Popover" },
+      { exportName: "Drawer", label: "Drawer" },
+      { exportName: "Dialog", label: "Dialog" },
+      { exportName: "Modal", label: "Modal" },
+    ],
+  },
+] as const;
+
+type SectionId = (typeof COMPONENT_SECTIONS)[number]["id"];
+
+const DEFAULT_OPEN: Record<SectionId, boolean> = {
+  actions: true,
+  inputs: true,
+  navigation: true,
+  messaging: true,
+  overlays: true,
+};
+
+function componentHref(name: string) {
+  return `/components/${name.toLowerCase()}`;
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      aria-hidden
+      style={{
+        flexShrink: 0,
+        transform: open ? "rotate(90deg)" : "rotate(0deg)",
+        transition: "transform 120ms ease",
+      }}
+    >
+      <path
+        d="M4.25 2.5L7.75 6l-3.5 3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function DocsShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [dark, setDark] = useState(false);
-  const isFixture = pathname?.startsWith("/fixtures") ?? false;
+  const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
+  const isCanvas =
+    pathname?.startsWith("/fixtures") || pathname?.startsWith("/prototype");
+
+  const componentsByExport = useMemo(() => {
+    const map = new Map(
+      cadsManifest.components.map((c) => [c.exportName, c] as const),
+    );
+    return map;
+  }, []);
+
+  const activeSectionId = useMemo(() => {
+    for (const section of COMPONENT_SECTIONS) {
+      for (const item of section.items) {
+        const component = componentsByExport.get(item.exportName);
+        if (!component) continue;
+        if (pathname === componentHref(component.name)) return section.id;
+      }
+    }
+    return null;
+  }, [componentsByExport, pathname]);
 
   useEffect(() => {
-    if (isFixture) return;
+    if (isCanvas) return;
     document.documentElement.classList.toggle("dark", dark);
-  }, [dark, isFixture]);
+  }, [dark, isCanvas]);
 
-  if (isFixture) {
+  useEffect(() => {
+    if (!activeSectionId) return;
+    setOpenSections((prev) =>
+      prev[activeSectionId] ? prev : { ...prev, [activeSectionId]: true },
+    );
+  }, [activeSectionId]);
+
+  if (isCanvas) {
     return <>{children}</>;
+  }
+
+  function toggleSection(id: SectionId) {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
   return (
@@ -94,36 +223,92 @@ export function DocsShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        <div style={{ marginTop: 28, marginBottom: 8, fontSize: "var(--text-body-xs)", color: "var(--text-neutral-secondary)", letterSpacing: "var(--tracking-overline)", textTransform: "uppercase" }}>
+        <div
+          style={{
+            marginTop: 28,
+            marginBottom: 8,
+            fontSize: "var(--text-body-xs)",
+            color: "var(--text-neutral-secondary)",
+            letterSpacing: "var(--tracking-overline)",
+            textTransform: "uppercase",
+          }}
+        >
           Components
         </div>
-        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {cadsManifest.components
-            .filter((c) => c.exportName !== "FaIcon")
-            .map((c) => {
-              const href = `/components/${c.name.toLowerCase()}`;
-              const active = pathname === href;
-              return (
-                <Link
-                  key={c.name}
-                  href={href}
+
+        <nav style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {COMPONENT_SECTIONS.map((section) => {
+            const open = openSections[section.id];
+            const panelId = `nav-section-${section.id}`;
+            return (
+              <div key={section.id}>
+                <button
+                  type="button"
+                  onClick={() => toggleSection(section.id)}
+                  aria-expanded={open}
+                  aria-controls={panelId}
                   style={{
-                    padding: "6px 10px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    width: "100%",
+                    padding: "4px 6px",
+                    border: "none",
                     borderRadius: "var(--radius-sm)",
-                    background: active
-                      ? "var(--background-selected-primary)"
-                      : "transparent",
-                    color: active
-                      ? "var(--text-selected-primary)"
-                      : "var(--text-neutral-primary)",
-                    textDecoration: "none",
+                    background: "transparent",
+                    color: "var(--text-neutral-primary)",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-body)",
                     fontSize: "var(--text-body-sm)",
+                    fontWeight: 600,
+                    textAlign: "left",
                   }}
                 >
-                  {c.name}
-                </Link>
-              );
-            })}
+                  <Chevron open={open} />
+                  {section.label}
+                </button>
+                {open ? (
+                  <div
+                    id={panelId}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                      marginTop: 2,
+                      paddingLeft: 8,
+                    }}
+                  >
+                    {section.items.map((item) => {
+                      const component = componentsByExport.get(item.exportName);
+                      if (!component) return null;
+                      const href = componentHref(component.name);
+                      const active = pathname === href;
+                      return (
+                        <Link
+                          key={item.exportName}
+                          href={href}
+                          style={{
+                            padding: "6px 10px",
+                            borderRadius: "var(--radius-sm)",
+                            background: active
+                              ? "var(--background-selected-primary)"
+                              : "transparent",
+                            color: active
+                              ? "var(--text-selected-primary)"
+                              : "var(--text-neutral-primary)",
+                            textDecoration: "none",
+                            fontSize: "var(--text-body-sm)",
+                          }}
+                        >
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
         </nav>
 
         <button

@@ -1,354 +1,66 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  FieldWrapper,
-  TextInput,
-  Dropdown,
-  type DropdownOption,
-} from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import type { FixtureCase } from "./cases/shared";
 
-interface FixtureCase {
-  id: string;
-  mode: "light" | "dark";
-  state?: string;
-  viewport: { width: number; height: number };
-  render: () => React.ReactNode;
-}
-
-const ICON_OPTIONS: DropdownOption[] = [
-  { value: "a", label: "Option A", iconName: "face-smile" as FaIconName },
-  { value: "b", label: "Option B", iconName: "heart" as FaIconName },
-  { value: "c", label: "Option C", iconName: "star" as FaIconName },
-];
-
-const ACTION_OPTIONS: DropdownOption[] = [
-  { value: "edit", label: "Edit", iconName: "pen" as FaIconName },
-  { value: "share", label: "Share", iconName: "share" as FaIconName },
-  {
-    value: "delete",
-    label: "Delete",
-    iconName: "trash" as FaIconName,
-    destructive: true,
-  },
-];
-
-const CASES: Record<string, FixtureCase[]> = {
-  FieldWrapper: [
-    {
-      id: "field-wrapper-large-default-light",
-      mode: "light",
-      viewport: { width: 320, height: 120 },
-      render: () => (
-        <FieldWrapper
-          size="large"
-          sentiment="default"
-          label="Field label"
-          helperText="Helper text"
-          showHelper
-        >
-          <TextInput placeholder="Placeholder" />
-        </FieldWrapper>
-      ),
-    },
-    {
-      id: "field-wrapper-medium-success-light",
-      mode: "light",
-      viewport: { width: 320, height: 120 },
-      render: () => (
-        <FieldWrapper
-          size="medium"
-          sentiment="success"
-          label="Field label"
-          helperText="Helper text"
-        >
-          <TextInput placeholder="Placeholder" />
-        </FieldWrapper>
-      ),
-    },
-    {
-      id: "field-wrapper-small-warning-light",
-      mode: "light",
-      viewport: { width: 320, height: 120 },
-      render: () => (
-        <FieldWrapper
-          size="small"
-          sentiment="warning"
-          label="Field label"
-          helperText="Helper text"
-        >
-          <TextInput placeholder="Placeholder" />
-        </FieldWrapper>
-      ),
-    },
-    {
-      id: "field-wrapper-xs-error-light",
-      mode: "light",
-      viewport: { width: 320, height: 120 },
-      render: () => (
-        <FieldWrapper
-          size="extraSmall"
-          sentiment="error"
-          label="Field label"
-          helperText="Helper text"
-        >
-          <TextInput placeholder="Placeholder" />
-        </FieldWrapper>
-      ),
-    },
-    {
-      id: "field-wrapper-large-default-dark",
-      mode: "dark",
-      viewport: { width: 320, height: 120 },
-      render: () => (
-        <FieldWrapper
-          size="large"
-          sentiment="default"
-          label="Field label"
-          helperText="Helper text"
-          showHelper
-        >
-          <TextInput placeholder="Placeholder" />
-        </FieldWrapper>
-      ),
-    },
-  ],
-  TextInput: [
-    {
-      id: "text-input-large-field-primary-default-light",
-      mode: "light",
-      state: "default",
-      viewport: { width: 360, height: 160 },
-      render: () => (
-        <TextInput
-          size="large"
-          color="primary"
-          label="Field label"
-          helperText="Helper text"
-          placeholder="Placeholder"
-        />
-      ),
-    },
-    {
-      id: "text-input-medium-area-secondary-filled-light",
-      mode: "light",
-      state: "default",
-      viewport: { width: 360, height: 200 },
-      render: () => (
-        <TextInput
-          size="medium"
-          multiline
-          color="secondary"
-          label="Field label"
-          defaultValue="Filled text"
-          rows={3}
-        />
-      ),
-    },
-    {
-      id: "text-input-small-field-primary-focus-light",
-      mode: "light",
-      state: "focus",
-      viewport: { width: 360, height: 140 },
-      render: () => (
-        <TextInput
-          size="small"
-          color="primary"
-          label="Field label"
-          placeholder="Placeholder"
-          autoFocus
-        />
-      ),
-    },
-    {
-      id: "text-input-large-field-error-light",
-      mode: "light",
-      state: "error",
-      viewport: { width: 360, height: 160 },
-      render: () => (
-        <TextInput
-          size="large"
-          color="primary"
-          label="Field label"
-          defaultValue="Filled text"
-          error
-          sentiment="error"
-          helperText="Helper text"
-        />
-      ),
-    },
-    {
-      id: "text-input-medium-field-readonly-light",
-      mode: "light",
-      state: "readOnly",
-      viewport: { width: 360, height: 140 },
-      render: () => (
-        <TextInput
-          size="medium"
-          color="primary"
-          label="Field label"
-          defaultValue="Filled text"
-          readOnly
-        />
-      ),
-    },
-    {
-      id: "text-input-xs-field-disabled-light",
-      mode: "light",
-      state: "disabled",
-      viewport: { width: 360, height: 120 },
-      render: () => (
-        <TextInput
-          size="extraSmall"
-          color="primary"
-          label="Field label"
-          placeholder="Placeholder"
-          disabled
-        />
-      ),
-    },
-    {
-      id: "text-input-large-field-primary-default-dark",
-      mode: "dark",
-      state: "default",
-      viewport: { width: 360, height: 160 },
-      render: () => (
-        <TextInput
-          size="large"
-          color="primary"
-          label="Field label"
-          helperText="Helper text"
-          placeholder="Placeholder"
-        />
-      ),
-    },
-  ],
-  Dropdown: [
-    {
-      id: "dropdown-large-input-icon-bottomleft-light",
-      mode: "light",
-      viewport: { width: 420, height: 360 },
-      render: () => (
-        <Dropdown
-          role="input"
-          size="large"
-          menuType="icon"
-          menuPlacement="bottomLeft"
-          label="Field label"
-          helperText="Helper text"
-          defaultOpen
-          options={ICON_OPTIONS}
-          defaultValue="a"
-        />
-      ),
-    },
-    {
-      id: "dropdown-medium-input-checklist-bottomright-light",
-      mode: "light",
-      viewport: { width: 420, height: 360 },
-      render: () => (
-        <Dropdown
-          role="input"
-          size="medium"
-          menuType="checklist"
-          menuPlacement="bottomRight"
-          label="Field label"
-          defaultOpen
-          options={ICON_OPTIONS}
-          defaultValue={["a", "b"]}
-        />
-      ),
-    },
-    {
-      id: "dropdown-large-action-icon-bottomleft-light",
-      mode: "light",
-      viewport: { width: 360, height: 360 },
-      render: () => (
-        <Dropdown
-          role="action"
-          size="large"
-          menuType="icon"
-          menuPlacement="bottomLeft"
-          label="Button"
-          defaultOpen
-          options={ACTION_OPTIONS}
-        />
-      ),
-    },
-    {
-      id: "dropdown-small-input-icon-topleft-light",
-      mode: "light",
-      viewport: { width: 420, height: 360 },
-      render: () => (
-        <div style={{ paddingTop: 180 }}>
-          <Dropdown
-            role="input"
-            size="small"
-            menuType="icon"
-            menuPlacement="topLeft"
-            label="Field label"
-            defaultOpen
-            options={ICON_OPTIONS}
-            defaultValue="b"
-          />
-        </div>
-      ),
-    },
-    {
-      id: "dropdown-xs-action-icon-topright-light",
-      mode: "light",
-      viewport: { width: 360, height: 320 },
-      render: () => (
-        <div
-          style={{
-            paddingTop: 180,
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Dropdown
-            role="action"
-            size="extraSmall"
-            menuType="icon"
-            menuPlacement="topRight"
-            label="Button"
-            defaultOpen
-            options={ACTION_OPTIONS}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "dropdown-large-input-icon-bottomleft-dark",
-      mode: "dark",
-      viewport: { width: 420, height: 360 },
-      render: () => (
-        <Dropdown
-          role="input"
-          size="large"
-          menuType="icon"
-          menuPlacement="bottomLeft"
-          label="Field label"
-          defaultOpen
-          options={ICON_OPTIONS}
-          defaultValue="a"
-        />
-      ),
-    },
-  ],
+const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
+  CloseIconButton: () => import("./cases/CloseIconButton"),
+  FieldWrapper: () => import("./cases/FieldWrapper"),
+  TextInput: () => import("./cases/TextInput"),
+  Dropdown: () => import("./cases/Dropdown"),
+  Checkbox: () => import("./cases/Checkbox"),
+  Radio: () => import("./cases/Radio"),
+  Toggle: () => import("./cases/Toggle"),
+  Slider: () => import("./cases/Slider"),
+  Chip: () => import("./cases/Chip"),
+  ChipGroup: () => import("./cases/ChipGroup"),
+  Link: () => import("./cases/Link"),
+  Breadcrumbs: () => import("./cases/Breadcrumbs"),
+  Tabs: () => import("./cases/Tabs"),
+  Alert: () => import("./cases/Alert"),
+  Toast: () => import("./cases/Toast"),
+  NotificationBanner: () => import("./cases/NotificationBanner"),
+  Tag: () => import("./cases/Tag"),
+  Tooltip: () => import("./cases/Tooltip"),
+  Popover: () => import("./cases/Popover"),
+  Drawer: () => import("./cases/Drawer"),
+  Dialog: () => import("./cases/Dialog"),
+  Modal: () => import("./cases/Modal"),
 };
 
 function FixtureBody() {
   const params = useSearchParams();
-  const component = params.get("component") ?? "TextInput";
+  const component = params.get("component") ?? "FieldWrapper";
   const caseId = params.get("case");
   const modeParam = params.get("mode") as "light" | "dark" | null;
   const subjectRef = useRef<HTMLDivElement>(null);
+  const [cases, setCases] = useState<FixtureCase[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
 
-  const cases = CASES[component] ?? [];
+  useEffect(() => {
+    let alive = true;
+    setCases(null);
+    setLoadError(false);
+    const loader = CASE_LOADERS[component];
+    if (!loader) {
+      setLoadError(true);
+      return;
+    }
+    loader()
+      .then((mod) => {
+        if (alive) setCases(mod.cases);
+      })
+      .catch(() => {
+        if (alive) setLoadError(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [component]);
+
   const selected = useMemo(() => {
+    if (!cases?.length) return null;
     if (caseId) return cases.find((c) => c.id === caseId) ?? cases[0];
     return cases[0];
   }, [cases, caseId]);
@@ -367,17 +79,39 @@ function FixtureBody() {
   useEffect(() => {
     if (selected?.state !== "focus") return;
     const el = subjectRef.current?.querySelector<HTMLElement>(
-      "input, textarea, button",
+      "input, textarea, button, a, [role='tab'], [role='link']",
     );
-    el?.focus();
+    if (!el) return;
+    el.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", bubbles: true }),
+    );
+    el.focus();
+    el.classList.add("Mui-focusVisible");
   }, [selected]);
 
-  if (!selected) {
+  useEffect(() => {
+    const root = subjectRef.current;
+    if (!root) return;
+    delete root.dataset.cadsForcePseudo;
+    if (selected?.state === "hover" || selected?.state === "press") {
+      root.dataset.cadsForcePseudo = selected.state;
+    }
+  }, [selected]);
+
+  if (loadError || (!cases && !CASE_LOADERS[component])) {
     return (
       <main data-cads-fixture-root="" style={{ padding: 24 }}>
         <p>
           Unknown fixture component: <code>{component}</code>
         </p>
+      </main>
+    );
+  }
+
+  if (!selected) {
+    return (
+      <main data-cads-fixture-root="" style={{ padding: 24 }}>
+        Loading fixture…
       </main>
     );
   }
@@ -405,6 +139,9 @@ function FixtureBody() {
         [data-cads-fixture-root] *::after {
           transition: none !important;
           animation: none !important;
+        }
+        [data-cads-fixture-root] a:hover {
+          text-decoration: none;
         }
       `}</style>
       <div

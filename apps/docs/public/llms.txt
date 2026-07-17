@@ -1,0 +1,788 @@
+# CADS — CodeAI Design System
+
+> Package: @codeai/cads-react v0.1.0
+> Figma: https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-
+
+## Rules for AI agents
+
+- Import components only from @codeai/cads-react (icons from @codeai/cads-react/icons).
+- Import variables CSS: @codeai/cads-variables/variables.css
+- Wrap the app in <CadsProvider>.
+- Use semantic color CSS variables (e.g. --background-brand-primary) — never hard-coded hex, never --ds- prefix.
+- Use brand tokens for CTAs; selected tokens for filled selected chrome.
+- Control heights: large=48 medium=40 small=32 extraSmall=24 — use the size prop, do not invent heights.
+- Do not invent props or variants outside the manifest below.
+- Verify UI against Figma screenshots when implementing designer mocks.
+
+## Components
+
+### Button
+
+Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, and error colors.
+
+Import: `import { Button } from "@codeai/cads-react"`
+
+Props:
+- `variant`: "contained" | "outlined" | "text" (default "contained")
+- `color`: "primary" | "secondary" | "tertiary" | "error" (default "primary")
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Control heights: 48 / 40 / 32 / 24
+- `iconOnly`: boolean — Square icon-only geometry; inferred when no children
+- `startIconName`: FaIconName
+- `endIconName`: FaIconName
+- `disabled`: boolean
+- `fullWidth`: boolean
+- `children`: ReactNode
+
+Usage rules:
+- Use variant=contained + color=primary for primary CTAs (brand fill).
+- Contained secondary uses --background-neutral-primary-inverse; outlined primary uses --border-neutral-solid.
+- Contained disabled text uses --text-disabled-neutral-inverse (solid fill).
+- color=tertiary is Figma-valid only for text + iconOnly; other combos warn and fall back to secondary.
+- Use semantic color CSS vars only — never hard-coded hex. No --ds- prefix.
+
+Example:
+```tsx
+<Button variant="contained" color="primary" size="medium">Continue</Button>
+```
+
+### CloseIconButton
+
+Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.
+
+Import: `import { CloseIconButton } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "large") — Figma close-control geometry: 24 / 18 / 18 / 13px.
+- `color`: "primary" | "secondary" | "brand" | "pink" | "orange" | "success" | "error" | "warning" | "info" (default "primary")
+- `disabled`: boolean
+- `onClick`: (event) => void
+- `aria-label`: string (default "Close") — Accessible name for the icon-only action.
+
+Usage rules:
+- Use only for close or dismiss actions.
+- Choose the color that matches the host component's sentiment; use secondary on neutral surfaces.
+- Interaction states are CSS recipes — do not expose state as a React prop.
+- Override aria-label when context such as Dismiss tab is clearer than Close.
+
+Example:
+```tsx
+<CloseIconButton size="medium" color="secondary" onClick={onClose} />
+```
+
+### SegmentedButton
+
+A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.
+
+Import: `import { SegmentedButton } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `value`: string
+- `defaultValue`: string
+- `onChange`: (value: string) => void
+- `options`: SegmentedButtonOption[] [required] — Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value.
+- `iconOnly`: boolean — Square icon-only segments
+- `disabled`: boolean
+- `aria-label`: string
+
+Usage rules:
+- Use selected tokens (fill + border + text) for the active segment — never brand fills for selected chrome.
+- Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.
+- Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.
+- Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).
+- Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.
+- Prefer the group API; Segmented Button Block (8000:4554) is an internal building block.
+
+Example:
+```tsx
+<SegmentedButton aria-label="View" options={[{value:"list",label:"List"},{value:"grid",label:"Grid"}]} defaultValue="list" />
+```
+
+### IconToggle
+
+Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).
+
+Import: `import { IconToggle } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `color`: "primary" | "secondary" | "brand" | "success" | "error" (default "brand")
+- `iconName`: FaIconName [required]
+- `pressed`: boolean — Controlled on/off (Figma isOn)
+- `defaultPressed`: boolean
+- `onPressedChange`: (pressed: boolean) => void
+- `label`: ReactNode — When set, renders Figma Icon Toggle + Label layout
+- `secondToggle`: { iconName; color?; pressed?; defaultPressed?; onPressedChange?; aria-label; disabled? } — Figma hasTwoToggles — second toggle with its own icon/color/aria-label (e.g. thumbs-down + error)
+- `exclusive`: boolean (default false) — With secondToggle: mutual exclusion (thumbs up/down). Figma does not specify exclusive — default is independent.
+- `disabled`: boolean
+- `aria-label`: string
+
+Usage rules:
+- Off = FA Regular + quaternary text; on = FA Solid + color on-token.
+- Hover/press surfaces are color-specific (brand-light, error-light, etc.) — never a generic grey for all colors.
+- Standalone and labeled Figma sets map to one React component (secondToggle for dual).
+- In dual mode, set color per toggle: parent color = first; secondToggle.color = second (e.g. success + error).
+- Dual toggles are independent unless exclusive; Figma has no exclusive prop.
+- Always provide aria-label when there is no visible label.
+
+Example:
+```tsx
+<IconToggle label="Was this helpful?" iconName="thumbs-up" color="success" exclusive aria-label="Thumbs up" secondToggle={{ iconName: "thumbs-down", color: "error", "aria-label": "Thumbs down" }} />
+```
+
+### FieldWrapper
+
+Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.
+
+Import: `import { FieldWrapper } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `sentiment`: "default" | "success" | "warning" | "error" (default "default")
+- `label`: ReactNode
+- `helperText`: ReactNode
+- `helperIconName`: FaIconName
+- `showHelper`: boolean (default true)
+- `children`: ReactNode [required]
+- `disabled`: boolean
+- `htmlFor`: string
+
+Usage rules:
+- Nest any CADS control in children (TextInput, Dropdown, Checkbox, etc.).
+- Warning helper text stays tertiary; only the icon uses warning color.
+- Non-default sentiments always show helper when helperText is set.
+
+Example:
+```tsx
+<FieldWrapper label="Email" helperText="We never share this" sentiment="default"><TextInput placeholder="you@example.com" /></FieldWrapper>
+```
+
+### TextInput
+
+Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.
+
+Import: `import { TextInput } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `color`: "primary" | "secondary" (default "primary") — primary = solid border; secondary = soft border
+- `multiline`: boolean (default false) — Figma type=area when true
+- `label`: string
+- `helperText`: ReactNode
+- `helperIconName`: FaIconName
+- `sentiment`: "default" | "success" | "warning" | "error" (default "default")
+- `error`: boolean
+- `readOnly`: boolean
+- `disabled`: boolean
+- `placeholder`: string
+- `value`: string
+- `defaultValue`: string
+- `rows`: number
+
+Usage rules:
+- Prefer TextInput over the deprecated TextField alias.
+- Figma type=field|area maps to multiline={false|true}.
+- extraSmall field height uses the shared 24px control scale (Figma building block is 22px).
+- Do not invent floating labels — label is always above via Field Wrapper.
+
+Example:
+```tsx
+<TextInput label="Email" size="medium" placeholder="you@example.com" helperText="Required" />
+```
+
+### Dropdown
+
+Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).
+
+Import: `import { Dropdown } from "@codeai/cads-react"`
+
+Props:
+- `role`: "input" | "action" [required] — input = form select; action = button menu
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `menuType`: "icon" | "checklist" (default "icon") — checklist is input-only in Figma
+- `menuPlacement`: "bottomLeft" | "bottomRight" | "topLeft" | "topRight" (default "bottomLeft")
+- `width`: string (default "hug") — Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.
+- `options`: DropdownOption[] [required]
+- `label`: ReactNode
+- `helperText`: ReactNode
+- `placeholder`: string
+- `value`: string | string[]
+- `defaultValue`: string | string[]
+- `onChange`: (value: string | string[]) => void
+- `onAction`: (value: string) => void
+- `open`: boolean
+- `defaultOpen`: boolean
+- `disabled`: boolean
+- `readOnly`: boolean
+- `error`: boolean
+- `color`: "primary" | "secondary"
+- `labelStyle`: "thick" | "thin"
+- `startIconName`: FaIconName
+- `buttonVariant`: "contained" | "outlined" | "text"
+- `buttonColor`: "primary" | "secondary" | "tertiary" | "error"
+- `aria-label`: string
+
+Usage rules:
+- role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
+- menuType=checklist is input-only; action menus use icon items (optional destructive).
+- Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
+- Selected menu items use selected tokens — never brand fills.
+- Dropdown Button / Menu List / Menu Item are internal — do not import standalone.
+
+Example:
+```tsx
+<Dropdown role="input" label="Sort" width="hug" options={[{value:"a",label:"Option A"},{value:"b",label:"Option B"}]} defaultValue="a" />
+```
+
+### Checkbox
+
+Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.
+
+Import: `import { Checkbox } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `labelStyle`: "thin" | "thick" (default "thin") — Figma labelStyle — thin=regular, thick=semibold
+- `label`: ReactNode
+- `checked`: boolean
+- `defaultChecked`: boolean
+- `indeterminate`: boolean — Maps Figma block status=indeterminate
+- `disabled`: boolean
+- `onChange`: (event, checked) => void
+
+Usage rules:
+- Checked / indeterminate fills use selected tokens — never brand fills.
+- Prefer labeled usage; standalone box only when + Label does not suffice.
+- Interaction states (hover/focus/press) are CSS recipes — not React props.
+
+Example:
+```tsx
+<Checkbox label="Remember me" size="medium" labelStyle="thin" />
+```
+
+### Radio
+
+Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.
+
+Import: `import { Radio } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `labelStyle`: "thin" | "thick" (default "thin") — Figma labelStyle — thin=regular, thick=semibold
+- `label`: ReactNode
+- `checked`: boolean
+- `value`: string
+- `disabled`: boolean
+- `onChange`: (event) => void
+
+Usage rules:
+- Selected state is ring + inner dot on neutral fill — not a filled selected square.
+- Group with MUI RadioGroup when needed.
+- Interaction states are CSS recipes — not React props.
+
+Example:
+```tsx
+<Radio label="Option A" value="a" size="medium" />
+```
+
+### Toggle
+
+On/off switch with check/xmark icons. Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.
+
+Import: `import { Toggle } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `labelPlacement`: "left" | "right" (default "left") — Label on the left (switch right) or label on the right (switch left). Corrects inverted Figma axis naming.
+- `label`: ReactNode
+- `checked`: boolean
+- `defaultChecked`: boolean
+- `disabled`: boolean
+- `onChange`: (event, checked) => void
+- `aria-label`: string — Required when unlabeled
+
+Usage rules:
+- On track uses selected tokens; off track uses neutral septenary/octonary.
+- Not the same as IconToggle (icon-only binary button).
+- Interaction states are CSS recipes — not React props.
+
+Example:
+```tsx
+<Toggle label="Notifications" labelPlacement="left" defaultChecked />
+```
+
+### Slider
+
+Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.
+
+Import: `import { Slider } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Maps Figma labelSize for label/helper type.
+- `sentiment`: "default" | "error" (default "default") — Maps field-level Figma state=error.
+- `label`: ReactNode
+- `displayValue`: ReactNode
+- `showDisplayValue`: boolean (default true)
+- `showLabelRow`: boolean (default true)
+- `helperText`: ReactNode
+- `helperIconName`: FaIconName
+- `showHelper`: boolean (default true)
+- `showControls`: boolean (default false)
+- `showStepper`: boolean (default false)
+- `stepCount`: 3 | 4 | 5 | 6 (default 5) — Stepper ticks when showStepper is true.
+- `startsFrom`: "side" | "center" (default "side") — Fill origin. "side" fills min→value; "center" is bipolar — fill from 0 toward the value (negatives left, positives right).
+- `min`: number (default 0 (side) / -100 (center)) — Range minimum. Side default 0; center default -100 (bipolar).
+- `max`: number (default 100) — Range maximum. Default 100 for both side and center.
+- `width`: number | string (default 300) — Control width. Numbers are px; strings are CSS lengths (e.g. "16rem"). Ignored when fullWidth is true. Default matches Figma (300px).
+- `fullWidth`: boolean (default false) — Stretch to 100% of the parent. Takes precedence over width.
+- `value`: number | number[]
+- `defaultValue`: number | number[] (default 50 (side) / 0 (center)) — Uncontrolled initial value. Side default 50; center default 0 (origin).
+- `step`: number (default 1)
+- `disabled`: boolean
+- `onChange`: (event, value, activeThumb) => void
+- `aria-label`: string
+
+Usage rules:
+- Filled track uses selected tokens — never brand fills for the active range.
+- Knob hover/focus/press are CSS recipes from Slider Knob — not React props.
+- Set min/max for the value domain — side defaults 0…100; center defaults -100…100 with 0 at the origin.
+- startsFrom="center" is bipolar: negative values fill left of 0, positive fill right.
+- Default width is 300px (Figma symbol). Use fullWidth in fluid layouts, or width for a fixed size.
+
+Example:
+```tsx
+<Slider label="Volume" defaultValue={50} showControls showHelper helperText="Helper text" />
+```
+
+### Chip
+
+Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).
+
+Import: `import { Chip } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `color`: "primary" | "secondary" (default "primary") — Unselected border treatment.
+- `labelStyle`: "thick" | "thin" (default "thick")
+- `selected`: boolean (default false)
+- `label`: ReactNode
+- `startIcon`: boolean (default false)
+- `endIcon`: boolean (default false)
+- `startIconName`: FaIconName
+- `endIconName`: FaIconName
+- `disabled`: boolean
+- `onClick`: (event) => void
+- `aria-label`: string
+
+Usage rules:
+- Selected chrome uses selected tokens — never brand fills.
+- Not the same as Tag (status/category badge).
+- Interaction states are CSS recipes — not React props.
+
+Example:
+```tsx
+<Chip label="Option" selected color="primary" size="medium" />
+```
+
+### ChipGroup
+
+Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.
+
+Import: `import { ChipGroup } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `color`: "primary" | "secondary" (default "primary")
+- `labelStyle`: "thick" | "thin" (default "thick")
+- `label`: ReactNode
+- `helperText`: ReactNode
+- `helperIconName`: FaIconName
+- `showHelper`: boolean (default true)
+- `options`: ChipGroupOption[] [required]
+- `value`: string[]
+- `defaultValue`: string[]
+- `onChange`: (value: string[]) => void
+- `disabled`: boolean
+- `aria-label`: string
+
+Usage rules:
+- Multi-select: value is string[]. Selected chips use selected tokens.
+- Prefer ChipGroup over ad-hoc Chip rows when a field label is needed.
+
+Example:
+```tsx
+<ChipGroup label="Interests" options={[{value:"a",label:"Art"},{value:"b",label:"Music"}]} defaultValue={["a"]} />
+```
+
+### Link
+
+Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.
+
+Import: `import { Link } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" | "extraExtraSmall" (default "medium") — extraExtraSmall is Link-only (body/xxs).
+- `type`: "primary" | "secondary" (default "primary") — Figma type axis — primary uses brand text; secondary uses neutral.
+- `isExternal`: boolean (default true) — Shows up-right-from-square end icon.
+- `href`: string
+- `disabled`: boolean
+- `children`: ReactNode [required]
+
+Usage rules:
+- Use type=primary for brand CTAs/links; secondary for neutral inline navigation.
+- Visited/hover/press are CSS recipes — not React props.
+- Brand tokens for primary links — never selected fills.
+
+Example:
+```tsx
+<Link href="/docs" type="primary" size="medium" isExternal>Link</Link>
+```
+
+### Breadcrumbs
+
+Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.
+
+Import: `import { Breadcrumbs } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `items`: BreadcrumbItem[] [required] — Trail items. Optional per-item iconName (leading icon on any crumb), iconOnly, current (Figma isCurrent), href/onClick.
+- `maxItems`: number (default 8) — MUI-compatible. Collapse middle into Overflow ellipsis when exceeded.
+- `itemsBeforeCollapse`: number (default 1) — MUI-compatible. Crumbs kept before the overflow ellipsis.
+- `itemsAfterCollapse`: number (default 1) — MUI-compatible. Crumbs kept after the overflow ellipsis (Figma default composition uses 2).
+- `expandText`: string (default "Show path") — Accessible name for the overflow trigger.
+- `aria-label`: string (default "Breadcrumb")
+
+Usage rules:
+- Mark the current page with items[].current — rendered as text, not a link.
+- Optional leading icon via items[].iconName on any crumb (not first-only); iconOnly hides the label.
+- Prefer items[] composition; do not use Breadcrumb Links standalone.
+- Overflow ellipsis opens a dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown).
+- Interaction states are CSS recipes — not React props. No underline on hover.
+
+Example:
+```tsx
+<Breadcrumbs size="medium" maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} items={[{label:"Home",href:"/"},{label:"Library",href:"#",iconName:"box-archive"},{label:"A",href:"#"},{label:"B",href:"#"},{label:"Page",current:true}]} />
+```
+
+### Tabs
+
+Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.
+
+Import: `import { Tabs } from "@codeai/cads-react"`
+
+Props:
+- `type`: "primary" | "secondary" (default "primary") — primary = underline; secondary = contained.
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `items`: TabsItem[] [required]
+- `value`: string
+- `defaultValue`: string
+- `onChange`: (value: string) => void
+- `onItemDismiss`: (value: string) => void
+- `aria-label`: string
+
+Usage rules:
+- Selection is owned by the group via value/defaultValue — do not expose isCurrent.
+- Selected chrome uses selected tokens; never brand fills for the active tab.
+- Tabs may not be used as standalone Tab Items — always via Tabs.
+
+Example:
+```tsx
+<Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />
+```
+
+### Alert
+
+Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.
+
+Import: `import { Alert } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "large")
+- `sentiment`: "brand" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "brand")
+- `children`: ReactNode
+- `hasIcon`: boolean (default true)
+- `iconName`: FaIconName
+- `hasAction`: boolean (default false)
+- `actionLabel`: ReactNode (default "Button")
+- `actionStartIconName`: FaIconName
+- `actionEndIconName`: FaIconName
+- `onAction`: () => void
+- `isDismissible`: boolean (default false)
+- `onClose`: () => void
+- `fullWidth`: boolean (default true)
+
+Usage rules:
+- Use for in-page contextual messaging — not temporary overlays (Toast) or page-level banners (NotificationBanner).
+- Action is locked to outlined secondary; size follows Alert size. Always pass actionLabel (empty falls back to Button).
+- Status sentiments supply default icons; override with iconName when needed.
+
+Example:
+```tsx
+<Alert sentiment="success" size="medium" isDismissible actionLabel="Undo" hasAction>Saved successfully.</Alert>
+```
+
+### Toast
+
+Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.
+
+Import: `import { Toast } from "@codeai/cads-react"`
+
+Props:
+- `sentiment`: "primary" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "primary")
+- `children`: ReactNode
+- `hasIcon`: boolean (default true)
+- `iconName`: FaIconName
+- `hasAction`: boolean (default false)
+- `actionLabel`: ReactNode (default "Button")
+- `actionStartIconName`: FaIconName
+- `actionEndIconName`: FaIconName
+- `onAction`: () => void
+- `isDismissible`: boolean (default true)
+- `onClose`: () => void
+
+Usage rules:
+- Figma uses sentiment=primary for brand chrome (not brand).
+- Action is locked to outlined secondary at small size. Always pass actionLabel.
+- Toast is a presentational surface — host apps own queueing / auto-dismiss timing.
+
+Example:
+```tsx
+<Toast sentiment="success" hasAction actionLabel="View">This is a toast.</Toast>
+```
+
+### NotificationBanner
+
+Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.
+
+Import: `import { NotificationBanner } from "@codeai/cads-react"`
+
+Props:
+- `sentiment`: "brand" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "brand")
+- `fillStyle`: "none" | "color" (default "none")
+- `title`: ReactNode [required]
+- `description`: ReactNode [required]
+- `iconName`: FaIconName
+- `hasPrimaryAction`: boolean (default true)
+- `hasSecondaryAction`: boolean (default true)
+- `primaryActionLabel`: ReactNode (default "Button")
+- `secondaryActionLabel`: ReactNode (default "Button")
+- `onPrimaryAction`: () => void
+- `onSecondaryAction`: () => void
+- `isDismissible`: boolean (default false)
+- `onClose`: () => void
+- `fullWidth`: boolean (default true)
+
+Usage rules:
+- title and description are required.
+- fillStyle=none is the white surface; fillStyle=color tints the banner and switches primary action to inverse/secondary.
+- Prefer NotificationBanner for persistent page messaging; Alert for compact inline status.
+
+Example:
+```tsx
+<NotificationBanner sentiment="error" fillStyle="color" title="Action required" description="Review the settings before continuing." />
+```
+
+### Tag
+
+Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.
+
+Import: `import { Tag } from "@codeai/cads-react"`
+
+Props:
+- `color`: "neutral" | "brand" | "pink" | "orange" | "success" | "error" | "warning" | "info" (default "neutral")
+- `size`: "large" | "medium" | "small" (default "large")
+- `label`: ReactNode
+- `startIcon`: boolean (default true)
+- `endIcon`: boolean (default false)
+- `startIconName`: FaIconName
+- `endIconName`: FaIconName
+- `isDismissible`: boolean (default false)
+- `onClose`: () => void
+
+Usage rules:
+- Not the same as Chip (selectable). Use Tag for status/category labels.
+- Use semantic colors — do not invent custom hues.
+
+Example:
+```tsx
+<Tag color="success" size="medium" label="Passed" />
+```
+
+### Tooltip
+
+Small hover/focus overlay with brief contextual text on an inverse surface.
+
+Import: `import { Tooltip } from "@codeai/cads-react"`
+
+Props:
+- `title`: ReactNode [required]
+- `children`: ReactElement [required]
+- `caretPlacement`: "top" | "bottom" | "left" | "right" (default "top") — Caret edge on the bubble; also positions the tooltip relative to the trigger.
+- `hasCaret`: boolean (default true)
+- `startIcon`: boolean (default false)
+- `iconName`: FaIconName | string
+
+Usage rules:
+- Child must be able to hold a ref (forwardRef element).
+- Prefer supplementary hints — avoid sole source of critical info.
+- Use caretPlacement only — it both places the caret and positions the tooltip.
+
+Example:
+```tsx
+<Tooltip title="Save" caretPlacement="top"><Button>Save</Button></Tooltip>
+```
+
+### Popover
+
+Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.
+
+Import: `import { Popover } from "@codeai/cads-react"`
+
+Props:
+- `content`: "textOnly" | "textImage" | "custom" (default "textOnly")
+- `caretPlacement`: "bottomLeft" | "bottomCenter" | "bottomRight" | "topLeft" | "topCenter" | "topRight" | "leftTop" | "leftCenter" | "leftBottom" | "rightTop" | "rightCenter" | "rightBottom" (default "bottomLeft")
+- `hasCaret`: boolean (default true)
+- `title`: ReactNode
+- `body`: ReactNode
+- `image`: ReactNode
+- `customContent`: ReactNode
+- `hasActionRow`: boolean (default true)
+- `hasStepper`: boolean (default true)
+- `stepperText`: ReactNode (default "1/3")
+- `hasPrimaryAction`: boolean (default true)
+- `hasSecondaryAction`: boolean (default true)
+- `primaryActionLabel`: ReactNode (default "Next")
+- `secondaryActionLabel`: ReactNode (default "Back")
+- `isDismissible`: boolean (default true)
+- `onClose`: () => void
+- `children`: ReactElement | ReactNode
+- `surfaceOnly`: boolean
+
+Usage rules:
+- Well suited to guided walkthroughs (stepper + Back/Next).
+- Pass a trigger child for anchored mode, or use surfaceOnly for static previews.
+
+Example:
+```tsx
+<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3" surfaceOnly />
+```
+
+### Drawer
+
+Bottom sheet that slides over page content without dimming or blocking it.
+
+Import: `import { Drawer } from "@codeai/cads-react"`
+
+Props:
+- `type`: "textOnly" | "customContent" (default "textOnly")
+- `title`: ReactNode
+- `description`: ReactNode
+- `hasDescription`: boolean (default true)
+- `hasActionRow`: boolean (default true)
+- `primaryActionLabel`: ReactNode (default "Button")
+- `secondaryActionLabel`: ReactNode (default "Button")
+- `isDismissible`: boolean (default true)
+- `onClose`: () => void
+- `open`: boolean (default false)
+- `children`: ReactNode
+- `surfaceOnly`: boolean
+
+Usage rules:
+- More prominent than inline content, less disruptive than a modal — use sparingly.
+- Does not dim the page (no backdrop).
+
+Example:
+```tsx
+<>
+  <Button onClick={() => setOpen(true)}>Open drawer</Button>
+  <Drawer open={open} onClose={() => setOpen(false)} type="textOnly" title="This is a heading" description="This is descriptive text." />
+</>
+```
+
+### Dialog
+
+Blocking confirmation overlay with short title, message, and usually two actions.
+
+Import: `import { Dialog } from "@codeai/cads-react"`
+
+Props:
+- `type`: "default" | "iconTop" | "customContent" (default "default")
+- `title`: ReactNode
+- `description`: ReactNode
+- `hasImage`: boolean (default false)
+- `image`: ReactNode
+- `topIconName`: FaIconName | string (default "smile") — Icon for the floating badge when type is iconTop (Figma shortcode; smile → face-smile).
+- `hasSecondaryAction`: boolean (default true)
+- `primaryActionLabel`: ReactNode (default "Button")
+- `secondaryActionLabel`: ReactNode (default "Button")
+- `isDismissable`: boolean (default true)
+- `onClose`: () => void
+- `open`: boolean (default false)
+- `children`: ReactNode
+- `surfaceOnly`: boolean
+
+Usage rules:
+- Use for short decisions — prefer Modal for rich interactive content.
+- Spelling isDismissable matches Figma.
+
+Example:
+```tsx
+<>
+  <Button onClick={() => setOpen(true)}>Open dialog</Button>
+  <Dialog open={open} onClose={() => setOpen(false)} type="default" title="Dialog Title" description="Confirm this action." />
+</>
+```
+
+### Modal
+
+Blocking overlay for rich interactive content (forms, media, multi-step flows).
+
+Import: `import { Modal } from "@codeai/cads-react"`
+
+Props:
+- `type`: "default" | "verticalImage" | "horizontalImage" (default "default")
+- `title`: ReactNode
+- `body`: ReactNode
+- `image`: ReactNode
+- `children`: ReactNode
+- `hasSecondaryAction`: boolean (default true)
+- `primaryActionLabel`: ReactNode (default "Button")
+- `secondaryActionLabel`: ReactNode (default "Button")
+- `isDismissable`: boolean (default true)
+- `onClose`: () => void
+- `open`: boolean (default false)
+- `surfaceOnly`: boolean
+
+Usage rules:
+- Unlike Dialog, Modal holds richer layouts with a header bar and footer actions.
+- Spelling isDismissable matches Figma.
+
+Example:
+```tsx
+<>
+  <Button onClick={() => setOpen(true)}>Open modal</Button>
+  <Modal open={open} onClose={() => setOpen(false)} type="default" title="Title" body="Modal body" />
+</>
+```
+
+### FaIcon
+
+Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.
+
+Import: `import { FaIcon } from "@codeai/cads-react/icons"`
+
+Props:
+- `name`: FaIconName | FaBrandIconName [required]
+- `family`: "solid" | "regular" | "brands" (default "solid")
+- `size`: "inherit" | "extraSmall" | "small" | "medium" | "large" (default "medium")
+- `title`: string
+
+Usage rules:
+- Import @codeai/cads-react/icons/fonts.css once at app root.
+- Internal FA Pro license — do not publish fonts publicly.
+
+Example:
+```tsx
+<FaIcon name="arrow-right" size="medium" />
+```

@@ -50,7 +50,7 @@ export default async function ComponentPage({
       <h2 style={{ marginTop: 32, fontSize: "var(--text-heading-xs)" }}>
         Playground
       </h2>
-      <InteractivePlayground component={component} />
+      <InteractivePlayground key={component.exportName} component={component} />
 
       <h2 style={{ marginTop: 32, fontSize: "var(--text-heading-xs)" }}>
         Props

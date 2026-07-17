@@ -1,37 +1,56 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
-import {
-  Button,
-  SegmentedButton,
-  IconToggle,
-  FieldWrapper,
-  TextInput,
-  TextField,
-  Dropdown,
-  Checkbox,
-  Radio,
-  Tag,
-  Tooltip,
-} from "@codeai/cads-react";
-import { FaIcon } from "@codeai/cads-react/icons";
 
-const scope = {
-  Button,
-  SegmentedButton,
-  IconToggle,
-  FieldWrapper,
-  TextInput,
-  TextField,
-  Dropdown,
-  Checkbox,
-  Radio,
-  Tag,
-  Tooltip,
-  FaIcon,
-};
-
+/**
+ * Rare fallback (e.g. FaIcon). Loads react-live + CADS scope only when mounted.
+ */
 export function LivePlayground({ code }: { code: string }) {
+  const [scope, setScope] = useState<Record<string, unknown> | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    Promise.all([
+      import("@codeai/cads-react"),
+      import("@codeai/cads-react/icons"),
+    ]).then(([cads, icons]) => {
+      if (!alive) return;
+      setScope({
+        Button: cads.Button,
+        SegmentedButton: cads.SegmentedButton,
+        IconToggle: cads.IconToggle,
+        FieldWrapper: cads.FieldWrapper,
+        TextInput: cads.TextInput,
+        TextField: cads.TextField,
+        Dropdown: cads.Dropdown,
+        Checkbox: cads.Checkbox,
+        Radio: cads.Radio,
+        Toggle: cads.Toggle,
+        Slider: cads.Slider,
+        Chip: cads.Chip,
+        ChipGroup: cads.ChipGroup,
+        Alert: cads.Alert,
+        Toast: cads.Toast,
+        NotificationBanner: cads.NotificationBanner,
+        Tag: cads.Tag,
+        Tooltip: cads.Tooltip,
+        Popover: cads.Popover,
+        Drawer: cads.Drawer,
+        Dialog: cads.Dialog,
+        Modal: cads.Modal,
+        FaIcon: icons.FaIcon,
+      });
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  if (!scope) {
+    return <div style={{ minHeight: 80 }} aria-hidden />;
+  }
+
   return (
     <LiveProvider code={code} scope={scope} noInline={false}>
       <div

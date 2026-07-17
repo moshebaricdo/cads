@@ -25,6 +25,16 @@ a:hover {
   text-decoration: underline;
 }
 
+/* CADS Link / Breadcrumbs own their chrome — no global underline. */
+[data-cads-breadcrumbs] a:hover,
+[data-cads-breadcrumbs] a:focus,
+[data-cads-breadcrumbs] a:active,
+a.cads-link:hover,
+a.cads-link:focus,
+a.cads-link:active {
+  text-decoration: none;
+}
+
 code,
 pre {
   font-family: var(--font-mono);

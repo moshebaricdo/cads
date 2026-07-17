@@ -1,26 +1,25 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import {
   useMemo,
   useState,
   type CSSProperties,
-  type ReactNode,
 } from "react";
 import type { CadsComponentManifest, CadsPropDef } from "@codeai/cads-react/manifest";
 import {
-  Button,
-  SegmentedButton,
-  IconToggle,
-  FieldWrapper,
-  TextInput,
-  Dropdown,
-  Checkbox,
-  Radio,
-  Tag,
-  Tooltip,
-} from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
-import { LivePlayground } from "./LivePlayground";
+  ComponentPreview,
+  hasComponentPreview,
+} from "./playground/ComponentPreview";
+import { buildDemoBreadcrumbItems } from "./playground/previews/shared";
+
+const LivePlayground = dynamic(
+  () => import("./LivePlayground").then((m) => m.LivePlayground),
+  {
+    ssr: false,
+    loading: () => <div style={{ minHeight: 80 }} aria-hidden />,
+  },
+);
 
 /** Props that are driven by interaction / too complex for simple controls. */
 const SKIP_PROPS = new Set([
@@ -28,6 +27,9 @@ const SKIP_PROPS = new Set([
   "onPressedChange",
   "onClick",
   "onAction",
+  "onClose",
+  "onPrimaryAction",
+  "onSecondaryAction",
   "onOpenChange",
   "sx",
   "className",
@@ -35,28 +37,22 @@ const SKIP_PROPS = new Set([
   "ref",
   "secondToggle",
   "options",
+  "items",
   "children",
   "value",
   "pressed",
   "checked",
   "htmlFor",
+  "onItemDismiss",
+  "href",
   // Open state is driven by clicking the trigger; controlled `open` in the
   // panel would freeze the menu (no onOpenChange wiring).
   "open",
   "defaultOpen",
+  "surfaceOnly",
+  "image",
+  "customContent",
 ]);
-
-const DEMO_DROPDOWN_OPTIONS = [
-  { value: "a", label: "Option A", iconName: "face-smile" as FaIconName },
-  { value: "b", label: "Option B", iconName: "heart" as FaIconName },
-  { value: "c", label: "Option C", iconName: "star" as FaIconName },
-  {
-    value: "danger",
-    label: "Delete",
-    iconName: "trash" as FaIconName,
-    destructive: true,
-  },
-];
 
 function parseEnumOptions(type: string): string[] | null {
   const parts = type
@@ -102,14 +98,19 @@ function isStringyType(type: string) {
   );
 }
 
+function isNumberType(type: string) {
+  return type.trim() === "number";
+}
+
 function controlKind(
   prop: CadsPropDef,
-): "enum" | "boolean" | "text" | "skip" {
+): "enum" | "boolean" | "text" | "number" | "skip" {
   if (SKIP_PROPS.has(prop.name)) return "skip";
   if (prop.type.includes("=>") || prop.type.includes("[]")) return "skip";
   if (prop.type.includes("ReactElement")) return "skip";
   if (parseEnumOptions(prop.type)) return "enum";
   if (isBooleanType(prop.type)) return "boolean";
+  if (isNumberType(prop.type)) return "number";
   if (isStringyType(prop.type)) return "text";
   return "skip";
 }
@@ -128,6 +129,8 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
     else if (kind === "enum") {
       const opts = parseEnumOptions(prop.type);
       values[prop.name] = opts?.[0] ?? "";
+    }     else if (kind === "number") {
+      values[prop.name] = "";
     } else if (kind === "text") {
       if (prop.name === "children" || prop.name === "label") {
         values[prop.name] =
@@ -136,7 +139,23 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
         // Figma placeholder shortcode (`smile` → face-smile via FaIcon alias).
         values[prop.name] = "smile";
       } else if (prop.name === "title") {
-        values[prop.name] = "Tooltip";
+        values[prop.name] =
+          component.exportName === "NotificationBanner"
+            ? "This is a title"
+            : component.exportName === "Tooltip"
+              ? "Tooltip"
+              : "Title";
+      } else if (prop.name === "description") {
+        values[prop.name] = "This is additional descriptive text.";
+      } else if (prop.name === "body") {
+        values[prop.name] =
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+      } else if (
+        prop.name === "actionLabel" ||
+        prop.name === "primaryActionLabel" ||
+        prop.name === "secondaryActionLabel"
+      ) {
+        values[prop.name] = "Button";
       } else if (prop.name === "aria-label") {
         values[prop.name] = component.name;
       } else {
@@ -146,6 +165,18 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
   }
 
   // Component-specific seeds
+  if (component.exportName === "Breadcrumbs") {
+    // Demo the Figma overflow pattern: Home > … > Detail > Current
+    values.maxItems = 4;
+    values.itemsBeforeCollapse = 1;
+    values.itemsAfterCollapse = 2;
+    // Playground-only: optional leading icon on any crumb (Detail stays
+    // visible with the default overflow collapse so the icon is obvious).
+    values.demoIcon = true;
+    values.demoIconName = "box-archive";
+    values.demoIconItem = "Detail";
+    values.demoIconOnly = false;
+  }
   if (component.exportName === "SegmentedButton") {
     values.defaultValue = "list";
   }
@@ -179,6 +210,45 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
     values.helperText = "";
     values.width = values.width || "hug";
     values["aria-label"] = "Dropdown";
+  }
+  if (component.exportName === "Slider") {
+    values.label = values.label || "Field label";
+    values.helperText = values.helperText ?? "Helper text";
+    values.width = values.width || "300";
+    values.fullWidth = values.fullWidth ?? false;
+    values.startsFrom = values.startsFrom || "side";
+    const center = values.startsFrom === "center";
+    values.min = values.min ?? (center ? -100 : 0);
+    values.max = values.max ?? 100;
+    values.defaultValue = values.defaultValue ?? 0;
+    values.step = values.step ?? 1;
+  }
+  // Alert/Toast: leave iconName empty so status-sentiment defaults apply
+  // (playground "smile" seed would force face-smile on every sentiment).
+  if (
+    component.exportName === "Alert" ||
+    component.exportName === "Toast"
+  ) {
+    values.iconName = "";
+  }
+  if (component.exportName === "Popover") {
+    values.title = "Popover title";
+    values.body =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.";
+    if (!values.stepperText) values.stepperText = "1/3";
+  }
+  if (component.exportName === "Dialog") {
+    values.title = "Dialog Title";
+    if (!values.topIconName) values.topIconName = "smile";
+  }
+  if (component.exportName === "Drawer") {
+    values.title = "This is a heading";
+    values.description = "This is descriptive text.";
+  }
+  if (component.exportName === "Modal") {
+    values.title = "Title";
+    values.body =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
   }
   return values;
 }
@@ -317,6 +387,30 @@ function ControlField({
     );
   }
 
+  if (kind === "number") {
+    return (
+      <div style={{ marginBottom: 14 }}>
+        {label}
+        <input
+          id={`ctrl-${prop.name}`}
+          type="number"
+          min={0}
+          value={value === "" || value == null ? "" : String(value)}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (raw === "") {
+              onChange("");
+              return;
+            }
+            const n = Number(raw);
+            onChange(Number.isFinite(n) ? n : raw);
+          }}
+          style={fieldStyle}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{ marginBottom: 14 }}>
       {label}
@@ -329,306 +423,6 @@ function ControlField({
       />
     </div>
   );
-}
-
-function renderComponent(
-  exportName: string,
-  values: Record<string, unknown>,
-): ReactNode {
-  const v = values;
-
-  switch (exportName) {
-    case "Button": {
-      const startIcon = String(v.startIconName ?? "").trim();
-      const endIcon = String(v.endIconName ?? "").trim();
-      return (
-        <Button
-          variant={v.variant as "contained" | "outlined" | "text" | undefined}
-          color={
-            v.color as "primary" | "secondary" | "tertiary" | "error" | undefined
-          }
-          size={
-            v.size as "large" | "medium" | "small" | "extraSmall" | undefined
-          }
-          iconOnly={Boolean(v.iconOnly)}
-          startIconName={(startIcon || undefined) as FaIconName | undefined}
-          endIconName={(endIcon || undefined) as FaIconName | undefined}
-          disabled={Boolean(v.disabled)}
-          fullWidth={Boolean(v.fullWidth)}
-        >
-          {v.iconOnly ? null : String(v.children ?? "Continue")}
-        </Button>
-      );
-    }
-    case "SegmentedButton":
-      return (
-        <SegmentedButton
-          size={
-            v.size as "large" | "medium" | "small" | "extraSmall" | undefined
-          }
-          disabled={Boolean(v.disabled)}
-          iconOnly={Boolean(v.iconOnly)}
-          aria-label={String(v["aria-label"] || "Options")}
-          defaultValue={String(v.defaultValue || "list")}
-          options={
-            v.iconOnly
-              ? [
-                  { value: "list", label: "List", iconName: "list" as FaIconName },
-                  { value: "grid", label: "Grid", iconName: "grid" as FaIconName },
-                  { value: "table", label: "Table", iconName: "table" as FaIconName },
-                ]
-              : [
-                  { value: "list", label: "List", iconName: "list" as FaIconName },
-                  { value: "grid", label: "Grid", iconName: "grid" as FaIconName },
-                  { value: "table", label: "Table" },
-                ]
-          }
-        />
-      );
-    case "IconToggle": {
-      const dual = Boolean(v.dualToggle);
-      const firstIcon = String(v.iconName ?? "").trim() || "smile";
-      const secondIcon = String(v.secondIconName ?? "").trim() || "thumbs-down";
-      const firstColor =
-        (v.color as
-          | "primary"
-          | "secondary"
-          | "brand"
-          | "success"
-          | "error"
-          | undefined) ?? (dual ? "success" : "brand");
-      const secondColor =
-        (v.secondColor as
-          | "primary"
-          | "secondary"
-          | "brand"
-          | "success"
-          | "error"
-          | undefined) ?? "error";
-      const labelText = v.label ? String(v.label) : undefined;
-      return (
-        <IconToggle
-          size={
-            v.size as "large" | "medium" | "small" | "extraSmall" | undefined
-          }
-          color={firstColor}
-          iconName={firstIcon as FaIconName}
-          defaultPressed={Boolean(v.defaultPressed)}
-          disabled={Boolean(v.disabled)}
-          label={dual ? labelText || "Was this helpful?" : labelText}
-          exclusive={Boolean(v.exclusive)}
-          aria-label={String(
-            v["aria-label"] || (dual ? "Thumbs up" : "Toggle"),
-          )}
-          secondToggle={
-            dual
-              ? {
-                  iconName: secondIcon as FaIconName,
-                  color: secondColor,
-                  "aria-label": String(
-                    v.secondAriaLabel || "Thumbs down",
-                  ),
-                }
-              : undefined
-          }
-        />
-      );
-    }
-    case "FieldWrapper":
-      return (
-        <FieldWrapper
-          label={String(v.label ?? "Email")}
-          helperText={
-            v.helperText ? String(v.helperText) : undefined
-          }
-          helperIconName={
-            (String(v.helperIconName ?? "").trim() || undefined) as
-              | FaIconName
-              | undefined
-          }
-          showHelper={v.showHelper !== false}
-          sentiment={
-            v.sentiment as
-              | "default"
-              | "success"
-              | "warning"
-              | "error"
-              | undefined
-          }
-          size={
-            v.size as "large" | "medium" | "small" | "extraSmall" | undefined
-          }
-          disabled={Boolean(v.disabled)}
-        >
-          <TextInput placeholder="Nested control" />
-        </FieldWrapper>
-      );
-    case "TextInput":
-      return (
-        <TextInput
-          label={String(v.label ?? "Email")}
-          size={
-            v.size as "large" | "medium" | "small" | "extraSmall" | undefined
-          }
-          color={v.color as "primary" | "secondary" | undefined}
-          multiline={Boolean(v.multiline)}
-          disabled={Boolean(v.disabled)}
-          error={Boolean(v.error)}
-          readOnly={Boolean(v.readOnly)}
-          sentiment={
-            v.sentiment as
-              | "default"
-              | "success"
-              | "warning"
-              | "error"
-              | undefined
-          }
-          helperText={
-            v.helperText ? String(v.helperText) : undefined
-          }
-          helperIconName={
-            (String(v.helperIconName ?? "").trim() || undefined) as
-              | FaIconName
-              | undefined
-          }
-          placeholder={
-            v.placeholder ? String(v.placeholder) : "you@example.com"
-          }
-          defaultValue={
-            v.defaultValue ? String(v.defaultValue) : undefined
-          }
-          rows={typeof v.rows === "number" ? v.rows : undefined}
-        />
-      );
-    case "Dropdown": {
-      const role = (v.role as "input" | "action" | undefined) ?? "input";
-      const size = v.size as
-        | "large"
-        | "medium"
-        | "small"
-        | "extraSmall"
-        | undefined;
-      const menuType = (v.menuType as "icon" | "checklist" | undefined) ?? "icon";
-      const menuPlacement = v.menuPlacement as
-        | "bottomLeft"
-        | "bottomRight"
-        | "topLeft"
-        | "topRight"
-        | undefined;
-      if (role === "action") {
-        return (
-          <Dropdown
-            role="action"
-            size={size}
-            menuType="icon"
-            menuPlacement={menuPlacement}
-            label={String(v.label ?? "Actions")}
-            startIconName={
-              (String(v.startIconName ?? "").trim() || undefined) as
-                | FaIconName
-                | undefined
-            }
-            buttonVariant={
-              v.buttonVariant as
-                | "contained"
-                | "outlined"
-                | "text"
-                | undefined
-            }
-            buttonColor={
-              v.buttonColor as
-                | "primary"
-                | "secondary"
-                | "tertiary"
-                | "error"
-                | undefined
-            }
-            disabled={Boolean(v.disabled)}
-            defaultOpen={Boolean(v.defaultOpen)}
-            options={DEMO_DROPDOWN_OPTIONS}
-            aria-label={String(v["aria-label"] || "Actions")}
-          />
-        );
-      }
-      const widthRaw = String(v.width ?? "hug").trim() || "hug";
-      const width =
-        widthRaw === "hug" || widthRaw === "full"
-          ? widthRaw
-          : /^\d+(\.\d+)?$/.test(widthRaw)
-            ? Number(widthRaw)
-            : widthRaw;
-      return (
-        <Dropdown
-          role="input"
-          size={size}
-          menuType={menuType}
-          menuPlacement={menuPlacement}
-          width={width}
-          label={String(v.label ?? "Sort")}
-          helperText={
-            v.helperText ? String(v.helperText) : undefined
-          }
-          placeholder={String(v.placeholder ?? "Select…")}
-          color={v.color as "primary" | "secondary" | undefined}
-          labelStyle={v.labelStyle as "thick" | "thin" | undefined}
-          startIconName={
-            (String(v.startIconName ?? "").trim() || undefined) as
-              | FaIconName
-              | undefined
-          }
-          disabled={Boolean(v.disabled)}
-          readOnly={Boolean(v.readOnly)}
-          error={Boolean(v.error)}
-          defaultOpen={Boolean(v.defaultOpen)}
-          options={DEMO_DROPDOWN_OPTIONS.filter((o) => !o.destructive)}
-          aria-label={String(v["aria-label"] || "Sort")}
-        />
-      );
-    }
-    case "Checkbox":
-      return (
-        <Checkbox
-          label={String(v.label ?? "Remember me")}
-          size={v.size as "medium" | "small" | undefined}
-          disabled={Boolean(v.disabled)}
-        />
-      );
-    case "Radio":
-      return (
-        <Radio
-          label={String(v.label ?? "Option A")}
-          value="a"
-          size={v.size as "medium" | "small" | undefined}
-          disabled={Boolean(v.disabled)}
-        />
-      );
-    case "Tag":
-      return (
-        <Tag
-          tone={
-            v.tone as
-              | "neutral"
-              | "brand"
-              | "success"
-              | "warning"
-              | "error"
-              | "info"
-              | undefined
-          }
-          size={v.size as "medium" | "small" | undefined}
-          label={String(v.label ?? "Tag")}
-          iconName={(v.iconName as FaIconName) || undefined}
-        />
-      );
-    case "Tooltip":
-      return (
-        <Tooltip title={String(v.title ?? "Tooltip")}>
-          <Button size="medium">Hover me</Button>
-        </Tooltip>
-      );
-    default:
-      return null;
-  }
 }
 
 function propsToCode(
@@ -645,12 +439,20 @@ function propsToCode(
       key === "secondIconName" ||
       key === "secondColor" ||
       key === "secondAriaLabel" ||
-      key === "secondToggle"
+      key === "secondToggle" ||
+      key === "demoIcon" ||
+      key === "demoIconName" ||
+      key === "demoIconItem" ||
+      key === "demoIconOnly"
     ) {
       continue;
     }
     if (typeof val === "boolean") {
       if (val) attrs.push(key);
+      continue;
+    }
+    if (typeof val === "number") {
+      attrs.push(`${key}={${val}}`);
       continue;
     }
     attrs.push(`${key}=${JSON.stringify(String(val))}`);
@@ -667,6 +469,37 @@ function propsToCode(
     attrs.push(
       `options={[{value:"a",label:"Option A"},{value:"b",label:"Option B"}]}`,
     );
+  }
+
+  if (exportName === "Breadcrumbs") {
+    const items = buildDemoBreadcrumbItems(values);
+    const itemLiterals = items.map((item) => {
+      const parts = [`label:${JSON.stringify(item.label)}`];
+      if ("href" in item && item.href != null) {
+        parts.push(`href:${JSON.stringify(item.href)}`);
+      }
+      if ("iconName" in item && item.iconName) {
+        parts.push(`iconName:${JSON.stringify(String(item.iconName))}`);
+      }
+      if ("iconOnly" in item && item.iconOnly) parts.push("iconOnly:true");
+      if ("current" in item && item.current) parts.push("current:true");
+      return `{${parts.join(",")}}`;
+    });
+    attrs.push(`items={[${itemLiterals.join(",")}]}`);
+    if (values.maxItems == null) attrs.push(`maxItems={4}`);
+    if (values.itemsBeforeCollapse == null) attrs.push(`itemsBeforeCollapse={1}`);
+    if (values.itemsAfterCollapse == null) attrs.push(`itemsAfterCollapse={2}`);
+  }
+
+  if (exportName === "Tabs") {
+    attrs.push(
+      `items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"},{value:"c",label:"Tab Label"}]}`,
+    );
+    if (values.defaultValue == null) attrs.push(`defaultValue="a"`);
+  }
+
+  if (exportName === "Link") {
+    attrs.push(`href="#link"`);
   }
 
   if (exportName === "IconToggle" && values.dualToggle) {
@@ -692,6 +525,24 @@ function propsToCode(
   if (exportName === "Tooltip") {
     return `<Tooltip${attrStr}><Button>Hover me</Button></Tooltip>`;
   }
+  if (exportName === "Drawer") {
+    return `<>
+  <Button onClick={() => setOpen(true)}>Open drawer</Button>
+  <Drawer open={open} onClose={() => setOpen(false)}${attrStr} />
+</>`;
+  }
+  if (exportName === "Dialog") {
+    return `<>
+  <Button onClick={() => setOpen(true)}>Open dialog</Button>
+  <Dialog open={open} onClose={() => setOpen(false)}${attrStr} />
+</>`;
+  }
+  if (exportName === "Modal") {
+    return `<>
+  <Button onClick={() => setOpen(true)}>Open modal</Button>
+  <Modal open={open} onClose={() => setOpen(false)}${attrStr} />
+</>`;
+  }
   if (exportName === "FieldWrapper") {
     return `<FieldWrapper${attrStr}><TextInput placeholder="Nested control" /></FieldWrapper>`;
   }
@@ -708,10 +559,10 @@ export function InteractivePlayground({
     [component],
   );
   const [values, setValues] = useState(() => initialValues(component));
-  const preview = renderComponent(component.exportName, values);
   const code = propsToCode(component.exportName, values);
+  const canPreview = hasComponentPreview(component.exportName);
 
-  if (preview == null) {
+  if (!canPreview) {
     return <LivePlayground code={component.example} />;
   }
 
@@ -737,13 +588,27 @@ export function InteractivePlayground({
             minHeight: 140,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: values.fullWidth ? "stretch" : "center",
             gap: 12,
             flexWrap: "wrap",
             borderRight: "1px solid var(--border-neutral-primary)",
           }}
         >
-          {preview}
+          {/* Remount when defaultChecked changes — uncontrolled defaults only apply on mount.
+              Stretch wrapper so fullWidth components can fill the preview stage. */}
+          <div
+            key={`defaultChecked:${String(values.defaultChecked)}`}
+            style={
+              values.fullWidth
+                ? { width: "100%", minWidth: 0 }
+                : undefined
+            }
+          >
+            <ComponentPreview
+              exportName={component.exportName}
+              values={values}
+            />
+          </div>
         </div>
         <div
           style={{
@@ -771,10 +636,113 @@ export function InteractivePlayground({
               prop={prop}
               value={values[prop.name]}
               onChange={(next) =>
-                setValues((prev) => ({ ...prev, [prop.name]: next }))
+                setValues((prev) => {
+                  const updated: Record<string, unknown> = {
+                    ...prev,
+                    [prop.name]: next,
+                  };
+                  // Bipolar vs side ranges when toggling Slider startsFrom.
+                  if (
+                    component.exportName === "Slider" &&
+                    prop.name === "startsFrom"
+                  ) {
+                    if (next === "center") {
+                      updated.min = -100;
+                      updated.max = 100;
+                      updated.defaultValue = 0;
+                    } else {
+                      updated.min = 0;
+                      updated.max = 100;
+                      updated.defaultValue = 0;
+                    }
+                  }
+                  // topIconName only renders for iconTop — switch type so the
+                  // playground control is never a no-op.
+                  if (
+                    component.exportName === "Dialog" &&
+                    prop.name === "topIconName" &&
+                    String(next ?? "").trim()
+                  ) {
+                    updated.type = "iconTop";
+                  }
+                  if (
+                    component.exportName === "Dialog" &&
+                    prop.name === "type" &&
+                    next === "iconTop" &&
+                    !updated.topIconName
+                  ) {
+                    updated.topIconName = "smile";
+                  }
+                  return updated;
+                })
               }
             />
           ))}
+          {component.exportName === "Breadcrumbs" ? (
+            <>
+              <div
+                style={{
+                  fontSize: "var(--text-body-xxs)",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  color: "var(--text-neutral-secondary)",
+                  margin: "8px 0 10px",
+                }}
+              >
+                Item icon (playground)
+              </div>
+              <ControlField
+                prop={{
+                  name: "demoIcon",
+                  type: "boolean",
+                  description:
+                    "Optional leading iconName on any crumb (items[].iconName)",
+                }}
+                value={values.demoIcon}
+                onChange={(next) =>
+                  setValues((prev) => ({ ...prev, demoIcon: next }))
+                }
+              />
+              {values.demoIcon ? (
+                <>
+                  <ControlField
+                    prop={{
+                      name: "demoIconItem",
+                      type: '"Home" | "Products" | "Category" | "Subsection" | "Detail" | "Current"',
+                      description: "Which trail item receives the icon",
+                    }}
+                    value={values.demoIconItem}
+                    onChange={(next) =>
+                      setValues((prev) => ({ ...prev, demoIconItem: next }))
+                    }
+                  />
+                  <ControlField
+                    prop={{
+                      name: "demoIconName",
+                      type: "FaIconName",
+                      description: "items[].iconName",
+                    }}
+                    value={values.demoIconName}
+                    onChange={(next) =>
+                      setValues((prev) => ({ ...prev, demoIconName: next }))
+                    }
+                  />
+                  <ControlField
+                    prop={{
+                      name: "demoIconOnly",
+                      type: "boolean",
+                      description: "items[].iconOnly — hide label, keep a11y name",
+                    }}
+                    value={values.demoIconOnly}
+                    onChange={(next) =>
+                      setValues((prev) => ({ ...prev, demoIconOnly: next }))
+                    }
+                  />
+                </>
+              ) : null}
+            </>
+          ) : null}
           {component.exportName === "IconToggle" ? (
             <>
               <ControlField
