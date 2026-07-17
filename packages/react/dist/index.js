@@ -1646,13 +1646,14 @@ function MenuItemRow({
               }
             ) : null
           }
-        ) : option.iconName || destructive ? /* @__PURE__ */ jsx8(
+        ) : /* @__PURE__ */ jsx8(
           "span",
           {
             "aria-hidden": true,
             style: {
               width: dims.iconSlot,
               display: "inline-flex",
+              alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
               color: textColor
@@ -1665,7 +1666,7 @@ function MenuItemRow({
               }
             )
           }
-        ) : null,
+        ),
         /* @__PURE__ */ jsx8(
           "span",
           {
@@ -1859,7 +1860,10 @@ var Dropdown = forwardRef7(
         anchorEl,
         placement: placementToPopper(menuPlacement),
         disablePortal: true,
-        style: { zIndex: 1400 },
+        style: {
+          zIndex: 1400,
+          ...isChecklist ? { width: "max-content", minWidth: "max-content" } : null
+        },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } }
         ],
@@ -1876,21 +1880,32 @@ var Dropdown = forwardRef7(
             onKeyDown,
             sx: {
               mt: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "stretch",
               border: "1px solid var(--border-neutral-primary)",
               borderRadius: "var(--radius-sm)",
               backgroundColor: "var(--background-neutral-primary)",
               boxShadow: "var(--shadow-md)",
               overflow: "hidden",
-              // Checklist: size to the action row so "Select all" / "Clear all"
-              // stay fully visible at every control size (Figma Menu List).
+              // Checklist (Figma Menu List 971:4280): hug the Action Row so
+              // footer labels stay fully visible at every size.
+              width: isChecklist ? "max-content" : void 0,
               minWidth: isChecklist ? "max-content" : isInput ? 180 : 120,
+              // Icon menus: 4px vertical padding. Checklist: options list owns
+              // the bottom padding (pb 4) above the Action Row divider.
               py: isChecklist ? 0 : "4px"
             },
             children: [
               /* @__PURE__ */ jsx8(
                 "div",
                 {
-                  style: { display: "flex", flexDirection: "column", minWidth: 0 },
+                  style: {
+                    display: "flex",
+                    flexDirection: "column",
+                    // Figma Options List: pb 4 on checklist before Action Row.
+                    paddingBottom: isChecklist ? 4 : 0
+                  },
                   onMouseLeave: () => setActiveIndex(-1),
                   children: options.map((option, index) => /* @__PURE__ */ jsx8(
                     MenuItemRow,
@@ -1915,13 +1930,15 @@ var Dropdown = forwardRef7(
                   "data-cads-dropdown-action-row": "",
                   style: {
                     display: "flex",
-                    // Figma Action Row: gap 4 + padding 4; large uses space-between.
+                    flexWrap: "nowrap",
+                    // Figma Action Row: large = space-between; else gap 4 + start.
                     justifyContent: size === "large" ? "space-between" : "flex-start",
                     alignItems: "flex-start",
                     borderTop: "1px solid var(--border-neutral-primary)",
                     padding: 4,
                     gap: 4,
-                    boxSizing: "border-box"
+                    boxSizing: "border-box",
+                    width: "100%"
                   },
                   children: [
                     /* @__PURE__ */ jsx8(
@@ -1936,9 +1953,12 @@ var Dropdown = forwardRef7(
                           handleSelectAll();
                         },
                         sx: {
+                          flex: "0 0 auto",
                           flexShrink: 0,
                           whiteSpace: "nowrap",
-                          minWidth: "max-content"
+                          minWidth: "max-content",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
                         },
                         children: "Select all"
                       }
@@ -1955,9 +1975,12 @@ var Dropdown = forwardRef7(
                           handleClearAll();
                         },
                         sx: {
+                          flex: "0 0 auto",
                           flexShrink: 0,
                           whiteSpace: "nowrap",
-                          minWidth: "max-content"
+                          minWidth: "max-content",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
                         },
                         children: "Clear all"
                       }
@@ -1981,13 +2004,24 @@ var Dropdown = forwardRef7(
 [data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"])[data-active="true"] {
   background-color: var(--background-neutral-secondary) !important;
 }
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):active {
+  background-color: var(--background-neutral-tertiary) !important;
+  color: var(--text-neutral-tertiary) !important;
+}
 [data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):hover,
 [data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"])[data-active="true"] {
   background-color: var(--background-error-light) !important;
 }
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active {
+  background-color: var(--background-error-primary) !important;
+  color: var(--text-neutral-white-fixed) !important;
+}
 [data-cads-dropdown-item][aria-selected="true"]:hover,
 [data-cads-dropdown-item][aria-selected="true"][data-active="true"] {
   background-color: var(--background-selected-strong) !important;
+}
+[data-cads-dropdown-action-row] .MuiButton-root {
+  white-space: nowrap;
 }
 `;
     if (isInput) {

@@ -382,7 +382,8 @@
     "correctionPasses": [
       "Removed Grow + disablePortal=false\u2192true so fixture transition:none and capture regions keep the menu",
       "Fixed Popper anchorEl via callback state so defaultOpen opens on first paint",
-      "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791"
+      "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791",
+      "Checklist menu width/minWidth max-content so Action Row labels never wrap; option labels ellipsize; options list pb 4; pressed states (neutral tertiary / error primary); icon menus always show leading icon (Figma 971:4280 / 896:3791)"
     ]
   }
 }
