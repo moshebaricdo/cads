@@ -14,6 +14,26 @@
 - Do not invent props or variants outside the manifest below.
 - Verify UI against Figma screenshots when implementing designer mocks.
 
+## UI patterns (how CodeAI screens compose)
+
+Territories — pick one before placing components:
+- Lab shell (student/creator tools): fixed 100vh app shell — 50px brand top bar (--background-brand-primary, white text), left icon rail + collapsible panel, workspace. Dense: compact panel headers, small/extraSmall controls.
+- Dashboard page (teacher/admin): brand bar + scrolling white page; optional 220px sidebar (--background-neutral-secondary) with small-caps overline group labels; active nav item = --background-neutral-tertiary fill + selected edge bar.
+- Marketing/public page: centered column — breadcrumbs, light-gray heading band with a --font-heading H1, two-column content + sidebar cards, near-black footer (--background-neutral-black-fixed).
+- Dialog/overlay: dimmed page + centered card (--radius-md, --shadow-lg); celebration variant = illustration + heading + one brand CTA.
+
+Composition:
+- Panel headers: 40px, white, bottom hairline (--border-neutral-primary), centered small-caps overline label in --text-neutral-quaternary.
+- Cards: white + 1px --border-neutral-primary + --radius-md by default; gray wells (--background-neutral-secondary) nest white sub-cards; --background-brand-light tint for promos only.
+- Group with overlines (semibold uppercase, --tracking-overline); chrome stays tight, content gets the whitespace.
+- Inspector/property panels: 226–280px card, 32px gray overline header, hairline-separated sections (semibold sentence-case titles), dense label-left / compact-control-right rows.
+
+Color language:
+- Brand = top bar, primary CTAs, links. One brand-filled CTA per region.
+- Selected trio (--background/-text/-border-selected-*) = active tabs, segmented buttons, selection chrome. Never brand fills for selected states; never split the trio.
+- Success = progress/saved (inline banner in the owning panel, not a toast); warning = stale/attention; error = destructive; accent orange = Run buttons + hover accents only.
+- Focus: 2px --border-focused-primary ring, never removed.
+
 ## Components
 
 ### Button

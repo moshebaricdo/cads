@@ -1,17 +1,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {
-  useMemo,
-  useState,
-  type CSSProperties,
-} from "react";
-import type { CadsComponentManifest, CadsPropDef } from "@codeai/cads-react/manifest";
+import { useMemo, useState } from "react";
+import type {
+  CadsComponentManifest,
+  CadsPropDef,
+} from "@codeai/cads-react/manifest";
+import { Dropdown, TextInput, Toggle } from "@codeai/cads-react";
 import {
   ComponentPreview,
   hasComponentPreview,
 } from "./playground/ComponentPreview";
 import { buildDemoBreadcrumbItems } from "./playground/previews/shared";
+import { CopyButton } from "./CopyControls";
 
 const LivePlayground = dynamic(
   () => import("./LivePlayground").then((m) => m.LivePlayground),
@@ -53,6 +54,150 @@ const SKIP_PROPS = new Set([
   "image",
   "customContent",
 ]);
+
+/* ------------------------------------------------------------------ */
+/* Prop grouping / ordering                                            */
+/* ------------------------------------------------------------------ */
+
+type ControlGroup = "appearance" | "content" | "state" | "behavior" | "a11y";
+
+const GROUP_ORDER: ControlGroup[] = [
+  "appearance",
+  "content",
+  "state",
+  "behavior",
+  "a11y",
+];
+
+const GROUP_LABELS: Record<ControlGroup, string> = {
+  appearance: "Appearance",
+  content: "Content",
+  state: "State",
+  behavior: "Layout & behavior",
+  a11y: "Accessibility",
+};
+
+/**
+ * Priority-ordered membership per group. Earlier entries render first, so the
+ * levers designers reach for most (variant / color / size) always lead.
+ */
+const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
+  appearance: [
+    "variant",
+    "type",
+    "color",
+    "size",
+    "sentiment",
+    "status",
+    "role",
+    "labelStyle",
+    "buttonVariant",
+    "buttonColor",
+    "menuType",
+    "menuPlacement",
+    "placement",
+    "position",
+    "align",
+    "orientation",
+    "labelPlacement",
+    "startsFrom",
+    "iconName",
+    "startIconName",
+    "endIconName",
+    "topIconName",
+    "helperIconName",
+    "iconOnly",
+    "hideIcon",
+    "arrow",
+    "width",
+  ],
+  content: [
+    "label",
+    "title",
+    "description",
+    "body",
+    "placeholder",
+    "helperText",
+    "showHelper",
+    "actionLabel",
+    "primaryActionLabel",
+    "secondaryActionLabel",
+    "stepperText",
+    "count",
+  ],
+  state: [
+    "defaultValue",
+    "defaultChecked",
+    "defaultPressed",
+    "min",
+    "max",
+    "step",
+    "exclusive",
+    "required",
+    "error",
+    "readOnly",
+    "loading",
+    "disabled",
+    "indeterminate",
+  ],
+  behavior: [
+    "fullWidth",
+    "multiline",
+    "rows",
+    "dismissible",
+    "showClose",
+    "dense",
+    "maxItems",
+    "itemsBeforeCollapse",
+    "itemsAfterCollapse",
+    "autoHideDuration",
+  ],
+  a11y: ["aria-label", "id", "name"],
+};
+
+function groupForProp(prop: CadsPropDef): ControlGroup {
+  for (const group of GROUP_ORDER) {
+    if (GROUP_MEMBERS[group].includes(prop.name)) return group;
+  }
+  if (prop.name.startsWith("aria")) return "a11y";
+  if (prop.name.toLowerCase().includes("icon")) return "appearance";
+  if (prop.name.startsWith("default")) return "state";
+  if (prop.type.trim() === "boolean") return "state";
+  return "content";
+}
+
+function orderedControls(props: CadsPropDef[]): {
+  group: ControlGroup;
+  props: CadsPropDef[];
+}[] {
+  const buckets = new Map<ControlGroup, CadsPropDef[]>();
+  for (const prop of props) {
+    const group = groupForProp(prop);
+    const bucket = buckets.get(group) ?? [];
+    bucket.push(prop);
+    buckets.set(group, bucket);
+  }
+  const result: { group: ControlGroup; props: CadsPropDef[] }[] = [];
+  for (const group of GROUP_ORDER) {
+    const bucket = buckets.get(group);
+    if (!bucket?.length) continue;
+    const priority = GROUP_MEMBERS[group];
+    const sorted = [...bucket].sort((a, b) => {
+      const ai = priority.indexOf(a.name);
+      const bi = priority.indexOf(b.name);
+      if (ai !== -1 && bi !== -1) return ai - bi;
+      if (ai !== -1) return -1;
+      if (bi !== -1) return 1;
+      return 0; // stable: keep manifest order for unlisted props
+    });
+    result.push({ group, props: sorted });
+  }
+  return result;
+}
+
+/* ------------------------------------------------------------------ */
+/* Type parsing                                                        */
+/* ------------------------------------------------------------------ */
 
 function parseEnumOptions(type: string): string[] | null {
   const parts = type
@@ -129,7 +274,7 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
     else if (kind === "enum") {
       const opts = parseEnumOptions(prop.type);
       values[prop.name] = opts?.[0] ?? "";
-    }     else if (kind === "number") {
+    } else if (kind === "number") {
       values[prop.name] = "";
     } else if (kind === "text") {
       if (prop.name === "children" || prop.name === "label") {
@@ -253,6 +398,10 @@ function initialValues(component: CadsComponentManifest): Record<string, unknown
   return values;
 }
 
+/* ------------------------------------------------------------------ */
+/* Controls (dogfooding CADS inputs)                                   */
+/* ------------------------------------------------------------------ */
+
 function ControlField({
   prop,
   value,
@@ -265,165 +414,97 @@ function ControlField({
   const kind = controlKind(prop);
   if (kind === "skip") return null;
 
+  // Inspector row: label left, compact control right (Sketch Lab pattern).
+  // Full type + description surface on hover via the title attribute; the
+  // props table below the playground documents them in full.
   const label = (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "baseline",
-        marginBottom: 6,
-        gap: 8,
-      }}
+    <span
+      className="docs-inspector-label"
+      title={[prop.type, prop.description].filter(Boolean).join(" — ")}
     >
-      <label
-        htmlFor={`ctrl-${prop.name}`}
-        style={{
-          fontSize: "var(--text-body-sm)",
-          fontWeight: 600,
-          color: "var(--text-neutral-primary)",
-        }}
-      >
-        {prop.name}
-        {prop.required ? " *" : ""}
-      </label>
-      <code
-        style={{
-          fontSize: "var(--text-body-xxs)",
-          color: "var(--text-neutral-tertiary)",
-        }}
-      >
-        {prop.type.length > 40 ? `${prop.type.slice(0, 37)}…` : prop.type}
-      </code>
-    </div>
+      {prop.name}
+      {prop.required ? " *" : ""}
+    </span>
   );
-
-  const fieldStyle: CSSProperties = {
-    width: "100%",
-    boxSizing: "border-box",
-    fontFamily: "var(--font-body)",
-    fontSize: "var(--text-body-sm)",
-    padding: "8px 10px",
-    borderRadius: "var(--radius-sm)",
-    border: "1px solid var(--border-neutral-secondary)",
-    background: "var(--background-neutral-primary)",
-    color: "var(--text-neutral-primary)",
-  };
 
   if (kind === "enum") {
     const opts = parseEnumOptions(prop.type) ?? [];
     return (
-      <div style={{ marginBottom: 14 }}>
+      <div className="docs-inspector-row">
         {label}
-        <select
-          id={`ctrl-${prop.name}`}
-          value={String(value ?? "")}
-          onChange={(e) => onChange(e.target.value)}
-          style={fieldStyle}
-        >
-          {opts.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        <div className="docs-inspector-control">
+          <Dropdown
+            role="input"
+            size="extraSmall"
+            width="full"
+            aria-label={prop.name}
+            options={opts.map((opt) => ({ value: opt, label: opt }))}
+            value={String(value ?? "")}
+            onChange={(next) =>
+              onChange(Array.isArray(next) ? next[0] : next)
+            }
+          />
+        </div>
       </div>
     );
   }
 
   if (kind === "boolean") {
     return (
-      <div
-        style={{
-          marginBottom: 14,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 12,
-        }}
-      >
-        <label
-          htmlFor={`ctrl-${prop.name}`}
-          style={{
-            fontSize: "var(--text-body-sm)",
-            fontWeight: 600,
-          }}
-        >
-          {prop.name}
-        </label>
-        <button
-          id={`ctrl-${prop.name}`}
-          type="button"
-          role="switch"
-          aria-checked={Boolean(value)}
-          onClick={() => onChange(!value)}
-          style={{
-            width: 44,
-            height: 26,
-            borderRadius: "var(--radius-round)",
-            border: "1px solid var(--border-neutral-secondary)",
-            background: value
-              ? "var(--background-selected-primary)"
-              : "var(--background-neutral-tertiary)",
-            padding: 2,
-            cursor: "pointer",
-            transition: "var(--transition-colors)",
-            position: "relative",
-          }}
-        >
-          <span
-            style={{
-              display: "block",
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              background: "var(--background-neutral-primary)",
-              transform: value ? "translateX(18px)" : "translateX(0)",
-              transition: "transform var(--duration-short) var(--easing-standard)",
-              boxShadow: "var(--shadow-sm)",
-            }}
-          />
-        </button>
+      <div className="docs-inspector-row">
+        {label}
+        <Toggle
+          size="extraSmall"
+          aria-label={prop.name}
+          checked={Boolean(value)}
+          onChange={(_event, next) => onChange(next)}
+        />
       </div>
     );
   }
 
   if (kind === "number") {
     return (
-      <div style={{ marginBottom: 14 }}>
+      <div className="docs-inspector-row">
         {label}
-        <input
-          id={`ctrl-${prop.name}`}
-          type="number"
-          min={0}
-          value={value === "" || value == null ? "" : String(value)}
-          onChange={(e) => {
-            const raw = e.target.value;
-            if (raw === "") {
-              onChange("");
-              return;
-            }
-            const n = Number(raw);
-            onChange(Number.isFinite(n) ? n : raw);
-          }}
-          style={fieldStyle}
-        />
+        <div className="docs-inspector-control">
+          <TextInput
+            size="extraSmall"
+            aria-label={prop.name}
+            value={value === "" || value == null ? "" : String(value)}
+            onChange={(e) => {
+              const raw = e.target.value;
+              if (raw === "") {
+                onChange("");
+                return;
+              }
+              const n = Number(raw);
+              onChange(Number.isFinite(n) ? n : raw);
+            }}
+          />
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ marginBottom: 14 }}>
+    <div className="docs-inspector-row">
       {label}
-      <input
-        id={`ctrl-${prop.name}`}
-        type="text"
-        value={String(value ?? "")}
-        onChange={(e) => onChange(e.target.value)}
-        style={fieldStyle}
-      />
+      <div className="docs-inspector-control">
+        <TextInput
+          size="extraSmall"
+          aria-label={prop.name}
+          value={String(value ?? "")}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Code generation                                                     */
+/* ------------------------------------------------------------------ */
 
 function propsToCode(
   exportName: string,
@@ -549,13 +630,20 @@ function propsToCode(
   return `<${exportName}${attrStr} />`;
 }
 
+/* ------------------------------------------------------------------ */
+/* Playground                                                          */
+/* ------------------------------------------------------------------ */
+
 export function InteractivePlayground({
   component,
 }: {
   component: CadsComponentManifest;
 }) {
-  const controllable = useMemo(
-    () => component.props.filter((p) => controlKind(p) !== "skip"),
+  const groups = useMemo(
+    () =>
+      orderedControls(
+        component.props.filter((p) => controlKind(p) !== "skip"),
+      ),
     [component],
   );
   const [values, setValues] = useState(() => initialValues(component));
@@ -566,33 +654,49 @@ export function InteractivePlayground({
     return <LivePlayground code={component.example} />;
   }
 
+  const setValue = (name: string, next: unknown) =>
+    setValues((prev) => {
+      const updated: Record<string, unknown> = { ...prev, [name]: next };
+      // Bipolar vs side ranges when toggling Slider startsFrom.
+      if (component.exportName === "Slider" && name === "startsFrom") {
+        if (next === "center") {
+          updated.min = -100;
+          updated.max = 100;
+          updated.defaultValue = 0;
+        } else {
+          updated.min = 0;
+          updated.max = 100;
+          updated.defaultValue = 0;
+        }
+      }
+      // topIconName only renders for iconTop — switch type so the
+      // playground control is never a no-op.
+      if (
+        component.exportName === "Dialog" &&
+        name === "topIconName" &&
+        String(next ?? "").trim()
+      ) {
+        updated.type = "iconTop";
+      }
+      if (
+        component.exportName === "Dialog" &&
+        name === "type" &&
+        next === "iconTop" &&
+        !updated.topIconName
+      ) {
+        updated.topIconName = "smile";
+      }
+      return updated;
+    });
+
   return (
-    <div
-      style={{
-        border: "1px solid var(--border-neutral-primary)",
-        borderRadius: "var(--radius-md)",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(240px, 300px)",
-        }}
-        className="cads-playground-grid"
-      >
+    <div className="docs-playground">
+      <div className="docs-playground-grid">
         <div
-          style={{
-            padding: 28,
-            background: "var(--background-neutral-primary)",
-            minHeight: 140,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: values.fullWidth ? "stretch" : "center",
-            gap: 12,
-            flexWrap: "wrap",
-            borderRight: "1px solid var(--border-neutral-primary)",
-          }}
+          className="docs-playground-stage"
+          style={
+            values.fullWidth ? { justifyContent: "stretch" } : undefined
+          }
         >
           {/* Remount when defaultChecked changes — uncontrolled defaults only apply on mount.
               Stretch wrapper so fullWidth components can fill the preview stage. */}
@@ -610,259 +714,197 @@ export function InteractivePlayground({
             />
           </div>
         </div>
-        <div
-          style={{
-            padding: 16,
-            background: "var(--background-neutral-secondary)",
-            maxHeight: 420,
-            overflow: "auto",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "var(--text-body-xs)",
-              fontWeight: 600,
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              color: "var(--text-neutral-secondary)",
-              marginBottom: 12,
-            }}
-          >
-            Props
+        <div className="docs-playground-panel">
+          <div className="docs-playground-panel-header">
+            <span className="docs-overline">Props</span>
+            <button
+              type="button"
+              className="docs-copy-btn"
+              style={{ position: "static" }}
+              onClick={() => setValues(initialValues(component))}
+            >
+              Reset
+            </button>
           </div>
-          {controllable.map((prop) => (
-            <ControlField
-              key={prop.name}
-              prop={prop}
-              value={values[prop.name]}
-              onChange={(next) =>
-                setValues((prev) => {
-                  const updated: Record<string, unknown> = {
-                    ...prev,
-                    [prop.name]: next,
-                  };
-                  // Bipolar vs side ranges when toggling Slider startsFrom.
-                  if (
-                    component.exportName === "Slider" &&
-                    prop.name === "startsFrom"
-                  ) {
-                    if (next === "center") {
-                      updated.min = -100;
-                      updated.max = 100;
-                      updated.defaultValue = 0;
-                    } else {
-                      updated.min = 0;
-                      updated.max = 100;
-                      updated.defaultValue = 0;
-                    }
+          <div>
+            {groups.map(({ group, props }) => (
+              <section key={group} className="docs-inspector-section">
+                {groups.length > 1 ? (
+                  <h4 className="docs-inspector-title">
+                    {GROUP_LABELS[group]}
+                  </h4>
+                ) : null}
+                {props.map((prop) => (
+                  <ControlField
+                    key={prop.name}
+                    prop={prop}
+                    value={values[prop.name]}
+                    onChange={(next) => setValue(prop.name, next)}
+                  />
+                ))}
+              </section>
+            ))}
+            {component.exportName === "Breadcrumbs" ? (
+              <section className="docs-inspector-section">
+                <h4 className="docs-inspector-title">
+                  Item icon (playground)
+                </h4>
+                <ControlField
+                  prop={{
+                    name: "demoIcon",
+                    type: "boolean",
+                    description:
+                      "Optional leading iconName on any crumb (items[].iconName)",
+                  }}
+                  value={values.demoIcon}
+                  onChange={(next) =>
+                    setValues((prev) => ({ ...prev, demoIcon: next }))
                   }
-                  // topIconName only renders for iconTop — switch type so the
-                  // playground control is never a no-op.
-                  if (
-                    component.exportName === "Dialog" &&
-                    prop.name === "topIconName" &&
-                    String(next ?? "").trim()
-                  ) {
-                    updated.type = "iconTop";
+                />
+                {values.demoIcon ? (
+                  <>
+                    <ControlField
+                      prop={{
+                        name: "demoIconItem",
+                        type: '"Home" | "Products" | "Category" | "Subsection" | "Detail" | "Current"',
+                        description: "Which trail item receives the icon",
+                      }}
+                      value={values.demoIconItem}
+                      onChange={(next) =>
+                        setValues((prev) => ({ ...prev, demoIconItem: next }))
+                      }
+                    />
+                    <ControlField
+                      prop={{
+                        name: "demoIconName",
+                        type: "FaIconName",
+                        description: "items[].iconName",
+                      }}
+                      value={values.demoIconName}
+                      onChange={(next) =>
+                        setValues((prev) => ({ ...prev, demoIconName: next }))
+                      }
+                    />
+                    <ControlField
+                      prop={{
+                        name: "demoIconOnly",
+                        type: "boolean",
+                        description:
+                          "items[].iconOnly — hide label, keep a11y name",
+                      }}
+                      value={values.demoIconOnly}
+                      onChange={(next) =>
+                        setValues((prev) => ({ ...prev, demoIconOnly: next }))
+                      }
+                    />
+                  </>
+                ) : null}
+              </section>
+            ) : null}
+            {component.exportName === "IconToggle" ? (
+              <section className="docs-inspector-section">
+                <h4 className="docs-inspector-title">
+                  Dual toggle (playground)
+                </h4>
+                <ControlField
+                  prop={{
+                    name: "dualToggle",
+                    type: "boolean",
+                    description:
+                      "Preview Figma Icon Toggle + Label with two toggles",
+                  }}
+                  value={values.dualToggle}
+                  onChange={(next) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      dualToggle: next,
+                      label:
+                        next && !String(prev.label || "").trim()
+                          ? "Was this helpful?"
+                          : prev.label,
+                      // Thumbs up/down seed: per-toggle colors + exclusive.
+                      iconName: next ? "thumbs-up" : prev.iconName || "smile",
+                      color: next ? "success" : prev.color,
+                      secondIconName: "thumbs-down",
+                      secondColor: "error",
+                      secondAriaLabel: "Thumbs down",
+                      exclusive: next ? true : prev.exclusive,
+                      "aria-label": next
+                        ? "Thumbs up"
+                        : prev["aria-label"] || component.name,
+                    }))
                   }
-                  if (
-                    component.exportName === "Dialog" &&
-                    prop.name === "type" &&
-                    next === "iconTop" &&
-                    !updated.topIconName
-                  ) {
-                    updated.topIconName = "smile";
-                  }
-                  return updated;
-                })
-              }
-            />
-          ))}
-          {component.exportName === "Breadcrumbs" ? (
-            <>
-              <div
-                style={{
-                  fontSize: "var(--text-body-xxs)",
-                  fontWeight: 600,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  color: "var(--text-neutral-secondary)",
-                  margin: "8px 0 10px",
-                }}
-              >
-                Item icon (playground)
-              </div>
-              <ControlField
-                prop={{
-                  name: "demoIcon",
-                  type: "boolean",
-                  description:
-                    "Optional leading iconName on any crumb (items[].iconName)",
-                }}
-                value={values.demoIcon}
-                onChange={(next) =>
-                  setValues((prev) => ({ ...prev, demoIcon: next }))
-                }
-              />
-              {values.demoIcon ? (
-                <>
-                  <ControlField
-                    prop={{
-                      name: "demoIconItem",
-                      type: '"Home" | "Products" | "Category" | "Subsection" | "Detail" | "Current"',
-                      description: "Which trail item receives the icon",
-                    }}
-                    value={values.demoIconItem}
-                    onChange={(next) =>
-                      setValues((prev) => ({ ...prev, demoIconItem: next }))
-                    }
-                  />
-                  <ControlField
-                    prop={{
-                      name: "demoIconName",
-                      type: "FaIconName",
-                      description: "items[].iconName",
-                    }}
-                    value={values.demoIconName}
-                    onChange={(next) =>
-                      setValues((prev) => ({ ...prev, demoIconName: next }))
-                    }
-                  />
-                  <ControlField
-                    prop={{
-                      name: "demoIconOnly",
-                      type: "boolean",
-                      description: "items[].iconOnly — hide label, keep a11y name",
-                    }}
-                    value={values.demoIconOnly}
-                    onChange={(next) =>
-                      setValues((prev) => ({ ...prev, demoIconOnly: next }))
-                    }
-                  />
-                </>
-              ) : null}
-            </>
-          ) : null}
-          {component.exportName === "IconToggle" ? (
-            <>
-              <ControlField
-                prop={{
-                  name: "dualToggle",
-                  type: "boolean",
-                  description:
-                    "Preview Figma Icon Toggle + Label with two toggles",
-                }}
-                value={values.dualToggle}
-                onChange={(next) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    dualToggle: next,
-                    label:
-                      next && !String(prev.label || "").trim()
-                        ? "Was this helpful?"
-                        : prev.label,
-                    // Thumbs up/down seed: per-toggle colors + exclusive.
-                    iconName: next ? "thumbs-up" : prev.iconName || "smile",
-                    color: next ? "success" : prev.color,
-                    secondIconName: "thumbs-down",
-                    secondColor: "error",
-                    secondAriaLabel: "Thumbs down",
-                    exclusive: next ? true : prev.exclusive,
-                    "aria-label": next
-                      ? "Thumbs up"
-                      : prev["aria-label"] || component.name,
-                  }))
-                }
-              />
-              {values.dualToggle ? (
-                <>
-                  <div
-                    style={{
-                      fontSize: "var(--text-body-xxs)",
-                      fontWeight: 600,
-                      letterSpacing: "0.04em",
-                      textTransform: "uppercase",
-                      color: "var(--text-neutral-secondary)",
-                      margin: "4px 0 10px",
-                    }}
-                  >
-                    First toggle — use color / iconName / aria-label above
-                  </div>
-                  <ControlField
-                    prop={{
-                      name: "secondIconName",
-                      type: "FaIconName",
-                      description: "secondToggle.iconName",
-                    }}
-                    value={values.secondIconName}
-                    onChange={(next) =>
-                      setValues((prev) => ({
-                        ...prev,
-                        secondIconName: next,
-                      }))
-                    }
-                  />
-                  <ControlField
-                    prop={{
-                      name: "secondColor",
-                      type: '"primary" | "secondary" | "brand" | "success" | "error"',
-                      description: "secondToggle.color (independent)",
-                    }}
-                    value={values.secondColor}
-                    onChange={(next) =>
-                      setValues((prev) => ({ ...prev, secondColor: next }))
-                    }
-                  />
-                  <ControlField
-                    prop={{
-                      name: "secondAriaLabel",
-                      type: "string",
-                      description: "secondToggle aria-label",
-                    }}
-                    value={values.secondAriaLabel}
-                    onChange={(next) =>
-                      setValues((prev) => ({
-                        ...prev,
-                        secondAriaLabel: next,
-                      }))
-                    }
-                  />
-                </>
-              ) : null}
-            </>
-          ) : null}
+                />
+                {values.dualToggle ? (
+                  <>
+                    <p className="docs-inspector-note">
+                      First toggle — use color / iconName / aria-label above
+                    </p>
+                    <ControlField
+                      prop={{
+                        name: "secondIconName",
+                        type: "FaIconName",
+                        description: "secondToggle.iconName",
+                      }}
+                      value={values.secondIconName}
+                      onChange={(next) =>
+                        setValues((prev) => ({
+                          ...prev,
+                          secondIconName: next,
+                        }))
+                      }
+                    />
+                    <ControlField
+                      prop={{
+                        name: "secondColor",
+                        type: '"primary" | "secondary" | "brand" | "success" | "error"',
+                        description: "secondToggle.color (independent)",
+                      }}
+                      value={values.secondColor}
+                      onChange={(next) =>
+                        setValues((prev) => ({ ...prev, secondColor: next }))
+                      }
+                    />
+                    <ControlField
+                      prop={{
+                        name: "secondAriaLabel",
+                        type: "string",
+                        description: "secondToggle aria-label",
+                      }}
+                      value={values.secondAriaLabel}
+                      onChange={(next) =>
+                        setValues((prev) => ({
+                          ...prev,
+                          secondAriaLabel: next,
+                        }))
+                      }
+                    />
+                  </>
+                ) : null}
+              </section>
+            ) : null}
+          </div>
         </div>
       </div>
-      <div
-        style={{
-          borderTop: "1px solid var(--border-neutral-primary)",
-          background: "var(--background-neutral-secondary)",
-          padding: "12px 16px",
-        }}
-      >
-        <pre
-          style={{
-            margin: 0,
-            fontFamily: "var(--font-mono)",
-            fontSize: 13,
-            whiteSpace: "pre-wrap",
-            color: "var(--text-neutral-primary)",
-          }}
-        >
-          {code}
-        </pre>
+      <div className="docs-playground-code">
+        <div style={{ position: "relative", padding: "12px 16px" }}>
+          <pre
+            style={{
+              margin: 0,
+              padding: 0,
+              border: "none",
+              background: "transparent",
+              fontFamily: "var(--font-mono)",
+              fontSize: 13,
+              whiteSpace: "pre-wrap",
+              color: "var(--text-neutral-primary)",
+            }}
+          >
+            {code}
+          </pre>
+          <CopyButton text={code} />
+        </div>
       </div>
-      <style>{`
-        @media (max-width: 720px) {
-          .cads-playground-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .cads-playground-grid > div:first-child {
-            border-right: none !important;
-            border-bottom: 1px solid var(--border-neutral-primary);
-          }
-        }
-      `}</style>
     </div>
   );
 }

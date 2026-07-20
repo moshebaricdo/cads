@@ -28,6 +28,19 @@ if (!existsSync(join(skillSrc, "runtime/cads-runtime.js"))) {
   process.exit(1);
 }
 
+// References that must ship in the ZIP (cpSync copies skill/ wholesale, but
+// fail loudly if one goes missing rather than shipping a broken skill).
+for (const ref of [
+  "references/schema.md",
+  "references/manifest-summary.md",
+  "references/ui-patterns.md",
+]) {
+  if (!existsSync(join(skillSrc, ref))) {
+    console.error(`Missing skill/${ref} — refusing to package.`);
+    process.exit(1);
+  }
+}
+
 rmSync(join(distDir, "skill-staging"), { recursive: true, force: true });
 mkdirSync(staging, { recursive: true });
 cpSync(skillSrc, staging, { recursive: true });

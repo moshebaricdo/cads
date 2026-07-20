@@ -8,5 +8,7 @@ node_modules
 coverage
 apps/docs/.next
 apps/docs/out
+# FA Pro inlined — internal license, never commit
+apps/docs/public/downloads/
 *.tsbuildinfo
 .pnpm-store

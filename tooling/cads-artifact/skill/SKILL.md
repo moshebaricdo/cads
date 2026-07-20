@@ -11,6 +11,7 @@ Create **native Claude artifacts** that embed the real CADS runtime. No hosting,
 
 1. Translate the user's request into a constrained CADS prototype JSON (see [references/schema.md](references/schema.md)).
 2. Use only components and props listed in [references/manifest-summary.md](references/manifest-summary.md).
+   Compose them per [references/ui-patterns.md](references/ui-patterns.md) — territories, shell scaffolds, density, and the brand/selected/status color rules that make output feel like CodeAI.
 3. Generate a **self-contained HTML artifact** by inlining:
    - `runtime/cads-runtime.css`
    - `runtime/cads-runtime.js`

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3100",
     "dev:webpack": "next dev --port 3100",
-    "prebuild": "node scripts/generate-llms-txt.mjs",
+    "prebuild": "node scripts/generate-llms-txt.mjs && node scripts/copy-skill-zip.mjs",
     "build": "next build",
     "start": "next start --port 3100"
   },

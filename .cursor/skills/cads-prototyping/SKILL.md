@@ -12,6 +12,7 @@ Build UI with the CodeAI Design System packages — never invent components, pro
 1. **Figma:** `https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-` (`fileKey: DGekOeToRVifvFAhfqpeC1`)
 2. **Manifest:** `import { cadsManifest } from "@codeai/cads-react"` (or `@codeai/cads-react/manifest`)
 3. **Docs / llms.txt:** docs site `/llms.txt` for a text catalog of every component
+4. **UI patterns:** `tooling/cads-artifact/skill/references/ui-patterns.md` — territories, app-shell/dashboard/marketing/dialog scaffolds, density, and brand vs selected vs status color rules. Read it before composing any multi-component screen so the result feels like CodeAI, not just "uses CADS".
 
 ## Setup (once per app)
 

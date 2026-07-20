@@ -30,6 +30,6 @@ interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type"
  * CADS Link — inline text link with optional external-affordance icon.
  * Spec: Figma Link `3480:5546` / key `87b099a460c3dad155731d3983e7ccfecefc5975`.
  */
-declare const Link: react.ForwardRefExoticComponent<LinkProps & react.RefAttributes<HTMLAnchorElement | HTMLSpanElement>>;
+declare const Link: react.ForwardRefExoticComponent<LinkProps & react.RefAttributes<HTMLSpanElement | HTMLAnchorElement>>;
 
 export { Link, type LinkProps, type LinkSize, type LinkType };

@@ -1,6 +1,6 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-17
+Last updated: 2026-07-19
 
 ## Done (scaffold complete)
 
@@ -27,6 +27,8 @@ Last updated: 2026-07-17
 - [x] **Cross-client prototyping proof of concept (2026-07-17)** — local stdio MCP exposes manifest search, constrained prototype schema, strict validation, and URL-encoded `/prototype` rendering through the real CADS package. Six validator/protocol tests pass; interactive TextInput/Dropdown/Button smoke-tested. Production gaps intentionally left visible: remote HTTP transport, auth, persistence, and multi-screen actions.
 - [x] **Claude artifact kit (2026-07-17)** — `@codeai/cads-artifact` bundles real CADS + FA fonts into a self-contained HTML runtime for organization-only Claude artifacts (no hosting). Runtime **3.74 MB** (JS 662 KB / CSS+fonts 3.10 MB); sample teacher-onboarding HTML **3.84 MB**; skill ZIP **3.20 MB** at `tooling/cads-artifact/dist/cads-prototyping.zip`. Local browser smoke: TextInput/Dropdown/Alert/Button + FA icons interactive. Upload via Customize → Skills; see `tooling/cads-artifact/MANUAL_TEST.md`.
 - [x] **Close Icon Button (2026-07-17)** — promoted the shared close action to a public Figma-mapped component and refactored Alert, Toast, NotificationBanner, Tag, Tabs, Popover, Drawer, Dialog, and Modal to compose it.
+- [x] **Docs design sweep (2026-07-19)** — docs UI kit (`apps/docs/components/docs-ui.tsx` + CSS classes in `globals.css`), redesigned shell with grouped nav (Getting started / Foundations / Components / Resources) and persisted dark mode; playground rework: props grouped Appearance → Content → State → Layout → A11y with CADS `Dropdown`/`Toggle`/`TextInput` as panel controls, dot-grid stage, reset + copyable synced snippet; component pages restructured (category eyebrow, copyable import, usage-rule cards, copyable variable chips, manifest example); variables pages rebuilt (color grouped by layer × role with light+dark swatches, full typography scale, spacing/shape) plus new **Core styles** page (elevation, motion, control heights); new **AI setup** page (`/ai`) documenting llms.txt / manifest / Claude skill with a skill-ZIP download (prebuild copies `tooling/cads-artifact/dist/cads-prototyping.zip` → gitignored `public/downloads/`; page falls back to build instructions when absent — FA Pro license note included).
+- [x] **CodeAI UI-patterns pass (2026-07-19)** — docs chrome aligned to CADS Figma shell (`16778:3578`): 200px sidebar + logo cell, white top bar with search / icon-only Figma button / theme Toggle, `DocsNavItem` (active = brand text+icon, hover = neutral-secondary fill), Overline section labels, playground props panel restyled as a Sketch-Lab-style grouped inspector (gray overline header strip, hairline-separated sections, dense label-left/control-right rows), cards/tables/playground on `--radius-md`. New skill reference `tooling/cads-artifact/skill/references/ui-patterns.md` (territories, shell scaffolds, composition/density, color language, do/don't) wired into `package-skill.mjs` (existence-checked, ships in ZIP), referenced from both SKILL.md files; `/ai` page gained a "UI patterns" section and `generate-llms-txt.mjs` now emits a compact patterns block.
 
 ## Close Icon Button — evidence summary
 
