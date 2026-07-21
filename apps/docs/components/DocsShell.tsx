@@ -45,6 +45,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
   const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
   const isCanvas =
     pathname.startsWith("/fixtures") || pathname.startsWith("/prototype");
+  const isExplore = pathname.startsWith("/explore");
 
   const componentsByExport = useMemo(
     () => new Map(cadsManifest.components.map((c) => [c.exportName, c] as const)),
@@ -256,7 +257,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <main className="docs-main">
+        <main className={isExplore ? "docs-main docs-main--explore" : "docs-main"}>
           <div className="docs-main-inner">{children}</div>
         </main>
       </div>
