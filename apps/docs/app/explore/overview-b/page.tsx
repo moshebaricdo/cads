@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Link as CadsLink } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import {
   ExploreBanner,
@@ -59,9 +58,9 @@ export default function ExploreOverviewBPage() {
 
       <footer className="docs-explore-footer">
         <span>Spec in Figma</span>
-        <CadsLink href={FIGMA_URL} size="extraSmall" target="_blank" rel="noreferrer">
-          Open CADS file
-        </CadsLink>
+        <a href={FIGMA_URL} target="_blank" rel="noreferrer">
+          Open CADS file ↗
+        </a>
       </footer>
     </ExploreSurface>
   );

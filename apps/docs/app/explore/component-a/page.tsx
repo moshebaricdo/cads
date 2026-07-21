@@ -1,4 +1,3 @@
-import { Link as CadsLink } from "@codeai/cads-react";
 import { InteractivePlayground } from "@/components/InteractivePlayground";
 import { PropsTable } from "@/components/PropsTable";
 import { CodeBlock, VarChip } from "@/components/docs-ui";
@@ -29,9 +28,15 @@ export default function ExploreComponentAPage() {
       >
         <div className="docs-explore-meta-row">
           <CodeBlock code={importCode} />
-          <CadsLink href={figmaUrl} size="small" target="_blank" rel="noreferrer">
+          <a
+            href={figmaUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="docs-explore-figma-btn"
+          >
             Open in Figma
-          </CadsLink>
+            <span aria-hidden>↗</span>
+          </a>
         </div>
       </ExploreHeader>
 

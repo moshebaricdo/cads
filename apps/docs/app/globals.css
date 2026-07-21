@@ -951,6 +951,37 @@ a.docs-explore-area-card:focus-visible {
   margin-top: 14px;
 }
 
+.docs-explore-figma-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--control-height-small);
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-primary);
+  color: var(--text-neutral-primary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition-colors);
+}
+
+a.docs-explore-figma-btn:hover {
+  text-decoration: none;
+  background: var(--background-neutral-secondary);
+}
+
+a.docs-explore-figma-btn:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+.docs-explore-figma-btn span {
+  color: var(--text-neutral-tertiary);
+}
+
 .docs-explore-meta-row .docs-codeblock {
   flex: 1 1 320px;
   min-width: 0;
