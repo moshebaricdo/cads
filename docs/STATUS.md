@@ -1,6 +1,6 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-19
+Last updated: 2026-07-21
 
 ## Done (scaffold complete)
 
@@ -29,6 +29,7 @@ Last updated: 2026-07-19
 - [x] **Close Icon Button (2026-07-17)** — promoted the shared close action to a public Figma-mapped component and refactored Alert, Toast, NotificationBanner, Tag, Tabs, Popover, Drawer, Dialog, and Modal to compose it.
 - [x] **Docs design sweep (2026-07-19)** — docs UI kit (`apps/docs/components/docs-ui.tsx` + CSS classes in `globals.css`), redesigned shell with grouped nav (Getting started / Foundations / Components / Resources) and persisted dark mode; playground rework: props grouped Appearance → Content → State → Layout → A11y with CADS `Dropdown`/`Toggle`/`TextInput` as panel controls, dot-grid stage, reset + copyable synced snippet; component pages restructured (category eyebrow, copyable import, usage-rule cards, copyable variable chips, manifest example); variables pages rebuilt (color grouped by layer × role with light+dark swatches, full typography scale, spacing/shape) plus new **Core styles** page (elevation, motion, control heights); new **AI setup** page (`/ai`) documenting llms.txt / manifest / Claude skill with a skill-ZIP download (prebuild copies `tooling/cads-artifact/dist/cads-prototyping.zip` → gitignored `public/downloads/`; page falls back to build instructions when absent — FA Pro license note included).
 - [x] **CodeAI UI-patterns pass (2026-07-19)** — docs chrome aligned to CADS Figma shell (`16778:3578`): 200px sidebar + logo cell, white top bar with search / icon-only Figma button / theme Toggle, `DocsNavItem` (active = brand text+icon, hover = neutral-secondary fill), Overline section labels, playground props panel restyled as a Sketch-Lab-style grouped inspector (gray overline header strip, hairline-separated sections, dense label-left/control-right rows), cards/tables/playground on `--radius-md`. New skill reference `tooling/cads-artifact/skill/references/ui-patterns.md` (territories, shell scaffolds, composition/density, color language, do/don't) wired into `package-skill.mjs` (existence-checked, ships in ZIP), referenced from both SKILL.md files; `/ai` page gained a "UI patterns" section and `generate-llms-txt.mjs` now emits a compact patterns block.
+- [x] **Docs content page options (2026-07-21)** — exploratory routes under `/explore` (index + overview-a/b + component-a/b for Button only). Gray field + white surface canvas; real `/` and `/components/[name]` unchanged. Pick a winning Overview + component template next, then promote.
 
 ## Close Icon Button — evidence summary
 
@@ -159,14 +160,15 @@ Accepted differences:
 
 Priority order for the next agent sessions:
 
-1. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
-2. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
-3. **End-to-end designer → Claude artifact** — upload `tooling/cads-artifact/dist/cads-prototyping.zip`, run the org-sharing checklist in `MANUAL_TEST.md` (create → publish org-only → teammate open → customize/edit). Decide whether multi-MB inlined FA fonts are acceptable in Claude artifacts; only then consider remote MCP/hosting as a secondary path.
-4. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
-5. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
-6. **Publish / hosting** — push to GitHub when ready; decide org (`code-dot-org` vs other); optionally deploy docs (Vercel / GH Pages).
-7. **Prototype gallery** — replace the placeholder with real inspectable prototypes.
-8. **Harness automation (later)** — REST snapshot refresh/change fingerprint with PAT; CI strict audit; Playwright pairwise fixture generation and normalized pixel baselines.
+1. **Choose and promote docs content templates** — review `/explore` Overview A/B + Button Component A/B; adopt winners onto real `/` and `/components/[name]` (shared canvas), then remove explore routes.
+2. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
+3. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
+4. **End-to-end designer → Claude artifact** — upload `tooling/cads-artifact/dist/cads-prototyping.zip`, run the org-sharing checklist in `MANUAL_TEST.md` (create → publish org-only → teammate open → customize/edit). Decide whether multi-MB inlined FA fonts are acceptable in Claude artifacts; only then consider remote MCP/hosting as a secondary path.
+5. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
+6. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
+7. **Publish / hosting** — push to GitHub when ready; decide org (`code-dot-org` vs other); optionally deploy docs (Vercel / GH Pages).
+8. **Prototype gallery** — replace the placeholder with real inspectable prototypes.
+9. **Harness automation (later)** — REST snapshot refresh/change fingerprint with PAT; CI strict audit; Playwright pairwise fixture generation and normalized pixel baselines.
 
 ## Explicit non-goals (for now)
 
