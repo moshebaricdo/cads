@@ -10,15 +10,21 @@
       "964:10677",
       "971:4280",
       "896:3791",
-      "15857:99804"
+      "15857:99804",
+      "16847:69841",
+      "16847:69853"
     ],
-    "retrievedAt": "2026-07-16",
+    "retrievedAt": "2026-07-20",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "figma-update",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "Menu Item itemType icon→default, iconError→defaultError; hasStartIcon boolean for text-only",
+      "Added menuSeparator (16847:69841) and menuOptGroup (16847:69853)",
+      "menuType icon→default (item icons are per-option, not list-level)"
+    ]
   },
   "axes": {
     "public": {
@@ -33,7 +39,7 @@
         "action"
       ],
       "menuType": [
-        "icon",
+        "default",
         "checklist"
       ],
       "menuPlacement": [
@@ -142,6 +148,40 @@
     },
     {
       "when": {
+        "role": "input",
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-solid)",
+        "focus": "FOCUS_RING (2px surface + 4px --border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "Dropdown Button state=focus",
+      "notes": [
+        "Trigger uses outer FOCUS_RING; outline:none to avoid browser stack.",
+        "When a menu item has keyboard focus, trigger ring is suppressed."
+      ]
+    },
+    {
+      "when": {
+        "role": "input",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "Dropdown Button state=hover",
+      "notes": [
+        "Hover fill is tertiary (not secondary)."
+      ]
+    },
+    {
+      "when": {
         "itemState": "selected",
         "mode": "light"
       },
@@ -159,7 +199,72 @@
     },
     {
       "when": {
-        "itemType": "iconError",
+        "itemState": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover, selected=no",
+      "notes": [
+        "Pointer hover only — distinct from keyboard focus."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "focus",
+        "selected": false,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "focus": "outline 2px solid var(--border-focused-primary); outline-offset: -2px"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus, selected=no",
+      "notes": [
+        "Keyboard highlight via data-keyboard-focus; Figma uses a 2px border — code uses outline + -2px offset to avoid layout shift.",
+        "Not the outer FOCUS_RING used on the trigger."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "focus",
+        "selected": true,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "text": "var(--text-selected-primary)",
+        "focus": "outline 2px solid var(--border-selected-primary-inverse); outline-offset: -2px"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus, selected=yes",
+      "notes": [
+        "Selected + keyboard focus keeps selected fill; inverse flush outline."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "defaultError",
+        "itemState": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "text": "var(--text-error-primary)",
+        "focus": "outline 2px solid var(--border-error-primary); outline-offset: -2px"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "itemType=defaultError, state=focus",
+      "notes": [
+        "Destructive keyboard focus: white fill + error flush outline."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "defaultError",
         "mode": "light"
       },
       "variables": {
@@ -167,9 +272,56 @@
         "icon": "var(--text-error-primary)"
       },
       "geometryOverrides": {},
-      "figmaVariant": "itemType=iconError",
+      "figmaVariant": "itemType=defaultError",
       "notes": [
         "Destructive action item."
+      ]
+    },
+    {
+      "when": {
+        "startIcon": false,
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {
+        "iconSlot": "0"
+      },
+      "figmaVariant": "hasStartIcon=false",
+      "notes": [
+        "Text-only item — no leading icon slot reserved."
+      ]
+    },
+    {
+      "when": {
+        "entry": "separator",
+        "mode": "light"
+      },
+      "variables": {
+        "border": "var(--border-neutral-primary)"
+      },
+      "geometryOverrides": {
+        "height": "8px"
+      },
+      "figmaVariant": "menuSeparator type=Default",
+      "notes": [
+        "8px row with 1px hairline."
+      ]
+    },
+    {
+      "when": {
+        "entry": "group",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-quaternary)",
+        "tracking": "var(--tracking-overline)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "menuOptGroup",
+      "notes": [
+        "Non-interactive overline label; skipped in keyboard nav."
       ]
     }
   ],
@@ -180,18 +332,19 @@
       "role",
       "menuType",
       "menuPlacement",
-      "mode"
+      "mode",
+      "startIcon"
     ],
     "cases": [
       {
         "id": "dropdown-large-input-icon-bottomleft-light",
         "figmaNodeId": "15857:100677",
-        "figmaVariant": "size=large, role=input, menuType=icon, menuPlacement=bottomLeft",
+        "figmaVariant": "size=large, role=input, menuType=default, menuPlacement=bottomLeft",
         "mode": "light",
         "props": {
           "size": "large",
           "role": "input",
-          "menuType": "icon",
+          "menuType": "default",
           "menuPlacement": "bottomLeft",
           "label": "Field label",
           "helperText": "Helper text",
@@ -250,12 +403,12 @@
       {
         "id": "dropdown-large-action-icon-bottomleft-light",
         "figmaNodeId": "15872:108962",
-        "figmaVariant": "size=large, role=action, menuType=icon, menuPlacement=bottomLeft",
+        "figmaVariant": "size=large, role=action, menuType=default, menuPlacement=bottomLeft",
         "mode": "light",
         "props": {
           "size": "large",
           "role": "action",
-          "menuType": "icon",
+          "menuType": "default",
           "menuPlacement": "bottomLeft",
           "label": "Button",
           "defaultOpen": true
@@ -282,12 +435,12 @@
       {
         "id": "dropdown-small-input-icon-topleft-light",
         "figmaNodeId": "15872:106758",
-        "figmaVariant": "size=small, role=input, menuType=icon, menuPlacement=topLeft",
+        "figmaVariant": "size=small, role=input, menuType=default, menuPlacement=topLeft",
         "mode": "light",
         "props": {
           "size": "small",
           "role": "input",
-          "menuType": "icon",
+          "menuType": "default",
           "menuPlacement": "topLeft",
           "label": "Field label",
           "defaultOpen": true
@@ -313,12 +466,12 @@
       {
         "id": "dropdown-xs-action-icon-topright-light",
         "figmaNodeId": "15872:109007",
-        "figmaVariant": "size=extraSmall, role=action, menuType=icon, menuPlacement=topRight",
+        "figmaVariant": "size=extraSmall, role=action, menuType=default, menuPlacement=topRight",
         "mode": "light",
         "props": {
           "size": "extraSmall",
           "role": "action",
-          "menuType": "icon",
+          "menuType": "default",
           "menuPlacement": "topRight",
           "label": "Button",
           "defaultOpen": true
@@ -344,12 +497,12 @@
       {
         "id": "dropdown-large-input-icon-bottomleft-dark",
         "figmaNodeId": "15857:100677",
-        "figmaVariant": "size=large, role=input, menuType=icon, menuPlacement=bottomLeft",
+        "figmaVariant": "size=large, role=input, menuType=default, menuPlacement=bottomLeft",
         "mode": "dark",
         "props": {
           "size": "large",
           "role": "input",
-          "menuType": "icon",
+          "menuType": "default",
           "menuPlacement": "bottomLeft",
           "label": "Field label",
           "defaultOpen": true
@@ -370,6 +523,40 @@
         "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-large-input-icon-bottomleft-dark&mode=dark",
         "result": "pass",
         "mismatches": []
+      },
+      {
+        "id": "dropdown-medium-input-text-grouped-light",
+        "figmaNodeId": "896:3791",
+        "figmaVariant": "hasStartIcon=false + menuOptGroup + menuSeparator",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "role": "input",
+          "menuType": "default",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "separatorHeight": "8px"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary",
+          "--text-neutral-quaternary",
+          "--tracking-overline",
+          "--background-selected-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-medium-input-text-grouped-light",
+        "referenceScreenshot": "captures/figma-dropdown.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-medium-input-text-grouped-light",
+        "result": "pending",
+        "mismatches": []
       }
     ]
   },
@@ -383,7 +570,9 @@
       "Removed Grow + disablePortal=false\u2192true so fixture transition:none and capture regions keep the menu",
       "Fixed Popper anchorEl via callback state so defaultOpen opens on first paint",
       "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791",
-      "Checklist menu width/minWidth max-content so Action Row labels never wrap; option labels ellipsize; options list pb 4; pressed states (neutral tertiary / error primary); icon menus always show leading icon (Figma 971:4280 / 896:3791)"
+      "Checklist menu width/minWidth max-content so Action Row labels never wrap; option labels ellipsize; options list pb 4; pressed states (neutral tertiary / error primary)",
+      "2026-07-20: text-only items (optional startIcon), menuSeparator, menuOptGroup; itemType default/defaultError",
+      "2026-07-21: focus/hover parity — trigger outline:none + tertiary hover; keyboard item focus outline 2px / offset -2px (brand-light / selected-inverse / error) distinct from pointer hover tertiary; suppress trigger ring while item has keyboard focus"
     ]
   }
 }

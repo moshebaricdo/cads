@@ -6,11 +6,11 @@ export { IconToggle, IconToggleColor, IconToggleProps, IconToggleSecondProps, Ic
 export { FieldContextValue, FieldSentiment, FieldWrapper, FieldWrapperProps, FieldWrapperSize, useFieldContext } from './components/FieldWrapper.js';
 export { TextInput, TextInputColor, TextInputProps, TextInputSize } from './components/TextInput.js';
 export { TextField, TextFieldProps, TextFieldSize } from './components/TextField.js';
-export { Dropdown, DropdownActionProps, DropdownColor, DropdownFieldWidth, DropdownInputProps, DropdownLabelStyle, DropdownMenuPlacement, DropdownMenuType, DropdownOption, DropdownProps, DropdownRole, DropdownSize } from './components/Dropdown.js';
+export { Dropdown, DropdownActionProps, DropdownColor, DropdownFieldWidth, DropdownGroupOption, DropdownInputProps, DropdownItemOption, DropdownLabelStyle, DropdownMenuPlacement, DropdownMenuType, DropdownOption, DropdownProps, DropdownRole, DropdownSeparatorOption, DropdownSize } from './components/Dropdown.js';
 export { Checkbox, CheckboxLabelStyle, CheckboxProps, CheckboxSize } from './components/Checkbox.js';
 export { Radio, RadioLabelStyle, RadioProps, RadioSize } from './components/Radio.js';
 export { Toggle, ToggleLabelPlacement, ToggleProps, ToggleSize } from './components/Toggle.js';
-export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, SliderProps, SliderSentiment, SliderSize, SliderStartsFrom, SliderStepCount } from './components/Slider.js';
+export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, SliderProps, SliderSentiment, SliderSize, SliderStartsFrom, resolveSliderTickValues } from './components/Slider.js';
 export { Chip, ChipColor, ChipLabelStyle, ChipProps, ChipSize } from './components/Chip.js';
 export { ChipGroup, ChipGroupColor, ChipGroupLabelStyle, ChipGroupOption, ChipGroupProps, ChipGroupSize } from './components/ChipGroup.js';
 export { Tabs, TabsItem, TabsProps, TabsSize, TabsType } from './components/Tabs.js';

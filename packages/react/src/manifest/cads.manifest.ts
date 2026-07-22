@@ -194,7 +194,11 @@ export const cadsManifest: {
       ],
       variableDependencies: [
         "--background-selected-primary",
+        "--background-brand-light",
+        "--background-neutral-tertiary",
         "--border-selected-primary",
+        "--border-focused-primary",
+        "--border-focused-inverse",
         "--text-selected-primary",
         "--border-neutral-secondary",
         "--control-height-medium",
@@ -205,6 +209,8 @@ export const cadsManifest: {
         "Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.",
         "Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.",
         "Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).",
+        "Focus uses outline 2px with -2px offset (brand-light / focused-inverse) — same flush recipe as Dropdown menu items, not outer FOCUS_RING.",
+        "Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
         "Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.",
         "Prefer the group API; Segmented Button Block (8000:4554) is an internal building block.",
       ],
@@ -307,12 +313,19 @@ export const cadsManifest: {
         { name: "helperIconName", type: "FaIconName" },
         { name: "showHelper", type: "boolean", default: "true" },
         { name: "children", type: "ReactNode", required: true },
+        {
+          name: "required",
+          type: "boolean",
+          default: "false",
+          description: "Appends * after the label (same type style, no gap).",
+        },
         { name: "disabled", type: "boolean" },
         { name: "htmlFor", type: "string" },
       ],
       variableDependencies: [
         "--text-neutral-primary",
         "--text-neutral-tertiary",
+        "--text-disabled-neutral",
         "--text-success-primary-fixed",
         "--text-warning-primary-fixed",
         "--text-error-primary-fixed",
@@ -321,6 +334,8 @@ export const cadsManifest: {
         "Nest any CADS control in children (TextInput, Dropdown, Checkbox, etc.).",
         "Warning helper text stays tertiary; only the icon uses warning color.",
         "Non-default sentiments always show helper when helperText is set.",
+        "disabled applies --text-disabled-neutral to label, helper text, and helper icon (Figma isDisabled).",
+        "required appends * after the label; pair with native required on the nested control when applicable.",
       ],
       example: `<FieldWrapper label="Email" helperText="We never share this" sentiment="default"><TextInput placeholder="you@example.com" /></FieldWrapper>`,
     },
@@ -353,9 +368,23 @@ export const cadsManifest: {
           default: "false",
           description: "Figma type=area when true",
         },
+        {
+          name: "startIcon",
+          type: "boolean",
+          default: "false",
+          description:
+            "Leading FA icon inside the field (building-block startIcon). Field-only; ignored when multiline. Prefer setting startIconName and enabling when present.",
+        },
+        {
+          name: "startIconName",
+          type: "FaIconName",
+          description:
+            "FA icon name (Figma startIconName; smile → face-smile). Playground/docs treat empty as no icon.",
+        },
         { name: "label", type: "string" },
         { name: "helperText", type: "ReactNode" },
         { name: "helperIconName", type: "FaIconName" },
+        { name: "showHelper", type: "boolean", default: "true" },
         {
           name: "sentiment",
           type: '"default" | "success" | "warning" | "error"',
@@ -364,6 +393,13 @@ export const cadsManifest: {
         { name: "error", type: "boolean" },
         { name: "readOnly", type: "boolean" },
         { name: "disabled", type: "boolean" },
+        {
+          name: "required",
+          type: "boolean",
+          default: "false",
+          description:
+            "Native required on the control + * after the Field Wrapper label.",
+        },
         { name: "placeholder", type: "string" },
         { name: "value", type: "string" },
         { name: "defaultValue", type: "string" },
@@ -375,16 +411,20 @@ export const cadsManifest: {
         "--border-focused-primary",
         "--border-error-primary",
         "--text-neutral-placeholder",
+        "--text-neutral-primary",
+        "--text-disabled-neutral",
         "--control-height-medium",
         "--radius-sm",
       ],
       usageRules: [
         "Prefer TextInput over the deprecated TextField alias.",
         "Figma type=field|area maps to multiline={false|true}.",
+        "startIcon is field-only; ignored when multiline (type=area).",
         "extraSmall field height uses the shared 24px control scale (Figma building block is 22px).",
         "Do not invent floating labels — label is always above via Field Wrapper.",
+        "required sets the native HTML attribute and appends * after the label.",
       ],
-      example: `<TextInput label="Email" size="medium" placeholder="you@example.com" helperText="Required" />`,
+      example: `<TextInput label="Email" size="medium" startIcon startIconName="envelope" placeholder="you@example.com" helperText="Required" />`,
     },
     {
       name: "Dropdown",
@@ -411,9 +451,10 @@ export const cadsManifest: {
         },
         {
           name: "menuType",
-          type: '"icon" | "checklist"',
-          default: '"icon"',
-          description: "checklist is input-only in Figma",
+          type: '"default" | "checklist"',
+          default: '"default"',
+          description:
+            "default = single-select list (item startIcon optional); checklist = multi-select (input-only)",
         },
         {
           name: "menuPlacement",
@@ -431,6 +472,8 @@ export const cadsManifest: {
           name: "options",
           type: "DropdownOption[]",
           required: true,
+          description:
+            "Items, separators ({type:\"separator\"}), and group headers ({type:\"group\",label}). Items support startIcon + iconName (text-only when omitted).",
         },
         { name: "label", type: "ReactNode" },
         { name: "helperText", type: "ReactNode" },
@@ -444,6 +487,13 @@ export const cadsManifest: {
         { name: "disabled", type: "boolean" },
         { name: "readOnly", type: "boolean" },
         { name: "error", type: "boolean" },
+        {
+          name: "required",
+          type: "boolean",
+          default: "false",
+          description:
+            "Input-role only. Appends * after the Field Wrapper label.",
+        },
         { name: "color", type: '"primary" | "secondary"' },
         { name: "labelStyle", type: '"thick" | "thin"' },
         { name: "startIconName", type: "FaIconName" },
@@ -454,20 +504,29 @@ export const cadsManifest: {
       variableDependencies: [
         "--border-neutral-solid",
         "--border-neutral-primary",
+        "--border-focused-primary",
+        "--border-selected-primary-inverse",
+        "--border-error-primary",
         "--background-selected-primary",
+        "--background-brand-light",
+        "--background-neutral-tertiary",
         "--text-selected-primary",
+        "--text-neutral-quaternary",
+        "--tracking-overline",
         "--shadow-md",
         "--radius-sm",
         "--background-brand-primary",
       ],
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
-        "menuType=checklist is input-only; action menus use icon items (optional destructive).",
+        "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (startIcon/iconName), not a list-level mode.",
+        "options may include {type:\"separator\"} and {type:\"group\",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.",
         'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',
         "Selected menu items use selected tokens — never brand fills.",
-        "Dropdown Button / Menu List / Menu Item are internal — do not import standalone.",
+        "Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.",
+        "Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone.",
       ],
-      example: `<Dropdown role="input" label="Sort" width="hug" options={[{value:"a",label:"Option A"},{value:"b",label:"Option B"}]} defaultValue="a" />`,
+      example: `<Dropdown role="input" label="Sort" width="hug" options={[{type:"group",label:"Recent"},{value:"a",label:"Option A"},{type:"separator"},{value:"b",label:"Option B"}]} defaultValue="a" />`,
     },
     {
       name: "Checkbox",
@@ -569,7 +628,7 @@ export const cadsManifest: {
       exportName: "Toggle",
       importFrom: "@codeai/cads-react",
       description:
-        "On/off switch with check/xmark icons. Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.",
+        "On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.",
       figma: {
         fileKey: CADS_FIGMA_FILE_KEY,
         nodeId: "327:2151",
@@ -594,6 +653,25 @@ export const cadsManifest: {
         { name: "disabled", type: "boolean" },
         { name: "onChange", type: "(event, checked) => void" },
         {
+          name: "hasIcons",
+          type: "boolean",
+          default: "true",
+          description:
+            "When false, hide track icons entirely (Figma hasIcons).",
+        },
+        {
+          name: "onIcon",
+          type: "FaIconName",
+          default: '"check"',
+          description: "Track icon when on (Figma onIcon). Ignored when hasIcons is false.",
+        },
+        {
+          name: "offIcon",
+          type: "FaIconName",
+          default: '"xmark"',
+          description: "Track icon when off (Figma offIcon). Ignored when hasIcons is false.",
+        },
+        {
           name: "aria-label",
           type: "string",
           description: "Required when unlabeled",
@@ -611,10 +689,12 @@ export const cadsManifest: {
       ],
       usageRules: [
         "On track uses selected tokens; off track uses neutral septenary/octonary.",
+        "Track heights match Checkbox/Radio at each size (22/20/18/16).",
+        "Defaults to check (on) / xmark (off); override with onIcon / offIcon, or set hasIcons={false} for a plain switch.",
         "Not the same as IconToggle (icon-only binary button).",
         "Interaction states are CSS recipes — not React props.",
       ],
-      example: `<Toggle label="Notifications" labelPlacement="left" defaultChecked />`,
+      example: `<Toggle label="Notifications" labelPlacement="left" defaultChecked onIcon="check" offIcon="xmark" />`,
     },
     {
       name: "Slider",
@@ -648,26 +728,26 @@ export const cadsManifest: {
         { name: "helperIconName", type: "FaIconName" },
         { name: "showHelper", type: "boolean", default: "true" },
         { name: "showControls", type: "boolean", default: "false" },
-        { name: "showStepper", type: "boolean", default: "false" },
         {
-          name: "stepCount",
-          type: "3 | 4 | 5 | 6",
-          default: "5",
-          description: "Stepper ticks when showStepper is true.",
+          name: "showTicks",
+          type: "boolean",
+          default: "false",
+          description:
+            "Show value labels under the track. Discrete step grids label every step; continuous (step=null) labels only min and max.",
         },
         {
           name: "startsFrom",
           type: '"side" | "center"',
           default: '"side"',
           description:
-            'Fill origin. "side" fills min→value; "center" is bipolar — fill from 0 toward the value (negatives left, positives right).',
+            'Track fill origin (Figma Slider Bar). "side" fills from min→value (0…100); "center" is bipolar around 0 (−100…100).',
         },
         {
           name: "min",
           type: "number",
-          default: "0 (side) / -100 (center)",
+          default: "0",
           description:
-            "Range minimum. Side default 0; center default -100 (bipolar).",
+            "Range minimum. Defaults to 0 when startsFrom is side, or -100 when center.",
         },
         {
           name: "max",
@@ -693,11 +773,17 @@ export const cadsManifest: {
         {
           name: "defaultValue",
           type: "number | number[]",
-          default: "50 (side) / 0 (center)",
+          default: "50",
           description:
-            "Uncontrolled initial value. Side default 50; center default 0 (origin).",
+            "Uncontrolled initial value. Defaults to 50 when startsFrom is side, or 0 when center.",
         },
-        { name: "step", type: "number", default: "1" },
+        {
+          name: "step",
+          type: "number | null",
+          default: "1",
+          description:
+            "Value increment for drag, ± controls, and tick labels when showTicks is on. Use null for continuous (ticks show only min and max).",
+        },
         { name: "disabled", type: "boolean" },
         { name: "onChange", type: "(event, value, activeThumb) => void" },
         { name: "aria-label", type: "string" },
@@ -715,6 +801,7 @@ export const cadsManifest: {
         "Knob hover/focus/press are CSS recipes from Slider Knob — not React props.",
         "Set min/max for the value domain — side defaults 0…100; center defaults -100…100 with 0 at the origin.",
         "startsFrom=\"center\" is bipolar: negative values fill left of 0, positive fill right.",
+        "showTicks labels follow the step grid (not Figma’s 1…N demo text). Continuous step={null} labels only min and max.",
         "Default width is 300px (Figma symbol). Use fullWidth in fluid layouts, or width for a fixed size.",
       ],
       example: `<Slider label="Volume" defaultValue={50} showControls showHelper helperText="Helper text" />`,
@@ -994,6 +1081,7 @@ export const cadsManifest: {
       usageRules: [
         "Selection is owned by the group via value/defaultValue — do not expose isCurrent.",
         "Selected chrome uses selected tokens; never brand fills for the active tab.",
+        "Keyboard: tablist manual activation — one Tab stop; ←/→ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
         "Tabs may not be used as standalone Tab Items — always via Tabs.",
       ],
       example: `<Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />`,

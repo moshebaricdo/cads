@@ -12,13 +12,18 @@
     "relatedComponentKeys": [
       "9e957e7fd931d5d068ffecb6f68531d9ebd5ce7c"
     ],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-07-21",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
-    "figmaChanges": []
+    "taskPath": "figma-update",
+    "previousRecipe": "2026-07-20 onIcon/offIcon",
+    "figmaChanges": [
+      "Track heights reduced to match Checkbox/Radio: L22/M20/S18/XS16 (was 26/24/22/20)",
+      "Track widths: 42/38/34/30 (was 52/48/44/40); handles 18/16/14/12 (was 22/20/18/16)",
+      "Icon glyphs: 12/11/10/9 (was 16/14/12/10); insets L8/R9 and M–XS 6",
+      "New boolean hasIcons (default true) hides track icons when false"
+    ]
   },
   "axes": {
     "public": {
@@ -31,6 +36,10 @@
       "labelPlacement": [
         "left",
         "right"
+      ],
+      "hasIcons": [
+        true,
+        false
       ]
     },
     "designOnly": [
@@ -42,42 +51,42 @@
   "geometry": {
     "sizes": {
       "large": {
-        "track": "52\u00d726",
-        "handle": "22",
-        "iconPx": "16",
-        "iconSlot": "14",
+        "track": "42×22",
+        "handle": "18",
+        "iconPx": "12",
+        "iconSlot": "12",
         "paddingOn": "8 2",
         "paddingOff": "2 9",
         "labelGap": "8px",
         "labelType": "body/lg"
       },
       "medium": {
-        "track": "48\u00d724",
-        "handle": "20",
-        "iconPx": "14",
-        "iconSlot": "14",
-        "paddingOn": "8 2",
-        "paddingOff": "2 8",
+        "track": "38×20",
+        "handle": "16",
+        "iconPx": "11",
+        "iconSlot": "11",
+        "paddingOn": "6 2",
+        "paddingOff": "2 6",
         "labelGap": "8px",
         "labelType": "body/md"
       },
       "small": {
-        "track": "44\u00d722",
-        "handle": "18",
-        "iconPx": "12",
+        "track": "34×18",
+        "handle": "14",
+        "iconPx": "10",
         "iconSlot": "10",
-        "paddingOn": "8 2",
-        "paddingOff": "2 8",
+        "paddingOn": "6 2",
+        "paddingOff": "2 6",
         "labelGap": "8px",
         "labelType": "body/sm"
       },
       "extraSmall": {
-        "track": "40\u00d720",
-        "handle": "16",
-        "iconPx": "10",
-        "iconSlot": "10",
-        "paddingOn": "7 2",
-        "paddingOff": "2 8",
+        "track": "30×16",
+        "handle": "12",
+        "iconPx": "9",
+        "iconSlot": "9",
+        "paddingOn": "6 2",
+        "paddingOff": "2 6",
         "labelGap": "6px",
         "labelType": "body/xs"
       }
@@ -101,6 +110,16 @@
       "names": [
         "check",
         "xmark"
+      ],
+      "defaults": {
+        "onIcon": "check",
+        "offIcon": "xmark",
+        "hasIcons": true
+      },
+      "props": [
+        "hasIcons",
+        "onIcon",
+        "offIcon"
       ],
       "size": "size-scaled"
     }
@@ -286,6 +305,7 @@
       "size",
       "labelPlacement",
       "isOn",
+      "hasIcons",
       "state",
       "mode"
     ],
@@ -308,8 +328,8 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726",
-          "handle": "22",
+          "track": "42×22",
+          "handle": "18",
           "labelGap": "8px"
         },
         "expectedVariables": [
@@ -341,7 +361,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726",
+          "track": "42×22",
           "labelGap": "8px"
         },
         "expectedVariables": [
@@ -371,8 +391,8 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "48\u00d724",
-          "handle": "20"
+          "track": "38×20",
+          "handle": "16"
         },
         "expectedVariables": [
           "var(--background-neutral-septenary)"
@@ -401,8 +421,8 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "44\u00d722",
-          "handle": "18"
+          "track": "34×18",
+          "handle": "14"
         },
         "expectedVariables": [
           "var(--background-neutral-septenary)"
@@ -431,8 +451,8 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "40\u00d720",
-          "handle": "16",
+          "track": "30×16",
+          "handle": "12",
           "labelGap": "6px"
         },
         "expectedVariables": [
@@ -461,8 +481,8 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726",
-          "handle": "22"
+          "track": "42×22",
+          "handle": "18"
         },
         "expectedVariables": [
           "var(--background-selected-primary)",
@@ -492,7 +512,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726"
+          "track": "42×22"
         },
         "expectedVariables": [
           "var(--background-neutral-septenary)",
@@ -522,7 +542,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "48\u00d724"
+          "track": "38×20"
         },
         "expectedVariables": [
           "var(--background-selected-strong)"
@@ -550,7 +570,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "44\u00d722"
+          "track": "34×18"
         },
         "expectedVariables": [
           "var(--background-neutral-octonary)"
@@ -578,7 +598,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726",
+          "track": "42×22",
           "focusRing": "double 2+4"
         },
         "expectedVariables": [
@@ -609,7 +629,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726"
+          "track": "42×22"
         },
         "expectedVariables": [
           "var(--background-disabled-neutral)",
@@ -640,7 +660,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "52\u00d726"
+          "track": "42×22"
         },
         "expectedVariables": [
           "var(--background-disabled-neutral)",
@@ -669,9 +689,9 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "40\u00d720",
-          "handle": "16",
-          "paddingOn": "7 2"
+          "track": "30×16",
+          "handle": "12",
+          "paddingOn": "6 2"
         },
         "expectedVariables": [
           "var(--background-selected-primary)"
@@ -699,7 +719,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "48\u00d724"
+          "track": "38×20"
         },
         "expectedVariables": [
           "var(--background-selected-primary)",
@@ -729,7 +749,7 @@
           "deviceScaleFactor": 2
         },
         "expectedGeometry": {
-          "track": "48\u00d724"
+          "track": "38×20"
         },
         "expectedVariables": [
           "var(--background-neutral-septenary)",
@@ -740,6 +760,102 @@
         "browserScreenshot": "captures/browser-toggle-medium-off-default-dark.png",
         "result": "pass",
         "mismatches": []
+      },
+      {
+        "id": "toggle-large-on-custom-icons-light",
+        "figmaNodeId": "8841:5569",
+        "figmaVariant": "size=large, state=default, isOn=on (onIcon/offIcon override)",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "onIcon": "sun",
+          "offIcon": "moon",
+          "aria-label": "Theme"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "42×22"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)",
+          "var(--text-selected-primary)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-on-custom-icons-light",
+        "referenceScreenshot": null,
+        "browserScreenshot": "captures/browser-toggle-large-on-custom-icons-light.png",
+        "result": "pass",
+        "mismatches": [],
+        "notes": "No dedicated Figma reference — verifies onIcon=sun renders in left slot when checked."
+      },
+      {
+        "id": "toggle-large-off-custom-icons-light",
+        "figmaNodeId": "8841:5569",
+        "figmaVariant": "size=large, state=default, isOn=off (onIcon/offIcon override)",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": false,
+          "onIcon": "sun",
+          "offIcon": "moon",
+          "aria-label": "Theme"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "42×22"
+        },
+        "expectedVariables": [
+          "var(--background-neutral-septenary)",
+          "var(--text-neutral-primary-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-off-custom-icons-light",
+        "referenceScreenshot": null,
+        "browserScreenshot": "captures/browser-toggle-large-off-custom-icons-light.png",
+        "result": "pass",
+        "mismatches": [],
+        "notes": "No dedicated Figma reference — verifies offIcon=moon renders in right slot when unchecked."
+      },
+      {
+        "id": "toggle-large-on-no-icons-light",
+        "figmaNodeId": "8841:5564",
+        "figmaVariant": "size=large, state=default, isOn=on, hasIcons=false",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "checked": true,
+          "hasIcons": false,
+          "aria-label": "Toggle"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 120,
+          "height": 80,
+          "deviceScaleFactor": 2
+        },
+        "expectedGeometry": {
+          "track": "42×22",
+          "handle": "18"
+        },
+        "expectedVariables": [
+          "var(--background-selected-primary)",
+          "var(--background-selected-primary-inverse)"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#Toggle/toggle-large-on-no-icons-light",
+        "referenceScreenshot": null,
+        "browserScreenshot": "captures/browser-toggle-large-on-no-icons-light.png",
+        "result": "pass",
+        "mismatches": [],
+        "notes": "Verifies hasIcons=false omits check/xmark; track/handle geometry unchanged."
       }
     ]
   },
@@ -757,15 +873,14 @@
     }
   ],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
-    "typecheck": "pnpm typecheck \u2192 pass",
-    "build": "pnpm build \u2192 pass",
-    "docsBuild": "pnpm build:docs \u2192 pass",
+    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error, 0 warn, 0 escalate (2026-07-21)",
+    "typecheck": "pnpm typecheck → pass",
+    "build": "pnpm build:react → pass",
+    "docsBuild": "fixtures + playground updated; llms.txt regenerated",
     "correctionPasses": [
-      "CDP measured large on track 52\u00d726, handle 22, mint handle + check (selected tokens)",
-      "labelPlacement corrected: left = label left / switch right (Figma axis was inverted)",
-      "Handle slide + icon crossfade (no snap); XS checkbox/radio top offset removed",
-      "Captured fixtures vs Figma 8841:5569 / 327:2151"
+      "2026-07-21: Figma update — compact track matching Checkbox/Radio heights + hasIcons boolean",
+      "Playwright CDP: L42×22/h18, M38×20/h16, S34×18/h14, XS30×16/h12; hasIcons=false → 0 icons",
+      "Browser fixtures vs Figma 8841:5564 / 8859:1814 screenshots — geometry and chrome match"
     ]
   }
 }

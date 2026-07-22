@@ -10,7 +10,7 @@ export { Dropdown } from './components/Dropdown.js';
 export { Checkbox } from './components/Checkbox.js';
 export { Radio } from './components/Radio.js';
 export { Toggle } from './components/Toggle.js';
-export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider } from './components/Slider.js';
+export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, resolveSliderTickValues } from './components/Slider.js';
 export { Chip } from './components/Chip.js';
 export { ChipGroup } from './components/ChipGroup.js';
 export { Tabs } from './components/Tabs.js';

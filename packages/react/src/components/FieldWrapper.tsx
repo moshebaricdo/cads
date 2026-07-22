@@ -47,6 +47,12 @@ export interface FieldWrapperProps {
   sentiment?: FieldSentiment;
   /** Visible field label. */
   label?: ReactNode;
+  /**
+   * Marks the field as required. Appends a `*` after the label (same type style,
+   * no extra gap) and is intended to pair with a native `required` on the control.
+   * @default false
+   */
+  required?: boolean;
   /** Helper / validation text below the control slot. */
   helperText?: ReactNode;
   /**
@@ -78,10 +84,19 @@ const SENTIMENT_ICON: Record<
   error: "circle-xmark",
 };
 
-function helperColors(sentiment: FieldSentiment): {
+function helperColors(
+  sentiment: FieldSentiment,
+  disabled: boolean,
+): {
   text: string;
   icon: string;
 } {
+  if (disabled) {
+    return {
+      text: "var(--text-disabled-neutral)",
+      icon: "var(--text-disabled-neutral)",
+    };
+  }
   switch (sentiment) {
     case "success":
       return {
@@ -116,6 +131,7 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
       size = "medium",
       sentiment = "default",
       label,
+      required = false,
       helperText,
       helperIconName = "smile",
       showHelper = true,
@@ -132,7 +148,10 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
     const labelId = `${controlId}-label`;
     const helperId = `${controlId}-helper`;
     const dims = FIELD_WRAPPER_SIZE[size];
-    const colors = helperColors(sentiment);
+    const colors = helperColors(sentiment, disabled);
+    const labelColor = disabled
+      ? "var(--text-disabled-neutral)"
+      : "var(--text-neutral-primary)";
 
     const shouldShowHelper =
       Boolean(helperText) &&
@@ -171,6 +190,7 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
           ref={ref}
           className={className}
           data-cads-field-wrapper=""
+          data-disabled={disabled ? "true" : undefined}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -192,11 +212,12 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
                 fontWeight: "var(--font-weight-semibold)" as unknown as number,
                 fontSize: dims.labelFontSize,
                 lineHeight: dims.labelLineHeight,
-                color: "var(--text-neutral-primary)",
+                color: labelColor,
                 margin: 0,
               }}
             >
               {label}
+              {required ? <span aria-hidden="true">*</span> : null}
             </label>
           ) : null}
 

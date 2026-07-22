@@ -114,4 +114,72 @@ export const cases: FixtureCase[] = [
         />
       ),
     },
+    {
+      id: "text-input-large-field-start-icon-light",
+      mode: "light",
+      state: "default",
+      viewport: { width: 360, height: 160 },
+      render: () => (
+        <TextInput
+          size="large"
+          color="primary"
+          startIcon
+          startIconName="face-smile"
+          label="Field label"
+          helperText="Helper text"
+          placeholder="Placeholder"
+        />
+      ),
+    },
+    {
+      id: "text-input-medium-field-start-icon-readonly-light",
+      mode: "light",
+      state: "readOnly",
+      viewport: { width: 360, height: 140 },
+      render: () => (
+        <TextInput
+          size="medium"
+          color="primary"
+          startIcon
+          startIconName="face-smile"
+          label="Field label"
+          defaultValue="Filled text"
+          readOnly
+        />
+      ),
+    },
+    {
+      id: "text-input-xs-field-start-icon-disabled-light",
+      mode: "light",
+      state: "disabled",
+      viewport: { width: 360, height: 120 },
+      render: () => (
+        <TextInput
+          size="extraSmall"
+          color="primary"
+          startIcon
+          startIconName="face-smile"
+          label="Field label"
+          placeholder="Placeholder"
+          disabled
+        />
+      ),
+    },
+    {
+      id: "text-input-large-field-secondary-start-icon-light",
+      mode: "light",
+      state: "default",
+      viewport: { width: 360, height: 160 },
+      render: () => (
+        <TextInput
+          size="large"
+          color="secondary"
+          startIcon
+          startIconName="face-smile"
+          label="Field label"
+          helperText="Helper text"
+          placeholder="Placeholder"
+        />
+      ),
+    },
   ];

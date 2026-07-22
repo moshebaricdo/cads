@@ -42,39 +42,39 @@
   "geometry": {
     "sizes": {
       "large": {
-        "primaryHeight": 48,
+        "primaryHeight": 56,
         "secondaryHeight": 32,
         "primaryGap": 20,
         "secondaryGap": 4,
         "fontSize": "18/16",
-        "padYPrimary": 10,
+        "padYPrimary": 14,
         "padXSecondary": 12
       },
       "medium": {
-        "primaryHeight": 40,
+        "primaryHeight": 48,
         "secondaryHeight": 28,
         "primaryGap": 18,
         "secondaryGap": 4,
         "fontSize": "16/14",
-        "padYPrimary": 6,
+        "padYPrimary": 10,
         "padXSecondary": 10
       },
       "small": {
-        "primaryHeight": 32,
+        "primaryHeight": 40,
         "secondaryHeight": 24,
         "primaryGap": 16,
         "secondaryGap": 4,
         "fontSize": "14/12",
-        "padYPrimary": 6,
+        "padYPrimary": 8,
         "padXSecondary": 8
       },
       "extraSmall": {
-        "primaryHeight": 24,
+        "primaryHeight": 32,
         "secondaryHeight": 20,
         "primaryGap": 14,
         "secondaryGap": 2,
         "fontSize": "12/10",
-        "padYPrimary": 4,
+        "padYPrimary": 6,
         "padXSecondary": 6
       }
     },

@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import ButtonBase from '@mui/material/ButtonBase';
-import { forwardRef, useId, useRef, useState } from 'react';
+import { forwardRef, useId, useRef, useState, useEffect } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
 import { TABS_SIZE, FOCUS_RING, TRANSITION_COLORS } from '../shared/controlSize.js';
 import { CloseIconButton } from './CloseIconButton.js';
@@ -36,15 +36,28 @@ const Tabs = forwardRef(function Tabs2({
     onChange?.(next);
   };
   const focusableIndexes = items.map((item, index) => item.disabled ? -1 : index).filter((index) => index >= 0);
+  const selectedFocusableIndex = focusableIndexes.find((index) => items[index]?.value === value) ?? focusableIndexes[0] ?? -1;
+  const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
+  const tabStopIndex = focusableIndexes.includes(focusedIndex) ? focusedIndex : selectedFocusableIndex;
+  useEffect(() => {
+    setFocusedIndex(selectedFocusableIndex);
+  }, [selectedFocusableIndex]);
+  const focusTab = (index) => {
+    setFocusedIndex(index);
+    tabRefs.current[index]?.focus();
+  };
   const moveFocus = (fromIndex, delta) => {
     if (focusableIndexes.length === 0) return;
     const currentPos = focusableIndexes.indexOf(fromIndex);
     const start = currentPos === -1 ? 0 : currentPos;
     const nextPos = (start + delta + focusableIndexes.length) % focusableIndexes.length;
-    const nextIndex = focusableIndexes[nextPos];
-    const nextItem = items[nextIndex];
-    tabRefs.current[nextIndex]?.focus();
-    selectValue(nextItem.value);
+    focusTab(focusableIndexes[nextPos]);
+  };
+  const activateTab = (index) => {
+    const item = items[index];
+    if (!item || item.disabled) return;
+    setFocusedIndex(index);
+    selectValue(item.value);
   };
   const onTabKeyDown = (event, index) => {
     switch (event.key) {
@@ -60,19 +73,28 @@ const Tabs = forwardRef(function Tabs2({
         event.preventDefault();
         const first = focusableIndexes[0];
         if (first === void 0) break;
-        tabRefs.current[first]?.focus();
-        selectValue(items[first].value);
+        focusTab(first);
         break;
       }
       case "End": {
         event.preventDefault();
         const last = focusableIndexes[focusableIndexes.length - 1];
         if (last === void 0) break;
-        tabRefs.current[last]?.focus();
-        selectValue(items[last].value);
+        focusTab(last);
+        break;
+      }
+      case " ":
+      case "Enter": {
+        event.preventDefault();
+        activateTab(index);
         break;
       }
     }
+  };
+  const onTablistBlur = (event) => {
+    const next = event.relatedTarget;
+    if (next instanceof Node && event.currentTarget.contains(next)) return;
+    setFocusedIndex(selectedFocusableIndex);
   };
   return /* @__PURE__ */ jsx(
     "div",
@@ -81,6 +103,7 @@ const Tabs = forwardRef(function Tabs2({
       role: "tablist",
       "aria-label": ariaLabel,
       className,
+      onBlur: onTablistBlur,
       style: {
         display: "flex",
         alignItems: isSecondary ? "flex-end" : "stretch",
@@ -113,12 +136,15 @@ const Tabs = forwardRef(function Tabs2({
             "aria-disabled": disabled || void 0,
             "aria-label": iconOnly ? accessibleName : void 0,
             "aria-labelledby": !iconOnly ? labelId : void 0,
-            tabIndex: selected && !disabled ? 0 : -1,
+            tabIndex: index === tabStopIndex ? 0 : -1,
             disabled,
             disableRipple: true,
             onClick: () => {
               if (disabled) return;
-              selectValue(item.value);
+              activateTab(index);
+            },
+            onFocus: () => {
+              if (!disabled) setFocusedIndex(index);
             },
             onKeyDown: (event) => onTabKeyDown(event, index),
             sx: {

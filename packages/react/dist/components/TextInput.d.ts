@@ -1,8 +1,8 @@
 import * as react from 'react';
 import { InputHTMLAttributes, ReactNode, ChangeEvent, CSSProperties } from 'react';
 import { FieldSentiment } from './FieldWrapper.js';
-import { ControlSize } from '../shared/controlSize.js';
 import { FaIconName } from '../icons/faProRegularCodepoints.js';
+import { ControlSize } from '../shared/controlSize.js';
 
 type TextInputSize = ControlSize;
 type TextInputColor = "primary" | "secondary";
@@ -21,11 +21,28 @@ interface TextInputProps extends SharedNativeProps {
     color?: TextInputColor;
     /**
      * When true, renders a multiline area (Figma `type=area`).
+     * Start icon is field-only and ignored when multiline.
      * @default false
      */
     multiline?: boolean;
+    /**
+     * Leading FA icon inside the field (Figma building-block `startIcon`).
+     * Field-only; ignored for multiline areas.
+     * @default false
+     */
+    startIcon?: boolean;
+    /**
+     * FA icon when `startIcon` (Figma `startIconName`; `smile` → `face-smile`).
+     * @default "face-smile"
+     */
+    startIconName?: FaIconName | (string & {});
     /** Visible field label via Field Wrapper. */
     label?: ReactNode;
+    /**
+     * Native required + Field Wrapper label asterisk (`*`).
+     * @default false
+     */
+    required?: boolean;
     /** Helper / validation text via Field Wrapper. */
     helperText?: ReactNode;
     helperIconName?: FaIconName | (string & {});
@@ -55,6 +72,7 @@ interface TextInputProps extends SharedNativeProps {
  * building block `16146:3517`.
  *
  * Figma `type=field|area` maps to `multiline={false|true}`.
+ * Figma `startIcon` / `startIconName` are field-only (ignored for areas).
  * Figma `isFilled` / interaction `state` are derived (value / CSS / props).
  */
 declare const TextInput: react.ForwardRefExoticComponent<TextInputProps & react.RefAttributes<HTMLDivElement>>;

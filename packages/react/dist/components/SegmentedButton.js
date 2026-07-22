@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import ButtonBase from '@mui/material/ButtonBase';
-import { forwardRef, useId, useState } from 'react';
+import { forwardRef, useId, useRef, useState, useEffect } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
 import { SEGMENTED_SIZE, TRANSITION_COLORS } from '../shared/controlSize.js';
 
@@ -53,11 +53,81 @@ const SegmentedButton = forwardRef(
   }, ref) {
     const dims = SEGMENTED_SIZE[size];
     const groupId = useId();
+    const segmentRefs = useRef([]);
     const controlled = valueProp !== void 0;
     const [uncontrolled, setUncontrolled] = useState(
-      defaultValue ?? options[0]?.value
+      defaultValue ?? options.find((option) => !option.disabled)?.value
     );
     const value = controlled ? valueProp : uncontrolled;
+    const selectValue = (next) => {
+      if (!controlled) setUncontrolled(next);
+      onChange?.(next);
+    };
+    const focusableIndexes = options.map(
+      (option, index) => disabled || option.disabled ? -1 : index
+    ).filter((index) => index >= 0);
+    const selectedFocusableIndex = focusableIndexes.find((index) => options[index]?.value === value) ?? focusableIndexes[0] ?? -1;
+    const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
+    const tabStopIndex = focusableIndexes.includes(focusedIndex) ? focusedIndex : selectedFocusableIndex;
+    useEffect(() => {
+      setFocusedIndex(selectedFocusableIndex);
+    }, [selectedFocusableIndex]);
+    const focusSegment = (index) => {
+      setFocusedIndex(index);
+      segmentRefs.current[index]?.focus();
+    };
+    const moveFocus = (fromIndex, delta) => {
+      if (focusableIndexes.length === 0) return;
+      const currentPos = focusableIndexes.indexOf(fromIndex);
+      const start = currentPos === -1 ? 0 : currentPos;
+      const nextPos = (start + delta + focusableIndexes.length) % focusableIndexes.length;
+      focusSegment(focusableIndexes[nextPos]);
+    };
+    const activateSegment = (index) => {
+      const option = options[index];
+      if (!option || disabled || option.disabled) return;
+      setFocusedIndex(index);
+      selectValue(option.value);
+    };
+    const onSegmentKeyDown = (event, index) => {
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowDown":
+          event.preventDefault();
+          moveFocus(index, 1);
+          break;
+        case "ArrowLeft":
+        case "ArrowUp":
+          event.preventDefault();
+          moveFocus(index, -1);
+          break;
+        case "Home": {
+          event.preventDefault();
+          const first = focusableIndexes[0];
+          if (first === void 0) break;
+          focusSegment(first);
+          break;
+        }
+        case "End": {
+          event.preventDefault();
+          const last = focusableIndexes[focusableIndexes.length - 1];
+          if (last === void 0) break;
+          focusSegment(last);
+          break;
+        }
+        case " ":
+        case "Enter": {
+          event.preventDefault();
+          activateSegment(index);
+          break;
+        }
+      }
+    };
+    const onGroupBlur = (event) => {
+      const next = event.relatedTarget;
+      if (next instanceof Node && event.currentTarget.contains(next)) return;
+      setFocusedIndex(selectedFocusableIndex);
+    };
     const unselectedBorder = "var(--border-neutral-secondary)";
     return /* @__PURE__ */ jsx(
       "div",
@@ -66,6 +136,7 @@ const SegmentedButton = forwardRef(
         role: "radiogroup",
         "aria-label": ariaLabel,
         className,
+        onBlur: onGroupBlur,
         style: {
           display: "inline-flex",
           alignItems: "stretch",
@@ -76,22 +147,30 @@ const SegmentedButton = forwardRef(
         },
         children: options.map((option, index) => {
           const selected = option.value === value;
-          const isDisabled = disabled || option.disabled;
+          const isDisabled = Boolean(disabled || option.disabled);
           const corners = segmentCorners(index, options.length);
           const startIcon = option.iconName ? /* @__PURE__ */ jsx(FaIcon, { name: option.iconName, fontSize: dims.iconPx }) : null;
           const endIcon = option.endIconName ? /* @__PURE__ */ jsx(FaIcon, { name: option.endIconName, fontSize: dims.iconPx }) : null;
           return /* @__PURE__ */ jsx(
             ButtonBase,
             {
+              ref: (node) => {
+                segmentRefs.current[index] = node;
+              },
               role: "radio",
               "aria-checked": selected,
               id: `${groupId}-${option.value}`,
+              tabIndex: index === tabStopIndex ? 0 : -1,
               disabled: isDisabled,
               disableRipple: true,
               onClick: () => {
-                if (!controlled) setUncontrolled(option.value);
-                onChange?.(option.value);
+                if (isDisabled) return;
+                activateSegment(index);
               },
+              onFocus: () => {
+                if (!isDisabled) setFocusedIndex(index);
+              },
+              onKeyDown: (event) => onSegmentKeyDown(event, index),
               sx: {
                 flex: iconOnly ? "0 0 auto" : "1 1 auto",
                 minWidth: dims.height,
@@ -129,8 +208,9 @@ const SegmentedButton = forwardRef(
                 },
                 "&.Mui-focusVisible": {
                   zIndex: 3,
-                  borderWidth: 2,
-                  borderColor: selected ? "var(--border-focused-inverse)" : "var(--border-focused-primary)",
+                  /* Figma uses a 2px border — outline + -2px offset avoids layout shift. */
+                  outline: `2px solid ${selected ? "var(--border-focused-inverse)" : "var(--border-focused-primary)"}`,
+                  outlineOffset: -2,
                   backgroundColor: selected ? "var(--background-selected-primary)" : "var(--background-brand-light)"
                 },
                 "&.Mui-disabled": {

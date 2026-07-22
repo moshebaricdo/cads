@@ -69,6 +69,23 @@ export const cases: FixtureCase[] = [
       ),
     },
     {
+      id: "field-wrapper-large-default-disabled-light",
+      mode: "light",
+      viewport: { width: 320, height: 120 },
+      render: () => (
+        <FieldWrapper
+          size="large"
+          sentiment="default"
+          label="Field label"
+          helperText="Helper text"
+          showHelper
+          disabled
+        >
+          <TextInput placeholder="Placeholder" disabled />
+        </FieldWrapper>
+      ),
+    },
+    {
       id: "field-wrapper-large-default-dark",
       mode: "dark",
       viewport: { width: 320, height: 120 },

@@ -8,7 +8,7 @@ import '@mui/material/Button';
 
 type DropdownSize = ControlSize;
 type DropdownRole = "input" | "action";
-type DropdownMenuType = "icon" | "checklist";
+type DropdownMenuType = "default" | "checklist";
 type DropdownMenuPlacement = "bottomLeft" | "bottomRight" | "topLeft" | "topRight";
 type DropdownLabelStyle = "thick" | "thin";
 type DropdownColor = "primary" | "secondary";
@@ -21,14 +21,32 @@ type DropdownColor = "primary" | "secondary";
  * - number: treated as pixels
  */
 type DropdownFieldWidth = "hug" | "full" | number | (string & {});
-interface DropdownOption {
+/** Selectable menu row (Figma Dropdown Menu Item `896:3791`). */
+interface DropdownItemOption {
+    type?: "item";
     value: string;
     label: ReactNode;
+    /**
+     * Show leading icon (Figma `hasStartIcon`).
+     * Defaults to `true` when `iconName` is set, otherwise `false` (text-only).
+     */
+    startIcon?: boolean;
+    /** FA icon when `startIcon` (Figma `iconName`). */
     iconName?: FaIconName | (string & {});
-    /** Destructive styling (Figma itemType=iconError). Action role only. */
+    /** Destructive styling (Figma itemType=defaultError). Action role only. */
     destructive?: boolean;
     disabled?: boolean;
 }
+/** Hairline row (Figma menuSeparator `16847:69841`). */
+interface DropdownSeparatorOption {
+    type: "separator";
+}
+/** Non-interactive section label (Figma menuOptGroup `16847:69853`). */
+interface DropdownGroupOption {
+    type: "group";
+    label: ReactNode;
+}
+type DropdownOption = DropdownItemOption | DropdownSeparatorOption | DropdownGroupOption;
 interface DropdownBaseProps {
     size?: DropdownSize;
     menuType?: DropdownMenuType;
@@ -45,6 +63,11 @@ interface DropdownBaseProps {
 interface DropdownInputProps extends DropdownBaseProps {
     role: "input";
     label?: ReactNode;
+    /**
+     * Required field marker on the Field Wrapper label (`*`).
+     * @default false
+     */
+    required?: boolean;
     helperText?: ReactNode;
     helperIconName?: FaIconName | (string & {});
     showHelper?: boolean;
@@ -73,15 +96,16 @@ interface DropdownActionProps extends DropdownBaseProps {
     buttonVariant?: ButtonVariant;
     buttonColor?: ButtonColor;
     onAction?: (value: string) => void;
-    /** Action menus are icon lists only in Figma. */
-    menuType?: "icon";
+    /** Action menus are non-checklist (`menuType=default`) in Figma. */
+    menuType?: "default";
 }
 type DropdownProps = DropdownInputProps | DropdownActionProps;
 /**
  * CADS Dropdown — form select (input) or action menu.
  * Spec: `15857:100676` / key `d3660d988bcb4702c24ce921128e32cadb6618db`.
- * Internal: Dropdown Button `964:10677`, Menu List `971:4280`, Menu Item `896:3791`.
+ * Internal: Dropdown Button `964:10677`, Menu List `971:4280`, Menu Item `896:3791`,
+ * menuSeparator `16847:69841`, menuOptGroup `16847:69853`.
  */
 declare const Dropdown: react.ForwardRefExoticComponent<DropdownProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Dropdown, type DropdownActionProps, type DropdownColor, type DropdownFieldWidth, type DropdownInputProps, type DropdownLabelStyle, type DropdownMenuPlacement, type DropdownMenuType, type DropdownOption, type DropdownProps, type DropdownRole, type DropdownSize };
+export { Dropdown, type DropdownActionProps, type DropdownColor, type DropdownFieldWidth, type DropdownGroupOption, type DropdownInputProps, type DropdownItemOption, type DropdownLabelStyle, type DropdownMenuPlacement, type DropdownMenuType, type DropdownOption, type DropdownProps, type DropdownRole, type DropdownSeparatorOption, type DropdownSize };

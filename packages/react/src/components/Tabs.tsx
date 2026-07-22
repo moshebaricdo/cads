@@ -1,9 +1,11 @@
 import ButtonBase from "@mui/material/ButtonBase";
 import {
   forwardRef,
+  useEffect,
   useId,
   useRef,
   useState,
+  type FocusEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
@@ -101,9 +103,30 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     onChange?.(next);
   };
 
+  /* Manual activation: arrows move focus only; Space/Enter commits selection. */
   const focusableIndexes = items
     .map((item, index) => (item.disabled ? -1 : index))
     .filter((index) => index >= 0);
+
+  const selectedFocusableIndex =
+    focusableIndexes.find((index) => items[index]?.value === value) ??
+    focusableIndexes[0] ??
+    -1;
+
+  const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
+  const tabStopIndex = focusableIndexes.includes(focusedIndex)
+    ? focusedIndex
+    : selectedFocusableIndex;
+
+  /* Keep the Tab stop on the selected tab when selection changes externally. */
+  useEffect(() => {
+    setFocusedIndex(selectedFocusableIndex);
+  }, [selectedFocusableIndex]);
+
+  const focusTab = (index: number) => {
+    setFocusedIndex(index);
+    tabRefs.current[index]?.focus();
+  };
 
   const moveFocus = (fromIndex: number, delta: number) => {
     if (focusableIndexes.length === 0) return;
@@ -111,10 +134,14 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     const start = currentPos === -1 ? 0 : currentPos;
     const nextPos =
       (start + delta + focusableIndexes.length) % focusableIndexes.length;
-    const nextIndex = focusableIndexes[nextPos]!;
-    const nextItem = items[nextIndex]!;
-    tabRefs.current[nextIndex]?.focus();
-    selectValue(nextItem.value);
+    focusTab(focusableIndexes[nextPos]!);
+  };
+
+  const activateTab = (index: number) => {
+    const item = items[index];
+    if (!item || item.disabled) return;
+    setFocusedIndex(index);
+    selectValue(item.value);
   };
 
   const onTabKeyDown = (
@@ -134,21 +161,32 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         event.preventDefault();
         const first = focusableIndexes[0];
         if (first === undefined) break;
-        tabRefs.current[first]?.focus();
-        selectValue(items[first]!.value);
+        focusTab(first);
         break;
       }
       case "End": {
         event.preventDefault();
         const last = focusableIndexes[focusableIndexes.length - 1];
         if (last === undefined) break;
-        tabRefs.current[last]?.focus();
-        selectValue(items[last]!.value);
+        focusTab(last);
+        break;
+      }
+      case " ":
+      case "Enter": {
+        event.preventDefault();
+        activateTab(index);
         break;
       }
       default:
         break;
     }
+  };
+
+  const onTablistBlur = (event: FocusEvent<HTMLDivElement>) => {
+    const next = event.relatedTarget;
+    if (next instanceof Node && event.currentTarget.contains(next)) return;
+    /* Tab re-entry lands on the selected tab, not the last focused. */
+    setFocusedIndex(selectedFocusableIndex);
   };
 
   return (
@@ -157,6 +195,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       role="tablist"
       aria-label={ariaLabel}
       className={className}
+      onBlur={onTablistBlur}
       style={{
         display: "flex",
         alignItems: isSecondary ? "flex-end" : "stretch",
@@ -201,12 +240,15 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
             aria-disabled={disabled || undefined}
             aria-label={iconOnly ? accessibleName : undefined}
             aria-labelledby={!iconOnly ? labelId : undefined}
-            tabIndex={selected && !disabled ? 0 : -1}
+            tabIndex={index === tabStopIndex ? 0 : -1}
             disabled={disabled}
             disableRipple
             onClick={() => {
               if (disabled) return;
-              selectValue(item.value);
+              activateTab(index);
+            }}
+            onFocus={() => {
+              if (!disabled) setFocusedIndex(index);
             }}
             onKeyDown={(event) => onTabKeyDown(event, index)}
             sx={{

@@ -118,80 +118,88 @@ const CHECKBOX_SIZE = {
 };
 const TOGGLE_SIZE = {
   large: {
-    trackWidth: "3.25rem",
-    // 52px
-    trackHeight: "1.625rem",
-    // 26px
-    handle: "1.375rem",
-    // 22px
-    pad: "0.125rem",
-    // 2px
-    iconPx: "1rem",
-    // 16px
-    iconSlot: "0.875rem",
-    // 14px
-    iconInset: "0.5rem",
-    // 8px — matches Figma on-state left padding
-    labelGap: "0.5rem",
-    // 8px
-    fontSize: "var(--text-body-lg)",
-    lineHeight: "var(--leading-body-lg)"
-  },
-  medium: {
-    trackWidth: "3rem",
-    // 48px
-    trackHeight: "1.5rem",
-    // 24px
-    handle: "1.25rem",
-    // 20px
-    pad: "0.125rem",
-    // 2px
-    iconPx: "0.875rem",
-    // 14px
-    iconSlot: "0.875rem",
-    // 14px
-    iconInset: "0.5rem",
-    // 8px
-    labelGap: "0.5rem",
-    // 8px
-    fontSize: "var(--text-body-md)",
-    lineHeight: "var(--leading-body-md)"
-  },
-  small: {
-    trackWidth: "2.75rem",
-    // 44px
+    trackWidth: "2.625rem",
+    // 42px
     trackHeight: "1.375rem",
-    // 22px
+    // 22px — matches Checkbox/Radio large
     handle: "1.125rem",
     // 18px
     pad: "0.125rem",
     // 2px
     iconPx: "0.75rem",
     // 12px
-    iconSlot: "0.625rem",
-    // 10px
-    iconInset: "0.5rem",
+    iconGap: "0.375rem",
+    // 6px
+    iconInsetLeft: "0.5rem",
     // 8px
+    iconInsetRight: "0.5625rem",
+    // 9px
+    labelGap: "0.5rem",
+    // 8px
+    fontSize: "var(--text-body-lg)",
+    lineHeight: "var(--leading-body-lg)"
+  },
+  medium: {
+    trackWidth: "2.375rem",
+    // 38px
+    trackHeight: "1.25rem",
+    // 20px — matches Checkbox/Radio medium
+    handle: "1rem",
+    // 16px
+    pad: "0.125rem",
+    // 2px
+    iconPx: "0.6875rem",
+    // 11px
+    iconGap: "0.25rem",
+    // 4px
+    iconInsetLeft: "0.375rem",
+    // 6px
+    iconInsetRight: "0.375rem",
+    // 6px
+    labelGap: "0.5rem",
+    // 8px
+    fontSize: "var(--text-body-md)",
+    lineHeight: "var(--leading-body-md)"
+  },
+  small: {
+    trackWidth: "2.125rem",
+    // 34px
+    trackHeight: "1.125rem",
+    // 18px — matches Checkbox/Radio small
+    handle: "0.875rem",
+    // 14px
+    pad: "0.125rem",
+    // 2px
+    iconPx: "0.625rem",
+    // 10px
+    iconGap: "0.25rem",
+    // 4px
+    iconInsetLeft: "0.375rem",
+    // 6px
+    iconInsetRight: "0.375rem",
+    // 6px
     labelGap: "0.5rem",
     // 8px
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)"
   },
   extraSmall: {
-    trackWidth: "2.5rem",
-    // 40px
-    trackHeight: "1.25rem",
-    // 20px
-    handle: "1rem",
-    // 16px
+    trackWidth: "1.875rem",
+    // 30px
+    trackHeight: "1rem",
+    // 16px — matches Checkbox/Radio extraSmall
+    handle: "0.75rem",
+    // 12px
     pad: "0.125rem",
     // 2px
-    iconPx: "0.625rem",
-    // 10px
-    iconSlot: "0.625rem",
-    // 10px
-    iconInset: "0.4375rem",
-    // 7px — matches Figma XS on-state left padding
+    iconPx: "0.5625rem",
+    // 9px
+    iconGap: "0.25rem",
+    // 4px
+    iconInsetLeft: "0.375rem",
+    // 6px
+    iconInsetRight: "0.375rem",
+    // 6px
     labelGap: "0.375rem",
     // 6px
     fontSize: "var(--text-body-xs)",
@@ -341,7 +349,11 @@ const TEXT_INPUT_SIZE = {
     paddingBlock: "0.625rem",
     // 10px
     fontSize: "var(--text-body-lg)",
-    lineHeight: "var(--leading-body-lg)"
+    lineHeight: "var(--leading-body-lg)",
+    iconGap: "0.625rem",
+    // 10px
+    iconPx: "1.125rem"
+    // 18px
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
@@ -352,7 +364,11 @@ const TEXT_INPUT_SIZE = {
     paddingBlock: "0.5rem",
     // 8px
     fontSize: "var(--text-body-md)",
-    lineHeight: "var(--leading-body-md)"
+    lineHeight: "var(--leading-body-md)",
+    iconGap: "0.625rem",
+    // 10px
+    iconPx: "1rem"
+    // 16px
   },
   small: {
     height: CONTROL_HEIGHT.small,
@@ -363,7 +379,11 @@ const TEXT_INPUT_SIZE = {
     paddingBlock: "0.3125rem",
     // 5px
     fontSize: "var(--text-body-sm)",
-    lineHeight: "var(--leading-body-sm)"
+    lineHeight: "var(--leading-body-sm)",
+    iconGap: "0.5rem",
+    // 8px
+    iconPx: "0.875rem"
+    // 14px
   },
   extraSmall: {
     // Approved exception: Figma field is 22px; CADS uses shared 24px control height.
@@ -375,7 +395,11 @@ const TEXT_INPUT_SIZE = {
     paddingBlock: "0.125rem",
     // 2px
     fontSize: "var(--text-body-xs)",
-    lineHeight: "var(--leading-body-xs)"
+    lineHeight: "var(--leading-body-xs)",
+    iconGap: "0.375rem",
+    // 6px
+    iconPx: "0.75rem"
+    // 12px
   }
 };
 const FIELD_WRAPPER_SIZE = {
@@ -480,16 +504,16 @@ const RADIO_SIZE = {
 };
 const TABS_SIZE = {
   large: {
-    primaryHeight: CONTROL_HEIGHT.large,
-    // 48
+    primaryHeight: "3.5rem",
+    // 56 (+8 vs control)
     secondaryHeight: "2rem",
     // 32
     primaryGroupGap: "1.25rem",
     // 20
     secondaryGroupGap: "0.25rem",
     // 4
-    primaryPadY: "0.625rem",
-    // 10
+    primaryPadY: "0.875rem",
+    // 14
     secondaryPadX: "0.75rem",
     // 12
     primaryItemGap: "0.5rem",
@@ -512,16 +536,16 @@ const TABS_SIZE = {
     // 36
   },
   medium: {
-    primaryHeight: CONTROL_HEIGHT.medium,
-    // 40
+    primaryHeight: "3rem",
+    // 48 (+8 vs control)
     secondaryHeight: "1.75rem",
     // 28
     primaryGroupGap: "1.125rem",
     // 18
     secondaryGroupGap: "0.25rem",
     // 4
-    primaryPadY: "0.375rem",
-    // 6
+    primaryPadY: "0.625rem",
+    // 10
     secondaryPadX: "0.625rem",
     // 10
     primaryItemGap: "0.5rem",
@@ -544,16 +568,16 @@ const TABS_SIZE = {
     // 32
   },
   small: {
-    primaryHeight: CONTROL_HEIGHT.small,
-    // 32
+    primaryHeight: "2.5rem",
+    // 40 (+8 vs control)
     secondaryHeight: "1.5rem",
     // 24
     primaryGroupGap: "1rem",
     // 16
     secondaryGroupGap: "0.25rem",
     // 4
-    primaryPadY: "0.375rem",
-    // 6
+    primaryPadY: "0.5rem",
+    // 8
     secondaryPadX: "0.5rem",
     // 8
     primaryItemGap: "0.375rem",
@@ -576,16 +600,16 @@ const TABS_SIZE = {
     // 28
   },
   extraSmall: {
-    primaryHeight: CONTROL_HEIGHT.extraSmall,
-    // 24
+    primaryHeight: "2rem",
+    // 32 (+8 vs control)
     secondaryHeight: "1.25rem",
     // 20
     primaryGroupGap: "0.875rem",
     // 14
     secondaryGroupGap: "0.125rem",
     // 2
-    primaryPadY: "0.25rem",
-    // 4
+    primaryPadY: "0.375rem",
+    // 6
     secondaryPadX: "0.375rem",
     // 6
     primaryItemGap: "0.25rem",

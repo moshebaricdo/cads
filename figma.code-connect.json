@@ -43,14 +43,14 @@
       "figmaNodeId": "16176:4884",
       "componentKey": "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4",
       "source": "@codeai/cads-react",
-      "snippet": "import { TextInput } from \"@codeai/cads-react\";\n\n<TextInput label=\"{label}\" size=\"medium\" placeholder=\"Placeholder\" />"
+      "snippet": "import { TextInput } from \"@codeai/cads-react\";\n\n<TextInput label=\"{label}\" size=\"medium\" startIcon startIconName=\"envelope\" placeholder=\"Placeholder\" />"
     },
     {
       "componentName": "Dropdown",
       "figmaNodeId": "15857:100676",
       "componentKey": "d3660d988bcb4702c24ce921128e32cadb6618db",
       "source": "@codeai/cads-react",
-      "snippet": "import { Dropdown } from \"@codeai/cads-react\";\n\n<Dropdown role=\"input\" label=\"{label}\" options={[{ value: \"a\", label: \"Option A\" }, { value: \"b\", label: \"Option B\" }]} />"
+      "snippet": "import { Dropdown } from \"@codeai/cads-react\";\n\n<Dropdown role=\"input\" label=\"{label}\" options={[{ type: \"group\", label: \"Recent\" }, { value: \"a\", label: \"Option A\" }, { type: \"separator\" }, { value: \"b\", label: \"Option B\" }]} />"
     },
     {
       "componentName": "Checkbox",
@@ -71,7 +71,7 @@
       "figmaNodeId": "327:2151",
       "componentKey": "13f4f08ad10787f9c7c557c0139b200f4d8864a8",
       "source": "@codeai/cads-react",
-      "snippet": "import { Toggle } from \"@codeai/cads-react\";\n\n<Toggle label=\"{label}\" labelPlacement=\"left\" size=\"medium\" />"
+      "snippet": "import { Toggle } from \"@codeai/cads-react\";\n\n<Toggle label=\"{label}\" labelPlacement=\"left\" size=\"medium\" hasIcons onIcon=\"check\" offIcon=\"xmark\" />"
     },
     {
       "componentName": "Slider",

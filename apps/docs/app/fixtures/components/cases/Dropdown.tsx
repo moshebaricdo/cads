@@ -5,6 +5,7 @@ import {
   type FixtureCase,
   ICON_OPTIONS,
   ACTION_OPTIONS,
+  TEXT_GROUPED_OPTIONS,
 } from "./shared";
 
 export const cases: FixtureCase[] = [
@@ -16,7 +17,7 @@ export const cases: FixtureCase[] = [
         <Dropdown
           role="input"
           size="large"
-          menuType="icon"
+          menuType="default"
           menuPlacement="bottomLeft"
           label="Field label"
           helperText="Helper text"
@@ -51,7 +52,7 @@ export const cases: FixtureCase[] = [
         <Dropdown
           role="action"
           size="large"
-          menuType="icon"
+          menuType="default"
           menuPlacement="bottomLeft"
           label="Button"
           defaultOpen
@@ -68,7 +69,7 @@ export const cases: FixtureCase[] = [
           <Dropdown
             role="input"
             size="small"
-            menuType="icon"
+            menuType="default"
             menuPlacement="topLeft"
             label="Field label"
             defaultOpen
@@ -93,7 +94,7 @@ export const cases: FixtureCase[] = [
           <Dropdown
             role="action"
             size="extraSmall"
-            menuType="icon"
+            menuType="default"
             menuPlacement="topRight"
             label="Button"
             defaultOpen
@@ -110,11 +111,29 @@ export const cases: FixtureCase[] = [
         <Dropdown
           role="input"
           size="large"
-          menuType="icon"
+          menuType="default"
           menuPlacement="bottomLeft"
           label="Field label"
           defaultOpen
           options={ICON_OPTIONS}
+          defaultValue="a"
+        />
+      ),
+    },
+    {
+      id: "dropdown-medium-input-text-grouped-light",
+      mode: "light",
+      viewport: { width: 420, height: 400 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size="medium"
+          menuType="default"
+          menuPlacement="bottomLeft"
+          label="Field label"
+          helperText="Text-only + groups + separator"
+          defaultOpen
+          options={TEXT_GROUPED_OPTIONS}
           defaultValue="a"
         />
       ),

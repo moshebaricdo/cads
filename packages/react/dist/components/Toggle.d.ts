@@ -1,6 +1,7 @@
 import * as react from 'react';
 import { ReactNode, MouseEvent } from 'react';
 import { ButtonBaseProps } from '@mui/material/ButtonBase';
+import { FaIconName } from '../icons/faProRegularCodepoints.js';
 import { ControlSize } from '../shared/controlSize.js';
 
 type ToggleSize = ControlSize;
@@ -29,10 +30,26 @@ interface ToggleProps extends Omit<ButtonBaseProps, "onChange" | "children" | "c
     /** Uncontrolled default. */
     defaultChecked?: boolean;
     onChange?: (event: MouseEvent<HTMLButtonElement>, checked: boolean) => void;
+    /**
+     * When false, hide track icons entirely (Figma `hasIcons`).
+     * @default true
+     */
+    hasIcons?: boolean;
+    /**
+     * FA Pro icon shown on the track when on (left slot).
+     * @default "check"
+     */
+    onIcon?: FaIconName | (string & {});
+    /**
+     * FA Pro icon shown on the track when off (right slot).
+     * @default "xmark"
+     */
+    offIcon?: FaIconName | (string & {});
 }
 /**
- * CADS Toggle — switch with check / xmark icons and a sliding handle.
- * Spec: Figma Toggle + Label `327:2151`, block `8841:5569`.
+ * CADS Toggle — switch with customizable track icons (default check / xmark)
+ * and a sliding handle. Spec: Figma Toggle + Label `327:2151`, block `8841:5569`.
+ * Track heights match Checkbox/Radio (22 / 20 / 18 / 16).
  */
 declare const Toggle: react.ForwardRefExoticComponent<Omit<ToggleProps, "ref"> & react.RefAttributes<HTMLButtonElement>>;
 

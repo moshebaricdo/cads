@@ -10,13 +10,18 @@
       "16146:3517",
       "15857:99804"
     ],
-    "retrievedAt": "2026-07-16",
+    "retrievedAt": "2026-07-21",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
-    "figmaChanges": []
+    "taskPath": "figma-update",
+    "previousRecipe": "2026-07-16 initial TextInput recipe",
+    "figmaChanges": [
+      "Building block field variants gained boolean startIcon + text startIconName (FA Solid smile).",
+      "Start icon is field-only; area variants have no startIcon property.",
+      "Icon gaps: L/M 10px, S 8px, XS 6px. Glyph: L 18 / M 16 / S 14 / XS 12.",
+      "Start icon color: primary → --text-neutral-primary; secondary → --text-neutral-placeholder (incl. filled/readOnly/error). disabled → --text-disabled-neutral."
+    ]
   },
   "axes": {
     "public": {
@@ -33,13 +38,19 @@
       "color": [
         "primary",
         "secondary"
+      ],
+      "startIcon": [
+        false,
+        true
       ]
     },
     "designOnly": [
       "state",
       "isFilled"
     ],
-    "restrictedCombinations": []
+    "restrictedCombinations": [
+      "startIcon is ignored when multiline=true (type=area)"
+    ]
   },
   "geometry": {
     "sizes": {
@@ -49,7 +60,9 @@
         "paddingInline": "16px",
         "paddingBlock": "10px",
         "fontSize": "var(--text-body-lg)",
-        "lineHeight": "var(--leading-body-lg)"
+        "lineHeight": "var(--leading-body-lg)",
+        "iconGap": "10px",
+        "iconPx": "18px"
       },
       "medium": {
         "fieldHeight": "40px",
@@ -57,7 +70,9 @@
         "paddingInline": "16px",
         "paddingBlock": "8px",
         "fontSize": "var(--text-body-md)",
-        "lineHeight": "var(--leading-body-md)"
+        "lineHeight": "var(--leading-body-md)",
+        "iconGap": "10px",
+        "iconPx": "16px"
       },
       "small": {
         "fieldHeight": "32px",
@@ -65,7 +80,9 @@
         "paddingInline": "12px",
         "paddingBlock": "5px",
         "fontSize": "var(--text-body-sm)",
-        "lineHeight": "var(--leading-body-sm)"
+        "lineHeight": "var(--leading-body-sm)",
+        "iconGap": "8px",
+        "iconPx": "14px"
       },
       "extraSmall": {
         "fieldHeight": "24px",
@@ -73,7 +90,9 @@
         "paddingInline": "8px",
         "paddingBlock": "2px",
         "fontSize": "var(--text-body-xs)",
-        "lineHeight": "var(--leading-body-xs)"
+        "lineHeight": "var(--leading-body-xs)",
+        "iconGap": "6px",
+        "iconPx": "12px"
       }
     },
     "layout": {
@@ -91,7 +110,12 @@
     },
     "icon": {
       "family": "solid",
-      "size": "helper-scaled"
+      "size": "field-start-scaled",
+      "colorPrimary": "var(--text-neutral-primary)",
+      "colorSecondary": "var(--text-neutral-placeholder)",
+      "colorDisabled": "var(--text-disabled-neutral)",
+      "colorReadOnlyPrimary": "var(--text-neutral-primary)",
+      "colorReadOnlySecondary": "var(--text-neutral-placeholder)"
     }
   },
   "recipes": [
@@ -202,7 +226,8 @@
       "multiline",
       "color",
       "state",
-      "mode"
+      "mode",
+      "startIcon"
     ],
     "cases": [
       {
@@ -214,6 +239,7 @@
           "size": "large",
           "multiline": false,
           "color": "primary",
+          "startIcon": false,
           "label": "Field label",
           "helperText": "Helper text",
           "placeholder": "Placeholder"
@@ -399,6 +425,7 @@
           "size": "large",
           "multiline": false,
           "color": "primary",
+          "startIcon": false,
           "label": "Field label",
           "helperText": "Helper text",
           "placeholder": "Placeholder"
@@ -418,18 +445,173 @@
         "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-primary-default-dark&mode=dark",
         "result": "pass",
         "mismatches": []
+      },
+      {
+        "id": "text-input-large-field-start-icon-light",
+        "figmaNodeId": "16146:3516",
+        "figmaVariant": "size=large, type=field, color=primary, state=default, isFilled=no + startIcon",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "multiline": false,
+          "color": "primary",
+          "startIcon": true,
+          "startIconName": "face-smile",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Placeholder"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "48px",
+          "iconPx": "18px",
+          "iconGap": "10px"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid",
+          "--text-neutral-primary",
+          "--text-neutral-placeholder"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-large-field-start-icon-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-start-icon-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-medium-field-start-icon-readonly-light",
+        "figmaNodeId": "16178:108",
+        "figmaVariant": "size=medium, type=field, state=readOnly + startIcon",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "color": "primary",
+          "startIcon": true,
+          "startIconName": "face-smile",
+          "label": "Field label",
+          "value": "Filled text",
+          "readOnly": true
+        },
+        "state": "readOnly",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "iconPx": "16px",
+          "iconGap": "10px"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--text-neutral-quaternary",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-medium-field-start-icon-readonly-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-medium-field-start-icon-readonly-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-xs-field-start-icon-disabled-light",
+        "figmaNodeId": "16146:4146",
+        "figmaVariant": "size=extraSmall, type=field, state=disabled + startIcon",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "color": "primary",
+          "startIcon": true,
+          "startIconName": "face-smile",
+          "label": "Field label",
+          "placeholder": "Placeholder",
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 360,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "24px",
+          "iconPx": "12px",
+          "iconGap": "6px"
+        },
+        "expectedVariables": [
+          "--border-disabled-neutral",
+          "--text-disabled-neutral"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-xs-field-start-icon-disabled-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-xs-field-start-icon-disabled-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-large-field-secondary-start-icon-light",
+        "figmaNodeId": "16146:3857",
+        "figmaVariant": "size=large, type=field, color=secondary, state=default, isFilled=no + startIcon",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "multiline": false,
+          "color": "secondary",
+          "startIcon": true,
+          "startIconName": "face-smile",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Placeholder"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "48px",
+          "iconPx": "18px",
+          "iconGap": "10px"
+        },
+        "expectedVariables": [
+          "--border-neutral-secondary",
+          "--text-neutral-placeholder"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-large-field-secondary-start-icon-light",
+        "referenceScreenshot": "captures/figma-text-input-set.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-large-field-secondary-start-icon-light",
+        "result": "pass",
+        "mismatches": []
       }
     ]
   },
   "acceptedDifferences": [
     {
       "caseIds": [
-        "text-input-xs-field-disabled-light"
+        "text-input-xs-field-disabled-light",
+        "text-input-xs-field-start-icon-disabled-light"
       ],
       "figmaBehavior": "Figma Text Input Building Block extraSmall field height is 22px.",
       "codeBehavior": "CADS uses the shared control height scale at 24px (var(--control-height-extra-small)).",
       "reason": "User-approved decision to keep the shared 24px control scale and record the Figma 22px mismatch.",
       "decisionSource": "user 2026-07-16"
+    },
+    {
+      "caseIds": [
+        "text-input-large-field-start-icon-light",
+        "text-input-medium-field-start-icon-readonly-light",
+        "text-input-xs-field-start-icon-disabled-light"
+      ],
+      "figmaBehavior": "Figma building-block startIcon boolean defaults true.",
+      "codeBehavior": "Public TextInput startIcon defaults false.",
+      "reason": "Opt-in adornment so existing undecorated fields stay the common case unless consumers set startIcon (same pattern as Tooltip).",
+      "decisionSource": "agent 2026-07-21 (parity with Tooltip startIcon default)"
     }
   ],
   "evidence": {
@@ -439,7 +621,9 @@
     "docsBuild": "pnpm build:docs \u2192 pass",
     "correctionPasses": [
       "Measured large field height 48px and extraSmall 24px in fixture (browser_get_bounding_box)",
-      "Verified error border + circle-xmark helper, focus FOCUS_RING vars, secondary border, readonly/disabled chrome vs building block 16146:3517"
+      "Verified error border + circle-xmark helper, focus FOCUS_RING vars, secondary border, readonly/disabled chrome vs building block 16146:3517",
+      "2026-07-21: startIcon field shell — icon geometry L18/M16/S14/XS12, gaps 10/10/8/6; readOnly icon stays primary; disabled icon uses disabled text",
+      "2026-07-21: secondary startIcon uses --text-neutral-placeholder (Figma 16146:3857 / 16146:3859 / 16178:84)"
     ]
   }
 }

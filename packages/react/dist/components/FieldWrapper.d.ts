@@ -29,6 +29,12 @@ interface FieldWrapperProps {
     sentiment?: FieldSentiment;
     /** Visible field label. */
     label?: ReactNode;
+    /**
+     * Marks the field as required. Appends a `*` after the label (same type style,
+     * no extra gap) and is intended to pair with a native `required` on the control.
+     * @default false
+     */
+    required?: boolean;
     /** Helper / validation text below the control slot. */
     helperText?: ReactNode;
     /**

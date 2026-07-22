@@ -8,6 +8,12 @@ import { FieldWrapper } from './FieldWrapper.js';
 import { FaIcon } from '../icons/FaIcon.js';
 import { FOCUS_RING, TRANSITION_COLORS, TEXT_INPUT_SIZE, BUTTON_SIZE } from '../shared/controlSize.js';
 
+function isItemOption(option) {
+  return option.type !== "separator" && option.type !== "group";
+}
+function isSelectableOption(option) {
+  return isItemOption(option) && !option.disabled;
+}
 function resolveInputWidth(width = "hug") {
   if (width === "hug") {
     return {
@@ -113,6 +119,37 @@ const MENU_ITEM_SIZE = {
     checkbox: 16
   }
 };
+const MENU_GROUP_SIZE = {
+  large: {
+    height: 32,
+    paddingLeft: "1rem",
+    paddingRight: "1.375rem",
+    fontSize: "var(--text-body-sm)",
+    lineHeight: "var(--leading-body-sm)"
+  },
+  medium: {
+    height: 28,
+    paddingLeft: "0.75rem",
+    paddingRight: "1rem",
+    fontSize: "var(--text-body-xs)",
+    lineHeight: "var(--leading-body-xs)"
+  },
+  small: {
+    height: 24,
+    paddingLeft: "0.625rem",
+    paddingRight: "0.875rem",
+    fontSize: "var(--text-body-xxs)",
+    lineHeight: "var(--leading-body-xxs)"
+  },
+  extraSmall: {
+    height: 20,
+    paddingLeft: "0.5rem",
+    paddingRight: "0.625rem",
+    fontSize: "var(--text-body-xxs)",
+    lineHeight: "var(--leading-body-xxs)"
+  }
+};
+const MENU_SEPARATOR_HEIGHT = 8;
 function triggerBorder(color, error, disabled, readOnly) {
   if (disabled) return "var(--border-disabled-neutral)";
   if (error) return "var(--border-error-primary)";
@@ -187,6 +224,7 @@ function DropdownButtonTrigger({
   disabled,
   readOnly,
   error,
+  required,
   onClick,
   buttonRef,
   id,
@@ -208,6 +246,7 @@ function DropdownButtonTrigger({
       "aria-haspopup": listedBy ? "listbox" : "menu",
       "aria-expanded": open,
       "aria-controls": listedBy,
+      "aria-required": required || void 0,
       "aria-label": ariaLabel,
       onClick,
       "data-cads-dropdown-trigger": "input",
@@ -266,21 +305,16 @@ function MenuItemRow({
   menuType,
   role,
   active,
+  keyboardFocus,
   onSelect,
   onHighlight,
   id
 }) {
   const dims = MENU_ITEM_SIZE[size];
   const destructive = Boolean(option.destructive) && role === "action";
+  const showStartIcon = menuType !== "checklist" && (option.startIcon ?? Boolean(option.iconName));
   const textColor = destructive ? "var(--text-error-primary)" : selected ? "var(--text-selected-primary)" : "var(--text-neutral-primary)";
-  let bg = "var(--background-neutral-primary)";
-  if (selected) {
-    bg = active ? "var(--background-selected-strong)" : "var(--background-selected-primary)";
-  } else if (active && destructive) {
-    bg = "var(--background-error-light)";
-  } else if (active) {
-    bg = "var(--background-neutral-secondary)";
-  }
+  const bg = selected ? "var(--background-selected-primary)" : "var(--background-neutral-primary)";
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -289,14 +323,17 @@ function MenuItemRow({
       "aria-selected": role === "input" ? selected : void 0,
       "aria-disabled": option.disabled || void 0,
       "data-cads-dropdown-item": "",
+      "data-value": option.value,
       "data-destructive": destructive ? "true" : void 0,
       "data-active": active ? "true" : void 0,
+      "data-keyboard-focus": keyboardFocus ? "true" : void 0,
       tabIndex: -1,
       onMouseDown: (e) => {
         e.preventDefault();
       },
       onClick: (e) => {
         e.preventDefault();
+        if (e.metaKey || e.ctrlKey) return;
         e.stopPropagation();
         if (!option.disabled) onSelect();
       },
@@ -306,7 +343,7 @@ function MenuItemRow({
       style: {
         display: "flex",
         alignItems: "center",
-        gap: dims.gap,
+        gap: showStartIcon || menuType === "checklist" ? dims.gap : 0,
         width: "100%",
         boxSizing: "border-box",
         paddingLeft: dims.paddingLeft,
@@ -349,7 +386,7 @@ function MenuItemRow({
               }
             ) : null
           }
-        ) : /* @__PURE__ */ jsx(
+        ) : showStartIcon ? /* @__PURE__ */ jsx(
           "span",
           {
             "aria-hidden": true,
@@ -369,7 +406,7 @@ function MenuItemRow({
               }
             )
           }
-        ),
+        ) : null,
         /* @__PURE__ */ jsx(
           "span",
           {
@@ -387,11 +424,88 @@ function MenuItemRow({
     }
   );
 }
+function MenuSeparatorRow() {
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      role: "separator",
+      "aria-hidden": true,
+      "data-cads-dropdown-separator": "",
+      style: {
+        boxSizing: "border-box",
+        width: "100%",
+        height: MENU_SEPARATOR_HEIGHT,
+        display: "flex",
+        alignItems: "center",
+        flexShrink: 0,
+        paddingBlock: 1
+      },
+      children: /* @__PURE__ */ jsx(
+        "div",
+        {
+          style: {
+            width: "100%",
+            height: 1,
+            backgroundColor: "var(--border-neutral-primary)"
+          }
+        }
+      )
+    }
+  );
+}
+function MenuGroupRow({
+  label,
+  size
+}) {
+  const dims = MENU_GROUP_SIZE[size];
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      role: "presentation",
+      "data-cads-dropdown-group": "",
+      style: {
+        boxSizing: "border-box",
+        width: "100%",
+        height: dims.height,
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: dims.paddingLeft,
+        paddingRight: dims.paddingRight,
+        backgroundColor: "var(--background-neutral-primary)",
+        color: "var(--text-neutral-quaternary)",
+        fontFamily: "var(--font-body)",
+        fontWeight: 600,
+        fontSize: dims.fontSize,
+        lineHeight: dims.lineHeight,
+        letterSpacing: "var(--tracking-overline)",
+        textTransform: "uppercase",
+        minWidth: 0,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        userSelect: "none",
+        pointerEvents: "none"
+      },
+      children: /* @__PURE__ */ jsx(
+        "span",
+        {
+          style: {
+            minWidth: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap"
+          },
+          children: label
+        }
+      )
+    }
+  );
+}
 const Dropdown = forwardRef(
   function Dropdown2(props, ref) {
     const {
       size = "medium",
-      menuType = "icon",
+      menuType = "default",
       menuPlacement = "bottomLeft",
       options,
       open: openProp,
@@ -421,11 +535,17 @@ const Dropdown = forwardRef(
       if (node) setAnchor(node);
     }, [open, triggerId, setAnchor]);
     const [activeIndex, setActiveIndex] = useState(-1);
+    const [highlightMode, setHighlightMode] = useState(
+      "pointer"
+    );
     const setOpen = useCallback(
       (next) => {
         if (openProp === void 0) setUncontrolledOpen(next);
         onOpenChange?.(next);
-        if (!next) setActiveIndex(-1);
+        if (!next) {
+          setActiveIndex(-1);
+          setHighlightMode("pointer");
+        }
       },
       [openProp, onOpenChange]
     );
@@ -439,11 +559,15 @@ const Dropdown = forwardRef(
       () => new Set(selectedValues),
       [selectedValues]
     );
+    const itemOptions = useMemo(
+      () => options.filter(isItemOption),
+      [options]
+    );
     const displayLabel = useMemo(() => {
       if (!isInput) return props.label ?? "Button";
       const placeholder = inputProps?.placeholder ?? "Dropdown";
       if (selectedValues.length === 0) return placeholder;
-      const labels = options.filter((o) => selectedSet.has(o.value)).map((o) => o.label);
+      const labels = itemOptions.filter((o) => selectedSet.has(o.value)).map((o) => o.label);
       if (labels.length === 0) return placeholder;
       return labels.length === 1 ? labels[0] : `${labels.length} selected`;
     }, [
@@ -451,18 +575,21 @@ const Dropdown = forwardRef(
       props,
       inputProps?.placeholder,
       selectedValues,
-      options,
+      itemOptions,
       selectedSet
     ]);
     const hugCandidates = useMemo(() => {
       if (!isInput) return void 0;
       const placeholder = inputProps?.placeholder ?? "Dropdown";
-      const candidates = [placeholder, ...options.map((o) => o.label)];
+      const candidates = [
+        placeholder,
+        ...itemOptions.map((o) => o.label)
+      ];
       if (isChecklist) {
-        candidates.push(`${options.length} selected`);
+        candidates.push(`${itemOptions.length} selected`);
       }
       return candidates;
-    }, [isInput, inputProps?.placeholder, options, isChecklist]);
+    }, [isInput, inputProps?.placeholder, itemOptions, isChecklist]);
     const commitSelection = (next) => {
       if (!inputProps) return;
       if (inputProps.value === void 0) setUncontrolledValue(next);
@@ -484,7 +611,9 @@ const Dropdown = forwardRef(
       }
     };
     const handleSelectAll = () => {
-      commitSelection(options.filter((o) => !o.disabled).map((o) => o.value));
+      commitSelection(
+        itemOptions.filter((o) => !o.disabled).map((o) => o.value)
+      );
     };
     const handleClearAll = () => {
       commitSelection([]);
@@ -495,15 +624,23 @@ const Dropdown = forwardRef(
       setOpen(!open);
     };
     useEffect(() => {
-      if (!open) setActiveIndex(-1);
+      if (!open) {
+        setActiveIndex(-1);
+        setHighlightMode("pointer");
+      }
     }, [open]);
+    const highlightKeyboard = (index) => {
+      setHighlightMode("keyboard");
+      setActiveIndex(index);
+    };
     const moveActive = (direction) => {
+      setHighlightMode("keyboard");
       setActiveIndex((current) => {
         const start = current < 0 ? direction === 1 ? -1 : 0 : current;
         let next = start;
         for (let step = 0; step < options.length; step++) {
           next = direction === 1 ? (next + 1) % options.length : (next - 1 + options.length) % options.length;
-          if (!options[next]?.disabled) return next;
+          if (isSelectableOption(options[next])) return next;
         }
         return current;
       });
@@ -515,14 +652,14 @@ const Dropdown = forwardRef(
           setOpen(true);
           if (event.key === "ArrowUp") {
             for (let i = options.length - 1; i >= 0; i--) {
-              if (!options[i]?.disabled) {
-                setActiveIndex(i);
+              if (isSelectableOption(options[i])) {
+                highlightKeyboard(i);
                 break;
               }
             }
           } else {
-            const idx = options.findIndex((o) => !o.disabled);
-            setActiveIndex(idx < 0 ? -1 : idx);
+            const idx = options.findIndex(isSelectableOption);
+            if (idx >= 0) highlightKeyboard(idx);
           }
         }
         return;
@@ -543,14 +680,14 @@ const Dropdown = forwardRef(
       }
       if (event.key === "Home") {
         event.preventDefault();
-        const idx = options.findIndex((o) => !o.disabled);
-        if (idx >= 0) setActiveIndex(idx);
+        const idx = options.findIndex(isSelectableOption);
+        if (idx >= 0) highlightKeyboard(idx);
       }
       if (event.key === "End") {
         event.preventDefault();
         for (let i = options.length - 1; i >= 0; i--) {
-          if (!options[i]?.disabled) {
-            setActiveIndex(i);
+          if (isSelectableOption(options[i])) {
+            highlightKeyboard(i);
             break;
           }
         }
@@ -558,10 +695,10 @@ const Dropdown = forwardRef(
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         const opt = activeIndex >= 0 ? options[activeIndex] : void 0;
-        if (opt) handleItemSelect(opt);
+        if (opt && isItemOption(opt)) handleItemSelect(opt);
       }
     };
-    const resolvedMenuType = isInput && (inputProps?.menuType ?? menuType) === "checklist" ? "checklist" : "icon";
+    const resolvedMenuType = isInput && (inputProps?.menuType ?? menuType) === "checklist" ? "checklist" : "default";
     const menu = /* @__PURE__ */ jsx(
       Popper,
       {
@@ -616,22 +753,45 @@ const Dropdown = forwardRef(
                     paddingTop: isChecklist ? 4 : 0,
                     paddingBottom: isChecklist ? 4 : 0
                   },
-                  onMouseLeave: () => setActiveIndex(-1),
-                  children: options.map((option, index) => /* @__PURE__ */ jsx(
-                    MenuItemRow,
-                    {
-                      id: `${listId}-opt-${index}`,
-                      option,
-                      size,
-                      selected: selectedSet.has(option.value),
-                      menuType: resolvedMenuType,
-                      role: props.role,
-                      active: index === activeIndex,
-                      onSelect: () => handleItemSelect(option),
-                      onHighlight: () => setActiveIndex(index)
-                    },
-                    option.value
-                  ))
+                  onMouseLeave: () => {
+                    setActiveIndex(-1);
+                    setHighlightMode("pointer");
+                  },
+                  children: options.map((option, index) => {
+                    if (option.type === "separator") {
+                      return /* @__PURE__ */ jsx(MenuSeparatorRow, {}, `${listId}-sep-${index}`);
+                    }
+                    if (option.type === "group") {
+                      return /* @__PURE__ */ jsx(
+                        MenuGroupRow,
+                        {
+                          label: option.label,
+                          size
+                        },
+                        `${listId}-group-${index}`
+                      );
+                    }
+                    const active = index === activeIndex;
+                    return /* @__PURE__ */ jsx(
+                      MenuItemRow,
+                      {
+                        id: `${listId}-opt-${index}`,
+                        option,
+                        size,
+                        selected: selectedSet.has(option.value),
+                        menuType: resolvedMenuType,
+                        role: props.role,
+                        active,
+                        keyboardFocus: active && highlightMode === "keyboard",
+                        onSelect: () => handleItemSelect(option),
+                        onHighlight: () => {
+                          setHighlightMode("pointer");
+                          setActiveIndex(index);
+                        }
+                      },
+                      option.value
+                    );
+                  })
                 }
               ),
               isChecklist ? /* @__PURE__ */ jsxs(
@@ -704,31 +864,56 @@ const Dropdown = forwardRef(
       }
     );
     const triggerStyles = `
+.cads-dropdown-trigger {
+  outline: none;
+}
 .cads-dropdown-trigger:hover:not(:disabled) {
-  background-color: var(--background-neutral-secondary) !important;
+  background-color: var(--background-neutral-tertiary) !important;
 }
 .cads-dropdown-trigger:focus-visible {
   box-shadow: ${FOCUS_RING};
 }
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):hover,
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"])[data-active="true"] {
-  background-color: var(--background-neutral-secondary) !important;
+/* When a menu item has keyboard focus, move chrome off the trigger (Figma). */
+[data-cads-dropdown]:has([data-keyboard-focus="true"]) .cads-dropdown-trigger:focus-visible,
+[data-cads-dropdown]:has([data-keyboard-focus="true"]) .MuiButton-root.Mui-focusVisible {
+  box-shadow: none !important;
 }
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):active {
+/* Pointer hover \u2014 Figma Menu Item / Dropdown Button state=hover */
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):not([data-keyboard-focus="true"]):hover {
+  background-color: var(--background-neutral-tertiary) !important;
+}
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):active:not([data-keyboard-focus="true"]) {
   background-color: var(--background-neutral-tertiary) !important;
   color: var(--text-neutral-tertiary) !important;
 }
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):hover,
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"])[data-active="true"] {
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-error-light) !important;
 }
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active {
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active:not([data-keyboard-focus="true"]) {
   background-color: var(--background-error-primary) !important;
   color: var(--text-neutral-white-fixed) !important;
 }
-[data-cads-dropdown-item][aria-selected="true"]:hover,
-[data-cads-dropdown-item][aria-selected="true"][data-active="true"] {
+[data-cads-dropdown-item][aria-selected="true"]:not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-selected-strong) !important;
+}
+/* Keyboard focus \u2014 Figma Menu Item state=focus (2px flush ring, not FOCUS_RING).
+   Use outline + negative offset so geometry does not shift like a real border. */
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"])[data-keyboard-focus="true"] {
+  background-color: var(--background-brand-light) !important;
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: -2px;
+}
+[data-cads-dropdown-item][aria-selected="true"][data-keyboard-focus="true"] {
+  background-color: var(--background-selected-primary) !important;
+  color: var(--text-selected-primary) !important;
+  outline: 2px solid var(--border-selected-primary-inverse);
+  outline-offset: -2px;
+}
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"])[data-keyboard-focus="true"] {
+  background-color: var(--background-neutral-primary) !important;
+  color: var(--text-error-primary) !important;
+  outline: 2px solid var(--border-error-primary);
+  outline-offset: -2px;
 }
 [data-cads-dropdown-action-row] .MuiButton-root {
   white-space: nowrap;
@@ -768,6 +953,7 @@ const Dropdown = forwardRef(
                     size,
                     sentiment,
                     label: ip.label,
+                    required: ip.required,
                     helperText: ip.helperText,
                     helperIconName: ip.helperIconName,
                     showHelper: ip.showHelper,
@@ -786,6 +972,7 @@ const Dropdown = forwardRef(
                         disabled,
                         readOnly: Boolean(ip.readOnly),
                         error: Boolean(ip.error) || sentiment === "error",
+                        required: Boolean(ip.required),
                         onClick: toggleOpen,
                         buttonRef: setAnchor,
                         id: triggerId,

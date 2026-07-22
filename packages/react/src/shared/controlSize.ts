@@ -122,7 +122,10 @@ export const CHECKBOX_SIZE: Record<
 /**
  * Toggle (switch) track / handle / icon matrix from Figma Toggle set
  * (`8841:5569`) and Toggle + Label (`327:2151`).
- * Handle slides via absolute `left`; icons crossfade in fixed slots.
+ * Track heights match Checkbox/Radio boxes (22 / 20 / 18 / 16).
+ * Handle slides via absolute `left`. Icons center in Figma's flex-1
+ * band: track − outerInset − iconGap − handle − pad (not a glyph-sized
+ * box — that eats the handle gap when FA advance > flex band).
  */
 export const TOGGLE_SIZE: Record<
   ControlSize,
@@ -133,58 +136,65 @@ export const TOGGLE_SIZE: Record<
     /** Inset from track edge to handle / track padding. */
     pad: string;
     iconPx: string;
-    iconSlot: string;
-    /** Inset for check (left) / xmark (right) icon slots. */
-    iconInset: string;
+    /** Figma flex gap between handle and icon flex band. */
+    iconGap: string;
+    /** Outer inset for on-icon band (Figma on pl). */
+    iconInsetLeft: string;
+    /** Outer inset for off-icon band (Figma off pr). */
+    iconInsetRight: string;
     labelGap: string;
     fontSize: string;
     lineHeight: string;
   }
 > = {
   large: {
-    trackWidth: "3.25rem", // 52px
-    trackHeight: "1.625rem", // 26px
-    handle: "1.375rem", // 22px
+    trackWidth: "2.625rem", // 42px
+    trackHeight: "1.375rem", // 22px — matches Checkbox/Radio large
+    handle: "1.125rem", // 18px
     pad: "0.125rem", // 2px
-    iconPx: "1rem", // 16px
-    iconSlot: "0.875rem", // 14px
-    iconInset: "0.5rem", // 8px — matches Figma on-state left padding
+    iconPx: "0.75rem", // 12px
+    iconGap: "0.375rem", // 6px
+    iconInsetLeft: "0.5rem", // 8px
+    iconInsetRight: "0.5625rem", // 9px
     labelGap: "0.5rem", // 8px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
   },
   medium: {
-    trackWidth: "3rem", // 48px
-    trackHeight: "1.5rem", // 24px
-    handle: "1.25rem", // 20px
+    trackWidth: "2.375rem", // 38px
+    trackHeight: "1.25rem", // 20px — matches Checkbox/Radio medium
+    handle: "1rem", // 16px
     pad: "0.125rem", // 2px
-    iconPx: "0.875rem", // 14px
-    iconSlot: "0.875rem", // 14px
-    iconInset: "0.5rem", // 8px
+    iconPx: "0.6875rem", // 11px
+    iconGap: "0.25rem", // 4px
+    iconInsetLeft: "0.375rem", // 6px
+    iconInsetRight: "0.375rem", // 6px
     labelGap: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
   },
   small: {
-    trackWidth: "2.75rem", // 44px
-    trackHeight: "1.375rem", // 22px
-    handle: "1.125rem", // 18px
+    trackWidth: "2.125rem", // 34px
+    trackHeight: "1.125rem", // 18px — matches Checkbox/Radio small
+    handle: "0.875rem", // 14px
     pad: "0.125rem", // 2px
-    iconPx: "0.75rem", // 12px
-    iconSlot: "0.625rem", // 10px
-    iconInset: "0.5rem", // 8px
+    iconPx: "0.625rem", // 10px
+    iconGap: "0.25rem", // 4px
+    iconInsetLeft: "0.375rem", // 6px
+    iconInsetRight: "0.375rem", // 6px
     labelGap: "0.5rem", // 8px
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
   },
   extraSmall: {
-    trackWidth: "2.5rem", // 40px
-    trackHeight: "1.25rem", // 20px
-    handle: "1rem", // 16px
+    trackWidth: "1.875rem", // 30px
+    trackHeight: "1rem", // 16px — matches Checkbox/Radio extraSmall
+    handle: "0.75rem", // 12px
     pad: "0.125rem", // 2px
-    iconPx: "0.625rem", // 10px
-    iconSlot: "0.625rem", // 10px
-    iconInset: "0.4375rem", // 7px — matches Figma XS on-state left padding
+    iconPx: "0.5625rem", // 9px
+    iconGap: "0.25rem", // 4px
+    iconInsetLeft: "0.375rem", // 6px
+    iconInsetRight: "0.375rem", // 6px
     labelGap: "0.375rem", // 6px
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
@@ -327,6 +337,10 @@ export const TEXT_INPUT_SIZE: Record<
     paddingBlock: string;
     fontSize: string;
     lineHeight: string;
+    /** Gap between start icon and text (field + startIcon only). */
+    iconGap: string;
+    /** Start icon glyph size (Figma FA Solid on building block). */
+    iconPx: string;
   }
 > = {
   large: {
@@ -336,6 +350,8 @@ export const TEXT_INPUT_SIZE: Record<
     paddingBlock: "0.625rem", // 10px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
+    iconGap: "0.625rem", // 10px
+    iconPx: "1.125rem", // 18px
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
@@ -344,6 +360,8 @@ export const TEXT_INPUT_SIZE: Record<
     paddingBlock: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
+    iconGap: "0.625rem", // 10px
+    iconPx: "1rem", // 16px
   },
   small: {
     height: CONTROL_HEIGHT.small,
@@ -352,6 +370,8 @@ export const TEXT_INPUT_SIZE: Record<
     paddingBlock: "0.3125rem", // 5px
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
+    iconGap: "0.5rem", // 8px
+    iconPx: "0.875rem", // 14px
   },
   extraSmall: {
     // Approved exception: Figma field is 22px; CADS uses shared 24px control height.
@@ -361,6 +381,8 @@ export const TEXT_INPUT_SIZE: Record<
     paddingBlock: "0.125rem", // 2px
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
+    iconGap: "0.375rem", // 6px
+    iconPx: "0.75rem", // 12px
   },
 };
 
@@ -469,6 +491,9 @@ export const RADIO_SIZE: Record<
  * Tab Group / Tab Item size matrix from Figma Tab Group (`16496:3371`) +
  * Tab Item (`6240:7203`). Primary (underline) and secondary (contained) differ
  * in height, group gap, type scale, and padding.
+ *
+ * Primary heights sit +8px above CONTROL_HEIGHT so equal padY still leaves
+ * breathing room above the underline when tabs share a row with actions.
  */
 export const TABS_SIZE: Record<
   ControlSize,
@@ -493,11 +518,11 @@ export const TABS_SIZE: Record<
   }
 > = {
   large: {
-    primaryHeight: CONTROL_HEIGHT.large, // 48
+    primaryHeight: "3.5rem", // 56 (+8 vs control)
     secondaryHeight: "2rem", // 32
     primaryGroupGap: "1.25rem", // 20
     secondaryGroupGap: "0.25rem", // 4
-    primaryPadY: "0.625rem", // 10
+    primaryPadY: "0.875rem", // 14
     secondaryPadX: "0.75rem", // 12
     primaryItemGap: "0.5rem", // 8
     secondaryItemGap: "0.375rem", // 6
@@ -512,11 +537,11 @@ export const TABS_SIZE: Record<
     secondaryIconOnlyMinWidth: "2.25rem", // 36
   },
   medium: {
-    primaryHeight: CONTROL_HEIGHT.medium, // 40
+    primaryHeight: "3rem", // 48 (+8 vs control)
     secondaryHeight: "1.75rem", // 28
     primaryGroupGap: "1.125rem", // 18
     secondaryGroupGap: "0.25rem", // 4
-    primaryPadY: "0.375rem", // 6
+    primaryPadY: "0.625rem", // 10
     secondaryPadX: "0.625rem", // 10
     primaryItemGap: "0.5rem", // 8
     secondaryItemGap: "0.375rem", // 6
@@ -531,11 +556,11 @@ export const TABS_SIZE: Record<
     secondaryIconOnlyMinWidth: "2rem", // 32
   },
   small: {
-    primaryHeight: CONTROL_HEIGHT.small, // 32
+    primaryHeight: "2.5rem", // 40 (+8 vs control)
     secondaryHeight: "1.5rem", // 24
     primaryGroupGap: "1rem", // 16
     secondaryGroupGap: "0.25rem", // 4
-    primaryPadY: "0.375rem", // 6
+    primaryPadY: "0.5rem", // 8
     secondaryPadX: "0.5rem", // 8
     primaryItemGap: "0.375rem", // 6
     secondaryItemGap: "0.25rem", // 4
@@ -550,11 +575,11 @@ export const TABS_SIZE: Record<
     secondaryIconOnlyMinWidth: "1.75rem", // 28
   },
   extraSmall: {
-    primaryHeight: CONTROL_HEIGHT.extraSmall, // 24
+    primaryHeight: "2rem", // 32 (+8 vs control)
     secondaryHeight: "1.25rem", // 20
     primaryGroupGap: "0.875rem", // 14
     secondaryGroupGap: "0.125rem", // 2
-    primaryPadY: "0.25rem", // 4
+    primaryPadY: "0.375rem", // 6
     secondaryPadX: "0.375rem", // 6
     primaryItemGap: "0.25rem", // 4
     secondaryItemGap: "0.1875rem", // 3

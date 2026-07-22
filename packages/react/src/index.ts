@@ -57,6 +57,9 @@ export type {
   DropdownInputProps,
   DropdownActionProps,
   DropdownOption,
+  DropdownItemOption,
+  DropdownSeparatorOption,
+  DropdownGroupOption,
   DropdownSize,
   DropdownRole,
   DropdownMenuType,
@@ -92,13 +95,13 @@ export {
   SLIDER_DEFAULT_WIDTH,
   SLIDER_SIDE_RANGE,
   SLIDER_CENTER_RANGE,
+  resolveSliderTickValues,
 } from "./components/Slider";
 export type {
   SliderProps,
   SliderSize,
   SliderSentiment,
   SliderStartsFrom,
-  SliderStepCount,
 } from "./components/Slider";
 
 export { Chip } from "./components/Chip";

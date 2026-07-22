@@ -369,7 +369,7 @@
       "figmaName": "Field Wrapper",
       "nodeId": "15857:99804",
       "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",
-      "symbolCount": 16,
+      "symbolCount": 20,
       "variantProperties": {
         "size": [
           "extraSmall",
@@ -382,12 +382,17 @@
           "error",
           "success",
           "warning"
+        ],
+        "isDisabled": [
+          "no",
+          "yes"
         ]
       },
       "designOnlyAxes": [],
       "axisToCodeProp": {
         "size": "size",
-        "sentiment": "sentiment"
+        "sentiment": "sentiment",
+        "isDisabled": "disabled"
       },
       "codeOnlyProps": [
         {
@@ -421,9 +426,9 @@
           "reason": "Associates the label with a control id when children are not auto-wired."
         },
         {
-          "name": "disabled",
+          "name": "required",
           "category": "controlled-state",
-          "reason": "Propagates disabled styling/context to nested controls."
+          "reason": "Appends * after the label; pairs with native required on the nested control. Pending Figma boolean."
         }
       ],
       "stateRecipes": [],
@@ -485,7 +490,7 @@
             "state",
             "isFilled"
           ],
-          "notes": "Internal chrome set. Public Text Input composes Field Wrapper + this building block. Figma extraSmall field height is 22px; code uses the shared 24px control height (accepted difference)."
+          "notes": "Internal chrome set. Public Text Input composes Field Wrapper + this building block. Boolean startIcon + text startIconName on field variants only (not area). Figma extraSmall field height is 22px; code uses the shared 24px control height (accepted difference)."
         }
       },
       "designOnlyAxes": [],
@@ -560,9 +565,24 @@
           "reason": "Convenience alias that sets sentiment=error and building-block error chrome."
         },
         {
+          "name": "required",
+          "category": "controlled-state",
+          "reason": "Native HTML required on the control + Field Wrapper label asterisk. Pending Figma boolean."
+        },
+        {
           "name": "rows",
           "category": "layout",
           "reason": "Multiline area height hint for textarea consumers."
+        },
+        {
+          "name": "startIcon",
+          "category": "content",
+          "reason": "Maps Figma building-block boolean startIcon (field-only; ignored for type=area)."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Maps Figma building-block text startIconName (FA shortcode smile → face-smile)."
         }
       ],
       "stateRecipes": [
@@ -574,7 +594,10 @@
         "error",
         "disabled"
       ],
-      "escalate": []
+      "escalate": [],
+      "notes": [
+        "2026-07-21: building block gained startIcon + startIconName on field variants. Figma defaults startIcon true; code defaults false so undecorated fields stay the common case unless opted in (same pattern as Tooltip)."
+      ]
     },
     {
       "cadsName": "Dropdown",
@@ -595,7 +618,7 @@
         ],
         "menuType": [
           "checklist",
-          "icon"
+          "default"
         ],
         "menuPlacement": [
           "bottomLeft",
@@ -621,7 +644,19 @@
           "figmaName": "Dropdown Menu Item",
           "nodeId": "896:3791",
           "componentKey": "0f55c81572c70c444efe57746a0bdd095a13633f",
-          "notes": "Internal item. Axes include role, itemType (icon|checkbox|iconError), selected, state."
+          "notes": "Internal item. Axes: role, itemType (default|checkbox|defaultError), selected, state. Boolean hasStartIcon → code startIcon; iconName when startIcon."
+        },
+        "menuSeparator": {
+          "figmaName": "menuSeparator",
+          "nodeId": "16847:69841",
+          "componentKey": "",
+          "notes": "Internal 8px hairline separator. Code: options entry { type: \"separator\" }. Stroke uses border/neutral/primary."
+        },
+        "menuOptGroup": {
+          "figmaName": "menuOptGroup",
+          "nodeId": "16847:69853",
+          "componentKey": "",
+          "notes": "Internal non-interactive group label (optgroup). Size L–XS overline. Code: options entry { type: \"group\", label }."
         }
       },
       "designOnlyAxes": [],
@@ -716,6 +751,11 @@
           "name": "error",
           "category": "controlled-state",
           "reason": "Input-role error trigger chrome."
+        },
+        {
+          "name": "required",
+          "category": "controlled-state",
+          "reason": "Input-role only. Field Wrapper label asterisk. Pending Figma boolean."
         },
         {
           "name": "color",
@@ -936,7 +976,7 @@
           "figmaName": "Toggle",
           "nodeId": "8841:5569",
           "componentKey": "9e957e7fd931d5d068ffecb6f68531d9ebd5ce7c",
-          "notes": "Building block with size \u00d7 state \u00d7 isOn. Prefer + Label publicly."
+          "notes": "Building block with size \u00d7 state \u00d7 isOn plus hasIcons boolean and onIcon/offIcon text props (defaults check/xmark). Track heights 22/20/18/16 match Checkbox/Radio. Prefer + Label publicly."
         }
       },
       "designOnlyAxes": [
@@ -974,6 +1014,21 @@
           "name": "onChange",
           "category": "event",
           "reason": "Reports on/off changes."
+        },
+        {
+          "name": "hasIcons",
+          "category": "content",
+          "reason": "Maps Figma Toggle block boolean property hasIcons (default true). When false, track icons are hidden."
+        },
+        {
+          "name": "onIcon",
+          "category": "content",
+          "reason": "Maps Figma Toggle block text property onIcon (default check)."
+        },
+        {
+          "name": "offIcon",
+          "category": "content",
+          "reason": "Maps Figma Toggle block text property offIcon (default xmark)."
         },
         {
           "name": "aria-label",
@@ -1077,7 +1132,11 @@
               "disabled"
             ]
           },
-          "notes": "Optional tick labels under the track when showStepper is true."
+          "notes": "Optional value ticks when showTicks is true. Figma stepCount (3–6) is a design demo axis — code tick density comes from the step prop (or min/max only when continuous).",
+          "designOnlyAxes": [
+            "stepCount",
+            "state"
+          ]
         }
       },
       "designOnlyAxes": [
@@ -1087,7 +1146,7 @@
         "labelSize": "size",
         "state": null,
         "showControls": "showControls",
-        "showStepper": "showStepper",
+        "showStepper": "showTicks",
         "showHelper": "showHelper",
         "showDisplayValue": "showDisplayValue",
         "showLabelRow": "showLabelRow"
@@ -1146,7 +1205,7 @@
         {
           "name": "step",
           "category": "controlled-state",
-          "reason": "Step increment for continuous or discrete sliding."
+          "reason": "Value increment for drag/± and tick labels when showTicks is on. null = continuous (endpoint ticks only). Replaces Figma Stepper stepCount density."
         },
         {
           "name": "startsFrom",
@@ -1162,11 +1221,6 @@
           "name": "fullWidth",
           "category": "layout",
           "reason": "Layout control (100% of parent). Not a Figma variant axis."
-        },
-        {
-          "name": "stepCount",
-          "category": "composition",
-          "reason": "Maps related Slider Stepper stepCount when showStepper is true."
         },
         {
           "name": "onChange",

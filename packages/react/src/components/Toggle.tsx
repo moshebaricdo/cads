@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { FaIcon } from "../icons/FaIcon";
+import type { FaIconName } from "../icons/faProRegularCodepoints";
 import {
   FOCUS_RING,
   TOGGLE_SIZE,
@@ -45,6 +46,21 @@ export interface ToggleProps
   /** Uncontrolled default. */
   defaultChecked?: boolean;
   onChange?: (event: MouseEvent<HTMLButtonElement>, checked: boolean) => void;
+  /**
+   * When false, hide track icons entirely (Figma `hasIcons`).
+   * @default true
+   */
+  hasIcons?: boolean;
+  /**
+   * FA Pro icon shown on the track when on (left slot).
+   * @default "check"
+   */
+  onIcon?: FaIconName | (string & {});
+  /**
+   * FA Pro icon shown on the track when off (right slot).
+   * @default "xmark"
+   */
+  offIcon?: FaIconName | (string & {});
 }
 
 const HANDLE_MOTION =
@@ -53,8 +69,9 @@ const ICON_MOTION =
   "opacity var(--duration-short) var(--easing-standard)";
 
 /**
- * CADS Toggle — switch with check / xmark icons and a sliding handle.
- * Spec: Figma Toggle + Label `327:2151`, block `8841:5569`.
+ * CADS Toggle — switch with customizable track icons (default check / xmark)
+ * and a sliding handle. Spec: Figma Toggle + Label `327:2151`, block `8841:5569`.
+ * Track heights match Checkbox/Radio (22 / 20 / 18 / 16).
  */
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   function Toggle(
@@ -65,6 +82,9 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       checked,
       defaultChecked = false,
       onChange,
+      hasIcons = true,
+      onIcon = "check",
+      offIcon = "xmark",
       disabled = false,
       id: idProp,
       sx,
@@ -166,49 +186,56 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           ...((sx as object) ?? {}),
         }}
       >
-        {/* Check — left side, visible when on */}
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: dims.iconInset,
-            width: dims.iconSlot,
-            transform: "translateY(-50%)",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            lineHeight: 1,
-            color: "inherit",
-            opacity: isOn ? 1 : 0,
-            transition: ICON_MOTION,
-            pointerEvents: "none",
-          }}
-        >
-          <FaIcon name="check" family="solid" fontSize={dims.iconPx} />
-        </span>
+        {hasIcons ? (
+          <>
+            {/*
+              Icon band = Figma flex-1 area after handle + iconGap. Center the
+              glyph in that band (may be narrower than iconPx). Sizing the band
+              to iconPx was what made L/S/XS icons kiss the handle.
+            */}
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: dims.iconInsetLeft,
+                width: `calc(100% - ${dims.iconInsetLeft} - ${dims.iconGap} - ${dims.handle} - ${dims.pad})`,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                lineHeight: 1,
+                color: "inherit",
+                opacity: isOn ? 1 : 0,
+                transition: ICON_MOTION,
+                pointerEvents: "none",
+              }}
+            >
+              <FaIcon name={onIcon} family="solid" fontSize={dims.iconPx} />
+            </span>
 
-        {/* Xmark — right side, visible when off */}
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: "50%",
-            right: dims.iconInset,
-            width: dims.iconSlot,
-            transform: "translateY(-50%)",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            lineHeight: 1,
-            color: "inherit",
-            opacity: isOn ? 0 : 1,
-            transition: ICON_MOTION,
-            pointerEvents: "none",
-          }}
-        >
-          <FaIcon name="xmark" family="solid" fontSize={dims.iconPx} />
-        </span>
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                right: dims.iconInsetRight,
+                width: `calc(100% - ${dims.iconInsetRight} - ${dims.iconGap} - ${dims.handle} - ${dims.pad})`,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                lineHeight: 1,
+                color: "inherit",
+                opacity: isOn ? 0 : 1,
+                transition: ICON_MOTION,
+                pointerEvents: "none",
+              }}
+            >
+              <FaIcon name={offIcon} family="solid" fontSize={dims.iconPx} />
+            </span>
+          </>
+        ) : null}
 
         {/* Sliding handle */}
         <span

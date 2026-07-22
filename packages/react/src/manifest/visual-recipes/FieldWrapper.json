@@ -7,13 +7,16 @@
     "publicNodeId": "15857:99804",
     "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",
     "relatedNodeIds": [],
-    "retrievedAt": "2026-07-16",
+    "retrievedAt": "2026-07-21",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "Figma update",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "Added isDisabled axis (yes/no); disabled variants for sentiment=default at all sizes (16867:85736/85742/85748/85754)",
+      "Disabled label + helper use --text-disabled-neutral"
+    ]
   },
   "axes": {
     "public": {
@@ -28,10 +31,16 @@
         "success",
         "warning",
         "error"
+      ],
+      "isDisabled": [
+        "no",
+        "yes"
       ]
     },
     "designOnly": [],
-    "restrictedCombinations": []
+    "restrictedCombinations": [
+      "isDisabled=yes only published with sentiment=default in Figma (no error/success/warning \u00d7 disabled symbols)"
+    ]
   },
   "geometry": {
     "sizes": {
@@ -98,7 +107,7 @@
         "helperIcon": "var(--text-neutral-tertiary)"
       },
       "geometryOverrides": {},
-      "figmaVariant": "sentiment=default",
+      "figmaVariant": "sentiment=default, isDisabled=no",
       "notes": [
         "Default helper uses consumer helperIconName (Figma smile)."
       ]
@@ -114,7 +123,7 @@
         "helperIcon": "var(--text-success-primary-fixed)"
       },
       "geometryOverrides": {},
-      "figmaVariant": "sentiment=success",
+      "figmaVariant": "sentiment=success, isDisabled=no",
       "notes": [
         "Icon: check-circle"
       ]
@@ -130,7 +139,7 @@
         "helperIcon": "var(--text-warning-primary-fixed)"
       },
       "geometryOverrides": {},
-      "figmaVariant": "sentiment=warning",
+      "figmaVariant": "sentiment=warning, isDisabled=no",
       "notes": [
         "Warning icon colored; helper text stays tertiary."
       ]
@@ -146,9 +155,26 @@
         "helperIcon": "var(--text-error-primary-fixed)"
       },
       "geometryOverrides": {},
-      "figmaVariant": "sentiment=error",
+      "figmaVariant": "sentiment=error, isDisabled=no",
       "notes": [
         "Icon: xmark-circle / circle-xmark"
+      ]
+    },
+    {
+      "when": {
+        "sentiment": "default",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-disabled-neutral)",
+        "helperText": "var(--text-disabled-neutral)",
+        "helperIcon": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "sentiment=default, isDisabled=yes",
+      "notes": [
+        "Figma isDisabled=yes; label + helper text/icon share --text-disabled-neutral."
       ]
     }
   ],
@@ -157,13 +183,14 @@
     "requiredDimensions": [
       "size",
       "sentiment",
-      "mode"
+      "mode",
+      "disabled"
     ],
     "cases": [
       {
         "id": "field-wrapper-large-default-light",
         "figmaNodeId": "15857:99803",
-        "figmaVariant": "size=large, sentiment=default",
+        "figmaVariant": "size=large, sentiment=default, isDisabled=no",
         "mode": "light",
         "props": {
           "size": "large",
@@ -194,7 +221,7 @@
       {
         "id": "field-wrapper-medium-success-light",
         "figmaNodeId": "15857:99885",
-        "figmaVariant": "size=medium, sentiment=success",
+        "figmaVariant": "size=medium, sentiment=success, isDisabled=no",
         "mode": "light",
         "props": {
           "size": "medium",
@@ -222,7 +249,7 @@
       {
         "id": "field-wrapper-small-warning-light",
         "figmaNodeId": "15857:100198",
-        "figmaVariant": "size=small, sentiment=warning",
+        "figmaVariant": "size=small, sentiment=warning, isDisabled=no",
         "mode": "light",
         "props": {
           "size": "small",
@@ -251,7 +278,7 @@
       {
         "id": "field-wrapper-xs-error-light",
         "figmaNodeId": "15857:99855",
-        "figmaVariant": "size=extraSmall, sentiment=error",
+        "figmaVariant": "size=extraSmall, sentiment=error, isDisabled=no",
         "mode": "light",
         "props": {
           "size": "extraSmall",
@@ -277,9 +304,40 @@
         "mismatches": []
       },
       {
+        "id": "field-wrapper-large-default-disabled-light",
+        "figmaNodeId": "16867:85736",
+        "figmaVariant": "size=large, sentiment=default, isDisabled=yes",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "sentiment": "default",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "showHelper": true,
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "gap": "2px"
+        },
+        "expectedVariables": [
+          "--text-disabled-neutral"
+        ],
+        "fixturePath": "/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-disabled-light",
+        "referenceScreenshot": "captures/figma-field-wrapper-disabled.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=FieldWrapper&case=field-wrapper-large-default-disabled-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
         "id": "field-wrapper-large-default-dark",
         "figmaNodeId": "15857:99803",
-        "figmaVariant": "size=large, sentiment=default",
+        "figmaVariant": "size=large, sentiment=default, isDisabled=no",
         "mode": "dark",
         "props": {
           "size": "large",
@@ -309,13 +367,13 @@
   },
   "acceptedDifferences": [],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-16)",
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-21); FieldWrapper ok",
     "typecheck": "pnpm typecheck \u2192 pass",
     "build": "pnpm build \u2192 pass",
-    "docsBuild": "pnpm build:docs \u2192 pass (includes /fixtures/components)",
+    "docsBuild": "n/a (fixture-only)",
     "correctionPasses": [
-      "Compared Field Wrapper sentiments (default/success/warning/error) + dark sentinel against Figma 15857:99804 screenshots",
-      "Warning helper text tertiary + warning icon color verified in fixture field-wrapper-small-warning-light"
+      "2026-07-21: wired isDisabled \u2192 disabled label/helper --text-disabled-neutral from Figma 15857:99804 / 16867:85736",
+      "TextInput/Dropdown already pass disabled into FieldWrapper; label/helper now follow"
     ]
   }
 }

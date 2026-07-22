@@ -78,8 +78,8 @@ export const cases: FixtureCase[] = [
           label="Field label"
           showHelper={false}
           showControls
-          showStepper
-          stepCount={5}
+          showTicks
+          step={25}
           defaultValue={50}
         />
       ),

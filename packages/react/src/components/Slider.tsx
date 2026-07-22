@@ -22,7 +22,6 @@ import {
 export type SliderSize = ControlSize;
 export type SliderSentiment = "default" | "error";
 export type SliderStartsFrom = "side" | "center";
-export type SliderStepCount = 3 | 4 | 5 | 6;
 
 /** Matches Figma Slider symbol width (`16344:15611` variants are 300px). */
 export const SLIDER_DEFAULT_WIDTH = 300;
@@ -65,20 +64,17 @@ export interface SliderProps
    */
   showHelper?: boolean;
   /**
-   * ± step buttons flanking the track.
+   * ± buttons flanking the track (nudge by `step`).
    * @default false
    */
   showControls?: boolean;
   /**
-   * Tick labels under the track (Figma Slider Stepper — separate row).
+   * Labeled ticks under the track (Figma Slider Stepper — separate row).
+   * Labels follow the `step` grid (e.g. min=0, max=100, step=25 → 0, 25, 50, 75, 100).
+   * With a continuous slider (`step={null}`), only min and max are shown.
    * @default false
    */
-  showStepper?: boolean;
-  /**
-   * Stepper tick count when `showStepper` is true.
-   * @default 5
-   */
-  stepCount?: SliderStepCount;
+  showTicks?: boolean;
   /**
    * Fill origin for the track (Figma Slider Bar `startsFrom`).
    * - `"side"`: fill from `min` → value (default range 0–100).
@@ -189,6 +185,15 @@ function resolveCenterTrackGeometry(
   };
 }
 
+function finiteOr(
+  value: number | undefined,
+  fallback: number,
+): number {
+  return value != null && Number.isFinite(Number(value))
+    ? Number(value)
+    : fallback;
+}
+
 function resolveSliderRange(
   startsFrom: SliderStartsFrom,
   min: number | undefined,
@@ -197,23 +202,63 @@ function resolveSliderRange(
 ): { min: number; max: number; defaultValue: number | number[] } {
   const defaults =
     startsFrom === "center" ? SLIDER_CENTER_RANGE : SLIDER_SIDE_RANGE;
+  const resolvedMin = finiteOr(min, defaults.min);
+  const resolvedMax = finiteOr(max, defaults.max);
+  let resolvedDefault: number | number[];
+  if (Array.isArray(defaultValue)) {
+    resolvedDefault = defaultValue.map((v) =>
+      Number.isFinite(Number(v)) ? Number(v) : defaults.defaultValue,
+    );
+  } else {
+    resolvedDefault = finiteOr(defaultValue, defaults.defaultValue);
+  }
   return {
-    min: min ?? defaults.min,
-    max: max ?? defaults.max,
-    defaultValue: defaultValue ?? defaults.defaultValue,
+    min: resolvedMin,
+    max: resolvedMax,
+    defaultValue: resolvedDefault,
   };
 }
 
-function SliderStepper({
-  stepCount,
+/**
+ * Tick label values for `showTicks`.
+ * - Continuous (`step` null / non-positive): `[min, max]` only.
+ * - Discrete: every `step` from min through the last on-grid value ≤ max.
+ */
+export function resolveSliderTickValues(
+  min: number,
+  max: number,
+  step: number | null,
+): number[] {
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return [];
+  if (!(max > min)) return [min];
+  if (step == null || !(step > 0)) return [min, max];
+  const values: number[] = [];
+  const n = Math.floor((max - min) / step + 1e-9);
+  for (let i = 0; i <= n; i++) {
+    const raw = min + i * step;
+    const value =
+      i === n && Math.abs(raw - max) <= Math.abs(step) * 1e-6 ? max : raw;
+    values.push(Number(value.toPrecision(12)));
+  }
+  return values.length >= 2 ? values : [min, max];
+}
+
+function formatTickLabel(value: number): string {
+  if (!Number.isFinite(value)) return "";
+  if (Math.abs(value - Math.round(value)) < 1e-9) return String(Math.round(value));
+  return String(Number(value.toPrecision(6)));
+}
+
+function SliderTicks({
+  values,
   disabled,
   withControlOffsets,
 }: {
-  stepCount: SliderStepCount;
+  values: number[];
   disabled?: boolean;
   withControlOffsets: boolean;
 }) {
-  const labels = Array.from({ length: stepCount }, (_, i) => String(i + 1));
+  const count = values.length;
   return (
     <div
       aria-hidden
@@ -244,11 +289,12 @@ function SliderStepper({
           height: `calc(${SLIDER_CHROME.stepperTickHeight} + ${SLIDER_CHROME.stepperTickGap} + ${SLIDER_CHROME.stepperLabelHeight})`,
         }}
       >
-        {labels.map((label, i) => {
-          const t = i / (stepCount - 1);
+        {values.map((tickValue, i) => {
+          const t = count > 1 ? i / (count - 1) : 0;
+          const label = formatTickLabel(tickValue);
           return (
             <div
-              key={label}
+              key={`${label}-${i}`}
               style={{
                 position: "absolute",
                 left: `calc(${SLIDER_CHROME.knobInset} + (100% - 2 * ${SLIDER_CHROME.knobInset}) * ${t})`,
@@ -322,8 +368,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     helperIconName = "face-smile",
     showHelper = true,
     showControls = false,
-    showStepper = false,
-    stepCount = 5,
+    showTicks = false,
     startsFrom = "side",
     width = SLIDER_DEFAULT_WIDTH,
     fullWidth = false,
@@ -358,6 +403,17 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   const isError = sentiment === "error" && !disabled;
   const showHelperRow = showHelper && helperText != null;
 
+  // `step={null}` → continuous (MUI). Otherwise a positive increment.
+  const resolvedStep: number | null =
+    step == null ? null : Number(step) > 0 ? Number(step) : 1;
+  const tickValues = showTicks
+    ? resolveSliderTickValues(min, max, resolvedStep)
+    : null;
+  const nudgeStep =
+    resolvedStep == null || !(resolvedStep > 0)
+      ? Math.max((max - min) / 100, Number.EPSILON)
+      : resolvedStep;
+
   const commit = (event: Event, next: number | number[], activeThumb = 0) => {
     if (valueProp === undefined) setUncontrolled(next);
     onChange?.(event, next, activeThumb);
@@ -365,10 +421,9 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
 
   const nudge = (delta: number) => {
     if (disabled) return;
-    const stepNum = Number(step) || 1;
     const next = Math.min(
       Number(max),
-      Math.max(Number(min), Number(numeric) + delta * stepNum),
+      Math.max(Number(min), Number(numeric) + delta * nudgeStep),
     );
     if (valueProp === undefined) setUncontrolled(next);
     onChange?.({} as Event, next, 0);
@@ -399,7 +454,9 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
 
   const resolvedDisplay =
     displayValue ??
-    (typeof numeric === "number" ? numeric.toFixed(1) : String(numeric));
+    (typeof numeric === "number" && Number.isFinite(numeric)
+      ? numeric.toFixed(1)
+      : String(Number.isFinite(Number(numeric)) ? Number(numeric) : min));
 
   return (
     <div
@@ -536,7 +593,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
             value={value}
             min={min}
             max={max}
-            step={step}
+            step={resolvedStep}
             disabled={disabled}
             marks={false}
             onChange={(e, v) => commit(e, v)}
@@ -636,9 +693,9 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
             />
           ) : null}
         </div>
-        {showStepper ? (
-          <SliderStepper
-            stepCount={stepCount}
+        {tickValues ? (
+          <SliderTicks
+            values={tickValues}
             disabled={disabled}
             withControlOffsets={showControls}
           />

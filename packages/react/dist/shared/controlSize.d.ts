@@ -32,7 +32,10 @@ declare const CHECKBOX_SIZE: Record<ControlSize, {
 /**
  * Toggle (switch) track / handle / icon matrix from Figma Toggle set
  * (`8841:5569`) and Toggle + Label (`327:2151`).
- * Handle slides via absolute `left`; icons crossfade in fixed slots.
+ * Track heights match Checkbox/Radio boxes (22 / 20 / 18 / 16).
+ * Handle slides via absolute `left`. Icons center in Figma's flex-1
+ * band: track − outerInset − iconGap − handle − pad (not a glyph-sized
+ * box — that eats the handle gap when FA advance > flex band).
  */
 declare const TOGGLE_SIZE: Record<ControlSize, {
     trackWidth: string;
@@ -41,9 +44,12 @@ declare const TOGGLE_SIZE: Record<ControlSize, {
     /** Inset from track edge to handle / track padding. */
     pad: string;
     iconPx: string;
-    iconSlot: string;
-    /** Inset for check (left) / xmark (right) icon slots. */
-    iconInset: string;
+    /** Figma flex gap between handle and icon flex band. */
+    iconGap: string;
+    /** Outer inset for on-icon band (Figma on pl). */
+    iconInsetLeft: string;
+    /** Outer inset for off-icon band (Figma off pr). */
+    iconInsetRight: string;
     labelGap: string;
     fontSize: string;
     lineHeight: string;
@@ -109,6 +115,10 @@ declare const TEXT_INPUT_SIZE: Record<ControlSize, {
     paddingBlock: string;
     fontSize: string;
     lineHeight: string;
+    /** Gap between start icon and text (field + startIcon only). */
+    iconGap: string;
+    /** Start icon glyph size (Figma FA Solid on building block). */
+    iconPx: string;
 }>;
 /** Field Wrapper label + helper typography / icon slots from Figma Field Wrapper. */
 declare const FIELD_WRAPPER_SIZE: Record<ControlSize, {
@@ -137,6 +147,9 @@ declare const RADIO_SIZE: Record<ControlSize, {
  * Tab Group / Tab Item size matrix from Figma Tab Group (`16496:3371`) +
  * Tab Item (`6240:7203`). Primary (underline) and secondary (contained) differ
  * in height, group gap, type scale, and padding.
+ *
+ * Primary heights sit +8px above CONTROL_HEIGHT so equal padY still leaves
+ * breathing room above the underline when tabs share a row with actions.
  */
 declare const TABS_SIZE: Record<ControlSize, {
     primaryHeight: string;

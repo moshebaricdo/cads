@@ -7,7 +7,6 @@ import { ControlSize } from '../shared/controlSize.js';
 type SliderSize = ControlSize;
 type SliderSentiment = "default" | "error";
 type SliderStartsFrom = "side" | "center";
-type SliderStepCount = 3 | 4 | 5 | 6;
 /** Matches Figma Slider symbol width (`16344:15611` variants are 300px). */
 declare const SLIDER_DEFAULT_WIDTH = 300;
 interface SliderProps extends Omit<SliderProps$1, "color" | "size" | "marks" | "orientation" | "valueLabelDisplay" | "min" | "max"> {
@@ -38,20 +37,17 @@ interface SliderProps extends Omit<SliderProps$1, "color" | "size" | "marks" | "
      */
     showHelper?: boolean;
     /**
-     * ± step buttons flanking the track.
+     * ± buttons flanking the track (nudge by `step`).
      * @default false
      */
     showControls?: boolean;
     /**
-     * Tick labels under the track (Figma Slider Stepper — separate row).
+     * Labeled ticks under the track (Figma Slider Stepper — separate row).
+     * Labels follow the `step` grid (e.g. min=0, max=100, step=25 → 0, 25, 50, 75, 100).
+     * With a continuous slider (`step={null}`), only min and max are shown.
      * @default false
      */
-    showStepper?: boolean;
-    /**
-     * Stepper tick count when `showStepper` is true.
-     * @default 5
-     */
-    stepCount?: SliderStepCount;
+    showTicks?: boolean;
     /**
      * Fill origin for the track (Figma Slider Bar `startsFrom`).
      * - `"side"`: fill from `min` → value (default range 0–100).
@@ -95,10 +91,16 @@ declare const SLIDER_CENTER_RANGE: {
     readonly defaultValue: 0;
 };
 /**
+ * Tick label values for `showTicks`.
+ * - Continuous (`step` null / non-positive): `[min, max]` only.
+ * - Discrete: every `step` from min through the last on-grid value ≤ max.
+ */
+declare function resolveSliderTickValues(min: number, max: number, step: number | null): number[];
+/**
  * CADS Slider — continuous or stepped value control with optional ± controls.
  * Spec: Figma Slider `16344:15611`, Knob `16336:13274`, Bar `16342:13347`,
  * Stepper `16344:14959`.
  */
 declare const Slider: react.ForwardRefExoticComponent<Omit<SliderProps, "ref"> & react.RefAttributes<HTMLSpanElement>>;
 
-export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, type SliderProps, type SliderSentiment, type SliderSize, type SliderStartsFrom, type SliderStepCount };
+export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, type SliderProps, type SliderSentiment, type SliderSize, type SliderStartsFrom, resolveSliderTickValues };

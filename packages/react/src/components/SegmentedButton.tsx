@@ -1,5 +1,14 @@
 import ButtonBase from "@mui/material/ButtonBase";
-import { forwardRef, useId, useState, type ReactNode } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { FaIcon } from "../icons/FaIcon";
 import type { FaIconName } from "../icons/faProRegularCodepoints";
 import {
@@ -105,11 +114,107 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
   ) {
     const dims = SEGMENTED_SIZE[size];
     const groupId = useId();
+    const segmentRefs = useRef<Array<HTMLElement | null>>([]);
     const controlled = valueProp !== undefined;
     const [uncontrolled, setUncontrolled] = useState(
-      defaultValue ?? options[0]?.value,
+      defaultValue ?? options.find((option) => !option.disabled)?.value,
     );
     const value = controlled ? valueProp : uncontrolled;
+
+    const selectValue = (next: string) => {
+      if (!controlled) setUncontrolled(next);
+      onChange?.(next);
+    };
+
+    /* Manual activation: arrows move focus only; Space/Enter commits selection. */
+    const focusableIndexes = options
+      .map((option, index) =>
+        disabled || option.disabled ? -1 : index,
+      )
+      .filter((index) => index >= 0);
+
+    const selectedFocusableIndex =
+      focusableIndexes.find((index) => options[index]?.value === value) ??
+      focusableIndexes[0] ??
+      -1;
+
+    const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
+    const tabStopIndex = focusableIndexes.includes(focusedIndex)
+      ? focusedIndex
+      : selectedFocusableIndex;
+
+    /* Keep the Tab stop on the selected segment when selection changes externally. */
+    useEffect(() => {
+      setFocusedIndex(selectedFocusableIndex);
+    }, [selectedFocusableIndex]);
+
+    const focusSegment = (index: number) => {
+      setFocusedIndex(index);
+      segmentRefs.current[index]?.focus();
+    };
+
+    const moveFocus = (fromIndex: number, delta: number) => {
+      if (focusableIndexes.length === 0) return;
+      const currentPos = focusableIndexes.indexOf(fromIndex);
+      const start = currentPos === -1 ? 0 : currentPos;
+      const nextPos =
+        (start + delta + focusableIndexes.length) % focusableIndexes.length;
+      focusSegment(focusableIndexes[nextPos]!);
+    };
+
+    const activateSegment = (index: number) => {
+      const option = options[index];
+      if (!option || disabled || option.disabled) return;
+      setFocusedIndex(index);
+      selectValue(option.value);
+    };
+
+    const onSegmentKeyDown = (
+      event: KeyboardEvent<HTMLElement>,
+      index: number,
+    ) => {
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowDown":
+          event.preventDefault();
+          moveFocus(index, 1);
+          break;
+        case "ArrowLeft":
+        case "ArrowUp":
+          event.preventDefault();
+          moveFocus(index, -1);
+          break;
+        case "Home": {
+          event.preventDefault();
+          const first = focusableIndexes[0];
+          if (first === undefined) break;
+          focusSegment(first);
+          break;
+        }
+        case "End": {
+          event.preventDefault();
+          const last = focusableIndexes[focusableIndexes.length - 1];
+          if (last === undefined) break;
+          focusSegment(last);
+          break;
+        }
+        case " ":
+        case "Enter": {
+          event.preventDefault();
+          activateSegment(index);
+          break;
+        }
+        default:
+          break;
+      }
+    };
+
+    const onGroupBlur = (event: FocusEvent<HTMLDivElement>) => {
+      const next = event.relatedTarget;
+      if (next instanceof Node && event.currentTarget.contains(next)) return;
+      /* Tab re-entry lands on the selected segment, not the last focused. */
+      setFocusedIndex(selectedFocusableIndex);
+    };
 
     /* Unselected border: Figma always uses neutral secondary (Group color=Primary only). */
     const unselectedBorder = "var(--border-neutral-secondary)";
@@ -120,6 +225,7 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
         role="radiogroup"
         aria-label={ariaLabel}
         className={className}
+        onBlur={onGroupBlur}
         style={{
           display: "inline-flex",
           alignItems: "stretch",
@@ -131,7 +237,7 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
       >
         {options.map((option, index) => {
           const selected = option.value === value;
-          const isDisabled = disabled || option.disabled;
+          const isDisabled = Boolean(disabled || option.disabled);
           const corners = segmentCorners(index, options.length);
           const startIcon = option.iconName ? (
             <FaIcon name={option.iconName} fontSize={dims.iconPx} />
@@ -143,15 +249,23 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
           return (
             <ButtonBase
               key={option.value}
+              ref={(node) => {
+                segmentRefs.current[index] = node;
+              }}
               role="radio"
               aria-checked={selected}
               id={`${groupId}-${option.value}`}
+              tabIndex={index === tabStopIndex ? 0 : -1}
               disabled={isDisabled}
               disableRipple
               onClick={() => {
-                if (!controlled) setUncontrolled(option.value);
-                onChange?.(option.value);
+                if (isDisabled) return;
+                activateSegment(index);
               }}
+              onFocus={() => {
+                if (!isDisabled) setFocusedIndex(index);
+              }}
+              onKeyDown={(event) => onSegmentKeyDown(event, index)}
               sx={{
                 flex: iconOnly ? "0 0 auto" : "1 1 auto",
                 minWidth: dims.height,
@@ -209,10 +323,13 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
                 },
                 "&.Mui-focusVisible": {
                   zIndex: 3,
-                  borderWidth: 2,
-                  borderColor: selected
-                    ? "var(--border-focused-inverse)"
-                    : "var(--border-focused-primary)",
+                  /* Figma uses a 2px border — outline + -2px offset avoids layout shift. */
+                  outline: `2px solid ${
+                    selected
+                      ? "var(--border-focused-inverse)"
+                      : "var(--border-focused-primary)"
+                  }`,
+                  outlineOffset: -2,
                   backgroundColor: selected
                     ? "var(--background-selected-primary)"
                     : "var(--background-brand-light)",

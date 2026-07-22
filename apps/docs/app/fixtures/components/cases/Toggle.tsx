@@ -146,4 +146,48 @@ export const cases: FixtureCase[] = [
         <Toggle size="medium" checked={false} aria-label="Toggle" />
       ),
     },
+    {
+      id: "toggle-large-on-custom-icons-light",
+      mode: "light",
+      state: "default",
+      viewport: { width: 120, height: 80 },
+      render: () => (
+        <Toggle
+          size="large"
+          checked
+          onIcon="sun"
+          offIcon="moon"
+          aria-label="Theme"
+        />
+      ),
+    },
+    {
+      id: "toggle-large-off-custom-icons-light",
+      mode: "light",
+      state: "default",
+      viewport: { width: 120, height: 80 },
+      render: () => (
+        <Toggle
+          size="large"
+          checked={false}
+          onIcon="sun"
+          offIcon="moon"
+          aria-label="Theme"
+        />
+      ),
+    },
+    {
+      id: "toggle-large-on-no-icons-light",
+      mode: "light",
+      state: "default",
+      viewport: { width: 120, height: 80 },
+      render: () => (
+        <Toggle
+          size="large"
+          checked
+          hasIcons={false}
+          aria-label="Toggle"
+        />
+      ),
+    },
   ];

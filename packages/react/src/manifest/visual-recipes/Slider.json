@@ -40,7 +40,7 @@
         true,
         false
       ],
-      "showStepper": [
+      "showTicks": [
         true,
         false
       ],
@@ -154,7 +154,7 @@
       "size",
       "sentiment",
       "showControls",
-      "showStepper",
+      "showTicks",
       "mode"
     ],
     "cases": [
@@ -274,7 +274,7 @@
         "props": {
           "size": "medium",
           "showControls": true,
-          "showStepper": true,
+          "showTicks": true,
           "showHelper": false
         },
         "state": "default",

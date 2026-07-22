@@ -12,13 +12,17 @@ import {
   useFieldContext,
   type FieldSentiment,
 } from "./FieldWrapper";
+import { FaIcon } from "../icons/FaIcon";
+import {
+  resolveFaIconName,
+  type FaIconName,
+} from "../icons/faProRegularCodepoints";
 import {
   FOCUS_RING,
   TEXT_INPUT_SIZE,
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
-import type { FaIconName } from "../icons/faProRegularCodepoints";
 
 export type TextInputSize = ControlSize;
 export type TextInputColor = "primary" | "secondary";
@@ -42,11 +46,28 @@ export interface TextInputProps extends SharedNativeProps {
   color?: TextInputColor;
   /**
    * When true, renders a multiline area (Figma `type=area`).
+   * Start icon is field-only and ignored when multiline.
    * @default false
    */
   multiline?: boolean;
+  /**
+   * Leading FA icon inside the field (Figma building-block `startIcon`).
+   * Field-only; ignored for multiline areas.
+   * @default false
+   */
+  startIcon?: boolean;
+  /**
+   * FA icon when `startIcon` (Figma `startIconName`; `smile` → `face-smile`).
+   * @default "face-smile"
+   */
+  startIconName?: FaIconName | (string & {});
   /** Visible field label via Field Wrapper. */
   label?: ReactNode;
+  /**
+   * Native required + Field Wrapper label asterisk (`*`).
+   * @default false
+   */
+  required?: boolean;
   /** Helper / validation text via Field Wrapper. */
   helperText?: ReactNode;
   helperIconName?: FaIconName | (string & {});
@@ -79,12 +100,22 @@ function defaultBorder(color: TextInputColor): string {
     : "var(--border-neutral-solid)";
 }
 
+const SHELL_CLASS = "cads-text-input-shell";
 const CONTROL_CLASS = "cads-text-input-control";
+
+function resolveStartIconName(
+  name: FaIconName | (string & {}) | undefined,
+): FaIconName {
+  if (!name) return "face-smile";
+  return resolveFaIconName(String(name)) ?? "face-smile";
+}
 
 function TextInputControl({
   size,
   color,
   multiline,
+  startIcon,
+  startIconName,
   disabled,
   readOnly,
   error,
@@ -101,6 +132,8 @@ function TextInputControl({
   size: TextInputSize;
   color: TextInputColor;
   multiline: boolean;
+  startIcon: boolean;
+  startIconName?: FaIconName | (string & {});
   disabled: boolean;
   readOnly: boolean;
   error: boolean;
@@ -115,14 +148,21 @@ function TextInputControl({
 } & SharedNativeProps) {
   const field = useFieldContext();
   const dims = TEXT_INPUT_SIZE[size];
+  const showStartIcon = startIcon && !multiline;
 
   let background = "var(--background-neutral-primary)";
   let borderColor = defaultBorder(color);
   let textColor = "var(--text-neutral-primary)";
+  // Primary: --text-neutral-primary (incl. readOnly). Secondary: --text-neutral-placeholder.
+  let iconColor =
+    color === "secondary"
+      ? "var(--text-neutral-placeholder)"
+      : "var(--text-neutral-primary)";
 
   if (disabled) {
     borderColor = "var(--border-disabled-neutral)";
     textColor = "var(--text-disabled-neutral)";
+    iconColor = "var(--text-disabled-neutral)";
   } else if (readOnly) {
     background = "var(--background-neutral-secondary)";
     borderColor = "var(--border-neutral-secondary)";
@@ -131,8 +171,14 @@ function TextInputControl({
     borderColor = "var(--border-error-primary)";
   }
 
-  const sharedStyle: CSSProperties = {
+  const describedBy = field?.describedBy;
+  const shellCls = [SHELL_CLASS, className].filter(Boolean).join(" ");
+
+  const shellStyle: CSSProperties = {
     boxSizing: "border-box",
+    display: "flex",
+    alignItems: multiline ? "flex-start" : "center",
+    gap: showStartIcon ? dims.iconGap : undefined,
     width: "100%",
     minWidth: 0,
     height: multiline ? dims.areaHeight : dims.height,
@@ -144,19 +190,33 @@ function TextInputControl({
     borderColor,
     backgroundColor: background,
     color: textColor,
+    overflow: "clip",
+    transition: TRANSITION_COLORS,
+    ...style,
+  };
+
+  const controlStyle: CSSProperties = {
+    boxSizing: "border-box",
+    flex: "1 1 0",
+    minWidth: 0,
+    width: "100%",
+    height: multiline ? "100%" : "100%",
+    margin: 0,
+    padding: 0,
+    border: "none",
+    borderRadius: 0,
+    backgroundColor: "transparent",
+    color: textColor,
     fontFamily: "var(--font-body)",
     fontWeight: 400,
     fontSize: dims.fontSize,
     lineHeight: dims.lineHeight,
     outline: "none",
-    transition: TRANSITION_COLORS,
     resize: multiline ? "vertical" : undefined,
-    ...style,
+    alignSelf: multiline ? "stretch" : undefined,
   };
 
-  const describedBy = field?.describedBy;
-  const cls = [CONTROL_CLASS, className].filter(Boolean).join(" ");
-  const commonProps = {
+  const commonControlProps = {
     id,
     disabled,
     readOnly,
@@ -164,27 +224,48 @@ function TextInputControl({
     value,
     defaultValue,
     onChange,
-    className: cls,
+    className: CONTROL_CLASS,
     "aria-invalid": error || undefined,
     "aria-describedby": describedBy,
-    "data-cads-text-input": multiline ? "area" : "field",
-    "data-color": color,
-    "data-readonly": readOnly ? "true" : undefined,
-    "data-error": error ? "true" : undefined,
-    style: sharedStyle,
+    style: controlStyle,
   };
 
-  if (multiline) {
-    return (
-      <textarea
-        {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-        {...commonProps}
-        rows={rows}
-      />
-    );
-  }
+  const control = multiline ? (
+    <textarea
+      {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+      {...commonControlProps}
+      rows={rows}
+    />
+  ) : (
+    <input {...rest} {...commonControlProps} type={rest.type ?? "text"} />
+  );
 
-  return <input {...rest} {...commonProps} type={rest.type ?? "text"} />;
+  return (
+    <div
+      className={shellCls}
+      data-cads-text-input={multiline ? "area" : "field"}
+      data-color={color}
+      data-readonly={readOnly ? "true" : undefined}
+      data-error={error ? "true" : undefined}
+      data-disabled={disabled ? "true" : undefined}
+      data-start-icon={showStartIcon ? "true" : undefined}
+      style={shellStyle}
+    >
+      {showStartIcon ? (
+        <FaIcon
+          name={resolveStartIconName(startIconName)}
+          family="solid"
+          fontSize={dims.iconPx}
+          style={{
+            flexShrink: 0,
+            color: iconColor,
+            lineHeight: 1.25,
+          }}
+        />
+      ) : null}
+      {control}
+    </div>
+  );
 }
 
 const INTERACTIVE_STYLES = `
@@ -192,15 +273,30 @@ const INTERACTIVE_STYLES = `
   color: var(--text-neutral-placeholder);
   opacity: 1;
 }
-.${CONTROL_CLASS}:hover:not(:disabled):not([data-readonly="true"]) {
+.${SHELL_CLASS}[data-disabled="true"] .${CONTROL_CLASS}::placeholder {
+  color: var(--text-disabled-neutral);
+}
+.${SHELL_CLASS}:hover:not([data-disabled="true"]):not([data-readonly="true"]) {
   background-color: var(--background-neutral-secondary) !important;
 }
-.${CONTROL_CLASS}:focus-visible:not(:disabled) {
+.${SHELL_CLASS}:focus-within:not([data-disabled="true"]) {
   box-shadow: ${FOCUS_RING};
   background-color: var(--background-neutral-primary) !important;
 }
-.${CONTROL_CLASS}:active:not(:disabled):not([data-readonly="true"]) {
+.${SHELL_CLASS}:active:not([data-disabled="true"]):not([data-readonly="true"]) {
   background-color: var(--background-neutral-primary) !important;
+}
+.${SHELL_CLASS} .${CONTROL_CLASS} {
+  cursor: inherit;
+}
+.${SHELL_CLASS}[data-disabled="true"] {
+  cursor: not-allowed;
+}
+.${SHELL_CLASS}[data-disabled="true"] .${CONTROL_CLASS} {
+  cursor: not-allowed;
+}
+.${SHELL_CLASS}[data-readonly="true"] .${CONTROL_CLASS} {
+  cursor: default;
 }
 `;
 
@@ -210,6 +306,7 @@ const INTERACTIVE_STYLES = `
  * building block `16146:3517`.
  *
  * Figma `type=field|area` maps to `multiline={false|true}`.
+ * Figma `startIcon` / `startIconName` are field-only (ignored for areas).
  * Figma `isFilled` / interaction `state` are derived (value / CSS / props).
  */
 export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
@@ -218,7 +315,10 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
       size = "medium",
       color = "primary",
       multiline = false,
+      startIcon = false,
+      startIconName = "face-smile",
       label,
+      required = false,
       helperText,
       helperIconName,
       showHelper = true,
@@ -251,6 +351,7 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
           size={size}
           sentiment={sentiment}
           label={label}
+          required={required}
           helperText={helperText}
           helperIconName={helperIconName}
           showHelper={showHelper}
@@ -265,8 +366,11 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
             size={size}
             color={color}
             multiline={multiline}
+            startIcon={startIcon}
+            startIconName={startIconName}
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
             error={isError}
             value={value}
             defaultValue={defaultValue}

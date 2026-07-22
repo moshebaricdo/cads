@@ -58,20 +58,51 @@ function resolveCenterTrackGeometry(value, min, max) {
     extendLeft: t < 1e-6
   };
 }
+function finiteOr(value, fallback) {
+  return value != null && Number.isFinite(Number(value)) ? Number(value) : fallback;
+}
 function resolveSliderRange(startsFrom, min, max, defaultValue) {
   const defaults = startsFrom === "center" ? SLIDER_CENTER_RANGE : SLIDER_SIDE_RANGE;
+  const resolvedMin = finiteOr(min, defaults.min);
+  const resolvedMax = finiteOr(max, defaults.max);
+  let resolvedDefault;
+  if (Array.isArray(defaultValue)) {
+    resolvedDefault = defaultValue.map(
+      (v) => Number.isFinite(Number(v)) ? Number(v) : defaults.defaultValue
+    );
+  } else {
+    resolvedDefault = finiteOr(defaultValue, defaults.defaultValue);
+  }
   return {
-    min: min ?? defaults.min,
-    max: max ?? defaults.max,
-    defaultValue: defaultValue ?? defaults.defaultValue
+    min: resolvedMin,
+    max: resolvedMax,
+    defaultValue: resolvedDefault
   };
 }
-function SliderStepper({
-  stepCount,
+function resolveSliderTickValues(min, max, step) {
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return [];
+  if (!(max > min)) return [min];
+  if (step == null || !(step > 0)) return [min, max];
+  const values = [];
+  const n = Math.floor((max - min) / step + 1e-9);
+  for (let i = 0; i <= n; i++) {
+    const raw = min + i * step;
+    const value = i === n && Math.abs(raw - max) <= Math.abs(step) * 1e-6 ? max : raw;
+    values.push(Number(value.toPrecision(12)));
+  }
+  return values.length >= 2 ? values : [min, max];
+}
+function formatTickLabel(value) {
+  if (!Number.isFinite(value)) return "";
+  if (Math.abs(value - Math.round(value)) < 1e-9) return String(Math.round(value));
+  return String(Number(value.toPrecision(6)));
+}
+function SliderTicks({
+  values,
   disabled,
   withControlOffsets
 }) {
-  const labels = Array.from({ length: stepCount }, (_, i) => String(i + 1));
+  const count = values.length;
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -101,8 +132,9 @@ function SliderStepper({
               minWidth: 0,
               height: `calc(${SLIDER_CHROME.stepperTickHeight} + ${SLIDER_CHROME.stepperTickGap} + ${SLIDER_CHROME.stepperLabelHeight})`
             },
-            children: labels.map((label, i) => {
-              const t = i / (stepCount - 1);
+            children: values.map((tickValue, i) => {
+              const t = count > 1 ? i / (count - 1) : 0;
+              const label = formatTickLabel(tickValue);
               return /* @__PURE__ */ jsxs(
                 "div",
                 {
@@ -146,7 +178,7 @@ function SliderStepper({
                     )
                   ]
                 },
-                label
+                `${label}-${i}`
               );
             })
           }
@@ -176,8 +208,7 @@ const Slider = forwardRef(function Slider2({
   helperIconName = "face-smile",
   showHelper = true,
   showControls = false,
-  showStepper = false,
-  stepCount = 5,
+  showTicks = false,
   startsFrom = "side",
   width = SLIDER_DEFAULT_WIDTH,
   fullWidth = false,
@@ -209,16 +240,18 @@ const Slider = forwardRef(function Slider2({
   const numeric = Array.isArray(value) ? value[0] ?? min : value;
   const isError = sentiment === "error" && !disabled;
   const showHelperRow = showHelper && helperText != null;
+  const resolvedStep = step == null ? null : Number(step) > 0 ? Number(step) : 1;
+  const tickValues = showTicks ? resolveSliderTickValues(min, max, resolvedStep) : null;
+  const nudgeStep = resolvedStep == null || !(resolvedStep > 0) ? Math.max((max - min) / 100, Number.EPSILON) : resolvedStep;
   const commit = (event, next, activeThumb = 0) => {
     if (valueProp === void 0) setUncontrolled(next);
     onChange?.(event, next, activeThumb);
   };
   const nudge = (delta) => {
     if (disabled) return;
-    const stepNum = Number(step) || 1;
     const next = Math.min(
       Number(max),
-      Math.max(Number(min), Number(numeric) + delta * stepNum)
+      Math.max(Number(min), Number(numeric) + delta * nudgeStep)
     );
     if (valueProp === void 0) setUncontrolled(next);
     onChange?.({}, next, 0);
@@ -227,7 +260,7 @@ const Slider = forwardRef(function Slider2({
   const railBorder = isError ? "var(--border-error-primary)" : disabled ? "var(--border-disabled-neutral)" : "var(--border-neutral-secondary)";
   const thumbBorder = isError ? "var(--border-error-primary)" : disabled ? "var(--border-disabled-neutral)" : "var(--border-neutral-solid)";
   const centerTrack = startsFrom === "center" ? resolveCenterTrackGeometry(Number(numeric), Number(min), Number(max)) : null;
-  const resolvedDisplay = displayValue ?? (typeof numeric === "number" ? numeric.toFixed(1) : String(numeric));
+  const resolvedDisplay = displayValue ?? (typeof numeric === "number" && Number.isFinite(numeric) ? numeric.toFixed(1) : String(Number.isFinite(Number(numeric)) ? Number(numeric) : min));
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -353,7 +386,7 @@ const Slider = forwardRef(function Slider2({
                         value,
                         min,
                         max,
-                        step,
+                        step: resolvedStep,
                         disabled,
                         marks: false,
                         onChange: (e, v) => commit(e, v),
@@ -449,10 +482,10 @@ const Slider = forwardRef(function Slider2({
                   ]
                 }
               ),
-              showStepper ? /* @__PURE__ */ jsx(
-                SliderStepper,
+              tickValues ? /* @__PURE__ */ jsx(
+                SliderTicks,
                 {
-                  stepCount,
+                  values: tickValues,
                   disabled,
                   withControlOffsets: showControls
                 }
@@ -465,6 +498,6 @@ const Slider = forwardRef(function Slider2({
   );
 });
 
-export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider };
+export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, resolveSliderTickValues };
 //# sourceMappingURL=Slider.js.map
 //# sourceMappingURL=Slider.js.map

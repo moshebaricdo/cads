@@ -29,7 +29,7 @@ import {
 
 export type DropdownSize = ControlSize;
 export type DropdownRole = "input" | "action";
-export type DropdownMenuType = "icon" | "checklist";
+export type DropdownMenuType = "default" | "checklist";
 export type DropdownMenuPlacement =
   | "bottomLeft"
   | "bottomRight"
@@ -47,13 +47,47 @@ export type DropdownColor = "primary" | "secondary";
  */
 export type DropdownFieldWidth = "hug" | "full" | number | (string & {});
 
-export interface DropdownOption {
+/** Selectable menu row (Figma Dropdown Menu Item `896:3791`). */
+export interface DropdownItemOption {
+  type?: "item";
   value: string;
   label: ReactNode;
+  /**
+   * Show leading icon (Figma `hasStartIcon`).
+   * Defaults to `true` when `iconName` is set, otherwise `false` (text-only).
+   */
+  startIcon?: boolean;
+  /** FA icon when `startIcon` (Figma `iconName`). */
   iconName?: FaIconName | (string & {});
-  /** Destructive styling (Figma itemType=iconError). Action role only. */
+  /** Destructive styling (Figma itemType=defaultError). Action role only. */
   destructive?: boolean;
   disabled?: boolean;
+}
+
+/** Hairline row (Figma menuSeparator `16847:69841`). */
+export interface DropdownSeparatorOption {
+  type: "separator";
+}
+
+/** Non-interactive section label (Figma menuOptGroup `16847:69853`). */
+export interface DropdownGroupOption {
+  type: "group";
+  label: ReactNode;
+}
+
+export type DropdownOption =
+  | DropdownItemOption
+  | DropdownSeparatorOption
+  | DropdownGroupOption;
+
+function isItemOption(option: DropdownOption): option is DropdownItemOption {
+  return option.type !== "separator" && option.type !== "group";
+}
+
+function isSelectableOption(
+  option: DropdownOption,
+): option is DropdownItemOption {
+  return isItemOption(option) && !option.disabled;
 }
 
 interface DropdownBaseProps {
@@ -73,6 +107,11 @@ interface DropdownBaseProps {
 export interface DropdownInputProps extends DropdownBaseProps {
   role: "input";
   label?: ReactNode;
+  /**
+   * Required field marker on the Field Wrapper label (`*`).
+   * @default false
+   */
+  required?: boolean;
   helperText?: ReactNode;
   helperIconName?: FaIconName | (string & {});
   showHelper?: boolean;
@@ -125,8 +164,8 @@ export interface DropdownActionProps extends DropdownBaseProps {
   buttonVariant?: ButtonVariant;
   buttonColor?: ButtonColor;
   onAction?: (value: string) => void;
-  /** Action menus are icon lists only in Figma. */
-  menuType?: "icon";
+  /** Action menus are non-checklist (`menuType=default`) in Figma. */
+  menuType?: "default";
 }
 
 export type DropdownProps = DropdownInputProps | DropdownActionProps;
@@ -213,6 +252,50 @@ const MENU_ITEM_SIZE: Record<
   },
 };
 
+/** Optgroup label geometry from Figma menuOptGroup `16847:69853`. */
+const MENU_GROUP_SIZE: Record<
+  ControlSize,
+  {
+    height: number;
+    paddingLeft: string;
+    paddingRight: string;
+    fontSize: string;
+    lineHeight: string;
+  }
+> = {
+  large: {
+    height: 32,
+    paddingLeft: "1rem",
+    paddingRight: "1.375rem",
+    fontSize: "var(--text-body-sm)",
+    lineHeight: "var(--leading-body-sm)",
+  },
+  medium: {
+    height: 28,
+    paddingLeft: "0.75rem",
+    paddingRight: "1rem",
+    fontSize: "var(--text-body-xs)",
+    lineHeight: "var(--leading-body-xs)",
+  },
+  small: {
+    height: 24,
+    paddingLeft: "0.625rem",
+    paddingRight: "0.875rem",
+    fontSize: "var(--text-body-xxs)",
+    lineHeight: "var(--leading-body-xxs)",
+  },
+  extraSmall: {
+    height: 20,
+    paddingLeft: "0.5rem",
+    paddingRight: "0.625rem",
+    fontSize: "var(--text-body-xxs)",
+    lineHeight: "var(--leading-body-xxs)",
+  },
+};
+
+/** Figma menuSeparator `16847:69840` — 8px row, 1px hairline. */
+const MENU_SEPARATOR_HEIGHT = 8;
+
 function triggerBorder(color: DropdownColor, error: boolean, disabled: boolean, readOnly: boolean) {
   if (disabled) return "var(--border-disabled-neutral)";
   if (error) return "var(--border-error-primary)";
@@ -297,6 +380,7 @@ function DropdownButtonTrigger({
   disabled,
   readOnly,
   error,
+  required,
   onClick,
   buttonRef,
   id,
@@ -314,6 +398,7 @@ function DropdownButtonTrigger({
   disabled: boolean;
   readOnly: boolean;
   error: boolean;
+  required?: boolean;
   onClick: () => void;
   buttonRef: (node: HTMLButtonElement | null) => void;
   id: string;
@@ -335,6 +420,7 @@ function DropdownButtonTrigger({
       aria-haspopup={listedBy ? "listbox" : "menu"}
       aria-expanded={open}
       aria-controls={listedBy}
+      aria-required={required || undefined}
       aria-label={ariaLabel}
       onClick={onClick}
       data-cads-dropdown-trigger="input"
@@ -397,37 +483,36 @@ function MenuItemRow({
   menuType,
   role,
   active,
+  keyboardFocus,
   onSelect,
   onHighlight,
   id,
 }: {
-  option: DropdownOption;
+  option: DropdownItemOption;
   size: DropdownSize;
   selected: boolean;
   menuType: DropdownMenuType;
   role: DropdownRole;
   active: boolean;
+  /** Keyboard highlight — Figma item `state=focus` (distinct from pointer hover). */
+  keyboardFocus: boolean;
   onSelect: () => void;
   onHighlight: () => void;
   id: string;
 }) {
   const dims = MENU_ITEM_SIZE[size];
   const destructive = Boolean(option.destructive) && role === "action";
+  const showStartIcon =
+    menuType !== "checklist" && (option.startIcon ?? Boolean(option.iconName));
   const textColor = destructive
     ? "var(--text-error-primary)"
     : selected
       ? "var(--text-selected-primary)"
       : "var(--text-neutral-primary)";
-  let bg = "var(--background-neutral-primary)";
-  if (selected) {
-    bg = active
-      ? "var(--background-selected-strong)"
-      : "var(--background-selected-primary)";
-  } else if (active && destructive) {
-    bg = "var(--background-error-light)";
-  } else if (active) {
-    bg = "var(--background-neutral-secondary)";
-  }
+  // Base chrome only — hover / keyboard-focus / press are CSS recipes.
+  const bg = selected
+    ? "var(--background-selected-primary)"
+    : "var(--background-neutral-primary)";
 
   return (
     <div
@@ -436,8 +521,10 @@ function MenuItemRow({
       aria-selected={role === "input" ? selected : undefined}
       aria-disabled={option.disabled || undefined}
       data-cads-dropdown-item=""
+      data-value={option.value}
       data-destructive={destructive ? "true" : undefined}
       data-active={active ? "true" : undefined}
+      data-keyboard-focus={keyboardFocus ? "true" : undefined}
       tabIndex={-1}
       onMouseDown={(e) => {
         // Keep focus on the trigger; prevents the menu from stealing focus mid-click.
@@ -445,6 +532,9 @@ function MenuItemRow({
       }}
       onClick={(e) => {
         e.preventDefault();
+        // ⌘/Ctrl+click is reserved for design-tool nested inspection in docs;
+        // don't select/close, and let the event bubble to the playground stage.
+        if (e.metaKey || e.ctrlKey) return;
         e.stopPropagation();
         if (!option.disabled) onSelect();
       }}
@@ -454,7 +544,7 @@ function MenuItemRow({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: dims.gap,
+        gap: showStartIcon || menuType === "checklist" ? dims.gap : 0,
         width: "100%",
         boxSizing: "border-box",
         paddingLeft: dims.paddingLeft,
@@ -506,7 +596,7 @@ function MenuItemRow({
             />
           ) : null}
         </span>
-      ) : (
+      ) : showStartIcon ? (
         <span
           aria-hidden
           style={{
@@ -523,7 +613,7 @@ function MenuItemRow({
             fontSize={dims.iconPx}
           />
         </span>
-      )}
+      ) : null}
       <span
         style={{
           minWidth: 0,
@@ -539,16 +629,94 @@ function MenuItemRow({
   );
 }
 
+function MenuSeparatorRow() {
+  return (
+    <div
+      role="separator"
+      aria-hidden
+      data-cads-dropdown-separator=""
+      style={{
+        boxSizing: "border-box",
+        width: "100%",
+        height: MENU_SEPARATOR_HEIGHT,
+        display: "flex",
+        alignItems: "center",
+        flexShrink: 0,
+        paddingBlock: 1,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: 1,
+          backgroundColor: "var(--border-neutral-primary)",
+        }}
+      />
+    </div>
+  );
+}
+
+function MenuGroupRow({
+  label,
+  size,
+}: {
+  label: ReactNode;
+  size: DropdownSize;
+}) {
+  const dims = MENU_GROUP_SIZE[size];
+  return (
+    <div
+      role="presentation"
+      data-cads-dropdown-group=""
+      style={{
+        boxSizing: "border-box",
+        width: "100%",
+        height: dims.height,
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: dims.paddingLeft,
+        paddingRight: dims.paddingRight,
+        backgroundColor: "var(--background-neutral-primary)",
+        color: "var(--text-neutral-quaternary)",
+        fontFamily: "var(--font-body)",
+        fontWeight: 600,
+        fontSize: dims.fontSize,
+        lineHeight: dims.lineHeight,
+        letterSpacing: "var(--tracking-overline)",
+        textTransform: "uppercase",
+        minWidth: 0,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        userSelect: "none",
+        pointerEvents: "none",
+      }}
+    >
+      <span
+        style={{
+          minWidth: 0,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
 /**
  * CADS Dropdown — form select (input) or action menu.
  * Spec: `15857:100676` / key `d3660d988bcb4702c24ce921128e32cadb6618db`.
- * Internal: Dropdown Button `964:10677`, Menu List `971:4280`, Menu Item `896:3791`.
+ * Internal: Dropdown Button `964:10677`, Menu List `971:4280`, Menu Item `896:3791`,
+ * menuSeparator `16847:69841`, menuOptGroup `16847:69853`.
  */
 export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
   function Dropdown(props, ref) {
     const {
       size = "medium",
-      menuType = "icon",
+      menuType = "default",
       menuPlacement = "bottomLeft",
       options,
       open: openProp,
@@ -587,12 +755,22 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     }, [open, triggerId, setAnchor]);
     /** Keyboard / pointer highlight index; -1 = none (avoid a stuck “hover”). */
     const [activeIndex, setActiveIndex] = useState(-1);
+    /**
+     * Pointer hover vs keyboard focus use different Figma recipes.
+     * `data-active` tracks either; `data-keyboard-focus` is keyboard-only.
+     */
+    const [highlightMode, setHighlightMode] = useState<"keyboard" | "pointer">(
+      "pointer",
+    );
 
     const setOpen = useCallback(
       (next: boolean) => {
         if (openProp === undefined) setUncontrolledOpen(next);
         onOpenChange?.(next);
-        if (!next) setActiveIndex(-1);
+        if (!next) {
+          setActiveIndex(-1);
+          setHighlightMode("pointer");
+        }
       },
       [openProp, onOpenChange],
     );
@@ -613,11 +791,16 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       [selectedValues],
     );
 
+    const itemOptions = useMemo(
+      () => options.filter(isItemOption),
+      [options],
+    );
+
     const displayLabel = useMemo(() => {
       if (!isInput) return props.label ?? "Button";
       const placeholder = inputProps?.placeholder ?? "Dropdown";
       if (selectedValues.length === 0) return placeholder;
-      const labels = options
+      const labels = itemOptions
         .filter((o) => selectedSet.has(o.value))
         .map((o) => o.label);
       if (labels.length === 0) return placeholder;
@@ -627,7 +810,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       props,
       inputProps?.placeholder,
       selectedValues,
-      options,
+      itemOptions,
       selectedSet,
     ]);
 
@@ -635,12 +818,15 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const hugCandidates = useMemo(() => {
       if (!isInput) return undefined;
       const placeholder = inputProps?.placeholder ?? "Dropdown";
-      const candidates: ReactNode[] = [placeholder, ...options.map((o) => o.label)];
+      const candidates: ReactNode[] = [
+        placeholder,
+        ...itemOptions.map((o) => o.label),
+      ];
       if (isChecklist) {
-        candidates.push(`${options.length} selected`);
+        candidates.push(`${itemOptions.length} selected`);
       }
       return candidates;
-    }, [isInput, inputProps?.placeholder, options, isChecklist]);
+    }, [isInput, inputProps?.placeholder, itemOptions, isChecklist]);
 
     const commitSelection = (next: string[]) => {
       if (!inputProps) return;
@@ -648,7 +834,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       inputProps.onChange?.(isChecklist ? next : (next[0] ?? ""));
     };
 
-    const handleItemSelect = (option: DropdownOption) => {
+    const handleItemSelect = (option: DropdownItemOption) => {
       if (option.disabled) return;
       if (isInput) {
         if (isChecklist) {
@@ -667,7 +853,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     };
 
     const handleSelectAll = () => {
-      commitSelection(options.filter((o) => !o.disabled).map((o) => o.value));
+      commitSelection(
+        itemOptions.filter((o) => !o.disabled).map((o) => o.value),
+      );
     };
     const handleClearAll = () => {
       commitSelection([]);
@@ -680,10 +868,19 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     };
 
     useEffect(() => {
-      if (!open) setActiveIndex(-1);
+      if (!open) {
+        setActiveIndex(-1);
+        setHighlightMode("pointer");
+      }
     }, [open]);
 
+    const highlightKeyboard = (index: number) => {
+      setHighlightMode("keyboard");
+      setActiveIndex(index);
+    };
+
     const moveActive = (direction: 1 | -1) => {
+      setHighlightMode("keyboard");
       setActiveIndex((current) => {
         const start = current < 0 ? (direction === 1 ? -1 : 0) : current;
         let next = start;
@@ -692,7 +889,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             direction === 1
               ? (next + 1) % options.length
               : (next - 1 + options.length) % options.length;
-          if (!options[next]?.disabled) return next;
+          if (isSelectableOption(options[next]!)) return next;
         }
         return current;
       });
@@ -710,14 +907,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           setOpen(true);
           if (event.key === "ArrowUp") {
             for (let i = options.length - 1; i >= 0; i--) {
-              if (!options[i]?.disabled) {
-                setActiveIndex(i);
+              if (isSelectableOption(options[i]!)) {
+                highlightKeyboard(i);
                 break;
               }
             }
           } else {
-            const idx = options.findIndex((o) => !o.disabled);
-            setActiveIndex(idx < 0 ? -1 : idx);
+            const idx = options.findIndex(isSelectableOption);
+            if (idx >= 0) highlightKeyboard(idx);
           }
         }
         return;
@@ -738,14 +935,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
       if (event.key === "Home") {
         event.preventDefault();
-        const idx = options.findIndex((o) => !o.disabled);
-        if (idx >= 0) setActiveIndex(idx);
+        const idx = options.findIndex(isSelectableOption);
+        if (idx >= 0) highlightKeyboard(idx);
       }
       if (event.key === "End") {
         event.preventDefault();
         for (let i = options.length - 1; i >= 0; i--) {
-          if (!options[i]?.disabled) {
-            setActiveIndex(i);
+          if (isSelectableOption(options[i]!)) {
+            highlightKeyboard(i);
             break;
           }
         }
@@ -753,14 +950,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         const opt = activeIndex >= 0 ? options[activeIndex] : undefined;
-        if (opt) handleItemSelect(opt);
+        if (opt && isItemOption(opt)) handleItemSelect(opt);
       }
     };
 
     const resolvedMenuType: DropdownMenuType =
       isInput && (inputProps?.menuType ?? menuType) === "checklist"
         ? "checklist"
-        : "icon";
+        : "default";
 
     // Instant open (no Grow): fixtures disable CSS transitions, which can leave
     // MUI Transition children stuck at opacity 0. disablePortal keeps the menu
@@ -817,22 +1014,44 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               paddingTop: isChecklist ? 4 : 0,
               paddingBottom: isChecklist ? 4 : 0,
             }}
-            onMouseLeave={() => setActiveIndex(-1)}
+            onMouseLeave={() => {
+              setActiveIndex(-1);
+              setHighlightMode("pointer");
+            }}
           >
-            {options.map((option, index) => (
-              <MenuItemRow
-                key={option.value}
-                id={`${listId}-opt-${index}`}
-                option={option}
-                size={size}
-                selected={selectedSet.has(option.value)}
-                menuType={resolvedMenuType}
-                role={props.role}
-                active={index === activeIndex}
-                onSelect={() => handleItemSelect(option)}
-                onHighlight={() => setActiveIndex(index)}
-              />
-            ))}
+            {options.map((option, index) => {
+              if (option.type === "separator") {
+                return <MenuSeparatorRow key={`${listId}-sep-${index}`} />;
+              }
+              if (option.type === "group") {
+                return (
+                  <MenuGroupRow
+                    key={`${listId}-group-${index}`}
+                    label={option.label}
+                    size={size}
+                  />
+                );
+              }
+              const active = index === activeIndex;
+              return (
+                <MenuItemRow
+                  key={option.value}
+                  id={`${listId}-opt-${index}`}
+                  option={option}
+                  size={size}
+                  selected={selectedSet.has(option.value)}
+                  menuType={resolvedMenuType}
+                  role={props.role}
+                  active={active}
+                  keyboardFocus={active && highlightMode === "keyboard"}
+                  onSelect={() => handleItemSelect(option)}
+                  onHighlight={() => {
+                    setHighlightMode("pointer");
+                    setActiveIndex(index);
+                  }}
+                />
+              );
+            })}
           </div>
           {isChecklist ? (
             <div
@@ -898,31 +1117,56 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     );
 
     const triggerStyles = `
+.cads-dropdown-trigger {
+  outline: none;
+}
 .cads-dropdown-trigger:hover:not(:disabled) {
-  background-color: var(--background-neutral-secondary) !important;
+  background-color: var(--background-neutral-tertiary) !important;
 }
 .cads-dropdown-trigger:focus-visible {
   box-shadow: ${FOCUS_RING};
 }
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):hover,
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"])[data-active="true"] {
-  background-color: var(--background-neutral-secondary) !important;
+/* When a menu item has keyboard focus, move chrome off the trigger (Figma). */
+[data-cads-dropdown]:has([data-keyboard-focus="true"]) .cads-dropdown-trigger:focus-visible,
+[data-cads-dropdown]:has([data-keyboard-focus="true"]) .MuiButton-root.Mui-focusVisible {
+  box-shadow: none !important;
 }
-[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):active {
+/* Pointer hover — Figma Menu Item / Dropdown Button state=hover */
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):not([data-keyboard-focus="true"]):hover {
+  background-color: var(--background-neutral-tertiary) !important;
+}
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):active:not([data-keyboard-focus="true"]) {
   background-color: var(--background-neutral-tertiary) !important;
   color: var(--text-neutral-tertiary) !important;
 }
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):hover,
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"])[data-active="true"] {
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-error-light) !important;
 }
-[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active {
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active:not([data-keyboard-focus="true"]) {
   background-color: var(--background-error-primary) !important;
   color: var(--text-neutral-white-fixed) !important;
 }
-[data-cads-dropdown-item][aria-selected="true"]:hover,
-[data-cads-dropdown-item][aria-selected="true"][data-active="true"] {
+[data-cads-dropdown-item][aria-selected="true"]:not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-selected-strong) !important;
+}
+/* Keyboard focus — Figma Menu Item state=focus (2px flush ring, not FOCUS_RING).
+   Use outline + negative offset so geometry does not shift like a real border. */
+[data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"])[data-keyboard-focus="true"] {
+  background-color: var(--background-brand-light) !important;
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: -2px;
+}
+[data-cads-dropdown-item][aria-selected="true"][data-keyboard-focus="true"] {
+  background-color: var(--background-selected-primary) !important;
+  color: var(--text-selected-primary) !important;
+  outline: 2px solid var(--border-selected-primary-inverse);
+  outline-offset: -2px;
+}
+[data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"])[data-keyboard-focus="true"] {
+  background-color: var(--background-neutral-primary) !important;
+  color: var(--text-error-primary) !important;
+  outline: 2px solid var(--border-error-primary);
+  outline-offset: -2px;
 }
 [data-cads-dropdown-action-row] .MuiButton-root {
   white-space: nowrap;
@@ -964,6 +1208,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               size={size}
               sentiment={sentiment}
               label={ip.label}
+              required={ip.required}
               helperText={ip.helperText}
               helperIconName={ip.helperIconName}
               showHelper={ip.showHelper}
@@ -981,6 +1226,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
                 disabled={disabled}
                 readOnly={Boolean(ip.readOnly)}
                 error={Boolean(ip.error) || sentiment === "error"}
+                required={Boolean(ip.required)}
                 onClick={toggleOpen}
                 buttonRef={setAnchor}
                 id={triggerId}

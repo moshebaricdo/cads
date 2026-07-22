@@ -12,7 +12,13 @@ const SENTIMENT_ICON = {
   warning: "circle-exclamation",
   error: "circle-xmark"
 };
-function helperColors(sentiment) {
+function helperColors(sentiment, disabled) {
+  if (disabled) {
+    return {
+      text: "var(--text-disabled-neutral)",
+      icon: "var(--text-disabled-neutral)"
+    };
+  }
   switch (sentiment) {
     case "success":
       return {
@@ -41,6 +47,7 @@ const FieldWrapper = forwardRef(
     size = "medium",
     sentiment = "default",
     label,
+    required = false,
     helperText,
     helperIconName = "smile",
     showHelper = true,
@@ -55,7 +62,8 @@ const FieldWrapper = forwardRef(
     const labelId = `${controlId}-label`;
     const helperId = `${controlId}-helper`;
     const dims = FIELD_WRAPPER_SIZE[size];
-    const colors = helperColors(sentiment);
+    const colors = helperColors(sentiment, disabled);
+    const labelColor = disabled ? "var(--text-disabled-neutral)" : "var(--text-neutral-primary)";
     const shouldShowHelper = Boolean(helperText) && (sentiment !== "default" ? true : showHelper);
     const context = useMemo(
       () => ({
@@ -85,6 +93,7 @@ const FieldWrapper = forwardRef(
         ref,
         className,
         "data-cads-field-wrapper": "",
+        "data-disabled": disabled ? "true" : void 0,
         style: {
           display: "flex",
           flexDirection: "column",
@@ -96,7 +105,7 @@ const FieldWrapper = forwardRef(
           ...style
         },
         children: [
-          label != null && label !== "" ? /* @__PURE__ */ jsx(
+          label != null && label !== "" ? /* @__PURE__ */ jsxs(
             "label",
             {
               id: labelId,
@@ -107,10 +116,13 @@ const FieldWrapper = forwardRef(
                 fontWeight: "var(--font-weight-semibold)",
                 fontSize: dims.labelFontSize,
                 lineHeight: dims.labelLineHeight,
-                color: "var(--text-neutral-primary)",
+                color: labelColor,
                 margin: 0
               },
-              children: label
+              children: [
+                label,
+                required ? /* @__PURE__ */ jsx("span", { "aria-hidden": "true", children: "*" }) : null
+              ]
             }
           ) : null,
           /* @__PURE__ */ jsx("div", { "data-cads-field-slot": "", style: { width: "100%", minWidth: 0 }, children }),

@@ -1,4 +1,4 @@
-import { jsxs, jsx } from 'react/jsx-runtime';
+import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
 import ButtonBase from '@mui/material/ButtonBase';
 import { forwardRef, useId, useState } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
@@ -14,6 +14,9 @@ const Toggle = forwardRef(
     checked,
     defaultChecked = false,
     onChange,
+    hasIcons = true,
+    onIcon = "check",
+    offIcon = "xmark",
     disabled = false,
     id: idProp,
     sx,
@@ -88,50 +91,52 @@ const Toggle = forwardRef(
           ...sx ?? {}
         },
         children: [
-          /* @__PURE__ */ jsx(
-            "span",
-            {
-              "aria-hidden": true,
-              style: {
-                position: "absolute",
-                top: "50%",
-                left: dims.iconInset,
-                width: dims.iconSlot,
-                transform: "translateY(-50%)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                lineHeight: 1,
-                color: "inherit",
-                opacity: isOn ? 1 : 0,
-                transition: ICON_MOTION,
-                pointerEvents: "none"
-              },
-              children: /* @__PURE__ */ jsx(FaIcon, { name: "check", family: "solid", fontSize: dims.iconPx })
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "span",
-            {
-              "aria-hidden": true,
-              style: {
-                position: "absolute",
-                top: "50%",
-                right: dims.iconInset,
-                width: dims.iconSlot,
-                transform: "translateY(-50%)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                lineHeight: 1,
-                color: "inherit",
-                opacity: isOn ? 0 : 1,
-                transition: ICON_MOTION,
-                pointerEvents: "none"
-              },
-              children: /* @__PURE__ */ jsx(FaIcon, { name: "xmark", family: "solid", fontSize: dims.iconPx })
-            }
-          ),
+          hasIcons ? /* @__PURE__ */ jsxs(Fragment, { children: [
+            /* @__PURE__ */ jsx(
+              "span",
+              {
+                "aria-hidden": true,
+                style: {
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: dims.iconInsetLeft,
+                  width: `calc(100% - ${dims.iconInsetLeft} - ${dims.iconGap} - ${dims.handle} - ${dims.pad})`,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  lineHeight: 1,
+                  color: "inherit",
+                  opacity: isOn ? 1 : 0,
+                  transition: ICON_MOTION,
+                  pointerEvents: "none"
+                },
+                children: /* @__PURE__ */ jsx(FaIcon, { name: onIcon, family: "solid", fontSize: dims.iconPx })
+              }
+            ),
+            /* @__PURE__ */ jsx(
+              "span",
+              {
+                "aria-hidden": true,
+                style: {
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  right: dims.iconInsetRight,
+                  width: `calc(100% - ${dims.iconInsetRight} - ${dims.iconGap} - ${dims.handle} - ${dims.pad})`,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  lineHeight: 1,
+                  color: "inherit",
+                  opacity: isOn ? 0 : 1,
+                  transition: ICON_MOTION,
+                  pointerEvents: "none"
+                },
+                children: /* @__PURE__ */ jsx(FaIcon, { name: offIcon, family: "solid", fontSize: dims.iconPx })
+              }
+            )
+          ] }) : null,
           /* @__PURE__ */ jsx(
             "span",
             {
