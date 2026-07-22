@@ -30,6 +30,17 @@ export default function TogglePreview({
           checked={v.checked == null ? undefined : Boolean(v.checked)}
           defaultChecked={Boolean(v.defaultChecked)}
           disabled={Boolean(v.disabled)}
+          hasIcons={v.hasIcons == null ? undefined : Boolean(v.hasIcons)}
+          onIcon={
+            v.onIcon == null || v.onIcon === ""
+              ? undefined
+              : (String(v.onIcon) as FaIconName)
+          }
+          offIcon={
+            v.offIcon == null || v.offIcon === ""
+              ? undefined
+              : (String(v.offIcon) as FaIconName)
+          }
           aria-label={String(v["aria-label"] || "Toggle")}
         />
       );

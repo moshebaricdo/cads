@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { CodeBlock, PageHeader, Section } from "@/components/docs-ui";
+import type { CSSProperties } from "react";
+import { CodeBlock } from "@/components/docs-ui";
+import { FoundationHeader } from "@/components/FoundationHeader";
+import pageStyles from "@/components/DocsTemplatePage.module.css";
+import styles from "./FoundationPage.module.css";
 
 const FOUNDATION_CARDS = [
   {
     href: "/variables/color",
     title: "Color",
-    body: "146 semantic roles — backgrounds, text, and borders across neutral, brand, selected, accent, and status ramps, with light and dark values.",
+    body: "Primitive ramps and semantic roles for backgrounds, text, borders, state, and feedback across light and dark themes.",
   },
   {
     href: "/variables/typography",
@@ -14,21 +18,20 @@ const FOUNDATION_CARDS = [
   },
   {
     href: "/variables/spacing",
-    title: "Spacing & shape",
-    body: "The 8px-based spacing scale and corner radius ramp used across all component chrome.",
+    title: "Shape",
+    body: "Border radii, elevation shadows, and the spacing ramp used to build consistent surfaces and layouts.",
   },
   {
     href: "/variables/core",
-    title: "Core styles",
-    body: "Elevation shadows, motion durations and easings, and the fixed control-height scale.",
+    title: "Motion",
+    body: "An experimental shared vocabulary for consistent durations, easing, and interaction feedback.",
   },
 ];
 
 export default function VariablesIndexPage() {
   return (
-    <div>
-      <PageHeader
-        eyebrow="Foundations"
+    <div className={pageStyles.page}>
+      <FoundationHeader
         title="Variables"
         lead={
           <>
@@ -40,122 +43,83 @@ export default function VariablesIndexPage() {
         }
       />
 
-      <Section title="Setup" description="Import the stylesheet once at your app root. Every variable on the following pages is then available globally, with dark values applied under a `.dark` class on the root element.">
-        <CodeBlock code={`import "@codeai/cads-variables/variables.css";`} />
-      </Section>
+      <section className={styles.section} aria-labelledby="setup">
+        <h2 id="setup" className={`docs-h2 ${styles.sectionTitle}`}>
+          Setup
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          Import the stylesheet once at your app root. Every variable on the
+          following pages is then available globally, with dark values applied
+          under a <code>.dark</code> class on the root element.
+        </p>
+        <div style={{ width: "100%" }}>
+          <CodeBlock code={`import "@codeai/cads-variables/variables.css";`} />
+        </div>
+      </section>
 
-      <Section title="Explore the foundations">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: 16,
-          }}
-        >
+      <section className={styles.section} aria-labelledby="explore">
+        <h2 id="explore" className={`docs-h2 ${styles.sectionTitle}`}>
+          Explore the foundations
+        </h2>
+        <div className={styles.cardGrid}>
           {FOUNDATION_CARDS.map((card) => (
             <Link key={card.href} href={card.href} className="docs-card">
-              <div
-                style={{
-                  fontWeight: 600,
-                  marginBottom: 6,
-                  color: "var(--text-brand-primary)",
-                }}
-              >
-                {card.title}
-              </div>
-              <div
-                style={{
-                  fontSize: "var(--text-body-sm)",
-                  lineHeight: "var(--leading-body-sm)",
-                  color: "var(--text-neutral-secondary)",
-                }}
-              >
-                {card.body}
-              </div>
+              <div className={styles.cardTitle}>{card.title}</div>
+              <p className={styles.cardBody}>{card.body}</p>
             </Link>
           ))}
         </div>
-      </Section>
+      </section>
 
-      <Section
-        title="Brand vs selected"
-        description="The most common misuse in prototypes — these two ramps look similar but mean different things."
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: 16,
-          }}
-        >
+      <section className={styles.section} aria-labelledby="brand-vs-selected">
+        <h2 id="brand-vs-selected" className={`docs-h2 ${styles.sectionTitle}`}>
+          Brand vs selected
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          The most common misuse in prototypes — these two ramps look similar
+          but mean different things.
+        </p>
+        <div className={styles.cardGrid}>
           <div className="docs-card">
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                marginBottom: 8,
-              }}
-            >
+            <div className={styles.ruleTitle}>
               <span
                 aria-hidden
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: 4,
-                  background: "var(--background-brand-primary)",
-                }}
+                className={styles.ruleSwatch}
+                style={
+                  {
+                    "--rule-swatch": "var(--background-brand-primary)",
+                  } as CSSProperties
+                }
               />
-              <strong>Brand</strong>
+              Brand
             </div>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "var(--text-body-sm)",
-                lineHeight: "var(--leading-body-sm)",
-                color: "var(--text-neutral-secondary)",
-              }}
-            >
+            <p className={styles.cardBody}>
               Primary actions, CTAs, and links. Use{" "}
-              <code>--background-brand-primary</code> and friends for the
-              things a user is invited to do.
+              <code>--background-brand-primary</code> and friends for the things
+              a user is invited to do.
             </p>
           </div>
           <div className="docs-card">
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                marginBottom: 8,
-              }}
-            >
+            <div className={styles.ruleTitle}>
               <span
                 aria-hidden
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: 4,
-                  background: "var(--background-selected-primary)",
-                }}
+                className={styles.ruleSwatch}
+                style={
+                  {
+                    "--rule-swatch": "var(--background-selected-primary)",
+                  } as CSSProperties
+                }
               />
-              <strong>Selected</strong>
+              Selected
             </div>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "var(--text-body-sm)",
-                lineHeight: "var(--leading-body-sm)",
-                color: "var(--text-neutral-secondary)",
-              }}
-            >
+            <p className={styles.cardBody}>
               Filled selected chrome — segmented controls, checked checkboxes,
-              selected menu items, active nav. Never paint selected surfaces
-              with brand fills.
+              selected menu items, active nav. Never paint selected surfaces with
+              brand fills.
             </p>
           </div>
         </div>
-      </Section>
+      </section>
     </div>
   );
 }

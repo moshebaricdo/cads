@@ -1,0 +1,429 @@
+/* Foundation content surfaces — page chrome comes from DocsTemplatePage */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  scroll-margin-top: var(--space-xl);
+}
+
+.sectionTitle {
+  margin: 0 !important;
+}
+
+.sectionBody {
+  margin: 0 !important;
+  max-width: 560px;
+}
+
+/* section gap is 12px; add the rest to land at 24px below section copy */
+.sectionAction {
+  margin-top: 6px;
+}
+
+.sectionContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  /* section gap is 12px; add the rest to land at --space-m (32px) below copy */
+  margin-top: calc(var(--space-m) - 12px);
+}
+
+/* Card surface — prefer .dividedList on foundation pages; kept for Shape/Motion until those pages get the same pass. */
+.surface {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+}
+
+.dividedList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  width: 100%;
+  background: var(--background-neutral-primary);
+}
+
+.table :global(th) {
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  color: var(--text-neutral-quaternary);
+}
+
+.collection + .collection {
+  margin-top: 0;
+}
+
+.collectionHeading {
+  margin: 0 0 var(--space-m);
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.tabbedContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.tabRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  border-bottom: 1px solid var(--border-neutral-primary);
+}
+
+/* Tabs paints its own baseline via inline style — suppress so .tabRow spans full width. */
+.tabsFlush {
+  border-bottom: none !important;
+  margin-bottom: -1px;
+}
+
+.tabWeight {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  align-self: center;
+  margin-bottom: 4px;
+}
+
+.rangeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.range {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rangeHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.rangeName {
+  margin: 0;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.rangeCount {
+  color: var(--text-neutral-quaternary);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-normal);
+}
+
+.swatchRange {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8.8px;
+}
+
+.swatch {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  /* Docs-only: black/white-alpha/10 so the rim reads on any fill. */
+  border: 1px solid #1212121a;
+  border-radius: var(--radius-md);
+  background-color: var(--swatch-color);
+  cursor: pointer;
+}
+
+:global(html.dark) .swatch {
+  border-color: #ffffff1a;
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+.specimen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: var(--space-m) 0;
+}
+
+.dividedList > .specimen:first-child {
+  padding-top: 0;
+}
+
+.specimen + .specimen {
+  border-top: 1px solid var(--border-neutral-primary);
+}
+
+.specimenSample {
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  cursor: text;
+  outline: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.specimenSampleMeasure {
+  max-width: 600px;
+}
+
+.specimenSample:focus,
+.specimenSample:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Shrink-wrap so text-decoration underline matches the link text width. */
+.specimenSampleLink {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.specimenMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.specimenName {
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.specimenValue {
+  color: var(--text-neutral-quaternary);
+  font-family: var(--font-body);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+}
+
+.specimenMeta .chipRow {
+  margin-inline-start: auto;
+}
+
+.shapeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+}
+
+.shapeItem {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: var(--space-xs);
+  text-align: center;
+}
+
+.shapeItem + .shapeItem {
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+.radiusSample {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--border-brand-primary);
+  border-radius: var(--sample-radius);
+  background: var(--background-brand-light);
+}
+
+.shadowSample {
+  width: 104px;
+  height: 72px;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+  box-shadow: var(--sample-shadow);
+}
+
+.itemValue {
+  color: var(--text-neutral-quaternary);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+}
+
+.spacingList {
+  padding: 6px var(--space-xs);
+}
+
+.spacingRow {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 44px;
+  gap: var(--space-xs);
+  align-items: center;
+  min-height: 36px;
+}
+
+.spacingBar {
+  width: var(--sample-space);
+  max-width: 100%;
+  height: 8px;
+  border-radius: var(--radius-round);
+  background: var(--background-brand-primary);
+}
+
+.motionDemo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.motionItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+}
+
+.motionItem + .motionItem {
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+.motionTrack {
+  padding: 4px;
+  border-radius: var(--radius-round);
+  background: var(--background-neutral-secondary);
+}
+
+.motionDot {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-round);
+  background: var(--background-brand-primary);
+  transition: transform var(--demo-duration) var(--easing-standard);
+}
+
+.motionItem:hover .motionDot,
+.motionItem:focus-within .motionDot {
+  transform: translateX(120px);
+}
+
+.note {
+  margin: 0;
+  max-width: 560px;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.weightRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+}
+
+.weightItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.weightValue {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.cardTitle {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+  color: var(--text-brand-primary);
+}
+
+.cardBody {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+}
+
+.ruleTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.ruleSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--rule-swatch);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionDot {
+    transition-duration: 0ms;
+  }
+}
+
+@media (max-width: 680px) {
+  .specimenMeta .chipRow {
+    margin-inline-start: 0;
+    width: 100%;
+  }
+
+  .tabWeight {
+    margin-inline-start: 0;
+  }
+
+  .shapeGrid,
+  .motionDemo {
+    grid-template-columns: 1fr;
+  }
+
+  .shapeItem + .shapeItem,
+  .motionItem + .motionItem {
+    border-top: 1px solid var(--border-neutral-primary);
+    border-left: 0;
+  }
+
+  .spacingRow {
+    grid-template-columns: 108px minmax(0, 1fr) 40px;
+    gap: 8px;
+  }
+}

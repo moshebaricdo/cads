@@ -1,0 +1,136 @@
+.destinations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 280px;
+  min-width: 0;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--background-neutral-primary);
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-xl);
+  transition: var(--transition-colors);
+}
+
+.card:hover {
+  text-decoration: none;
+  border-color: var(--border-neutral-secondary);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+.graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  /* Match copy inset so collage edges align with title/body. */
+  padding: 4px;
+  background: var(--background-neutral-primary);
+  pointer-events: none;
+}
+
+.graphicFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 784 / 400;
+}
+
+.graphicImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 784 / 400;
+  object-fit: contain;
+  object-position: center;
+}
+
+.graphicLight {
+  display: block;
+}
+
+.graphicDark {
+  display: none;
+}
+
+:global(html.dark) .graphicLight {
+  display: none;
+}
+
+:global(html.dark) .graphicDark {
+  display: block;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px 18px 16px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  color: var(--text-neutral-primary);
+}
+
+.cardBody {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+}
+
+.sectionTitle {
+  margin: 0 !important;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sectionBody {
+  margin: 0 !important;
+  max-width: 640px;
+}
+ .sectionAction {
+  margin-top: 6px;
+}
+
+.resourceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.resourceItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.resourceDot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-round);
+  background: var(--background-neutral-quaternary);
+}

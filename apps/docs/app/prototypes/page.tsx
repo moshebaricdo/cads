@@ -35,9 +35,9 @@ export default function PrototypesPage() {
           Publish a prototype by adding a page under{" "}
           <code>apps/docs/app/prototypes/</code> that imports CADS components
           and documents the Figma source frame. In the meantime, see the{" "}
-          <Link href="/ai">AI setup</Link> page for the Claude artifact
-          workflow — the fastest way to produce a shareable CADS prototype
-          today.
+          <Link href="/ai">For Agents</Link> page for the portable skill
+          workflow — the fastest way to produce a self-contained CADS
+          prototype today.
         </p>
       </div>
     </div>

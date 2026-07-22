@@ -34,6 +34,7 @@ export default function FieldWrapperPreview({
             v.size as "large" | "medium" | "small" | "extraSmall" | undefined
           }
           disabled={Boolean(v.disabled)}
+          required={Boolean(v.required)}
         >
           <TextInput placeholder="Nested control" />
         </FieldWrapper>

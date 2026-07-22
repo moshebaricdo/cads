@@ -7,12 +7,12 @@
 
 export const RESOURCES_NAV = [
   { href: "/", label: "Overview", iconName: "grid" },
-  { href: "/ai", label: "For Agents", iconName: "font" },
+  { href: "/ai", label: "For Agents", iconName: "robot" },
 ] as const;
 
 export const FOUNDATIONS_NAV = [
   { href: "/variables/color", label: "Color", iconName: "palette" },
-  { href: "/variables/typography", label: "Typography", iconName: "font" },
+  { href: "/variables/typography", label: "Typography", iconName: "text-size" },
   { href: "/variables/spacing", label: "Shape", iconName: "draw-square" },
   { href: "/variables/core", label: "Motion", iconName: "play-pause" },
 ] as const;
@@ -21,7 +21,7 @@ export const COMPONENT_SECTIONS = [
   {
     id: "actions",
     label: "Actions",
-    iconName: "computer-mouse-button-left",
+    iconName: "computer-mouse",
     items: [
       { exportName: "Button", label: "Button" },
       { exportName: "SegmentedButton", label: "Segmented Button" },
@@ -32,7 +32,7 @@ export const COMPONENT_SECTIONS = [
   {
     id: "inputs",
     label: "Inputs",
-    iconName: "i-cursor",
+    iconName: "grid",
     items: [
       { exportName: "FieldWrapper", label: "Field Wrapper" },
       { exportName: "TextInput", label: "Text Input" },
@@ -98,4 +98,57 @@ export function componentCategory(exportName: string): {
     }
   }
   return null;
+}
+
+export type NavComponent = {
+  exportName: string;
+  label: string;
+  href: string;
+};
+
+/** Flat component list in sidebar / Figma section order. */
+export function listNavComponents(): NavComponent[] {
+  return COMPONENT_SECTIONS.flatMap((section) =>
+    section.items.map((item) => ({
+      exportName: item.exportName,
+      label: item.label,
+      href: componentHref(item.exportName),
+    })),
+  );
+}
+
+/** Previous / next neighbors for component page footer nav. */
+export function adjacentComponents(exportName: string): {
+  previous: NavComponent | null;
+  next: NavComponent | null;
+} {
+  const list = listNavComponents();
+  const index = list.findIndex((item) => item.exportName === exportName);
+  if (index < 0) return { previous: null, next: null };
+  return {
+    previous: index > 0 ? list[index - 1]! : null,
+    next: index < list.length - 1 ? list[index + 1]! : null,
+  };
+}
+
+export type NavFoundation = {
+  href: string;
+  label: string;
+};
+
+/** Previous / next neighbors for foundation page footer nav. */
+export function adjacentFoundations(href: string): {
+  previous: NavFoundation | null;
+  next: NavFoundation | null;
+} {
+  const list: NavFoundation[] = FOUNDATIONS_NAV.map((item) => ({
+    href: item.href,
+    label: item.label,
+  }));
+  const index = list.findIndex((item) => item.href === href);
+  if (index < 0) return { previous: null, next: null };
+  return {
+    previous: index > 0 ? list[index - 1]! : null,
+    next: index < list.length - 1 ? list[index + 1]! : null,
+  };
 }

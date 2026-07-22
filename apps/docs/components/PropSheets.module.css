@@ -1,0 +1,58 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* CADS Body MD + semibold — section / H5 */
+.heading {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  color: var(--text-neutral-primary);
+  margin: 0;
+}
+
+/* Primary surface so tables lift off the secondary page background */
+.tableWrap {
+  background: var(--background-neutral-primary);
+}
+
+.table th {
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  color: var(--text-neutral-quaternary);
+}
+
+.propName,
+.propType {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.propName {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-neutral-primary);
+}
+
+.propType {
+  color: var(--text-neutral-quaternary);
+}
+
+.propDesc {
+  color: var(--text-neutral-quaternary);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+}

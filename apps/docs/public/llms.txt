@@ -110,6 +110,8 @@ Usage rules:
 - Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.
 - Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.
 - Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).
+- Focus uses outline 2px with -2px offset (brand-light / focused-inverse) — same flush recipe as Dropdown menu items, not outer FOCUS_RING.
+- Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).
 - Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.
 - Prefer the group API; Segmented Button Block (8000:4554) is an internal building block.
 
@@ -164,6 +166,7 @@ Props:
 - `helperIconName`: FaIconName
 - `showHelper`: boolean (default true)
 - `children`: ReactNode [required]
+- `required`: boolean (default false) — Appends * after the label (same type style, no gap).
 - `disabled`: boolean
 - `htmlFor`: string
 
@@ -171,6 +174,8 @@ Usage rules:
 - Nest any CADS control in children (TextInput, Dropdown, Checkbox, etc.).
 - Warning helper text stays tertiary; only the icon uses warning color.
 - Non-default sentiments always show helper when helperText is set.
+- disabled applies --text-disabled-neutral to label, helper text, and helper icon (Figma isDisabled).
+- required appends * after the label; pair with native required on the nested control when applicable.
 
 Example:
 ```tsx
@@ -187,13 +192,17 @@ Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
 - `color`: "primary" | "secondary" (default "primary") — primary = solid border; secondary = soft border
 - `multiline`: boolean (default false) — Figma type=area when true
+- `startIcon`: boolean (default false) — Leading FA icon inside the field (building-block startIcon). Field-only; ignored when multiline. Prefer setting startIconName and enabling when present.
+- `startIconName`: FaIconName — FA icon name (Figma startIconName; smile → face-smile). Playground/docs treat empty as no icon.
 - `label`: string
 - `helperText`: ReactNode
 - `helperIconName`: FaIconName
+- `showHelper`: boolean (default true)
 - `sentiment`: "default" | "success" | "warning" | "error" (default "default")
 - `error`: boolean
 - `readOnly`: boolean
 - `disabled`: boolean
+- `required`: boolean (default false) — Native required on the control + * after the Field Wrapper label.
 - `placeholder`: string
 - `value`: string
 - `defaultValue`: string
@@ -202,12 +211,14 @@ Props:
 Usage rules:
 - Prefer TextInput over the deprecated TextField alias.
 - Figma type=field|area maps to multiline={false|true}.
+- startIcon is field-only; ignored when multiline (type=area).
 - extraSmall field height uses the shared 24px control scale (Figma building block is 22px).
 - Do not invent floating labels — label is always above via Field Wrapper.
+- required sets the native HTML attribute and appends * after the label.
 
 Example:
 ```tsx
-<TextInput label="Email" size="medium" placeholder="you@example.com" helperText="Required" />
+<TextInput label="Email" size="medium" startIcon startIconName="envelope" placeholder="you@example.com" helperText="Required" />
 ```
 
 ### Dropdown
@@ -219,10 +230,10 @@ Import: `import { Dropdown } from "@codeai/cads-react"`
 Props:
 - `role`: "input" | "action" [required] — input = form select; action = button menu
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
-- `menuType`: "icon" | "checklist" (default "icon") — checklist is input-only in Figma
+- `menuType`: "default" | "checklist" (default "default") — default = single-select list (item startIcon optional); checklist = multi-select (input-only)
 - `menuPlacement`: "bottomLeft" | "bottomRight" | "topLeft" | "topRight" (default "bottomLeft")
 - `width`: string (default "hug") — Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.
-- `options`: DropdownOption[] [required]
+- `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support startIcon + iconName (text-only when omitted).
 - `label`: ReactNode
 - `helperText`: ReactNode
 - `placeholder`: string
@@ -235,6 +246,7 @@ Props:
 - `disabled`: boolean
 - `readOnly`: boolean
 - `error`: boolean
+- `required`: boolean (default false) — Input-role only. Appends * after the Field Wrapper label.
 - `color`: "primary" | "secondary"
 - `labelStyle`: "thick" | "thin"
 - `startIconName`: FaIconName
@@ -244,14 +256,16 @@ Props:
 
 Usage rules:
 - role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
-- menuType=checklist is input-only; action menus use icon items (optional destructive).
+- menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (startIcon/iconName), not a list-level mode.
+- options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
 - Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
 - Selected menu items use selected tokens — never brand fills.
-- Dropdown Button / Menu List / Menu Item are internal — do not import standalone.
+- Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.
+- Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone.
 
 Example:
 ```tsx
-<Dropdown role="input" label="Sort" width="hug" options={[{value:"a",label:"Option A"},{value:"b",label:"Option B"}]} defaultValue="a" />
+<Dropdown role="input" label="Sort" width="hug" options={[{type:"group",label:"Recent"},{value:"a",label:"Option A"},{type:"separator"},{value:"b",label:"Option B"}]} defaultValue="a" />
 ```
 
 ### Checkbox
@@ -307,7 +321,7 @@ Example:
 
 ### Toggle
 
-On/off switch with check/xmark icons. Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.
+On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.
 
 Import: `import { Toggle } from "@codeai/cads-react"`
 
@@ -319,16 +333,21 @@ Props:
 - `defaultChecked`: boolean
 - `disabled`: boolean
 - `onChange`: (event, checked) => void
+- `hasIcons`: boolean (default true) — When false, hide track icons entirely (Figma hasIcons).
+- `onIcon`: FaIconName (default "check") — Track icon when on (Figma onIcon). Ignored when hasIcons is false.
+- `offIcon`: FaIconName (default "xmark") — Track icon when off (Figma offIcon). Ignored when hasIcons is false.
 - `aria-label`: string — Required when unlabeled
 
 Usage rules:
 - On track uses selected tokens; off track uses neutral septenary/octonary.
+- Track heights match Checkbox/Radio at each size (22/20/18/16).
+- Defaults to check (on) / xmark (off); override with onIcon / offIcon, or set hasIcons={false} for a plain switch.
 - Not the same as IconToggle (icon-only binary button).
 - Interaction states are CSS recipes — not React props.
 
 Example:
 ```tsx
-<Toggle label="Notifications" labelPlacement="left" defaultChecked />
+<Toggle label="Notifications" labelPlacement="left" defaultChecked onIcon="check" offIcon="xmark" />
 ```
 
 ### Slider
@@ -348,16 +367,15 @@ Props:
 - `helperIconName`: FaIconName
 - `showHelper`: boolean (default true)
 - `showControls`: boolean (default false)
-- `showStepper`: boolean (default false)
-- `stepCount`: 3 | 4 | 5 | 6 (default 5) — Stepper ticks when showStepper is true.
-- `startsFrom`: "side" | "center" (default "side") — Fill origin. "side" fills min→value; "center" is bipolar — fill from 0 toward the value (negatives left, positives right).
-- `min`: number (default 0 (side) / -100 (center)) — Range minimum. Side default 0; center default -100 (bipolar).
+- `showTicks`: boolean (default false) — Show value labels under the track. Discrete step grids label every step; continuous (step=null) labels only min and max.
+- `startsFrom`: "side" | "center" (default "side") — Track fill origin (Figma Slider Bar). "side" fills from min→value (0…100); "center" is bipolar around 0 (−100…100).
+- `min`: number (default 0) — Range minimum. Defaults to 0 when startsFrom is side, or -100 when center.
 - `max`: number (default 100) — Range maximum. Default 100 for both side and center.
 - `width`: number | string (default 300) — Control width. Numbers are px; strings are CSS lengths (e.g. "16rem"). Ignored when fullWidth is true. Default matches Figma (300px).
 - `fullWidth`: boolean (default false) — Stretch to 100% of the parent. Takes precedence over width.
 - `value`: number | number[]
-- `defaultValue`: number | number[] (default 50 (side) / 0 (center)) — Uncontrolled initial value. Side default 50; center default 0 (origin).
-- `step`: number (default 1)
+- `defaultValue`: number | number[] (default 50) — Uncontrolled initial value. Defaults to 50 when startsFrom is side, or 0 when center.
+- `step`: number | null (default 1) — Value increment for drag, ± controls, and tick labels when showTicks is on. Use null for continuous (ticks show only min and max).
 - `disabled`: boolean
 - `onChange`: (event, value, activeThumb) => void
 - `aria-label`: string
@@ -367,6 +385,7 @@ Usage rules:
 - Knob hover/focus/press are CSS recipes from Slider Knob — not React props.
 - Set min/max for the value domain — side defaults 0…100; center defaults -100…100 with 0 at the origin.
 - startsFrom="center" is bipolar: negative values fill left of 0, positive fill right.
+- showTicks labels follow the step grid (not Figma’s 1…N demo text). Continuous step={null} labels only min and max.
 - Default width is 300px (Figma symbol). Use fullWidth in fluid layouts, or width for a fixed size.
 
 Example:
@@ -504,6 +523,7 @@ Props:
 Usage rules:
 - Selection is owned by the group via value/defaultValue — do not expose isCurrent.
 - Selected chrome uses selected tokens; never brand fills for the active tab.
+- Keyboard: tablist manual activation — one Tab stop; ←/→ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).
 - Tabs may not be used as standalone Tab Items — always via Tabs.
 
 Example:

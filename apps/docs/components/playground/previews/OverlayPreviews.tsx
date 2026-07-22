@@ -82,7 +82,10 @@ export function DialogPlaygroundPreview({
         }
         hasImage={Boolean(v.hasImage)}
         topIconName={
-          (String(v.topIconName || "smile") as FaIconName)
+          type === "iconTop"
+            ? ((String(v.topIconName || "smile").trim() ||
+                "smile") as FaIconName)
+            : undefined
         }
         hasSecondaryAction={v.hasSecondaryAction !== false}
         primaryActionLabel={

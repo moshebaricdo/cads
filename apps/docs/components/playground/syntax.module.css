@@ -1,0 +1,23 @@
+.tag {
+  color: var(--syntax-tag);
+}
+
+.attribute {
+  color: var(--syntax-attribute);
+}
+
+.string {
+  color: var(--syntax-string);
+}
+
+.punctuation {
+  color: var(--syntax-punctuation);
+}
+
+.value {
+  color: var(--syntax-value);
+}
+
+.plain {
+  color: var(--text-neutral-primary);
+}

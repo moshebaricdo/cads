@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@codeai/cads-react/components/Link";
-import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function LinkPreview({
   values,
@@ -10,22 +9,22 @@ export default function LinkPreview({
 }) {
   const v = values;
   return (
-        <Link
-          href="#link"
-          size={
-            v.size as
-              | "large"
-              | "medium"
-              | "small"
-              | "extraSmall"
-              | "extraExtraSmall"
-              | undefined
-          }
-          type={v.type as "primary" | "secondary" | undefined}
-          isExternal={v.isExternal == null ? true : Boolean(v.isExternal)}
-          disabled={Boolean(v.disabled)}
-        >
-          Link
-        </Link>
-      );
+    <Link
+      href="#link"
+      size={
+        v.size as
+          | "large"
+          | "medium"
+          | "small"
+          | "extraSmall"
+          | "extraExtraSmall"
+          | undefined
+      }
+      type={v.type as "primary" | "secondary" | undefined}
+      isExternal={v.isExternal == null ? true : Boolean(v.isExternal)}
+      disabled={Boolean(v.disabled)}
+    >
+      {String(v.children ?? "Link")}
+    </Link>
+  );
 }

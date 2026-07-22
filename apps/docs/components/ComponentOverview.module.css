@@ -1,0 +1,56 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  max-width: 560px;
+}
+
+/* CADS Heading XL / Semi Bold — default heading weight */
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-heading-xl);
+  line-height: var(--leading-heading-xl);
+  letter-spacing: var(--tracking-heading-display);
+  color: var(--text-neutral-primary);
+}
+
+/* CADS Body MD */
+.lead {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  color: var(--text-neutral-secondary);
+  max-width: 560px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-top: var(--space-xxs);
+}
+
+.linkItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.linkDot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-round);
+  background: var(--background-neutral-quaternary);
+}

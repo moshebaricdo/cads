@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
+/** Maps to Figma `resourceItem` type: topLevel | subItem (+ collapsible group). */
 export type DocsNavItemKind = "primary" | "child" | "group";
 
 type SharedProps = {
@@ -32,14 +33,7 @@ export type DocsNavItemProps = LinkProps | ButtonProps;
 
 /**
  * Docs-only sidebar row — not a CADS library component.
- * Spec: CADS chrome Figma `16778:3578` (primary / child / collapsible group).
- *
- * States:
- * - default primary: Body 3 Semi Bold, text-neutral-primary
- * - active primary: text-brand-secondary + brand icon (no fill)
- * - hover: background-neutral-secondary
- * - child default: Body 4 Regular, text-neutral-secondary
- * - child hover: text-neutral-primary + secondary fill
+ * Spec: Figma sidebar `16847:56434`. Hover fill is a snappy CSS fade.
  */
 export function DocsNavItem(props: DocsNavItemProps) {
   const {
@@ -51,6 +45,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
 
   const isGroup = kind === "group";
   const isChild = kind === "child";
+
   const className = [
     "docs-nav-item",
     isChild ? "docs-nav-item--child" : null,

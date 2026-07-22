@@ -1,0 +1,17 @@
+/* Shared narrow content column used by component pages + overview */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxl);
+}
+
+:global(.docs-main):has(.page) {
+  background: var(--background-neutral-secondary);
+}
+
+:global(.docs-main):has(.page) :global(.docs-main-inner) {
+  max-width: 800px;
+  margin-inline: auto;
+  padding-block: var(--space-xxxl);
+}

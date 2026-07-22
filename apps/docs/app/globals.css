@@ -1,6 +1,14 @@
 @import "@codeai/cads-variables/variables.css";
 @import "@codeai/cads-react/icons/fonts.css";
 
+/* Prefer next/font-loaded faces (variable files) over bare family names. */
+:root {
+  --font-heading: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-body: var(--font-geist-sans), "Geist", sans-serif;
+  --font-mono: var(--font-google-sans-code), "Google Sans Code", "Courier New",
+    monospace;
+}
+
 *,
 *::before,
 *::after {
@@ -16,6 +24,8 @@ body {
   line-height: var(--leading-body-md);
   color: var(--text-neutral-primary);
   background: var(--background-neutral-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -79,7 +89,7 @@ pre code {
 
 .docs-h1 {
   font-family: var(--font-heading);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   font-size: var(--text-heading-lg);
   line-height: var(--leading-heading-lg);
   letter-spacing: var(--tracking-heading-display);
@@ -263,7 +273,7 @@ a.docs-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------- */
-/* Shell / chrome (Figma 16778:3578)                                  */
+/* Shell / chrome (Figma nav 16847:56410)                             */
 /* ---------------------------------------------------------------- */
 
 .docs-shell {
@@ -279,17 +289,22 @@ a.docs-card:focus-visible {
   z-index: 20;
   display: flex;
   align-items: stretch;
+  height: 56px;
   background: var(--background-neutral-primary);
   border-bottom: 1px solid var(--border-neutral-primary);
+  box-sizing: border-box;
 }
 
 .docs-topbar-brand-cell {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   flex-shrink: 0;
-  padding: 12px;
+  width: 220px;
+  padding: 16px 24px;
   border-right: 1px solid var(--border-neutral-primary);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .docs-topbar-brand {
@@ -297,10 +312,13 @@ a.docs-card:focus-visible {
   align-items: center;
   text-decoration: none;
   border-radius: var(--radius-sm);
+  opacity: 1;
+  transition: opacity 150ms ease;
 }
 
 .docs-topbar-brand:hover {
   text-decoration: none;
+  opacity: 0.8;
 }
 
 .docs-topbar-brand:focus-visible {
@@ -326,31 +344,13 @@ a.docs-card:focus-visible {
   justify-content: space-between;
   gap: 16px;
   min-width: 0;
-  padding: 12px;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .docs-search {
-  position: relative;
   width: 150px;
   flex-shrink: 0;
-}
-
-.docs-search-icon {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  color: var(--text-neutral-placeholder);
-  pointer-events: none;
-}
-
-.docs-search-field {
-  width: 100%;
-}
-
-.docs-search-field .cads-text-input-control {
-  padding-left: 28px !important;
 }
 
 .docs-topbar-right {
@@ -358,19 +358,6 @@ a.docs-card:focus-visible {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-}
-
-/* Icon-only Figma control — brand icon can't use Button startIconName family. */
-.docs-topbar-figma.MuiButton-root {
-  min-width: var(--control-height-extra-small);
-  width: var(--control-height-extra-small);
-  padding: 4px;
-}
-
-.docs-topbar-divider {
-  width: 1px;
-  height: 22px;
-  background: var(--border-neutral-primary);
 }
 
 .docs-body {
@@ -405,96 +392,108 @@ a.docs-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------- */
-/* DocsNavItem — special sidebar component                            */
+/* DocsNavItem — Figma sidebar 16847:56434 (airy)                     */
 /* ---------------------------------------------------------------- */
 
 .docs-nav-section {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.docs-nav-section:first-child {
+  padding-top: 8px;
 }
 
 .docs-nav-section-label {
-  padding: 12px 18px 8px;
-  font-size: var(--text-body-xxs);
+  padding: 16px 16px 14px;
+  font-size: var(--text-body-xs);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--leading-body-xxs);
-  letter-spacing: var(--tracking-overline);
-  text-transform: uppercase;
-  color: var(--text-neutral-quaternary);
+  line-height: var(--leading-body-xs);
+  color: var(--text-neutral-placeholder);
 }
 
 .docs-nav-section-items {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 0 8px 12px;
-  border-bottom: 1px solid var(--border-neutral-primary);
-}
-
-.docs-nav-section:last-child .docs-nav-section-items {
-  border-bottom: none;
+  gap: 4px;
+  padding-bottom: 4px;
 }
 
 .docs-nav-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .docs-nav-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   height: 30px;
-  padding: 6px 10px;
+  padding: 6px 16px;
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--text-neutral-secondary);
+  color: var(--text-neutral-tertiary);
   text-decoration: none;
   font-family: var(--font-body);
-  font-size: var(--text-body-sm);
+  font-size: var(--text-body-xs);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--leading-body-sm);
+  line-height: var(--leading-body-xs);
   text-align: left;
   cursor: pointer;
   box-sizing: border-box;
-  transition: var(--transition-colors);
+  transition:
+    color 125ms ease,
+    background-color 125ms ease;
 }
 
-.docs-nav-item:hover {
-  text-decoration: none;
-  background: var(--background-neutral-secondary);
+@media (hover: hover) and (pointer: fine) {
+  .docs-nav-item:hover,
+  .docs-nav-item--child[data-active="true"]:hover {
+    text-decoration: none;
+    background: var(--background-neutral-secondary);
+    color: var(--text-neutral-primary);
+  }
+}
+
+.docs-nav-item:active {
   color: var(--text-neutral-primary);
 }
 
 .docs-nav-item:focus-visible {
-  outline: 2px solid var(--border-focused-primary);
-  outline-offset: -2px;
-}
-
-/* Active: brand text/icon only — no fill (Figma Overview). */
-.docs-nav-item[data-active="true"] {
-  background: transparent;
-  color: var(--text-brand-secondary);
-}
-
-.docs-nav-item[data-active="true"] .docs-nav-item-icon {
-  color: var(--text-brand-primary);
-}
-
-.docs-nav-item[data-active="true"]:hover {
+  outline: none;
   background: var(--background-neutral-secondary);
+  color: var(--text-neutral-primary);
+  box-shadow:
+    0 0 0 2px var(--background-neutral-primary),
+    0 0 0 4px var(--border-focused-primary);
+}
+
+/* Active top-level leaf + active folder — secondary fill. */
+.docs-nav-item[data-active="true"] {
+  background: var(--background-neutral-secondary);
+  color: var(--text-neutral-primary);
+}
+
+/* Active sub-item — text emphasis only (hover fill still allowed above). */
+.docs-nav-item--child[data-active="true"] {
+  background: transparent;
+  color: var(--text-neutral-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .docs-nav-item-main {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
+  flex: 1;
 }
 
 .docs-nav-item-icon {
@@ -511,39 +510,39 @@ a.docs-card:focus-visible {
 
 .docs-nav-item-chevron {
   flex-shrink: 0;
-  color: var(--text-neutral-quaternary);
+  color: var(--text-neutral-placeholder);
 }
 
-/* Body 3 Regular, indented — matches Figma folderItem. */
+/* subItem — Body 4 Regular, indented under icon+gap. */
 .docs-nav-item--child {
-  height: 30px;
-  padding: 6px 8px 6px 30px;
   justify-content: flex-start;
-  font-size: var(--text-body-sm);
+  padding: 6px 16px 6px 39px;
   font-weight: var(--font-weight-normal);
-  line-height: var(--leading-body-sm);
-  color: var(--text-neutral-secondary);
+  color: var(--text-neutral-tertiary);
 }
 
-.docs-nav-item--child:hover {
-  color: var(--text-neutral-primary);
-  background: var(--background-neutral-secondary);
-}
-
-.docs-nav-item--child[data-active="true"] {
-  color: var(--text-brand-secondary);
+.docs-nav-item--child:focus-visible {
   background: transparent;
-  font-weight: var(--font-weight-normal);
+  box-shadow: none;
 }
 
-.docs-nav-item--child[data-active="true"]:hover {
-  background: var(--background-neutral-secondary);
+.docs-nav-item--child:focus-visible .docs-nav-item-label {
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 0 0 2px var(--background-neutral-primary),
+    0 0 0 4px var(--border-focused-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-nav-item {
+    transition: none;
+  }
 }
 
 .docs-nav-children {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 /* ---------------------------------------------------------------- */
@@ -607,7 +606,7 @@ a.docs-card:focus-visible {
 .docs-inspector-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border-neutral-primary);
 }
@@ -617,28 +616,43 @@ a.docs-card:focus-visible {
 }
 
 .docs-inspector-title {
-  margin: 0 0 2px;
+  margin: 0;
   font-size: var(--text-body-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--text-neutral-primary);
 }
 
+.docs-inspector-title-caps {
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-neutral-placeholder);
+}
+
+/* Stacked field: label above control (matches CADS FieldWrapper). */
+.docs-inspector-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+}
+
+.docs-inspector-label {
+  font-size: var(--text-body-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-body-xs);
+  color: var(--text-neutral-primary);
+}
+
+/* Legacy side-by-side row (kept for any remaining callers). */
 .docs-inspector-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   min-height: 26px;
-}
-
-.docs-inspector-label {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: var(--text-body-xs);
-  color: var(--text-neutral-secondary);
 }
 
 .docs-inspector-control {

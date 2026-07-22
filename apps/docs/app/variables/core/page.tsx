@@ -1,16 +1,9 @@
-import { controlHeights, elevation, motion } from "@codeai/cads-variables";
-import { PageHeader, Section, VarChip } from "@/components/docs-ui";
-
-const HEIGHTS = [
-  { key: "large", varName: "--control-height-large", sizeProp: "large" },
-  { key: "medium", varName: "--control-height-medium", sizeProp: "medium" },
-  { key: "small", varName: "--control-height-small", sizeProp: "small" },
-  {
-    key: "extraSmall",
-    varName: "--control-height-extra-small",
-    sizeProp: "extraSmall",
-  },
-] as const;
+import { motion } from "@codeai/cads-variables";
+import type { CSSProperties } from "react";
+import { VarChip } from "@/components/docs-ui";
+import { FoundationHeader } from "@/components/FoundationHeader";
+import pageStyles from "@/components/DocsTemplatePage.module.css";
+import styles from "../FoundationPage.module.css";
 
 const DURATIONS = [
   {
@@ -43,47 +36,55 @@ const EASINGS = [
   },
 ];
 
-export default function CoreStylesPage() {
+export default function MotionPage() {
   return (
-    <div>
-      <PageHeader
-        eyebrow="Foundations"
-        title="Core styles"
-        lead="Elevation, motion, and control sizing — the non-color, non-type variables that make CADS chrome feel consistent."
+    <div className={pageStyles.page}>
+      <FoundationHeader
+        title="Motion"
+        lead="CADS motion is an experimental effort to standardize how interface changes feel across the design system. The current set is intentionally small while we learn which patterns should become shared conventions."
       />
 
-      <Section
-        title="Elevation"
-        description="Three shadow levels. Cards and popovers sit at sm/md; overlays like dialogs and drawers use lg."
-      >
-        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-          {Object.entries(elevation).map(([name, value]) => {
-            const varName = `--shadow-${name.replace("shadow", "").toLowerCase()}`;
-            return (
-              <div key={name} style={{ textAlign: "center" }}>
+      <section className={styles.section} aria-labelledby="durations">
+        <h2 id="durations" className={`docs-h2 ${styles.sectionTitle}`}>
+          Durations
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          Use the shortest duration that clearly communicates the change. Motion
+          should support orientation and feedback, never delay interaction.
+        </p>
+        <div className={`${styles.surface} ${styles.motionDemo}`}>
+          {DURATIONS.map((duration) => (
+            <div className={styles.motionItem} key={duration.varName}>
+              <div className={styles.motionTrack}>
                 <div
-                  style={{
-                    width: 150,
-                    height: 96,
-                    background: "var(--background-neutral-primary)",
-                    border: "1px solid var(--border-neutral-primary)",
-                    borderRadius: "var(--radius-lg)",
-                    boxShadow: value,
-                    marginBottom: 12,
-                  }}
+                  className={styles.motionDot}
+                  style={
+                    {
+                      "--demo-duration": duration.value,
+                    } as CSSProperties
+                  }
                 />
-                <VarChip name={varName} />
               </div>
-            );
-          })}
+              <div>
+                <VarChip name={duration.varName} />
+              </div>
+              <span className={styles.itemValue}>
+                {duration.value} · {duration.usage}
+              </span>
+            </div>
+          ))}
         </div>
-      </Section>
+      </section>
 
-      <Section
-        title="Motion"
-        description="Figma has no motion collection yet, so this is a deliberately small CADS set for control chrome. Hover the cards to feel each duration with the standard easing."
-      >
-        <div className="docs-table-wrap" style={{ marginBottom: 16 }}>
+      <section className={styles.section} aria-labelledby="reference">
+        <h2 id="reference" className={`docs-h2 ${styles.sectionTitle}`}>
+          Reference
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          These variables are a starting point for consistent state changes and
+          entrances. They are not yet a complete choreography system.
+        </p>
+        <div className={`docs-table-wrap ${styles.table}`}>
           <table className="docs-table">
             <thead>
               <tr>
@@ -93,7 +94,7 @@ export default function CoreStylesPage() {
               </tr>
             </thead>
             <tbody>
-              {[...DURATIONS, ...EASINGS].map((row) => (
+              {EASINGS.map((row) => (
                 <tr key={row.varName}>
                   <td>
                     <VarChip name={row.varName} />
@@ -101,12 +102,7 @@ export default function CoreStylesPage() {
                   <td>
                     <code>{row.value}</code>
                   </td>
-                  <td
-                    style={{
-                      color: "var(--text-neutral-secondary)",
-                      fontSize: "var(--text-body-sm)",
-                    }}
-                  >
+                  <td className={styles.note} style={{ maxWidth: "none" }}>
                     {row.usage}
                   </td>
                 </tr>
@@ -114,62 +110,13 @@ export default function CoreStylesPage() {
             </tbody>
           </table>
         </div>
-        <p
-          style={{
-            margin: 0,
-            fontSize: "var(--text-body-sm)",
-            color: "var(--text-neutral-secondary)",
-            maxWidth: 640,
-          }}
-        >
-          For color/border/shadow transitions, prefer the composite{" "}
-          <code>--transition-colors</code> shorthand over hand-rolled
-          transition lists.
+        <p className={styles.note}>
+          For color, border, shadow, and opacity changes, prefer the composite{" "}
+          <code>--transition-colors</code> shorthand over hand-rolled transition
+          lists. Respect reduced-motion preferences for movement that is not
+          essential to understanding the interface.
         </p>
-      </Section>
-
-      <Section
-        title="Control heights"
-        description="Fixed heights driven by the size prop on every CADS control — never invent intermediate heights."
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            gap: 20,
-            flexWrap: "wrap",
-            border: "1px solid var(--border-neutral-primary)",
-            borderRadius: "var(--radius-lg)",
-            padding: 20,
-          }}
-        >
-          {HEIGHTS.map((h) => (
-            <div key={h.key} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  height: controlHeights[h.key],
-                  minWidth: 104,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "var(--radius-sm)",
-                  border: "1px solid var(--border-brand-primary)",
-                  background: "var(--background-brand-light)",
-                  fontSize: "var(--text-body-xs)",
-                  fontWeight: 500,
-                  marginBottom: 10,
-                }}
-              >
-                {controlHeights[h.key]}
-              </div>
-              <div style={{ marginBottom: 4 }}>
-                <code>size=&quot;{h.sizeProp}&quot;</code>
-              </div>
-              <VarChip name={h.varName} />
-            </div>
-          ))}
-        </div>
-      </Section>
+      </section>
     </div>
   );
 }

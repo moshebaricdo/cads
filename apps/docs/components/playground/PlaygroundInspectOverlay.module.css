@@ -1,0 +1,232 @@
+.root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stageFrame {
+  position: fixed;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Span-only ruler strips: exist just over the component’s occupied range.
+   Ticks hang from the stage edge; numbers sit beneath their tick. No rails,
+   no borders — the strip floats over the stage background. */
+.rulerH,
+.rulerV {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.rulerH {
+  top: 0;
+  height: 22px;
+}
+
+.rulerV {
+  left: 0;
+  width: 22px;
+}
+
+/* Brand wash across the strip — hover only. */
+.rulerShade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: color-mix(
+    in srgb,
+    var(--background-brand-primary) 10%,
+    transparent
+  );
+}
+
+.tick {
+  position: absolute;
+  z-index: 1;
+  background: var(--border-neutral-primary);
+}
+
+/* Stems grow from the top / left stage edge. */
+.rulerH .tick {
+  top: 0;
+  width: 1px;
+  height: 5px;
+}
+
+.rulerV .tick {
+  left: 0;
+  width: 5px;
+  height: 1px;
+}
+
+.tickMajor {
+  background: var(--border-neutral-secondary);
+}
+
+.rulerH .tickMajor {
+  height: 8px;
+}
+
+.rulerV .tickMajor {
+  width: 8px;
+}
+
+/* Number centered directly beneath (H) / beside (V) its major tick. */
+.tickLabel {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  color: var(--text-neutral-quaternary);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.rulerH .tickLabel {
+  top: 10px;
+  left: 0;
+  transform: translateX(-50%);
+}
+
+.rulerV .tickLabel {
+  left: 10px;
+  top: 0;
+  writing-mode: vertical-lr;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.guide {
+  position: fixed;
+  background: var(--border-brand-primary);
+  opacity: 0.85;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.guideH {
+  height: 1px;
+}
+
+.guideV {
+  width: 1px;
+}
+
+.box {
+  position: fixed;
+  box-sizing: border-box;
+  border: 1px solid var(--border-brand-primary);
+  background: color-mix(
+    in srgb,
+    var(--background-brand-primary) 12%,
+    transparent
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pad {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(
+    in srgb,
+    var(--background-success-mid) 55%,
+    transparent
+  );
+  color: var(--text-neutral-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xxs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.pad span {
+  padding: 0 2px;
+}
+
+.padT {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.padB {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.padL {
+  left: 0;
+}
+
+.padR {
+  right: 0;
+}
+
+.padContent {
+  position: absolute;
+  background: color-mix(
+    in srgb,
+    var(--background-brand-primary) 8%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.gap {
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-success-primary);
+  background: color-mix(
+    in srgb,
+    var(--background-success-mid) 70%,
+    transparent
+  );
+  color: var(--text-neutral-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.popover {
+  position: fixed;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: var(--space-xxs);
+  border-radius: var(--radius-sm);
+  background: var(--background-neutral-primary-inverse);
+  color: var(--text-neutral-primary-inverse);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  white-space: nowrap;
+}
+
+.popoverTitle {
+  margin: 0 0 2px;
+  font-size: var(--text-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-body-xxs);
+  color: var(--text-neutral-primary-inverse);
+  text-transform: uppercase;
+}
+
+.popoverLine {
+  color: var(--text-neutral-primary-inverse);
+  font-weight: var(--font-weight-normal);
+}

@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button, TextInput, Toggle } from "@codeai/cads-react";
-import { FaIcon } from "@codeai/cads-react/icons";
+import { SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -17,20 +16,18 @@ import {
   type ComponentSectionId,
 } from "@/lib/nav";
 
-const FIGMA_URL =
-  "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-";
-
+/** Collapsed by default; the section containing the current page auto-opens. */
 const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
-  actions: true,
-  inputs: true,
-  navigation: true,
+  actions: false,
+  inputs: false,
+  navigation: false,
   messaging: false,
   overlays: false,
 };
 
 const DARK_STORAGE_KEY = "cads-docs-dark";
-const SIDEBAR_WIDTH = 200;
-const TOPBAR_HEIGHT = 48;
+const SIDEBAR_WIDTH = 220;
+const TOPBAR_HEIGHT = 56;
 
 function normalizePath(path: string | null): string {
   if (!path) return "/";
@@ -106,11 +103,8 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="docs-shell">
-      <header className="docs-topbar" style={{ height: TOPBAR_HEIGHT }}>
-        <div
-          className="docs-topbar-brand-cell"
-          style={{ width: SIDEBAR_WIDTH }}
-        >
+      <header className="docs-topbar">
+        <div className="docs-topbar-brand-cell">
           <Link href="/" className="docs-topbar-brand" aria-label="CodeAI home">
             <Image
               src="/codeai-logo.svg"
@@ -125,44 +119,30 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
         <div className="docs-topbar-main">
           <div className="docs-search">
-            <FaIcon
-              name="magnifying-glass"
-              fontSize="12px"
-              className="docs-search-icon"
-            />
             <TextInput
               size="extraSmall"
               color="secondary"
+              startIcon
+              startIconName="magnifying-glass"
               placeholder="Search CADS"
               showHelper={false}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label="Search CADS"
-              className="docs-search-field"
             />
           </div>
 
           <div className="docs-topbar-right">
-            <Button
-              href={FIGMA_URL}
-              variant="outlined"
-              color="secondary"
+            <SegmentedButton
               size="extraSmall"
-              aria-label="Open in Figma"
-              className="docs-topbar-figma"
-              {...({
-                target: "_blank",
-                rel: "noreferrer",
-              } as Record<string, string>)}
-            >
-              <FaIcon name="figma" family="brands" fontSize="12px" />
-            </Button>
-            <span className="docs-topbar-divider" aria-hidden />
-            <Toggle
-              size="small"
-              checked={dark}
-              onChange={(_, next) => setDark(next)}
-              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+              iconOnly
+              value={dark ? "dark" : "light"}
+              onChange={(value) => setDark(value === "dark")}
+              aria-label="Color mode"
+              options={[
+                { value: "light", label: "Light", iconName: "sun" },
+                { value: "dark", label: "Dark", iconName: "moon" },
+              ]}
             />
           </div>
         </div>
@@ -209,23 +189,32 @@ export function DocsShell({ children }: { children: ReactNode }) {
               {COMPONENT_SECTIONS.map((section) => {
                 const open = openSections[section.id] || Boolean(query);
                 const visibleItems = section.items.filter((item) => {
-                  if (!matchesQuery(item.label) && !matchesQuery(section.label)) {
+                  if (
+                    !matchesQuery(item.label) &&
+                    !matchesQuery(section.label)
+                  ) {
                     return false;
                   }
                   return componentsByExport.has(item.exportName);
                 });
 
-                if (query && visibleItems.length === 0 && !matchesQuery(section.label)) {
+                if (
+                  query &&
+                  visibleItems.length === 0 &&
+                  !matchesQuery(section.label)
+                ) {
                   return null;
                 }
 
                 const panelId = `nav-section-${section.id}`;
+                const sectionActive = activeSectionId === section.id;
                 return (
                   <div key={section.id} className="docs-nav-group">
                     <DocsNavItem
                       kind="group"
                       label={section.label}
                       iconName={section.iconName}
+                      active={sectionActive}
                       expanded={open}
                       onClick={() => toggleSection(section.id)}
                     />

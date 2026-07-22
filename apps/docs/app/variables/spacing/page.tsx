@@ -1,103 +1,104 @@
-import { shape, spacing } from "@codeai/cads-variables";
-import Link from "next/link";
-import { PageHeader, Section, VarChip } from "@/components/docs-ui";
+import { elevation, shape, spacing } from "@codeai/cads-variables";
+import type { CSSProperties } from "react";
+import { VarChip } from "@/components/docs-ui";
+import { FoundationHeader } from "@/components/FoundationHeader";
+import pageStyles from "@/components/DocsTemplatePage.module.css";
+import styles from "../FoundationPage.module.css";
 
-export default function SpacingPage() {
+const RADII = Object.entries(shape).map(([name, value]) => ({
+  name,
+  value,
+  variable: `--radius-${name.replace("radius", "").toLowerCase()}`,
+}));
+
+const SHADOWS = Object.entries(elevation).map(([name, value]) => ({
+  name,
+  value,
+  variable: `--shadow-${name.replace("shadow", "").toLowerCase()}`,
+}));
+
+export default function ShapePage() {
   return (
-    <div>
-      <PageHeader
-        eyebrow="Foundations"
-        title="Spacing & shape"
-        lead={
-          <>
-            The 8px-based spacing scale and corner radius ramp from the Figma
-            spacing-shape collection. Elevation shadows and motion now live on
-            the <Link href="/variables/core">Core styles</Link> page.
-          </>
-        }
+    <div className={pageStyles.page}>
+      <FoundationHeader
+        title="Shape"
+        lead="Corner radii and elevation define the silhouette and depth of CADS surfaces. The spacing ramp is available for larger layout rhythm."
       />
 
-      <Section
-        title="Spacing"
-        description="Use spacing variables for layout gaps, padding, and stack rhythm — not raw pixel values."
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-            border: "1px solid var(--border-neutral-primary)",
-            borderRadius: "var(--radius-lg)",
-            padding: "16px 20px",
-          }}
-        >
-          {Object.entries(spacing).map(([name, value]) => (
-            <div
-              key={name}
-              style={{ display: "flex", alignItems: "center", gap: 14 }}
-            >
-              <span style={{ width: 130, flexShrink: 0 }}>
-                <VarChip name={`--space-${name}`} />
-              </span>
+      <section className={styles.section} aria-labelledby="border-radius">
+        <h2 id="border-radius" className={`docs-h2 ${styles.sectionTitle}`}>
+          Border radius
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          Use smaller radii for compact controls, larger radii for surfaces, and
+          round for pills or circular controls.
+        </p>
+        <div className={`${styles.surface} ${styles.shapeGrid}`}>
+          {RADII.map((radius) => (
+            <div className={styles.shapeItem} key={radius.name}>
               <div
-                style={{
-                  height: 14,
-                  width: value,
-                  background: "var(--background-brand-primary)",
-                  borderRadius: 3,
-                  flexShrink: 0,
-                }}
+                className={styles.radiusSample}
+                role="img"
+                aria-label={`${radius.value} radius preview`}
+                style={
+                  { "--sample-radius": radius.value } as CSSProperties
+                }
               />
-              <span
-                style={{
-                  color: "var(--text-neutral-secondary)",
-                  fontSize: "var(--text-body-xs)",
-                  fontFamily: "var(--font-mono)",
-                }}
-              >
-                {value}
-              </span>
+              <VarChip name={radius.variable} />
+              <span className={styles.itemValue}>{radius.value}</span>
             </div>
           ))}
         </div>
-      </Section>
+      </section>
 
-      <Section
-        title="Corner radius"
-        description="Small radii for compact controls, larger for surfaces; round for pills and circular chrome."
-      >
-        <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-          {Object.entries(shape).map(([name, value]) => {
-            const varName = `--radius-${name.replace("radius", "").toLowerCase()}`;
-            return (
-              <div key={name} style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    width: 80,
-                    height: 80,
-                    background: "var(--background-brand-light)",
-                    border: "1px solid var(--border-brand-primary)",
-                    borderRadius: value,
-                    marginBottom: 10,
-                  }}
-                />
-                <div style={{ marginBottom: 4 }}>
-                  <VarChip name={varName} />
-                </div>
-                <div
-                  style={{
-                    fontSize: "var(--text-body-xxs)",
-                    fontFamily: "var(--font-mono)",
-                    color: "var(--text-neutral-tertiary)",
-                  }}
-                >
-                  {value}
-                </div>
-              </div>
-            );
-          })}
+      <section className={styles.section} aria-labelledby="elevation">
+        <h2 id="elevation" className={`docs-h2 ${styles.sectionTitle}`}>
+          Elevation
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          Three shadow levels communicate depth without changing a surface&apos;s
+          shape. Use stronger elevation only as content moves closer to the
+          user.
+        </p>
+        <div className={`${styles.surface} ${styles.shapeGrid}`}>
+          {SHADOWS.map((shadow) => (
+            <div className={styles.shapeItem} key={shadow.name}>
+              <div
+                className={styles.shadowSample}
+                role="img"
+                aria-label={`${shadow.name} shadow preview`}
+                style={
+                  { "--sample-shadow": shadow.value } as CSSProperties
+                }
+              />
+              <VarChip name={shadow.variable} />
+            </div>
+          ))}
         </div>
-      </Section>
+      </section>
+
+      <section className={styles.section} aria-labelledby="spacing">
+        <h2 id="spacing" className={`docs-h2 ${styles.sectionTitle}`}>
+          Spacing
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          An 8px-based ramp for page layout and larger composition gaps.
+          Component internals should use their documented construction rather
+          than ad hoc spacing.
+        </p>
+        <div className={`${styles.surface} ${styles.spacingList}`}>
+          {Object.entries(spacing).map(([name, value]) => (
+            <div className={styles.spacingRow} key={name}>
+              <VarChip name={`--space-${name}`} />
+              <div
+                className={styles.spacingBar}
+                style={{ "--sample-space": value } as CSSProperties}
+              />
+              <span className={styles.itemValue}>{value}</span>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

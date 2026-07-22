@@ -38,20 +38,20 @@ const textStyles: Record<
   headingLarge: {
     fontFamily: "var(--font-heading)",
     fontSize: "var(--text-heading-xl)",
-    fontWeight: 500,
+    fontWeight: "var(--font-weight-semibold)",
     lineHeight: "var(--leading-heading-xl)",
     letterSpacing: "var(--tracking-heading-display)",
   },
   headingMedium: {
-    fontFamily: "var(--font-heading)",
+    fontFamily: "var(--font-body)",
     fontSize: "var(--text-heading-lg)",
-    fontWeight: 500,
+    fontWeight: "var(--font-weight-semibold)",
     lineHeight: "var(--leading-heading-lg)",
   },
   headingSmall: {
-    fontFamily: "var(--font-heading)",
+    fontFamily: "var(--font-body)",
     fontSize: "var(--text-heading-sm)",
-    fontWeight: 500,
+    fontWeight: "var(--font-weight-semibold)",
     lineHeight: "var(--leading-heading-sm)",
   },
   body: {
