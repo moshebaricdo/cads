@@ -5,6 +5,7 @@ import NextLink from "next/link";
 import { Button, Link } from "@codeai/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 import overviewStyles from "@/components/ComponentOverview.module.css";
+import { withBasePath } from "@/lib/basePath";
 import styles from "./OverviewHome.module.css";
 
 const FIGMA_URL =
@@ -54,14 +55,14 @@ function ThemeGraphic({ kind }: { kind: keyof typeof GRAPHICS }) {
     <div className={styles.graphicFrame} aria-hidden>
       <Image
         className={`${styles.graphicImage} ${styles.graphicLight}`}
-        src={sources.light}
+        src={withBasePath(sources.light)}
         alt=""
         width={784}
         height={400}
       />
       <Image
         className={`${styles.graphicImage} ${styles.graphicDark}`}
-        src={sources.dark}
+        src={withBasePath(sources.dark)}
         alt=""
         width={784}
         height={400}
@@ -106,7 +107,7 @@ export function OverviewHome() {
           real CADS runtime — no npm packages required.
         </p>
         <div className={styles.sectionAction}>
-          <Button href="/ai" size="small" color="secondary">
+          <Button href={withBasePath("/ai")} size="small" color="secondary">
             Learn more
           </Button>
         </div>

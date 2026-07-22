@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { withBasePath } from "@/lib/basePath";
 import { usePathname } from "next/navigation";
 import { SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
@@ -107,7 +108,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
         <div className="docs-topbar-brand-cell">
           <Link href="/" className="docs-topbar-brand" aria-label="CodeAI home">
             <Image
-              src="/codeai-logo.svg"
+              src={withBasePath("/codeai-logo.svg")}
               alt="CodeAI"
               width={128}
               height={22}

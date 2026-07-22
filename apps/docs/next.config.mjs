@@ -72,6 +72,10 @@ const nextConfig = {
   output: "export",
   basePath,
   assetPrefix: basePath || undefined,
+  /** Exposed for `withBasePath` — `next/image` (unoptimized) skips basePath. */
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   trailingSlash: true,
   images: {
     unoptimized: true,

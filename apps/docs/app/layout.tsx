@@ -4,6 +4,7 @@ import { Google_Sans_Code, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { DocsShell } from "@/components/DocsShell";
 import { Providers } from "@/components/Providers";
+import { withBasePath } from "@/lib/basePath";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Designer-grade documentation for the CodeAI Design System: variables, components, and AI/Figma parity.",
   icons: {
-    icon: [{ url: "/favicon.png", type: "image/png" }],
+    icon: [{ url: withBasePath("/favicon.png"), type: "image/png" }],
   },
 };
 
