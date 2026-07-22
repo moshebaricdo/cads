@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Self-contained CADS runtime for native Claude artifacts (organization-only prototyping)",
+  "description": "Portable CADS prototyping skill + self-contained HTML runtime (internal / organization-only)",
   "scripts": {
     "build": "node scripts/build-runtime.mjs && node scripts/write-manifest-summary.mjs",
     "generate": "node scripts/generate-artifact.mjs",
     "package-skill": "node scripts/package-skill.mjs",
     "test": "node --test src/*.test.mjs",
-    "build:all": "pnpm run build && node scripts/generate-artifact.mjs --example teacher-onboarding && pnpm run package-skill"
+    "build:all": "pnpm --filter @codeai/cads-react run build && pnpm --filter @codeai/cads-variables run build && pnpm run build && node scripts/generate-artifact.mjs --example teacher-onboarding && pnpm run package-skill"
   },
   "dependencies": {
     "@codeai/cads-react": "workspace:*",

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Bundle a self-contained browser CADS runtime (JS + CSS with inlined FA fonts).
- * Output lands in dist/ and is copied into skill/runtime/ for the Claude skill.
+ * Output lands in dist/ and is copied into skill/runtime/ for the portable skill.
  */
 import * as esbuild from "esbuild";
 import {
@@ -100,8 +100,8 @@ sizes.human = {
 };
 writeFileSync(join(distDir, "SIZE.json"), JSON.stringify(sizes, null, 2));
 
-// Copy into skill/runtime
-for (const file of ["cads-runtime.js", "cads-runtime.css", "VERSION.json", "SIZE.json"]) {
+// Copy into skill/runtime (exclude SIZE.json / meta — packaging noise)
+for (const file of ["cads-runtime.js", "cads-runtime.css", "VERSION.json"]) {
   const from = join(distDir, file);
   if (exists(from)) copyFileSync(from, join(skillRuntimeDir, file));
 }

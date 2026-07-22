@@ -5,3 +5,5 @@ skill/references/manifest-summary.md
 skill/references/components.json
 skill/output/
 skill/examples/*.html
+__pycache__/
+*.pyc

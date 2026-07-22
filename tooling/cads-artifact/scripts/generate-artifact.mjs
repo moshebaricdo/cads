@@ -96,7 +96,7 @@ const sizeKb = (Buffer.byteLength(html) / 1024).toFixed(1);
 console.log(`Wrote ${outPath}`);
 console.log(`  artifact size: ${sizeKb} KB`);
 console.log(`  CADS manifest: ${version.manifestVersion}`);
-console.log(`  format: self-contained HTML (Claude-shareable fallback)`);
+console.log(`  format: self-contained HTML (portable skill output)`);
 
 function buildHtml({ spec, js, css, version, warnings }) {
   const title = escapeHtml(spec.title || "CADS prototype");

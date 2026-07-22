@@ -1,34 +1,42 @@
 ---
 name: cads-prototyping
-description: Build CodeAI Design System (CADS) prototypes as shareable Claude artifacts. Use for internal design prototypes, Figma-aligned UI mocks, and when the user asks for CADS, CodeAI UI, or design-system components.
+description: Build CADS UI prototypes with real components. Use for CodeAI/CADS mocks, Figma-aligned screens, or when the user asks for design-system prototypes.
+license: UNLICENSED
+compatibility: Requires code execution or file output. Internal CodeAI use only (embeds FA Pro fonts).
 ---
 
-# CADS prototyping (Claude artifacts)
+# CADS prototyping
 
-Create **native Claude artifacts** that embed the real CADS runtime. No hosting, npm install, or prototype URL required. Intended for **organization-only** sharing.
+Create **self-contained HTML prototypes** that embed the real CADS runtime.
+No npm install, hosting, or package registry required. Intended for
+**organization-only / internal** sharing.
 
 ## Workflow
 
-1. Translate the user's request into a constrained CADS prototype JSON (see [references/schema.md](references/schema.md)).
-2. Use only components and props listed in [references/manifest-summary.md](references/manifest-summary.md).
-   Compose them per [references/ui-patterns.md](references/ui-patterns.md) — territories, shell scaffolds, density, and the brand/selected/status color rules that make output feel like CodeAI.
-3. Generate a **self-contained HTML artifact** by inlining:
+1. Translate the user's request into constrained CADS prototype JSON
+   (see [references/schema.md](references/schema.md)).
+2. Use only components and props from
+   [references/manifest-summary.md](references/manifest-summary.md).
+   Compose them per [references/ui-patterns.md](references/ui-patterns.md).
+3. Generate a **self-contained HTML** file by inlining:
    - `runtime/cads-runtime.css`
    - `runtime/cads-runtime.js`
-   - the prototype JSON in `<script id="cads-prototype-spec" type="application/json">`
+   - the prototype JSON in
+     `<script id="cads-prototype-spec" type="application/json">`
    - a boot call: `CADS.mountFromScriptTag("cads-prototype-spec")`
-4. Prefer regenerating the full HTML after edits. Do **not** rewrite or hand-edit `cads-runtime.js`.
+4. Prefer regenerating the full HTML after edits. Do **not** rewrite or
+   hand-edit `cads-runtime.js`.
 5. Stamp `_cads.manifestVersion` from `runtime/VERSION.json`.
 
-Optional helper (when code execution can read skill files):
+### Helper (when code execution can read skill files)
 
 ```bash
-node scripts/generate-artifact.mjs --spec /path/to/spec.json --out /tmp/prototype.html
+python3 scripts/generate_artifact.py --spec path/to/spec.json --out /tmp/prototype.html
 ```
 
-If the helper is unavailable, assemble the HTML template below in the artifact.
+If the helper is unavailable, assemble the HTML template below by hand.
 
-## HTML artifact template
+## HTML template
 
 ```html
 <!DOCTYPE html>
@@ -66,16 +74,19 @@ If the helper is unavailable, assemble the HTML template below in the artifact.
 - Layout only via `layout` nodes: `stack`, `inline`, `surface`.
 - Typography only via `text` nodes with approved variants.
 - Do not emit callbacks (`onClick`, etc.) in the JSON — they are not serializable.
-- After the user asks for changes, update the JSON and regenerate the artifact.
+- After the user asks for changes, update the JSON and regenerate the HTML.
 
-## Preferred vs fallback formats
+## Output
 
-- **Reliable (use this):** self-contained HTML with inlined runtime (above).
-- **Experimental:** multi-file React artifact importing `./cads-runtime.module.js` — only if the host preserves local modules. If imports fail, fall back to HTML.
+- **Reliable:** one self-contained HTML file with the runtime inlined.
+- Some hosts preview HTML inline; others return a downloadable file. Either is fine.
+- Do not rely on multi-file React module imports unless the host preserves local modules.
 
 ## Sharing
 
-Publish **organization-only**. This embeds FA Pro fonts under the internal license for internal prototyping — not for public/commercial redistribution.
+Keep prototypes **internal / organization-only**. This skill embeds Font Awesome
+Pro fonts under CodeAI’s internal license — not for public or commercial
+redistribution.
 
 ## Example
 
