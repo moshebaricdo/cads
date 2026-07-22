@@ -21,14 +21,14 @@ var cadsThemeOptions = {
       fontFamily: typography.fontFamily.heading,
       fontSize: typography.fontSize.headingXxl,
       lineHeight: typography.lineHeight.headingXxl,
-      fontWeight: Number(typography.fontWeight.medium),
+      fontWeight: Number(typography.fontWeight.semibold),
       letterSpacing: typography.letterSpacing.headingDisplay
     },
     h2: {
       fontFamily: typography.fontFamily.heading,
       fontSize: typography.fontSize.headingXl,
       lineHeight: typography.lineHeight.headingXl,
-      fontWeight: Number(typography.fontWeight.medium),
+      fontWeight: Number(typography.fontWeight.semibold),
       letterSpacing: typography.letterSpacing.headingDisplay
     },
     h3: {

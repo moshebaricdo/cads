@@ -11,6 +11,24 @@ export {
 export { colorVarsLight, colorVarsDark } from "./generated/cssVars";
 export type { ColorVarName } from "./generated/cssVars";
 
+export {
+  UNSET_PRIMITIVE_HEX,
+  isUnsetPrimitiveHex,
+  primitiveVarName,
+  semanticExportVarName,
+  compareSemanticExportNames,
+  comparePrimitiveExportNames,
+  buildPrimitiveColorsCss,
+  buildSemanticColorsCss,
+} from "./colorCssExport";
+export type {
+  ThemeKey,
+  PrimitiveStep,
+  PrimitiveFamily,
+  SemanticToken,
+  ColorSystemExportDoc,
+} from "./colorCssExport";
+
 /** Figma file key for the CADS design system. */
 export const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
 

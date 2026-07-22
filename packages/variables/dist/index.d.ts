@@ -298,6 +298,81 @@ declare const colorVarsDark: {
 };
 type ColorVarName = keyof typeof colorVarsLight;
 
+/**
+ * Prod-shaped CSS export for CADS color variables.
+ *
+ * Generates the two files product ingest expects:
+ *  - primitiveColors.css — flat `:root` of primitive hex values
+ *  - colors.css          — semantic tokens referencing primitives via var(),
+ *                          with Light (`:root, [data-theme='Light']`) and
+ *                          Dark (`[data-theme='Dark']`) blocks
+ *
+ * Names are derived from collection / family / subgroup display names (never
+ * internal stable ids), matching Lab2 colorSystemCssExport.
+ */
+type ThemeKey = "light" | "dark";
+type PrimitiveStep = {
+    id: string;
+    step: string;
+    hex: string;
+};
+type PrimitiveFamily = {
+    id: string;
+    collectionId: string;
+    name: string;
+    stepped?: boolean;
+    steps: PrimitiveStep[];
+};
+type SemanticToken = {
+    id: string;
+    surface: string;
+    familyKey: string;
+    role: string;
+    ref: Record<ThemeKey, string | null>;
+    semanticRef?: Record<ThemeKey, string | null>;
+    fallbackHex: Record<ThemeKey, string>;
+    comments?: Partial<Record<ThemeKey, string>>;
+};
+type ColorSystemExportDoc = {
+    collections?: {
+        id: string;
+        name: string;
+    }[];
+    families?: PrimitiveFamily[];
+    semanticCollections?: {
+        id: string;
+        name: string;
+    }[];
+    semanticSubGroups?: {
+        id: string;
+        name: string;
+    }[];
+    semanticFamilies?: {
+        id: string;
+        name: string;
+    }[];
+    semanticFamilySubGroups?: Record<string, string>;
+    semantics?: SemanticToken[];
+};
+/** Fully transparent sentinel — unset steps are omitted from export. */
+declare const UNSET_PRIMITIVE_HEX = "#00000000";
+declare function isUnsetPrimitiveHex(hex: string): boolean;
+declare function primitiveVarName(family: PrimitiveFamily, step: PrimitiveStep): string;
+/**
+ * Prod-style semantic variable name.
+ * `{surface}-{subgroup?}-{family?}-{role}` with brand collapse + flat state/sentiment.
+ */
+declare function semanticExportVarName(system: ColorSystemExportDoc, token: Pick<SemanticToken, "surface" | "familyKey" | "role">): string;
+/** Grouped, prod-readable ordering for exported semantic variable names. */
+declare function compareSemanticExportNames(a: string, b: string): number;
+/**
+ * Primitive ordering: families alphabetical, steps numeric within a family
+ * (5 before 10), non-numeric steps last.
+ */
+declare function comparePrimitiveExportNames(a: string, b: string): number;
+declare function buildPrimitiveColorsCss(system: ColorSystemExportDoc): string;
+declare function buildSemanticColorsCss(system: ColorSystemExportDoc): string;
+
 /** Figma file key for the CADS design system. */
 declare const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
 /** CSS custom-property helper: wraps a semantic color name as var(--…). */
@@ -305,4 +380,4 @@ declare function cssVar(name: string): string;
 /** @deprecated Use `cssVar` — `--ds-*` prefix removed. */
 declare const ds: typeof cssVar;
 
-export { CADS_FIGMA_FILE_KEY, type ColorVarName, colorVarsDark, colorVarsLight, cssVar, ds };
+export { CADS_FIGMA_FILE_KEY, type ColorSystemExportDoc, type ColorVarName, type PrimitiveFamily, type PrimitiveStep, type SemanticToken, type ThemeKey, UNSET_PRIMITIVE_HEX, buildPrimitiveColorsCss, buildSemanticColorsCss, colorVarsDark, colorVarsLight, comparePrimitiveExportNames, compareSemanticExportNames, cssVar, ds, isUnsetPrimitiveHex, primitiveVarName, semanticExportVarName };
