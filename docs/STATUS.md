@@ -1,6 +1,6 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-19
+Last updated: 2026-07-21
 
 ## Done (scaffold complete)
 
@@ -8,6 +8,8 @@ Last updated: 2026-07-19
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
 - [x] Color CSS vars use semantic names **without** `--ds-` prefix (e.g. `--background-brand-primary`)
 - [x] `@codeai/cads-react` — Figma-parity Actions: Button, SegmentedButton, IconToggle (+ labeled); FieldWrapper, TextInput (+ deprecated TextField alias), Dropdown (input/action); Checkbox, Radio, Toggle; Slider, Chip, ChipGroup; Alert, Toast, NotificationBanner, Tag; Link, Breadcrumbs, Tabs; **Tooltip**, **Popover**, **Drawer**, **Dialog**, **Modal**; plus FaIcon (solid/regular/brands)
+- [x] **TextInput start icon (2026-07-21)** — Figma building-block `startIcon` + `startIconName` (field-only); see evidence summary below
+- [x] **Toggle compact + hasIcons (2026-07-21)** — track heights match Checkbox/Radio (22/20/18/16); new `hasIcons` boolean; see evidence summary below
 - [x] Shared control size scale: `large` | `medium` | `small` | `extraSmall` (Link also `extraExtraSmall`)
 - [x] `cadsManifest` + docs `/llms.txt` + `figma.code-connect.json` maps through Messaging + Navigation + Overlays (Tooltip/Popover/Drawer/Dialog/Modal)
 - [x] Docs mini-site (`apps/docs`) — interactive Storybook-style prop playgrounds, props from manifest, variables pages, prototype gallery placeholder, deterministic `/fixtures/components` capture route
@@ -23,12 +25,83 @@ Last updated: 2026-07-19
 - [x] **Alert / Toast / NotificationBanner / Tag batch (2026-07-17)** — see evidence summary below
 - [x] **Link / Breadcrumbs / Tabs batch (2026-07-17)** — see evidence summary below
 - [x] **Tooltip / Popover / Drawer / Dialog / Modal batch (2026-07-17)** — see evidence summary below
-- [x] **Docs performance pass (2026-07-17)** — tree-shakeable `@codeai/cads-react` (`tsup` preserve modules + ESM `.js` fix), deep MUI imports in `CadsProvider`, lazy per-component playground/fixture chunks, deferred `react-live`, FA `font-display: swap`, Turbopack docs dev. Prod First Load for `/components/[name]` **333KB → 110KB** (route JS **88KB → 6KB**). Avoid wiping `packages/react/dist` while `next dev` is running (HMR can wedge the server).
+- [x] **Docs performance pass (2026-07-17)** — tree-shakeable `@codeai/cads-react` (`tsup` preserve modules + ESM `.js` fix), deep MUI imports in `CadsProvider`, lazy per-component playground/fixture chunks, deferred `react-live`, FA `font-display: swap`, Turbopack docs dev. Prod First Load for `/components/[name]` **333KB → 110KB** (route JS **88KB → 6KB**).
+- [x] **Docs dev source aliases (2026-07-21)** — `apps/docs/next.config.mjs` maps `@codeai/cads-react` / `@codeai/cads-variables` to `packages/*/src` under `next dev` (Turbopack + webpack). Verified: routes stay `200` while `dist/` is wiped and during `pnpm build:react`; no Module-not-found storm. Production `build:docs` still uses committed `dist/` via package `exports`.
 - [x] **Cross-client prototyping proof of concept (2026-07-17)** — local stdio MCP exposes manifest search, constrained prototype schema, strict validation, and URL-encoded `/prototype` rendering through the real CADS package. Six validator/protocol tests pass; interactive TextInput/Dropdown/Button smoke-tested. Production gaps intentionally left visible: remote HTTP transport, auth, persistence, and multi-screen actions.
 - [x] **Claude artifact kit (2026-07-17)** — `@codeai/cads-artifact` bundles real CADS + FA fonts into a self-contained HTML runtime for organization-only Claude artifacts (no hosting). Runtime **3.74 MB** (JS 662 KB / CSS+fonts 3.10 MB); sample teacher-onboarding HTML **3.84 MB**; skill ZIP **3.20 MB** at `tooling/cads-artifact/dist/cads-prototyping.zip`. Local browser smoke: TextInput/Dropdown/Alert/Button + FA icons interactive. Upload via Customize → Skills; see `tooling/cads-artifact/MANUAL_TEST.md`.
+- [x] **Portable Agent Skills pack (2026-07-21)** — same ZIP retargeted as an open-standard `cads-prototyping` skill (platform-neutral `SKILL.md`, stdlib Python generator, preflight package validation, no duplicate `skill.md` / sample HTML). Installable in Claude, ChatGPT Skills/Work, Gemini Spark, and Cursor skill folders. Docs `/ai` rewritten around one download + per-host install notes; ZIP stays **internal-only** (FA Pro) and is **not** published on public GitHub Pages. CI runs `pnpm test:artifact`.
 - [x] **Close Icon Button (2026-07-17)** — promoted the shared close action to a public Figma-mapped component and refactored Alert, Toast, NotificationBanner, Tag, Tabs, Popover, Drawer, Dialog, and Modal to compose it.
 - [x] **Docs design sweep (2026-07-19)** — docs UI kit (`apps/docs/components/docs-ui.tsx` + CSS classes in `globals.css`), redesigned shell with grouped nav (Getting started / Foundations / Components / Resources) and persisted dark mode; playground rework: props grouped Appearance → Content → State → Layout → A11y with CADS `Dropdown`/`Toggle`/`TextInput` as panel controls, dot-grid stage, reset + copyable synced snippet; component pages restructured (category eyebrow, copyable import, usage-rule cards, copyable variable chips, manifest example); variables pages rebuilt (color grouped by layer × role with light+dark swatches, full typography scale, spacing/shape) plus new **Core styles** page (elevation, motion, control heights); new **AI setup** page (`/ai`) documenting llms.txt / manifest / Claude skill with a skill-ZIP download (prebuild copies `tooling/cads-artifact/dist/cads-prototyping.zip` → gitignored `public/downloads/`; page falls back to build instructions when absent — FA Pro license note included).
 - [x] **CodeAI UI-patterns pass (2026-07-19)** — docs chrome aligned to CADS Figma shell (`16778:3578`): 200px sidebar + logo cell, white top bar with search / icon-only Figma button / theme Toggle, `DocsNavItem` (active = brand text+icon, hover = neutral-secondary fill), Overline section labels, playground props panel restyled as a Sketch-Lab-style grouped inspector (gray overline header strip, hairline-separated sections, dense label-left/control-right rows), cards/tables/playground on `--radius-md`. New skill reference `tooling/cads-artifact/skill/references/ui-patterns.md` (territories, shell scaffolds, composition/density, color language, do/don't) wired into `package-skill.mjs` (existence-checked, ships in ZIP), referenced from both SKILL.md files; `/ai` page gained a "UI patterns" section and `generate-llms-txt.mjs` now emits a compact patterns block.
+- [x] **Playground props sweep (2026-07-21)** — sidebar grouping expanded (Appearance → Content → State → Layout & behavior → A11y); icon UX unified to string `*IconName` / `iconName` (boolean gates derived; empty = no icon); conditional controls (e.g. TextInput start icon when not multiline, Toggle on/off icons when `hasIcons`, Alert action icons when `hasAction`); wired missing preview props (Slider helper/display/stepCount, Tabs defaultValue, children for Button/Link/Alert/Toast, a11y labels); TemplatePlayground gained Dropdown/Breadcrumbs/IconToggle demo sections.
+- [x] **Docs overview + component page template (2026-07-21)** — component pages use narrow centered column on `--background-neutral-secondary` (`DocsTemplatePage`); overview redesigned as short path: CADS intro → Core styles / Components destination cards → For Agents callout → Resources (Storybook, Figma, Brand guidelines).
+- [x] **Docs foundations pass (2026-07-21)** — Color condensed into one-line primitive and current-theme semantic ramps; Shape now owns radii, elevation, and spacing; Motion is a focused, explicitly experimental duration/easing standard.
+- [x] **Color CSS exporter (2026-07-21)** — Lab2 prod-shaped export (`primitiveColors.css` + `colors.css` with `data-theme`) ported into `@codeai/cads-variables` (`buildPrimitiveColorsCss` / `buildSemanticColorsCss`); Color page exports each file from its section (no zip). Header links to CADS Figma Color + production `component-library-styles`.
+- [x] **Typography foundation cleanup (2026-07-21)** — Matches Color page template: `FoundationHeader` → sections → foundation pagination. Text styles tabbed to match Figma Typography page (Heading / Body / Overline / Label / Link / Mono — all published styles), divider list with no card surfaces, families table last. Shared `.dividedList` in `FoundationPage.module.css`. Shape + Motion still on card surfaces — same template pass next.
+
+## Toggle compact + hasIcons — evidence summary
+
+```text
+Task path: Figma update
+Components: Toggle
+Figma evidence (retrieved 2026-07-21, file DGekOeToRVifvFAhfqpeC1):
+  - Toggle + Label public 327:2151 / key 13f4f08ad10787f9c7c557c0139b200f4d8864a8
+  - Toggle block 8841:5569 / key 9e957e7fd931d5d068ffecb6f68531d9ebd5ce7c
+  - Exact refs: large on 8841:5564 (42×22), XS on 8859:1814 (30×16)
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json
+  - packages/react/src/manifest/visual-recipes/Toggle.json
+Coverage: 18/18 recipe cases
+  (sizes L–XS; label left/right; on/off; hover/press/focus/disabled;
+   light/dark; custom icons; hasIcons=false)
+Correction loop:
+  - Track: 42×22 / 38×20 / 34×18 / 30×16 (was 52×26 / 48×24 / 44×22 / 40×20)
+  - Handle: 18 / 16 / 14 / 12; pad 2px; icons 12 / 11 / 10 / 9
+  - Icon insets: L left 8 / right 9; M–XS 6
+  - hasIcons=false omits track icons; geometry unchanged
+  - Playwright fixture measures match Figma; screenshots vs 8841:5564 / 8859:1814
+API notes:
+  - hasIcons maps Figma boolean (default true)
+  - onIcon / offIcon ignored when hasIcons is false
+API audit: 0 error / 0 warn / 0 escalate (strict)
+Verification: pnpm figma:audit-props -- --strict; pnpm typecheck; pnpm build:react
+Accepted differences:
+  - press border via inset box-shadow (prior; avoids layout shift)
+```
+
+## TextInput start icon — evidence summary
+
+```text
+Task path: Figma update
+Components: TextInput (TextField deprecated alias inherits)
+Figma evidence (retrieved 2026-07-21, file DGekOeToRVifvFAhfqpeC1):
+  - Text Input public 16176:4884 / key ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4
+  - Text Input Building Block 16146:3517 / key adac7e7bcbeece4cd3ed6f7cd77d7664ea3c9f9e
+  - Exact field refs: large default 16146:3516, large readOnly 16178:76, large disabled 16146:3526
+  - Area variants have no startIcon (confirmed 16146:4314)
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json
+  - packages/react/src/manifest/visual-recipes/TextInput.json
+Coverage: 10/10 recipe cases (7 regression + 3 startIcon)
+  (large startIcon default; medium startIcon readOnly; XS startIcon disabled;
+   prior size/color/state/mode sentinels unchanged)
+Correction loop:
+  - Field shell flex layout: icon + borderless control; hover/focus/active on :focus-within shell
+  - Icon geometry L18/M16/S14/XS12; gaps 10/10/8/6
+  - Start icon color: primary → --text-neutral-primary; secondary → --text-neutral-placeholder (Figma 16146:3857/3859/16178:84)
+  - readOnly value text quaternary; primary readOnly icon stays primary; secondary readOnly icon stays placeholder
+  - disabled icon + placeholder use --text-disabled-neutral
+  - Browser fixtures vs Figma 16146:3516 screenshot: start icon + placeholder alignment match
+API notes:
+  - startIcon / startIconName field-only (ignored when multiline)
+  - Figma startIcon defaults true; code defaults false (opt-in, same pattern as Tooltip)
+  - smile → face-smile via resolveFaIconName
+API audit: 0 error / 0 warn / 0 escalate (strict)
+Verification: pnpm figma:audit-props -- --strict; pnpm typecheck; pnpm build:react
+Accepted differences:
+  - extraSmall field height 22px Figma vs 24px shared control scale (prior)
+  - startIcon default false vs Figma true (opt-in adornment)
+```
 
 ## Close Icon Button — evidence summary
 
@@ -161,7 +234,7 @@ Priority order for the next agent sessions:
 
 1. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
 2. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
-3. **End-to-end designer → Claude artifact** — upload `tooling/cads-artifact/dist/cads-prototyping.zip`, run the org-sharing checklist in `MANUAL_TEST.md` (create → publish org-only → teammate open → customize/edit). Decide whether multi-MB inlined FA fonts are acceptable in Claude artifacts; only then consider remote MCP/hosting as a secondary path.
+3. **End-to-end portable skill hosts** — upload `tooling/cads-artifact/dist/cads-prototyping.zip` and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Decide whether multi-MB inlined FA fonts remain acceptable; only then consider remote MCP/hosting as a secondary path.
 4. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
 5. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
 6. **Publish / hosting** — push to GitHub when ready; decide org (`code-dot-org` vs other); optionally deploy docs (Vercel / GH Pages).
