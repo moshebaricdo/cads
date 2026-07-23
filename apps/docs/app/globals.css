@@ -443,15 +443,22 @@ a.docs-card:focus-visible {
 }
 
 .docs-body {
+  position: relative;
   display: flex;
   flex: 1;
   align-items: stretch;
   min-height: 0;
 }
 
-.docs-sidebar {
+.docs-sidebar-slot {
   flex: 0 0 var(--docs-sidebar-width);
   width: var(--docs-sidebar-width);
+  min-width: 0;
+}
+
+.docs-sidebar {
+  width: 100%;
+  height: 100%;
   border-right: 1px solid var(--border-neutral-primary);
   background: var(--background-neutral-primary);
   position: sticky;
@@ -468,6 +475,10 @@ a.docs-card:focus-visible {
 
 .docs-shell[data-sidebar="collapsed"] .docs-sidebar-scroll {
   overflow-x: hidden;
+}
+
+.docs-sidebar-scrim {
+  display: none;
 }
 
 .docs-main {
@@ -841,5 +852,69 @@ a.docs-card:focus-visible {
   .docs-playground-stage {
     border-right: none;
     border-bottom: 1px solid var(--border-neutral-primary);
+  }
+
+  /* Mobile chrome: rail stays collapsed-width; expand opens an overlay drawer. */
+  .docs-topbar-brand-cell {
+    width: var(--docs-sidebar-width);
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .docs-topbar-brand {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+  }
+
+  .docs-topbar-logo--full {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .docs-topbar-logo--mark {
+    opacity: 1;
+  }
+
+  .docs-sidebar-toggle {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: 1;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .docs-topbar-brand-cell .docs-topbar-brand {
+    opacity: 0;
+  }
+
+  .docs-main-inner {
+    padding: 28px 20px 28px;
+  }
+
+  .docs-sidebar-scrim {
+    display: block;
+    position: fixed;
+    top: var(--docs-topbar-height, 48px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: color-mix(in srgb, var(--text-neutral-primary) 28%, transparent);
+    cursor: pointer;
+  }
+
+  .docs-shell[data-sidebar="expanded"] .docs-sidebar {
+    position: fixed;
+    top: var(--docs-topbar-height, 48px);
+    left: 0;
+    z-index: 40;
+    width: var(--docs-sidebar-drawer-width, 220px);
+    height: calc(100vh - var(--docs-topbar-height, 48px));
+    box-shadow: var(--shadow-lg);
   }
 }

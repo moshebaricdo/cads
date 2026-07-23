@@ -15,3 +15,9 @@
   margin-inline: auto;
   padding-block: var(--space-xxxl);
 }
+
+@media (max-width: 760px) {
+  :global(.docs-main):has(.page) :global(.docs-main-inner) {
+    padding-block: var(--space-m);
+  }
+}

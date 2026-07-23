@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button, SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { CSSProperties, ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DocsNavItem, DocsNavSection } from "@/components/DocsNavItem";
 import {
   COMPONENT_SECTIONS,
@@ -31,6 +31,7 @@ const SIDEBAR_STORAGE_KEY = "cads-docs-sidebar-collapsed";
 const SIDEBAR_WIDTH = 220;
 const SIDEBAR_COLLAPSED_WIDTH = 50;
 const TOPBAR_HEIGHT = 48;
+const MOBILE_MQ = "(max-width: 760px)";
 
 function normalizePath(path: string | null): string {
   if (!path) return "/";
@@ -43,7 +44,9 @@ export function DocsShell({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [search, setSearch] = useState("");
   const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const pathnameRef = useRef(pathname);
   const isCanvas =
     pathname.startsWith("/fixtures") || pathname.startsWith("/prototype");
 
@@ -53,6 +56,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
   );
 
   const query = search.trim().toLowerCase();
+  const drawerOpen = isMobile && !collapsed;
 
   const activeSectionId = useMemo(() => {
     for (const section of COMPONENT_SECTIONS) {
@@ -68,10 +72,27 @@ export function DocsShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       setDark(window.localStorage.getItem(DARK_STORAGE_KEY) === "1");
-      setCollapsed(window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1");
     } catch {
       /* storage unavailable */
     }
+
+    const mq = window.matchMedia(MOBILE_MQ);
+    function syncViewport() {
+      const mobile = mq.matches;
+      setIsMobile(mobile);
+      if (mobile) {
+        setCollapsed(true);
+        return;
+      }
+      try {
+        setCollapsed(window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1");
+      } catch {
+        setCollapsed(false);
+      }
+    }
+    syncViewport();
+    mq.addEventListener("change", syncViewport);
+    return () => mq.removeEventListener("change", syncViewport);
   }, []);
 
   useEffect(() => {
@@ -85,13 +106,13 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, [dark, isCanvas]);
 
   useEffect(() => {
-    if (isCanvas) return;
+    if (isCanvas || isMobile) return;
     try {
       window.localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
     } catch {
       /* storage unavailable */
     }
-  }, [collapsed, isCanvas]);
+  }, [collapsed, isCanvas, isMobile]);
 
   useEffect(() => {
     if (!activeSectionId || collapsed) return;
@@ -103,6 +124,28 @@ export function DocsShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (query && collapsed) setCollapsed(false);
   }, [query, collapsed]);
+
+  // Close the mobile drawer after navigation (not on mobile breakpoint entry).
+  useEffect(() => {
+    if (isMobile && pathnameRef.current !== pathname) {
+      setCollapsed(true);
+    }
+    pathnameRef.current = pathname;
+  }, [pathname, isMobile]);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setCollapsed(true);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [drawerOpen]);
 
   if (isCanvas) {
     return <>{children}</>;
@@ -122,6 +165,10 @@ export function DocsShell({ children }: { children: ReactNode }) {
     queueMicrotask(() => {
       (document.activeElement as HTMLElement | null)?.blur?.();
     });
+  }
+
+  function closeDrawer() {
+    setCollapsed(true);
   }
 
   const brandLogos = (
@@ -161,20 +208,28 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
   const resources = RESOURCES_NAV.filter((item) => matchesQuery(item.label));
   const foundations = FOUNDATIONS_NAV.filter((item) => matchesQuery(item.label));
-  const sidebarWidth = collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH;
+  // On mobile the in-flow rail stays collapsed-width; the drawer overlays at full width.
+  const layoutSidebarWidth = isMobile
+    ? SIDEBAR_COLLAPSED_WIDTH
+    : collapsed
+      ? SIDEBAR_COLLAPSED_WIDTH
+      : SIDEBAR_WIDTH;
   const shellStyle = {
-    "--docs-sidebar-width": `${sidebarWidth}px`,
+    "--docs-sidebar-width": `${layoutSidebarWidth}px`,
+    "--docs-sidebar-drawer-width": `${SIDEBAR_WIDTH}px`,
+    "--docs-topbar-height": `${TOPBAR_HEIGHT}px`,
   } as CSSProperties;
 
   return (
     <div
       className="docs-shell"
       data-sidebar={collapsed ? "collapsed" : "expanded"}
+      data-mobile={isMobile ? "true" : undefined}
       style={shellStyle}
     >
       <header className="docs-topbar">
         <div className="docs-topbar-brand-cell">
-          {collapsed ? (
+          {collapsed || isMobile ? (
             <div className="docs-topbar-brand" aria-hidden>
               {brandLogos}
             </div>
@@ -236,102 +291,116 @@ export function DocsShell({ children }: { children: ReactNode }) {
       </header>
 
       <div className="docs-body">
-        <aside
-          className="docs-sidebar"
-          style={{ top: TOPBAR_HEIGHT, height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}
-        >
-          <div className="docs-sidebar-scroll">
-            {resources.length > 0 ? (
-              <DocsNavSection label="Resources" collapsed={collapsed}>
-                {resources.map((item) => (
-                  <DocsNavItem
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    iconName={item.iconName}
-                    active={pathname === item.href}
-                    collapsed={collapsed}
-                  />
-                ))}
-              </DocsNavSection>
-            ) : null}
+        {drawerOpen ? (
+          <button
+            type="button"
+            className="docs-sidebar-scrim"
+            aria-label="Close navigation"
+            onClick={closeDrawer}
+          />
+        ) : null}
 
-            {foundations.length > 0 ? (
-              <DocsNavSection label="Foundations" collapsed={collapsed}>
-                {foundations.map((item) => (
-                  <DocsNavItem
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    iconName={item.iconName}
-                    active={pathname === item.href}
-                    collapsed={collapsed}
-                  />
-                ))}
-              </DocsNavSection>
-            ) : null}
+        <div className="docs-sidebar-slot">
+          <aside
+            className="docs-sidebar"
+            style={{
+              top: TOPBAR_HEIGHT,
+              height: `calc(100vh - ${TOPBAR_HEIGHT}px)`,
+            }}
+          >
+            <div className="docs-sidebar-scroll">
+              {resources.length > 0 ? (
+                <DocsNavSection label="Resources" collapsed={collapsed}>
+                  {resources.map((item) => (
+                    <DocsNavItem
+                      key={item.href}
+                      href={item.href}
+                      label={item.label}
+                      iconName={item.iconName}
+                      active={pathname === item.href}
+                      collapsed={collapsed}
+                    />
+                  ))}
+                </DocsNavSection>
+              ) : null}
 
-            <DocsNavSection label="Components" collapsed={collapsed}>
-              {COMPONENT_SECTIONS.map((section) => {
-                const open =
-                  !collapsed && (openSections[section.id] || Boolean(query));
-                const visibleItems = section.items.filter((item) => {
+              {foundations.length > 0 ? (
+                <DocsNavSection label="Foundations" collapsed={collapsed}>
+                  {foundations.map((item) => (
+                    <DocsNavItem
+                      key={item.href}
+                      href={item.href}
+                      label={item.label}
+                      iconName={item.iconName}
+                      active={pathname === item.href}
+                      collapsed={collapsed}
+                    />
+                  ))}
+                </DocsNavSection>
+              ) : null}
+
+              <DocsNavSection label="Components" collapsed={collapsed}>
+                {COMPONENT_SECTIONS.map((section) => {
+                  const open =
+                    !collapsed && (openSections[section.id] || Boolean(query));
+                  const visibleItems = section.items.filter((item) => {
+                    if (
+                      !matchesQuery(item.label) &&
+                      !matchesQuery(section.label)
+                    ) {
+                      return false;
+                    }
+                    return componentsByExport.has(item.exportName);
+                  });
+
                   if (
-                    !matchesQuery(item.label) &&
+                    query &&
+                    visibleItems.length === 0 &&
                     !matchesQuery(section.label)
                   ) {
-                    return false;
+                    return null;
                   }
-                  return componentsByExport.has(item.exportName);
-                });
 
-                if (
-                  query &&
-                  visibleItems.length === 0 &&
-                  !matchesQuery(section.label)
-                ) {
-                  return null;
-                }
-
-                const panelId = `nav-section-${section.id}`;
-                const sectionActive = activeSectionId === section.id;
-                return (
-                  <div key={section.id} className="docs-nav-group">
-                    <DocsNavItem
-                      kind="group"
-                      label={section.label}
-                      iconName={section.iconName}
-                      active={sectionActive}
-                      expanded={open}
-                      collapsed={collapsed}
-                      onClick={() => toggleSection(section.id)}
-                    />
-                    {open ? (
-                      <div id={panelId} className="docs-nav-children">
-                        {visibleItems.map((item) => {
-                          const component = componentsByExport.get(
-                            item.exportName,
-                          );
-                          if (!component) return null;
-                          const href = componentHref(component.name);
-                          return (
-                            <DocsNavItem
-                              key={item.exportName}
-                              kind="child"
-                              href={href}
-                              label={item.label}
-                              active={pathname === href}
-                            />
-                          );
-                        })}
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </DocsNavSection>
-          </div>
-        </aside>
+                  const panelId = `nav-section-${section.id}`;
+                  const sectionActive = activeSectionId === section.id;
+                  return (
+                    <div key={section.id} className="docs-nav-group">
+                      <DocsNavItem
+                        kind="group"
+                        label={section.label}
+                        iconName={section.iconName}
+                        active={sectionActive}
+                        expanded={open}
+                        collapsed={collapsed}
+                        onClick={() => toggleSection(section.id)}
+                      />
+                      {open ? (
+                        <div id={panelId} className="docs-nav-children">
+                          {visibleItems.map((item) => {
+                            const component = componentsByExport.get(
+                              item.exportName,
+                            );
+                            if (!component) return null;
+                            const href = componentHref(component.name);
+                            return (
+                              <DocsNavItem
+                                key={item.exportName}
+                                kind="child"
+                                href={href}
+                                label={item.label}
+                                active={pathname === href}
+                              />
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </DocsNavSection>
+            </div>
+          </aside>
+        </div>
 
         <main className="docs-main">
           <div className="docs-main-inner">{children}</div>
