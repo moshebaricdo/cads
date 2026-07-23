@@ -175,12 +175,12 @@
         {
           "id": "neutral::gray::10",
           "step": "10",
-          "hex": "#DBDDE2"
+          "hex": "#E1E3E6"
         },
         {
           "id": "neutral::gray::20",
           "step": "20",
-          "hex": "#CCD1D7"
+          "hex": "#D3D6DA"
         },
         {
           "id": "neutral::gray::30",
@@ -886,7 +886,7 @@
         "dark": "neutral::gray::90"
       },
       "fallbackHex": {
-        "light": "#DBDDE2",
+        "light": "#E1E3E6",
         "dark": "#363B40"
       }
     },
@@ -900,7 +900,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCD1D7",
+        "light": "#D3D6DA",
         "dark": "#4B5258"
       }
     },
@@ -957,7 +957,7 @@
       },
       "fallbackHex": {
         "light": "#4B5258",
-        "dark": "#CCD1D7"
+        "dark": "#D3D6DA"
       }
     },
     {
@@ -1396,7 +1396,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCD1D7",
+        "light": "#D3D6DA",
         "dark": "#4B5258"
       }
     },
@@ -1425,6 +1425,34 @@
       },
       "fallbackHex": {
         "light": "#121212",
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "id": "borders/neutral/black-fixed",
+      "surface": "borders",
+      "familyKey": "neutral",
+      "role": "black-fixed",
+      "ref": {
+        "light": "neutral::base::black",
+        "dark": "neutral::base::black"
+      },
+      "fallbackHex": {
+        "light": "#121212",
+        "dark": "#121212"
+      }
+    },
+    {
+      "id": "borders/neutral/white-fixed",
+      "surface": "borders",
+      "familyKey": "neutral",
+      "role": "white-fixed",
+      "ref": {
+        "light": "neutral::base::white",
+        "dark": "neutral::base::white"
+      },
+      "fallbackHex": {
+        "light": "#FFFFFF",
         "dark": "#FFFFFF"
       }
     },
@@ -1686,7 +1714,7 @@
       },
       "fallbackHex": {
         "light": "#4B5258",
-        "dark": "#DBDDE2"
+        "dark": "#E1E3E6"
       }
     },
     {
@@ -1700,7 +1728,7 @@
       },
       "fallbackHex": {
         "light": "#596069",
-        "dark": "#CCD1D7"
+        "dark": "#D3D6DA"
       }
     },
     {
@@ -1779,11 +1807,11 @@
       "familyKey": "teal",
       "role": "secondary",
       "ref": {
-        "light": "brand::teal::70",
+        "light": "brand::teal::90",
         "dark": "brand::teal::5"
       },
       "fallbackHex": {
-        "light": "#3228B7",
+        "light": "#1D1590",
         "dark": "#E4E2F8"
       }
     },
@@ -2243,10 +2271,10 @@
       }
     },
     {
-      "id": "text/pink/strong",
+      "id": "text/pink/secondary",
       "surface": "text",
       "familyKey": "pink",
-      "role": "strong",
+      "role": "secondary",
       "ref": {
         "light": "brand::strawberry::70",
         "dark": "brand::strawberry::5"
@@ -2271,10 +2299,10 @@
       }
     },
     {
-      "id": "text/orange/strong",
+      "id": "text/orange/secondary",
       "surface": "text",
       "familyKey": "orange-2",
-      "role": "strong",
+      "role": "secondary",
       "ref": {
         "light": "brand::orange::70",
         "dark": "brand::orange::5"
@@ -2511,7 +2539,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCD1D7",
+        "light": "#D3D6DA",
         "dark": "#4B5258"
       },
       "comments": {
@@ -2626,7 +2654,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCD1D7",
+        "light": "#D3D6DA",
         "dark": "#4B5258"
       }
     },
@@ -2755,7 +2783,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCD1D7",
+        "light": "#D3D6DA",
         "dark": "#4B5258"
       }
     },
@@ -3104,12 +3132,12 @@
     ],
     "text::pink": [
       "primary",
-      "strong",
+      "secondary",
       "primary-fixed"
     ],
     "text::orange-2": [
       "primary",
-      "strong",
+      "secondary",
       "primary-fixed"
     ],
     "text::selected-2": [
@@ -3119,7 +3147,9 @@
     "borders::neutral": [
       "primary",
       "secondary",
-      "solid"
+      "solid",
+      "black-fixed",
+      "white-fixed"
     ],
     "borders::teal": [
       "primary",

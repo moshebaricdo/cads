@@ -6,7 +6,7 @@ import {
   shape,
   spacing,
   typography
-} from "./chunk-WIC77WFW.js";
+} from "./chunk-F4W6BRVS.js";
 
 // src/theme.ts
 import { createTheme } from "@mui/material/styles";
@@ -131,7 +131,7 @@ var cadsThemeOptions = {
       secondary: hex("text-neutral-secondary", "#4B5258"),
       disabled: hex("text-neutral-quaternary", "#87909A")
     },
-    divider: hex("border-neutral-primary", "#DBDDE2")
+    divider: hex("border-neutral-primary", "#D3D6DA")
   },
   components: {
     MuiButtonBase: {

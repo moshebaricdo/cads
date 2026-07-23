@@ -141,7 +141,7 @@ export const cadsThemeOptions: ThemeOptions = {
       secondary: hex("text-neutral-secondary", "#4B5258"),
       disabled: hex("text-neutral-quaternary", "#87909A"),
     },
-    divider: hex("border-neutral-primary", "#DBDDE2"),
+    divider: hex("border-neutral-primary", "#D3D6DA"),
   },
   components: {
     MuiButtonBase: {

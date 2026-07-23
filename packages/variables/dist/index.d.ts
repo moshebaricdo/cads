@@ -4,8 +4,8 @@ declare const colorVarsLight: {
     readonly "background-neutral-primary": "#FFFFFF";
     readonly "background-neutral-primary-inverse": "#121212";
     readonly "background-neutral-secondary": "#F1F2F4";
-    readonly "background-neutral-tertiary": "#DBDDE2";
-    readonly "background-neutral-quaternary": "#CCD1D7";
+    readonly "background-neutral-tertiary": "#E1E3E6";
+    readonly "background-neutral-quaternary": "#D3D6DA";
     readonly "background-neutral-quinary": "#B7BCC2";
     readonly "background-neutral-senary": "#87909A";
     readonly "background-neutral-septenary": "#596069";
@@ -39,9 +39,11 @@ declare const colorVarsLight: {
     readonly "background-info-light": "#D5EFFF";
     readonly "background-info-mid": "#6FCAFF";
     readonly "background-info-strong": "#0B43A3";
-    readonly "border-neutral-primary": "#CCD1D7";
+    readonly "border-neutral-primary": "#D3D6DA";
     readonly "border-neutral-secondary": "#9EA5AD";
     readonly "border-neutral-solid": "#121212";
+    readonly "border-neutral-black-fixed": "#121212";
+    readonly "border-neutral-white-fixed": "#FFFFFF";
     readonly "border-brand-primary": "#4C42CF";
     readonly "border-brand-light": "#E4E2F8";
     readonly "border-brand-strong": "#3228B7";
@@ -66,7 +68,7 @@ declare const colorVarsLight: {
     readonly "text-neutral-white-fixed": "#FFFFFF";
     readonly "text-neutral-black-fixed": "#121212";
     readonly "text-brand-primary": "#4C42CF";
-    readonly "text-brand-secondary": "#3228B7";
+    readonly "text-brand-secondary": "#1D1590";
     readonly "text-brand-primary-fixed": "#4C42CF";
     readonly "text-error-primary": "#EB1414";
     readonly "text-error-secondary": "#B30F0F";
@@ -99,9 +101,9 @@ declare const colorVarsLight: {
     readonly "border-accent-orange-primary": "#F46800";
     readonly "background-selected-primary": "#2B1E9F";
     readonly "background-selected-strong": "#1F1976";
-    readonly "text-accent-pink-strong": "#B5004F";
+    readonly "text-accent-pink-secondary": "#B5004F";
     readonly "text-accent-pink-primary-fixed": "#E11970";
-    readonly "text-accent-orange-strong": "#B34800";
+    readonly "text-accent-orange-secondary": "#B34800";
     readonly "text-accent-orange-primary-fixed": "#F46800";
     readonly "text-selected-primary": "#CCF1D0";
     readonly "border-accent-pink-light": "#F3C3D8";
@@ -117,7 +119,7 @@ declare const colorVarsLight: {
     readonly "border-accent-orange-mid": "#FFA868";
     readonly "border-selected-primary": "#2B1E9F";
     readonly "border-selected-strong": "#1F1976";
-    readonly "background-disabled-neutral": "#CCD1D7";
+    readonly "background-disabled-neutral": "#D3D6DA";
     readonly "background-disabled-brand": "#E4E2F8";
     readonly "background-disabled-error": "#FBD5D5";
     readonly "background-disabled-warning": "#FFF3D1";
@@ -125,7 +127,7 @@ declare const colorVarsLight: {
     readonly "background-disabled-info": "#D5EFFF";
     readonly "background-disabled-pink": "#FBDAE8";
     readonly "background-disabled-orange": "#FFE3CE";
-    readonly "text-disabled-neutral": "#CCD1D7";
+    readonly "text-disabled-neutral": "#D3D6DA";
     readonly "text-disabled-neutral-inverse": "#FFFFFF";
     readonly "text-disabled-brand": "#E4E2F8";
     readonly "text-disabled-error": "#FBD5D5";
@@ -134,7 +136,7 @@ declare const colorVarsLight: {
     readonly "text-disabled-info": "#D5EFFF";
     readonly "text-disabled-pink": "#FBDAE8";
     readonly "text-disabled-orange": "#FFE3CE";
-    readonly "border-disabled-neutral": "#CCD1D7";
+    readonly "border-disabled-neutral": "#D3D6DA";
     readonly "border-disabled-brand": "#E4E2F8";
     readonly "border-disabled-error": "#FBD5D5";
     readonly "border-disabled-warning": "#FFF3D1";
@@ -157,7 +159,7 @@ declare const colorVarsDark: {
     readonly "background-neutral-quinary": "#596069";
     readonly "background-neutral-senary": "#87909A";
     readonly "background-neutral-septenary": "#B7BCC2";
-    readonly "background-neutral-octonary": "#CCD1D7";
+    readonly "background-neutral-octonary": "#D3D6DA";
     readonly "background-neutral-white-fixed": "#FFFFFF";
     readonly "background-neutral-black-fixed": "#121212";
     readonly "background-neutral-true-base": "#000000";
@@ -190,6 +192,8 @@ declare const colorVarsDark: {
     readonly "border-neutral-primary": "#4B5258";
     readonly "border-neutral-secondary": "#6E7782";
     readonly "border-neutral-solid": "#FFFFFF";
+    readonly "border-neutral-black-fixed": "#121212";
+    readonly "border-neutral-white-fixed": "#FFFFFF";
     readonly "border-brand-primary": "#4C42CF";
     readonly "border-brand-light": "#1D1590";
     readonly "border-brand-strong": "#928CEF";
@@ -207,8 +211,8 @@ declare const colorVarsDark: {
     readonly "border-info-strong": "#6FCAFF";
     readonly "text-neutral-primary": "#FFFFFF";
     readonly "text-neutral-secondary": "#F1F2F4";
-    readonly "text-neutral-tertiary": "#DBDDE2";
-    readonly "text-neutral-quaternary": "#CCD1D7";
+    readonly "text-neutral-tertiary": "#E1E3E6";
+    readonly "text-neutral-quaternary": "#D3D6DA";
     readonly "text-neutral-placeholder": "#6E7782";
     readonly "text-neutral-primary-inverse": "#121212";
     readonly "text-neutral-white-fixed": "#FFFFFF";
@@ -247,9 +251,9 @@ declare const colorVarsDark: {
     readonly "border-accent-orange-primary": "#F46800";
     readonly "background-selected-primary": "#CCF1D0";
     readonly "background-selected-strong": "#9BE3A3";
-    readonly "text-accent-pink-strong": "#FBDAE8";
+    readonly "text-accent-pink-secondary": "#FBDAE8";
     readonly "text-accent-pink-primary-fixed": "#F07FB0";
-    readonly "text-accent-orange-strong": "#FFE3CE";
+    readonly "text-accent-orange-secondary": "#FFE3CE";
     readonly "text-accent-orange-primary-fixed": "#FFA868";
     readonly "text-selected-primary": "#1F1976";
     readonly "border-accent-pink-light": "#8D003D";

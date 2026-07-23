@@ -57,7 +57,7 @@ Path (typical local checkout): `../web-lab-prototype`
 | Prototyping / AI fidelity | [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) |
 | Build/update a component (before coding through “done”) | [`.cursor/skills/cads-parity-qa/SKILL.md`](.cursor/skills/cads-parity-qa/SKILL.md) |
 | Styling rules | [`.cursor/rules/design-system.mdc`](.cursor/rules/design-system.mdc) |
-| Figma variables sync | [`tooling/figma-sync/README.md`](tooling/figma-sync/README.md) |
+| Figma color variables sync | [`.cursor/skills/cads-figma-color-sync/SKILL.md`](.cursor/skills/cads-figma-color-sync/SKILL.md) + [`tooling/figma-sync/README.md`](tooling/figma-sync/README.md) |
 | Component catalog for agents | `cadsManifest` in `@codeai/cads-react` / docs `/llms.txt` |
 
 ---
@@ -68,6 +68,7 @@ Copy `.env.example` → `.env` locally (never commit secrets).
 
 | Need | How |
 |---|---|
+| Color variables sync (agent workflow) | Follow [`.cursor/skills/cads-figma-color-sync/SKILL.md`](.cursor/skills/cads-figma-color-sync/SKILL.md). Prefer `use_figma` or `FIGMA_ACCESS_TOKEN` + `pnpm figma:sync`. |
 | Headless variable sync | Set `FIGMA_ACCESS_TOKEN` (Figma PAT with File content Read + Variables Read). Run `pnpm figma:sync` or `pnpm figma:sync:apply`. |
 | Interactive Figma MCP (screenshots, execute, bridge tools) | Open **Figma Desktop Bridge** plugin in Figma Desktop (`Plugins → Development → Figma Desktop Bridge`). Bridge connects to `ws://localhost:9225`. |
 | Official Figma MCP / local Code Connect maps | Use `add_code_connect_map` / committed [`figma.code-connect.json`](figma.code-connect.json). Fill real `nodeId` / `componentKey` values as you map components. |

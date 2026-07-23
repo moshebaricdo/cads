@@ -47,6 +47,7 @@ var shape = {
   radiusSm: "6px",
   radiusMd: "8px",
   radiusLg: "10px",
+  radiusXl: "12px",
   radiusRound: "999px"
 };
 var spacing = {
@@ -65,10 +66,25 @@ var elevation = {
   shadowLg: "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)"
 };
 var controlHeights = {
+  large: "48px",
+  medium: "40px",
+  small: "32px",
+  extraSmall: "24px",
+  /** @deprecated Prefer `large` */
   l: "48px",
+  /** @deprecated Prefer `medium` */
   m: "40px",
+  /** @deprecated Prefer `small` */
   s: "32px",
+  /** @deprecated Prefer `extraSmall` */
   xs: "24px"
+};
+var motion = {
+  durationInstant: "0ms",
+  durationShort: "150ms",
+  durationMedium: "200ms",
+  easingStandard: "cubic-bezier(0.4, 0, 0.2, 1)",
+  easingEmphasized: "cubic-bezier(0.2, 0, 0, 1)"
 };
 function nonColorCssVars() {
   return {
@@ -107,6 +123,7 @@ function nonColorCssVars() {
     "--radius-sm": shape.radiusSm,
     "--radius-md": shape.radiusMd,
     "--radius-lg": shape.radiusLg,
+    "--radius-xl": shape.radiusXl,
     "--radius-round": shape.radiusRound,
     "--space-xxs": spacing.xxs,
     "--space-xs": spacing.xs,
@@ -119,10 +136,20 @@ function nonColorCssVars() {
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,
-    "--control-height-l": controlHeights.l,
-    "--control-height-m": controlHeights.m,
-    "--control-height-s": controlHeights.s,
-    "--control-height-xs": controlHeights.xs,
+    "--control-height-large": controlHeights.large,
+    "--control-height-medium": controlHeights.medium,
+    "--control-height-small": controlHeights.small,
+    "--control-height-extra-small": controlHeights.extraSmall,
+    "--control-height-l": controlHeights.large,
+    "--control-height-m": controlHeights.medium,
+    "--control-height-s": controlHeights.small,
+    "--control-height-xs": controlHeights.extraSmall,
+    "--duration-instant": motion.durationInstant,
+    "--duration-short": motion.durationShort,
+    "--duration-medium": motion.durationMedium,
+    "--easing-standard": motion.easingStandard,
+    "--easing-emphasized": motion.easingEmphasized,
+    "--transition-colors": `background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)`,
     "--font-fa-pro": '"Font Awesome 7 Pro"',
     "--font-fa-brands": '"Font Awesome 7 Brands"'
   };
@@ -133,8 +160,8 @@ var colorVarsLight = {
   "background-neutral-primary": "#FFFFFF",
   "background-neutral-primary-inverse": "#121212",
   "background-neutral-secondary": "#F1F2F4",
-  "background-neutral-tertiary": "#DBDDE2",
-  "background-neutral-quaternary": "#CCD1D7",
+  "background-neutral-tertiary": "#E1E3E6",
+  "background-neutral-quaternary": "#D3D6DA",
   "background-neutral-quinary": "#B7BCC2",
   "background-neutral-senary": "#87909A",
   "background-neutral-septenary": "#596069",
@@ -168,9 +195,11 @@ var colorVarsLight = {
   "background-info-light": "#D5EFFF",
   "background-info-mid": "#6FCAFF",
   "background-info-strong": "#0B43A3",
-  "border-neutral-primary": "#CCD1D7",
+  "border-neutral-primary": "#D3D6DA",
   "border-neutral-secondary": "#9EA5AD",
   "border-neutral-solid": "#121212",
+  "border-neutral-black-fixed": "#121212",
+  "border-neutral-white-fixed": "#FFFFFF",
   "border-brand-primary": "#4C42CF",
   "border-brand-light": "#E4E2F8",
   "border-brand-strong": "#3228B7",
@@ -195,7 +224,7 @@ var colorVarsLight = {
   "text-neutral-white-fixed": "#FFFFFF",
   "text-neutral-black-fixed": "#121212",
   "text-brand-primary": "#4C42CF",
-  "text-brand-secondary": "#3228B7",
+  "text-brand-secondary": "#1D1590",
   "text-brand-primary-fixed": "#4C42CF",
   "text-error-primary": "#EB1414",
   "text-error-secondary": "#B30F0F",
@@ -228,9 +257,9 @@ var colorVarsLight = {
   "border-accent-orange-primary": "#F46800",
   "background-selected-primary": "#2B1E9F",
   "background-selected-strong": "#1F1976",
-  "text-accent-pink-strong": "#B5004F",
+  "text-accent-pink-secondary": "#B5004F",
   "text-accent-pink-primary-fixed": "#E11970",
-  "text-accent-orange-strong": "#B34800",
+  "text-accent-orange-secondary": "#B34800",
   "text-accent-orange-primary-fixed": "#F46800",
   "text-selected-primary": "#CCF1D0",
   "border-accent-pink-light": "#F3C3D8",
@@ -246,7 +275,7 @@ var colorVarsLight = {
   "border-accent-orange-mid": "#FFA868",
   "border-selected-primary": "#2B1E9F",
   "border-selected-strong": "#1F1976",
-  "background-disabled-neutral": "#CCD1D7",
+  "background-disabled-neutral": "#D3D6DA",
   "background-disabled-brand": "#E4E2F8",
   "background-disabled-error": "#FBD5D5",
   "background-disabled-warning": "#FFF3D1",
@@ -254,7 +283,7 @@ var colorVarsLight = {
   "background-disabled-info": "#D5EFFF",
   "background-disabled-pink": "#FBDAE8",
   "background-disabled-orange": "#FFE3CE",
-  "text-disabled-neutral": "#CCD1D7",
+  "text-disabled-neutral": "#D3D6DA",
   "text-disabled-neutral-inverse": "#FFFFFF",
   "text-disabled-brand": "#E4E2F8",
   "text-disabled-error": "#FBD5D5",
@@ -263,7 +292,7 @@ var colorVarsLight = {
   "text-disabled-info": "#D5EFFF",
   "text-disabled-pink": "#FBDAE8",
   "text-disabled-orange": "#FFE3CE",
-  "border-disabled-neutral": "#CCD1D7",
+  "border-disabled-neutral": "#D3D6DA",
   "border-disabled-brand": "#E4E2F8",
   "border-disabled-error": "#FBD5D5",
   "border-disabled-warning": "#FFF3D1",
@@ -286,7 +315,7 @@ var colorVarsDark = {
   "background-neutral-quinary": "#596069",
   "background-neutral-senary": "#87909A",
   "background-neutral-septenary": "#B7BCC2",
-  "background-neutral-octonary": "#CCD1D7",
+  "background-neutral-octonary": "#D3D6DA",
   "background-neutral-white-fixed": "#FFFFFF",
   "background-neutral-black-fixed": "#121212",
   "background-neutral-true-base": "#000000",
@@ -319,6 +348,8 @@ var colorVarsDark = {
   "border-neutral-primary": "#4B5258",
   "border-neutral-secondary": "#6E7782",
   "border-neutral-solid": "#FFFFFF",
+  "border-neutral-black-fixed": "#121212",
+  "border-neutral-white-fixed": "#FFFFFF",
   "border-brand-primary": "#4C42CF",
   "border-brand-light": "#1D1590",
   "border-brand-strong": "#928CEF",
@@ -336,8 +367,8 @@ var colorVarsDark = {
   "border-info-strong": "#6FCAFF",
   "text-neutral-primary": "#FFFFFF",
   "text-neutral-secondary": "#F1F2F4",
-  "text-neutral-tertiary": "#DBDDE2",
-  "text-neutral-quaternary": "#CCD1D7",
+  "text-neutral-tertiary": "#E1E3E6",
+  "text-neutral-quaternary": "#D3D6DA",
   "text-neutral-placeholder": "#6E7782",
   "text-neutral-primary-inverse": "#121212",
   "text-neutral-white-fixed": "#FFFFFF",
@@ -376,9 +407,9 @@ var colorVarsDark = {
   "border-accent-orange-primary": "#F46800",
   "background-selected-primary": "#CCF1D0",
   "background-selected-strong": "#9BE3A3",
-  "text-accent-pink-strong": "#FBDAE8",
+  "text-accent-pink-secondary": "#FBDAE8",
   "text-accent-pink-primary-fixed": "#F07FB0",
-  "text-accent-orange-strong": "#FFE3CE",
+  "text-accent-orange-secondary": "#FFE3CE",
   "text-accent-orange-primary-fixed": "#FFA868",
   "text-selected-primary": "#1F1976",
   "border-accent-pink-light": "#8D003D",
@@ -432,8 +463,9 @@ export {
   spacing,
   elevation,
   controlHeights,
+  motion,
   nonColorCssVars,
   colorVarsLight,
   colorVarsDark
 };
-//# sourceMappingURL=chunk-X5TIG6QO.js.map
+//# sourceMappingURL=chunk-F4W6BRVS.js.map
