@@ -55,3 +55,18 @@
   border-radius: var(--radius-round);
   background: var(--background-neutral-quaternary);
 }
+
+@media (max-width: 760px) {
+  .links {
+    column-gap: var(--space-xs);
+    row-gap: 4px;
+  }
+
+  .linkDot {
+    display: none;
+  }
+
+  .linkItem {
+    gap: 0;
+  }
+}

@@ -37,8 +37,7 @@ export const SKIP_PROPS = new Set([
   "surfaceOnly",
   "image",
   "customContent",
-  // Boolean icon gates — playground uses string *IconName / iconName instead.
-  // Previews derive the boolean from a non-empty name (API still accepts both).
+  // Legacy boolean icon gates — no longer in the public API; skip if present.
   "startIcon",
   "endIcon",
 ]);
@@ -206,7 +205,7 @@ function groupForProp(prop: CadsPropDef): ControlGroup {
     if (GROUP_MEMBERS[group].includes(prop.name)) return group;
   }
   if (prop.name.startsWith("aria")) return "a11y";
-  // Icon names / glyphs are content; boolean gates (hasIcon, iconOnly) stay elsewhere.
+  // Icon names / glyphs are content; boolean gates (hasIcons, iconOnly, playground hasIcon) stay elsewhere.
   if (prop.name.toLowerCase().includes("icon")) return "content";
   if (prop.name === "defaultValue") return "value";
   if (prop.name.startsWith("default")) return "state";
@@ -316,6 +315,18 @@ export function playgroundExtraProps(
       },
     ];
   }
+  // Alert/Toast: playground gate for iconName={false} (default-on when omitted).
+  if (exportName === "Alert" || exportName === "Toast") {
+    return [
+      {
+        name: "hasIcon",
+        type: "boolean",
+        default: "true",
+        description:
+          "Show leading icon. Off maps to iconName={false} (MUI convention).",
+      },
+    ];
+  }
   return [];
 }
 
@@ -410,6 +421,7 @@ function isStringyType(type: string) {
     t === "string" ||
     t === "ReactNode" ||
     t === "FaIconName" ||
+    t.includes("FaIconName") ||
     t.startsWith("ReactNode") ||
     t.includes("CSS length") ||
     /\|\s*string\b/.test(t)
@@ -570,6 +582,9 @@ export function initialValues(
   }
   if (component.exportName === "Tooltip") {
     values.iconName = "";
+  }
+  if (component.exportName === "Alert" || component.exportName === "Toast") {
+    values.hasIcon = true;
   }
   if (component.exportName === "Dropdown") {
     values.role = values.role || "input";
@@ -777,8 +792,7 @@ function formatCodeObject(obj: CodeLiteral): string {
   return `{ ${parts.join(", ")} }`;
 }
 
-/**
- * Multi-line array prop for option/item sets, e.g.
+/** Multi-line array prop for option/item sets, e.g.
  * `options={[
  *     { value: "a", label: "A" },
  *   ]}`
@@ -790,31 +804,12 @@ function formatArrayProp(name: string, items: CodeLiteral[]): string {
   return `${name}={[\n${lines.join("\n")}\n  ]}`;
 }
 
-/** Icon boolean gates derived from string name fields for code output. */
-function derivedIconBooleans(
-  exportName: string,
-  values: Record<string, unknown>,
-): Record<string, boolean> {
-  const out: Record<string, boolean> = {};
-  if (exportName === "TextInput" || exportName === "Chip") {
-    out.startIcon = hasIconName(values.startIconName);
-    if (exportName === "Chip") {
-      out.endIcon = hasIconName(values.endIconName);
-    }
-  }
-  if (exportName === "Tooltip") {
-    out.startIcon = hasIconName(values.iconName);
-  }
-  return out;
-}
-
 export function propsToCode(
   exportName: string,
   values: Record<string, unknown>,
 ): string {
   const dropdownRole =
     exportName === "Dropdown" ? String(values.role ?? "input") : null;
-  const derivedIcons = derivedIconBooleans(exportName, values);
   const attrs: string[] = [];
   for (const [key, val] of Object.entries(values)) {
     // Continuous slider: empty step field → step={null} in the snippet.
@@ -841,7 +836,9 @@ export function propsToCode(
       key === "demoItemIcons" ||
       key === "optionEdits" ||
       key === "startIcon" ||
-      key === "endIcon"
+      key === "endIcon" ||
+      // Playground-only gate for Alert/Toast → emitted as iconName={false}.
+      key === "hasIcon"
     ) {
       continue;
     }
@@ -874,6 +871,14 @@ export function propsToCode(
     ) {
       continue;
     }
+    // Alert/Toast with hasIcon off: skip custom iconName (emitted as false below).
+    if (
+      (exportName === "Alert" || exportName === "Toast") &&
+      key === "iconName" &&
+      values.hasIcon === false
+    ) {
+      continue;
+    }
     if (
       exportName === "Dialog" &&
       key === "topIconName" &&
@@ -894,8 +899,11 @@ export function propsToCode(
     attrs.push(`${key}=${JSON.stringify(String(val))}`);
   }
 
-  for (const [key, enabled] of Object.entries(derivedIcons)) {
-    if (enabled) attrs.push(key);
+  if (
+    (exportName === "Alert" || exportName === "Toast") &&
+    values.hasIcon === false
+  ) {
+    attrs.push("iconName={false}");
   }
 
   if (exportName === "Button" && Boolean(values.iconOnly)) {
@@ -928,12 +936,11 @@ export function propsToCode(
     if (role === "action") {
       attrs.push(
         formatArrayProp("options", [
-          { value: "a", label: "Edit", startIcon: true, iconName: "pen" },
-          { value: "b", label: "Share", startIcon: true, iconName: "share" },
+          { value: "a", label: "Edit", iconName: "pen" },
+          { value: "b", label: "Share", iconName: "share" },
           {
             value: "c",
             label: "Delete",
-            startIcon: true,
             iconName: "trash",
             destructive: true,
           },
@@ -945,13 +952,11 @@ export function propsToCode(
           {
             value: "a",
             label: "Option A",
-            startIcon: true,
             iconName: "face-smile",
           },
           {
             value: "b",
             label: "Option B",
-            startIcon: true,
             iconName: "heart",
           },
         ]),
@@ -1197,19 +1202,6 @@ export function applyValueUpdate(
   // Password type is field-only; clear when switching to a multiline area.
   if (exportName === "TextInput" && name === "multiline" && next) {
     updated.type = "text";
-  }
-  // Keep derived icon booleans in sync for previews that still read them.
-  if (
-    (exportName === "TextInput" || exportName === "Chip") &&
-    name === "startIconName"
-  ) {
-    updated.startIcon = hasIconName(next);
-  }
-  if (exportName === "Chip" && name === "endIconName") {
-    updated.endIcon = hasIconName(next);
-  }
-  if (exportName === "Tooltip" && name === "iconName") {
-    updated.startIcon = hasIconName(next);
   }
   if (exportName === "Button" && name === "iconOnly" && next) {
     if (!iconNameValue(updated.iconName)) updated.iconName = "smile";

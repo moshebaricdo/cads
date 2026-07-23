@@ -14,7 +14,6 @@ export const cases: FixtureCase[] = [
         <Alert
           size="large"
           sentiment="brand"
-          hasIcon
           hasAction
           isDismissible
         >
@@ -30,7 +29,6 @@ export const cases: FixtureCase[] = [
         <Alert
           size="medium"
           sentiment="success"
-          hasIcon
           hasAction
           actionLabel="Button"
           isDismissible
@@ -44,7 +42,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 560, height: 90 },
       render: () => (
-        <Alert size="small" sentiment="error" hasIcon hasAction isDismissible>
+        <Alert size="small" sentiment="error" hasAction isDismissible>
           This is an alert.
         </Alert>
       ),
@@ -57,7 +55,6 @@ export const cases: FixtureCase[] = [
         <Alert
           size="extraSmall"
           sentiment="warning"
-          hasIcon
           hasAction
           isDismissible
         >
@@ -80,7 +77,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 560, height: 100 },
       render: () => (
-        <Alert size="medium" sentiment="pink" hasIcon hasAction>
+        <Alert size="medium" sentiment="pink" hasAction>
           This is an alert.
         </Alert>
       ),
@@ -93,7 +90,6 @@ export const cases: FixtureCase[] = [
         <Alert
           size="medium"
           sentiment="neutral"
-          hasIcon
           hasAction
           isDismissible
         >
@@ -109,7 +105,6 @@ export const cases: FixtureCase[] = [
         <Alert
           size="large"
           sentiment="brand"
-          hasIcon
           hasAction
           isDismissible
         >

@@ -35,7 +35,7 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
           name: "iconName",
           type: "FaIconName | string",
           description:
-            "Leading FA icon. Omit when unset. (API also accepts startIcon boolean.)",
+            "Leading FA icon. Omit when unset.",
         },
       ],
     },

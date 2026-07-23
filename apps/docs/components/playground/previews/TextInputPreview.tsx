@@ -27,7 +27,6 @@ export default function TextInputPreview({
             ? "password"
             : "text"
       }
-      startIcon={Boolean(startIconName) && !multiline}
       startIconName={
         (startIconName || undefined) as FaIconName | undefined
       }

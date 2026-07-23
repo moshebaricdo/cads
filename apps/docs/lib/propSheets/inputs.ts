@@ -97,7 +97,7 @@ const TEXT_INPUT_PROP_SHEETS: PropSheet[] = [
         name: "startIconName",
         type: "FaIconName",
         description:
-          "Leading FA icon. Field-only; omitted when unset or multiline. (API also accepts startIcon boolean.)",
+          "Leading FA icon. Field-only; omitted when unset or multiline.",
       },
       {
         name: "label",
@@ -508,12 +508,12 @@ const CHIP_PROP_SHEETS: PropSheet[] = [
       {
         name: "startIconName",
         type: "FaIconName",
-        description: "Leading FA icon. Omit when unset. (API also accepts startIcon boolean.)",
+        description: "Leading FA icon. Omit when unset.",
       },
       {
         name: "endIconName",
         type: "FaIconName",
-        description: "Trailing FA icon. Omit when unset. (API also accepts endIcon boolean.)",
+        description: "Trailing FA icon. Omit when unset.",
       },
       {
         name: "disabled",

@@ -39,12 +39,23 @@ function normalizePath(path: string | null): string {
   return path;
 }
 
+function readSidebarCollapsed(): boolean {
+  try {
+    return window.sessionStorage.getItem(SIDEBAR_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function DocsShell({ children }: { children: ReactNode }) {
   const pathname = normalizePath(usePathname());
   const [dark, setDark] = useState(false);
   const [search, setSearch] = useState("");
   const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
-  const [collapsed, setCollapsed] = useState(true);
+  /** Desktop collapsed preference. Null until session storage is read. */
+  const [collapsed, setCollapsed] = useState<boolean | null>(null);
+  /** Mobile overlay drawer — independent of the desktop preference. */
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const pathnameRef = useRef(pathname);
   const isCanvas =
@@ -56,7 +67,10 @@ export function DocsShell({ children }: { children: ReactNode }) {
   );
 
   const query = search.trim().toLowerCase();
-  const drawerOpen = isMobile && !collapsed;
+  const sidebarCollapsed = collapsed ?? false;
+  const drawerOpen = isMobile && mobileDrawerOpen;
+  // Mobile never uses collapsed chrome — drawer is always full labels when open.
+  const chromeCollapsed = isMobile ? false : sidebarCollapsed;
 
   const activeSectionId = useMemo(() => {
     for (const section of COMPONENT_SECTIONS) {
@@ -76,19 +90,18 @@ export function DocsShell({ children }: { children: ReactNode }) {
       /* storage unavailable */
     }
 
+    setCollapsed(readSidebarCollapsed());
+
     const mq = window.matchMedia(MOBILE_MQ);
+    let wasMobile = mq.matches;
     function syncViewport() {
       const mobile = mq.matches;
+      // Close the drawer only when crossing into the mobile breakpoint.
+      if (mobile && !wasMobile) {
+        setMobileDrawerOpen(false);
+      }
+      wasMobile = mobile;
       setIsMobile(mobile);
-      if (mobile) {
-        setCollapsed(true);
-        return;
-      }
-      try {
-        setCollapsed(window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1");
-      } catch {
-        setCollapsed(false);
-      }
     }
     syncViewport();
     mq.addEventListener("change", syncViewport);
@@ -105,30 +118,33 @@ export function DocsShell({ children }: { children: ReactNode }) {
     }
   }, [dark, isCanvas]);
 
+  // Persist only after hydration so the default never overwrites the session preference.
   useEffect(() => {
-    if (isCanvas || isMobile) return;
+    if (isCanvas || collapsed === null) return;
     try {
-      window.localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
+      window.sessionStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
     } catch {
       /* storage unavailable */
     }
-  }, [collapsed, isCanvas, isMobile]);
+  }, [collapsed, isCanvas]);
 
   useEffect(() => {
-    if (!activeSectionId || collapsed) return;
+    if (!activeSectionId || chromeCollapsed) return;
     setOpenSections((prev) =>
       prev[activeSectionId] ? prev : { ...prev, [activeSectionId]: true },
     );
-  }, [activeSectionId, collapsed]);
+  }, [activeSectionId, chromeCollapsed]);
 
   useEffect(() => {
-    if (query && collapsed) setCollapsed(false);
-  }, [query, collapsed]);
+    if (!query || isMobile || collapsed !== true) return;
+    // Wait for session preference before expanding so we don't clobber hydration.
+    setCollapsed(false);
+  }, [query, isMobile, collapsed]);
 
   // Close the mobile drawer after navigation (not on mobile breakpoint entry).
   useEffect(() => {
     if (isMobile && pathnameRef.current !== pathname) {
-      setCollapsed(true);
+      setMobileDrawerOpen(false);
     }
     pathnameRef.current = pathname;
   }, [pathname, isMobile]);
@@ -138,7 +154,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setCollapsed(true);
+      if (event.key === "Escape") setMobileDrawerOpen(false);
     }
     window.addEventListener("keydown", onKeyDown);
     return () => {
@@ -152,7 +168,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }
 
   function toggleSection(id: ComponentSectionId) {
-    if (collapsed) {
+    if (chromeCollapsed) {
       setCollapsed(false);
       setOpenSections((prev) => ({ ...prev, [id]: true }));
       return;
@@ -160,22 +176,26 @@ export function DocsShell({ children }: { children: ReactNode }) {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  function toggleSidebar() {
-    setCollapsed((value) => !value);
+  function toggleDesktopSidebar() {
+    setCollapsed((value) => !(value ?? false));
     queueMicrotask(() => {
       (document.activeElement as HTMLElement | null)?.blur?.();
     });
   }
 
+  function toggleMobileDrawer() {
+    setMobileDrawerOpen((value) => !value);
+  }
+
   function closeDrawer() {
-    setCollapsed(true);
+    setMobileDrawerOpen(false);
   }
 
   const brandLogos = (
     <>
       <Image
         src={withBasePath("/codeai-logo.svg")}
-        alt={collapsed ? "" : "CodeAI"}
+        alt={chromeCollapsed && !isMobile ? "" : "CodeAI"}
         width={128}
         height={22}
         className="docs-topbar-logo docs-topbar-logo--full"
@@ -206,12 +226,27 @@ export function DocsShell({ children }: { children: ReactNode }) {
     return !query || label.toLowerCase().includes(query);
   }
 
+  function renderSearchField() {
+    return (
+      <TextInput
+        size="extraSmall"
+        color="secondary"
+        startIconName="magnifying-glass"
+        placeholder="Search CADS"
+        showHelper={false}
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        aria-label="Search CADS"
+      />
+    );
+  }
+
   const resources = RESOURCES_NAV.filter((item) => matchesQuery(item.label));
   const foundations = FOUNDATIONS_NAV.filter((item) => matchesQuery(item.label));
-  // On mobile the in-flow rail stays collapsed-width; the drawer overlays at full width.
+  // Mobile: no in-flow rail. Desktop: honor collapsed preference.
   const layoutSidebarWidth = isMobile
-    ? SIDEBAR_COLLAPSED_WIDTH
-    : collapsed
+    ? 0
+    : sidebarCollapsed
       ? SIDEBAR_COLLAPSED_WIDTH
       : SIDEBAR_WIDTH;
   const shellStyle = {
@@ -223,13 +258,30 @@ export function DocsShell({ children }: { children: ReactNode }) {
   return (
     <div
       className="docs-shell"
-      data-sidebar={collapsed ? "collapsed" : "expanded"}
+      data-sidebar={
+        isMobile ? "expanded" : sidebarCollapsed ? "collapsed" : "expanded"
+      }
       data-mobile={isMobile ? "true" : undefined}
+      data-mobile-drawer={drawerOpen ? "open" : undefined}
       style={shellStyle}
     >
       <header className="docs-topbar">
+        <div className="docs-mobile-menu">
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="extraSmall"
+            iconOnly
+            startIconName="table-layout"
+            aria-label={drawerOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={drawerOpen}
+            aria-controls="docs-sidebar"
+            onClick={toggleMobileDrawer}
+          />
+        </div>
+
         <div className="docs-topbar-brand-cell">
-          {collapsed || isMobile ? (
+          {chromeCollapsed ? (
             <div className="docs-topbar-brand" aria-hidden>
               {brandLogos}
             </div>
@@ -250,28 +302,45 @@ export function DocsShell({ children }: { children: ReactNode }) {
               size="extraSmall"
               iconOnly
               startIconName={
-                collapsed ? "arrow-right-from-line" : "arrow-left-from-line"
+                chromeCollapsed
+                  ? "arrow-right-from-line"
+                  : "arrow-left-from-line"
               }
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              aria-expanded={!collapsed}
-              onClick={toggleSidebar}
+              aria-label={
+                chromeCollapsed ? "Expand sidebar" : "Collapse sidebar"
+              }
+              aria-expanded={!chromeCollapsed}
+              onClick={toggleDesktopSidebar}
             />
           </div>
         </div>
 
         <div className="docs-topbar-main">
-          <div className="docs-search">
-            <TextInput
-              size="extraSmall"
-              color="secondary"
-              startIcon
-              startIconName="magnifying-glass"
-              placeholder="Search CADS"
-              showHelper={false}
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              aria-label="Search CADS"
+          <Link
+            href="/"
+            className="docs-topbar-brand docs-topbar-brand--mobile"
+            aria-label="CodeAI home"
+          >
+            <Image
+              src={withBasePath("/codeai-mark-light.png")}
+              alt=""
+              width={24}
+              height={24}
+              className="docs-topbar-logo docs-topbar-logo--favicon docs-topbar-logo--mark-light"
+              priority
             />
+            <Image
+              src={withBasePath("/codeai-mark-dark.png")}
+              alt=""
+              width={24}
+              height={24}
+              className="docs-topbar-logo docs-topbar-logo--favicon docs-topbar-logo--mark-dark"
+              priority
+            />
+          </Link>
+
+          <div className="docs-search docs-search--topbar">
+            {renderSearchField()}
           </div>
 
           <div className="docs-topbar-right">
@@ -302,6 +371,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
         <div className="docs-sidebar-slot">
           <aside
+            id="docs-sidebar"
             className="docs-sidebar"
             style={{
               top: TOPBAR_HEIGHT,
@@ -310,7 +380,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           >
             <div className="docs-sidebar-scroll">
               {resources.length > 0 ? (
-                <DocsNavSection label="Resources" collapsed={collapsed}>
+                <DocsNavSection label="Resources" collapsed={chromeCollapsed}>
                   {resources.map((item) => (
                     <DocsNavItem
                       key={item.href}
@@ -318,14 +388,14 @@ export function DocsShell({ children }: { children: ReactNode }) {
                       label={item.label}
                       iconName={item.iconName}
                       active={pathname === item.href}
-                      collapsed={collapsed}
+                      collapsed={chromeCollapsed}
                     />
                   ))}
                 </DocsNavSection>
               ) : null}
 
               {foundations.length > 0 ? (
-                <DocsNavSection label="Foundations" collapsed={collapsed}>
+                <DocsNavSection label="Foundations" collapsed={chromeCollapsed}>
                   {foundations.map((item) => (
                     <DocsNavItem
                       key={item.href}
@@ -333,16 +403,17 @@ export function DocsShell({ children }: { children: ReactNode }) {
                       label={item.label}
                       iconName={item.iconName}
                       active={pathname === item.href}
-                      collapsed={collapsed}
+                      collapsed={chromeCollapsed}
                     />
                   ))}
                 </DocsNavSection>
               ) : null}
 
-              <DocsNavSection label="Components" collapsed={collapsed}>
+              <DocsNavSection label="Components" collapsed={chromeCollapsed}>
                 {COMPONENT_SECTIONS.map((section) => {
                   const open =
-                    !collapsed && (openSections[section.id] || Boolean(query));
+                    !chromeCollapsed &&
+                    (openSections[section.id] || Boolean(query));
                   const visibleItems = section.items.filter((item) => {
                     if (
                       !matchesQuery(item.label) &&
@@ -371,7 +442,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                         iconName={section.iconName}
                         active={sectionActive}
                         expanded={open}
-                        collapsed={collapsed}
+                        collapsed={chromeCollapsed}
                         onClick={() => toggleSection(section.id)}
                       />
                       {open ? (
@@ -399,6 +470,8 @@ export function DocsShell({ children }: { children: ReactNode }) {
                 })}
               </DocsNavSection>
             </div>
+
+            <div className="docs-sidebar-search">{renderSearchField()}</div>
           </aside>
         </div>
 

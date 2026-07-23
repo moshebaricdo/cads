@@ -27,6 +27,7 @@ export default function ButtonPreview({
       iconOnly={iconOnly}
       startIconName={(startIcon || undefined) as FaIconName | undefined}
       endIconName={(endIcon || undefined) as FaIconName | undefined}
+      loading={Boolean(v.loading)}
       disabled={Boolean(v.disabled)}
       fullWidth={Boolean(v.fullWidth)}
       aria-label={iconOnly ? iconName : undefined}

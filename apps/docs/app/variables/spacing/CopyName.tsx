@@ -39,7 +39,6 @@ export function CopyName({
       title={copied ? "Copied" : "\u200B Copy"}
       hasCaret={false}
       placement={placement}
-      startIcon
       iconName={copied ? "check" : "copy"}
     >
       <button

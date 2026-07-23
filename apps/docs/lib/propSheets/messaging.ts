@@ -22,15 +22,10 @@ const ALERT_PROP_SHEETS: PropSheet[] = [
         description: "Inline message body.",
       },
       {
-        name: "hasIcon",
-        type: "boolean",
-        default: "true",
-        description: "Show leading status icon.",
-      },
-      {
         name: "iconName",
-        type: "FaIconName",
-        description: "Override default sentiment icon.",
+        type: "FaIconName | false",
+        description:
+          "Leading icon. Omit for sentiment default; false hides the icon; string overrides.",
       },
       {
         name: "hasAction",
@@ -96,15 +91,10 @@ const TOAST_PROP_SHEETS: PropSheet[] = [
         description: "Brief notification message.",
       },
       {
-        name: "hasIcon",
-        type: "boolean",
-        default: "true",
-        description: "Show leading status icon.",
-      },
-      {
         name: "iconName",
-        type: "FaIconName",
-        description: "Override default sentiment icon.",
+        type: "FaIconName | false",
+        description:
+          "Leading icon. Omit for sentiment default; false hides the icon; string overrides.",
       },
       {
         name: "hasAction",

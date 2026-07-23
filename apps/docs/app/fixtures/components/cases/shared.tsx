@@ -16,19 +16,16 @@ export const ICON_OPTIONS: DropdownOption[] = [
   {
     value: "a",
     label: "Option A",
-    startIcon: true,
     iconName: "face-smile" as FaIconName,
   },
   {
     value: "b",
     label: "Option B",
-    startIcon: true,
     iconName: "heart" as FaIconName,
   },
   {
     value: "c",
     label: "Option C",
-    startIcon: true,
     iconName: "star" as FaIconName,
   },
 ];
@@ -37,19 +34,16 @@ export const ACTION_OPTIONS: DropdownOption[] = [
   {
     value: "edit",
     label: "Edit",
-    startIcon: true,
     iconName: "pen" as FaIconName,
   },
   {
     value: "share",
     label: "Share",
-    startIcon: true,
     iconName: "share" as FaIconName,
   },
   {
     value: "delete",
     label: "Delete",
-    startIcon: true,
     iconName: "trash" as FaIconName,
     destructive: true,
   },

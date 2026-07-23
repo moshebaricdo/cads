@@ -20,7 +20,6 @@ export default function TooltipPreview({
         (v.placement as NonNullable<TooltipProps["placement"]>) ?? "bottom"
       }
       hasCaret={v.hasCaret !== false}
-      startIcon={Boolean(iconName)}
       iconName={(iconName || undefined) as FaIconName | undefined}
     >
       <Button size="medium">Hover me</Button>

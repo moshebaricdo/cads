@@ -20,8 +20,6 @@ export default function ChipPreview({
       labelStyle={v.labelStyle as "thick" | "thin" | undefined}
       label={String(v.label ?? "Chips")}
       selected={Boolean(v.selected)}
-      startIcon={Boolean(startIconName)}
-      endIcon={Boolean(endIconName)}
       startIconName={
         (startIconName || undefined) as FaIconName | undefined
       }

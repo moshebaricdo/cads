@@ -11,7 +11,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="primary" hasIcon hasAction isDismissible>
+        <Toast sentiment="primary" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -21,7 +21,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="success" hasIcon hasAction isDismissible>
+        <Toast sentiment="success" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -31,7 +31,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="error" hasIcon hasAction isDismissible>
+        <Toast sentiment="error" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -41,7 +41,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="warning" hasIcon isDismissible>
+        <Toast sentiment="warning" isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -51,7 +51,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="info" hasIcon hasAction isDismissible={false}>
+        <Toast sentiment="info" hasAction isDismissible={false}>
           This is a toast.
         </Toast>
       ),
@@ -61,7 +61,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="pink" hasIcon hasAction isDismissible>
+        <Toast sentiment="pink" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -71,7 +71,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="neutral" hasIcon hasAction isDismissible>
+        <Toast sentiment="neutral" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),
@@ -81,7 +81,7 @@ export const cases: FixtureCase[] = [
       mode: "dark",
       viewport: { width: 360, height: 100 },
       render: () => (
-        <Toast sentiment="primary" hasIcon hasAction isDismissible>
+        <Toast sentiment="primary" hasAction isDismissible>
           This is a toast.
         </Toast>
       ),

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import colorSystemJson from "@codeai/cads-variables/data/color-system.json";
 import { Tabs } from "@codeai/cads-react";
 import styles from "../FoundationPage.module.css";
@@ -14,11 +14,15 @@ type PrimitiveFamily = {
   steps: { id: string; step: string; hex: string }[];
 };
 
+type ThemeKey = "light" | "dark";
+
 type Semantic = {
   id: string;
   surface: "background" | "text" | "borders";
   familyKey: string;
   role: string;
+  ref: Record<ThemeKey, string | null>;
+  fallbackHex: Record<ThemeKey, string>;
 };
 
 const colorSystem = colorSystemJson as {
@@ -37,6 +41,15 @@ const colorSystem = colorSystemJson as {
 /** Matches `semanticExportVarName` in `@codeai/cads-variables`. */
 const FLAT_SUBGROUPS = new Set(["sentiment", "state"]);
 const SINGLE_FAMILY_SUBGROUPS = new Set(["brand"]);
+
+const STEP_BY_ID = new Map(
+  colorSystem.families.flatMap((family) =>
+    family.steps.map(
+      (step) =>
+        [step.id, { step: step.step, familyId: family.id }] as const,
+    ),
+  ),
+);
 
 function slugify(value: string) {
   return (
@@ -78,16 +91,56 @@ function cssName(semantic: Semantic) {
   return parts.join("-");
 }
 
+function stepFromRef(refId: string | null | undefined): string | undefined {
+  if (!refId) return undefined;
+  return STEP_BY_ID.get(refId)?.step;
+}
+
+function inkSchemeForFamilyId(
+  familyId: string | undefined,
+): "ramp" | "black-alpha" | "white-alpha" {
+  if (familyId?.includes("white-alpha")) return "white-alpha";
+  if (familyId?.includes("black-alpha")) return "black-alpha";
+  return "ramp";
+}
+
+function inkSchemeFromRef(
+  refId: string | null | undefined,
+): "ramp" | "black-alpha" | "white-alpha" {
+  if (!refId) return "ramp";
+  return inkSchemeForFamilyId(STEP_BY_ID.get(refId)?.familyId);
+}
+
+function useDocsTheme(): ThemeKey {
+  const [theme, setTheme] = useState<ThemeKey>("light");
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () =>
+      setTheme(root.classList.contains("dark") ? "dark" : "light");
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return theme;
+}
+
 function Range({
   name,
   swatches,
+  theme,
 }: {
   name: string;
+  theme: ThemeKey;
   swatches: {
     id: string;
     color: string;
     tooltip: string;
     copyValue: string;
+    step?: string;
+    inkScheme?: "ramp" | "black-alpha" | "white-alpha";
   }[];
 }) {
   return (
@@ -103,6 +156,9 @@ function Range({
             color={swatch.color}
             label={swatch.tooltip}
             copyValue={swatch.copyValue}
+            step={swatch.step}
+            inkScheme={swatch.inkScheme}
+            theme={theme}
           />
         ))}
       </div>
@@ -137,32 +193,42 @@ function CollectionTabs({
 }
 
 export function ColorPageContent() {
-  const primitiveItems = colorSystem.collections
-    .map((collection) => {
-      const familyOrder =
-        colorSystem.primitiveFamilyOrders[collection.id] ?? [];
-      const families = familyOrder
-        .map((id) => colorSystem.families.find((family) => family.id === id))
-        .filter((family): family is PrimitiveFamily => Boolean(family));
-      if (!families.length) return null;
-      return { collection, families };
-    })
-    .filter(
-      (
-        item,
-      ): item is {
-        collection: (typeof colorSystem.collections)[number];
-        families: PrimitiveFamily[];
-      } => Boolean(item),
-    );
+  const theme = useDocsTheme();
 
-  const semanticItems = colorSystem.semanticCollections.map((collection) => {
-    const orderEntries = Object.entries(
-      colorSystem.semanticFamilyOrders,
-    ).filter(([key]) => key.startsWith(`${collection.id}::`));
-    const familyKeys = orderEntries.flatMap(([, keys]) => keys);
-    return { collection, familyKeys };
-  });
+  const primitiveItems = useMemo(
+    () =>
+      colorSystem.collections
+        .map((collection) => {
+          const familyOrder =
+            colorSystem.primitiveFamilyOrders[collection.id] ?? [];
+          const families = familyOrder
+            .map((id) => colorSystem.families.find((family) => family.id === id))
+            .filter((family): family is PrimitiveFamily => Boolean(family));
+          if (!families.length) return null;
+          return { collection, families };
+        })
+        .filter(
+          (
+            item,
+          ): item is {
+            collection: (typeof colorSystem.collections)[number];
+            families: PrimitiveFamily[];
+          } => Boolean(item),
+        ),
+    [],
+  );
+
+  const semanticItems = useMemo(
+    () =>
+      colorSystem.semanticCollections.map((collection) => {
+        const orderEntries = Object.entries(
+          colorSystem.semanticFamilyOrders,
+        ).filter(([key]) => key.startsWith(`${collection.id}::`));
+        const familyKeys = orderEntries.flatMap(([, keys]) => keys);
+        return { collection, familyKeys };
+      }),
+    [],
+  );
 
   return (
     <>
@@ -194,11 +260,14 @@ export function ColorPageContent() {
                   <Range
                     key={family.id}
                     name={family.name}
+                    theme={theme}
                     swatches={family.steps.map((step) => ({
                       id: step.id,
                       color: step.hex,
-                      tooltip: `${step.step} · ${step.hex}`,
+                      tooltip: step.hex,
                       copyValue: step.hex,
+                      step: step.step,
+                      inkScheme: inkSchemeForFamilyId(family.id),
                     }))}
                   />
                 )),
@@ -257,14 +326,18 @@ export function ColorPageContent() {
                     <Range
                       key={`${collection.id}-${familyKey}`}
                       name={familyName}
+                      theme={theme}
                       swatches={semantics.map((semantic) => {
                         const name = cssName(semantic);
                         const varName = `--${name}`;
+                        const refId = semantic.ref[theme];
                         return {
                           id: semantic.id,
                           color: `var(${varName})`,
                           tooltip: varName,
                           copyValue: varName,
+                          step: stepFromRef(refId),
+                          inkScheme: inkSchemeFromRef(refId),
                         };
                       })}
                     />

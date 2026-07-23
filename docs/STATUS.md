@@ -1,6 +1,6 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-22
+Last updated: 2026-07-23
 
 ## Done (scaffold complete)
 
@@ -8,6 +8,7 @@ Last updated: 2026-07-22
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
 - [x] Color CSS vars use semantic names **without** `--ds-` prefix (e.g. `--background-brand-primary`)
 - [x] `@codeai/cads-react` — Figma-parity Actions: Button, SegmentedButton, IconToggle (+ labeled); FieldWrapper, TextInput (+ deprecated TextField alias), Dropdown (input/action); Checkbox, Radio, Toggle; Slider, Chip, ChipGroup; Alert, Toast, NotificationBanner, Tag; Link, Breadcrumbs, Tabs; **Tooltip**, **Popover**, **Drawer**, **Dialog**, **Modal**; plus FaIcon (solid/regular/brands)
+- [x] **Icon boolean → presence API (2026-07-23)** — collapsed Figma show/hide booleans into optional `*IconName` / `iconName` on TextInput, Chip/ChipGroup, Tooltip, Dropdown items (same pattern as Button/Tag). Alert/Toast use MUI-style `iconName={false}` to hide (omit = sentiment default). Toggle `hasIcons` kept (dual track icon defaults).
 - [x] **TextInput start icon (2026-07-21)** — Figma building-block `startIcon` + `startIconName` (field-only); see evidence summary below
 - [x] **Toggle compact + hasIcons (2026-07-21)** — track heights match Checkbox/Radio (22/20/18/16); new `hasIcons` boolean; see evidence summary below
 - [x] Shared control size scale: `large` | `medium` | `small` | `extraSmall` (Link also `extraExtraSmall`)
@@ -39,6 +40,8 @@ Last updated: 2026-07-22
 - [x] **Docs foundations pass (2026-07-21)** — Color condensed into one-line primitive and current-theme semantic ramps; Shape now owns radii, elevation, and spacing; Motion is a focused, explicitly experimental duration/easing standard.
 - [x] **Color CSS exporter (2026-07-21)** — Lab2 prod-shaped export (`primitiveColors.css` + `colors.css` with `data-theme`) ported into `@codeai/cads-variables` (`buildPrimitiveColorsCss` / `buildSemanticColorsCss`); Color page exports each file from its section (no zip). Header links to CADS Figma Color + production `component-library-styles`.
 - [x] **Typography foundation cleanup (2026-07-21)** — Matches Color page template: `FoundationHeader` → sections → foundation pagination. Text styles tabbed to match Figma Typography page (Heading / Body / Overline / Label / Link / Mono — all published styles), divider list with no card surfaces, families table last. Shared `.dividedList` in `FoundationPage.module.css`. Shape + Motion still on card surfaces — same template pass next.
+- [x] **Color variables sync with Figma (2026-07-23)** — Live Figma Semantic Colors = 148 (matches Lab2 Jul 21 sync). Promoted `codeAiColorSystem.json` + `figmaVariablesSnapshot.json`; renamed `text/accent/{pink,orange}/strong` → `secondary` (`--text-accent-*-secondary`); added `--border-neutral-black-fixed` / `--border-neutral-white-fixed`. Follow-up: remapped `text/brand/secondary` Light `purple/70` → `purple/90` (`#1D1590`) after live mapping audit (missed by snapshot/Lab2 promotion). Skill now requires second-pass live alias audit + LLM-as-judge spot-check. Exporter already supported roles; docs Color page + CSS export buttons read regenerated JSON. New agent skill: `.cursor/skills/cads-figma-color-sync`.
+- [x] **Neutral gray hex refresh (2026-07-23)** — Live `use_figma` audit: `neutral/gray/10` `#DBDDE2` → `#E1E3E6`, `gray/20` `#CCD1D7` → `#D3D6DA`; updated 9 semantic `fallbackHex` consumers + theme divider fallback; second-pass mapping audit **0 / 0 / 0**; high-risk spot-check clean.
 
 ## Toggle compact + hasIcons — evidence summary
 

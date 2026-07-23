@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@codeai/cads-react";
+import { Button, Link } from "@codeai/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 import overviewStyles from "@/components/ComponentOverview.module.css";
 import { withBasePath } from "@/lib/basePath";
@@ -71,10 +71,21 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           ChatGPT
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Skills have been buried a bit in ChatGPT, the easiest way is to navigate to  
-          <a href="https://chatgpt.com/skills" target="_blank" rel="noopener noreferrer"> chatgpt.com/skills</a> directly. 
-          There you can upload the zip and add it as a reusable skill. ChatGPT will prompt you to test it out.
-       </p>
+          Skills have been buried a bit in ChatGPT, the easiest way is to
+          navigate to{" "}
+          <Link
+            href="https://chatgpt.com/skills"
+            size="small"
+            type="primary"
+            isExternal
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            chatgpt.com/skills
+          </Link>{" "}
+          directly. There you can upload the zip and add it as a reusable skill.
+          ChatGPT will prompt you to test it out.
+        </p>
       </section>
 
       <section className={styles.section} aria-labelledby="gemini">

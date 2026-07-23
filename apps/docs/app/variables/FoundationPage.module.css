@@ -140,7 +140,11 @@
 }
 
 .swatch {
+  position: relative;
+  display: inline-flex;
   flex: 0 0 56px;
+  align-items: center;
+  justify-content: center;
   width: 56px;
   height: 56px;
   padding: 0;
@@ -158,6 +162,22 @@
 .swatch:focus-visible {
   outline: 2px solid var(--border-focused-primary);
   outline-offset: 2px;
+}
+
+.swatchStep {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  color: var(--swatch-step-ink, #000000);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-short) var(--easing-standard);
+}
+
+.swatch:hover .swatchStep,
+.swatch:focus-visible .swatchStep {
+  opacity: 1;
 }
 
 .specimen {

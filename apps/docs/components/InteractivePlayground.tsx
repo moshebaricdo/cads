@@ -123,7 +123,7 @@ export function InteractivePlayground({
                     name: "demoItemIcons",
                     type: "boolean",
                     description:
-                      "Preview options with startIcon + iconName (otherwise text-only + group + separator)",
+                      "Preview options with iconName (otherwise text-only + group + separator)",
                   }}
                   value={values.demoItemIcons}
                   onChange={(next) =>

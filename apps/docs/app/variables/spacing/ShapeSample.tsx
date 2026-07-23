@@ -38,8 +38,7 @@ export function ShapeSample({
       title={copied ? "Copied" : label}
       hasCaret={false}
       placement="top"
-      startIcon={copied}
-      iconName="check"
+      iconName={copied ? "check" : undefined}
     >
       <button
         type="button"

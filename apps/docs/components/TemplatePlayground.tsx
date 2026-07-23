@@ -169,7 +169,6 @@ export function TemplatePlayground({
             edits.disabled ?? item.getAttribute("aria-disabled"),
           ),
           iconName,
-          startIcon: Boolean(edits.startIcon ?? iconName),
         },
       });
       return;
@@ -195,9 +194,6 @@ export function TemplatePlayground({
   const setNestedValue = (name: string, next: unknown) => {
     if (!selection) return;
     const patch: Record<string, unknown> = { [name]: next };
-    if (name === "iconName") {
-      patch.startIcon = Boolean(String(next ?? "").trim());
-    }
     setSelection((prev) =>
       prev ? { ...prev, values: { ...prev.values, ...patch } } : prev,
     );

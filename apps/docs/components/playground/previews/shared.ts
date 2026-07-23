@@ -16,19 +16,16 @@ export const DEMO_DROPDOWN_ICON_OPTIONS = [
   {
     value: "a",
     label: "Option A",
-    startIcon: true,
     iconName: "face-smile" as FaIconName,
   },
   {
     value: "b",
     label: "Option B",
-    startIcon: true,
     iconName: "heart" as FaIconName,
   },
   {
     value: "c",
     label: "Option C",
-    startIcon: true,
     iconName: "star" as FaIconName,
   },
 ];
@@ -38,25 +35,21 @@ export const DEMO_DROPDOWN_ACTION_OPTIONS = [
   {
     value: "a",
     label: "Option A",
-    startIcon: true,
     iconName: "face-smile" as FaIconName,
   },
   {
     value: "b",
     label: "Option B",
-    startIcon: true,
     iconName: "heart" as FaIconName,
   },
   {
     value: "c",
     label: "Option C",
-    startIcon: true,
     iconName: "star" as FaIconName,
   },
   {
     value: "danger",
     label: "Delete",
-    startIcon: true,
     iconName: "trash" as FaIconName,
     destructive: true,
   },

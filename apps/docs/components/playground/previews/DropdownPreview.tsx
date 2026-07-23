@@ -15,7 +15,6 @@ type OptionEdit = {
   label?: string;
   value?: string;
   disabled?: boolean;
-  startIcon?: boolean;
   iconName?: string;
 };
 
@@ -28,16 +27,13 @@ function applyOptionEdits(
     const edit = edits[opt.value];
     if (!edit) return opt;
     const iconName =
-      (edit.iconName as FaIconName | undefined) ?? opt.iconName;
+      edit.iconName != null
+        ? String(edit.iconName).trim() || undefined
+        : opt.iconName;
     return {
       ...opt,
       ...edit,
-      iconName,
-      startIcon:
-        edit.startIcon ??
-        (edit.iconName != null
-          ? Boolean(String(edit.iconName).trim())
-          : opt.startIcon),
+      iconName: iconName as FaIconName | undefined,
     };
   });
 }

@@ -16,7 +16,7 @@ export const cases: FixtureCase[] = [
           <Tooltip
             title="Tooltip"
             placement="bottom"
-            startIcon
+            iconName="face-smile"
             open
             disableInteractive
             slotProps={{ popper: { disablePortal: true } }}
@@ -52,7 +52,7 @@ export const cases: FixtureCase[] = [
           <Tooltip
             title="Tooltip"
             placement="right"
-            startIcon
+            iconName="face-smile"
             open
             slotProps={{ popper: { disablePortal: true } }}
           >
@@ -70,7 +70,7 @@ export const cases: FixtureCase[] = [
           <Tooltip
             title="Tooltip"
             placement="left"
-            startIcon
+            iconName="face-smile"
             open
             slotProps={{ popper: { disablePortal: true } }}
           >
@@ -90,6 +90,25 @@ export const cases: FixtureCase[] = [
             placement="bottom"
             hasCaret={false}
             open
+            slotProps={{ popper: { disablePortal: true } }}
+          >
+            <Button size="small">Target</Button>
+          </Tooltip>
+        </div>
+      ),
+    },
+    {
+      id: "tooltip-long-text-icon-light",
+      mode: "light",
+      viewport: { width: 320, height: 200 },
+      render: () => (
+        <div style={{ paddingBottom: 120, textAlign: "center" }}>
+          <Tooltip
+            title="This is a longer tooltip label that should wrap within the 256px max width while keeping the icon aligned to the first line."
+            placement="bottom"
+            iconName="face-smile"
+            open
+            disableInteractive
             slotProps={{ popper: { disablePortal: true } }}
           >
             <Button size="small">Target</Button>

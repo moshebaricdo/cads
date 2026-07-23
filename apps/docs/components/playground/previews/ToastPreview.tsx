@@ -12,6 +12,10 @@ export default function ToastPreview({
   const iconName = String(v.iconName ?? "").trim();
   const actionStart = String(v.actionStartIconName ?? "").trim();
   const actionEnd = String(v.actionEndIconName ?? "").trim();
+  const resolvedIconName =
+    v.hasIcon === false
+      ? false
+      : ((iconName || undefined) as FaIconName | undefined);
   return (
     <Toast
       sentiment={
@@ -25,8 +29,7 @@ export default function ToastPreview({
           | "neutral"
           | undefined
       }
-      hasIcon={v.hasIcon !== false}
-      iconName={(iconName || undefined) as FaIconName | undefined}
+      iconName={resolvedIconName}
       hasAction={Boolean(v.hasAction)}
       actionLabel={String(v.actionLabel || "Button")}
       actionStartIconName={

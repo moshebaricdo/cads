@@ -123,7 +123,6 @@ export const cases: FixtureCase[] = [
         <TextInput
           size="large"
           color="primary"
-          startIcon
           startIconName="face-smile"
           label="Field label"
           helperText="Helper text"
@@ -140,7 +139,6 @@ export const cases: FixtureCase[] = [
         <TextInput
           size="medium"
           color="primary"
-          startIcon
           startIconName="face-smile"
           label="Field label"
           defaultValue="Filled text"
@@ -157,7 +155,6 @@ export const cases: FixtureCase[] = [
         <TextInput
           size="extraSmall"
           color="primary"
-          startIcon
           startIconName="face-smile"
           label="Field label"
           placeholder="Placeholder"
@@ -174,7 +171,6 @@ export const cases: FixtureCase[] = [
         <TextInput
           size="large"
           color="secondary"
-          startIcon
           startIconName="face-smile"
           label="Field label"
           helperText="Helper text"
