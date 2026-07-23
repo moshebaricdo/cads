@@ -10,26 +10,53 @@ export const cases: FixtureCase[] = [
       id: "tag-large-neutral-light",
       mode: "light",
       viewport: { width: 200, height: 80 },
-      render: () => <Tag size="large" color="neutral" label="Tag" startIcon />,
+      render: () => (
+        <Tag
+          size="large"
+          color="neutral"
+          label="Tag"
+          startIconName="face-smile"
+        />
+      ),
     },
     {
       id: "tag-medium-brand-light",
       mode: "light",
       viewport: { width: 200, height: 80 },
-      render: () => <Tag size="medium" color="brand" label="Tag" startIcon />,
+      render: () => (
+        <Tag
+          size="medium"
+          color="brand"
+          label="Tag"
+          startIconName="face-smile"
+        />
+      ),
     },
     {
       id: "tag-small-success-light",
       mode: "light",
       viewport: { width: 200, height: 80 },
-      render: () => <Tag size="small" color="success" label="Tag" startIcon />,
+      render: () => (
+        <Tag
+          size="small"
+          color="success"
+          label="Tag"
+          startIconName="face-smile"
+        />
+      ),
     },
     {
       id: "tag-large-pink-light",
       mode: "light",
       viewport: { width: 220, height: 80 },
       render: () => (
-        <Tag size="large" color="pink" label="Tag" startIcon isDismissible />
+        <Tag
+          size="large"
+          color="pink"
+          label="Tag"
+          startIconName="face-smile"
+          isDismissible
+        />
       ),
     },
     {
@@ -41,7 +68,7 @@ export const cases: FixtureCase[] = [
           size="medium"
           color="orange"
           label="Tag"
-          startIcon
+          startIconName="face-smile"
           isDismissible
         />
       ),
@@ -51,21 +78,32 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 220, height: 80 },
       render: () => (
-        <Tag size="large" color="error" label="Tag" startIcon endIcon />
+        <Tag
+          size="large"
+          color="error"
+          label="Tag"
+          startIconName="face-smile"
+          endIconName="face-smile"
+        />
       ),
     },
     {
       id: "tag-medium-warning-light",
       mode: "light",
       viewport: { width: 200, height: 80 },
-      render: () => (
-        <Tag size="medium" color="warning" label="Tag" startIcon={false} />
-      ),
+      render: () => <Tag size="medium" color="warning" label="Tag" />,
     },
     {
       id: "tag-large-info-dark",
       mode: "dark",
       viewport: { width: 200, height: 80 },
-      render: () => <Tag size="large" color="info" label="Tag" startIcon />,
+      render: () => (
+        <Tag
+          size="large"
+          color="info"
+          label="Tag"
+          startIconName="face-smile"
+        />
+      ),
     },
   ];

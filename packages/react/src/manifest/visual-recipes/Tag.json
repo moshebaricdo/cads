@@ -110,7 +110,7 @@
         "props": {
           "size": "large",
           "color": "neutral",
-          "startIcon": true
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -140,7 +140,7 @@
         "props": {
           "size": "medium",
           "color": "brand",
-          "startIcon": true
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -168,7 +168,7 @@
         "props": {
           "size": "small",
           "color": "success",
-          "startIcon": true
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -196,8 +196,8 @@
         "props": {
           "size": "large",
           "color": "pink",
-          "startIcon": true,
-          "isDismissible": true
+          "isDismissible": true,
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -223,8 +223,8 @@
         "props": {
           "size": "medium",
           "color": "orange",
-          "startIcon": true,
-          "isDismissible": true
+          "isDismissible": true,
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -250,8 +250,8 @@
         "props": {
           "size": "large",
           "color": "error",
-          "startIcon": true,
-          "endIcon": true
+          "startIconName": "face-smile",
+          "endIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -276,8 +276,7 @@
         "mode": "light",
         "props": {
           "size": "medium",
-          "color": "warning",
-          "startIcon": false
+          "color": "warning"
         },
         "state": "default",
         "viewport": {
@@ -303,7 +302,7 @@
         "props": {
           "size": "large",
           "color": "info",
-          "startIcon": true
+          "startIconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -323,7 +322,24 @@
       }
     ]
   },
-  "acceptedDifferences": [],
+  "acceptedDifferences": [
+    {
+      "figmaBehavior": "Boolean startIcon (default true) and endIcon (default false) gate icon visibility alongside startIconName/endIconName text props.",
+      "codeBehavior": "Icons render only when startIconName / endIconName are set; unset means no icon. No separate boolean props.",
+      "reason": "Code-idiomatic API \u2014 presence of the icon name replaces Figma\u2019s design-tool boolean toggle.",
+      "decisionSource": "agent 2026-07-23 (user request)",
+      "affectedCases": [
+        "tag-large-neutral-light",
+        "tag-medium-brand-light",
+        "tag-small-success-light",
+        "tag-large-pink-light",
+        "tag-medium-orange-light",
+        "tag-large-error-light",
+        "tag-medium-warning-light",
+        "tag-large-info-dark"
+      ]
+    }
+  ],
   "evidence": {
     "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (2026-07-17)",
     "typecheck": "pnpm typecheck \u2192 pass",

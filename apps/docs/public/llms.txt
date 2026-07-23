@@ -633,16 +633,15 @@ Props:
 - `color`: "neutral" | "brand" | "pink" | "orange" | "success" | "error" | "warning" | "info" (default "neutral")
 - `size`: "large" | "medium" | "small" (default "large")
 - `label`: ReactNode
-- `startIcon`: boolean (default true)
-- `endIcon`: boolean (default false)
-- `startIconName`: FaIconName
-- `endIconName`: FaIconName
+- `startIconName`: FaIconName — Leading FA icon. Omit for no start icon (Figma boolean startIcon collapsed into presence of this prop).
+- `endIconName`: FaIconName — Trailing FA icon. Omit for no end icon (Figma boolean endIcon collapsed into presence of this prop).
 - `isDismissible`: boolean (default false)
 - `onClose`: () => void
 
 Usage rules:
 - Not the same as Chip (selectable). Use Tag for status/category labels.
 - Use semantic colors — do not invent custom hues.
+- Icons render only when startIconName / endIconName are set — there is no separate boolean gate.
 
 Example:
 ```tsx
@@ -658,7 +657,7 @@ Import: `import { Tooltip } from "@codeai/cads-react"`
 Props:
 - `title`: ReactNode [required]
 - `children`: ReactElement [required]
-- `caretPlacement`: "top" | "bottom" | "left" | "right" (default "top") — Caret edge on the bubble; also positions the tooltip relative to the trigger.
+- `placement`: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end" (default "bottom") — MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.
 - `hasCaret`: boolean (default true)
 - `startIcon`: boolean (default false)
 - `iconName`: FaIconName | string
@@ -666,11 +665,12 @@ Props:
 Usage rules:
 - Child must be able to hold a ref (forwardRef element).
 - Prefer supplementary hints — avoid sole source of critical info.
-- Use caretPlacement only — it both places the caret and positions the tooltip.
+- Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).
+- Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).
 
 Example:
 ```tsx
-<Tooltip title="Save" caretPlacement="top"><Button>Save</Button></Tooltip>
+<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>
 ```
 
 ### Popover

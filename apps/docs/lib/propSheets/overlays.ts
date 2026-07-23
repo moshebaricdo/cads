@@ -19,11 +19,11 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
           description: "Trigger element; must accept a ref.",
         },
         {
-          name: "caretPlacement",
-          type: '"top" | "bottom" | "left" | "right"',
-          default: '"top"',
+          name: "placement",
+          type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
+          default: '"bottom"',
           description:
-            "Caret edge on the bubble; also positions the tooltip relative to the trigger.",
+            "MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.",
         },
         {
           name: "hasCaret",

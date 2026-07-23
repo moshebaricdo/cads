@@ -19,14 +19,14 @@ interface TagProps {
     /** Figma `labelText`. */
     label?: ReactNode;
     /**
-     * @default true
+     * Leading FA icon. Omit for no start icon (Figma’s boolean `startIcon` is
+     * collapsed into presence of this prop).
      */
-    startIcon?: boolean;
-    /**
-     * @default false
-     */
-    endIcon?: boolean;
     startIconName?: FaIconName | (string & {});
+    /**
+     * Trailing FA icon. Omit for no end icon (Figma’s boolean `endIcon` is
+     * collapsed into presence of this prop).
+     */
     endIconName?: FaIconName | (string & {});
     /**
      * Figma `isDismissible`.

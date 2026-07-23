@@ -27,8 +27,6 @@ export default function TagPreview({
       }
       size={v.size as "large" | "medium" | "small" | undefined}
       label={String(v.label ?? "Tag")}
-      startIcon={Boolean(startIconName)}
-      endIcon={Boolean(endIconName)}
       startIconName={
         (startIconName || undefined) as FaIconName | undefined
       }

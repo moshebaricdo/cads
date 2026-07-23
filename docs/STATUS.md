@@ -213,7 +213,7 @@ Coverage: 5 + 5 + 4 + 5 + 5 = 24/24 recipe cases marked pass
    Dialog default/iconTop/customContent + dark;
    Modal default/verticalImage/horizontalImage + dark)
 Correction loop:
-  - Tooltip caretPlacement maps inverted to MUI placement (Figma caret edge ≠ anchor side)
+  - Tooltip uses MUI `placement` only (Figma caretPlacement maps inverted: Figma top → placement bottom)
   - Tooltip fixtures use disablePortal for capture; Dialog data-cads-component on paper
   - Added --radius-xl (12px) for Dialog/Modal Figma shape/xl
   - Scrim uses fixed black 80% (not theme-flipping --background-neutral-alpha-80)

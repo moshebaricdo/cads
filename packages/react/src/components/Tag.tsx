@@ -27,14 +27,14 @@ export interface TagProps {
   /** Figma `labelText`. */
   label?: ReactNode;
   /**
-   * @default true
+   * Leading FA icon. Omit for no start icon (Figma’s boolean `startIcon` is
+   * collapsed into presence of this prop).
    */
-  startIcon?: boolean;
-  /**
-   * @default false
-   */
-  endIcon?: boolean;
   startIconName?: FaIconName | (string & {});
+  /**
+   * Trailing FA icon. Omit for no end icon (Figma’s boolean `endIcon` is
+   * collapsed into presence of this prop).
+   */
   endIconName?: FaIconName | (string & {});
   /**
    * Figma `isDismissible`.
@@ -54,10 +54,8 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
     color = "neutral",
     size = "large",
     label = "Tag",
-    startIcon = true,
-    endIcon = false,
-    startIconName = "face-smile",
-    endIconName = "face-smile",
+    startIconName,
+    endIconName,
     isDismissible = false,
     onClose,
     className,
@@ -66,8 +64,10 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
 ) {
   const dims = TAG_SIZE[size];
   const chrome = messagingChrome(color);
-  const startName = resolveMessagingIconName(startIconName);
-  const endName = resolveMessagingIconName(endIconName);
+  const startName = startIconName
+    ? resolveMessagingIconName(startIconName)
+    : null;
+  const endName = endIconName ? resolveMessagingIconName(endIconName) : null;
 
   return (
     <Box
@@ -101,13 +101,13 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(function Tag(
           minWidth: 0,
         }}
       >
-        {startIcon ? (
+        {startName ? (
           <FaIcon name={startName} fontSize={dims.iconPx} aria-hidden />
         ) : null}
         <Box component="span" sx={{ minWidth: 0 }}>
           {label}
         </Box>
-        {endIcon ? (
+        {endName ? (
           <FaIcon name={endName} fontSize={dims.iconPx} aria-hidden />
         ) : null}
       </Box>

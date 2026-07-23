@@ -2104,24 +2104,14 @@
           "reason": "Maps Figma text property labelText."
         },
         {
-          "name": "startIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean startIcon."
-        },
-        {
-          "name": "endIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean endIcon."
-        },
-        {
           "name": "startIconName",
           "category": "content",
-          "reason": "Maps Figma text startIconName."
+          "reason": "Maps Figma text startIconName; presence replaces Figma boolean startIcon."
         },
         {
           "name": "endIconName",
           "category": "content",
-          "reason": "Maps Figma text endIconName."
+          "reason": "Maps Figma text endIconName; presence replaces Figma boolean endIcon."
         },
         {
           "name": "isDismissible",
@@ -2139,7 +2129,8 @@
       ],
       "escalate": [],
       "notes": [
-        "Replaced stub Tag tone API with Figma color axis (includes pink/orange)."
+        "Replaced stub Tag tone API with Figma color axis (includes pink/orange).",
+        "2026-07-23: Figma boolean startIcon/endIcon collapsed into presence of startIconName/endIconName (unset = no icon)."
       ]
     },
     {
@@ -2209,7 +2200,7 @@
       "escalate": [],
       "notes": [
         "Figma startIcon defaults true; code defaults false so short text tooltips stay compact unless opted in.",
-        "Single placement axis is caretPlacement (Figma); no separate MUI placement prop."
+        "Figma axis remains caretPlacement (four edges). Code API uses MUI placement only (Figma top → placement bottom; *-start/*-end pin caret near that edge)."
       ]
     },
     {

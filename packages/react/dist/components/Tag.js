@@ -10,18 +10,16 @@ const Tag = forwardRef(function Tag2({
   color = "neutral",
   size = "large",
   label = "Tag",
-  startIcon = true,
-  endIcon = false,
-  startIconName = "face-smile",
-  endIconName = "face-smile",
+  startIconName,
+  endIconName,
   isDismissible = false,
   onClose,
   className
 }, ref) {
   const dims = TAG_SIZE[size];
   const chrome = messagingChrome(color);
-  const startName = resolveMessagingIconName(startIconName);
-  const endName = resolveMessagingIconName(endIconName);
+  const startName = startIconName ? resolveMessagingIconName(startIconName) : null;
+  const endName = endIconName ? resolveMessagingIconName(endIconName) : null;
   return /* @__PURE__ */ jsxs(
     Box,
     {
@@ -57,9 +55,9 @@ const Tag = forwardRef(function Tag2({
               minWidth: 0
             },
             children: [
-              startIcon ? /* @__PURE__ */ jsx(FaIcon, { name: startName, fontSize: dims.iconPx, "aria-hidden": true }) : null,
+              startName ? /* @__PURE__ */ jsx(FaIcon, { name: startName, fontSize: dims.iconPx, "aria-hidden": true }) : null,
               /* @__PURE__ */ jsx(Box, { component: "span", sx: { minWidth: 0 }, children: label }),
-              endIcon ? /* @__PURE__ */ jsx(FaIcon, { name: endName, fontSize: dims.iconPx, "aria-hidden": true }) : null
+              endName ? /* @__PURE__ */ jsx(FaIcon, { name: endName, fontSize: dims.iconPx, "aria-hidden": true }) : null
             ]
           }
         ),

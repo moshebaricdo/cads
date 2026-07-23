@@ -3,6 +3,7 @@
 import { Tooltip } from "@codeai/cads-react/components/Tooltip";
 import { Button } from "@codeai/cads-react/components/Button";
 import type { FaIconName } from "@codeai/cads-react/icons";
+import type { TooltipProps } from "@codeai/cads-react";
 
 export default function TooltipPreview({
   values,
@@ -11,11 +12,12 @@ export default function TooltipPreview({
 }) {
   const v = values;
   const iconName = String(v.iconName ?? "").trim();
+
   return (
     <Tooltip
       title={String(v.title ?? "Tooltip")}
-      caretPlacement={
-        (v.caretPlacement as "top" | "bottom" | "left" | "right") ?? "top"
+      placement={
+        (v.placement as NonNullable<TooltipProps["placement"]>) ?? "bottom"
       }
       hasCaret={v.hasCaret !== false}
       startIcon={Boolean(iconName)}

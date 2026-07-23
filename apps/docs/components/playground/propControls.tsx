@@ -116,12 +116,12 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "buttonColor",
     "menuType",
     "menuPlacement",
-    "placement",
     "position",
     "align",
     "orientation",
     "labelPlacement",
     "startsFrom",
+    "placement",
     "caretPlacement",
     "hasCaret",
     "content",
@@ -568,10 +568,6 @@ export function initialValues(
     values.startIconName = "";
     values.endIconName = "";
   }
-  if (component.exportName === "Tag") {
-    // Playground: no start icon until a name is set (overrides API default true).
-    values.startIcon = false;
-  }
   if (component.exportName === "Tooltip") {
     values.iconName = "";
   }
@@ -800,13 +796,9 @@ function derivedIconBooleans(
   values: Record<string, unknown>,
 ): Record<string, boolean> {
   const out: Record<string, boolean> = {};
-  if (
-    exportName === "TextInput" ||
-    exportName === "Chip" ||
-    exportName === "Tag"
-  ) {
+  if (exportName === "TextInput" || exportName === "Chip") {
     out.startIcon = hasIconName(values.startIconName);
-    if (exportName !== "TextInput") {
+    if (exportName === "Chip") {
       out.endIcon = hasIconName(values.endIconName);
     }
   }
@@ -1208,17 +1200,12 @@ export function applyValueUpdate(
   }
   // Keep derived icon booleans in sync for previews that still read them.
   if (
-    (exportName === "TextInput" ||
-      exportName === "Chip" ||
-      exportName === "Tag") &&
+    (exportName === "TextInput" || exportName === "Chip") &&
     name === "startIconName"
   ) {
     updated.startIcon = hasIconName(next);
   }
-  if (
-    (exportName === "Chip" || exportName === "Tag") &&
-    name === "endIconName"
-  ) {
+  if (exportName === "Chip" && name === "endIconName") {
     updated.endIcon = hasIconName(next);
   }
   if (exportName === "Tooltip" && name === "iconName") {

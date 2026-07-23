@@ -43,7 +43,7 @@ export function CopyButton({ text }: { text: string }) {
 export function CopyCodeIconButton({ text }: { text: string }) {
   const [copied, copy] = useCopied(1000);
   return (
-    <Tooltip title="copy code" hasCaret={false} caretPlacement="bottom">
+    <Tooltip title="copy code" hasCaret={false} placement="top">
       <Button
         variant="text"
         color="tertiary"

@@ -15,7 +15,7 @@ export const cases: FixtureCase[] = [
         <div style={{ paddingBottom: 48, textAlign: "center" }}>
           <Tooltip
             title="Tooltip"
-            caretPlacement="top"
+            placement="bottom"
             startIcon
             open
             disableInteractive
@@ -34,7 +34,7 @@ export const cases: FixtureCase[] = [
         <div style={{ paddingTop: 48, textAlign: "center" }}>
           <Tooltip
             title="Tooltip"
-            caretPlacement="bottom"
+            placement="top"
             open
             slotProps={{ popper: { disablePortal: true } }}
           >
@@ -51,7 +51,7 @@ export const cases: FixtureCase[] = [
         <div style={{ paddingRight: 120, textAlign: "center" }}>
           <Tooltip
             title="Tooltip"
-            caretPlacement="left"
+            placement="right"
             startIcon
             open
             slotProps={{ popper: { disablePortal: true } }}
@@ -69,7 +69,7 @@ export const cases: FixtureCase[] = [
         <div style={{ paddingLeft: 120, textAlign: "center" }}>
           <Tooltip
             title="Tooltip"
-            caretPlacement="right"
+            placement="left"
             startIcon
             open
             slotProps={{ popper: { disablePortal: true } }}
@@ -87,7 +87,7 @@ export const cases: FixtureCase[] = [
         <div style={{ paddingBottom: 48, textAlign: "center" }}>
           <Tooltip
             title="Tooltip"
-            caretPlacement="top"
+            placement="bottom"
             hasCaret={false}
             open
             slotProps={{ popper: { disablePortal: true } }}

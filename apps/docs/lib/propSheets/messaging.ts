@@ -260,14 +260,12 @@ const TAG_PROP_SHEETS: PropSheet[] = [
       {
         name: "startIconName",
         type: "FaIconName",
-        description:
-          "Leading FA icon. Omit when unset. (API also accepts startIcon boolean; default true in Figma.)",
+        description: "Leading FA icon. Omit for no start icon.",
       },
       {
         name: "endIconName",
         type: "FaIconName",
-        description:
-          "Trailing FA icon. Omit when unset. (API also accepts endIcon boolean.)",
+        description: "Trailing FA icon. Omit for no end icon.",
       },
       {
         name: "isDismissible",

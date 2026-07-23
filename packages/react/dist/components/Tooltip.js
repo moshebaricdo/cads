@@ -3,25 +3,85 @@ import MuiTooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { FaIcon } from '../icons/FaIcon.js';
 
-const CARET_TO_MUI_PLACEMENT = {
-  top: "bottom",
-  bottom: "top",
-  left: "right",
-  right: "left"
-};
-const ARROW_SIZE_PX = 14;
+const ARROW_SIZE_PX = 6;
 const ARROW_HEIGHT_PX = Math.round(ARROW_SIZE_PX * 0.71);
+const ARROW_EDGE_INSET_PX = 12;
+function arrowEdgePin(placement) {
+  const value = String(placement);
+  if (value === "bottom-start" || value === "top-start") {
+    return { axis: "horizontal", side: "start" };
+  }
+  if (value === "bottom-end" || value === "top-end") {
+    return { axis: "horizontal", side: "end" };
+  }
+  if (value === "left-start" || value === "right-start") {
+    return { axis: "vertical", side: "start" };
+  }
+  if (value === "left-end" || value === "right-end") {
+    return { axis: "vertical", side: "end" };
+  }
+  return null;
+}
+function createArrowEdgeModifier(pin) {
+  return {
+    name: "cadsArrowEdge",
+    enabled: Boolean(pin),
+    phase: "write",
+    requires: ["arrow"],
+    fn({ state }) {
+      if (!pin) return;
+      const arrowEl = state.elements.arrow;
+      if (!arrowEl) return;
+      if (pin.axis === "horizontal") {
+        arrowEl.style.setProperty("right", "auto", "important");
+        arrowEl.style.setProperty("transform", "none", "important");
+        if (pin.side === "start") {
+          arrowEl.style.setProperty(
+            "left",
+            `${ARROW_EDGE_INSET_PX}px`,
+            "important"
+          );
+        } else {
+          arrowEl.style.setProperty("left", "auto", "important");
+          arrowEl.style.setProperty(
+            "right",
+            `${ARROW_EDGE_INSET_PX}px`,
+            "important"
+          );
+        }
+        return;
+      }
+      arrowEl.style.setProperty("bottom", "auto", "important");
+      arrowEl.style.setProperty("transform", "none", "important");
+      if (pin.side === "start") {
+        arrowEl.style.setProperty(
+          "top",
+          `${ARROW_EDGE_INSET_PX}px`,
+          "important"
+        );
+      } else {
+        arrowEl.style.setProperty("top", "auto", "important");
+        arrowEl.style.setProperty(
+          "bottom",
+          `${ARROW_EDGE_INSET_PX}px`,
+          "important"
+        );
+      }
+    }
+  };
+}
 function Tooltip({
   children,
   title,
-  caretPlacement = "top",
   hasCaret = true,
   startIcon = false,
   iconName = "face-smile",
+  placement = "bottom",
+  slotProps,
   ...rest
 }) {
-  const muiPlacement = CARET_TO_MUI_PLACEMENT[caretPlacement];
   const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
+  const edgePin = arrowEdgePin(placement ?? "bottom");
   const content = /* @__PURE__ */ jsxs(
     Box,
     {
@@ -85,24 +145,41 @@ function Tooltip({
       ]
     }
   );
+  const {
+    popper: popperSlot,
+    tooltip: tooltipSlot,
+    arrow: arrowSlot,
+    ...otherSlots
+  } = slotProps ?? {};
+  const existingPopperOptions = popperSlot && typeof popperSlot === "object" && "popperOptions" in popperSlot && popperSlot.popperOptions && typeof popperSlot.popperOptions === "object" ? popperSlot.popperOptions : null;
+  const existingModifiers = existingPopperOptions && "modifiers" in existingPopperOptions && Array.isArray(existingPopperOptions.modifiers) ? existingPopperOptions.modifiers : [];
   return /* @__PURE__ */ jsx(
     MuiTooltip,
     {
+      ...rest,
       title: content,
       arrow: hasCaret,
-      placement: muiPlacement,
+      placement,
       slotProps: {
+        ...otherSlots,
         popper: {
-          modifiers: [
-            {
-              name: "offset",
-              options: {
-                offset: [0, offsetDistance]
-              }
-            }
-          ]
+          ...popperSlot,
+          popperOptions: {
+            ...existingPopperOptions,
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, offsetDistance]
+                }
+              },
+              createArrowEdgeModifier(edgePin),
+              ...existingModifiers
+            ]
+          }
         },
         tooltip: {
+          ...tooltipSlot,
           sx: {
             backgroundColor: "var(--background-neutral-primary-inverse)",
             color: "var(--text-neutral-primary-inverse)",
@@ -117,20 +194,22 @@ function Tooltip({
             boxShadow: "var(--shadow-md)",
             // Kill MUI’s placement margins — gap is controlled via offset above.
             margin: "0 !important",
-            textAlign: "left"
+            textAlign: "left",
+            ...tooltipSlot && typeof tooltipSlot === "object" && "sx" in tooltipSlot && tooltipSlot.sx && typeof tooltipSlot.sx === "object" ? tooltipSlot.sx : null
           }
         },
         arrow: {
+          ...arrowSlot,
           sx: {
             color: "var(--background-neutral-primary-inverse)",
             fontSize: ARROW_SIZE_PX,
             "&::before": {
               backgroundColor: "var(--background-neutral-primary-inverse)"
-            }
+            },
+            ...arrowSlot && typeof arrowSlot === "object" && "sx" in arrowSlot && arrowSlot.sx && typeof arrowSlot.sx === "object" ? arrowSlot.sx : null
           }
         }
       },
-      ...rest,
       children
     }
   );

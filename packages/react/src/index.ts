@@ -149,10 +149,7 @@ export { Link } from "./components/Link";
 export type { LinkProps, LinkSize, LinkType } from "./components/Link";
 
 export { Tooltip } from "./components/Tooltip";
-export type {
-  TooltipProps,
-  TooltipCaretPlacement,
-} from "./components/Tooltip";
+export type { TooltipProps } from "./components/Tooltip";
 
 export { Popover } from "./components/Popover";
 export type {

@@ -19,7 +19,7 @@ export { Alert, AlertProps, AlertSentiment, AlertSize } from './components/Alert
 export { Toast, ToastProps, ToastSentiment } from './components/Toast.js';
 export { NotificationBanner, NotificationBannerFillStyle, NotificationBannerProps, NotificationBannerSentiment } from './components/NotificationBanner.js';
 export { Link, LinkProps, LinkSize, LinkType } from './components/Link.js';
-export { Tooltip, TooltipCaretPlacement, TooltipProps } from './components/Tooltip.js';
+export { Tooltip, TooltipProps } from './components/Tooltip.js';
 export { Popover, PopoverCaretPlacement, PopoverContent, PopoverProps } from './components/Popover.js';
 export { Drawer, DrawerProps, DrawerType } from './components/Drawer.js';
 export { Dialog, DialogProps, DialogType } from './components/Dialog.js';

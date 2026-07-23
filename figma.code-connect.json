@@ -148,7 +148,7 @@
       "figmaNodeId": "1990:7125",
       "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
       "source": "@codeai/cads-react",
-      "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\" caretPlacement=\"top\"><Button>{label}</Button></Tooltip>"
+      "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\" placement=\"bottom\"><Button>{label}</Button></Tooltip>"
     },
     {
       "componentName": "Popover",

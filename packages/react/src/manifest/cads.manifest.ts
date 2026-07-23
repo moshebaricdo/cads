@@ -1261,10 +1261,18 @@ export const cadsManifest: {
           default: '"large"',
         },
         { name: "label", type: "ReactNode" },
-        { name: "startIcon", type: "boolean", default: "true" },
-        { name: "endIcon", type: "boolean", default: "false" },
-        { name: "startIconName", type: "FaIconName" },
-        { name: "endIconName", type: "FaIconName" },
+        {
+          name: "startIconName",
+          type: "FaIconName",
+          description:
+            "Leading FA icon. Omit for no start icon (Figma boolean startIcon collapsed into presence of this prop).",
+        },
+        {
+          name: "endIconName",
+          type: "FaIconName",
+          description:
+            "Trailing FA icon. Omit for no end icon (Figma boolean endIcon collapsed into presence of this prop).",
+        },
         { name: "isDismissible", type: "boolean", default: "false" },
         { name: "onClose", type: "() => void" },
       ],
@@ -1276,6 +1284,7 @@ export const cadsManifest: {
       usageRules: [
         "Not the same as Chip (selectable). Use Tag for status/category labels.",
         "Use semantic colors — do not invent custom hues.",
+        "Icons render only when startIconName / endIconName are set — there is no separate boolean gate.",
       ],
       example: `<Tag color="success" size="medium" label="Passed" />`,
     },
@@ -1294,11 +1303,11 @@ export const cadsManifest: {
         { name: "title", type: "ReactNode", required: true },
         { name: "children", type: "ReactElement", required: true },
         {
-          name: "caretPlacement",
-          type: '"top" | "bottom" | "left" | "right"',
-          default: '"top"',
+          name: "placement",
+          type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
+          default: '"bottom"',
           description:
-            "Caret edge on the bubble; also positions the tooltip relative to the trigger.",
+            "MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.",
         },
         { name: "hasCaret", type: "boolean", default: "true" },
         { name: "startIcon", type: "boolean", default: "false" },
@@ -1314,9 +1323,10 @@ export const cadsManifest: {
       usageRules: [
         "Child must be able to hold a ref (forwardRef element).",
         "Prefer supplementary hints — avoid sole source of critical info.",
-        "Use caretPlacement only — it both places the caret and positions the tooltip.",
+        "Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).",
+        "Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).",
       ],
-      example: `<Tooltip title="Save" caretPlacement="top"><Button>Save</Button></Tooltip>`,
+      example: `<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>`,
     },
     {
       name: "Popover",
