@@ -12,6 +12,10 @@ import {
   COMPONENT_PROP_SHEETS,
   defaultPropSheets,
 } from "@/lib/propSheets";
+import {
+  getComponentMuiDocsUrl,
+  getComponentStorybookUrl,
+} from "@/lib/componentExternalLinks";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 
 export function generateStaticParams() {
@@ -40,7 +44,8 @@ export default async function ComponentPage({
   const propSheets =
     COMPONENT_PROP_SHEETS[component.exportName] ??
     defaultPropSheets(component);
-  const storybookUrl = `/fixtures/components?component=${component.exportName}`;
+  const storybookUrl = getComponentStorybookUrl(component.exportName);
+  const muiDocsUrl = getComponentMuiDocsUrl(component.exportName);
 
   return (
     <div className={pageStyles.page}>
@@ -56,7 +61,7 @@ export default async function ComponentPage({
         component={component}
       />
 
-      <PropSheets sheets={propSheets} />
+      <PropSheets sheets={propSheets} muiDocsUrl={muiDocsUrl} />
 
       <ComponentPageNav previous={previous} next={next} />
     </div>

@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Tooltip } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Tooltip, type TooltipProps } from "@codeai/cads-react";
 
-export function ColorSwatch({
-  color,
-  label,
+/** Click-to-copy label with an icon-only tooltip (copy / check), not the variable name. */
+export function CopyName({
+  className,
   copyValue,
+  children,
+  placement = "left",
 }: {
-  color: string;
-  label: string;
+  className?: string;
   copyValue: string;
+  children: ReactNode;
+  placement?: TooltipProps["placement"];
 }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -33,19 +35,21 @@ export function ColorSwatch({
 
   return (
     <Tooltip
-      title={copied ? "Copied" : label}
+      // Idle: icon-only (ZWSP keeps MUI from treating an empty title as disabled).
+      title={copied ? "Copied" : "\u200B Copy"}
       hasCaret={false}
-      placement="top"
-      startIcon={copied}
-      iconName="check"
+      placement={placement}
+      startIcon
+      iconName={copied ? "check" : "copy"}
     >
       <button
         type="button"
-        className={styles.swatch}
-        style={{ "--swatch-color": color } as CSSProperties}
+        className={className}
         aria-label={`Copy ${copyValue}`}
         onClick={handleCopy}
-      />
+      >
+        {children}
+      </button>
     </Tooltip>
   );
 }

@@ -6,6 +6,7 @@ import { Button, Link } from "@codeai/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 import overviewStyles from "@/components/ComponentOverview.module.css";
 import { withBasePath } from "@/lib/basePath";
+import { STORYBOOK_BASE } from "@/lib/componentExternalLinks";
 import styles from "./OverviewHome.module.css";
 
 const FIGMA_URL =
@@ -14,8 +15,7 @@ const FIGMA_URL =
 const BRAND_GUIDELINES_URL =
   "https://www.figma.com/deck/TpRUWRX4SE00phZnQWMDRS/CodeAI_Brand-Guidelines?node-id=7-17457&t=0p6yzcdHTmoJS9yZ-1";
 
-const STORYBOOK_URL =
-  "https://code-dot-org.github.io/code-dot-org/component-library-storybook/?path=/story/designsystem-accordion--playground";
+const STORYBOOK_URL = `${STORYBOOK_BASE}/?path=/story/designsystem-accordion--playground`;
 
 const DESTINATIONS = [
   {

@@ -277,6 +277,7 @@ a.docs-card:focus-visible {
 /* ---------------------------------------------------------------- */
 
 .docs-shell {
+  --docs-sidebar-width: 220px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -289,52 +290,133 @@ a.docs-card:focus-visible {
   z-index: 20;
   display: flex;
   align-items: stretch;
-  height: 56px;
+  height: 48px;
   background: var(--background-neutral-primary);
   border-bottom: 1px solid var(--border-neutral-primary);
   box-sizing: border-box;
 }
 
 .docs-topbar-brand-cell {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-shrink: 0;
-  width: 220px;
-  padding: 16px 24px;
+  width: var(--docs-sidebar-width);
+  padding: 12px 12px 12px 18px;
   border-right: 1px solid var(--border-neutral-primary);
   box-sizing: border-box;
   overflow: hidden;
 }
 
-.docs-topbar-brand {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  border-radius: var(--radius-sm);
-  opacity: 1;
-  transition: opacity 150ms ease;
+.docs-shell[data-sidebar="collapsed"] .docs-topbar-brand-cell {
+  justify-content: center;
+  padding: 12px;
 }
 
-.docs-topbar-brand:hover {
+.docs-topbar-brand {
+  position: relative;
+  display: block;
+  width: 128px;
+  height: 24px;
+  text-decoration: none;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-topbar-brand {
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.docs-shell[data-sidebar="expanded"] a.docs-topbar-brand:hover {
   text-decoration: none;
   opacity: 0.8;
 }
 
-.docs-topbar-brand:focus-visible {
+.docs-shell[data-sidebar="expanded"] a.docs-topbar-brand:focus-visible {
   outline: 2px solid var(--border-focused-primary);
   outline-offset: 2px;
 }
 
 .docs-topbar-logo {
   display: block;
-  width: 128px;
-  height: 22px;
   object-fit: contain;
 }
 
-.dark .docs-topbar-logo {
+.docs-topbar-logo--full {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 128px;
+  height: 22px;
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.dark .docs-topbar-logo--full {
   filter: invert(1);
+}
+
+.docs-topbar-logo--mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.docs-topbar-logo--mark-dark {
+  display: none;
+}
+
+.dark .docs-topbar-logo--mark-light {
+  display: none;
+}
+
+.dark .docs-topbar-logo--mark-dark {
+  display: block;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-topbar-logo--full {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-topbar-logo--mark {
+  opacity: 1;
+}
+
+.docs-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.docs-topbar-brand-cell:hover .docs-sidebar-toggle,
+.docs-sidebar-toggle:focus-within:has(:focus-visible) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-sidebar-toggle {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 1;
+}
+
+/* Collapsed: mark yields to the expand control on hover. */
+.docs-shell[data-sidebar="collapsed"] .docs-topbar-brand-cell:hover .docs-topbar-brand {
+  opacity: 0;
 }
 
 .docs-topbar-main {
@@ -344,7 +426,7 @@ a.docs-card:focus-visible {
   justify-content: space-between;
   gap: 16px;
   min-width: 0;
-  padding: 16px;
+  padding: 12px;
   box-sizing: border-box;
 }
 
@@ -361,19 +443,22 @@ a.docs-card:focus-visible {
 }
 
 .docs-body {
-  display: grid;
+  display: flex;
   flex: 1;
   align-items: stretch;
   min-height: 0;
 }
 
 .docs-sidebar {
+  flex: 0 0 var(--docs-sidebar-width);
+  width: var(--docs-sidebar-width);
   border-right: 1px solid var(--border-neutral-primary);
   background: var(--background-neutral-primary);
   position: sticky;
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
 }
 
 .docs-sidebar-scroll {
@@ -381,7 +466,12 @@ a.docs-card:focus-visible {
   overflow: auto;
 }
 
+.docs-shell[data-sidebar="collapsed"] .docs-sidebar-scroll {
+  overflow-x: hidden;
+}
+
 .docs-main {
+  flex: 1;
   min-width: 0;
   background: var(--background-neutral-primary);
 }
@@ -399,20 +489,60 @@ a.docs-card:focus-visible {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 8px;
+  padding: 0 6px;
   box-sizing: border-box;
 }
 
 .docs-nav-section:first-child {
+  padding-top: 6px;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section {
+  align-items: center;
+  padding: 0 10px;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section + .docs-nav-section {
+  position: relative;
+  margin-top: 8px;
   padding-top: 8px;
 }
 
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section + .docs-nav-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 8px;
+  height: 1px;
+  background: var(--border-neutral-primary);
+  transform: translateX(-50%);
+}
+
 .docs-nav-section-label {
-  padding: 16px 16px 14px;
-  font-size: var(--text-body-xs);
+  padding: 14px 12px 12px;
+  font-size: var(--text-body-xxs);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--leading-body-xs);
+  line-height: var(--leading-body-xxs);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
   color: var(--text-neutral-placeholder);
+  overflow: hidden;
+  white-space: nowrap;
+  max-height: 48px;
+  opacity: 1;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section-label {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section:first-child {
+  padding-top: 12px;
 }
 
 .docs-nav-section-items {
@@ -422,10 +552,18 @@ a.docs-card:focus-visible {
   padding-bottom: 4px;
 }
 
+.docs-shell[data-sidebar="collapsed"] .docs-nav-section-items {
+  align-items: center;
+}
+
 .docs-nav-group {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.docs-shell[data-sidebar="collapsed"] .docs-nav-group {
+  align-items: center;
 }
 
 .docs-nav-item {
@@ -435,7 +573,7 @@ a.docs-card:focus-visible {
   gap: 10px;
   width: 100%;
   height: 30px;
-  padding: 6px 16px;
+  padding: 6px 12px;
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -451,6 +589,15 @@ a.docs-card:focus-visible {
   transition:
     color 125ms ease,
     background-color 125ms ease;
+}
+
+.docs-nav-item--collapsed {
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -496,6 +643,12 @@ a.docs-card:focus-visible {
   flex: 1;
 }
 
+.docs-nav-item--collapsed .docs-nav-item-main {
+  flex: 0 0 auto;
+  justify-content: center;
+  gap: 0;
+}
+
 .docs-nav-item-icon {
   flex-shrink: 0;
   width: 12px;
@@ -506,6 +659,14 @@ a.docs-card:focus-visible {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  opacity: 1;
+  max-width: 160px;
+}
+
+.docs-nav-item--collapsed .docs-nav-item-label {
+  opacity: 0;
+  max-width: 0;
+  pointer-events: none;
 }
 
 .docs-nav-item-chevron {
@@ -516,7 +677,7 @@ a.docs-card:focus-visible {
 /* subItem — Body 4 Regular, indented under icon+gap. */
 .docs-nav-item--child {
   justify-content: flex-start;
-  padding: 6px 16px 6px 39px;
+  padding: 6px 16px 6px 34px;
   font-weight: var(--font-weight-normal);
   color: var(--text-neutral-tertiary);
 }

@@ -13,6 +13,8 @@ type WeightOption = {
 
 type StyleGroup = {
   label: string;
+  /** CADS size token name (e.g. `body-xs`, `heading-xxl`). */
+  tokenName: string;
   family: string;
   familyLabel: string;
   size: string;
@@ -61,6 +63,7 @@ const FONT_MONO = "var(--font-mono)";
 const HEADING_SIZES = [
   {
     level: "H1",
+    tokenName: "heading-xxl",
     size: typography.fontSize.headingXxl,
     lineHeight: typography.lineHeight.headingXxl,
     family: FONT_HEADING,
@@ -70,6 +73,7 @@ const HEADING_SIZES = [
   },
   {
     level: "H2",
+    tokenName: "heading-xl",
     size: typography.fontSize.headingXl,
     lineHeight: typography.lineHeight.headingXl,
     family: FONT_HEADING,
@@ -79,6 +83,7 @@ const HEADING_SIZES = [
   },
   {
     level: "H3",
+    tokenName: "heading-lg",
     size: typography.fontSize.headingLg,
     lineHeight: typography.lineHeight.headingLg,
     family: FONT_BODY,
@@ -86,6 +91,7 @@ const HEADING_SIZES = [
   },
   {
     level: "H4",
+    tokenName: "heading-md",
     size: typography.fontSize.headingMd,
     lineHeight: typography.lineHeight.headingMd,
     family: FONT_BODY,
@@ -93,6 +99,7 @@ const HEADING_SIZES = [
   },
   {
     level: "H5",
+    tokenName: "heading-sm",
     size: typography.fontSize.headingSm,
     lineHeight: typography.lineHeight.headingSm,
     family: FONT_BODY,
@@ -100,6 +107,7 @@ const HEADING_SIZES = [
   },
   {
     level: "H6",
+    tokenName: "heading-xs",
     size: typography.fontSize.headingXs,
     lineHeight: typography.lineHeight.headingXs,
     family: FONT_BODY,
@@ -110,26 +118,31 @@ const HEADING_SIZES = [
 const BODY_SIZES = [
   {
     level: "Body 1",
+    tokenName: "body-lg",
     size: typography.fontSize.bodyLg,
     lineHeight: typography.lineHeight.bodyLg,
   },
   {
     level: "Body 2",
+    tokenName: "body-md",
     size: typography.fontSize.bodyMd,
     lineHeight: typography.lineHeight.bodyMd,
   },
   {
     level: "Body 3",
+    tokenName: "body-sm",
     size: typography.fontSize.bodySm,
     lineHeight: typography.lineHeight.bodySm,
   },
   {
     level: "Body 4",
+    tokenName: "body-xs",
     size: typography.fontSize.bodyXs,
     lineHeight: typography.lineHeight.bodyXs,
   },
   {
     level: "Body 5",
+    tokenName: "body-xxs",
     size: typography.fontSize.bodyXxs,
     lineHeight: typography.lineHeight.bodyXxs,
   },
@@ -140,6 +153,7 @@ const OVERLINE_TRACKING = "0.06em";
 
 const HEADING_STYLES: StyleGroup[] = HEADING_SIZES.map((heading) => ({
   label: heading.level,
+  tokenName: heading.tokenName,
   family: heading.family,
   familyLabel: heading.familyLabel,
   size: heading.size,
@@ -152,6 +166,7 @@ const HEADING_STYLES: StyleGroup[] = HEADING_SIZES.map((heading) => ({
 
 const BODY_STYLES: StyleGroup[] = BODY_SIZES.map((body) => ({
   label: body.level,
+  tokenName: body.tokenName,
   family: FONT_BODY,
   familyLabel: "Geist",
   size: body.size,
@@ -162,6 +177,7 @@ const BODY_STYLES: StyleGroup[] = BODY_SIZES.map((body) => ({
 const OVERLINE_STYLES: StyleGroup[] = [
   {
     label: "Overline 1",
+    tokenName: "body-sm",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -174,6 +190,7 @@ const OVERLINE_STYLES: StyleGroup[] = [
   },
   {
     label: "Overline 2",
+    tokenName: "body-xs",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -186,6 +203,7 @@ const OVERLINE_STYLES: StyleGroup[] = [
   },
   {
     label: "Overline 3",
+    tokenName: "body-xxs",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -201,6 +219,7 @@ const OVERLINE_STYLES: StyleGroup[] = [
 const LABEL_STYLES: StyleGroup[] = [
   {
     label: "Label 1",
+    tokenName: "body-md",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -211,6 +230,7 @@ const LABEL_STYLES: StyleGroup[] = [
   },
   {
     label: "Label 2",
+    tokenName: "body-sm",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -221,6 +241,7 @@ const LABEL_STYLES: StyleGroup[] = [
   },
   {
     label: "Label 3",
+    tokenName: "body-xs",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -231,6 +252,7 @@ const LABEL_STYLES: StyleGroup[] = [
   },
   {
     label: "Label 4",
+    tokenName: "body-xxs",
     family: FONT_BODY,
     familyLabel: "Geist",
     weight: WEIGHTS.semibold,
@@ -243,6 +265,7 @@ const LABEL_STYLES: StyleGroup[] = [
 
 const LINK_STYLES: StyleGroup[] = BODY_SIZES.map((body, index) => ({
   label: `Link Body ${index + 1}`,
+  tokenName: body.tokenName,
   family: FONT_BODY,
   familyLabel: "Geist",
   weight: WEIGHTS.semibold,
@@ -255,6 +278,7 @@ const LINK_STYLES: StyleGroup[] = BODY_SIZES.map((body, index) => ({
 
 const MONO_STYLES: StyleGroup[] = BODY_SIZES.map((body, index) => ({
   label: `Mono Body ${index + 1}`,
+  tokenName: body.tokenName,
   family: FONT_MONO,
   familyLabel: "Google Sans Code",
   size: body.size,
@@ -332,6 +356,8 @@ function StyleRow({
   }, [sample]);
 
   const metrics = [
+    style.label,
+    style.tokenName,
     style.familyLabel,
     weightLabel,
     `${style.size} / ${style.lineHeight}`,
@@ -403,9 +429,10 @@ export function TypographyPageContent() {
         Text styles
       </h2>
       <p className={`docs-section-desc ${styles.sectionBody}`}>
-        Every published Figma text style from the Typography page — headings,
-        body, overline, label, link, and mono. Semi Bold is the default heading
-        weight (page titles and section titles across this site).
+        Text styles are broken into headings, body, overline, label, link, and
+        mono. Each one pairs a size token (like heading-xxl or body-xs) with a
+        family, weight, and tracking so you can match Figma without guessing.
+        Semi Bold is the default heading weight.
       </p>
       <div className={styles.sectionContent}>
         <div className={styles.tabbedContent}>

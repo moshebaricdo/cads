@@ -35,7 +35,13 @@ export function ComponentOverview({
         {storybookUrl ? (
           <span className={styles.linkItem}>
             <span className={styles.linkDot} aria-hidden />
-            <Link href={storybookUrl} size="small" type="primary">
+            <Link
+              href={storybookUrl}
+              size="small"
+              type="primary"
+              target="_blank"
+              rel="noreferrer"
+            >
               View in Storybook
             </Link>
           </span>

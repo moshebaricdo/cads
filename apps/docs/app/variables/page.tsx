@@ -9,17 +9,17 @@ const FOUNDATION_CARDS = [
   {
     href: "/variables/color",
     title: "Color",
-    body: "Primitive ramps and semantic roles for backgrounds, text, borders, state, and feedback across light and dark themes.",
+    body: "Primitives for the core palette, semantics for how color gets applied — backgrounds, text, borders, and theme-aware roles.",
   },
   {
     href: "/variables/typography",
     title: "Typography",
-    body: "Space Grotesk display headings, Geist body, Google Sans Code mono — the full size, line-height, and weight scale.",
+    body: "Three families and a shared size scale — Space Grotesk for display, Geist for body and UI, Google Sans Code for mono.",
   },
   {
     href: "/variables/spacing",
     title: "Shape",
-    body: "Border radii, elevation shadows, and the spacing ramp used to build consistent surfaces and layouts.",
+    body: "Border radius, elevation, and spacing — corners, depth, and the shared ramp for layout gaps.",
   },
   {
     href: "/variables/core",

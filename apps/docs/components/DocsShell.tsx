@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { withBasePath } from "@/lib/basePath";
 import { usePathname } from "next/navigation";
-import { SegmentedButton, TextInput } from "@codeai/cads-react";
+import { Button, SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { DocsNavItem, DocsNavSection } from "@/components/DocsNavItem";
 import {
@@ -27,8 +27,10 @@ const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
 };
 
 const DARK_STORAGE_KEY = "cads-docs-dark";
+const SIDEBAR_STORAGE_KEY = "cads-docs-sidebar-collapsed";
 const SIDEBAR_WIDTH = 220;
-const TOPBAR_HEIGHT = 56;
+const SIDEBAR_COLLAPSED_WIDTH = 50;
+const TOPBAR_HEIGHT = 48;
 
 function normalizePath(path: string | null): string {
   if (!path) return "/";
@@ -41,6 +43,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [search, setSearch] = useState("");
   const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
+  const [collapsed, setCollapsed] = useState(false);
   const isCanvas =
     pathname.startsWith("/fixtures") || pathname.startsWith("/prototype");
 
@@ -65,6 +68,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       setDark(window.localStorage.getItem(DARK_STORAGE_KEY) === "1");
+      setCollapsed(window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1");
     } catch {
       /* storage unavailable */
     }
@@ -81,19 +85,75 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, [dark, isCanvas]);
 
   useEffect(() => {
-    if (!activeSectionId) return;
+    if (isCanvas) return;
+    try {
+      window.localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
+    } catch {
+      /* storage unavailable */
+    }
+  }, [collapsed, isCanvas]);
+
+  useEffect(() => {
+    if (!activeSectionId || collapsed) return;
     setOpenSections((prev) =>
       prev[activeSectionId] ? prev : { ...prev, [activeSectionId]: true },
     );
-  }, [activeSectionId]);
+  }, [activeSectionId, collapsed]);
+
+  useEffect(() => {
+    if (query && collapsed) setCollapsed(false);
+  }, [query, collapsed]);
 
   if (isCanvas) {
     return <>{children}</>;
   }
 
   function toggleSection(id: ComponentSectionId) {
+    if (collapsed) {
+      setCollapsed(false);
+      setOpenSections((prev) => ({ ...prev, [id]: true }));
+      return;
+    }
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   }
+
+  function toggleSidebar() {
+    setCollapsed((value) => !value);
+    queueMicrotask(() => {
+      (document.activeElement as HTMLElement | null)?.blur?.();
+    });
+  }
+
+  const brandLogos = (
+    <>
+      <Image
+        src={withBasePath("/codeai-logo.svg")}
+        alt={collapsed ? "" : "CodeAI"}
+        width={128}
+        height={22}
+        className="docs-topbar-logo docs-topbar-logo--full"
+        priority
+      />
+      <Image
+        src={withBasePath("/codeai-mark-light.png")}
+        alt=""
+        width={24}
+        height={24}
+        className="docs-topbar-logo docs-topbar-logo--mark docs-topbar-logo--mark-light"
+        aria-hidden
+        priority
+      />
+      <Image
+        src={withBasePath("/codeai-mark-dark.png")}
+        alt=""
+        width={24}
+        height={24}
+        className="docs-topbar-logo docs-topbar-logo--mark docs-topbar-logo--mark-dark"
+        aria-hidden
+        priority
+      />
+    </>
+  );
 
   function matchesQuery(label: string) {
     return !query || label.toLowerCase().includes(query);
@@ -101,21 +161,47 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
   const resources = RESOURCES_NAV.filter((item) => matchesQuery(item.label));
   const foundations = FOUNDATIONS_NAV.filter((item) => matchesQuery(item.label));
+  const sidebarWidth = collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH;
+  const shellStyle = {
+    "--docs-sidebar-width": `${sidebarWidth}px`,
+  } as CSSProperties;
 
   return (
-    <div className="docs-shell">
+    <div
+      className="docs-shell"
+      data-sidebar={collapsed ? "collapsed" : "expanded"}
+      style={shellStyle}
+    >
       <header className="docs-topbar">
         <div className="docs-topbar-brand-cell">
-          <Link href="/" className="docs-topbar-brand" aria-label="CodeAI home">
-            <Image
-              src={withBasePath("/codeai-logo.svg")}
-              alt="CodeAI"
-              width={128}
-              height={22}
-              className="docs-topbar-logo"
-              priority
+          {collapsed ? (
+            <div className="docs-topbar-brand" aria-hidden>
+              {brandLogos}
+            </div>
+          ) : (
+            <Link
+              href="/"
+              className="docs-topbar-brand"
+              aria-label="CodeAI home"
+            >
+              {brandLogos}
+            </Link>
+          )}
+
+          <div className="docs-sidebar-toggle">
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="extraSmall"
+              iconOnly
+              startIconName={
+                collapsed ? "arrow-right-from-line" : "arrow-left-from-line"
+              }
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-expanded={!collapsed}
+              onClick={toggleSidebar}
             />
-          </Link>
+          </div>
         </div>
 
         <div className="docs-topbar-main">
@@ -149,17 +235,14 @@ export function DocsShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div
-        className="docs-body"
-        style={{ gridTemplateColumns: `${SIDEBAR_WIDTH}px 1fr` }}
-      >
+      <div className="docs-body">
         <aside
           className="docs-sidebar"
           style={{ top: TOPBAR_HEIGHT, height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}
         >
           <div className="docs-sidebar-scroll">
             {resources.length > 0 ? (
-              <DocsNavSection label="Resources">
+              <DocsNavSection label="Resources" collapsed={collapsed}>
                 {resources.map((item) => (
                   <DocsNavItem
                     key={item.href}
@@ -167,13 +250,14 @@ export function DocsShell({ children }: { children: ReactNode }) {
                     label={item.label}
                     iconName={item.iconName}
                     active={pathname === item.href}
+                    collapsed={collapsed}
                   />
                 ))}
               </DocsNavSection>
             ) : null}
 
             {foundations.length > 0 ? (
-              <DocsNavSection label="Foundations">
+              <DocsNavSection label="Foundations" collapsed={collapsed}>
                 {foundations.map((item) => (
                   <DocsNavItem
                     key={item.href}
@@ -181,14 +265,16 @@ export function DocsShell({ children }: { children: ReactNode }) {
                     label={item.label}
                     iconName={item.iconName}
                     active={pathname === item.href}
+                    collapsed={collapsed}
                   />
                 ))}
               </DocsNavSection>
             ) : null}
 
-            <DocsNavSection label="Components">
+            <DocsNavSection label="Components" collapsed={collapsed}>
               {COMPONENT_SECTIONS.map((section) => {
-                const open = openSections[section.id] || Boolean(query);
+                const open =
+                  !collapsed && (openSections[section.id] || Boolean(query));
                 const visibleItems = section.items.filter((item) => {
                   if (
                     !matchesQuery(item.label) &&
@@ -217,6 +303,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                       iconName={section.iconName}
                       active={sectionActive}
                       expanded={open}
+                      collapsed={collapsed}
                       onClick={() => toggleSection(section.id)}
                     />
                     {open ? (

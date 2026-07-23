@@ -39,6 +39,7 @@
   align-items: center;
   gap: var(--space-xs);
   padding-top: var(--space-xxs);
+  padding-bottom: var(--space-xxs);
 }
 
 .linkItem {

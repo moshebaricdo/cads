@@ -17,7 +17,8 @@ export default function ColorVariablesPage() {
     <div className={pageStyles.page}>
       <FoundationHeader
         title="Color"
-        lead="Primitive ramps provide the palette; semantic variables describe how color is used. Swatches follow the light or dark theme selected in the docs navigation."
+        lead="The CADS color system is broken into two categories: primitives and semantics. Primitives
+        define core brand colors while semantics define how they should be applied in the product." 
         links={[
           { href: FIGMA_COLOR_URL, label: "Open in Figma", external: true },
           {

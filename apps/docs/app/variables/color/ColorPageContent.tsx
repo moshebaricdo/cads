@@ -171,8 +171,9 @@ export function ColorPageContent() {
           Primitive colors
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Raw palette values. Use these to understand the ramps; product UI
-          should normally use semantic variables.
+          Our core colors and their ramps, broken down into brand, sentiment, and neutral families.
+          Primitives are used to build the semantic colors and are not light/dark theme aware, they should not
+          be used directly in the product.
         </p>
         <div className={styles.sectionAction}>
           <ColorExportButton kind="primitive" />
@@ -182,7 +183,9 @@ export function ColorPageContent() {
             ariaLabel="Primitive color collections"
             items={primitiveItems.map(({ collection }) => ({
               value: collection.id,
-              label: collection.name,
+              label:
+                collection.name.charAt(0).toUpperCase() +
+                collection.name.slice(1),
             }))}
             panels={Object.fromEntries(
               primitiveItems.map(({ collection, families }) => [
@@ -210,8 +213,9 @@ export function ColorPageContent() {
           Semantic colors
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Purpose-based variables for surfaces, content, states, and feedback.
-          Values update with the selected theme.
+          Semantic colors are broken into three primary families: backgrounds, text, and borders.
+          They assign primitives to specific contexts and are carefully crafted to ensure 
+          proper contrast, support consistent usage of colors in the UI, and are theme aware.
         </p>
         <div className={styles.sectionAction}>
           <ColorExportButton kind="semantic" />

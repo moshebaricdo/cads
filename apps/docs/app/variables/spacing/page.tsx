@@ -1,28 +1,41 @@
 import { elevation, shape, spacing } from "@codeai/cads-variables";
 import type { CSSProperties } from "react";
-import { VarChip } from "@/components/docs-ui";
 import { FoundationHeader } from "@/components/FoundationHeader";
+import { ComponentPageNav } from "@/components/ComponentPageNav";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
+import { adjacentFoundations } from "@/lib/nav";
 import styles from "../FoundationPage.module.css";
+import { CopyName } from "./CopyName";
+import { ShapeSample } from "./ShapeSample";
 
-const RADII = Object.entries(shape).map(([name, value]) => ({
-  name,
-  value,
-  variable: `--radius-${name.replace("radius", "").toLowerCase()}`,
-}));
+const RADII = Object.entries(shape).map(([name, value]) => {
+  const token = `radius-${name.replace("radius", "").toLowerCase()}`;
+  return {
+    name,
+    value,
+    token,
+    variable: `--${token}`,
+  };
+});
 
-const SHADOWS = Object.entries(elevation).map(([name, value]) => ({
-  name,
-  value,
-  variable: `--shadow-${name.replace("shadow", "").toLowerCase()}`,
-}));
+const SHADOWS = Object.entries(elevation).map(([name, value]) => {
+  const token = `shadow-${name.replace("shadow", "").toLowerCase()}`;
+  return {
+    name,
+    value,
+    token,
+    variable: `--${token}`,
+  };
+});
 
 export default function ShapePage() {
+  const { previous, next } = adjacentFoundations("/variables/spacing");
+
   return (
     <div className={pageStyles.page}>
       <FoundationHeader
         title="Shape"
-        lead="Corner radii and elevation define the silhouette and depth of CADS surfaces. The spacing ramp is available for larger layout rhythm."
+        lead="The CADS shape system is broken into three categories: border radius, elevation, and spacing. Radius handles corners, elevation handles depth, and spacing is the shared ramp for layout gaps."
       />
 
       <section className={styles.section} aria-labelledby="border-radius">
@@ -30,24 +43,30 @@ export default function ShapePage() {
           Border radius
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Use smaller radii for compact controls, larger radii for surfaces, and
-          round for pills or circular controls.
+          Border radius is broken into five steps from sm to round. Use the
+          smaller values on compact controls, the larger ones on cards and
+          panels, and round for pills. When nesting rounded elements, step down
+          the scale so the corners stay concentric.
         </p>
-        <div className={`${styles.surface} ${styles.shapeGrid}`}>
-          {RADII.map((radius) => (
-            <div className={styles.shapeItem} key={radius.name}>
-              <div
-                className={styles.radiusSample}
-                role="img"
-                aria-label={`${radius.value} radius preview`}
-                style={
-                  { "--sample-radius": radius.value } as CSSProperties
-                }
-              />
-              <VarChip name={radius.variable} />
-              <span className={styles.itemValue}>{radius.value}</span>
-            </div>
-          ))}
+        <div className={styles.sectionContent}>
+          <div className={styles.shapeGrid}>
+            {RADII.map((radius) => (
+              <div className={styles.shapeItem} key={radius.name}>
+                <ShapeSample
+                  className={styles.radiusSample}
+                  label={radius.variable}
+                  copyValue={radius.variable}
+                  style={
+                    { "--sample-radius": radius.value } as CSSProperties
+                  }
+                />
+                <div className={styles.rangeHeader}>
+                  <span className={styles.rangeName}>{radius.token}</span>
+                  <span className={styles.rangeCount}>{radius.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -56,24 +75,35 @@ export default function ShapePage() {
           Elevation
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Three shadow levels communicate depth without changing a surface&apos;s
-          shape. Use stronger elevation only as content moves closer to the
-          user.
+          Elevation is broken into three shadow levels: sm, md, and lg. Use sm
+          for light lift on surfaces, md for menus and popovers, and lg when
+          something needs to sit clearly above the page.
         </p>
-        <div className={`${styles.surface} ${styles.shapeGrid}`}>
-          {SHADOWS.map((shadow) => (
-            <div className={styles.shapeItem} key={shadow.name}>
-              <div
-                className={styles.shadowSample}
-                role="img"
-                aria-label={`${shadow.name} shadow preview`}
-                style={
-                  { "--sample-shadow": shadow.value } as CSSProperties
-                }
-              />
-              <VarChip name={shadow.variable} />
-            </div>
-          ))}
+        <div className={styles.sectionContent}>
+          <div className={styles.shapeGrid}>
+            {SHADOWS.map((shadow) => (
+              <div className={styles.shapeItem} key={shadow.name}>
+                <ShapeSample
+                  className={styles.shadowSample}
+                  label={shadow.variable}
+                  copyValue={shadow.variable}
+                  style={
+                    { "--sample-shadow": shadow.value } as CSSProperties
+                  }
+                />
+                <div className={styles.shapeMeta}>
+                  <span className={styles.rangeName}>{shadow.token}</span>
+                  <CopyName
+                    className={styles.copyValue}
+                    copyValue={shadow.value}
+                    placement="bottom-start"
+                  >
+                    {shadow.value.replace(/,\s*/g, ",\n")}
+                  </CopyName>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -82,23 +112,47 @@ export default function ShapePage() {
           Spacing
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          An 8px-based ramp for page layout and larger composition gaps.
-          Component internals should use their documented construction rather
-          than ad hoc spacing.
+          Spacing is an 8px-based ramp for gaps between sections and components.
+          Prefer these over one-off values; component internals already handle
+          their own spacing.
         </p>
-        <div className={`${styles.surface} ${styles.spacingList}`}>
-          {Object.entries(spacing).map(([name, value]) => (
-            <div className={styles.spacingRow} key={name}>
-              <VarChip name={`--space-${name}`} />
-              <div
-                className={styles.spacingBar}
-                style={{ "--sample-space": value } as CSSProperties}
-              />
-              <span className={styles.itemValue}>{value}</span>
-            </div>
-          ))}
+        <div className={styles.sectionContent}>
+          <div className={styles.spacingStack}>
+            {Object.entries(spacing).map(([name, value]) => {
+              const token = `space-${name}`;
+              const variable = `--${token}`;
+              return (
+                <div
+                  className={styles.spacingRow}
+                  key={name}
+                  style={{ "--sample-space": value } as CSSProperties}
+                >
+                  <div className={styles.spacingLabel}>
+                    <CopyName
+                      className={styles.copyName}
+                      copyValue={variable}
+                    >
+                      {token}
+                    </CopyName>
+                    <span className={styles.rangeCount}>{value}</span>
+                  </div>
+                  <ShapeSample
+                    className={styles.spacingSample}
+                    label={variable}
+                    copyValue={variable}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
+
+      <ComponentPageNav
+        previous={previous}
+        next={next}
+        aria-label="Foundation pagination"
+      />
     </div>
   );
 }

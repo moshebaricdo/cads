@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { Tooltip } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
@@ -13,6 +14,8 @@ type SharedProps = {
   iconName?: FaIconName | (string & {});
   active?: boolean;
   kind?: DocsNavItemKind;
+  /** Icon-only rail (30×30). Hides label/chevron; tooltips the label. */
+  collapsed?: boolean;
 };
 
 type LinkProps = SharedProps & {
@@ -41,6 +44,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
     iconName,
     active = false,
     kind = "primary",
+    collapsed = false,
   } = props;
 
   const isGroup = kind === "group";
@@ -50,6 +54,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
     "docs-nav-item",
     isChild ? "docs-nav-item--child" : null,
     isGroup ? "docs-nav-item--group" : null,
+    collapsed ? "docs-nav-item--collapsed" : null,
   ]
     .filter(Boolean)
     .join(" ");
@@ -66,7 +71,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
         ) : null}
         <span className="docs-nav-item-label">{label}</span>
       </span>
-      {isGroup ? (
+      {isGroup && !collapsed ? (
         <FaIcon
           name={props.expanded ? "chevron-up" : "chevron-down"}
           fontSize="12px"
@@ -76,53 +81,72 @@ export function DocsNavItem(props: DocsNavItemProps) {
     </>
   );
 
+  let node: ReactElement;
+
   if (props.href) {
     if (props.external) {
-      return (
+      node = (
         <a
           href={props.href}
           target="_blank"
           rel="noreferrer"
           className={className}
           data-active={active || undefined}
+          aria-label={collapsed ? label : undefined}
         >
           {content}
         </a>
       );
+    } else {
+      node = (
+        <Link
+          href={props.href}
+          className={className}
+          data-active={active || undefined}
+          aria-label={collapsed ? label : undefined}
+        >
+          {content}
+        </Link>
+      );
     }
-    return (
-      <Link
-        href={props.href}
+  } else {
+    node = (
+      <button
+        type="button"
         className={className}
         data-active={active || undefined}
+        aria-expanded={collapsed ? undefined : props.expanded}
+        aria-label={collapsed ? label : undefined}
+        onClick={props.onClick}
       >
         {content}
-      </Link>
+      </button>
     );
   }
 
+  if (!collapsed) return node;
+
   return (
-    <button
-      type="button"
-      className={className}
-      data-active={active || undefined}
-      aria-expanded={props.expanded}
-      onClick={props.onClick}
-    >
-      {content}
-    </button>
+    <Tooltip title={label} hasCaret={false} placement="right">
+      {node}
+    </Tooltip>
   );
 }
 
 export function DocsNavSection({
   label,
   children,
+  collapsed = false,
 }: {
   label: string;
   children: ReactNode;
+  collapsed?: boolean;
 }) {
   return (
-    <div className="docs-nav-section">
+    <div
+      className="docs-nav-section"
+      data-collapsed={collapsed || undefined}
+    >
       <div className="docs-nav-section-label">{label}</div>
       <div className="docs-nav-section-items">{children}</div>
     </div>

@@ -106,6 +106,11 @@ export type NavComponent = {
   href: string;
 };
 
+export type NavFoundation = {
+  href: string;
+  label: string;
+};
+
 /** Flat component list in sidebar / Figma section order. */
 export function listNavComponents(): NavComponent[] {
   return COMPONENT_SECTIONS.flatMap((section) =>
@@ -119,27 +124,27 @@ export function listNavComponents(): NavComponent[] {
 
 /** Previous / next neighbors for component page footer nav. */
 export function adjacentComponents(exportName: string): {
-  previous: NavComponent | null;
+  previous: NavComponent | NavFoundation | null;
   next: NavComponent | null;
 } {
   const list = listNavComponents();
   const index = list.findIndex((item) => item.exportName === exportName);
   if (index < 0) return { previous: null, next: null };
+  const lastFoundation = FOUNDATIONS_NAV[FOUNDATIONS_NAV.length - 1]!;
   return {
-    previous: index > 0 ? list[index - 1]! : null,
+    // First component continues from the last foundation (Motion → Button).
+    previous:
+      index > 0
+        ? list[index - 1]!
+        : { href: lastFoundation.href, label: lastFoundation.label },
     next: index < list.length - 1 ? list[index + 1]! : null,
   };
 }
 
-export type NavFoundation = {
-  href: string;
-  label: string;
-};
-
 /** Previous / next neighbors for foundation page footer nav. */
 export function adjacentFoundations(href: string): {
   previous: NavFoundation | null;
-  next: NavFoundation | null;
+  next: NavFoundation | NavComponent | null;
 } {
   const list: NavFoundation[] = FOUNDATIONS_NAV.map((item) => ({
     href: item.href,
@@ -147,8 +152,15 @@ export function adjacentFoundations(href: string): {
   }));
   const index = list.findIndex((item) => item.href === href);
   if (index < 0) return { previous: null, next: null };
+  const firstComponent = listNavComponents()[0] ?? null;
   return {
     previous: index > 0 ? list[index - 1]! : null,
-    next: index < list.length - 1 ? list[index + 1]! : null,
+    // Last foundation continues into the first component (Motion → Button).
+    next:
+      index < list.length - 1
+        ? list[index + 1]!
+        : firstComponent
+          ? { href: firstComponent.href, label: firstComponent.label }
+          : null,
   };
 }

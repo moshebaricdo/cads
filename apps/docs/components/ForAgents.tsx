@@ -28,10 +28,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
         <div className={overviewStyles.copy}>
           <h1 className={overviewStyles.title}>Using CADS with AI</h1>
           <p className={overviewStyles.lead}>
-            One portable skill carries the real CADS runtime. Install it in a
-            supported AI tool, ask for a prototype, and get self-contained HTML —
-            no npm packages and no monorepo checkout. Intended for CodeAI
-            internal use (embeds Font Awesome 7 Pro).
+            The CADS portable skill packages the CADS Docs runtime (components and styles) along 
+            with general guidance for LLMs on how to best use it. It also provides context on our 
+            UI/UX practices, different surfaces of our platform, and more. It works in any AI tool
+            that supports agent skills.
           </p>
         </div>
         {zipReady ? (
@@ -59,10 +59,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           Claude
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Upload the ZIP under Customize <Arrow /> Skills, enable{" "}
-          <code>cads-prototyping</code>, then ask for a CADS prototype. Claude
-          returns self-contained HTML with the real components inlined. Keep
-          shares organization-only.
+          Upload the ZIP under Customize <Arrow /> Skills, and make sure to enable{" "}
+          <code>cads-prototyping</code>. When you next ask Claude to create a prototype and 
+          reference the skill, it will return self-contained HTML with the CADS components 
+          and styles inlined. 
         </p>
       </section>
 
@@ -71,11 +71,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           ChatGPT
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Upload the same ZIP as an Agent Skill (Skills / Work mode, depending
-          on your plan). Ask for a CADS prototype — expect either an inline
-          preview or a downloadable HTML file. Do not ask ChatGPT to import a
-          public npm package; CADS is not published that way.
-        </p>
+          Skills have been buried a bit in ChatGPT, the easiest way is to navigate to  
+          <a href="https://chatgpt.com/skills" target="_blank" rel="noopener noreferrer"> chatgpt.com/skills</a> directly. 
+          There you can upload the zip and add it as a reusable skill. ChatGPT will prompt you to test it out.
+       </p>
       </section>
 
       <section className={styles.section} aria-labelledby="gemini">
@@ -83,10 +82,9 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           Gemini
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          In Gemini Spark, open Skills <Arrow /> Upload and choose the ZIP (or
-          its <code>SKILL.md</code> folder). Skills are Spark-only and may
-          require a qualifying subscription. Once installed, ask for a CADS HTML
-          prototype the same way.
+          There is no dedicated skill support in Gemini that I could find. 
+          There is potentially a way to upload skills through Gemini Spark (?)
+          but I haven't bothered to explore it, it's Gemini.
         </p>
       </section>
 
@@ -95,9 +93,8 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           Cursor
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Drop the ZIP into an Agent chat and ask Cursor to install the skill.
-          Then ask for a CADS prototype — it should write self-contained HTML
-          from the bundled runtime.
+          Inside of your project, just drop the ZIP into any agent thread and request
+          that it install the skill. You can then reference the skill when building prototypes.
         </p>
       </section>
     </div>

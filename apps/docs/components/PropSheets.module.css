@@ -10,6 +10,13 @@
   gap: 12px;
 }
 
+.headingRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-m);
+}
+
 /* CADS Body MD + semibold — section / H5 */
 .heading {
   font-family: var(--font-body);
@@ -55,4 +62,9 @@
   color: var(--text-neutral-quaternary);
   font-size: var(--text-body-xs);
   line-height: var(--leading-body-xs);
+}
+
+/* Optical nudge: body desc sits a hair high vs mono prop/type when top-aligned */
+.table td.propDesc {
+  padding-top: 12px; /* docs-table td 10px + 2px */
 }

@@ -2,14 +2,16 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Tooltip } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
 
-export function ColorSwatch({
-  color,
+export function ShapeSample({
+  className,
+  style,
   label,
   copyValue,
 }: {
-  color: string;
+  className: string;
+  style?: CSSProperties;
+  /** Tooltip label while idle (typically the CSS variable name). */
   label: string;
   copyValue: string;
 }) {
@@ -41,8 +43,8 @@ export function ColorSwatch({
     >
       <button
         type="button"
-        className={styles.swatch}
-        style={{ "--swatch-color": color } as CSSProperties}
+        className={className}
+        style={style}
         aria-label={`Copy ${copyValue}`}
         onClick={handleCopy}
       />
