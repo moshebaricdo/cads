@@ -10,7 +10,7 @@ type ButtonVariant = "contained" | "outlined" | "text";
 type ButtonColor = "primary" | "secondary" | "tertiary" | "error";
 /** Figma size scale. */
 type ButtonSize = ControlSize;
-interface ButtonProps extends Omit<ButtonProps$1, "variant" | "color" | "size" | "startIcon" | "endIcon"> {
+interface ButtonProps extends Omit<ButtonProps$1, "variant" | "color" | "size" | "startIcon" | "endIcon" | "loading" | "loadingIndicator" | "loadingPosition"> {
     /**
      * Visual style (Figma: contained | outlined | text).
      * @default "contained"
@@ -40,6 +40,12 @@ interface ButtonProps extends Omit<ButtonProps$1, "variant" | "color" | "size" |
      * Figma shortcode `smile` is accepted (alias of `face-smile`).
      */
     endIconName?: FaIconName | (string & {});
+    /**
+     * Replaces visible content with a centered FA spinner while preserving
+     * the button's width (label/icons stay in layout, visually hidden).
+     * Does not apply disabled styling; blocks interaction via pointer-events.
+     */
+    loading?: boolean;
     fullWidth?: boolean;
     children?: ReactNode;
 }

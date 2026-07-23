@@ -30,10 +30,12 @@ export interface ToastProps {
   /** Toast body copy (Figma `toastText`). */
   children?: ReactNode;
   /**
-   * @default true
+   * Leading status/custom icon (Figma `hasIcon` + icon name).
+   * - `undefined` — show the sentiment default (or face-smile)
+   * - `false` — hide the icon (MUI Alert `icon={false}` convention)
+   * - string — custom FA icon name
    */
-  hasIcon?: boolean;
-  iconName?: FaIconName | (string & {});
+  iconName?: FaIconName | false | (string & {});
   /**
    * Show trailing outlined secondary action button (variant/color/size locked).
    * @default false
@@ -66,7 +68,6 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
   {
     sentiment = "primary",
     children = "This is a toast.",
-    hasIcon = true,
     iconName,
     hasAction = false,
     actionLabel = "Button",
@@ -82,10 +83,13 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
 ) {
   const chrome = messagingChrome(sentiment);
   const statusDefault = defaultStatusIcon(sentiment);
-  const resolvedIcon = resolveMessagingIconName(
-    iconName,
-    statusDefault ?? "face-smile",
-  );
+  const showIcon = iconName !== false;
+  const resolvedIcon = showIcon
+    ? resolveMessagingIconName(
+        typeof iconName === "string" ? iconName : undefined,
+        statusDefault ?? "face-smile",
+      )
+    : null;
   const label = resolveActionLabel(actionLabel);
 
   return (
@@ -120,7 +124,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
           color: "var(--text-neutral-primary)",
         }}
       >
-        {hasIcon ? (
+        {showIcon && resolvedIcon ? (
           <Box
             sx={{
               display: "flex",

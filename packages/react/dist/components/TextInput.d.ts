@@ -26,14 +26,9 @@ interface TextInputProps extends SharedNativeProps {
      */
     multiline?: boolean;
     /**
-     * Leading FA icon inside the field (Figma building-block `startIcon`).
-     * Field-only; ignored for multiline areas.
-     * @default false
-     */
-    startIcon?: boolean;
-    /**
-     * FA icon when `startIcon` (Figma `startIconName`; `smile` → `face-smile`).
-     * @default "face-smile"
+     * Leading FA icon inside the field (Figma building-block `startIcon` +
+     * `startIconName`). Field-only; ignored for multiline areas. Omit for no
+     * icon (Figma’s boolean is collapsed into presence of this prop).
      */
     startIconName?: FaIconName | (string & {});
     /** Visible field label via Field Wrapper. */
@@ -72,7 +67,8 @@ interface TextInputProps extends SharedNativeProps {
  * building block `16146:3517`.
  *
  * Figma `type=field|area` maps to `multiline={false|true}`.
- * Figma `startIcon` / `startIconName` are field-only (ignored for areas).
+ * Figma `startIcon` boolean is collapsed into presence of `startIconName`
+ * (field-only; ignored for areas).
  * Figma `isFilled` / interaction `state` are derived (value / CSS / props).
  */
 declare const TextInput: react.ForwardRefExoticComponent<TextInputProps & react.RefAttributes<HTMLDivElement>>;

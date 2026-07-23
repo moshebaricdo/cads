@@ -312,7 +312,7 @@ function MenuItemRow({
 }) {
   const dims = MENU_ITEM_SIZE[size];
   const destructive = Boolean(option.destructive) && role === "action";
-  const showStartIcon = menuType !== "checklist" && (option.startIcon ?? Boolean(option.iconName));
+  const showStartIcon = menuType !== "checklist" && Boolean(option.iconName);
   const textColor = destructive ? "var(--text-error-primary)" : selected ? "var(--text-selected-primary)" : "var(--text-neutral-primary)";
   const bg = selected ? "var(--background-selected-primary)" : "var(--background-neutral-primary)";
   return /* @__PURE__ */ jsxs(
@@ -401,7 +401,7 @@ function MenuItemRow({
             children: /* @__PURE__ */ jsx(
               FaIcon,
               {
-                name: option.iconName ?? "smile",
+                name: option.iconName,
                 fontSize: dims.iconPx
               }
             )

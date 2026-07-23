@@ -14,10 +14,12 @@ interface ToastProps {
     /** Toast body copy (Figma `toastText`). */
     children?: ReactNode;
     /**
-     * @default true
+     * Leading status/custom icon (Figma `hasIcon` + icon name).
+     * - `undefined` — show the sentiment default (or face-smile)
+     * - `false` — hide the icon (MUI Alert `icon={false}` convention)
+     * - string — custom FA icon name
      */
-    hasIcon?: boolean;
-    iconName?: FaIconName | (string & {});
+    iconName?: FaIconName | false | (string & {});
     /**
      * Show trailing outlined secondary action button (variant/color/size locked).
      * @default false

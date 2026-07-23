@@ -58,8 +58,7 @@
         "component": "Alert",
         "props": {
           "sentiment": "info",
-          "size": "medium",
-          "hasIcon": true
+          "size": "medium"
         },
         "children": "You can change these details later in settings."
       },

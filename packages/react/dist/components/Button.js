@@ -1,4 +1,4 @@
-import { jsx } from 'react/jsx-runtime';
+import { jsx, jsxs } from 'react/jsx-runtime';
 import MuiButton from '@mui/material/Button';
 import { forwardRef } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
@@ -102,6 +102,12 @@ function colorRecipe(color) {
       };
   }
 }
+function contentForeground(variant, color) {
+  const c = colorRecipe(color);
+  if (variant === "contained") return c.filledFg;
+  if (variant === "outlined") return c.outlinedFg;
+  return c.textFg;
+}
 function variantStyles(variant, color) {
   const c = colorRecipe(color);
   if (variant === "contained") {
@@ -163,25 +169,35 @@ const Button = forwardRef(
     iconOnly: iconOnlyProp,
     startIconName,
     endIconName,
+    loading = false,
     children,
     sx,
     disabled,
+    onClick,
     ...rest
   }, ref) {
     const dims = BUTTON_SIZE[size];
     const iconOnly = iconOnlyProp ?? (!children && Boolean(startIconName || endIconName));
     const resolvedColor = resolveColor(color, variant, iconOnly);
+    const spinnerColor = contentForeground(variant, resolvedColor);
+    const showLoading = Boolean(loading) && !disabled;
     const startIcon = startIconName ? /* @__PURE__ */ jsx(FaIcon, { name: startIconName, fontSize: dims.iconPx }) : null;
     const endIcon = endIconName ? /* @__PURE__ */ jsx(FaIcon, { name: endIconName, fontSize: dims.iconPx }) : null;
-    return /* @__PURE__ */ jsx(
+    return /* @__PURE__ */ jsxs(
       MuiButton,
       {
         ref,
         disableElevation: true,
         disabled,
+        "aria-busy": showLoading || void 0,
+        onClick: showLoading ? void 0 : onClick,
         startIcon: !iconOnly && startIcon ? startIcon : void 0,
         endIcon: !iconOnly && endIcon ? endIcon : void 0,
         sx: {
+          "@keyframes cads-button-spin": {
+            "100%": { transform: "rotate(360deg)" }
+          },
+          position: "relative",
           minWidth: dims.height,
           width: iconOnly ? dims.height : void 0,
           height: dims.height,
@@ -204,10 +220,49 @@ const Button = forwardRef(
             boxShadow: FOCUS_RING
           },
           ...variantStyles(variant, resolvedColor),
+          // Keep label/icons in layout for width; hide them and overlay spinner.
+          ...showLoading ? {
+            color: "transparent",
+            pointerEvents: "none",
+            "&:hover, &:active": {
+              color: "transparent"
+            },
+            // Hide adornment/icon-only glyphs; spinner uses its own color.
+            "& .MuiButton-startIcon, & .MuiButton-endIcon, & > [data-fa-icon]": {
+              color: "transparent"
+            }
+          } : null,
           ...sx ?? {}
         },
         ...rest,
-        children: iconOnly ? startIcon || endIcon : children
+        children: [
+          iconOnly ? startIcon || endIcon : children,
+          showLoading ? /* @__PURE__ */ jsx(
+            "span",
+            {
+              "aria-hidden": true,
+              "data-cads-button-spinner": "",
+              style: {
+                position: "absolute",
+                inset: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: spinnerColor
+              },
+              children: /* @__PURE__ */ jsx(
+                FaIcon,
+                {
+                  name: "spinner",
+                  fontSize: dims.iconPx,
+                  style: {
+                    animation: "cads-button-spin 0.75s linear infinite"
+                  }
+                }
+              )
+            }
+          ) : null
+        ]
       }
     );
   }

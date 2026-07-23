@@ -43,7 +43,7 @@
       "figmaNodeId": "16176:4884",
       "componentKey": "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4",
       "source": "@codeai/cads-react",
-      "snippet": "import { TextInput } from \"@codeai/cads-react\";\n\n<TextInput label=\"{label}\" size=\"medium\" startIcon startIconName=\"envelope\" placeholder=\"Placeholder\" />"
+      "snippet": "import { TextInput } from \"@codeai/cads-react\";\n\n<TextInput label=\"{label}\" size=\"medium\" startIconName=\"envelope\" placeholder=\"Placeholder\" />"
     },
     {
       "componentName": "Dropdown",

@@ -11,14 +11,12 @@ function defaultBorder(color) {
 const SHELL_CLASS = "cads-text-input-shell";
 const CONTROL_CLASS = "cads-text-input-control";
 function resolveStartIconName(name) {
-  if (!name) return "face-smile";
   return resolveFaIconName(String(name)) ?? "face-smile";
 }
 function TextInputControl({
   size,
   color,
   multiline,
-  startIcon,
   startIconName,
   disabled,
   readOnly,
@@ -35,7 +33,7 @@ function TextInputControl({
 }) {
   const field = useFieldContext();
   const dims = TEXT_INPUT_SIZE[size];
-  const showStartIcon = startIcon && !multiline;
+  const showStartIcon = Boolean(startIconName) && !multiline;
   let background = "var(--background-neutral-primary)";
   let borderColor = defaultBorder(color);
   let textColor = "var(--text-neutral-primary)";
@@ -126,7 +124,7 @@ function TextInputControl({
       "data-start-icon": showStartIcon ? "true" : void 0,
       style: shellStyle,
       children: [
-        showStartIcon ? /* @__PURE__ */ jsx(
+        showStartIcon && startIconName ? /* @__PURE__ */ jsx(
           FaIcon,
           {
             name: resolveStartIconName(startIconName),
@@ -180,8 +178,7 @@ const TextInput = forwardRef(
     size = "medium",
     color = "primary",
     multiline = false,
-    startIcon = false,
-    startIconName = "face-smile",
+    startIconName,
     label,
     required = false,
     helperText,
@@ -230,7 +227,6 @@ const TextInput = forwardRef(
               size,
               color,
               multiline,
-              startIcon,
               startIconName,
               disabled,
               readOnly,

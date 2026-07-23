@@ -15,7 +15,6 @@ function resolveActionLabel(label) {
 const Toast = forwardRef(function Toast2({
   sentiment = "primary",
   children = "This is a toast.",
-  hasIcon = true,
   iconName,
   hasAction = false,
   actionLabel = "Button",
@@ -29,10 +28,11 @@ const Toast = forwardRef(function Toast2({
 }, ref) {
   const chrome = messagingChrome(sentiment);
   const statusDefault = defaultStatusIcon(sentiment);
-  const resolvedIcon = resolveMessagingIconName(
-    iconName,
+  const showIcon = iconName !== false;
+  const resolvedIcon = showIcon ? resolveMessagingIconName(
+    typeof iconName === "string" ? iconName : void 0,
     statusDefault ?? "face-smile"
-  );
+  ) : null;
   const label = resolveActionLabel(actionLabel);
   return /* @__PURE__ */ jsxs(
     Box,
@@ -69,7 +69,7 @@ const Toast = forwardRef(function Toast2({
               color: "var(--text-neutral-primary)"
             },
             children: [
-              hasIcon ? /* @__PURE__ */ jsx(
+              showIcon && resolvedIcon ? /* @__PURE__ */ jsx(
                 Box,
                 {
                   sx: {

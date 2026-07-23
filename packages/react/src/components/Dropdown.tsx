@@ -53,11 +53,10 @@ export interface DropdownItemOption {
   value: string;
   label: ReactNode;
   /**
-   * Show leading icon (Figma `hasStartIcon`).
-   * Defaults to `true` when `iconName` is set, otherwise `false` (text-only).
+   * Leading FA icon (Figma `iconName`). Omit for text-only items (Figma’s
+   * boolean `hasStartIcon` / `startIcon` is collapsed into presence of this
+   * prop).
    */
-  startIcon?: boolean;
-  /** FA icon when `startIcon` (Figma `iconName`). */
   iconName?: FaIconName | (string & {});
   /** Destructive styling (Figma itemType=defaultError). Action role only. */
   destructive?: boolean;
@@ -503,7 +502,7 @@ function MenuItemRow({
   const dims = MENU_ITEM_SIZE[size];
   const destructive = Boolean(option.destructive) && role === "action";
   const showStartIcon =
-    menuType !== "checklist" && (option.startIcon ?? Boolean(option.iconName));
+    menuType !== "checklist" && Boolean(option.iconName);
   const textColor = destructive
     ? "var(--text-error-primary)"
     : selected
@@ -609,7 +608,7 @@ function MenuItemRow({
           }}
         >
           <FaIcon
-            name={option.iconName ?? "smile"}
+            name={option.iconName!}
             fontSize={dims.iconPx}
           />
         </span>

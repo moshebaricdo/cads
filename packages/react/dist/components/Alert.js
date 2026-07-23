@@ -16,7 +16,6 @@ const Alert = forwardRef(function Alert2({
   size = "large",
   sentiment = "brand",
   children = "This is an alert.",
-  hasIcon = true,
   iconName,
   hasAction = false,
   actionLabel = "Button",
@@ -32,10 +31,11 @@ const Alert = forwardRef(function Alert2({
   const dims = ALERT_SIZE[size];
   const chrome = messagingChrome(sentiment);
   const statusDefault = defaultStatusIcon(sentiment);
-  const resolvedIcon = resolveMessagingIconName(
-    iconName,
+  const showIcon = iconName !== false;
+  const resolvedIcon = showIcon ? resolveMessagingIconName(
+    typeof iconName === "string" ? iconName : void 0,
     statusDefault ?? "face-smile"
-  );
+  ) : null;
   const label = resolveActionLabel(actionLabel);
   return /* @__PURE__ */ jsxs(
     Box,
@@ -71,7 +71,7 @@ const Alert = forwardRef(function Alert2({
               minWidth: 0
             },
             children: [
-              hasIcon ? /* @__PURE__ */ jsx(
+              showIcon && resolvedIcon ? /* @__PURE__ */ jsx(
                 Box,
                 {
                   sx: {

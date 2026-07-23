@@ -24,9 +24,15 @@ interface ChipProps extends Omit<ButtonBaseProps, "color" | "children"> {
     /** Selected fill chrome (Figma `selected=yes`). */
     selected?: boolean;
     label?: ReactNode;
-    startIcon?: boolean;
-    endIcon?: boolean;
+    /**
+     * Leading FA icon. Omit for no start icon (Figma’s boolean `startIcon` is
+     * collapsed into presence of this prop).
+     */
     startIconName?: FaIconName | (string & {});
+    /**
+     * Trailing FA icon. Omit for no end icon (Figma’s boolean `endIcon` is
+     * collapsed into presence of this prop).
+     */
     endIconName?: FaIconName | (string & {});
 }
 /**

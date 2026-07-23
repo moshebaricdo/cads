@@ -34,14 +34,12 @@ export interface AlertProps {
   /** Alert body copy (Figma `alertText`). */
   children?: ReactNode;
   /**
-   * Show leading status/custom icon.
-   * @default true
+   * Leading status/custom icon (Figma `hasIcon` + `alertIcon`).
+   * - `undefined` — show the sentiment default (or face-smile)
+   * - `false` — hide the icon (MUI Alert `icon={false}` convention)
+   * - string — custom FA icon name
    */
-  hasIcon?: boolean;
-  /**
-   * Custom icon name. Status sentiments default to Figma glyphs when omitted.
-   */
-  iconName?: FaIconName | (string & {});
+  iconName?: FaIconName | false | (string & {});
   /**
    * Show trailing outlined secondary action button (variant/color/size locked).
    * @default false
@@ -81,7 +79,6 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     size = "large",
     sentiment = "brand",
     children = "This is an alert.",
-    hasIcon = true,
     iconName,
     hasAction = false,
     actionLabel = "Button",
@@ -99,10 +96,13 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   const dims = ALERT_SIZE[size];
   const chrome = messagingChrome(sentiment);
   const statusDefault = defaultStatusIcon(sentiment);
-  const resolvedIcon = resolveMessagingIconName(
-    iconName,
-    statusDefault ?? "face-smile",
-  );
+  const showIcon = iconName !== false;
+  const resolvedIcon = showIcon
+    ? resolveMessagingIconName(
+        typeof iconName === "string" ? iconName : undefined,
+        statusDefault ?? "face-smile",
+      )
+    : null;
   const label = resolveActionLabel(actionLabel);
 
   return (
@@ -136,7 +136,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
           minWidth: 0,
         }}
       >
-        {hasIcon ? (
+        {showIcon && resolvedIcon ? (
           <Box
             sx={{
               // Match the text line-box height and center the FA glyph inside it.

@@ -13,11 +13,9 @@ interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow"> {
      */
     hasCaret?: boolean;
     /**
-     * Leading icon (Figma `startIcon`).
-     * @default false
+     * Leading FA icon. Omit for no icon (Figma’s boolean `startIcon` is
+     * collapsed into presence of this prop).
      */
-    startIcon?: boolean;
-    /** FA icon name when `startIcon` (Figma `iconName`). */
     iconName?: FaIconName | (string & {});
     /**
      * MUI placement (where the tooltip sits relative to the trigger).
@@ -33,6 +31,6 @@ interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow"> {
  * Accepts the full MUI Tooltip prop surface (except `title` shape and `arrow`,
  * which are driven by CADS `title` / `hasCaret`). Position with MUI `placement`.
  */
-declare function Tooltip({ children, title, hasCaret, startIcon, iconName, placement, slotProps, ...rest }: TooltipProps): react.JSX.Element;
+declare function Tooltip({ children, title, hasCaret, iconName, placement, slotProps, ...rest }: TooltipProps): react.JSX.Element;
 
 export { Tooltip, type TooltipProps };

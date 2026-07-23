@@ -27,11 +27,10 @@ interface DropdownItemOption {
     value: string;
     label: ReactNode;
     /**
-     * Show leading icon (Figma `hasStartIcon`).
-     * Defaults to `true` when `iconName` is set, otherwise `false` (text-only).
+     * Leading FA icon (Figma `iconName`). Omit for text-only items (Figma’s
+     * boolean `hasStartIcon` / `startIcon` is collapsed into presence of this
+     * prop).
      */
-    startIcon?: boolean;
-    /** FA icon when `startIcon` (Figma `iconName`). */
     iconName?: FaIconName | (string & {});
     /** Destructive styling (Figma itemType=defaultError). Action role only. */
     destructive?: boolean;

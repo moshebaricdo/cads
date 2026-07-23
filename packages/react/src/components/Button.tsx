@@ -19,7 +19,14 @@ export type ButtonSize = ControlSize;
 export interface ButtonProps
   extends Omit<
     MuiButtonProps,
-    "variant" | "color" | "size" | "startIcon" | "endIcon"
+    | "variant"
+    | "color"
+    | "size"
+    | "startIcon"
+    | "endIcon"
+    | "loading"
+    | "loadingIndicator"
+    | "loadingPosition"
   > {
   /**
    * Visual style (Figma: contained | outlined | text).
@@ -50,6 +57,12 @@ export interface ButtonProps
    * Figma shortcode `smile` is accepted (alias of `face-smile`).
    */
   endIconName?: FaIconName | (string & {});
+  /**
+   * Replaces visible content with a centered FA spinner while preserving
+   * the button's width (label/icons stay in layout, visually hidden).
+   * Does not apply disabled styling; blocks interaction via pointer-events.
+   */
+  loading?: boolean;
   fullWidth?: boolean;
   children?: ReactNode;
 }
@@ -189,6 +202,16 @@ function colorRecipe(
   }
 }
 
+function contentForeground(
+  variant: ButtonVariant,
+  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
+): string {
+  const c = colorRecipe(color);
+  if (variant === "contained") return c.filledFg;
+  if (variant === "outlined") return c.outlinedFg;
+  return c.textFg;
+}
+
 function variantStyles(
   variant: ButtonVariant,
   color: Exclude<ButtonColor, "tertiary"> | "tertiary",
@@ -262,9 +285,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       iconOnly: iconOnlyProp,
       startIconName,
       endIconName,
+      loading = false,
       children,
       sx,
       disabled,
+      onClick,
       ...rest
     },
     ref,
@@ -274,6 +299,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       iconOnlyProp ??
       (!children && Boolean(startIconName || endIconName));
     const resolvedColor = resolveColor(color, variant, iconOnly);
+    const spinnerColor = contentForeground(variant, resolvedColor);
+    const showLoading = Boolean(loading) && !disabled;
 
     const startIcon = startIconName ? (
       <FaIcon name={startIconName} fontSize={dims.iconPx} />
@@ -287,9 +314,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disableElevation
         disabled={disabled}
+        aria-busy={showLoading || undefined}
+        onClick={showLoading ? undefined : onClick}
         startIcon={!iconOnly && startIcon ? startIcon : undefined}
         endIcon={!iconOnly && endIcon ? endIcon : undefined}
         sx={{
+          "@keyframes cads-button-spin": {
+            "100%": { transform: "rotate(360deg)" },
+          },
+          position: "relative",
           minWidth: dims.height,
           width: iconOnly ? dims.height : undefined,
           height: dims.height,
@@ -312,11 +345,48 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             boxShadow: FOCUS_RING,
           },
           ...variantStyles(variant, resolvedColor),
+          // Keep label/icons in layout for width; hide them and overlay spinner.
+          ...(showLoading
+            ? {
+                color: "transparent",
+                pointerEvents: "none",
+                "&:hover, &:active": {
+                  color: "transparent",
+                },
+                // Hide adornment/icon-only glyphs; spinner uses its own color.
+                "& .MuiButton-startIcon, & .MuiButton-endIcon, & > [data-fa-icon]":
+                  {
+                    color: "transparent",
+                  },
+              }
+            : null),
           ...((sx as object) ?? {}),
         }}
         {...rest}
       >
         {iconOnly ? startIcon || endIcon : children}
+        {showLoading ? (
+          <span
+            aria-hidden
+            data-cads-button-spinner=""
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: spinnerColor,
+            }}
+          >
+            <FaIcon
+              name="spinner"
+              fontSize={dims.iconPx}
+              style={{
+                animation: "cads-button-spin 0.75s linear infinite",
+              }}
+            />
+          </span>
+        ) : null}
       </MuiButton>
     );
   },

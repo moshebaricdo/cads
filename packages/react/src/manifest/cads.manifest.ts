@@ -75,6 +75,12 @@ export const cadsManifest: {
         },
         { name: "startIconName", type: "FaIconName" },
         { name: "endIconName", type: "FaIconName" },
+        {
+          name: "loading",
+          type: "boolean",
+          description:
+            "Replaces visible content with a centered FA spinner; preserves button width (no layout shift). Does not use disabled styling.",
+        },
         { name: "disabled", type: "boolean" },
         { name: "fullWidth", type: "boolean" },
         { name: "children", type: "ReactNode" },
@@ -97,6 +103,7 @@ export const cadsManifest: {
         "Contained secondary uses --background-neutral-primary-inverse; outlined primary uses --border-neutral-solid.",
         "Contained disabled text uses --text-disabled-neutral-inverse (solid fill).",
         "color=tertiary is Figma-valid only for text + iconOnly; other combos warn and fall back to secondary.",
+        "loading replaces all visible content with a centered spinner and keeps the prior width — do not swap startIcon for a spinner.",
         "Use semantic color CSS vars only — never hard-coded hex. No --ds- prefix.",
       ],
       example: `<Button variant="contained" color="primary" size="medium">Continue</Button>`,
@@ -139,9 +146,9 @@ export const cadsManifest: {
         "--text-brand-primary",
         "--text-brand-secondary",
         "--text-accent-pink-primary",
-        "--text-accent-pink-strong",
+        "--text-accent-pink-secondary",
         "--text-accent-orange-primary",
-        "--text-accent-orange-strong",
+        "--text-accent-orange-secondary",
         "--text-success-primary",
         "--text-success-secondary",
         "--text-error-primary",
@@ -369,17 +376,10 @@ export const cadsManifest: {
           description: "Figma type=area when true",
         },
         {
-          name: "startIcon",
-          type: "boolean",
-          default: "false",
-          description:
-            "Leading FA icon inside the field (building-block startIcon). Field-only; ignored when multiline. Prefer setting startIconName and enabling when present.",
-        },
-        {
           name: "startIconName",
           type: "FaIconName",
           description:
-            "FA icon name (Figma startIconName; smile → face-smile). Playground/docs treat empty as no icon.",
+            "Leading FA icon inside the field. Field-only; ignored when multiline. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).",
         },
         { name: "label", type: "string" },
         { name: "helperText", type: "ReactNode" },
@@ -419,12 +419,12 @@ export const cadsManifest: {
       usageRules: [
         "Prefer TextInput over the deprecated TextField alias.",
         "Figma type=field|area maps to multiline={false|true}.",
-        "startIcon is field-only; ignored when multiline (type=area).",
+        "startIconName is field-only; ignored when multiline (type=area). Omit for no icon.",
         "extraSmall field height uses the shared 24px control scale (Figma building block is 22px).",
         "Do not invent floating labels — label is always above via Field Wrapper.",
         "required sets the native HTML attribute and appends * after the label.",
       ],
-      example: `<TextInput label="Email" size="medium" startIcon startIconName="envelope" placeholder="you@example.com" helperText="Required" />`,
+      example: `<TextInput label="Email" size="medium" startIconName="envelope" placeholder="you@example.com" helperText="Required" />`,
     },
     {
       name: "Dropdown",
@@ -454,7 +454,7 @@ export const cadsManifest: {
           type: '"default" | "checklist"',
           default: '"default"',
           description:
-            "default = single-select list (item startIcon optional); checklist = multi-select (input-only)",
+            "default = single-select list (item iconName optional); checklist = multi-select (input-only)",
         },
         {
           name: "menuPlacement",
@@ -473,7 +473,7 @@ export const cadsManifest: {
           type: "DropdownOption[]",
           required: true,
           description:
-            "Items, separators ({type:\"separator\"}), and group headers ({type:\"group\",label}). Items support startIcon + iconName (text-only when omitted).",
+            "Items, separators ({type:\"separator\"}), and group headers ({type:\"group\",label}). Items support iconName (text-only when omitted).",
         },
         { name: "label", type: "ReactNode" },
         { name: "helperText", type: "ReactNode" },
@@ -519,7 +519,7 @@ export const cadsManifest: {
       ],
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
-        "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (startIcon/iconName), not a list-level mode.",
+        "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
         "options may include {type:\"separator\"} and {type:\"group\",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.",
         'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',
         "Selected menu items use selected tokens — never brand fills.",
@@ -836,10 +836,18 @@ export const cadsManifest: {
         },
         { name: "selected", type: "boolean", default: "false" },
         { name: "label", type: "ReactNode" },
-        { name: "startIcon", type: "boolean", default: "false" },
-        { name: "endIcon", type: "boolean", default: "false" },
-        { name: "startIconName", type: "FaIconName" },
-        { name: "endIconName", type: "FaIconName" },
+        {
+          name: "startIconName",
+          type: "FaIconName",
+          description:
+            "Leading FA icon. Omit for no start icon (Figma boolean startIcon collapsed into presence of this prop).",
+        },
+        {
+          name: "endIconName",
+          type: "FaIconName",
+          description:
+            "Trailing FA icon. Omit for no end icon (Figma boolean endIcon collapsed into presence of this prop).",
+        },
         { name: "disabled", type: "boolean" },
         { name: "onClick", type: "(event) => void" },
         { name: "aria-label", type: "string" },
@@ -855,6 +863,7 @@ export const cadsManifest: {
       usageRules: [
         "Selected chrome uses selected tokens — never brand fills.",
         "Not the same as Tag (status/category badge).",
+        "Icons render only when startIconName / endIconName are set — there is no separate boolean gate.",
         "Interaction states are CSS recipes — not React props.",
       ],
       example: `<Chip label="Option" selected color="primary" size="medium" />`,
@@ -1109,8 +1118,12 @@ export const cadsManifest: {
           default: '"brand"',
         },
         { name: "children", type: "ReactNode" },
-        { name: "hasIcon", type: "boolean", default: "true" },
-        { name: "iconName", type: "FaIconName" },
+        {
+          name: "iconName",
+          type: "FaIconName | false",
+          description:
+            "Leading icon. Omit for sentiment default; false hides the icon (MUI convention); string overrides.",
+        },
         { name: "hasAction", type: "boolean", default: "false" },
         {
           name: "actionLabel",
@@ -1133,7 +1146,7 @@ export const cadsManifest: {
       usageRules: [
         "Use for in-page contextual messaging — not temporary overlays (Toast) or page-level banners (NotificationBanner).",
         "Action is locked to outlined secondary; size follows Alert size. Always pass actionLabel (empty falls back to Button).",
-        "Status sentiments supply default icons; override with iconName when needed.",
+        "Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide (same as MUI Alert icon={false}).",
       ],
       example: `<Alert sentiment="success" size="medium" isDismissible actionLabel="Undo" hasAction>Saved successfully.</Alert>`,
     },
@@ -1155,8 +1168,12 @@ export const cadsManifest: {
           default: '"primary"',
         },
         { name: "children", type: "ReactNode" },
-        { name: "hasIcon", type: "boolean", default: "true" },
-        { name: "iconName", type: "FaIconName" },
+        {
+          name: "iconName",
+          type: "FaIconName | false",
+          description:
+            "Leading icon. Omit for sentiment default; false hides the icon (MUI convention); string overrides.",
+        },
         { name: "hasAction", type: "boolean", default: "false" },
         {
           name: "actionLabel",
@@ -1179,6 +1196,7 @@ export const cadsManifest: {
         "Figma uses sentiment=primary for brand chrome (not brand).",
         "Action is locked to outlined secondary at small size. Always pass actionLabel.",
         "Toast is a presentational surface — host apps own queueing / auto-dismiss timing.",
+        "Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide.",
       ],
       example: `<Toast sentiment="success" hasAction actionLabel="View">This is a toast.</Toast>`,
     },
@@ -1310,8 +1328,12 @@ export const cadsManifest: {
             "MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.",
         },
         { name: "hasCaret", type: "boolean", default: "true" },
-        { name: "startIcon", type: "boolean", default: "false" },
-        { name: "iconName", type: "FaIconName | string" },
+        {
+          name: "iconName",
+          type: "FaIconName | string",
+          description:
+            "Leading FA icon. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).",
+        },
       ],
       variableDependencies: [
         "--background-neutral-primary-inverse",
@@ -1324,6 +1346,7 @@ export const cadsManifest: {
         "Child must be able to hold a ref (forwardRef element).",
         "Prefer supplementary hints — avoid sole source of critical info.",
         "Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).",
+        "Icons render only when iconName is set — there is no separate boolean gate.",
         "Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).",
       ],
       example: `<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>`,

@@ -74,14 +74,14 @@ function Tooltip({
   children,
   title,
   hasCaret = true,
-  startIcon = false,
-  iconName = "face-smile",
+  iconName,
   placement = "bottom",
   slotProps,
   ...rest
 }) {
   const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
   const edgePin = arrowEdgePin(placement ?? "bottom");
+  const resolvedIcon = iconName ? iconName || "face-smile" : null;
   const content = /* @__PURE__ */ jsxs(
     Box,
     {
@@ -90,18 +90,21 @@ function Tooltip({
         display: "inline-flex",
         alignItems: "flex-start",
         gap: "8px",
-        maxWidth: 256,
-        width: "max-content",
+        // Constrain to the bubble; hug width is owned by the tooltip slot.
+        maxWidth: "100%",
+        minWidth: 0,
+        boxSizing: "border-box",
         textAlign: "left"
       },
       children: [
-        startIcon ? /* @__PURE__ */ jsx(
+        resolvedIcon ? /* @__PURE__ */ jsx(
           Box,
           {
             component: "span",
             "aria-hidden": true,
             sx: {
               // Match body/sm line-box and center the FA glyph (same approach as Alert).
+              // Parent is items-start so the icon stays on the first text line when wrapping.
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -114,7 +117,7 @@ function Tooltip({
             children: /* @__PURE__ */ jsx(
               FaIcon,
               {
-                name: iconName || "face-smile",
+                name: resolvedIcon,
                 fontSize: "14px",
                 style: {
                   width: 14,
@@ -132,12 +135,19 @@ function Tooltip({
           {
             component: "span",
             sx: {
+              // Allow the flex item to shrink so copy wraps inside max-width 256.
+              // (Default min-width:auto keeps a single long line from wrapping.)
+              flex: "1 1 auto",
+              minWidth: 0,
               fontFamily: "var(--font-body)",
               fontSize: "var(--text-body-sm)",
               fontWeight: 400,
               lineHeight: "var(--leading-body-sm)",
               color: "var(--text-neutral-primary-inverse)",
-              textAlign: "left"
+              textAlign: "left",
+              whiteSpace: "normal",
+              overflowWrap: "anywhere",
+              wordBreak: "break-word"
             },
             children: title
           }
@@ -188,13 +198,16 @@ function Tooltip({
             fontSize: "var(--text-body-sm)",
             lineHeight: "var(--leading-body-sm)",
             padding: "4px 12px",
+            // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
             maxWidth: 256,
+            minWidth: 64,
             width: "max-content",
-            minWidth: 0,
+            boxSizing: "border-box",
             boxShadow: "var(--shadow-md)",
             // Kill MUI’s placement margins — gap is controlled via offset above.
             margin: "0 !important",
             textAlign: "left",
+            whiteSpace: "normal",
             ...tooltipSlot && typeof tooltipSlot === "object" && "sx" in tooltipSlot && tooltipSlot.sx && typeof tooltipSlot.sx === "object" ? tooltipSlot.sx : null
           }
         },

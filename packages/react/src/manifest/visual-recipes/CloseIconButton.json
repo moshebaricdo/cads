@@ -108,7 +108,7 @@
         "background": "transparent",
         "border": "transparent",
         "text": "",
-        "icon": "var(--text-accent-pink-strong)",
+        "icon": "var(--text-accent-pink-secondary)",
         "focus": "var(--border-focused-primary)"
       },
       "geometryOverrides": {},
@@ -121,7 +121,7 @@
         "background": "transparent",
         "border": "transparent",
         "text": "",
-        "icon": "var(--text-accent-orange-strong)",
+        "icon": "var(--text-accent-orange-secondary)",
         "focus": "var(--border-focused-primary)"
       },
       "geometryOverrides": {},
@@ -271,7 +271,7 @@
         "state": "press",
         "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
         "expectedGeometry": { "width": "13", "height": "13", "icon": "10" },
-        "expectedVariables": ["--text-accent-pink-strong"],
+        "expectedVariables": ["--text-accent-pink-secondary"],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CloseIconButton/close-xs-pink-press-light",
         "referenceScreenshot": "",
         "browserScreenshot": "",

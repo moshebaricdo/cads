@@ -11,9 +11,9 @@ export type ChipGroupLabelStyle = ChipLabelStyle;
 export interface ChipGroupOption {
   value: string;
   label: ReactNode;
-  startIcon?: boolean;
-  endIcon?: boolean;
+  /** Leading FA icon. Omit for no start icon. */
   startIconName?: FaIconName | (string & {});
+  /** Trailing FA icon. Omit for no end icon. */
   endIconName?: FaIconName | (string & {});
   disabled?: boolean;
 }
@@ -110,8 +110,6 @@ export const ChipGroup = forwardRef<HTMLDivElement, ChipGroupProps>(
             labelStyle={labelStyle}
             label={opt.label}
             selected={selected.includes(opt.value)}
-            startIcon={opt.startIcon}
-            endIcon={opt.endIcon}
             startIconName={opt.startIconName}
             endIconName={opt.endIconName}
             disabled={disabled || opt.disabled}

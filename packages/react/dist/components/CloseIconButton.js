@@ -32,11 +32,11 @@ const CloseIconButton = forwardRef(function CloseIconButton2({
       hover: "var(--text-brand-primary)"
     },
     pink: {
-      default: "var(--text-accent-pink-strong)",
+      default: "var(--text-accent-pink-secondary)",
       hover: "var(--text-accent-pink-primary)"
     },
     orange: {
-      default: "var(--text-accent-orange-strong)",
+      default: "var(--text-accent-orange-secondary)",
       hover: "var(--text-accent-orange-primary)"
     },
     success: {

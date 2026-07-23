@@ -14,16 +14,16 @@ const Chip = forwardRef(function Chip2({
   labelStyle = "thick",
   selected = false,
   label = "Chips",
-  startIcon = false,
-  endIcon = false,
-  startIconName = "face-smile",
-  endIconName = "face-smile",
+  startIconName,
+  endIconName,
   disabled,
   sx,
   ...rest
 }, ref) {
   const dims = CHIP_SIZE[size];
   const borderDefault = color === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
+  const startName = startIconName ? resolveIconName(startIconName) : null;
+  const endName = endIconName ? resolveIconName(endIconName) : null;
   return /* @__PURE__ */ jsxs(
     ButtonBase,
     {
@@ -76,15 +76,9 @@ const Chip = forwardRef(function Chip2({
       },
       ...rest,
       children: [
-        startIcon ? /* @__PURE__ */ jsx(
-          FaIcon,
-          {
-            name: resolveIconName(startIconName),
-            fontSize: dims.iconPx
-          }
-        ) : null,
+        startName ? /* @__PURE__ */ jsx(FaIcon, { name: startName, fontSize: dims.iconPx }) : null,
         label,
-        endIcon ? /* @__PURE__ */ jsx(FaIcon, { name: resolveIconName(endIconName), fontSize: dims.iconPx }) : null
+        endName ? /* @__PURE__ */ jsx(FaIcon, { name: endName, fontSize: dims.iconPx }) : null
       ]
     }
   );

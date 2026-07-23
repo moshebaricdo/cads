@@ -35,7 +35,7 @@ const PINK: MessagingChrome = {
   border: "var(--border-accent-pink-mid)",
   borderPrimary: "var(--border-accent-pink-primary)",
   icon: "var(--text-accent-pink-primary-fixed)",
-  label: "var(--text-accent-pink-strong)",
+  label: "var(--text-accent-pink-secondary)",
 };
 
 const ORANGE: MessagingChrome = {
@@ -43,7 +43,7 @@ const ORANGE: MessagingChrome = {
   border: "var(--border-accent-orange-mid)",
   borderPrimary: "var(--border-accent-orange-primary)",
   icon: "var(--text-accent-orange-primary-fixed)",
-  label: "var(--text-accent-orange-strong)",
+  label: "var(--text-accent-orange-secondary)",
 };
 
 const SUCCESS: MessagingChrome = {

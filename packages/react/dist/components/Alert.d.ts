@@ -19,14 +19,12 @@ interface AlertProps {
     /** Alert body copy (Figma `alertText`). */
     children?: ReactNode;
     /**
-     * Show leading status/custom icon.
-     * @default true
+     * Leading status/custom icon (Figma `hasIcon` + `alertIcon`).
+     * - `undefined` — show the sentiment default (or face-smile)
+     * - `false` — hide the icon (MUI Alert `icon={false}` convention)
+     * - string — custom FA icon name
      */
-    hasIcon?: boolean;
-    /**
-     * Custom icon name. Status sentiments default to Figma glyphs when omitted.
-     */
-    iconName?: FaIconName | (string & {});
+    iconName?: FaIconName | false | (string & {});
     /**
      * Show trailing outlined secondary action button (variant/color/size locked).
      * @default false

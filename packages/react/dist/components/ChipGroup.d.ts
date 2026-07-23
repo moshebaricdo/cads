@@ -11,9 +11,9 @@ type ChipGroupLabelStyle = ChipLabelStyle;
 interface ChipGroupOption {
     value: string;
     label: ReactNode;
-    startIcon?: boolean;
-    endIcon?: boolean;
+    /** Leading FA icon. Omit for no start icon. */
     startIconName?: FaIconName | (string & {});
+    /** Trailing FA icon. Omit for no end icon. */
     endIconName?: FaIconName | (string & {});
     disabled?: boolean;
 }

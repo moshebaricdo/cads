@@ -7,13 +7,15 @@
     "publicNodeId": "1990:7125",
     "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
     "relatedNodeIds": [],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-07-23",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "Figma update",
+    "taskPath": "code-only fix",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "2026-07-23: long text must wrap at maxWidth 256 with left alignment; start icon stays on first line (items-start)."
+    ]
   },
   "axes": {
     "public": {
@@ -42,7 +44,10 @@
         "gap": "8",
         "radius": "6",
         "maxWidth": "256",
-        "width": "hug"
+        "minWidth": "64",
+        "width": "hug",
+        "textWrap": "word-break / left-aligned",
+        "iconAlign": "flex-start (first line)"
       }
     },
     "layout": {
@@ -53,7 +58,9 @@
       "overlap": "0",
       "triggerGapWithCaret": "4",
       "triggerGapWithoutCaret": "6",
-      "caretSize": "6\u00d74"
+      "caretSize": "6×4",
+      "maxWidth": "256",
+      "minWidth": "64"
     },
     "typography": {
       "family": "var(--font-body)",
@@ -96,10 +103,10 @@
         "figmaVariant": "caretPlacement=top",
         "mode": "light",
         "props": {
-          "startIcon": true,
           "hasCaret": true,
           "title": "Tooltip",
-          "placement": "bottom"
+          "placement": "bottom",
+          "iconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -127,7 +134,6 @@
         "figmaVariant": "caretPlacement=bottom",
         "mode": "light",
         "props": {
-          "startIcon": false,
           "hasCaret": true,
           "title": "Tooltip",
           "placement": "top"
@@ -156,10 +162,10 @@
         "figmaVariant": "caretPlacement=left",
         "mode": "light",
         "props": {
-          "startIcon": true,
           "hasCaret": true,
           "title": "Tooltip",
-          "placement": "right"
+          "placement": "right",
+          "iconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -185,10 +191,10 @@
         "figmaVariant": "caretPlacement=right",
         "mode": "dark",
         "props": {
-          "startIcon": true,
           "hasCaret": true,
           "title": "Tooltip",
-          "placement": "left"
+          "placement": "left",
+          "iconName": "face-smile"
         },
         "state": "default",
         "viewport": {
@@ -215,7 +221,6 @@
         "mode": "light",
         "props": {
           "hasCaret": false,
-          "startIcon": false,
           "title": "Tooltip",
           "placement": "bottom"
         },
@@ -236,15 +241,59 @@
         "mismatches": [],
         "browserScreenshot": "captures/browser-tooltip-no-caret-light.png",
         "figmaScreenshot": "captures/figma-tooltip-set.png"
+      },
+      {
+        "id": "tooltip-long-text-icon-light",
+        "figmaNodeId": "1990:7125",
+        "figmaVariant": "caretPlacement=top, startIcon=true",
+        "mode": "light",
+        "props": {
+          "hasCaret": true,
+          "title": "This is a longer tooltip label that should wrap within the 256px max width while keeping the icon aligned to the first line.",
+          "placement": "bottom",
+          "iconName": "face-smile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 200,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "radius": "6",
+          "padding": "4 12",
+          "maxWidth": "256",
+          "textAlign": "left",
+          "iconAlign": "first-line"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse",
+          "--shadow-md"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Tooltip.tsx",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-tooltip-long-text-icon-light.png",
+        "figmaScreenshot": null,
+        "notes": [
+          "Content-stress case for wrap + first-line icon alignment; Figma component set samples are short labels."
+        ]
       }
     ]
   },
   "acceptedDifferences": [],
   "evidence": {
-    "apiAudit": "0 error / 0 warn / 0 escalate (strict)",
+    "apiAudit": "0 error / 0 warn / 0 escalate (strict); caretPlacement design-only → placement codeOnly",
     "typecheck": "pass",
     "build": "pass",
     "docsBuild": null,
-    "correctionPasses": []
+    "correctionPasses": [
+      {
+        "at": "2026-07-23",
+        "mismatch": "Long title stayed on one line past 256px",
+        "fix": "whiteSpace normal + minWidth 0 + overflow-wrap on text; bubble maxWidth 256 / minWidth 64; items-start icon",
+        "measured": "long case width=256 height=96; iconTop===textTop; short case width≈89 (hug)"
+      }
+    ]
   }
 }

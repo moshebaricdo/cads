@@ -54,8 +54,6 @@ const ChipGroup = forwardRef(
             labelStyle,
             label: opt.label,
             selected: selected.includes(opt.value),
-            startIcon: opt.startIcon,
-            endIcon: opt.endIcon,
             startIconName: opt.startIconName,
             endIconName: opt.endIconName,
             disabled: disabled || opt.disabled,

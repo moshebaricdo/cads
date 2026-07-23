@@ -33,9 +33,15 @@ export interface ChipProps
   /** Selected fill chrome (Figma `selected=yes`). */
   selected?: boolean;
   label?: ReactNode;
-  startIcon?: boolean;
-  endIcon?: boolean;
+  /**
+   * Leading FA icon. Omit for no start icon (Figma’s boolean `startIcon` is
+   * collapsed into presence of this prop).
+   */
   startIconName?: FaIconName | (string & {});
+  /**
+   * Trailing FA icon. Omit for no end icon (Figma’s boolean `endIcon` is
+   * collapsed into presence of this prop).
+   */
   endIconName?: FaIconName | (string & {});
 }
 
@@ -57,10 +63,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
     labelStyle = "thick",
     selected = false,
     label = "Chips",
-    startIcon = false,
-    endIcon = false,
-    startIconName = "face-smile",
-    endIconName = "face-smile",
+    startIconName,
+    endIconName,
     disabled,
     sx,
     ...rest
@@ -72,6 +76,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
     color === "secondary"
       ? "var(--border-neutral-secondary)"
       : "var(--border-neutral-solid)";
+  const startName = startIconName ? resolveIconName(startIconName) : null;
+  const endName = endIconName ? resolveIconName(endIconName) : null;
 
   return (
     <ButtonBase
@@ -147,16 +153,9 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
       }}
       {...rest}
     >
-      {startIcon ? (
-        <FaIcon
-          name={resolveIconName(startIconName)}
-          fontSize={dims.iconPx}
-        />
-      ) : null}
+      {startName ? <FaIcon name={startName} fontSize={dims.iconPx} /> : null}
       {label}
-      {endIcon ? (
-        <FaIcon name={resolveIconName(endIconName)} fontSize={dims.iconPx} />
-      ) : null}
+      {endName ? <FaIcon name={endName} fontSize={dims.iconPx} /> : null}
     </ButtonBase>
   );
 });

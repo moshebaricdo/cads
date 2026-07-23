@@ -74,6 +74,11 @@
           "reason": "Code identifies the Figma end-icon instance by CADS icon name."
         },
         {
+          "name": "loading",
+          "category": "controlled-state",
+          "reason": "Code-only progressive state: replaces all visible content with a centered FA spinner while preserving width. Not a Figma variant axis (avoids startIcon swap / layout shift)."
+        },
+        {
           "name": "disabled",
           "category": "controlled-state",
           "reason": "Consumers need to select the Figma disabled state semantically."
@@ -89,7 +94,8 @@
         "hover",
         "focus",
         "pressed",
-        "disabled"
+        "disabled",
+        "loading"
       ]
     },
     {
@@ -490,7 +496,7 @@
             "state",
             "isFilled"
           ],
-          "notes": "Internal chrome set. Public Text Input composes Field Wrapper + this building block. Boolean startIcon + text startIconName on field variants only (not area). Figma extraSmall field height is 22px; code uses the shared 24px control height (accepted difference)."
+          "notes": "Internal chrome set. Public Text Input composes Field Wrapper + this building block. Text startIconName on field variants only (not area); Figma boolean startIcon collapsed into presence. Figma extraSmall field height is 22px; code uses the shared 24px control height (accepted difference)."
         }
       },
       "designOnlyAxes": [],
@@ -575,14 +581,9 @@
           "reason": "Multiline area height hint for textarea consumers."
         },
         {
-          "name": "startIcon",
-          "category": "content",
-          "reason": "Maps Figma building-block boolean startIcon (field-only; ignored for type=area)."
-        },
-        {
           "name": "startIconName",
           "category": "content",
-          "reason": "Maps Figma building-block text startIconName (FA shortcode smile → face-smile)."
+          "reason": "Maps Figma building-block text startIconName; presence replaces Figma boolean startIcon (field-only; ignored for type=area)."
         }
       ],
       "stateRecipes": [
@@ -596,7 +597,8 @@
       ],
       "escalate": [],
       "notes": [
-        "2026-07-21: building block gained startIcon + startIconName on field variants. Figma defaults startIcon true; code defaults false so undecorated fields stay the common case unless opted in (same pattern as Tooltip)."
+        "2026-07-21: building block gained startIcon + startIconName on field variants. Figma defaults startIcon true; code uses presence of startIconName (unset = no icon) so undecorated fields stay the common case.",
+        "2026-07-23: Figma boolean startIcon collapsed into presence of startIconName (unset = no icon)."
       ]
     },
     {
@@ -644,7 +646,7 @@
           "figmaName": "Dropdown Menu Item",
           "nodeId": "896:3791",
           "componentKey": "0f55c81572c70c444efe57746a0bdd095a13633f",
-          "notes": "Internal item. Axes: role, itemType (default|checkbox|defaultError), selected, state. Boolean hasStartIcon → code startIcon; iconName when startIcon."
+          "notes": "Internal item. Axes: role, itemType (default|checkbox|defaultError), selected, state. Figma boolean hasStartIcon collapsed into presence of iconName."
         },
         "menuSeparator": {
           "figmaName": "menuSeparator",
@@ -1295,12 +1297,12 @@
         {
           "name": "startIconName",
           "category": "content",
-          "reason": "Maps Figma startIcon name text property."
+          "reason": "Maps Figma startIcon name text property; presence replaces Figma boolean startIcon."
         },
         {
           "name": "endIconName",
           "category": "content",
-          "reason": "Maps Figma endIcon name text property."
+          "reason": "Maps Figma endIcon name text property; presence replaces Figma boolean endIcon."
         },
         {
           "name": "disabled",
@@ -1316,16 +1318,6 @@
           "name": "aria-label",
           "category": "accessibility",
           "reason": "Accessible name override when label content is decorative."
-        },
-        {
-          "name": "startIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean startIcon#15970:363."
-        },
-        {
-          "name": "endIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean endIcon#15970:242."
         }
       ],
       "stateRecipes": [
@@ -1337,7 +1329,8 @@
       ],
       "escalate": [],
       "notes": [
-        "Figma color=selected (n/a) couples to selected=yes; code uses selected boolean + selected tokens only."
+        "Figma color=selected (n/a) couples to selected=yes; code uses selected boolean + selected tokens only.",
+        "2026-07-23: Figma boolean startIcon/endIcon collapsed into presence of startIconName/endIconName (unset = no icon)."
       ]
     },
     {
@@ -1794,14 +1787,9 @@
           "reason": "Maps Figma text property alertText."
         },
         {
-          "name": "hasIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean hasIcon."
-        },
-        {
           "name": "iconName",
           "category": "content",
-          "reason": "Maps Figma text alertIcon / custom icon override."
+          "reason": "Maps Figma text alertIcon / custom icon override. Presence + false sentinel replace Figma boolean hasIcon (undefined = sentiment default, false = hide, string = override)."
         },
         {
           "name": "hasAction",
@@ -1854,7 +1842,8 @@
       ],
       "escalate": [],
       "notes": [
-        "Action Button is locked to outlined secondary; size maps large\u2192medium, medium\u2192small, small/XS\u2192extraSmall."
+        "Action Button is locked to outlined secondary; size maps large\u2192medium, medium\u2192small, small/XS\u2192extraSmall.",
+        "2026-07-23: Figma boolean hasIcon collapsed into iconName (undefined = sentiment default, false = hide, string = override) — MUI Alert icon={false} convention."
       ]
     },
     {
@@ -1893,14 +1882,9 @@
           "reason": "Maps Figma text property toastText."
         },
         {
-          "name": "hasIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean hasIcon."
-        },
-        {
           "name": "iconName",
           "category": "content",
-          "reason": "Maps Figma text toastIcon / custom icon override."
+          "reason": "Maps Figma text toastIcon / custom icon override. Presence + false sentinel replace Figma boolean hasIcon (undefined = sentiment default, false = hide, string = override)."
         },
         {
           "name": "hasAction",
@@ -1949,7 +1933,8 @@
       "escalate": [],
       "notes": [
         "Figma Toast sentiment=primary maps to brand chrome tokens (Alert/Banner use brand).",
-        "Action Button is locked to outlined secondary at small size."
+        "Action Button is locked to outlined secondary at small size.",
+        "2026-07-23: Figma boolean hasIcon collapsed into iconName (undefined = sentiment default, false = hide, string = override) — MUI Alert icon={false} convention."
       ]
     },
     {
@@ -2148,10 +2133,8 @@
           "left"
         ]
       },
-      "designOnlyAxes": [],
-      "axisToCodeProp": {
-        "caretPlacement": "caretPlacement"
-      },
+      "designOnlyAxes": ["caretPlacement"],
+      "axisToCodeProp": {},
       "booleanProps": {
         "hasCaret": {
           "figma": "hasCaret#11291:0",
@@ -2179,19 +2162,19 @@
           "reason": "Maps Figma boolean hasCaret."
         },
         {
-          "name": "startIcon",
-          "category": "composition",
-          "reason": "Maps Figma boolean startIcon."
-        },
-        {
           "name": "iconName",
           "category": "content",
-          "reason": "Maps Figma text iconName."
+          "reason": "Maps Figma text iconName; presence replaces Figma boolean startIcon."
         },
         {
           "name": "open",
           "category": "controlled-state",
           "reason": "Controlled visibility for fixtures/tests."
+        },
+        {
+          "name": "placement",
+          "category": "composition",
+          "reason": "Code-idiomatic MUI placement for Figma caretPlacement (inverted top/bottom) plus *-start/*-end caret edge pins not in the Figma axis."
         }
       ],
       "stateRecipes": [
@@ -2199,8 +2182,10 @@
       ],
       "escalate": [],
       "notes": [
-        "Figma startIcon defaults true; code defaults false so short text tooltips stay compact unless opted in.",
-        "Figma axis remains caretPlacement (four edges). Code API uses MUI placement only (Figma top → placement bottom; *-start/*-end pin caret near that edge)."
+        "Figma startIcon defaults true; code uses presence of iconName (unset = no icon) so short text tooltips stay compact unless opted in.",
+        "Figma axis remains caretPlacement (four edges). Code API uses MUI placement only (Figma top → placement bottom; *-start/*-end pin caret near that edge).",
+        "2026-07-23: long labels wrap at maxWidth 256 (left-aligned); start icon stays on the first text line.",
+        "2026-07-23: Figma boolean startIcon collapsed into presence of iconName (unset = no icon)."
       ]
     },
     {

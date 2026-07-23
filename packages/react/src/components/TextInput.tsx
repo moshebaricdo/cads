@@ -51,14 +51,9 @@ export interface TextInputProps extends SharedNativeProps {
    */
   multiline?: boolean;
   /**
-   * Leading FA icon inside the field (Figma building-block `startIcon`).
-   * Field-only; ignored for multiline areas.
-   * @default false
-   */
-  startIcon?: boolean;
-  /**
-   * FA icon when `startIcon` (Figma `startIconName`; `smile` → `face-smile`).
-   * @default "face-smile"
+   * Leading FA icon inside the field (Figma building-block `startIcon` +
+   * `startIconName`). Field-only; ignored for multiline areas. Omit for no
+   * icon (Figma’s boolean is collapsed into presence of this prop).
    */
   startIconName?: FaIconName | (string & {});
   /** Visible field label via Field Wrapper. */
@@ -104,9 +99,8 @@ const SHELL_CLASS = "cads-text-input-shell";
 const CONTROL_CLASS = "cads-text-input-control";
 
 function resolveStartIconName(
-  name: FaIconName | (string & {}) | undefined,
+  name: FaIconName | (string & {}),
 ): FaIconName {
-  if (!name) return "face-smile";
   return resolveFaIconName(String(name)) ?? "face-smile";
 }
 
@@ -114,7 +108,6 @@ function TextInputControl({
   size,
   color,
   multiline,
-  startIcon,
   startIconName,
   disabled,
   readOnly,
@@ -132,7 +125,6 @@ function TextInputControl({
   size: TextInputSize;
   color: TextInputColor;
   multiline: boolean;
-  startIcon: boolean;
   startIconName?: FaIconName | (string & {});
   disabled: boolean;
   readOnly: boolean;
@@ -148,7 +140,7 @@ function TextInputControl({
 } & SharedNativeProps) {
   const field = useFieldContext();
   const dims = TEXT_INPUT_SIZE[size];
-  const showStartIcon = startIcon && !multiline;
+  const showStartIcon = Boolean(startIconName) && !multiline;
 
   let background = "var(--background-neutral-primary)";
   let borderColor = defaultBorder(color);
@@ -251,7 +243,7 @@ function TextInputControl({
       data-start-icon={showStartIcon ? "true" : undefined}
       style={shellStyle}
     >
-      {showStartIcon ? (
+      {showStartIcon && startIconName ? (
         <FaIcon
           name={resolveStartIconName(startIconName)}
           family="solid"
@@ -306,7 +298,8 @@ const INTERACTIVE_STYLES = `
  * building block `16146:3517`.
  *
  * Figma `type=field|area` maps to `multiline={false|true}`.
- * Figma `startIcon` / `startIconName` are field-only (ignored for areas).
+ * Figma `startIcon` boolean is collapsed into presence of `startIconName`
+ * (field-only; ignored for areas).
  * Figma `isFilled` / interaction `state` are derived (value / CSS / props).
  */
 export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
@@ -315,8 +308,7 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
       size = "medium",
       color = "primary",
       multiline = false,
-      startIcon = false,
-      startIconName = "face-smile",
+      startIconName,
       label,
       required = false,
       helperText,
@@ -366,7 +358,6 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
             size={size}
             color={color}
             multiline={multiline}
-            startIcon={startIcon}
             startIconName={startIconName}
             disabled={disabled}
             readOnly={readOnly}
