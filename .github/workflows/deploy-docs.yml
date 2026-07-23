@@ -27,6 +27,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm generate:variables
       - run: pnpm build
+      # Skill ZIP (FA7 inlined) → public/downloads via docs prebuild copy-skill-zip
+      - run: pnpm artifact:package
       - name: Build docs (static export for Pages)
         env:
           GITHUB_PAGES: "true"

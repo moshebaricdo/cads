@@ -87,7 +87,8 @@ pnpm dev:docs          # http://localhost:3100 (Turbopack)
 pnpm build:docs        # static export → apps/docs/out (GITHUB_PAGES=true → basePath=/cads)
 pnpm figma:sync        # needs FIGMA_ACCESS_TOKEN for live fetch
 pnpm figma:audit-props # cadsManifest ↔ Figma prop snapshot (Actions pilot)
-pnpm artifact:build    # Portable skill ZIP → tooling/cads-artifact/dist/cads-prototyping.zip (internal; FA Pro)
+pnpm artifact:build    # Full artifact rebuild + skill ZIP (FA7 Pro inlined)
+pnpm artifact:package  # Runtime + skill ZIP only (packages already built; used by Pages deploy)
 ```
 
 Docs are deployed to GitHub Pages from `main` via `.github/workflows/deploy-docs.yml` → `https://moshebaricdo.github.io/cads/`.

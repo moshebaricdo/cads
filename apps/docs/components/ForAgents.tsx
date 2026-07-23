@@ -3,9 +3,10 @@
 import { Button } from "@codeai/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 import overviewStyles from "@/components/ComponentOverview.module.css";
+import { withBasePath } from "@/lib/basePath";
 import styles from "./ForAgents.module.css";
 
-const SKILL_ZIP_ROUTE = "/downloads/cads-prototyping.zip";
+const SKILL_ZIP_ROUTE = withBasePath("/downloads/cads-prototyping.zip");
 
 /** Geist’s rightwards arrow (text presentation, not emoji). */
 function Arrow() {
@@ -29,7 +30,8 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           <p className={overviewStyles.lead}>
             One portable skill carries the real CADS runtime. Install it in a
             supported AI tool, ask for a prototype, and get self-contained HTML —
-            no npm packages and no monorepo checkout.
+            no npm packages and no monorepo checkout. Intended for CodeAI
+            internal use (embeds Font Awesome 7 Pro).
           </p>
         </div>
         {zipReady ? (
@@ -45,10 +47,9 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           </div>
         ) : (
           <p className={styles.fallback}>
-            The skill ZIP is internal-only (it embeds licensed Font Awesome Pro
-            fonts) and is not published on this public site. Use an internal
-            docs build that includes the download, or get the ZIP from your
-            CodeAI team.
+            Skill ZIP not in this build. Run{" "}
+            <code>pnpm artifact:package</code> then rebuild docs, or download
+            from the deployed docs site.
           </p>
         )}
       </header>

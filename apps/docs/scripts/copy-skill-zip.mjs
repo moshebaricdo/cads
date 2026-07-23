@@ -1,10 +1,10 @@
 /**
- * Copies the built portable skill ZIP into public/downloads for local /
- * internal docs builds. Skipped when the artifact hasn't been built — the
- * For Agents page then shows an internal-access note.
+ * Copies the built portable skill ZIP into public/downloads for docs export
+ * (local + GitHub Pages). The ZIP is gitignored; CI runs `pnpm artifact:package`
+ * before `build:docs` so Pages ships the download.
  *
- * The copy is gitignored: the ZIP inlines FA Pro fonts (internal license) and
- * must not be published via public GitHub Pages.
+ * Embeds FA7 Pro — CodeAI internal use. When prod `dsco` publishes FA7, prefer
+ * those CDN assets over inlining.
  */
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -21,11 +21,11 @@ const target = join(targetDir, "cads-prototyping.zip");
 if (existsSync(source)) {
   mkdirSync(targetDir, { recursive: true });
   copyFileSync(source, target);
-  console.log("[docs] copied cads-prototyping.zip → public/downloads/ (internal)");
+  console.log("[docs] copied cads-prototyping.zip → public/downloads/");
 } else if (existsSync(target)) {
   console.log("[docs] skill ZIP not rebuilt; keeping existing public copy");
 } else {
   console.log(
-    "[docs] no skill ZIP found (internal builds: run `pnpm artifact:build`); For Agents page will show access note",
+    "[docs] no skill ZIP found (run `pnpm artifact:package`); /ai will show a rebuild note",
   );
 }

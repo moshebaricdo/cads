@@ -17,6 +17,7 @@
     "mcp:cads": "pnpm --filter @codeai/cads-mcp run start",
     "test:mcp": "pnpm --filter @codeai/cads-mcp run test",
     "artifact:build": "pnpm --filter @codeai/cads-artifact run build:all",
+    "artifact:package": "pnpm --filter @codeai/cads-artifact run build && pnpm --filter @codeai/cads-artifact run package-skill",
     "test:artifact": "pnpm --filter @codeai/cads-artifact run test",
     "typecheck": "pnpm -r --filter './packages/*' run typecheck",
     "generate:variables": "pnpm --filter @codeai/cads-variables run generate",

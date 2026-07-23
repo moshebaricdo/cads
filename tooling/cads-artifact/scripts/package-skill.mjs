@@ -12,7 +12,8 @@
  *       ├── scripts/generate_artifact.py
  *       └── examples/*.json
  *
- * Internal-only: embeds FA Pro fonts. Do not publish publicly.
+ * Embeds FA7 Pro fonts for CodeAI internal prototyping. Docs/Pages may host
+ * the ZIP for team download until prod ships FA7 CDN assets.
  */
 import { spawnSync } from "node:child_process";
 import {
@@ -147,7 +148,8 @@ console.log(`  size: ${human(zipBytes)}`);
 console.log(`  files: ${preflight.fileCount}`);
 console.log(`  description: ${preflight.descriptionLength} chars`);
 console.log(`
-Upload (internal only — FA Pro fonts):
+Upload (CodeAI internal — embeds FA7 Pro):
+  Docs:     /ai → Download skill (also on GitHub Pages)
   Claude:   Customize → Skills → Upload
   ChatGPT:  Skills / Work mode (Agent Skills ZIP)
   Gemini:   Spark → Skills → Upload

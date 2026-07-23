@@ -8,7 +8,7 @@ node_modules
 coverage
 apps/docs/.next
 apps/docs/out
-# FA Pro inlined — internal license, never commit
+# Skill ZIP copied at docs prebuild (CI / local); do not commit
 apps/docs/public/downloads/
 *.tsbuildinfo
 .pnpm-store
