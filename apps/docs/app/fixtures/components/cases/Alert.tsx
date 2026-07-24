@@ -67,7 +67,7 @@ export const cases: FixtureCase[] = [
       mode: "light",
       viewport: { width: 560, height: 100 },
       render: () => (
-        <Alert size="large" sentiment="info" hasIcon>
+        <Alert size="large" sentiment="info">
           This is an alert.
         </Alert>
       ),
