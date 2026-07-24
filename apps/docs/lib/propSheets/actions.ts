@@ -14,9 +14,10 @@ export const ACTIONS_PROP_SHEETS: Record<string, PropSheet[]> = {
         },
         {
           name: "color",
-          type: '"primary" | "secondary" | "tertiary" | "error"',
+          type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',
           default: '"primary"',
-          description: "Color role for the button surface and text.",
+          description:
+            "Color role for the button surface and text. Tertiary is only for text + icon-only; orange is only for the run button (contained). Other combos fall back (tertiary→secondary, orange→primary).",
         },
         {
           name: "size",

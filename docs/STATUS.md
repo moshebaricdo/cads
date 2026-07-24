@@ -8,6 +8,7 @@ Last updated: 2026-07-23
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
 - [x] Color CSS vars use semantic names **without** `--ds-` prefix (e.g. `--background-brand-primary`)
 - [x] `@codeai/cads-react` — Figma-parity Actions: Button, SegmentedButton, IconToggle (+ labeled); FieldWrapper, TextInput (+ deprecated TextField alias), Dropdown (input/action); Checkbox, Radio, Toggle; Slider, Chip, ChipGroup; Alert, Toast, NotificationBanner, Tag; Link, Breadcrumbs, Tabs; **Tooltip**, **Popover**, **Drawer**, **Dialog**, **Modal**; plus FaIcon (solid/regular/brands)
+- [x] **Button color=orange (2026-07-23)** — contained-only run-button accent; outlined/text fall back to primary (mirrors tertiary→secondary). Props table notes for orange + tertiary restrictions.
 - [x] **Icon boolean → presence API (2026-07-23)** — collapsed Figma show/hide booleans into optional `*IconName` / `iconName` on TextInput, Chip/ChipGroup, Tooltip, Dropdown items (same pattern as Button/Tag). Alert/Toast use MUI-style `iconName={false}` to hide (omit = sentiment default). Toggle `hasIcons` kept (dual track icon defaults).
 - [x] **TextInput start icon (2026-07-21)** — Figma building-block `startIcon` + `startIconName` (field-only); see evidence summary below
 - [x] **Toggle compact + hasIcons (2026-07-21)** — track heights match Checkbox/Radio (22/20/18/16); new `hasIcons` boolean; see evidence summary below

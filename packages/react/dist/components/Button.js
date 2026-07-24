@@ -5,14 +5,25 @@ import { FaIcon } from '../icons/FaIcon.js';
 import { BUTTON_SIZE, FOCUS_RING, TRANSITION_COLORS } from '../shared/controlSize.js';
 
 function resolveColor(color, variant, iconOnly) {
-  if (color !== "tertiary") return color;
-  if (variant === "text" && iconOnly) return "tertiary";
-  if (process.env.NODE_ENV !== "production") {
-    console.warn(
-      `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. Falling back to color="secondary" for variant="${variant}"${iconOnly ? "" : " (labeled)"}.`
-    );
+  if (color === "tertiary") {
+    if (variant === "text" && iconOnly) return "tertiary";
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. Falling back to color="secondary" for variant="${variant}"${iconOnly ? "" : " (labeled)"}.`
+      );
+    }
+    return "secondary";
   }
-  return "secondary";
+  if (color === "orange") {
+    if (variant === "contained") return "orange";
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[CADS Button] color="orange" is only defined in Figma for variant="contained" (run button). Falling back to color="primary" for variant="${variant}".`
+      );
+    }
+    return "primary";
+  }
+  return color;
 }
 function colorRecipe(color) {
   switch (color) {
@@ -57,6 +68,26 @@ function colorRecipe(color) {
         textHoverBg: "var(--background-error-light)",
         textPressedBg: "var(--background-error-light)",
         textDisabledFg: "var(--text-disabled-error)"
+      };
+    case "orange":
+      return {
+        filledBg: "var(--background-accent-orange-primary)",
+        filledBgHover: "var(--background-accent-orange-strong)",
+        filledBgPressed: "var(--background-accent-orange-primary)",
+        filledFg: "var(--text-neutral-white-fixed)",
+        filledDisabledBg: "var(--background-disabled-orange)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        outlinedBorder: "var(--border-accent-orange-primary)",
+        outlinedFg: "var(--text-accent-orange-primary)",
+        outlinedHoverBg: "var(--background-accent-orange-light)",
+        outlinedPressedBg: "var(--background-accent-orange-light)",
+        outlinedDisabledBorder: "var(--border-disabled-orange)",
+        outlinedDisabledFg: "var(--text-disabled-orange)",
+        textFg: "var(--text-accent-orange-primary)",
+        textFgPressed: "var(--text-accent-orange-secondary)",
+        textHoverBg: "var(--background-accent-orange-light)",
+        textPressedBg: "var(--background-accent-orange-light)",
+        textDisabledFg: "var(--text-disabled-orange)"
       };
     case "tertiary":
       return {

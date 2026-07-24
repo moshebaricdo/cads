@@ -19,7 +19,13 @@ export default function ButtonPreview({
     <Button
       variant={v.variant as "contained" | "outlined" | "text" | undefined}
       color={
-        v.color as "primary" | "secondary" | "tertiary" | "error" | undefined
+        v.color as
+          | "primary"
+          | "secondary"
+          | "tertiary"
+          | "orange"
+          | "error"
+          | undefined
       }
       size={
         v.size as "large" | "medium" | "small" | "extraSmall" | undefined

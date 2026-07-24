@@ -1,7 +1,7 @@
 {
   "fileKey": "DGekOeToRVifvFAhfqpeC1",
   "fileUrl": "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-",
-  "fetchedAt": "2026-07-17",
+  "fetchedAt": "2026-07-23",
   "source": "figma-mcp get_metadata \u2014 variant axes parsed from COMPONENT symbol names",
   "notes": [
     "Interaction axes (state) are design recipes, not React props \u2014 implement via CSS :hover/:focus/:active/disabled.",
@@ -16,7 +16,7 @@
       "figmaName": "Button",
       "nodeId": "15724:18791",
       "componentKey": "2507b18076b4066c6ff738539115b36a798fd707",
-      "symbolCount": 380,
+      "symbolCount": 420,
       "variantProperties": {
         "size": [
           "extraSmall",
@@ -31,6 +31,7 @@
         ],
         "color": [
           "error",
+          "orange",
           "primary",
           "secondary",
           "tertiary"
@@ -96,6 +97,10 @@
         "pressed",
         "disabled",
         "loading"
+      ],
+      "notes": [
+        "color=orange exists in Figma only for variant=contained (labeled + iconOnly) — run button; other variants fall back to primary.",
+        "color=tertiary exists in Figma only for variant=text + iconOnly; other combos fall back to secondary."
       ]
     },
     {

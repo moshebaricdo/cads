@@ -7,7 +7,7 @@ import { ControlSize } from '../shared/controlSize.js';
 /** Figma Button `variant` — contained / outlined / text. */
 type ButtonVariant = "contained" | "outlined" | "text";
 /** Figma Button `color`. */
-type ButtonColor = "primary" | "secondary" | "tertiary" | "error";
+type ButtonColor = "primary" | "secondary" | "tertiary" | "orange" | "error";
 /** Figma size scale. */
 type ButtonSize = ControlSize;
 interface ButtonProps extends Omit<ButtonProps$1, "variant" | "color" | "size" | "startIcon" | "endIcon" | "loading" | "loadingIndicator" | "loadingPosition"> {
@@ -17,9 +17,11 @@ interface ButtonProps extends Omit<ButtonProps$1, "variant" | "color" | "size" |
      */
     variant?: ButtonVariant;
     /**
-     * Color intent (Figma: primary | secondary | tertiary | error).
+     * Color intent (Figma: primary | secondary | tertiary | orange | error).
      * Tertiary is only valid for `variant="text"` + icon-only; other combos
      * fall back to secondary with a development warning.
+     * Orange is only valid for `variant="contained"` (run button); other
+     * variants fall back to primary with a development warning.
      * @default "primary"
      */
     color?: ButtonColor;

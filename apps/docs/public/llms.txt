@@ -38,17 +38,18 @@ Color language:
 
 ### Button
 
-Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, and error colors.
+Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.
 
 Import: `import { Button } from "@codeai/cads-react"`
 
 Props:
 - `variant`: "contained" | "outlined" | "text" (default "contained")
-- `color`: "primary" | "secondary" | "tertiary" | "error" (default "primary")
+- `color`: "primary" | "secondary" | "tertiary" | "orange" | "error" (default "primary") — Color role. Tertiary is only for text + icon-only; orange is only for contained (run button). Other combos fall back (tertiary→secondary, orange→primary).
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Control heights: 48 / 40 / 32 / 24
 - `iconOnly`: boolean — Square icon-only geometry; inferred when no children
 - `startIconName`: FaIconName
 - `endIconName`: FaIconName
+- `loading`: boolean — Replaces visible content with a centered FA spinner; preserves button width (no layout shift). Does not use disabled styling.
 - `disabled`: boolean
 - `fullWidth`: boolean
 - `children`: ReactNode
@@ -58,6 +59,8 @@ Usage rules:
 - Contained secondary uses --background-neutral-primary-inverse; outlined primary uses --border-neutral-solid.
 - Contained disabled text uses --text-disabled-neutral-inverse (solid fill).
 - color=tertiary is Figma-valid only for text + iconOnly; other combos warn and fall back to secondary.
+- color=orange is only for the run button (contained, labeled or icon-only); other variants warn and fall back to primary.
+- loading replaces all visible content with a centered spinner and keeps the prior width — do not swap startIcon for a spinner.
 - Use semantic color CSS vars only — never hard-coded hex. No --ds- prefix.
 
 Example:
@@ -192,8 +195,7 @@ Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
 - `color`: "primary" | "secondary" (default "primary") — primary = solid border; secondary = soft border
 - `multiline`: boolean (default false) — Figma type=area when true
-- `startIcon`: boolean (default false) — Leading FA icon inside the field (building-block startIcon). Field-only; ignored when multiline. Prefer setting startIconName and enabling when present.
-- `startIconName`: FaIconName — FA icon name (Figma startIconName; smile → face-smile). Playground/docs treat empty as no icon.
+- `startIconName`: FaIconName — Leading FA icon inside the field. Field-only; ignored when multiline. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).
 - `label`: string
 - `helperText`: ReactNode
 - `helperIconName`: FaIconName
@@ -211,14 +213,14 @@ Props:
 Usage rules:
 - Prefer TextInput over the deprecated TextField alias.
 - Figma type=field|area maps to multiline={false|true}.
-- startIcon is field-only; ignored when multiline (type=area).
+- startIconName is field-only; ignored when multiline (type=area). Omit for no icon.
 - extraSmall field height uses the shared 24px control scale (Figma building block is 22px).
 - Do not invent floating labels — label is always above via Field Wrapper.
 - required sets the native HTML attribute and appends * after the label.
 
 Example:
 ```tsx
-<TextInput label="Email" size="medium" startIcon startIconName="envelope" placeholder="you@example.com" helperText="Required" />
+<TextInput label="Email" size="medium" startIconName="envelope" placeholder="you@example.com" helperText="Required" />
 ```
 
 ### Dropdown
@@ -230,10 +232,10 @@ Import: `import { Dropdown } from "@codeai/cads-react"`
 Props:
 - `role`: "input" | "action" [required] — input = form select; action = button menu
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
-- `menuType`: "default" | "checklist" (default "default") — default = single-select list (item startIcon optional); checklist = multi-select (input-only)
+- `menuType`: "default" | "checklist" (default "default") — default = single-select list (item iconName optional); checklist = multi-select (input-only)
 - `menuPlacement`: "bottomLeft" | "bottomRight" | "topLeft" | "topRight" (default "bottomLeft")
 - `width`: string (default "hug") — Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.
-- `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support startIcon + iconName (text-only when omitted).
+- `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted).
 - `label`: ReactNode
 - `helperText`: ReactNode
 - `placeholder`: string
@@ -251,12 +253,12 @@ Props:
 - `labelStyle`: "thick" | "thin"
 - `startIconName`: FaIconName
 - `buttonVariant`: "contained" | "outlined" | "text"
-- `buttonColor`: "primary" | "secondary" | "tertiary" | "error"
+- `buttonColor`: "primary" | "secondary" | "tertiary" | "orange" | "error"
 - `aria-label`: string
 
 Usage rules:
 - role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
-- menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (startIcon/iconName), not a list-level mode.
+- menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.
 - options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
 - Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
 - Selected menu items use selected tokens — never brand fills.
@@ -405,10 +407,8 @@ Props:
 - `labelStyle`: "thick" | "thin" (default "thick")
 - `selected`: boolean (default false)
 - `label`: ReactNode
-- `startIcon`: boolean (default false)
-- `endIcon`: boolean (default false)
-- `startIconName`: FaIconName
-- `endIconName`: FaIconName
+- `startIconName`: FaIconName — Leading FA icon. Omit for no start icon (Figma boolean startIcon collapsed into presence of this prop).
+- `endIconName`: FaIconName — Trailing FA icon. Omit for no end icon (Figma boolean endIcon collapsed into presence of this prop).
 - `disabled`: boolean
 - `onClick`: (event) => void
 - `aria-label`: string
@@ -416,6 +416,7 @@ Props:
 Usage rules:
 - Selected chrome uses selected tokens — never brand fills.
 - Not the same as Tag (status/category badge).
+- Icons render only when startIconName / endIconName are set — there is no separate boolean gate.
 - Interaction states are CSS recipes — not React props.
 
 Example:
@@ -541,8 +542,7 @@ Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "large")
 - `sentiment`: "brand" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "brand")
 - `children`: ReactNode
-- `hasIcon`: boolean (default true)
-- `iconName`: FaIconName
+- `iconName`: FaIconName | false — Leading icon. Omit for sentiment default; false hides the icon (MUI convention); string overrides.
 - `hasAction`: boolean (default false)
 - `actionLabel`: ReactNode (default "Button")
 - `actionStartIconName`: FaIconName
@@ -555,7 +555,7 @@ Props:
 Usage rules:
 - Use for in-page contextual messaging — not temporary overlays (Toast) or page-level banners (NotificationBanner).
 - Action is locked to outlined secondary; size follows Alert size. Always pass actionLabel (empty falls back to Button).
-- Status sentiments supply default icons; override with iconName when needed.
+- Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide (same as MUI Alert icon={false}).
 
 Example:
 ```tsx
@@ -571,8 +571,7 @@ Import: `import { Toast } from "@codeai/cads-react"`
 Props:
 - `sentiment`: "primary" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "primary")
 - `children`: ReactNode
-- `hasIcon`: boolean (default true)
-- `iconName`: FaIconName
+- `iconName`: FaIconName | false — Leading icon. Omit for sentiment default; false hides the icon (MUI convention); string overrides.
 - `hasAction`: boolean (default false)
 - `actionLabel`: ReactNode (default "Button")
 - `actionStartIconName`: FaIconName
@@ -585,6 +584,7 @@ Usage rules:
 - Figma uses sentiment=primary for brand chrome (not brand).
 - Action is locked to outlined secondary at small size. Always pass actionLabel.
 - Toast is a presentational surface — host apps own queueing / auto-dismiss timing.
+- Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide.
 
 Example:
 ```tsx
@@ -659,13 +659,13 @@ Props:
 - `children`: ReactElement [required]
 - `placement`: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end" (default "bottom") — MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.
 - `hasCaret`: boolean (default true)
-- `startIcon`: boolean (default false)
-- `iconName`: FaIconName | string
+- `iconName`: FaIconName | string — Leading FA icon. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).
 
 Usage rules:
 - Child must be able to hold a ref (forwardRef element).
 - Prefer supplementary hints — avoid sole source of critical info.
 - Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).
+- Icons render only when iconName is set — there is no separate boolean gate.
 - Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).
 
 Example:

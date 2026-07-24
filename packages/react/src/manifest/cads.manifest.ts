@@ -45,7 +45,7 @@ export const cadsManifest: {
       exportName: "Button",
       importFrom: "@codeai/cads-react",
       description:
-        "Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, and error colors.",
+        "Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.",
       figma: {
         fileKey: CADS_FIGMA_FILE_KEY,
         nodeId: "15724:18791",
@@ -59,8 +59,10 @@ export const cadsManifest: {
         },
         {
           name: "color",
-          type: '"primary" | "secondary" | "tertiary" | "error"',
+          type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',
           default: '"primary"',
+          description:
+            "Color role. Tertiary is only for text + icon-only; orange is only for contained (run button). Other combos fall back (tertiary→secondary, orange→primary).",
         },
         {
           name: "size",
@@ -89,6 +91,9 @@ export const cadsManifest: {
         "--background-brand-primary",
         "--background-brand-strong",
         "--background-brand-light",
+        "--background-accent-orange-primary",
+        "--background-accent-orange-strong",
+        "--background-disabled-orange",
         "--background-neutral-primary-inverse",
         "--background-neutral-octonary",
         "--border-focused-primary",
@@ -103,6 +108,7 @@ export const cadsManifest: {
         "Contained secondary uses --background-neutral-primary-inverse; outlined primary uses --border-neutral-solid.",
         "Contained disabled text uses --text-disabled-neutral-inverse (solid fill).",
         "color=tertiary is Figma-valid only for text + iconOnly; other combos warn and fall back to secondary.",
+        "color=orange is only for the run button (contained, labeled or icon-only); other variants warn and fall back to primary.",
         "loading replaces all visible content with a centered spinner and keeps the prior width — do not swap startIcon for a spinner.",
         "Use semantic color CSS vars only — never hard-coded hex. No --ds- prefix.",
       ],
@@ -498,7 +504,10 @@ export const cadsManifest: {
         { name: "labelStyle", type: '"thick" | "thin"' },
         { name: "startIconName", type: "FaIconName" },
         { name: "buttonVariant", type: '"contained" | "outlined" | "text"' },
-        { name: "buttonColor", type: '"primary" | "secondary" | "tertiary" | "error"' },
+        {
+          name: "buttonColor",
+          type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',
+        },
         { name: "aria-label", type: "string" },
       ],
       variableDependencies: [

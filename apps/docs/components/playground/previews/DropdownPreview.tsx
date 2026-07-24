@@ -85,6 +85,7 @@ export default function DropdownPreview({
             | "primary"
             | "secondary"
             | "tertiary"
+            | "orange"
             | "error"
             | undefined
         }

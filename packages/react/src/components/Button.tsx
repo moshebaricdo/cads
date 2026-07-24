@@ -12,9 +12,20 @@ import {
 /** Figma Button `variant` — contained / outlined / text. */
 export type ButtonVariant = "contained" | "outlined" | "text";
 /** Figma Button `color`. */
-export type ButtonColor = "primary" | "secondary" | "tertiary" | "error";
+export type ButtonColor =
+  | "primary"
+  | "secondary"
+  | "tertiary"
+  | "orange"
+  | "error";
 /** Figma size scale. */
 export type ButtonSize = ControlSize;
+
+/** Resolved color after restricted-combo fallbacks (tertiary / orange). */
+type ResolvedButtonColor =
+  | Exclude<ButtonColor, "tertiary" | "orange">
+  | "tertiary"
+  | "orange";
 
 export interface ButtonProps
   extends Omit<
@@ -34,9 +45,11 @@ export interface ButtonProps
    */
   variant?: ButtonVariant;
   /**
-   * Color intent (Figma: primary | secondary | tertiary | error).
+   * Color intent (Figma: primary | secondary | tertiary | orange | error).
    * Tertiary is only valid for `variant="text"` + icon-only; other combos
    * fall back to secondary with a development warning.
+   * Orange is only valid for `variant="contained"` (run button); other
+   * variants fall back to primary with a development warning.
    * @default "primary"
    */
   color?: ButtonColor;
@@ -67,7 +80,7 @@ export interface ButtonProps
   children?: ReactNode;
 }
 
-/** Recipes for primary | secondary | error (and tertiary text+iconOnly). */
+/** Recipes for primary | secondary | error | orange contained | tertiary text+iconOnly. */
 type ColorRecipe = {
   filledBg: string;
   filledBgHover: string;
@@ -92,27 +105,41 @@ type ColorRecipe = {
 /**
  * Figma: tertiary gray styling exists only for text + iconOnly.
  * Contained/outlined (and labeled text) fall back to secondary.
+ * Orange (run) styling exists only for contained; other variants fall back to primary.
  */
 function resolveColor(
   color: ButtonColor,
   variant: ButtonVariant,
   iconOnly: boolean,
-): Exclude<ButtonColor, "tertiary"> | "tertiary" {
-  if (color !== "tertiary") return color;
-  if (variant === "text" && iconOnly) return "tertiary";
+): ResolvedButtonColor {
+  if (color === "tertiary") {
+    if (variant === "text" && iconOnly) return "tertiary";
 
-  if (process.env.NODE_ENV !== "production") {
-    console.warn(
-      `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. ` +
-        `Falling back to color="secondary" for variant="${variant}"${iconOnly ? "" : " (labeled)"}.`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. ` +
+          `Falling back to color="secondary" for variant="${variant}"${iconOnly ? "" : " (labeled)"}.`,
+      );
+    }
+    return "secondary";
   }
-  return "secondary";
+
+  if (color === "orange") {
+    if (variant === "contained") return "orange";
+
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[CADS Button] color="orange" is only defined in Figma for variant="contained" (run button). ` +
+          `Falling back to color="primary" for variant="${variant}".`,
+      );
+    }
+    return "primary";
+  }
+
+  return color;
 }
 
-function colorRecipe(
-  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
-): ColorRecipe {
+function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
   switch (color) {
     case "primary":
       return {
@@ -155,6 +182,27 @@ function colorRecipe(
         textHoverBg: "var(--background-error-light)",
         textPressedBg: "var(--background-error-light)",
         textDisabledFg: "var(--text-disabled-error)",
+      };
+    case "orange":
+      // Only reached for contained (run button). Outlined/text fields unused.
+      return {
+        filledBg: "var(--background-accent-orange-primary)",
+        filledBgHover: "var(--background-accent-orange-strong)",
+        filledBgPressed: "var(--background-accent-orange-primary)",
+        filledFg: "var(--text-neutral-white-fixed)",
+        filledDisabledBg: "var(--background-disabled-orange)",
+        filledDisabledFg: "var(--text-disabled-neutral-inverse)",
+        outlinedBorder: "var(--border-accent-orange-primary)",
+        outlinedFg: "var(--text-accent-orange-primary)",
+        outlinedHoverBg: "var(--background-accent-orange-light)",
+        outlinedPressedBg: "var(--background-accent-orange-light)",
+        outlinedDisabledBorder: "var(--border-disabled-orange)",
+        outlinedDisabledFg: "var(--text-disabled-orange)",
+        textFg: "var(--text-accent-orange-primary)",
+        textFgPressed: "var(--text-accent-orange-secondary)",
+        textHoverBg: "var(--background-accent-orange-light)",
+        textPressedBg: "var(--background-accent-orange-light)",
+        textDisabledFg: "var(--text-disabled-orange)",
       };
     case "tertiary":
       // Only reached for text + iconOnly (gray / quaternary styling).
@@ -204,7 +252,7 @@ function colorRecipe(
 
 function contentForeground(
   variant: ButtonVariant,
-  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
+  color: ResolvedButtonColor,
 ): string {
   const c = colorRecipe(color);
   if (variant === "contained") return c.filledFg;
@@ -214,7 +262,7 @@ function contentForeground(
 
 function variantStyles(
   variant: ButtonVariant,
-  color: Exclude<ButtonColor, "tertiary"> | "tertiary",
+  color: ResolvedButtonColor,
 ) {
   const c = colorRecipe(color);
 
