@@ -4,18 +4,19 @@
   "component": "IconTooltip",
   "figma": {
     "fileKey": "DGekOeToRVifvFAhfqpeC1",
-    "publicNodeId": null,
-    "componentKey": null,
-    "relatedNodeIds": ["1990:7125"],
+    "publicNodeId": "17051:27346",
+    "componentKey": "2136f83f6a3b9e32d1687b074eda81b74c13b186",
+    "relatedNodeIds": ["1990:7125", "16416:1189", "17044:8135"],
     "retrievedAt": "2026-07-25",
-    "designContextCaptured": false
+    "designContextCaptured": true
   },
   "change": {
     "taskPath": "new",
     "previousRecipe": null,
     "figmaChanges": [
       "2026-07-25: search_design_system + Tooltip (1990:7125) get_metadata found no Icon Tooltip / info-icon component set in DGekOeToRVifvFAhfqpeC1 — implemented docs-driven (see figmaComponentPropsSnapshot.json notes).",
-      "2026-07-25: color axis expanded to primary|secondary|tertiary; catalog section moved to Messaging."
+      "2026-07-25: color axis expanded to primary|secondary|tertiary; catalog section moved to Messaging.",
+      "2026-07-25: code → design. Authored the Info Tooltip set (17051:27346) in Figma via MCP from this recipe: size × color × state, FA 7 Pro Solid circle-info glyph, shared focus-ring effect style, hover/focus variants pinning a Tooltip instance 4px above the glyph."
     ]
   },
   "axes": {
@@ -29,7 +30,7 @@
         "right-start", "right", "right-end"
       ]
     },
-    "designOnly": [],
+    "designOnly": ["state"],
     "restrictedCombinations": []
   },
   "geometry": {
@@ -69,8 +70,8 @@
         "focus": "var(--border-focused-primary)"
       },
       "geometryOverrides": {},
-      "figmaVariant": null,
-      "notes": ["No Figma variant — docs-driven color role."]
+      "figmaVariant": "size=medium, color=primary, state=default",
+      "notes": ["Figma glyph fill bound to text/brand/primary."]
     },
     {
       "when": {
@@ -83,8 +84,8 @@
         "focus": "var(--border-focused-primary)"
       },
       "geometryOverrides": {},
-      "figmaVariant": null,
-      "notes": ["No Figma variant — docs-driven color role."]
+      "figmaVariant": "size=medium, color=secondary, state=default",
+      "notes": ["Figma glyph fill bound to text/neutral/primary."]
     },
     {
       "when": {
@@ -97,8 +98,40 @@
         "focus": "var(--border-focused-primary)"
       },
       "geometryOverrides": {},
-      "figmaVariant": null,
-      "notes": ["No Figma variant — docs-driven color role."]
+      "figmaVariant": "size=medium, color=tertiary, state=default",
+      "notes": ["Figma glyph fill bound to text/neutral/quaternary."]
+    },
+    {
+      "when": {
+        "color": "tertiary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "icon": "var(--text-neutral-quaternary)",
+        "surface": "var(--background-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, color=tertiary, state=hover",
+      "notes": [
+        "Glyph is unchanged on hover — the only hover affordance is the tooltip itself.",
+        "Figma pins the Tooltip instance so the caret tip sits 4px above the glyph, matching the code offset (4 + caret height)."
+      ]
+    },
+    {
+      "when": {
+        "color": "tertiary",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "size=medium, color=tertiary, state=disabled",
+      "notes": [
+        "Disabled glyph fill is color-role independent (text/state/disabled/neutral in Figma); no tooltip is shown."
+      ]
     }
   ],
   "coverage": {

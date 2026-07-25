@@ -1,7 +1,7 @@
 {
   "fileKey": "DGekOeToRVifvFAhfqpeC1",
   "fileUrl": "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-",
-  "fetchedAt": "2026-07-23",
+  "fetchedAt": "2026-07-25",
   "source": "figma-mcp get_metadata \u2014 variant axes parsed from COMPONENT symbol names",
   "notes": [
     "Interaction axes (state) are design recipes, not React props \u2014 implement via CSS :hover/:focus/:active/disabled.",
@@ -9,7 +9,8 @@
     "Segmented Button page 587:1268 contains Group + Block; Group is the public API; Block is internal.",
     "SegmentedButton: removed invented labelStyle + color (Group color=Primary only; labels always Body Semi Bold).",
     "Pagination page 17007:18077 / set 17007:19104 — Figma type=page → Pagination, type=table → TablePagination (docs on Pagination page).",
-    "Code-only props carry a category and rationale so API divergences are explicit and auditable."
+    "Code-only props carry a category and rationale so API divergences are explicit and auditable.",
+    "Info Tooltip page 17044:8135 / set 17051:27346 was authored from code into Figma via MCP (2026-07-25); hover/focus variants pin a nested Tooltip instance above the icon."
   ],
   "components": [
     {
@@ -2445,40 +2446,50 @@
     },
     {
       "cadsName": "IconTooltip",
-      "figmaName": null,
-      "variantProperties": {},
-      "designOnlyAxes": [],
-      "axisToCodeProp": {},
+      "figmaName": "Info Tooltip",
+      "nodeId": "17051:27346",
+      "componentKey": "2136f83f6a3b9e32d1687b074eda81b74c13b186",
+      "pageId": "17044:8135",
+      "symbolCount": 48,
+      "variantProperties": {
+        "size": ["large", "medium", "small", "extraSmall"],
+        "color": ["primary", "secondary", "tertiary"],
+        "state": ["default", "hover", "focus", "disabled"]
+      },
+      "related": {
+        "tooltip": {
+          "figmaName": "Tooltip",
+          "nodeId": "1990:7125",
+          "componentKey": "8f604de25a1742f20b6e6f1dd3680bdfdbda2234",
+          "notes": "hover/focus variants nest the caretPlacement=bottom Tooltip variant (16416:1189) as an exposed instance inside a centering tooltipAnchor frame."
+        }
+      },
+      "designOnlyAxes": ["state"],
+      "axisToCodeProp": {
+        "size": "size",
+        "color": "color",
+        "state": null
+      },
       "codeOnlyProps": [
         {
           "name": "title",
           "category": "content",
-          "reason": "Tooltip label text, passed through to Tooltip.title."
+          "reason": "Tooltip label text, passed through to Tooltip.title; maps to the nested Tooltip instance text property in Figma."
         },
         {
           "name": "iconName",
           "category": "content",
-          "reason": "Trigger affordance glyph; no Figma component set exists for this pattern (see notes)."
-        },
-        {
-          "name": "color",
-          "category": "composition",
-          "reason": "Icon color role (primary=brand, secondary=neutral-primary, tertiary=neutral-quaternary) — docs-driven, no Figma axis to map from."
-        },
-        {
-          "name": "size",
-          "category": "composition",
-          "reason": "Glyph size on the shared control size scale — docs-driven, no Figma axis to map from."
+          "reason": "Trigger glyph; maps to the Figma text property iconName#17051:0 (default circle-info), not a variant axis."
         },
         {
           "name": "placement",
           "category": "composition",
-          "reason": "Passed through to Tooltip's MUI placement, mirrors Tooltip.placement."
+          "reason": "Passed through to Tooltip's MUI placement. Figma models only the default top placement (caret below the bubble); other placements come from the Tooltip set."
         },
         {
           "name": "hasCaret",
           "category": "composition",
-          "reason": "Passed through to Tooltip.hasCaret."
+          "reason": "Passed through to Tooltip.hasCaret; exposed in Figma on the nested Tooltip instance rather than as an Info Tooltip axis."
         },
         {
           "name": "aria-label",
@@ -2488,11 +2499,15 @@
       ],
       "stateRecipes": [
         "default",
-        "focus"
+        "hover",
+        "focus",
+        "disabled"
       ],
       "escalate": [],
       "notes": [
-        "2026-07-25: New component. Searched CADS Figma DGekOeToRVifvFAhfqpeC1 via search_design_system (\"icon tooltip\", \"info icon\") and inspected the Tooltip frame (1990:7125) metadata for a sibling variant — no Icon Tooltip / info-icon-affordance component set exists in this file. Implemented docs-driven from the agent task's suggested API (title/iconName/color/size/placement) plus the existing Tooltip spec and shared icon color/size conventions (CloseIconButton icon sizing, IconToggle focus ring). Accepted per task instructions; revisit if/when Figma adds a matching component."
+        "2026-07-25: Figma set authored from code via MCP (use_figma) into the prepared Info Tooltip page — 48 variants (4 sizes × 3 colors × 4 states), FA 7 Pro Solid circle-info glyph, semantic color/shape variables, shared focus-ring effect style.",
+        "No pressed variant by design: the code trigger keeps a transparent background on :active, so press has no distinct recipe.",
+        "Figma default variant is size=large, color=primary (grid reading order); code defaults are size=medium, color=tertiary — same divergence as Button."
       ]
     },
     {
