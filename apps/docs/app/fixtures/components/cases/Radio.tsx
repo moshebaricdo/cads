@@ -1,6 +1,6 @@
 "use client";
 
-import { Radio } from "@codeai/cads-react/components/Radio";
+import { Radio } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

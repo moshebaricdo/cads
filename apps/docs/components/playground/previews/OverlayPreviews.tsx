@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@codeai/cads-react/components/Button";
-import { Drawer } from "@codeai/cads-react/components/Drawer";
-import { Dialog } from "@codeai/cads-react/components/Dialog";
-import { Modal } from "@codeai/cads-react/components/Modal";
+import { Button, Dialog, Drawer, Modal } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 import type { PreviewProps } from "./shared";
 

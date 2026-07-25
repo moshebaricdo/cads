@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Radio } from "@codeai/cads-react/components/Radio";
+import { Radio } from "@codeai/cads-react";
 
 const OPTIONS = [
   { slot: "a", value: "a", label: "Option A" },

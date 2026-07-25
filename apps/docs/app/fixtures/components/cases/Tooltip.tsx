@@ -1,7 +1,6 @@
 "use client";
 
-import { Tooltip } from "@codeai/cads-react/components/Tooltip";
-import { Button } from "@codeai/cads-react/components/Button";
+import { Button, Tooltip } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Slider } from "@codeai/cads-react/components/Slider";
+import { Slider } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 function finiteNumber(value: unknown, fallback: number): number {

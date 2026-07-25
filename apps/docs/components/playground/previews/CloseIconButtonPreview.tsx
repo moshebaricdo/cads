@@ -1,10 +1,10 @@
 "use client";
 
-import { CloseIconButton } from "@codeai/cads-react/components/CloseIconButton";
-import type {
-  CloseIconButtonColor,
-  CloseIconButtonSize,
-} from "@codeai/cads-react/components/CloseIconButton";
+import {
+  CloseIconButton,
+  type CloseIconButtonColor,
+  type CloseIconButtonSize,
+} from "@codeai/cads-react";
 
 export default function CloseIconButtonPreview({
   values,

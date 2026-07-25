@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@codeai/cads-react/components/Link";
+import { Link } from "@codeai/cads-react";
 
 export default function LinkPreview({
   values,

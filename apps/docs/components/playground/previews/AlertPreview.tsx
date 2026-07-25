@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert } from "@codeai/cads-react/components/Alert";
+import { Alert } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function AlertPreview({

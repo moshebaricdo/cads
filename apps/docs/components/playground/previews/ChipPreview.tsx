@@ -1,6 +1,6 @@
 "use client";
 
-import { Chip } from "@codeai/cads-react/components/Chip";
+import { Chip } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function ChipPreview({

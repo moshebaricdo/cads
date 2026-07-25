@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox } from "@codeai/cads-react/components/Checkbox";
+import { Checkbox } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

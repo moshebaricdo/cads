@@ -1,11 +1,11 @@
 "use client";
 
-import { IconTooltip } from "@codeai/cads-react/components/IconTooltip";
-import type {
-  IconTooltipColor,
-  IconTooltipSize,
-} from "@codeai/cads-react/components/IconTooltip";
-import type { TooltipProps } from "@codeai/cads-react";
+import {
+  IconTooltip,
+  type IconTooltipColor,
+  type IconTooltipSize,
+  type TooltipProps,
+} from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function IconTooltipPreview({

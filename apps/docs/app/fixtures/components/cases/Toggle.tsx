@@ -1,6 +1,6 @@
 "use client";
 
-import { Toggle } from "@codeai/cads-react/components/Toggle";
+import { Toggle } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

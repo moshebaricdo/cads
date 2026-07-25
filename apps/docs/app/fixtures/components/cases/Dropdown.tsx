@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropdown } from "@codeai/cads-react/components/Dropdown";
+import { Dropdown } from "@codeai/cads-react";
 import {
   type FixtureCase,
   ICON_OPTIONS,

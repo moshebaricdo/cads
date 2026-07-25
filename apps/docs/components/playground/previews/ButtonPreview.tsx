@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@codeai/cads-react/components/Button";
+import { Button } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function ButtonPreview({

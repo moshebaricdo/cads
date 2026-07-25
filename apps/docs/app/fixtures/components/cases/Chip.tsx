@@ -1,6 +1,6 @@
 "use client";
 
-import { Chip } from "@codeai/cads-react/components/Chip";
+import { Chip } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

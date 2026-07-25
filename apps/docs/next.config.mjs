@@ -14,11 +14,11 @@ const variablesSrcAbs = path.join(repoRoot, "packages/variables/src");
 /**
  * Dev-only: resolve workspace packages from source.
  * Production/export keeps package.json `exports` → committed `dist/`.
- * This stops `tsup clean` / `pnpm build:react` from deleting modules out from
+ * This stops `vite build` / `pnpm build:react` from deleting modules out from
  * under a live Turbopack server (Module not found → .next cache corruption).
  *
  * Turbopack resolves these relative to the docs app dir (`apps/docs`).
- * Wildcard `/*` covers deep imports (`/components/Button`, `/icons`, …).
+ * Wildcard `/*` covers subpaths (`/icons`, `/manifest`, …).
  */
 const turbopackSrcAliases = {
   "@codeai/cads-react/manifest":

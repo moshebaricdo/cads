@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { createElement, type CSSProperties, type ElementType, type ReactNode } from "react";
 import * as CadsReact from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
-import { CadsProvider } from "@codeai/cads-react/theme/CadsProvider";
+import { CadsProvider } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import "@codeai/cads-variables/variables.css";
 import "@codeai/cads-react/icons/fonts.css";

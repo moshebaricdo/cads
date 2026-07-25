@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationBanner } from "@codeai/cads-react/components/NotificationBanner";
+import { NotificationBanner } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

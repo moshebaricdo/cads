@@ -1,7 +1,6 @@
 "use client";
 
-import { FieldWrapper } from "@codeai/cads-react/components/FieldWrapper";
-import { TextInput } from "@codeai/cads-react/components/TextInput";
+import { FieldWrapper, TextInput } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 export default function FieldWrapperPreview({

@@ -9,7 +9,7 @@ import {
 import {
   Dropdown,
   type DropdownOption,
-} from "@codeai/cads-react/components/Dropdown";
+} from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 import {
   DEMO_DROPDOWN_ACTION_OPTIONS,

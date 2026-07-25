@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@codeai/cads-react/components/Button";
-import { Toast } from "@codeai/cads-react/components/Toast";
-import type { ToastPlacement } from "@codeai/cads-react/components/Toast";
+import { Button, Toast, type ToastPlacement } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 import type { PreviewProps } from "./shared";
 

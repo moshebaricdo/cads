@@ -1,6 +1,6 @@
 "use client";
 
-import type { DropdownOption } from "@codeai/cads-react/components/Dropdown";
+import type { DropdownOption } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 import type { ReactNode } from "react";
 

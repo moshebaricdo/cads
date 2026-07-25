@@ -1,6 +1,6 @@
 "use client";
 
-import { CadsProvider } from "@codeai/cads-react/theme/CadsProvider";
+import { CadsProvider } from "@codeai/cads-react";
 import {
   MOTION_FLAG_EVENT,
   MOTION_FLAG_PARAM,

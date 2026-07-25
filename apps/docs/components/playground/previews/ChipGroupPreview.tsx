@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Chip } from "@codeai/cads-react/components/Chip";
-import { FieldWrapper } from "@codeai/cads-react/components/FieldWrapper";
+import { Chip, FieldWrapper } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
 const OPTIONS = [

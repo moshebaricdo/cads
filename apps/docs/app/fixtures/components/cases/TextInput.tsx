@@ -1,6 +1,6 @@
 "use client";
 
-import { TextInput } from "@codeai/cads-react/components/TextInput";
+import { TextInput } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

@@ -1,9 +1,7 @@
 "use client";
 
-import { Tooltip } from "@codeai/cads-react/components/Tooltip";
-import { Button } from "@codeai/cads-react/components/Button";
+import { Button, Tooltip, type TooltipProps } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
-import type { TooltipProps } from "@codeai/cads-react";
 import type { PreviewProps } from "./shared";
 
 /**
