@@ -1,82 +1,86 @@
-# CADS — CodeAI Design System
+# CodeAI Design System
 
-Standalone design-system platform for CodeAI: Figma-anchored **variables**, MUI-wrapped **React components** (with icons), a designer-grade **docs mini-site**, and **AI/Figma parity** tooling.
+The CodeAI Design System (CADS) is a collection of design primitives and components that power our signed-in product experience.
 
-| Package | Name | Purpose |
-|---|---|---|
-| `packages/variables` | `@codeai/cads-variables` | Color + typography + spacing/shape + effects; CSS vars, TS object, generated MUI theme |
-| `packages/react` | `@codeai/cads-react` | CADS components wrapping MUI; icons at `@codeai/cads-react/icons` |
-| `apps/docs` | `@codeai/cads-docs` | Next.js docs mini-site |
-| `tooling/figma-sync` | `@codeai/cads-figma-sync` | Figma → variables sync (values, mappings, naming, structure) |
+Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-). This repo is the implementation that stays with it — variables, React components, and the docs site.
 
-**Design source of truth:** [CADS Figma file](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-) (`fileKey: DGekOeToRVifvFAhfqpeC1`).
+**Docs:** [https://moshebaricdo.github.io/cads/](https://moshebaricdo.github.io/cads/)
 
-## For humans & agents starting here
+## Docs
 
-| Doc | Purpose |
-|---|---|
-| [`AGENTS.md`](AGENTS.md) | **Start here** — decisions, Lab2 sibling relationship, Figma tooling, commands |
-| [`docs/STATUS.md`](docs/STATUS.md) | What’s done / what’s next |
-| [`docs/PLATFORM_PLAN.md`](docs/PLATFORM_PLAN.md) | Full platform plan (architecture, phases, resolved decisions) |
-| [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) | High-fidelity prototyping with the packages |
+### Getting started
 
-**Lab2 sandbox** (typical path `../web-lab-prototype`) is a **consumer only** — parity UI at `#/design-system/cads`. Do not treat its `App*` atoms as the CADS component source of truth.
+- **Overview** — What CADS is and where to go next.
+- **For Agents** — Portable skill and how to prototype with CADS from an LLM.
 
-## Quick start
+### Foundations
 
-```bash
-pnpm install
-pnpm generate:variables
-pnpm build
-pnpm dev:docs
-```
+- **Color** — Primitives for core brand colors, semantics for how they apply in product.
+- **Typography** — Space Grotesk for display, Geist for body, Google Sans Code for mono.
+- **Shape** — Radius, elevation, spacing, and stacking.
+- **Motion** _(experimental)_ — Micro-interaction recipes on a shared duration and easing ladder.
 
-## Install into a consumer (Git-URL)
+### Components
 
-Packages ship committed `dist/` folders so consumers can install from Git without a registry:
+Reusable UI building blocks, grouped the same way as Figma (Actions, Inputs, Navigation, Messaging, Overlays). Each page has a playground, props, and usage notes.
 
-```bash
-# From a tag or branch that includes built dist/
-npm install github:<owner>/cads#packages/variables&path:packages/variables
-# or, for local development against a sibling checkout:
-npm install ../cads/packages/variables ../cads/packages/react
-```
+## Components
 
-Simpler local path (recommended while iterating with the Lab2 sandbox):
+Status reflects whether a matching component has shipped in the [production Storybook](https://code-dot-org.github.io/code-dot-org/component-library-storybook/). “Not in production” means it’s available here (and usually in Figma) but hasn’t landed in that library yet.
 
-```bash
-# In the consumer package.json
-"@codeai/cads-variables": "file:../cads/packages/variables",
-"@codeai/cads-react": "file:../cads/packages/react"
-```
+| Component | Group | Status |
+| --- | --- | --- |
+| Button | Actions | In production |
+| Segmented Button | Actions | In production |
+| Icon Toggle | Actions | Not in production |
+| Close Button | Actions | In production |
+| Field Wrapper | Inputs | In production |
+| Text Input | Inputs | In production |
+| Dropdown | Inputs | In production |
+| Checkbox | Inputs | In production |
+| Radio Button | Inputs | In production |
+| Toggle | Inputs | In production |
+| Slider | Inputs | In production |
+| Chips | Inputs | In production |
+| Links | Navigation | In production |
+| Breadcrumbs | Navigation | In production |
+| Tabs | Navigation | In production |
+| Pagination | Navigation | Not in production |
+| Alert | Messaging | In production |
+| Toast | Messaging | In production |
+| Notification Banner | Messaging | In production |
+| Tag | Messaging | In production |
+| Icon Tooltip | Messaging | Not in production |
+| Tooltip | Overlays | In production |
+| Popover | Overlays | In production |
+| Drawer | Overlays | Not in production |
+| Dialog | Overlays | In production |
+| Modal | Overlays | In production |
 
-Then import:
+## Experiments
 
-```tsx
-import "@codeai/cads-variables/variables.css";
-import { CadsProvider, Button, TextField } from "@codeai/cads-react";
-import { FaIcon } from "@codeai/cads-react/icons";
-```
+Work in this repo that isn’t a settled production standard yet — safe to explore, expect change.
 
-## Scripts
+### Motion
 
-| Script | Description |
-|---|---|
-| `pnpm generate:variables` | Regenerate `variables.css`, TS exports, MUI theme from the variables document |
-| `pnpm build` | Build all packages |
-| `pnpm typecheck` | Typecheck packages |
-| `pnpm figma:sync` | Diff Figma variables vs snapshot and report/apply (needs `FIGMA_ACCESS_TOKEN`) |
-| `pnpm dev:docs` | Run the docs site |
+Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Opt in with `CadsProvider experimentalMotion` — off by default.
 
-## Environment
+Docs: [`/variables/core`](https://moshebaricdo.github.io/cads/variables/core)
 
-```bash
-cp .env.example .env
-# Set FIGMA_ACCESS_TOKEN for headless `pnpm figma:sync` (optional until you sync).
-```
+### Portable prototyping skill
 
-Interactive Figma work (screenshots, Desktop Bridge MCP): open **Figma Desktop Bridge** in Figma Desktop while the CADS file is open. See `.env.example` and `AGENTS.md`.
+A self-contained Agent Skills ZIP with the real CADS runtime and FA fonts inlined. Install it in Claude, ChatGPT, Gemini Spark, or Cursor to prototype without a monorepo checkout.
 
-## License
+Docs: [`/ai`](https://moshebaricdo.github.io/cads/ai)
 
-Internal Code.org / CodeAI use. Font Awesome Pro fonts are licensed for internal distribution only — do not publish packages to public npm.
+### Local MCP
+
+Stdio MCP proof of concept: catalog search, constrained prototype schema, and validation against `cadsManifest`. Renders through the docs `/prototype` route.
+
+In repo: [`tooling/cads-mcp`](tooling/cads-mcp)
+
+## Working in this repo
+
+For contributors and agents, start with [`AGENTS.md`](AGENTS.md). Current priorities live in [`docs/STATUS.md`](docs/STATUS.md).
+
+This README’s component table and experiments list are generated — run `pnpm generate:readme` after changing docs nav, component Storybook links, or [`docs/experiments.json`](docs/experiments.json). Docs builds regenerate it automatically.

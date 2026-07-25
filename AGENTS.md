@@ -53,6 +53,7 @@ Path (typical local checkout): `../web-lab-prototype`
 | Task | Read |
 |---|---|
 | Any change | This file + [`docs/STATUS.md`](docs/STATUS.md) |
+| Human-facing repo intro | Root [`README.md`](README.md) (generated — see below) |
 | Architecture / roadmap | [`docs/PLATFORM_PLAN.md`](docs/PLATFORM_PLAN.md) |
 | Prototyping / AI fidelity | [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) |
 | Build/update a component (before coding through “done”) | [`.cursor/skills/cads-parity-qa/SKILL.md`](.cursor/skills/cads-parity-qa/SKILL.md) |
@@ -82,10 +83,11 @@ Agents should **not** invent a PAT; ask the user if sync requires one and it is 
 ```bash
 pnpm install
 pnpm generate:variables
+pnpm generate:readme   # refresh root README (nav / Storybook status / docs/experiments.json)
 pnpm build
 pnpm typecheck
 pnpm dev:docs          # http://localhost:3100 (Turbopack)
-pnpm build:docs        # static export → apps/docs/out (GITHUB_PAGES=true → basePath=/cads)
+pnpm build:docs        # regenerates README + static export → apps/docs/out (GITHUB_PAGES=true → basePath=/cads)
 pnpm figma:sync        # needs FIGMA_ACCESS_TOKEN for live fetch
 pnpm figma:audit-props # cadsManifest ↔ Figma prop snapshot (Actions pilot)
 pnpm artifact:build    # Full artifact rebuild + skill ZIP (FA7 Pro inlined)
@@ -107,6 +109,7 @@ Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **
 - Control heights via `size`: large 48 / medium 40 / small 32 / extraSmall 24.
 - Only props/variants listed in `cadsManifest` — do not invent APIs.
 - Keep docs props / variable pages generated from source (manifest or TS), not hand-written duplicates that can drift.
+- After changing docs nav, Storybook links in `componentExternalLinks`, or [`docs/experiments.json`](docs/experiments.json), run `pnpm generate:readme` (also runs on `pnpm build:docs`).
 
 ---
 
@@ -121,4 +124,4 @@ pnpm build
 
 If docs changed meaningfully, also `pnpm build:docs`.
 
-Update [`docs/STATUS.md`](docs/STATUS.md) when you finish a milestone or change “what’s next.”
+Update [`docs/STATUS.md`](docs/STATUS.md) when you finish a milestone or change “what’s next.” Commit an updated [`README.md`](README.md) when the catalog, status, or experiments list changed.

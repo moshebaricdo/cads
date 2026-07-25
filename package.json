@@ -21,6 +21,7 @@
     "test:artifact": "pnpm --filter @codeai/cads-artifact run test",
     "typecheck": "pnpm -r --filter './packages/*' run typecheck",
     "generate:variables": "pnpm --filter @codeai/cads-variables run generate",
+    "generate:readme": "node scripts/generate-readme.mjs",
     "figma:sync": "pnpm --filter @codeai/cads-figma-sync run sync",
     "figma:audit-props": "pnpm build:react && pnpm --filter @codeai/cads-figma-sync run audit-props",
     "changeset": "changeset",

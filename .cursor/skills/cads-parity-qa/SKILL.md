@@ -175,10 +175,11 @@ Run:
 ```bash
 pnpm typecheck
 pnpm build
-pnpm build:docs # when docs/fixtures changed
+pnpm generate:readme # when nav / Storybook status / experiments changed
+pnpm build:docs # when docs/fixtures changed (also regenerates README)
 ```
 
-Update `docs/STATUS.md` when a milestone or next priority changes.
+Update `docs/STATUS.md` when a milestone or next priority changes. Commit `README.md` when the generated component table or experiments list changed.
 
 The final summary must include:
 
