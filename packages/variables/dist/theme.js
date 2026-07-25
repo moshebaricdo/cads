@@ -5,8 +5,9 @@ import {
   motion,
   shape,
   spacing,
-  typography
-} from "./chunk-N7CFNX2O.js";
+  typography,
+  zIndex
+} from "./chunk-F5RA6I6M.js";
 
 // src/theme.ts
 import { createTheme } from "@mui/material/styles";
@@ -72,6 +73,16 @@ var cadsThemeOptions = {
     borderRadius: parseInt(shape.radiusSm, 10)
   },
   spacing: parseInt(spacing.xxs, 10),
+  zIndex: {
+    mobileStepper: 1e3,
+    fab: 1050,
+    speedDial: 1050,
+    appBar: 1100,
+    drawer: zIndex.drawer,
+    modal: zIndex.modal,
+    snackbar: zIndex.toast,
+    tooltip: zIndex.tooltip
+  },
   shadows: [
     "none",
     elevation.shadowSm,
@@ -197,6 +208,7 @@ export {
   motion,
   shape,
   spacing,
-  typography
+  typography,
+  zIndex
 };
 //# sourceMappingURL=theme.js.map

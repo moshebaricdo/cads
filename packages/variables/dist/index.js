@@ -7,8 +7,10 @@ import {
   nonColorCssVars,
   shape,
   spacing,
-  typography
-} from "./chunk-N7CFNX2O.js";
+  typography,
+  zIndex,
+  zIndexLayers
+} from "./chunk-F5RA6I6M.js";
 
 // src/colorCssExport.ts
 var UNSET_PRIMITIVE_HEX = "#00000000";
@@ -296,6 +298,8 @@ export {
   semanticExportVarName,
   shape,
   spacing,
-  typography
+  typography,
+  zIndex,
+  zIndexLayers
 };
 //# sourceMappingURL=index.js.map

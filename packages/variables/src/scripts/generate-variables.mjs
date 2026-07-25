@@ -95,6 +95,14 @@ const NON_COLOR = {
     "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
   "--shadow-lg":
     "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)",
+  /* Stacking — code-owned; keep in sync with nonColorVariables.ts `zIndex`.
+   * Dropdown/Popover share modal layer so nested overlays stack by DOM order. */
+  "--z-drawer": "1200",
+  "--z-modal": "1300",
+  "--z-dropdown": "1300",
+  "--z-popover": "1300",
+  "--z-toast": "1400",
+  "--z-tooltip": "1500",
   "--control-height-large": "48px",
   "--control-height-medium": "40px",
   "--control-height-small": "32px",
@@ -107,24 +115,27 @@ const NON_COLOR = {
   "--font-fa-pro": '"Font Awesome 7 Pro"',
   "--font-fa-brands": '"Font Awesome 7 Brands"',
   "--ring": "var(--border-focused-primary)",
-  /* Motion — no Figma collection yet; keep in sync with nonColorVariables.ts */
+  /* Motion — no Figma collection yet; keep in sync with nonColorVariables.ts.
+   * Duration ladder: instant 0 / fast 100 / short 150 / medium 200.
+   * Recipe durations pick from that ladder (literals so getComputedStyle resolves). */
   "--duration-instant": "0ms",
+  "--duration-fast": "100ms",
   "--duration-short": "150ms",
   "--duration-medium": "200ms",
   "--easing-standard": "cubic-bezier(0.4, 0, 0.2, 1)",
   "--easing-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
   "--easing-out": "cubic-bezier(0.23, 1, 0.32, 1)",
   "--motion-press-scale": "0.97",
-  "--motion-press-duration": "140ms",
+  "--motion-press-duration": "150ms",
   "--motion-press-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
   "--motion-surface-from-scale": "0.96",
-  "--motion-surface-duration": "180ms",
+  "--motion-surface-duration": "200ms",
   "--motion-surface-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
   "--motion-indicator-duration": "200ms",
   "--motion-indicator-easing": "cubic-bezier(0.2, 0, 0, 1)",
   "--motion-fade-duration": "100ms",
   "--motion-fade-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--motion-highlight-chase-duration": "120ms",
+  "--motion-highlight-chase-duration": "100ms",
   "--motion-highlight-chase-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
   "--transition-colors":
     "background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)",
@@ -176,8 +187,8 @@ ${SYNTAX_DARK}
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-press-duration: 0ms;
-    --motion-surface-duration: 80ms;
-    --motion-indicator-duration: 80ms;
+    --motion-surface-duration: 100ms;
+    --motion-indicator-duration: 100ms;
     --motion-highlight-chase-duration: 0ms;
     --motion-surface-from-scale: 1;
     --motion-press-scale: 1;

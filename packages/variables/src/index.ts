@@ -3,10 +3,13 @@ export {
   shape,
   spacing,
   elevation,
+  zIndex,
+  zIndexLayers,
   controlHeights,
   motion,
   nonColorCssVars,
 } from "./nonColorVariables";
+export type { MotionSpringPreset, ZIndexLayer } from "./nonColorVariables";
 
 export { colorVarsLight, colorVarsDark } from "./generated/cssVars";
 export type { ColorVarName } from "./generated/cssVars";

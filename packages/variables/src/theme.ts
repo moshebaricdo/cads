@@ -13,6 +13,7 @@ import {
   shape,
   spacing,
   typography,
+  zIndex,
 } from "./nonColorVariables";
 
 function hex(name: string, fallback: string): string {
@@ -82,6 +83,16 @@ export const cadsThemeOptions: ThemeOptions = {
     borderRadius: parseInt(shape.radiusSm, 10),
   },
   spacing: parseInt(spacing.xxs, 10),
+  zIndex: {
+    mobileStepper: 1000,
+    fab: 1050,
+    speedDial: 1050,
+    appBar: 1100,
+    drawer: zIndex.drawer,
+    modal: zIndex.modal,
+    snackbar: zIndex.toast,
+    tooltip: zIndex.tooltip,
+  },
   shadows: [
     "none",
     elevation.shadowSm,
@@ -201,4 +212,12 @@ export function createCadsTheme(overrides?: ThemeOptions) {
   return createTheme(cadsThemeOptions, overrides ?? {});
 }
 
-export { controlHeights, elevation, motion, shape, spacing, typography };
+export {
+  controlHeights,
+  elevation,
+  motion,
+  shape,
+  spacing,
+  typography,
+  zIndex,
+};

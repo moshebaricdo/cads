@@ -76,6 +76,62 @@ export const elevation = {
     "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)",
 } as const;
 
+/**
+ * Overlay stacking layers (code-owned; Figma has no z-index collection).
+ * Dropdown / Popover share the modal layer so nested menus stack by DOM order
+ * when both portal to `document.body`.
+ */
+export const zIndex = {
+  drawer: 1200,
+  modal: 1300,
+  dropdown: 1300,
+  popover: 1300,
+  toast: 1400,
+  tooltip: 1500,
+} as const;
+
+export type ZIndexLayer = keyof typeof zIndex;
+
+/** Docs rows — variable / value / use stay in sync with `zIndex`. */
+export const zIndexLayers = [
+  {
+    key: "drawer",
+    variable: "--z-drawer",
+    value: zIndex.drawer,
+    use: "Drawer (below centered dialogs)",
+  },
+  {
+    key: "modal",
+    variable: "--z-modal",
+    value: zIndex.modal,
+    use: "Dialog and Modal",
+  },
+  {
+    key: "dropdown",
+    variable: "--z-dropdown",
+    value: zIndex.dropdown,
+    use: "Dropdown menus and Breadcrumbs overflow (same layer as modal)",
+  },
+  {
+    key: "popover",
+    variable: "--z-popover",
+    value: zIndex.popover,
+    use: "Popover (same layer as modal / dropdown)",
+  },
+  {
+    key: "toast",
+    variable: "--z-toast",
+    value: zIndex.toast,
+    use: "Toast snackbar host",
+  },
+  {
+    key: "tooltip",
+    variable: "--z-tooltip",
+    value: zIndex.tooltip,
+    use: "Tooltip and IconTooltip",
+  },
+] as const;
+
 export const controlHeights = {
   large: "48px",
   medium: "40px",
@@ -92,48 +148,109 @@ export const controlHeights = {
 } as const;
 
 /**
- * Motion / transition variables.
- * Figma has no duration/easing collection yet — chrome durations plus experimental
- * micro-interaction recipes (Press / Surface / Indicator / Highlight chase).
+ * Duration ladder (primitives). Recipes pick from these — they do not invent
+ * parallel ms values. Figma has no duration collection yet.
  * Focus rings use short so they don't feel lagged.
  */
+const durationInstant = "0ms";
+const durationFast = "100ms";
+const durationShort = "150ms";
+const durationMedium = "200ms";
+
+/**
+ * Apple-style spring preset (Motion / Framer Motion `transition` shape).
+ * Prefer these over stiffness/damping for Indicator and pointer-driven chase.
+ * Near-zero bounce — CADS product UI, not playful consumer chrome.
+ */
+export type MotionSpringPreset = {
+  type: "spring";
+  /** Perceptual settle time in seconds. */
+  duration: number;
+  /** Overshoot amount; keep ≤ 0.1 for library chrome. */
+  bounce: number;
+};
+
+/**
+ * Motion / transition variables — duration primitives + experimental recipes
+ * (Press / Surface / Indicator / Fade / Highlight chase) + spring presets.
+ *
+ * Springs are JS-only (not CSS custom properties). Use for interruptible /
+ * pointer-driven recipes; keep the duration ladder for Press, Fade, Surface.
+ */
 export const motion = {
-  durationInstant: "0ms",
-  durationShort: "150ms",
-  durationMedium: "200ms",
+  durationInstant,
+  /** High-frequency tint / chase — quieter than chrome color transitions. */
+  durationFast,
+  durationShort,
+  durationMedium,
   easingStandard: "cubic-bezier(0.4, 0, 0.2, 1)",
   easingEmphasized: "cubic-bezier(0.2, 0, 0, 1)",
   /** Ease-out for user-initiated feedback (snappy start, soft settle). */
   easingOut: "cubic-bezier(0.23, 1, 0.32, 1)",
-  /** Active scale feedback on pressable controls. */
+  /**
+   * Spring ladder for interruptible travel. Maps loosely to the duration
+   * ladder’s feel (fast ≈ 100ms, moderate ≈ 200ms, slow ≈ 320ms).
+   */
+  spring: {
+    /** Pointer chase / micro-settle — docs nav highlight. */
+    fast: {
+      type: "spring",
+      duration: 0.12,
+      bounce: 0,
+    } satisfies MotionSpringPreset,
+    /** Indicator (Toggle handle, Tabs underline). */
+    moderate: {
+      type: "spring",
+      duration: 0.2,
+      bounce: 0.05,
+    } satisfies MotionSpringPreset,
+    /** Drag release / drawer settle only — not everyday chrome. */
+    slow: {
+      type: "spring",
+      duration: 0.32,
+      bounce: 0.08,
+    } satisfies MotionSpringPreset,
+  },
+  /** Active scale feedback on pressable controls. Duration = short. */
   press: {
     scale: "0.97",
-    duration: "140ms",
+    duration: durationShort,
     easing: "cubic-bezier(0.23, 1, 0.32, 1)",
   },
-  /** Overlay / menu enter-exit (opacity + slight scale). */
+  /** Overlay / menu enter-exit (opacity + slight scale). Duration = medium. */
   surface: {
     fromScale: "0.96",
-    duration: "180ms",
+    duration: durationMedium,
     easing: "cubic-bezier(0.23, 1, 0.32, 1)",
-  },
-  /** Committed selection chrome that moves (toggle handle, selected pill). */
-  indicator: {
-    duration: "200ms",
-    easing: "cubic-bezier(0.2, 0, 0, 1)",
   },
   /**
-   * Soft opacity/chrome fade — shorter and quieter than `--transition-colors`.
-   * Use for menu-item hover fills and other high-frequency tint changes.
+   * Committed selection chrome that moves (toggle handle, selected pill).
+   * When `experimentalMotion` is on, JS springs use `spring.moderate`;
+   * CSS vars remain the non-spring / reduced-motion fallback.
+   */
+  indicator: {
+    duration: durationMedium,
+    easing: "cubic-bezier(0.2, 0, 0, 1)",
+    spring: "moderate" as const,
+  },
+  /**
+   * Soft opacity/chrome fade — quieter than `--transition-colors`.
+   * Duration = fast. Use for menu-item hover fills and high-frequency tints.
+   * Do not spring high-frequency dropdown rows (feels slow under keyboard).
    */
   fade: {
-    duration: "100ms",
+    duration: durationFast,
     easing: "cubic-bezier(0.23, 1, 0.32, 1)",
   },
-  /** Ephemeral hover highlight that follows the pointer across list rows. */
+  /**
+   * Ephemeral hover highlight that follows the pointer (single floating
+   * chrome — not per-row fades). Spring = fast. Deferred in the catalog;
+   * docs sidebar uses this pattern as a site-only experiment.
+   */
   highlightChase: {
-    duration: "120ms",
+    duration: durationFast,
     easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+    spring: "fast" as const,
   },
 } as const;
 
@@ -188,6 +305,12 @@ export function nonColorCssVars(): Record<string, string> {
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,
+    "--z-drawer": String(zIndex.drawer),
+    "--z-modal": String(zIndex.modal),
+    "--z-dropdown": String(zIndex.dropdown),
+    "--z-popover": String(zIndex.popover),
+    "--z-toast": String(zIndex.toast),
+    "--z-tooltip": String(zIndex.tooltip),
     "--control-height-large": controlHeights.large,
     "--control-height-medium": controlHeights.medium,
     "--control-height-small": controlHeights.small,
@@ -197,6 +320,7 @@ export function nonColorCssVars(): Record<string, string> {
     "--control-height-s": controlHeights.small,
     "--control-height-xs": controlHeights.extraSmall,
     "--duration-instant": motion.durationInstant,
+    "--duration-fast": motion.durationFast,
     "--duration-short": motion.durationShort,
     "--duration-medium": motion.durationMedium,
     "--easing-standard": motion.easingStandard,
