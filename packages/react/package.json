@@ -29,15 +29,7 @@
       "import": "./dist/manifest/cads.manifest.js"
     },
     "./icons/fonts.css": "./src/icons/fonts.css",
-    "./icons/fonts-solid.css": "./src/icons/fonts-solid.css",
-    "./components/*": {
-      "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.js"
-    },
-    "./theme/*": {
-      "types": "./dist/theme/*.d.ts",
-      "import": "./dist/theme/*.js"
-    }
+    "./icons/fonts-solid.css": "./src/icons/fonts-solid.css"
   },
   "files": [
     "dist",
@@ -47,7 +39,7 @@
     "src/manifest"
   ],
   "scripts": {
-    "build": "tsup && node scripts/fix-esm-extensions.mjs && node scripts/copy-assets.mjs",
+    "build": "vite build && node scripts/copy-assets.mjs",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build"
   },
@@ -65,9 +57,15 @@
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.5.2",
+    "glob": "^13.0.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "tsup": "^8.5.1",
-    "typescript": "^5.8.3"
+    "sass": "^1.102.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.4.3",
+    "vite-plugin-dts": "^5.0.3",
+    "vite-plugin-externalize-deps": "^0.10.0",
+    "vite-plugin-lib-inject-css": "^2.2.2"
   }
 }

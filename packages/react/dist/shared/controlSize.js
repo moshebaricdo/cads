@@ -1,12 +1,11 @@
-const CONTROL_HEIGHT = {
+const e = {
   large: "var(--control-height-large)",
   medium: "var(--control-height-medium)",
   small: "var(--control-height-small)",
   extraSmall: "var(--control-height-extra-small)"
-};
-const BUTTON_SIZE = {
+}, r = {
   large: {
-    height: CONTROL_HEIGHT.large,
+    height: e.large,
     paddingInline: "var(--space-xs)",
     // 16px
     paddingBlock: "0.625rem",
@@ -21,7 +20,7 @@ const BUTTON_SIZE = {
     // 12px
   },
   medium: {
-    height: CONTROL_HEIGHT.medium,
+    height: e.medium,
     paddingInline: "var(--space-xs)",
     // 16px
     paddingBlock: "0.5rem",
@@ -36,7 +35,7 @@ const BUTTON_SIZE = {
     // 10px
   },
   small: {
-    height: CONTROL_HEIGHT.small,
+    height: e.small,
     paddingInline: "0.75rem",
     // 12px
     paddingBlock: "0.3125rem",
@@ -51,7 +50,7 @@ const BUTTON_SIZE = {
     // 7px
   },
   extraSmall: {
-    height: CONTROL_HEIGHT.extraSmall,
+    height: e.extraSmall,
     paddingInline: "0.5rem",
     // 8px
     paddingBlock: "0.125rem",
@@ -65,8 +64,7 @@ const BUTTON_SIZE = {
     iconOnlyPadding: "0.25rem"
     // 4px
   }
-};
-const CHECKBOX_SIZE = {
+}, a = {
   large: {
     box: "1.375rem",
     // 22px
@@ -115,8 +113,7 @@ const CHECKBOX_SIZE = {
     labelAlignOffset: "0"
     // Figma: no optical offset on XS
   }
-};
-const TOGGLE_SIZE = {
+}, i = {
   large: {
     trackWidth: "2.625rem",
     // 42px
@@ -213,10 +210,9 @@ const TOGGLE_SIZE = {
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)"
   }
-};
-const ICON_TOGGLE_SIZE = {
+}, n = {
   large: {
-    size: CONTROL_HEIGHT.large,
+    size: e.large,
     padding: "0.75rem",
     // 12px
     iconPx: "1.1875rem",
@@ -225,7 +221,7 @@ const ICON_TOGGLE_SIZE = {
     // 24px
   },
   medium: {
-    size: CONTROL_HEIGHT.medium,
+    size: e.medium,
     padding: "0.625rem",
     // 10px
     iconPx: "1rem",
@@ -234,7 +230,7 @@ const ICON_TOGGLE_SIZE = {
     // 20px
   },
   small: {
-    size: CONTROL_HEIGHT.small,
+    size: e.small,
     padding: "0.4375rem",
     // 7px
     iconPx: "0.875rem",
@@ -243,7 +239,7 @@ const ICON_TOGGLE_SIZE = {
     // 18px
   },
   extraSmall: {
-    size: CONTROL_HEIGHT.extraSmall,
+    size: e.extraSmall,
     padding: "0.25rem",
     // 4px
     iconPx: "0.75rem",
@@ -251,13 +247,9 @@ const ICON_TOGGLE_SIZE = {
     iconSlot: "1rem"
     // 16px
   }
-};
-const FOCUS_RING = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)";
-const TRANSITION_COLORS = "var(--transition-colors)";
-const TRANSITION_FADE = "var(--transition-fade)";
-const CHIP_SIZE = {
+}, m = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)", o = "var(--transition-colors)", t = "var(--transition-fade)", d = {
   large: {
-    height: CONTROL_HEIGHT.large,
+    height: e.large,
     paddingInline: "1.25rem",
     // 20px
     paddingBlock: "0.625rem",
@@ -272,7 +264,7 @@ const CHIP_SIZE = {
     // 8px
   },
   medium: {
-    height: CONTROL_HEIGHT.medium,
+    height: e.medium,
     paddingInline: "1rem",
     // 16px
     paddingBlock: "0.5rem",
@@ -287,7 +279,7 @@ const CHIP_SIZE = {
     // 6px
   },
   small: {
-    height: CONTROL_HEIGHT.small,
+    height: e.small,
     paddingInline: "0.75rem",
     // 12px
     paddingBlock: "0.3125rem",
@@ -302,7 +294,7 @@ const CHIP_SIZE = {
     // 6px
   },
   extraSmall: {
-    height: CONTROL_HEIGHT.extraSmall,
+    height: e.extraSmall,
     paddingInline: "0.5rem",
     // 8px
     paddingBlock: "0.125rem",
@@ -316,8 +308,7 @@ const CHIP_SIZE = {
     groupGap: "0.25rem"
     // 4px
   }
-};
-const SLIDER_CHROME = {
+}, l = {
   trackHeight: "0.375rem",
   // 6px
   knob: "1rem",
@@ -347,10 +338,9 @@ const SLIDER_CHROME = {
   // 4px tick ↔ label
   stepperLabelHeight: "0.875rem"
   // 14px
-};
-const TEXT_INPUT_SIZE = {
+}, g = {
   large: {
-    height: CONTROL_HEIGHT.large,
+    height: e.large,
     areaHeight: "6.5rem",
     // 104px
     paddingInline: "var(--space-xs)",
@@ -365,7 +355,7 @@ const TEXT_INPUT_SIZE = {
     // 18px
   },
   medium: {
-    height: CONTROL_HEIGHT.medium,
+    height: e.medium,
     areaHeight: "5.5rem",
     // 88px
     paddingInline: "var(--space-xs)",
@@ -380,7 +370,7 @@ const TEXT_INPUT_SIZE = {
     // 16px
   },
   small: {
-    height: CONTROL_HEIGHT.small,
+    height: e.small,
     areaHeight: "4.75rem",
     // 76px
     paddingInline: "0.75rem",
@@ -396,7 +386,7 @@ const TEXT_INPUT_SIZE = {
   },
   extraSmall: {
     // Approved exception: Figma field is 22px; CADS uses shared 24px control height.
-    height: CONTROL_HEIGHT.extraSmall,
+    height: e.extraSmall,
     areaHeight: "3.625rem",
     // 58px
     paddingInline: "0.5rem",
@@ -410,8 +400,7 @@ const TEXT_INPUT_SIZE = {
     iconPx: "0.75rem"
     // 12px
   }
-};
-const FIELD_WRAPPER_SIZE = {
+}, p = {
   large: {
     labelFontSize: "var(--text-body-md)",
     labelLineHeight: "var(--leading-body-md)",
@@ -460,8 +449,7 @@ const FIELD_WRAPPER_SIZE = {
     helperIconSlot: "0.75rem"
     // 12px
   }
-};
-const RADIO_SIZE = {
+}, c = {
   large: {
     box: "1.375rem",
     // 22px
@@ -510,8 +498,7 @@ const RADIO_SIZE = {
     controlPaddingTop: "0"
     // Figma: no optical offset on XS
   }
-};
-const TABS_SIZE = {
+}, x = {
   large: {
     primaryHeight: "3.5rem",
     // 56 (+8 vs control)
@@ -640,8 +627,7 @@ const TABS_SIZE = {
     secondaryIconOnlyMinWidth: "1.5rem"
     // 24
   }
-};
-const BREADCRUMB_SIZE = {
+}, s = {
   large: {
     linkGap: "0.625rem",
     // 10px
@@ -698,10 +684,9 @@ const BREADCRUMB_SIZE = {
     sepIconPx: "0.625rem"
     // 10px
   }
-};
-const SEGMENTED_SIZE = {
+}, y = {
   large: {
-    height: CONTROL_HEIGHT.large,
+    height: e.large,
     paddingInline: "var(--space-xs)",
     // 16px
     paddingBlock: "0.625rem",
@@ -716,7 +701,7 @@ const SEGMENTED_SIZE = {
     // 12px
   },
   medium: {
-    height: CONTROL_HEIGHT.medium,
+    height: e.medium,
     paddingInline: "0.75rem",
     // 12px
     paddingBlock: "0.5rem",
@@ -731,7 +716,7 @@ const SEGMENTED_SIZE = {
     // 10px
   },
   small: {
-    height: CONTROL_HEIGHT.small,
+    height: e.small,
     paddingInline: "0.625rem",
     // 10px
     paddingBlock: "0.3125rem",
@@ -746,7 +731,7 @@ const SEGMENTED_SIZE = {
     // 7px
   },
   extraSmall: {
-    height: CONTROL_HEIGHT.extraSmall,
+    height: e.extraSmall,
     paddingInline: "0.5rem",
     // 8px
     paddingBlock: "0.125rem",
@@ -760,10 +745,9 @@ const SEGMENTED_SIZE = {
     iconOnlyPadding: "0.25rem"
     // 4px
   }
-};
-const TABLE_PAGINATION_SIZE = {
+}, h = {
   large: {
-    height: CONTROL_HEIGHT.large,
+    height: e.large,
     groupGap: "1.5rem",
     // 24px
     mobileGroupGap: "var(--space-xs)",
@@ -776,7 +760,7 @@ const TABLE_PAGINATION_SIZE = {
     lineHeight: "var(--leading-body-lg)"
   },
   medium: {
-    height: CONTROL_HEIGHT.medium,
+    height: e.medium,
     groupGap: "1.5rem",
     // 24px
     mobileGroupGap: "0.75rem",
@@ -789,7 +773,7 @@ const TABLE_PAGINATION_SIZE = {
     lineHeight: "var(--leading-body-md)"
   },
   small: {
-    height: CONTROL_HEIGHT.small,
+    height: e.small,
     groupGap: "var(--space-xs)",
     // 16px
     mobileGroupGap: "0.5rem",
@@ -802,7 +786,7 @@ const TABLE_PAGINATION_SIZE = {
     lineHeight: "var(--leading-body-sm)"
   },
   extraSmall: {
-    height: CONTROL_HEIGHT.extraSmall,
+    height: e.extraSmall,
     groupGap: "var(--space-xs)",
     // 16px
     mobileGroupGap: "0.375rem",
@@ -814,8 +798,7 @@ const TABLE_PAGINATION_SIZE = {
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)"
   }
-};
-const LINK_SIZE = {
+}, b = {
   large: {
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
@@ -856,8 +839,7 @@ const LINK_SIZE = {
     iconPx: "0.625rem"
     // 10px
   }
-};
-const ALERT_SIZE = {
+}, v = {
   large: {
     minHeight: "3.5rem",
     // 56px
@@ -942,8 +924,7 @@ const ALERT_SIZE = {
     // 16
     actionButtonSize: "extraSmall"
   }
-};
-const TAG_SIZE = {
+}, S = {
   large: {
     height: "1.75rem",
     // 28
@@ -998,8 +979,7 @@ const TAG_SIZE = {
     closeWidth: "0.5rem"
     // 8
   }
-};
-const TOAST_CHROME = {
+}, I = {
   /**
    * Figma symbol width for the default string ("This is a toast.").
    * Surface layout is hug — this is a reference size, not a hard CSS width.
@@ -1024,8 +1004,7 @@ const TOAST_CHROME = {
   radius: "var(--radius-md)",
   // shape/md — 8px
   shadow: "var(--shadow-lg)"
-};
-const NOTIFICATION_BANNER_CHROME = {
+}, H = {
   padding: "1rem",
   // 16
   gap: "1.5rem",
@@ -1048,7 +1027,28 @@ const NOTIFICATION_BANNER_CHROME = {
   radius: "var(--radius-md)"
   // shape/md — 8px
 };
-
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS, TRANSITION_FADE };
-//# sourceMappingURL=controlSize.js.map
+export {
+  v as ALERT_SIZE,
+  s as BREADCRUMB_SIZE,
+  r as BUTTON_SIZE,
+  a as CHECKBOX_SIZE,
+  d as CHIP_SIZE,
+  e as CONTROL_HEIGHT,
+  p as FIELD_WRAPPER_SIZE,
+  m as FOCUS_RING,
+  n as ICON_TOGGLE_SIZE,
+  b as LINK_SIZE,
+  H as NOTIFICATION_BANNER_CHROME,
+  c as RADIO_SIZE,
+  y as SEGMENTED_SIZE,
+  l as SLIDER_CHROME,
+  h as TABLE_PAGINATION_SIZE,
+  x as TABS_SIZE,
+  S as TAG_SIZE,
+  g as TEXT_INPUT_SIZE,
+  I as TOAST_CHROME,
+  i as TOGGLE_SIZE,
+  o as TRANSITION_COLORS,
+  t as TRANSITION_FADE
+};
 //# sourceMappingURL=controlSize.js.map

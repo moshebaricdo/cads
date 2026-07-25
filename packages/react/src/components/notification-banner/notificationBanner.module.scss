@@ -1,0 +1,92 @@
+/**
+ * NotificationBanner — layout + chrome.
+ * Sentiment colors are passed as --nb-* custom properties from the component
+ * (shared messagingChrome map stays in TS).
+ */
+
+.banner {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 1rem;
+  gap: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--nb-border);
+  background-color: var(--nb-bg);
+  overflow: hidden;
+  font-family: var(--font-body);
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &:not(.fullWidth) {
+    width: fit-content;
+  }
+}
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.875rem;
+  height: 2.875rem;
+  border-radius: var(--radius-round);
+  border: 3px solid var(--nb-icon-ring);
+  background-color: var(--background-neutral-primary);
+  color: var(--nb-icon-color);
+  line-height: 1;
+
+  > * {
+    display: block;
+    line-height: 1;
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 0.125rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--text-neutral-primary);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.description {
+  margin: 0;
+  color: var(--text-neutral-secondary);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  font-weight: var(--font-weight-normal);
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.875rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

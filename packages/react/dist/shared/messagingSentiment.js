@@ -1,82 +1,75 @@
-const BRAND = {
+const a = {
   background: "var(--background-brand-light)",
   border: "var(--border-brand-mid)",
   borderPrimary: "var(--border-brand-primary)",
   icon: "var(--text-brand-primary-fixed)",
   label: "var(--text-brand-secondary)"
-};
-const PINK = {
+}, n = {
   background: "var(--background-accent-pink-light)",
   border: "var(--border-accent-pink-mid)",
   borderPrimary: "var(--border-accent-pink-primary)",
   icon: "var(--text-accent-pink-primary-fixed)",
   label: "var(--text-accent-pink-secondary)"
-};
-const ORANGE = {
+}, c = {
   background: "var(--background-accent-orange-light)",
   border: "var(--border-accent-orange-mid)",
   borderPrimary: "var(--border-accent-orange-primary)",
   icon: "var(--text-accent-orange-primary-fixed)",
   label: "var(--text-accent-orange-secondary)"
-};
-const SUCCESS = {
+}, o = {
   background: "var(--background-success-light)",
   border: "var(--border-success-mid)",
   borderPrimary: "var(--border-success-primary)",
   icon: "var(--text-success-primary-fixed)",
   label: "var(--text-success-secondary)"
-};
-const ERROR = {
+}, i = {
   background: "var(--background-error-light)",
   border: "var(--border-error-mid)",
   borderPrimary: "var(--border-error-primary)",
   icon: "var(--text-error-primary-fixed)",
   label: "var(--text-error-secondary)"
-};
-const WARNING = {
+}, t = {
   background: "var(--background-warning-light)",
   border: "var(--border-warning-mid)",
   borderPrimary: "var(--border-warning-primary)",
   icon: "var(--text-warning-primary-fixed)",
   label: "var(--text-warning-secondary)"
-};
-const INFO = {
+}, d = {
   background: "var(--background-info-light)",
   border: "var(--border-info-mid)",
   borderPrimary: "var(--border-info-primary)",
   icon: "var(--text-info-primary-fixed)",
   label: "var(--text-info-secondary)"
-};
-const NEUTRAL = {
+}, b = {
   background: "var(--background-neutral-tertiary)",
   border: "var(--border-neutral-secondary)",
   borderPrimary: "var(--border-neutral-secondary)",
   icon: "var(--text-neutral-primary)",
   label: "var(--text-neutral-secondary)"
 };
-function messagingChrome(sentiment) {
-  switch (sentiment) {
+function s(r) {
+  switch (r) {
     case "primary":
     case "brand":
-      return BRAND;
+      return a;
     case "pink":
-      return PINK;
+      return n;
     case "orange":
-      return ORANGE;
+      return c;
     case "success":
-      return SUCCESS;
+      return o;
     case "error":
-      return ERROR;
+      return i;
     case "warning":
-      return WARNING;
+      return t;
     case "info":
-      return INFO;
+      return d;
     case "neutral":
-      return NEUTRAL;
+      return b;
   }
 }
-function defaultStatusIcon(sentiment) {
-  switch (sentiment) {
+function u(r) {
+  switch (r) {
     case "success":
       return "circle-check";
     case "error":
@@ -89,13 +82,12 @@ function defaultStatusIcon(sentiment) {
       return null;
   }
 }
-function resolveMessagingIconName(name, fallback = "face-smile") {
-  if (!name || name === "smile") return fallback;
-  if (name === "check-circle") return "circle-check";
-  if (name === "exclamation-circle") return "circle-exclamation";
-  return name;
+function l(r, e = "face-smile") {
+  return !r || r === "smile" ? e : r === "check-circle" ? "circle-check" : r === "exclamation-circle" ? "circle-exclamation" : r;
 }
-
-export { defaultStatusIcon, messagingChrome, resolveMessagingIconName };
-//# sourceMappingURL=messagingSentiment.js.map
+export {
+  u as defaultStatusIcon,
+  s as messagingChrome,
+  l as resolveMessagingIconName
+};
 //# sourceMappingURL=messagingSentiment.js.map

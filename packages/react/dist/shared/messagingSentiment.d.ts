@@ -1,8 +1,7 @@
-import { FaIconName } from '../icons/faProRegularCodepoints.js';
-
+import { FaIconName } from '../icons/faProRegularCodepoints';
 /** Shared sentiment chrome for Alert / Toast / Notification Banner / Tag. */
-type MessagingSentiment = "brand" | "primary" | "pink" | "orange" | "success" | "error" | "warning" | "info" | "neutral";
-type MessagingChrome = {
+export type MessagingSentiment = "brand" | "primary" | "pink" | "orange" | "success" | "error" | "warning" | "info" | "neutral";
+export type MessagingChrome = {
     background: string;
     border: string;
     /** Stronger border used by Notification Banner fillStyle=color. */
@@ -12,10 +11,9 @@ type MessagingChrome = {
     label: string;
 };
 /** Toast uses Figma `primary` for brand chrome. */
-declare function messagingChrome(sentiment: MessagingSentiment): MessagingChrome;
+export declare function messagingChrome(sentiment: MessagingSentiment): MessagingChrome;
 /** Default status icons for Alert/Toast when consumer does not override. */
-declare function defaultStatusIcon(sentiment: MessagingSentiment): FaIconName | null;
+export declare function defaultStatusIcon(sentiment: MessagingSentiment): FaIconName | null;
 /** Figma shortcode → FA Pro name. */
-declare function resolveMessagingIconName(name: FaIconName | (string & {}) | undefined, fallback?: FaIconName): FaIconName;
-
-export { type MessagingChrome, type MessagingSentiment, defaultStatusIcon, messagingChrome, resolveMessagingIconName };
+export declare function resolveMessagingIconName(name: FaIconName | (string & {}) | undefined, fallback?: FaIconName): FaIconName;
+//# sourceMappingURL=messagingSentiment.d.ts.map

@@ -1,0 +1,29 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--tag-height);
+  padding-inline: var(--tag-px);
+  padding-block: var(--tag-py);
+  gap: var(--tag-gap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--tag-border);
+  background-color: var(--tag-bg);
+  color: var(--tag-fg);
+  font-family: var(--font-body);
+  font-size: var(--tag-font-size);
+  line-height: var(--tag-line-height);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tag-content-gap);
+  min-width: 0;
+}
+
+.label {
+  min-width: 0;
+}

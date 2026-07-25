@@ -1,0 +1,63 @@
+.button:global(.MuiIconButton-root):global(.MuiIconButton-root) {
+  width: var(--it-size);
+  height: var(--it-size);
+  padding: var(--it-padding);
+  border-radius: var(--radius-sm);
+  color: inherit;
+  background-color: transparent;
+  transition: var(--transition-colors);
+  --it-icon-color: var(--it-icon-off);
+
+  &[aria-pressed="true"] {
+    --it-icon-color: var(--it-icon-on);
+  }
+
+  &:hover:not(:global(.Mui-disabled)) {
+    background-color: var(--it-surface);
+    --it-icon-color: var(--it-hover-icon);
+  }
+
+  &:active:not(:global(.Mui-disabled)),
+  :global([data-cads-force-pseudo="press"]) &:not(:global(.Mui-disabled)) {
+    background-color: var(--it-surface);
+    --it-icon-color: var(--it-press-icon);
+  }
+
+  &:global(.Mui-focusVisible) {
+    background-color: transparent;
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &:global(.Mui-disabled) {
+    opacity: 1;
+    --it-icon-color: var(--text-disabled-neutral);
+  }
+}
+
+.icon {
+  width: var(--it-icon-slot);
+  color: var(--it-icon-color);
+  transition: var(--transition-colors);
+}
+
+.labelRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--it-label-gap);
+}
+
+.label {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-neutral-primary);
+  white-space: nowrap;
+  font-size: var(--it-label-font-size);
+  line-height: var(--it-label-line-height);
+}
+
+.togglePair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+}

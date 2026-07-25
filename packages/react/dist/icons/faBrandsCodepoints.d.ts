@@ -3,7 +3,7 @@
  * Auto-generated from Font Awesome 7 Brands-Regular-400.otf
  * Regenerate: `npm run generate:fa-codepoints`
  */
-declare const FA_BRANDS_CODEPOINTS: {
+export declare const FA_BRANDS_CODEPOINTS: {
     readonly "0": "30";
     readonly "1": "31";
     readonly "2": "32";
@@ -556,7 +556,6 @@ declare const FA_BRANDS_CODEPOINTS: {
     readonly "zero-width-space": "21";
     readonly zhihu: "f63f";
 };
-type FaBrandIconName = keyof typeof FA_BRANDS_CODEPOINTS;
-declare function getFaBrandCodepoint(name: FaBrandIconName): string;
-
-export { FA_BRANDS_CODEPOINTS, type FaBrandIconName, getFaBrandCodepoint };
+export type FaBrandIconName = keyof typeof FA_BRANDS_CODEPOINTS;
+export declare function getFaBrandCodepoint(name: FaBrandIconName): string;
+//# sourceMappingURL=faBrandsCodepoints.d.ts.map

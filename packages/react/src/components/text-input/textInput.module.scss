@@ -1,0 +1,67 @@
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  border-radius: var(--radius-sm);
+  border-width: 1px;
+  border-style: solid;
+  overflow: clip;
+  transition: var(--transition-colors);
+}
+
+.control {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  font-family: var(--font-body);
+  font-weight: 400;
+  outline: none;
+  cursor: inherit;
+
+  &::placeholder {
+    color: var(--text-neutral-placeholder);
+    opacity: 1;
+  }
+}
+
+.shell[data-disabled="true"] .control::placeholder {
+  color: var(--text-disabled-neutral);
+}
+
+/* Hover only when not focused */
+.shell:hover:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]),
+:global([data-cads-force-pseudo="hover"]) .shell:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]) {
+  background-color: var(--background-neutral-secondary) !important;
+}
+
+.shell:focus-within:not([data-disabled="true"]) {
+  box-shadow: 0 0 0 2px var(--background-neutral-primary),
+    0 0 0 4px var(--border-focused-primary);
+  background-color: var(--background-neutral-primary) !important;
+}
+
+/* Press state — secondary fill while unfocused only */
+.shell:active:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]),
+:global([data-cads-force-pseudo="press"]) .shell:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]) {
+  background-color: var(--background-neutral-secondary) !important;
+}
+
+.shell[data-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.shell[data-disabled="true"] .control {
+  cursor: not-allowed;
+}
+
+.shell[data-readonly="true"] .control {
+  cursor: default;
+}

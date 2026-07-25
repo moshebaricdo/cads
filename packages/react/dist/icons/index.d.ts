@@ -1,4 +1,7 @@
-export { FaIcon, FaIconFamily, FaIconProps, FaIconSize } from './FaIcon.js';
-export { FA_ICON_ALIASES, FaIconName, getFaCodepoint, isFaIconName, resolveFaIconName } from './faProRegularCodepoints.js';
-export { FaBrandIconName, getFaBrandCodepoint } from './faBrandsCodepoints.js';
-import 'react';
+export { FaIcon } from './FaIcon';
+export type { FaIconProps, FaIconSize, FaIconFamily } from './FaIcon';
+export type { FaIconName } from './faProRegularCodepoints';
+export type { FaBrandIconName } from './faBrandsCodepoints';
+export { getFaCodepoint, isFaIconName, resolveFaIconName, FA_ICON_ALIASES, } from './faProRegularCodepoints';
+export { getFaBrandCodepoint } from './faBrandsCodepoints';
+//# sourceMappingURL=index.d.ts.map

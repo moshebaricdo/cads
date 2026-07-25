@@ -1,0 +1,64 @@
+/**
+ * Toast surface — layout + chrome.
+ * Sentiment colors are passed as --toast-* custom properties from the component
+ * (shared messagingChrome map stays in TS).
+ * Single size — dimensions from Figma Toast (`10587:14942`).
+ */
+
+.surface {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  flex-shrink: 0;
+  padding-inline: 0.875rem 0.75rem; // 14 / 12
+  padding-block: 0.75rem; // 12
+  gap: 1rem; // 16
+  border-radius: var(--radius-md);
+  border: 1px solid var(--toast-border);
+  background-color: var(--toast-bg);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-body);
+  --cads-surface-origin: var(--toast-surface-origin, bottom center);
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.5rem; // 8
+  min-width: 0;
+  color: var(--text-neutral-primary);
+}
+
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.25rem; // 20 — iconSlot
+  color: var(--toast-icon-color);
+  line-height: 1;
+
+  > * {
+    display: block;
+    line-height: 1;
+  }
+}
+
+.text {
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  font-weight: var(--font-weight-normal);
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.625rem; // 10
+}

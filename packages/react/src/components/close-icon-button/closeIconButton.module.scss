@@ -1,0 +1,42 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--cib-box);
+  height: var(--cib-box);
+  min-width: 0;
+  padding: 0;
+  overflow: visible;
+  border-radius: 0.25rem;
+  color: var(--cib-color);
+  background-color: transparent;
+  transition: var(--transition-colors);
+
+  &:hover {
+    color: var(--cib-color-hover);
+    background-color: transparent;
+  }
+
+  &:active {
+    color: var(--cib-color);
+  }
+
+  &:global(.Mui-focusVisible) {
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &:global(.Mui-disabled) {
+    color: var(--text-disabled-neutral);
+    opacity: 1;
+  }
+}
+
+:global([data-cads-force-pseudo="press"]) .root {
+  color: var(--cib-color);
+}
+
+:global([data-cads-force-pseudo="hover"]) .root {
+  color: var(--cib-color-hover);
+}

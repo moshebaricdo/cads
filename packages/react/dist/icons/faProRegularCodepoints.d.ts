@@ -3,7 +3,7 @@
  * Auto-generated from font-awesome-7-pro-solid-900.otf
  * Regenerate: `npm run generate:fa-codepoints`
  */
-declare const FA_PRO_SOLID_CODEPOINTS: {
+export declare const FA_PRO_SOLID_CODEPOINTS: {
     readonly "0": "30";
     readonly "1": "31";
     readonly "2": "32";
@@ -3677,14 +3677,13 @@ declare const FA_PRO_SOLID_CODEPOINTS: {
     readonly z: "5a";
     readonly "zero-width-space": "5e";
 };
-type FaIconName = keyof typeof FA_PRO_SOLID_CODEPOINTS;
+export type FaIconName = keyof typeof FA_PRO_SOLID_CODEPOINTS;
 /**
  * Figma / designer shortcodes that map onto FA Pro names.
  * Figma Button / Icon Toggle samples use `smile`; FA’s glyph is `face-smile`.
  */
-declare const FA_ICON_ALIASES: Record<string, FaIconName>;
-declare function resolveFaIconName(name: string): FaIconName | undefined;
-declare function isFaIconName(name: string): name is FaIconName;
-declare function getFaCodepoint(name: FaIconName | string): string | undefined;
-
-export { FA_ICON_ALIASES, FA_PRO_SOLID_CODEPOINTS, type FaIconName, getFaCodepoint, isFaIconName, resolveFaIconName };
+export declare const FA_ICON_ALIASES: Record<string, FaIconName>;
+export declare function resolveFaIconName(name: string): FaIconName | undefined;
+export declare function isFaIconName(name: string): name is FaIconName;
+export declare function getFaCodepoint(name: FaIconName | string): string | undefined;
+//# sourceMappingURL=faProRegularCodepoints.d.ts.map

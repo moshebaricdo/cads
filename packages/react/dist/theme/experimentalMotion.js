@@ -1,66 +1,50 @@
-import { motion } from '@codeai/cads-variables';
-import { createContext, useContext, useState, useRef, useEffect } from 'react';
-
-const ExperimentalMotionContext = createContext(false);
-function useExperimentalMotion() {
-  return useContext(ExperimentalMotionContext);
+import { motion as u } from "@codeai/cads-variables";
+import { createContext as f, useState as n, useRef as m, useEffect as l, useContext as p } from "react";
+const g = f(!1);
+function b() {
+  return p(g);
 }
-function springTransition(name, reduceMotion) {
-  if (reduceMotion) return { duration: 0 };
-  return motion.spring[name];
+function y(a, t) {
+  return t ? { duration: 0 } : u.spring[a];
 }
-function readSurfaceDurationMs() {
-  if (typeof document === "undefined") return 200;
-  const raw = getComputedStyle(document.documentElement).getPropertyValue("--motion-surface-duration").trim();
-  if (raw.endsWith("ms")) {
-    const n = Number.parseFloat(raw);
-    return Number.isFinite(n) ? n : 200;
+function v() {
+  if (typeof document > "u") return 200;
+  const a = getComputedStyle(document.documentElement).getPropertyValue("--motion-surface-duration").trim();
+  if (a.endsWith("ms")) {
+    const t = Number.parseFloat(a);
+    return Number.isFinite(t) ? t : 200;
   }
-  if (raw.endsWith("s")) {
-    const n = Number.parseFloat(raw) * 1e3;
-    return Number.isFinite(n) ? n : 200;
+  if (a.endsWith("s")) {
+    const t = Number.parseFloat(a) * 1e3;
+    return Number.isFinite(t) ? t : 200;
   }
   return 200;
 }
-function useSurfacePresence(open) {
-  const experimentalMotion = useExperimentalMotion();
-  const [mounted, setMounted] = useState(open);
-  const [exiting, setExiting] = useState(false);
-  const mountedRef = useRef(open);
-  useEffect(() => {
-    if (!experimentalMotion) {
-      mountedRef.current = open;
-      setMounted(open);
-      setExiting(false);
+function S(a) {
+  const t = b(), [o, s] = n(a), [i, e] = n(!1), r = m(a);
+  return l(() => {
+    if (!t) {
+      r.current = a, s(a), e(!1);
       return;
     }
-    if (open) {
-      mountedRef.current = true;
-      setMounted(true);
-      setExiting(false);
+    if (a) {
+      r.current = !0, s(!0), e(!1);
       return;
     }
-    if (!mountedRef.current) return;
-    setExiting(true);
-    const ms = readSurfaceDurationMs();
-    const id = window.setTimeout(() => {
-      mountedRef.current = false;
-      setMounted(false);
-      setExiting(false);
-    }, ms);
-    return () => window.clearTimeout(id);
-  }, [open, experimentalMotion]);
-  if (!experimentalMotion) {
-    return { mounted: open, exiting: false };
-  }
-  return { mounted, exiting };
+    if (!r.current) return;
+    e(!0);
+    const d = v(), c = window.setTimeout(() => {
+      r.current = !1, s(!1), e(!1);
+    }, d);
+    return () => window.clearTimeout(c);
+  }, [a, t]), t ? { mounted: o, exiting: i } : { mounted: a, exiting: !1 };
 }
-const EXPERIMENTAL_MOTION_CSS = `
+const x = `
 [data-cads-press] {
   transition: var(--transition-colors), var(--transition-press);
 }
 /*
- * Dropdown triggers skip Press scale \u2014 movement is reserved for the menu
+ * Dropdown triggers skip Press scale — movement is reserved for the menu
  * Surface. Input omits data-cads-press; action keeps Button's attr but
  * drops scale + press transition so the trigger doesn't compete on open.
  */
@@ -114,7 +98,7 @@ const EXPERIMENTAL_MOTION_CSS = `
 }
 /*
  * CSS Indicator fallback. Spring path sets data-cads-indicator-spring and
- * drives transform via Motion \u2014 skip the CSS transition so they don\u2019t fight.
+ * drives transform via Motion — skip the CSS transition so they don’t fight.
  */
 [data-cads-indicator]:not([data-cads-indicator-spring]) {
   transition: var(--transition-indicator);
@@ -125,8 +109,8 @@ const EXPERIMENTAL_MOTION_CSS = `
   background-color: var(--border-selected-strong);
 }
 /*
- * Toggle handle press-scale. Spring path nests the painted face so Motion\u2019s
- * x transform and CSS scale don\u2019t clobber each other.
+ * Toggle handle press-scale. Spring path nests the painted face so Motion’s
+ * x transform and CSS scale don’t clobber each other.
  */
 @media (hover: hover) and (pointer: fine) {
   [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator]:not([data-cads-indicator-spring]) {
@@ -162,7 +146,12 @@ const EXPERIMENTAL_MOTION_CSS = `
   }
 }
 `;
-
-export { EXPERIMENTAL_MOTION_CSS, ExperimentalMotionContext, readSurfaceDurationMs, springTransition, useExperimentalMotion, useSurfacePresence };
-//# sourceMappingURL=experimentalMotion.js.map
+export {
+  x as EXPERIMENTAL_MOTION_CSS,
+  g as ExperimentalMotionContext,
+  v as readSurfaceDurationMs,
+  y as springTransition,
+  b as useExperimentalMotion,
+  S as useSurfacePresence
+};
 //# sourceMappingURL=experimentalMotion.js.map

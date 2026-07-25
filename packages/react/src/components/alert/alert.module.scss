@@ -1,0 +1,73 @@
+/**
+ * Alert — layout + chrome.
+ * Sentiment colors and size dimensions are passed as CSS custom properties
+ * from the component (shared messagingChrome map stays in TS).
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: var(--alert-min-height);
+  padding-inline: var(--alert-px);
+  padding-block: var(--alert-py);
+  gap: var(--alert-gap);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--alert-border);
+  background-color: var(--alert-bg);
+  font-family: var(--font-body);
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &:not(.fullWidth) {
+    width: fit-content;
+  }
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: var(--alert-content-gap);
+  min-width: 0;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--alert-icon-slot);
+  height: var(--alert-line-height);
+  color: var(--alert-icon-color);
+  line-height: 0;
+
+  > * {
+    width: var(--alert-icon-slot);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.text {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--text-neutral-primary);
+  font-size: var(--alert-font-size);
+  line-height: var(--alert-line-height);
+  font-weight: var(--font-weight-normal);
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  gap: var(--alert-action-gap);
+}

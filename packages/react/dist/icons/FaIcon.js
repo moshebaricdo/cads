@@ -1,8 +1,7 @@
-import { jsx } from 'react/jsx-runtime';
-import { getFaBrandCodepoint } from './faBrandsCodepoints.js';
-import { resolveFaIconName, getFaCodepoint } from './faProRegularCodepoints.js';
-
-const SIZE_PX = {
+import { jsx as c } from "react/jsx-runtime";
+import { getFaBrandCodepoint as f } from "./faBrandsCodepoints.js";
+import { resolveFaIconName as u, getFaCodepoint as p } from "./faProRegularCodepoints.js";
+const g = {
   inherit: void 0,
   extraSmall: "0.75rem",
   // 12px
@@ -17,60 +16,54 @@ const SIZE_PX = {
   m: "1rem",
   l: "1.25rem"
 };
-function resolveCodepoint(name, family) {
-  if (family === "brands") {
-    return getFaBrandCodepoint(name);
-  }
-  return getFaCodepoint(name);
+function b(e, n) {
+  return n === "brands" ? f(e) : p(e);
 }
-function FaIcon({
-  name,
-  family = "solid",
-  className = "",
-  title,
-  size = "medium",
-  fontSize: fontSizeProp,
-  style
+function C({
+  name: e,
+  family: n = "solid",
+  className: t = "",
+  title: r,
+  size: a = "medium",
+  fontSize: i,
+  style: s
 }) {
-  const hex = resolveCodepoint(name, family);
-  if (!hex) {
+  const o = b(e, n);
+  if (!o) {
     if (process.env.NODE_ENV !== "production") {
-      const hint = family !== "brands" && resolveFaIconName(name) == null ? ` (try a kebab-case FA name; "smile" \u2192 face-smile)` : "";
-      console.warn(`[CADS FaIcon] Unknown icon name "${name}"${hint}`);
+      const l = n !== "brands" && u(e) == null ? ' (try a kebab-case FA name; "smile" → face-smile)' : "";
+      console.warn(`[CADS FaIcon] Unknown icon name "${e}"${l}`);
     }
     return null;
   }
-  const char = String.fromCodePoint(Number.parseInt(hex, 16));
-  const fontSize = fontSizeProp ?? SIZE_PX[size];
-  const fontFamily = family === "brands" ? "var(--font-fa-brands)" : "var(--font-fa-pro)";
-  const fontWeight = family === "brands" || family === "regular" ? 400 : 900;
-  return /* @__PURE__ */ jsx(
+  const m = String.fromCodePoint(Number.parseInt(o, 16)), d = i ?? g[a];
+  return /* @__PURE__ */ c(
     "span",
     {
-      className,
+      className: t,
       "data-fa-icon": "",
-      "data-fa-family": family,
-      "data-fa-name": name,
+      "data-fa-family": n,
+      "data-fa-name": e,
       style: {
-        fontFamily,
-        fontWeight,
+        fontFamily: n === "brands" ? "var(--font-fa-brands)" : "var(--font-fa-pro)",
+        fontWeight: n === "brands" || n === "regular" ? 400 : 900,
         fontStyle: "normal",
-        fontSize,
+        fontSize: d,
         lineHeight: 1,
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        ...style
+        ...s
       },
-      title,
-      "aria-hidden": title ? void 0 : true,
-      "aria-label": title,
-      role: title ? "img" : void 0,
-      children: char
+      title: r,
+      "aria-hidden": r ? void 0 : !0,
+      "aria-label": r,
+      role: r ? "img" : void 0,
+      children: m
     }
   );
 }
-
-export { FaIcon };
-//# sourceMappingURL=FaIcon.js.map
+export {
+  C as FaIcon
+};
 //# sourceMappingURL=FaIcon.js.map

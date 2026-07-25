@@ -2,14 +2,14 @@
  * Machine-readable CADS component catalog for AI agents and docs.
  * Versioned with the package; Figma node IDs filled as components are mapped.
  */
-interface CadsPropDef {
+export interface CadsPropDef {
     name: string;
     type: string;
     default?: string;
     description?: string;
     required?: boolean;
 }
-interface CadsComponentManifest {
+export interface CadsComponentManifest {
     name: string;
     exportName: string;
     importFrom: string;
@@ -26,12 +26,12 @@ interface CadsComponentManifest {
     usageRules: string[];
     example: string;
 }
-declare const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
-declare const cadsManifest: {
+export declare const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
+export declare const cadsManifest: {
     version: string;
     package: string;
     figmaFileKey: string;
     components: CadsComponentManifest[];
 };
-
-export { CADS_FIGMA_FILE_KEY, type CadsComponentManifest, type CadsPropDef, cadsManifest, cadsManifest as default };
+export default cadsManifest;
+//# sourceMappingURL=cads.manifest.d.ts.map

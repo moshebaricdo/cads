@@ -1,0 +1,79 @@
+/**
+ * Drawer — bottom-sheet surface layout.
+ * MUI Drawer paper slot override stays in sx.
+ */
+
+.surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 10px;
+  padding: 40px 10px 48px;
+  background-color: var(--background-neutral-secondary);
+  border-top: 1px solid var(--border-neutral-primary);
+  box-shadow:
+    0 -10px 15px -3px rgb(0 0 0 / 10%),
+    0 -4px 6px -4px rgb(0 0 0 / 10%);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+  min-width: 0;
+  max-width: 1160px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+  color: var(--text-neutral-primary);
+}
+
+.title {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-heading-lg);
+  line-height: var(--leading-heading-lg);
+}
+
+.description {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+}
+
+.customSlot {
+  width: 100%;
+  max-width: 1160px;
+  min-width: 500px;
+  min-height: 72px;
+  box-sizing: border-box;
+  background-color: var(--background-neutral-primary);
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}

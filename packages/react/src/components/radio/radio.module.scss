@@ -1,0 +1,101 @@
+/* Radio interactive state chrome — CSS vars on MUI root drive circle/dot colors. */
+
+.circle {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-round);
+  border: 2px solid var(--cads-radio-border);
+  background-color: var(--cads-radio-bg);
+  transition: var(--transition-colors);
+}
+
+.dot {
+  display: block;
+  border-radius: var(--radius-round);
+  background-color: var(--cads-radio-dot);
+  transition: var(--transition-colors);
+}
+
+.root {
+  --cads-radio-bg: var(--background-neutral-primary);
+  --cads-radio-border: var(--border-neutral-solid);
+  --cads-radio-dot: var(--background-selected-primary);
+  transition: var(--transition-colors);
+
+  &:hover:not(:global(.Mui-disabled)) {
+    background-color: transparent;
+    --cads-radio-bg: var(--background-brand-light);
+    --cads-radio-border: var(--border-neutral-solid);
+  }
+
+  &:active:not(:global(.Mui-disabled)) {
+    --cads-radio-bg: var(--background-brand-light);
+    --cads-radio-border: var(--border-selected-primary);
+  }
+
+  &:global(.Mui-focusVisible):not(:global(.Mui-disabled)) {
+    background-color: transparent;
+    --cads-radio-bg: var(--background-neutral-primary);
+    --cads-radio-border: var(--border-neutral-solid);
+
+    .circle {
+      box-shadow: 0 0 0 2px var(--background-neutral-primary),
+        0 0 0 4px var(--border-focused-primary);
+    }
+  }
+
+  /* Selected */
+  &:global(.Mui-checked) {
+    --cads-radio-bg: var(--background-neutral-primary);
+    --cads-radio-border: var(--border-selected-primary);
+    --cads-radio-dot: var(--background-selected-primary);
+
+    &:hover:not(:global(.Mui-disabled)) {
+      --cads-radio-bg: var(--background-neutral-primary);
+      --cads-radio-border: var(--border-selected-strong);
+      --cads-radio-dot: var(--background-selected-strong);
+    }
+
+    &:active:not(:global(.Mui-disabled)) {
+      --cads-radio-bg: var(--background-brand-light);
+      --cads-radio-border: var(--border-selected-primary);
+      --cads-radio-dot: var(--background-selected-primary);
+    }
+
+    &:global(.Mui-focusVisible):not(:global(.Mui-disabled)) {
+      background-color: transparent;
+      --cads-radio-bg: var(--background-neutral-primary);
+      --cads-radio-border: var(--border-selected-primary);
+      --cads-radio-dot: var(--background-selected-primary);
+
+      .circle {
+        box-shadow: 0 0 0 2px var(--background-neutral-primary),
+          0 0 0 4px var(--border-focused-primary);
+      }
+    }
+  }
+
+  /* Disabled */
+  &:global(.Mui-disabled) {
+    opacity: 1;
+    --cads-radio-bg: var(--background-neutral-primary);
+    --cads-radio-border: var(--border-disabled-neutral);
+    --cads-radio-dot: var(--background-disabled-neutral);
+  }
+}
+
+.labelWrapper {
+  align-items: flex-start;
+  margin: 0;
+
+  :global(.MuiFormControlLabel-label) {
+    font-family: var(--font-body);
+    color: var(--text-neutral-primary);
+
+    &:global(.Mui-disabled) {
+      color: var(--text-disabled-neutral);
+    }
+  }
+}

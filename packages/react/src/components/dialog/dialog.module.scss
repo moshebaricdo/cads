@@ -1,0 +1,124 @@
+/**
+ * Dialog — blocking confirmation overlay surface.
+ * MUI Dialog backdrop/paper slot overrides stay in sx.
+ */
+
+.scrim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  background-color: color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent);
+  min-height: 360px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.outerWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  isolation: isolate;
+}
+
+.iconBadge {
+  z-index: 2;
+  margin-bottom: -30px;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-round);
+  background-color: var(--background-brand-primary);
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-neutral-white-fixed);
+}
+
+.surface {
+  z-index: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
+  background-color: var(--background-neutral-primary);
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+
+  &.default {
+    padding: 40px 56px;
+  }
+
+  &.iconTop {
+    padding: 56px 56px 40px;
+  }
+
+  &.customContent {
+    padding: 30px;
+  }
+}
+
+.contentWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+.imageSlot {
+  width: 260px;
+  height: 138px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--background-neutral-tertiary);
+  flex-shrink: 0;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-heading-xl);
+  line-height: var(--leading-heading-xl);
+  letter-spacing: var(--tracking-heading-display, -0.38px);
+  color: var(--text-neutral-primary);
+}
+
+.description {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  color: var(--text-neutral-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.customSlot {
+  width: 100%;
+  min-height: 130px;
+}

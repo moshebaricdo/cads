@@ -1,7 +1,5 @@
-import * as react from 'react';
 import { ReactNode } from 'react';
-
-interface CadsProviderProps {
+export interface CadsProviderProps {
     children: ReactNode;
     /** When true, injects MUI CssBaseline. Default true. */
     baseline?: boolean;
@@ -15,6 +13,5 @@ interface CadsProviderProps {
  * Provides the CADS MUI theme. Pair with `@codeai/cads-variables/variables.css`
  * and toggle `.dark` on an ancestor for dark mode.
  */
-declare function CadsProvider({ children, baseline, experimentalMotion, }: CadsProviderProps): react.JSX.Element;
-
-export { CadsProvider, type CadsProviderProps };
+export declare function CadsProvider({ children, baseline, experimentalMotion, }: CadsProviderProps): import("react").JSX.Element;
+//# sourceMappingURL=CadsProvider.d.ts.map

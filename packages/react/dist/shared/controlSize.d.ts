@@ -2,10 +2,10 @@
  * Shared control size scale (Figma: large / medium / small / extraSmall).
  * Heights map to CSS variables; paddings/gaps use rem (root) or em (font-relative).
  */
-type ControlSize = "large" | "medium" | "small" | "extraSmall";
-declare const CONTROL_HEIGHT: Record<ControlSize, string>;
+export type ControlSize = "large" | "medium" | "small" | "extraSmall";
+export declare const CONTROL_HEIGHT: Record<ControlSize, string>;
 /** Labeled button padding / gap / type from Figma Button set. */
-declare const BUTTON_SIZE: Record<ControlSize, {
+export declare const BUTTON_SIZE: Record<ControlSize, {
     height: string;
     paddingInline: string;
     paddingBlock: string;
@@ -20,7 +20,7 @@ declare const BUTTON_SIZE: Record<ControlSize, {
  * Box sizes are independent of CONTROL_HEIGHT (22 / 20 / 18 / 16).
  * Corner radius uses `--radius-sm` (6px).
  */
-declare const CHECKBOX_SIZE: Record<ControlSize, {
+export declare const CHECKBOX_SIZE: Record<ControlSize, {
     box: string;
     iconPx: string;
     gap: string;
@@ -37,7 +37,7 @@ declare const CHECKBOX_SIZE: Record<ControlSize, {
  * band: track − outerInset − iconGap − handle − pad (not a glyph-sized
  * box — that eats the handle gap when FA advance > flex band).
  */
-declare const TOGGLE_SIZE: Record<ControlSize, {
+export declare const TOGGLE_SIZE: Record<ControlSize, {
     trackWidth: string;
     trackHeight: string;
     handle: string;
@@ -60,23 +60,23 @@ declare const TOGGLE_SIZE: Record<ControlSize, {
     lineHeight: string;
 }>;
 /** Icon Toggle hit target + glyph size from Figma Icon Toggle set. */
-declare const ICON_TOGGLE_SIZE: Record<ControlSize, {
+export declare const ICON_TOGGLE_SIZE: Record<ControlSize, {
     size: string;
     padding: string;
     iconPx: string;
     iconSlot: string;
 }>;
 /** Figma focus ring: 2px surface gap + 2px focused border (outer 4px). */
-declare const FOCUS_RING = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)";
+export declare const FOCUS_RING = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)";
 /** Shared color/chrome transition — uses CADS motion variables. */
-declare const TRANSITION_COLORS = "var(--transition-colors)";
+export declare const TRANSITION_COLORS = "var(--transition-colors)";
 /** Quieter fade for high-frequency tints (menu hover, soft state changes). */
-declare const TRANSITION_FADE = "var(--transition-fade)";
+export declare const TRANSITION_FADE = "var(--transition-fade)";
 /**
  * Chip size matrix from Figma Chip set (`5881:2187`).
  * Heights match CONTROL_HEIGHT; horizontal padding is slightly tighter than Button.
  */
-declare const CHIP_SIZE: Record<ControlSize, {
+export declare const CHIP_SIZE: Record<ControlSize, {
     height: string;
     paddingInline: string;
     paddingBlock: string;
@@ -91,7 +91,7 @@ declare const CHIP_SIZE: Record<ControlSize, {
  * Bar (`16342:13347`), Stepper (`16344:14959`).
  * Track row is short (knob height); ± buttons overflow into the stack gap like Figma.
  */
-declare const SLIDER_CHROME: {
+export declare const SLIDER_CHROME: {
     readonly trackHeight: "0.375rem";
     readonly knob: "1rem";
     /**
@@ -115,7 +115,7 @@ declare const SLIDER_CHROME: {
  * Text Input / Dropdown Button size matrix from Figma Text Input Building Block
  * and Dropdown Button sets (matches Button padding for L/M; area heights differ).
  */
-declare const TEXT_INPUT_SIZE: Record<ControlSize, {
+export declare const TEXT_INPUT_SIZE: Record<ControlSize, {
     height: string;
     areaHeight: string;
     paddingInline: string;
@@ -128,7 +128,7 @@ declare const TEXT_INPUT_SIZE: Record<ControlSize, {
     iconPx: string;
 }>;
 /** Field Wrapper label + helper typography / icon slots from Figma Field Wrapper. */
-declare const FIELD_WRAPPER_SIZE: Record<ControlSize, {
+export declare const FIELD_WRAPPER_SIZE: Record<ControlSize, {
     labelFontSize: string;
     labelLineHeight: string;
     helperFontSize: string;
@@ -142,7 +142,7 @@ declare const FIELD_WRAPPER_SIZE: Record<ControlSize, {
  * Circle box: 22 / 20 / 18 / 16; selected inner dot: 10 / 8 / 8 / 7.
  * Label gap: 8px (L/M), 6px (S/XS). L/M/S have 2px top offset; XS has none.
  */
-declare const RADIO_SIZE: Record<ControlSize, {
+export declare const RADIO_SIZE: Record<ControlSize, {
     box: string;
     dot: string;
     gap: string;
@@ -158,7 +158,7 @@ declare const RADIO_SIZE: Record<ControlSize, {
  * Primary heights sit +8px above CONTROL_HEIGHT so equal padY still leaves
  * breathing room above the underline when tabs share a row with actions.
  */
-declare const TABS_SIZE: Record<ControlSize, {
+export declare const TABS_SIZE: Record<ControlSize, {
     primaryHeight: string;
     secondaryHeight: string;
     primaryGroupGap: string;
@@ -182,7 +182,7 @@ declare const TABS_SIZE: Record<ControlSize, {
  * Breadcrumb Links (`6862:5619`), Separators (`2434:9333`), Overflow (`16398:927`).
  * Type scale is one step smaller than Button at each size (body/md → body/xxs).
  */
-declare const BREADCRUMB_SIZE: Record<ControlSize, {
+export declare const BREADCRUMB_SIZE: Record<ControlSize, {
     linkGap: string;
     trailGap: string;
     fontSize: string;
@@ -196,7 +196,7 @@ declare const BREADCRUMB_SIZE: Record<ControlSize, {
  * Segmented Button Block size matrix from Figma (differs from Button padding/gap).
  * Gap is 8px for L/M/S and 4px for XS; medium/small horizontal padding is tighter.
  */
-declare const SEGMENTED_SIZE: Record<ControlSize, {
+export declare const SEGMENTED_SIZE: Record<ControlSize, {
     height: string;
     paddingInline: string;
     paddingBlock: string;
@@ -212,7 +212,7 @@ declare const SEGMENTED_SIZE: Record<ControlSize, {
  * Desktop follows Figma's horizontal layout; mobile stacks at 760px with
  * gaps L 16 / M 12 / S 8 / XS 6 and hides the divider.
  */
-declare const TABLE_PAGINATION_SIZE: Record<ControlSize, {
+export declare const TABLE_PAGINATION_SIZE: Record<ControlSize, {
     height: string;
     /** Desktop horizontal gap between clusters and divider. */
     groupGap: string;
@@ -228,8 +228,8 @@ declare const TABLE_PAGINATION_SIZE: Record<ControlSize, {
  * Link size matrix from Figma Link (`3480:5546`).
  * Includes Link-only `extraExtraSmall` (body/xxs) — do not add to ControlSize.
  */
-type LinkControlSize = ControlSize | "extraExtraSmall";
-declare const LINK_SIZE: Record<LinkControlSize, {
+export type LinkControlSize = ControlSize | "extraExtraSmall";
+export declare const LINK_SIZE: Record<LinkControlSize, {
     fontSize: string;
     lineHeight: string;
     gap: string;
@@ -239,7 +239,7 @@ declare const LINK_SIZE: Record<LinkControlSize, {
  * Alert size matrix from Figma Alert (`2133:4160`).
  * Surface radius is `--radius-md` (8px) in the component.
  */
-declare const ALERT_SIZE: Record<ControlSize, {
+export declare const ALERT_SIZE: Record<ControlSize, {
     minHeight: string;
     paddingInline: string;
     paddingBlock: string;
@@ -256,7 +256,7 @@ declare const ALERT_SIZE: Record<ControlSize, {
  * Tag size matrix from Figma Tag (`16433:2625`).
  * Heights 28 / 24 / 20 — tighter than control heights.
  */
-declare const TAG_SIZE: Record<"large" | "medium" | "small", {
+export declare const TAG_SIZE: Record<"large" | "medium" | "small", {
     height: string;
     paddingInline: string;
     paddingBlock: string;
@@ -268,7 +268,7 @@ declare const TAG_SIZE: Record<"large" | "medium" | "small", {
     closeWidth: string;
 }>;
 /** Toast chrome from Figma Toast (`10587:14942`) — single size, elevated. */
-declare const TOAST_CHROME: {
+export declare const TOAST_CHROME: {
     /**
      * Figma symbol width for the default string ("This is a toast.").
      * Surface layout is hug — this is a reference size, not a hard CSS width.
@@ -287,7 +287,7 @@ declare const TOAST_CHROME: {
     shadow: string;
 };
 /** Notification Banner chrome from Figma (`10618:632`). */
-declare const NOTIFICATION_BANNER_CHROME: {
+export declare const NOTIFICATION_BANNER_CHROME: {
     padding: string;
     gap: string;
     contentGap: string;
@@ -302,5 +302,4 @@ declare const NOTIFICATION_BANNER_CHROME: {
     descriptionLineHeight: string;
     radius: string;
 };
-
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, type ControlSize, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, type LinkControlSize, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS, TRANSITION_FADE };
+//# sourceMappingURL=controlSize.d.ts.map

@@ -1,0 +1,83 @@
+/**
+ * Tooltip — bubble, label, and static caret styles.
+ * Dynamic placement-dependent positioning lives in sx (MUI slot overrides).
+ */
+
+.bubble {
+  background-color: var(--background-neutral-primary-inverse);
+  color: var(--text-neutral-primary-inverse);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  padding: 4px 12px;
+  max-width: 256px;
+  width: max-content;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-md);
+  text-align: left;
+  white-space: normal;
+}
+
+.label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.labelIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: var(--leading-body-sm);
+  color: var(--text-neutral-primary-inverse);
+  line-height: 0;
+}
+
+.labelText {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: 400;
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-primary-inverse);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.surfaceWrap {
+  display: inline-flex;
+  align-items: center;
+  max-width: 256px;
+
+  &.horizontal {
+    flex-direction: column;
+  }
+
+  &.vertical {
+    flex-direction: row;
+  }
+}
+
+.caretWrap {
+  display: flex;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.caretDiamond {
+  width: 6px;
+  height: 6px;
+  background-color: var(--background-neutral-primary-inverse);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}

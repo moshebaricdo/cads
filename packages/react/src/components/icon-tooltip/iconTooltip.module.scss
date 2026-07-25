@@ -1,0 +1,34 @@
+/**
+ * IconTooltip trigger — bare icon glyph with focus ring, no button chrome.
+ * Size and color are passed as CSS custom properties from the component.
+ */
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--it-size);
+  height: var(--it-size);
+  min-width: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  color: var(--it-color);
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover,
+  &:active {
+    background-color: transparent;
+  }
+
+  &:global(.Mui-focusVisible) {
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &:global(.Mui-disabled) {
+    color: var(--text-disabled-neutral);
+    opacity: 1;
+  }
+}

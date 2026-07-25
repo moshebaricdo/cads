@@ -1,21 +1,15 @@
-import * as react from 'react';
-import { TextInputProps, TextInputSize } from './TextInput.js';
-import './FieldWrapper.js';
-import '../icons/faProRegularCodepoints.js';
-import '../shared/controlSize.js';
-
+import { TextInputProps, TextInputSize } from './text-input/index';
 /**
  * @deprecated Prefer `TextInput`. Kept as a compatibility alias for early pilots.
  */
-type TextFieldSize = TextInputSize;
+export type TextFieldSize = TextInputSize;
 /**
  * @deprecated Prefer `TextInput`. Kept as a compatibility alias for early pilots.
  */
-type TextFieldProps = TextInputProps;
+export type TextFieldProps = TextInputProps;
 /**
  * @deprecated Prefer `TextInput`. Compatibility alias that forwards to TextInput.
  * Spec source: CADS Figma Text Input (`16176:4884`).
  */
-declare const TextField: react.ForwardRefExoticComponent<TextInputProps & react.RefAttributes<HTMLDivElement>>;
-
-export { TextField, type TextFieldProps, type TextFieldSize };
+export declare const TextField: import('react').ForwardRefExoticComponent<TextInputProps & import('react').RefAttributes<HTMLDivElement>>;
+//# sourceMappingURL=TextField.d.ts.map

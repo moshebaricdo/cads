@@ -1,8 +1,7 @@
-const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
-const cadsManifest = {
+const e = "DGekOeToRVifvFAhfqpeC1", a = {
   version: "0.1.0",
   package: "@codeai/cads-react",
-  figmaFileKey: CADS_FIGMA_FILE_KEY,
+  figmaFileKey: e,
   components: [
     {
       name: "Button",
@@ -10,7 +9,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "15724:18791",
         componentKey: "2507b18076b4066c6ff738539115b36a798fd707"
       },
@@ -24,7 +23,7 @@ const cadsManifest = {
           name: "color",
           type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',
           default: '"primary"',
-          description: "Color role. Tertiary is only for text + icon-only; orange is only for contained (run button). Other combos fall back (tertiary\u2192secondary, orange\u2192primary)."
+          description: "Color role. Tertiary is only for text + icon-only; orange is only for contained (run button). Other combos fall back (tertiary→secondary, orange→primary)."
         },
         {
           name: "size",
@@ -70,10 +69,10 @@ const cadsManifest = {
         "Contained disabled text uses --text-disabled-neutral-inverse (solid fill).",
         "color=tertiary is Figma-valid only for text + iconOnly; other combos warn and fall back to secondary.",
         "color=orange is only for the run button (contained, labeled or icon-only); other variants warn and fall back to primary.",
-        "loading replaces all visible content with a centered spinner and keeps the prior width \u2014 do not swap startIcon for a spinner.",
-        "Use semantic color CSS vars only \u2014 never hard-coded hex. No --ds- prefix."
+        "loading replaces all visible content with a centered spinner and keeps the prior width — do not swap startIcon for a spinner.",
+        "Use semantic color CSS vars only — never hard-coded hex. No --ds- prefix."
       ],
-      example: `<Button variant="contained" color="primary" size="medium">Continue</Button>`
+      example: '<Button variant="contained" color="primary" size="medium">Continue</Button>'
     },
     {
       name: "CloseIconButton",
@@ -81,7 +80,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "6368:7269",
         componentKey: "c492ad784f39078a3067dde33f2be223d6e30903"
       },
@@ -129,10 +128,10 @@ const cadsManifest = {
       usageRules: [
         "Use only for close or dismiss actions.",
         "Choose the color that matches the host component's sentiment; use secondary on neutral surfaces.",
-        "Interaction states are CSS recipes \u2014 do not expose state as a React prop.",
+        "Interaction states are CSS recipes — do not expose state as a React prop.",
         "Override aria-label when context such as Dismiss tab is clearer than Close."
       ],
-      example: `<CloseIconButton size="medium" color="secondary" onClick={onClose} />`
+      example: '<CloseIconButton size="medium" color="secondary" onClick={onClose} />'
     },
     {
       name: "SegmentedButton",
@@ -140,7 +139,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "8027:2099",
         componentKey: "bf599e1bc1d1e651be6aab5bf90ac6a7c26dcfd1"
       },
@@ -156,7 +155,7 @@ const cadsManifest = {
         {
           name: "options",
           type: "SegmentedButtonOption[]",
-          required: true,
+          required: !0,
           description: "Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value."
         },
         { name: "iconOnly", type: "boolean", description: "Square icon-only segments" },
@@ -181,17 +180,17 @@ const cadsManifest = {
         "--transition-colors"
       ],
       usageRules: [
-        "Use selected tokens (fill + border + text) for the active segment \u2014 never brand fills for selected chrome.",
+        "Use selected tokens (fill + border + text) for the active segment — never brand fills for selected chrome.",
         "Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.",
-        "Labels are always Body Semi Bold \u2014 do not invent labelStyle / thick|thin.",
+        "Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.",
         "Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).",
         "Unselected press softens label/icon to --text-neutral-tertiary (hover keeps --text-neutral-primary); selected press keeps --text-selected-primary.",
-        "Focus uses outline 2px with -2px offset (brand-light / focused-inverse) \u2014 same flush recipe as Dropdown menu items, not outer FOCUS_RING.",
-        "Keyboard: radiogroup manual activation \u2014 one Tab stop; \u2190/\u2192/\u2191/\u2193 + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
-        "Figma Block-only: position (first|middle|last), state, isActive \u2014 derived in code from options index / value / CSS / disabled.",
+        "Focus uses outline 2px with -2px offset (brand-light / focused-inverse) — same flush recipe as Dropdown menu items, not outer FOCUS_RING.",
+        "Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
+        "Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.",
         "Prefer the group API; Segmented Button Block (8000:4554) is an internal building block."
       ],
-      example: `<SegmentedButton aria-label="View" options={[{value:"list",label:"List"},{value:"grid",label:"Grid"}]} defaultValue="list" />`
+      example: '<SegmentedButton aria-label="View" options={[{value:"list",label:"List"},{value:"grid",label:"Grid"}]} defaultValue="list" />'
     },
     {
       name: "IconToggle",
@@ -199,7 +198,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "3710:461",
         componentKey: "d08929d02e63b3b286690e87d791199e4545126f"
       },
@@ -214,7 +213,7 @@ const cadsManifest = {
           type: '"primary" | "secondary" | "brand" | "success" | "error"',
           default: '"brand"'
         },
-        { name: "iconName", type: "FaIconName", required: true },
+        { name: "iconName", type: "FaIconName", required: !0 },
         { name: "pressed", type: "boolean", description: "Controlled on/off (Figma isOn)" },
         { name: "defaultPressed", type: "boolean" },
         { name: "onPressedChange", type: "(pressed: boolean) => void" },
@@ -226,13 +225,13 @@ const cadsManifest = {
         {
           name: "secondToggle",
           type: "{ iconName; color?; pressed?; defaultPressed?; onPressedChange?; aria-label; disabled? }",
-          description: "Figma hasTwoToggles \u2014 second toggle with its own icon/color/aria-label (e.g. thumbs-down + error)"
+          description: "Figma hasTwoToggles — second toggle with its own icon/color/aria-label (e.g. thumbs-down + error)"
         },
         {
           name: "exclusive",
           type: "boolean",
           default: "false",
-          description: "With secondToggle: mutual exclusion (thumbs up/down). Figma does not specify exclusive \u2014 default is independent."
+          description: "With secondToggle: mutual exclusion (thumbs up/down). Figma does not specify exclusive — default is independent."
         },
         { name: "disabled", type: "boolean" },
         { name: "aria-label", type: "string" }
@@ -252,13 +251,13 @@ const cadsManifest = {
       ],
       usageRules: [
         "Off = FA Regular + quaternary text; on = FA Solid + color on-token.",
-        "Hover/press surfaces are color-specific (brand-light, error-light, etc.) \u2014 never a generic grey for all colors.",
+        "Hover/press surfaces are color-specific (brand-light, error-light, etc.) — never a generic grey for all colors.",
         "Standalone and labeled Figma sets map to one React component (secondToggle for dual).",
         "In dual mode, set color per toggle: parent color = first; secondToggle.color = second (e.g. success + error).",
         "Dual toggles are independent unless exclusive; Figma has no exclusive prop.",
         "Always provide aria-label when there is no visible label."
       ],
-      example: `<IconToggle label="Was this helpful?" iconName="thumbs-up" color="success" exclusive aria-label="Thumbs up" secondToggle={{ iconName: "thumbs-down", color: "error", "aria-label": "Thumbs down" }} />`
+      example: '<IconToggle label="Was this helpful?" iconName="thumbs-up" color="success" exclusive aria-label="Thumbs up" secondToggle={{ iconName: "thumbs-down", color: "error", "aria-label": "Thumbs down" }} />'
     },
     {
       name: "FieldWrapper",
@@ -266,7 +265,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "15857:99804",
         componentKey: "a76313f790928233bb8afabe35bd6f76f6e9a473"
       },
@@ -285,7 +284,7 @@ const cadsManifest = {
         { name: "helperText", type: "ReactNode" },
         { name: "helperIconName", type: "FaIconName" },
         { name: "showHelper", type: "boolean", default: "true" },
-        { name: "children", type: "ReactNode", required: true },
+        { name: "children", type: "ReactNode", required: !0 },
         {
           name: "required",
           type: "boolean",
@@ -310,7 +309,7 @@ const cadsManifest = {
         "disabled applies --text-disabled-neutral to label, helper text, and helper icon (Figma isDisabled).",
         "required appends * after the label; pair with native required on the nested control when applicable."
       ],
-      example: `<FieldWrapper label="Email" helperText="We never share this" sentiment="default"><TextInput placeholder="you@example.com" /></FieldWrapper>`
+      example: '<FieldWrapper label="Email" helperText="We never share this" sentiment="default"><TextInput placeholder="you@example.com" /></FieldWrapper>'
     },
     {
       name: "TextInput",
@@ -318,7 +317,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16176:4884",
         componentKey: "ba50b76d3e6bc3730fcd2b6389ab2c5306a1c3d4"
       },
@@ -384,10 +383,10 @@ const cadsManifest = {
         "Figma type=field|area maps to multiline={false|true}.",
         "startIconName is field-only; ignored when multiline (type=area). Omit for no icon.",
         "extraSmall field height uses the shared 24px control scale (Figma building block is 22px).",
-        "Do not invent floating labels \u2014 label is always above via Field Wrapper.",
+        "Do not invent floating labels — label is always above via Field Wrapper.",
         "required sets the native HTML attribute and appends * after the label."
       ],
-      example: `<TextInput label="Email" size="medium" startIconName="envelope" placeholder="you@example.com" helperText="Required" />`
+      example: '<TextInput label="Email" size="medium" startIconName="envelope" placeholder="you@example.com" helperText="Required" />'
     },
     {
       name: "Dropdown",
@@ -395,7 +394,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "15857:100676",
         componentKey: "d3660d988bcb4702c24ce921128e32cadb6618db"
       },
@@ -403,7 +402,7 @@ const cadsManifest = {
         {
           name: "role",
           type: '"input" | "action"',
-          required: true,
+          required: !0,
           description: "input = form select; action = button menu"
         },
         {
@@ -437,7 +436,7 @@ const cadsManifest = {
         {
           name: "options",
           type: "DropdownOption[]",
-          required: true,
+          required: !0,
           description: 'Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted).'
         },
         { name: "label", type: "ReactNode" },
@@ -486,17 +485,17 @@ const cadsManifest = {
       ],
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
-        "Triggers skip Press scale when experimentalMotion is on \u2014 open motion belongs to the menu Surface.",
-        "menuType=checklist is input-only; menuType=default is single-select \u2014 item icons are per-option (iconName), not a list-level mode.",
+        "Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.",
+        "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
         'options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.',
-        'Input-role width defaults to hug (static width from the longest option/placeholder \u2014 selection does not resize the field). Use "full" or a CSS length otherwise.',
+        'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',
         'menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.',
-        "Selected menu items use selected tokens \u2014 never brand fills.",
-        "Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) \u2014 not the same recipe as hover.",
+        "Selected menu items use selected tokens — never brand fills.",
+        "Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.",
         "Menu item press: neutral softens to text-neutral-tertiary; destructive keeps error-light + text-error-secondary; selected press returns to selected-primary (hover uses selected-strong).",
-        "Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal \u2014 do not import standalone."
+        "Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone."
       ],
-      example: `<Dropdown role="input" label="Sort" width="hug" options={[{type:"group",label:"Recent"},{value:"a",label:"Option A"},{type:"separator"},{value:"b",label:"Option B"}]} defaultValue="a" />`
+      example: '<Dropdown role="input" label="Sort" width="hug" options={[{type:"group",label:"Recent"},{value:"a",label:"Option A"},{type:"separator"},{value:"b",label:"Option B"}]} defaultValue="a" />'
     },
     {
       name: "Checkbox",
@@ -504,7 +503,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "252:2038",
         componentKey: "503f333f3195d96aa1659225c533b00567e90863"
       },
@@ -518,7 +517,7 @@ const cadsManifest = {
           name: "labelStyle",
           type: '"thin" | "thick"',
           default: '"thin"',
-          description: "Figma labelStyle \u2014 thin=regular, thick=semibold"
+          description: "Figma labelStyle — thin=regular, thick=semibold"
         },
         { name: "label", type: "ReactNode" },
         { name: "checked", type: "boolean" },
@@ -542,11 +541,11 @@ const cadsManifest = {
         "--radius-sm"
       ],
       usageRules: [
-        "Checked / indeterminate fills use selected tokens \u2014 never brand fills.",
+        "Checked / indeterminate fills use selected tokens — never brand fills.",
         "Prefer labeled usage; standalone box only when + Label does not suffice.",
-        "Interaction states (hover/focus/press) are CSS recipes \u2014 not React props."
+        "Interaction states (hover/focus/press) are CSS recipes — not React props."
       ],
-      example: `<Checkbox label="Remember me" size="medium" labelStyle="thin" />`
+      example: '<Checkbox label="Remember me" size="medium" labelStyle="thin" />'
     },
     {
       name: "Radio",
@@ -554,7 +553,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "4675:6352",
         componentKey: "dae7e8825645a8ec83b8593ab666788be4593ab8"
       },
@@ -568,7 +567,7 @@ const cadsManifest = {
           name: "labelStyle",
           type: '"thin" | "thick"',
           default: '"thin"',
-          description: "Figma labelStyle \u2014 thin=regular, thick=semibold"
+          description: "Figma labelStyle — thin=regular, thick=semibold"
         },
         { name: "label", type: "ReactNode" },
         { name: "checked", type: "boolean" },
@@ -585,11 +584,11 @@ const cadsManifest = {
         "--border-focused-primary"
       ],
       usageRules: [
-        "Selected state is ring + inner dot on neutral fill \u2014 not a filled selected square.",
+        "Selected state is ring + inner dot on neutral fill — not a filled selected square.",
         "Group with MUI RadioGroup when needed.",
-        "Interaction states are CSS recipes \u2014 not React props."
+        "Interaction states are CSS recipes — not React props."
       ],
-      example: `<Radio label="Option A" value="a" size="medium" />`
+      example: '<Radio label="Option A" value="a" size="medium" />'
     },
     {
       name: "Toggle",
@@ -597,7 +596,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "327:2151",
         componentKey: "13f4f08ad10787f9c7c557c0139b200f4d8864a8"
       },
@@ -657,17 +656,17 @@ const cadsManifest = {
         "Track heights match Checkbox/Radio at each size (22/20/18/16).",
         "Defaults to check (on) / xmark (off); override with onIcon / offIcon, or set hasIcons={false} for a plain switch.",
         "Not the same as IconToggle (icon-only binary button).",
-        "Interaction states are CSS recipes \u2014 not React props."
+        "Interaction states are CSS recipes — not React props."
       ],
-      example: `<Toggle label="Notifications" labelPlacement="left" defaultChecked onIcon="check" offIcon="xmark" />`
+      example: '<Toggle label="Notifications" labelPlacement="left" defaultChecked onIcon="check" offIcon="xmark" />'
     },
     {
       name: "Slider",
       exportName: "Slider",
       importFrom: "@codeai/cads-react",
-      description: "Continuous or stepped value control with optional \xB1 buttons, display value, and stepper ticks. Track fill uses selected tokens.",
+      description: "Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16344:15611",
         componentKey: "7659dd566886ab8e61de1cf5c73ff039928b6553"
       },
@@ -702,7 +701,7 @@ const cadsManifest = {
           name: "startsFrom",
           type: '"side" | "center"',
           default: '"side"',
-          description: 'Track fill origin (Figma Slider Bar). "side" fills from min\u2192value (0\u2026100); "center" is bipolar around 0 (\u2212100\u2026100).'
+          description: 'Track fill origin (Figma Slider Bar). "side" fills from min→value (0…100); "center" is bipolar around 0 (−100…100).'
         },
         {
           name: "min",
@@ -739,7 +738,7 @@ const cadsManifest = {
           name: "step",
           type: "number | null",
           default: "1",
-          description: "Value increment for drag, \xB1 controls, and tick labels when showTicks is on. Use null for continuous (ticks show only min and max)."
+          description: "Value increment for drag, ± controls, and tick labels when showTicks is on. Use null for continuous (ticks show only min and max)."
         },
         { name: "disabled", type: "boolean" },
         { name: "onChange", type: "(event, value, activeThumb) => void" },
@@ -754,14 +753,14 @@ const cadsManifest = {
         "--background-disabled-neutral"
       ],
       usageRules: [
-        "Filled track uses selected tokens \u2014 never brand fills for the active range.",
-        "Knob hover/focus/press are CSS recipes from Slider Knob \u2014 not React props.",
-        "Set min/max for the value domain \u2014 side defaults 0\u2026100; center defaults -100\u2026100 with 0 at the origin.",
+        "Filled track uses selected tokens — never brand fills for the active range.",
+        "Knob hover/focus/press are CSS recipes from Slider Knob — not React props.",
+        "Set min/max for the value domain — side defaults 0…100; center defaults -100…100 with 0 at the origin.",
         'startsFrom="center" is bipolar: negative values fill left of 0, positive fill right.',
-        "showTicks labels follow the step grid (not Figma\u2019s 1\u2026N demo text). Continuous step={null} labels only min and max.",
+        "showTicks labels follow the step grid (not Figma’s 1…N demo text). Continuous step={null} labels only min and max.",
         "Default width is 300px (Figma symbol). Use fullWidth in fluid layouts, or width for a fixed size."
       ],
-      example: `<Slider label="Volume" defaultValue={50} showControls showHelper helperText="Helper text" />`
+      example: '<Slider label="Volume" defaultValue={50} showControls showHelper helperText="Helper text" />'
     },
     {
       name: "Chip",
@@ -769,7 +768,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "5881:2187",
         componentKey: "388cba2ed6150b2a9b448f1895ed2f04ca90edb2"
       },
@@ -815,12 +814,12 @@ const cadsManifest = {
         "--radius-round"
       ],
       usageRules: [
-        "Selected chrome uses selected tokens \u2014 never brand fills.",
+        "Selected chrome uses selected tokens — never brand fills.",
         "Not the same as Tag (status/category badge).",
-        "Icons render only when startIconName / endIconName are set \u2014 there is no separate boolean gate.",
-        "Interaction states are CSS recipes \u2014 not React props."
+        "Icons render only when startIconName / endIconName are set — there is no separate boolean gate.",
+        "Interaction states are CSS recipes — not React props."
       ],
-      example: `<Chip label="Option" selected color="primary" size="medium" />`
+      example: '<Chip label="Option" selected color="primary" size="medium" />'
     },
     {
       name: "ChipGroup",
@@ -828,7 +827,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "15953:3568",
         componentKey: "65c61f6f006c06e27b293ca8f5e573d650c69c06"
       },
@@ -855,7 +854,7 @@ const cadsManifest = {
         {
           name: "options",
           type: "ChipGroupOption[]",
-          required: true
+          required: !0
         },
         { name: "value", type: "string[]" },
         { name: "defaultValue", type: "string[]" },
@@ -872,7 +871,7 @@ const cadsManifest = {
         "Multi-select: value is string[]. Selected chips use selected tokens.",
         "Prefer ChipGroup over ad-hoc Chip rows when a field label is needed."
       ],
-      example: `<ChipGroup label="Interests" options={[{value:"a",label:"Art"},{value:"b",label:"Music"}]} defaultValue={["a"]} />`
+      example: '<ChipGroup label="Interests" options={[{value:"a",label:"Art"},{value:"b",label:"Music"}]} defaultValue={["a"]} />'
     },
     {
       name: "Link",
@@ -880,7 +879,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "3480:5546",
         componentKey: "87b099a460c3dad155731d3983e7ccfecefc5975"
       },
@@ -895,7 +894,7 @@ const cadsManifest = {
           name: "type",
           type: '"primary" | "secondary"',
           default: '"primary"',
-          description: "Figma type axis \u2014 primary uses brand text; secondary uses neutral."
+          description: "Figma type axis — primary uses brand text; secondary uses neutral."
         },
         {
           name: "isExternal",
@@ -905,7 +904,7 @@ const cadsManifest = {
         },
         { name: "href", type: "string" },
         { name: "disabled", type: "boolean" },
-        { name: "children", type: "ReactNode", required: true }
+        { name: "children", type: "ReactNode", required: !0 }
       ],
       variableDependencies: [
         "--text-brand-primary",
@@ -918,18 +917,18 @@ const cadsManifest = {
       ],
       usageRules: [
         "Use type=primary for brand CTAs/links; secondary for neutral inline navigation.",
-        "Visited/hover/press are CSS recipes \u2014 not React props.",
-        "Brand tokens for primary links \u2014 never selected fills."
+        "Visited/hover/press are CSS recipes — not React props.",
+        "Brand tokens for primary links — never selected fills."
       ],
-      example: `<Link href="/docs" type="primary" size="medium" isExternal>Link</Link>`
+      example: '<Link href="/docs" type="primary" size="medium" isExternal>Link</Link>'
     },
     {
       name: "Breadcrumbs",
       exportName: "Breadcrumbs",
       importFrom: "@codeai/cads-react",
-      description: "Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis \u2192 dropdown of truncated pages). Composes Figma Links / Separators / Overflow.",
+      description: "Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16381:3339",
         componentKey: "43afede0abfd158d2c740e2801b46d13e570a8d0"
       },
@@ -942,7 +941,7 @@ const cadsManifest = {
         {
           name: "items",
           type: "BreadcrumbItem[]",
-          required: true,
+          required: !0,
           description: "Trail items. Optional per-item iconName (leading icon on any crumb), iconOnly, current (Figma isCurrent), href/onClick."
         },
         {
@@ -983,21 +982,21 @@ const cadsManifest = {
         "--shadow-md"
       ],
       usageRules: [
-        "Mark the current page with items[].current \u2014 rendered as text, not a link.",
+        "Mark the current page with items[].current — rendered as text, not a link.",
         "Optional leading icon via items[].iconName on any crumb (not first-only); iconOnly hides the label.",
         "Prefer items[] composition; do not use Breadcrumb Links standalone.",
         "Overflow ellipsis opens a dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown).",
-        "Interaction states are CSS recipes \u2014 not React props. No underline on hover."
+        "Interaction states are CSS recipes — not React props. No underline on hover."
       ],
-      example: `<Breadcrumbs size="medium" maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} items={[{label:"Home",href:"/"},{label:"Library",href:"#",iconName:"box-archive"},{label:"A",href:"#"},{label:"B",href:"#"},{label:"Page",current:true}]} />`
+      example: '<Breadcrumbs size="medium" maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} items={[{label:"Home",href:"/"},{label:"Library",href:"#",iconName:"box-archive"},{label:"A",href:"#"},{label:"B",href:"#"},{label:"Page",current:true}]} />'
     },
     {
       name: "Tabs",
       exportName: "Tabs",
       importFrom: "@codeai/cads-react",
-      description: "Tab Group \u2014 primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.",
+      description: "Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16496:3371",
         componentKey: "b49fe2d463645f88551c83bd8bff0ab56fcde35e"
       },
@@ -1016,7 +1015,7 @@ const cadsManifest = {
         {
           name: "items",
           type: "TabsItem[]",
-          required: true
+          required: !0
         },
         { name: "value", type: "string" },
         { name: "defaultValue", type: "string" },
@@ -1035,20 +1034,20 @@ const cadsManifest = {
         "--background-neutral-tertiary"
       ],
       usageRules: [
-        "Selection is owned by the group via value/defaultValue \u2014 do not expose isCurrent.",
+        "Selection is owned by the group via value/defaultValue — do not expose isCurrent.",
         "Selected chrome uses selected tokens; never brand fills for the active tab.",
-        "Keyboard: tablist manual activation \u2014 one Tab stop; \u2190/\u2192 + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
-        "Tabs may not be used as standalone Tab Items \u2014 always via Tabs."
+        "Keyboard: tablist manual activation — one Tab stop; ←/→ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
+        "Tabs may not be used as standalone Tab Items — always via Tabs."
       ],
-      example: `<Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />`
+      example: '<Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />'
     },
     {
       name: "Pagination",
       exportName: "Pagination",
       importFrom: "@codeai/cads-react",
-      description: "Page pagination \u2014 segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).",
+      description: "Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "17007:19104",
         componentKey: "9f27562cc11f74ff5019ad281149a183c1510ecf"
       },
@@ -1061,7 +1060,7 @@ const cadsManifest = {
         {
           name: "count",
           type: "number",
-          required: true,
+          required: !0,
           description: "Total number of pages."
         },
         {
@@ -1141,21 +1140,21 @@ const cadsManifest = {
       ],
       usageRules: [
         "Page type uses Segmented Button Block geometry with nav chrome tweaks (secondary fill + quaternary icons on first/prev/next/last).",
-        "Selected page uses selected tokens \u2014 never brand fills.",
+        "Selected page uses selected tokens — never brand fills.",
         "Disabled (group or boundary item): transparent fill + disabled border/text; selected-while-disabled uses disabled-neutral fill + inverse text.",
         "layout defaults to auto: when the segmented trail would overflow, swap to compact prev + Page X of Y + next (no wrap). Use layout=segmented to force the trail (scrolls if needed) or layout=compact always.",
         "For table footers use TablePagination (same Figma set, type=table).",
         "Additional MUI Pagination props are available; see MUI docs from the props table."
       ],
-      example: `<Pagination count={10} page={4} showFirstButton showLastButton aria-label="Pagination" />`
+      example: '<Pagination count={10} page={4} showFirstButton showLastButton aria-label="Pagination" />'
     },
     {
       name: "TablePagination",
       exportName: "TablePagination",
       importFrom: "@codeai/cads-react",
-      description: "Table footer pagination \u2014 rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.",
+      description: "Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "17007:19104",
         componentKey: "9f27562cc11f74ff5019ad281149a183c1510ecf"
       },
@@ -1168,24 +1167,24 @@ const cadsManifest = {
         {
           name: "count",
           type: "number",
-          required: true,
+          required: !0,
           description: "Total number of rows."
         },
         {
           name: "page",
           type: "number",
-          required: true,
+          required: !0,
           description: "0-based page index (MUI TablePagination)."
         },
         {
           name: "rowsPerPage",
           type: "number",
-          required: true
+          required: !0
         },
         {
           name: "onPageChange",
           type: "(event, newPage: number) => void",
-          required: true
+          required: !0
         },
         {
           name: "onRowsPerPageChange",
@@ -1224,7 +1223,7 @@ const cadsManifest = {
         "page is 0-based (MUI TablePagination convention); Pagination page is 1-based.",
         "Documented on the Pagination component page with a dedicated props table."
       ],
-      example: `<TablePagination count={100} page={1} rowsPerPage={10} onPageChange={() => {}} onRowsPerPageChange={() => {}} />`
+      example: "<TablePagination count={100} page={1} rowsPerPage={10} onPageChange={() => {}} onRowsPerPageChange={() => {}} />"
     },
     {
       name: "Alert",
@@ -1232,7 +1231,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "2133:4160",
         componentKey: "dbe516b76486882d3508633715c5e4e999c183db"
       },
@@ -1273,11 +1272,11 @@ const cadsManifest = {
         "--text-brand-primary-fixed"
       ],
       usageRules: [
-        "Use for in-page contextual messaging \u2014 not temporary overlays (Toast) or page-level banners (NotificationBanner).",
+        "Use for in-page contextual messaging — not temporary overlays (Toast) or page-level banners (NotificationBanner).",
         "Action is locked to outlined secondary; size follows Alert size. Always pass actionLabel (empty falls back to Button).",
         "Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide (same as MUI Alert icon={false})."
       ],
-      example: `<Alert sentiment="success" size="medium" isDismissible actionLabel="Undo" hasAction>Saved successfully.</Alert>`
+      example: '<Alert sentiment="success" size="medium" isDismissible actionLabel="Undo" hasAction>Saved successfully.</Alert>'
     },
     {
       name: "Toast",
@@ -1285,7 +1284,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "10587:14942",
         componentKey: "29c36f3d7ec051b81e7dc42a724d9097a680f2ee"
       },
@@ -1347,7 +1346,7 @@ const cadsManifest = {
         "Pass open + placement to host via MUI Snackbar; omit open (or surfaceOnly) for inline/fixture chrome. Host apps still own queueing / auto-dismiss timing.",
         "Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide."
       ],
-      example: `<Toast open placement="bottomCenter" sentiment="success" hasAction actionLabel="View" onClose={hide}>This is a toast.</Toast>`
+      example: '<Toast open placement="bottomCenter" sentiment="success" hasAction actionLabel="View" onClose={hide}>This is a toast.</Toast>'
     },
     {
       name: "NotificationBanner",
@@ -1355,7 +1354,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "10618:632",
         componentKey: "5f158e59f1188b62d671448be304f22d3a7bde42"
       },
@@ -1370,8 +1369,8 @@ const cadsManifest = {
           type: '"none" | "color"',
           default: '"none"'
         },
-        { name: "title", type: "ReactNode", required: true },
-        { name: "description", type: "ReactNode", required: true },
+        { name: "title", type: "ReactNode", required: !0 },
+        { name: "description", type: "ReactNode", required: !0 },
         { name: "iconName", type: "FaIconName" },
         { name: "hasPrimaryAction", type: "boolean", default: "true" },
         { name: "hasSecondaryAction", type: "boolean", default: "true" },
@@ -1402,7 +1401,7 @@ const cadsManifest = {
         "fillStyle=none is the white surface; fillStyle=color tints the banner and switches primary action to inverse/secondary.",
         "Prefer NotificationBanner for persistent page messaging; Alert for compact inline status."
       ],
-      example: `<NotificationBanner sentiment="error" fillStyle="color" title="Action required" description="Review the settings before continuing." />`
+      example: '<NotificationBanner sentiment="error" fillStyle="color" title="Action required" description="Review the settings before continuing." />'
     },
     {
       name: "Tag",
@@ -1410,7 +1409,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16433:2625",
         componentKey: "e4a964357b1eaedfab777db89058ccb4d528ec1c"
       },
@@ -1446,23 +1445,23 @@ const cadsManifest = {
       ],
       usageRules: [
         "Not the same as Chip (selectable). Use Tag for status/category labels.",
-        "Use semantic colors \u2014 do not invent custom hues.",
-        "Icons render only when startIconName / endIconName are set \u2014 there is no separate boolean gate."
+        "Use semantic colors — do not invent custom hues.",
+        "Icons render only when startIconName / endIconName are set — there is no separate boolean gate."
       ],
-      example: `<Tag color="success" size="medium" label="Passed" />`
+      example: '<Tag color="success" size="medium" label="Passed" />'
     },
     {
       name: "IconTooltip",
       exportName: "IconTooltip",
       importFrom: "@codeai/cads-react",
-      description: "Info-style icon that is purely a Tooltip affordance \u2014 no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
+      description: "Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "17051:27346",
         componentKey: "2136f83f6a3b9e32d1687b074eda81b74c13b186"
       },
       props: [
-        { name: "title", type: "ReactNode", required: true },
+        { name: "title", type: "ReactNode", required: !0 },
         {
           name: "iconName",
           type: "FaIconName | string",
@@ -1473,7 +1472,7 @@ const cadsManifest = {
           name: "color",
           type: '"primary" | "secondary" | "tertiary"',
           default: '"tertiary"',
-          description: "primary \u2192 brand; secondary \u2192 neutral-primary; tertiary \u2192 neutral-quaternary (muted)."
+          description: "primary → brand; secondary → neutral-primary; tertiary → neutral-quaternary (muted)."
         },
         {
           name: "size",
@@ -1505,12 +1504,12 @@ const cadsManifest = {
         "--shadow-md"
       ],
       usageRules: [
-        "No hover/press/border chrome on the icon itself \u2014 only a required focus-visible ring.",
+        "No hover/press/border chrome on the icon itself — only a required focus-visible ring.",
         "Composes Tooltip for positioning/caret; does not reimplement tooltip surface.",
-        "Figma Info Tooltip (17051:27346) models size \xD7 color \xD7 state; hover/focus variants pin a Tooltip instance above the icon. placement/hasCaret stay code-only \u2014 Figma covers the default top placement.",
-        "Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, \u2026) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props)."
+        "Figma Info Tooltip (17051:27346) models size × color × state; hover/focus variants pin a Tooltip instance above the icon. placement/hasCaret stay code-only — Figma covers the default top placement.",
+        "Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, …) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props)."
       ],
-      example: `<IconTooltip title="Help text" color="tertiary" placement="top" />`
+      example: '<IconTooltip title="Help text" color="tertiary" placement="top" />'
     },
     {
       name: "Tooltip",
@@ -1518,12 +1517,12 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Small hover/focus overlay with brief contextual text on an inverse surface.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "1990:7125",
         componentKey: "8f604de25a1742f20b6e6f1dd3680bdfdbda2234"
       },
       props: [
-        { name: "title", type: "ReactNode", required: true },
+        { name: "title", type: "ReactNode", required: !0 },
         {
           name: "children",
           type: "ReactElement",
@@ -1533,7 +1532,7 @@ const cadsManifest = {
           name: "placement",
           type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
           default: '"bottom"',
-          description: "MUI placement \u2014 where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge."
+          description: "MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge."
         },
         { name: "hasCaret", type: "boolean", default: "true" },
         {
@@ -1556,13 +1555,13 @@ const cadsManifest = {
       ],
       usageRules: [
         "Child must be able to hold a ref (forwardRef element).",
-        "Prefer supplementary hints \u2014 avoid sole source of critical info.",
-        "Use MUI placement for position (bottom, top-start, etc.). Figma\u2019s caretPlacement maps inverted (Figma top \u2192 placement bottom).",
-        "Icons render only when iconName is set \u2014 there is no separate boolean gate.",
+        "Prefer supplementary hints — avoid sole source of critical info.",
+        "Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).",
+        "Icons render only when iconName is set — there is no separate boolean gate.",
         "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
-        "Also accepts other MUI Tooltip props (slotProps, open, followCursor, \u2026) except arrow (use hasCaret)."
+        "Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret)."
       ],
-      example: `<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>`
+      example: '<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>'
     },
     {
       name: "Popover",
@@ -1570,7 +1569,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "16426:681",
         componentKey: "b524d42ecd329068d1cfa45de2b79e874f9f6cf0"
       },
@@ -1611,9 +1610,9 @@ const cadsManifest = {
       usageRules: [
         "Well suited to guided walkthroughs (stepper + Back/Next).",
         "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
-        "caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft \u2192 above trigger, start-aligned)."
+        "caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned)."
       ],
-      example: `<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3"><Button>Open</Button></Popover>`
+      example: '<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3"><Button>Open</Button></Popover>'
     },
     {
       name: "Drawer",
@@ -1621,7 +1620,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Bottom sheet that slides over page content without dimming or blocking it.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "10708:17779",
         componentKey: "b2cd3a35f20d344f38d677d0dfd992d64f503b87"
       },
@@ -1654,7 +1653,7 @@ const cadsManifest = {
         "--text-heading-lg"
       ],
       usageRules: [
-        "More prominent than inline content, less disruptive than a modal \u2014 use sparingly.",
+        "More prominent than inline content, less disruptive than a modal — use sparingly.",
         "Does not dim the page (no backdrop)."
       ],
       example: `<>
@@ -1668,7 +1667,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Blocking confirmation overlay with short title, message, and usually two actions.",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "3453:3938",
         componentKey: "75feff93418c9804cbd3075e8a7f85bce1a5ff1e"
       },
@@ -1686,7 +1685,7 @@ const cadsManifest = {
           name: "topIconName",
           type: "FaIconName | string",
           default: '"smile"',
-          description: "Icon for the floating badge when type is iconTop (Figma shortcode; smile \u2192 face-smile)."
+          description: "Icon for the floating badge when type is iconTop (Figma shortcode; smile → face-smile)."
         },
         { name: "hasSecondaryAction", type: "boolean", default: "true" },
         { name: "primaryActionLabel", type: "ReactNode", default: '"Button"' },
@@ -1710,7 +1709,7 @@ const cadsManifest = {
         "--text-heading-xl"
       ],
       usageRules: [
-        "Use for short decisions \u2014 prefer Modal for rich interactive content.",
+        "Use for short decisions — prefer Modal for rich interactive content.",
         "Spelling isDismissable matches Figma."
       ],
       example: `<>
@@ -1724,7 +1723,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react",
       description: "Blocking overlay for rich interactive content (forms, media, multi-step flows).",
       figma: {
-        fileKey: CADS_FIGMA_FILE_KEY,
+        fileKey: e,
         nodeId: "2190:8284",
         componentKey: "0fe4d86d9d16ed81da4f995fc1e8fae90f7cf0e5"
       },
@@ -1772,7 +1771,7 @@ const cadsManifest = {
       importFrom: "@codeai/cads-react/icons",
       description: "Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.",
       props: [
-        { name: "name", type: "FaIconName | FaBrandIconName", required: true },
+        { name: "name", type: "FaIconName | FaBrandIconName", required: !0 },
         {
           name: "family",
           type: '"solid" | "regular" | "brands"',
@@ -1788,14 +1787,15 @@ const cadsManifest = {
       variableDependencies: ["--font-fa-pro", "--font-fa-brands"],
       usageRules: [
         "Import @codeai/cads-react/icons/fonts.css once at app root.",
-        "Internal FA Pro license \u2014 do not publish fonts publicly."
+        "Internal FA Pro license — do not publish fonts publicly."
       ],
-      example: `<FaIcon name="arrow-right" size="medium" />`
+      example: '<FaIcon name="arrow-right" size="medium" />'
     }
   ]
 };
-var cads_manifest_default = cadsManifest;
-
-export { CADS_FIGMA_FILE_KEY, cadsManifest, cads_manifest_default as default };
-//# sourceMappingURL=cads.manifest.js.map
+export {
+  e as CADS_FIGMA_FILE_KEY,
+  a as cadsManifest,
+  a as default
+};
 //# sourceMappingURL=cads.manifest.js.map

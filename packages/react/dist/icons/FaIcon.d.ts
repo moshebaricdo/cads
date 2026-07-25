@@ -1,9 +1,7 @@
-import * as react from 'react';
 import { CSSProperties } from 'react';
-import { FaBrandIconName } from './faBrandsCodepoints.js';
-import { FaIconName } from './faProRegularCodepoints.js';
-
-type FaIconSize = "inherit" | "extraSmall" | "small" | "medium" | "large"
+import { FaBrandIconName } from './faBrandsCodepoints';
+import { FaIconName } from './faProRegularCodepoints';
+export type FaIconSize = "inherit" | "extraSmall" | "small" | "medium" | "large"
 /** @deprecated Prefer `extraSmall` */
  | "xs"
 /** @deprecated Prefer `small` */
@@ -12,8 +10,8 @@ type FaIconSize = "inherit" | "extraSmall" | "small" | "medium" | "large"
  | "m"
 /** @deprecated Prefer `large` */
  | "l";
-type FaIconFamily = "solid" | "regular" | "brands";
-interface FaIconProps {
+export type FaIconFamily = "solid" | "regular" | "brands";
+export interface FaIconProps {
     /**
      * FA icon name (kebab-case), e.g. `arrow-right`, `face-smile`.
      * Figma shortcode `smile` is accepted as an alias for `face-smile`.
@@ -36,6 +34,5 @@ interface FaIconProps {
  * Unknown names render nothing (no throw) so playgrounds stay resilient
  * while typing shortcodes.
  */
-declare function FaIcon({ name, family, className, title, size, fontSize: fontSizeProp, style, }: FaIconProps): react.JSX.Element | null;
-
-export { FaIcon, type FaIconFamily, type FaIconProps, type FaIconSize };
+export declare function FaIcon({ name, family, className, title, size, fontSize: fontSizeProp, style, }: FaIconProps): import("react").JSX.Element | null;
+//# sourceMappingURL=FaIcon.d.ts.map

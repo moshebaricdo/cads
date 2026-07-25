@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
-import { TextInput, type TextInputProps, type TextInputSize } from "./TextInput";
+import { TextInput } from "./text-input/index";
+import type { TextInputProps, TextInputSize } from "./text-input/index";
 
 /**
  * @deprecated Prefer `TextInput`. Kept as a compatibility alias for early pilots.

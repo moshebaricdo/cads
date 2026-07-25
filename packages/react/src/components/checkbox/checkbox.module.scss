@@ -1,0 +1,90 @@
+/* Checkbox interactive state chrome — CSS vars set on MUI root drive glyph colors. */
+
+.box {
+  border-radius: var(--radius-sm);
+  border-width: 2px;
+  border-style: solid;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition-colors);
+  background-color: var(--cads-checkbox-bg);
+  border-color: var(--cads-checkbox-border);
+  color: var(--cads-checkbox-icon);
+}
+
+.root {
+  --cads-checkbox-bg: var(--background-neutral-primary);
+  --cads-checkbox-border: var(--border-neutral-solid);
+  --cads-checkbox-icon: var(--text-selected-primary);
+
+  /* Unselected hover */
+  &:hover:not(:global(.Mui-disabled)) {
+    --cads-checkbox-bg: var(--background-brand-light);
+    --cads-checkbox-border: var(--border-neutral-solid);
+  }
+
+  /* Selected / indeterminate default */
+  &:global(.Mui-checked),
+  &:global(.MuiCheckbox-indeterminate) {
+    --cads-checkbox-bg: var(--background-selected-primary);
+    --cads-checkbox-border: var(--border-selected-primary);
+    --cads-checkbox-icon: var(--text-selected-primary);
+  }
+
+  /* Selected / indeterminate hover */
+  &:global(.Mui-checked):hover:not(:global(.Mui-disabled)),
+  &:global(.MuiCheckbox-indeterminate):hover:not(:global(.Mui-disabled)) {
+    --cads-checkbox-bg: var(--background-selected-strong);
+    --cads-checkbox-border: var(--border-selected-strong);
+  }
+
+  /* Unselected pressed */
+  &:active:not(:global(.Mui-disabled)):not(:global(.Mui-checked)):not(:global(.MuiCheckbox-indeterminate)) {
+    --cads-checkbox-bg: var(--background-brand-light);
+    --cads-checkbox-border: var(--border-selected-primary);
+  }
+
+  /* Selected / indeterminate pressed */
+  &:global(.Mui-checked):active:not(:global(.Mui-disabled)),
+  &:global(.MuiCheckbox-indeterminate):active:not(:global(.Mui-disabled)) {
+    --cads-checkbox-bg: var(--background-selected-strong);
+    --cads-checkbox-border: var(--border-selected-strong);
+  }
+
+  /* Focus double-ring */
+  &:global(.Mui-focusVisible) .box {
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  /* Disabled unselected */
+  &:global(.Mui-disabled) {
+    --cads-checkbox-bg: var(--background-neutral-primary);
+    --cads-checkbox-border: var(--border-disabled-neutral);
+  }
+
+  /* Disabled selected / indeterminate */
+  &:global(.Mui-disabled.Mui-checked),
+  &:global(.Mui-disabled.MuiCheckbox-indeterminate) {
+    --cads-checkbox-bg: var(--background-disabled-neutral);
+    --cads-checkbox-border: var(--border-disabled-neutral);
+    --cads-checkbox-icon: var(--text-disabled-neutral-inverse);
+  }
+}
+
+.labelWrapper {
+  margin: 0;
+  align-items: flex-start;
+
+  :global(.MuiFormControlLabel-label) {
+    font-family: var(--font-body);
+    color: var(--text-neutral-primary);
+  }
+
+  &:global(.Mui-disabled) :global(.MuiFormControlLabel-label) {
+    color: var(--text-disabled-neutral);
+  }
+}
