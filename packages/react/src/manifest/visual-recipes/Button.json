@@ -1,0 +1,496 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Button",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "15724:18791",
+    "componentKey": "2507b18076b4066c6ff738539115b36a798fd707",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-24",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "figma-update",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-07-24: Pressed-state consistency pass \u2014 contained primary/error/orange press keeps *-strong (same as hover); contained secondary press returns to primary-inverse; outlined press keeps tertiary/error-light (same as hover, not white); text press keeps light fill + deepens label to *-secondary."
+    ]
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ],
+      "variant": [
+        "contained",
+        "outlined",
+        "text"
+      ],
+      "color": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "orange",
+        "error"
+      ],
+      "iconOnly": [
+        false,
+        true
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": [
+      "color=tertiary only for variant=text + iconOnly",
+      "color=orange only for variant=contained"
+    ]
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "height": "48",
+        "icon": "18"
+      },
+      "medium": {
+        "height": "40",
+        "icon": "16"
+      },
+      "small": {
+        "height": "32",
+        "icon": "14"
+      },
+      "extraSmall": {
+        "height": "24",
+        "icon": "12"
+      }
+    },
+    "layout": {
+      "padding": "size-scaled",
+      "gap": "size-scaled",
+      "borderWidth": "1px",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "size": "size-scaled",
+      "weight": "var(--font-weight-semibold)",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "large 18 / medium 16 / small 14 / extraSmall 12"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "variant": "contained",
+        "color": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-primary)",
+        "text": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=primary, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "primary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-strong)",
+        "text": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=primary, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "primary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-strong)",
+        "text": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=primary, state=pressed",
+      "notes": [
+        "Press keeps brand-strong (same as hover); previously incorrectly reset to brand-primary."
+      ]
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "secondary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-octonary)",
+        "text": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=secondary, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "secondary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary-inverse)",
+        "text": "var(--text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=secondary, state=pressed",
+      "notes": [
+        "Secondary contained is the exception: press returns to primary-inverse from hover octonary."
+      ]
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "error",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-error-strong)",
+        "text": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=error, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "contained",
+        "color": "orange",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-accent-orange-strong)",
+        "text": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=contained, color=orange, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "outlined",
+        "color": "primary",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=outlined, color=primary, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "outlined",
+        "color": "primary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-solid)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=outlined, color=primary, state=pressed",
+      "notes": [
+        "Press keeps tertiary fill (same as hover); previously incorrectly reset to primary white."
+      ]
+    },
+    {
+      "when": {
+        "variant": "outlined",
+        "color": "secondary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=outlined, color=secondary, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "outlined",
+        "color": "error",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-error-light)",
+        "border": "var(--border-error-primary)",
+        "text": "var(--text-error-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=outlined, color=error, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "text",
+        "color": "primary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-brand-light)",
+        "text": "var(--text-brand-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=text, color=primary, state=pressed",
+      "notes": [
+        "Press keeps brand-light fill; label deepens to brand-secondary."
+      ]
+    },
+    {
+      "when": {
+        "variant": "text",
+        "color": "secondary",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-quaternary)",
+        "text": "var(--text-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=text, color=secondary, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "text",
+        "color": "error",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-error-light)",
+        "text": "var(--text-error-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=text, color=error, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "variant": "text",
+        "color": "tertiary",
+        "iconOnly": true,
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-quaternary)",
+        "text": "var(--text-neutral-quaternary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "variant=text, color=tertiary, state=pressed, iconOnly=Yes",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "variant",
+      "color",
+      "state",
+      "mode",
+      "iconOnly"
+    ],
+    "cases": [
+      {
+        "id": "button-medium-contained-primary-pressed-light",
+        "figmaNodeId": "15724:19937",
+        "figmaVariant": "size=medium, variant=contained, color=primary, state=pressed, iconOnly=No",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "variant": "contained",
+          "color": "primary"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 160,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40px"
+        },
+        "expectedVariables": [
+          "--background-brand-strong"
+        ],
+        "fixturePath": "/fixtures/components?component=Button&case=button-medium-contained-primary-pressed-light",
+        "referenceScreenshot": "captures/figma-button-contained-primary-pressed.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Button&case=button-medium-contained-primary-pressed-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "button-medium-contained-secondary-pressed-light",
+        "figmaNodeId": "15724:19802",
+        "figmaVariant": "size=medium, variant=contained, color=secondary, state=pressed, iconOnly=No",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "variant": "contained",
+          "color": "secondary"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 160,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40px"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Button&case=button-medium-contained-secondary-pressed-light",
+        "referenceScreenshot": "captures/figma-button-contained-secondary-pressed.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Button&case=button-medium-contained-secondary-pressed-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "button-medium-outlined-primary-pressed-light",
+        "figmaNodeId": "15724:19540",
+        "figmaVariant": "size=medium, variant=outlined, color=primary, state=pressed, iconOnly=No",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "variant": "outlined",
+          "color": "primary"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 160,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40px"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary",
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "/fixtures/components?component=Button&case=button-medium-outlined-primary-pressed-light",
+        "referenceScreenshot": "captures/figma-button-outlined-primary-pressed.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Button&case=button-medium-outlined-primary-pressed-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "button-medium-text-primary-pressed-light",
+        "figmaNodeId": "15724:19456",
+        "figmaVariant": "size=medium, variant=text, color=primary, state=pressed, iconOnly=No",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "variant": "text",
+          "color": "primary"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 160,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40px"
+        },
+        "expectedVariables": [
+          "--background-brand-light",
+          "--text-brand-secondary"
+        ],
+        "fixturePath": "/fixtures/components?component=Button&case=button-medium-text-primary-pressed-light",
+        "referenceScreenshot": "captures/figma-button-text-primary-pressed.png",
+        "browserScreenshot": "fixture:/fixtures/components?component=Button&case=button-medium-text-primary-pressed-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "button-medium-contained-primary-default-light",
+        "figmaNodeId": "15724:18791",
+        "figmaVariant": "size=medium, variant=contained, color=primary, state=default, iconOnly=No",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "variant": "contained",
+          "color": "primary"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 160,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40px"
+        },
+        "expectedVariables": [
+          "--background-brand-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Button&case=button-medium-contained-primary-default-light",
+        "referenceScreenshot": null,
+        "browserScreenshot": "fixture:/fixtures/components?component=Button&case=button-medium-contained-primary-default-light",
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate, 26 info",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "n/a (fixtures only)",
+    "correctionPasses": [
+      "2026-07-24: aligned pressed recipes to Figma 15724:18791 after pressed-state consistency pass",
+      "Playwright fixture capture: 6 press cases all matched expected CSS vars (brand-strong / primary-inverse / tertiary / brand-light+text-brand-secondary / text-input secondary / dropdown tertiary)"
+    ]
+  }
+}

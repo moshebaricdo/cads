@@ -14,16 +14,18 @@
       "16847:69841",
       "16847:69853"
     ],
-    "retrievedAt": "2026-07-20",
+    "retrievedAt": "2026-07-24",
     "designContextCaptured": true
   },
   "change": {
     "taskPath": "figma-update",
     "previousRecipe": null,
     "figmaChanges": [
-      "Menu Item itemType icon→default, iconError→defaultError; hasStartIcon boolean for text-only",
+      "Menu Item itemType icon\u2192default, iconError\u2192defaultError; hasStartIcon boolean for text-only",
       "Added menuSeparator (16847:69841) and menuOptGroup (16847:69853)",
-      "menuType icon→default (item icons are per-option, not list-level)"
+      "menuType icon\u2192default (item icons are per-option, not list-level)",
+      "2026-07-24: default/defaultError state recipes \u2014 destructive press stays error-light + text-error-secondary; selected press returns to selected-primary (not strong); disabled uses text/background-disabled-* tokens (no opacity fade). Checklist itemType deferred.",
+      "2026-07-24: Dropdown Button state=press shares tertiary fill with hover (aligns with outlined Button press)."
     ]
   },
   "axes": {
@@ -182,6 +184,22 @@
     },
     {
       "when": {
+        "role": "input",
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-solid)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "Dropdown Button state=press",
+      "notes": [
+        "Press shares tertiary fill with hover (Figma 964:10677)."
+      ]
+    },
+    {
+      "when": {
         "itemState": "selected",
         "mode": "light"
       },
@@ -200,15 +218,65 @@
     {
       "when": {
         "itemState": "hover",
+        "selected": false,
         "mode": "light"
       },
       "variables": {
-        "background": "var(--background-neutral-tertiary)"
+        "background": "var(--background-neutral-tertiary)",
+        "text": "var(--text-neutral-primary)"
       },
       "geometryOverrides": {},
       "figmaVariant": "state=hover, selected=no",
       "notes": [
-        "Pointer hover only — distinct from keyboard focus."
+        "Pointer hover only \u2014 distinct from keyboard focus."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "press",
+        "selected": false,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "text": "var(--text-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press, selected=no",
+      "notes": [
+        "Same tertiary fill as hover; label softens to text-neutral-tertiary."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "hover",
+        "selected": true,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover, selected=yes",
+      "notes": [
+        "Selected hover deepens to selected-strong."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "press",
+        "selected": true,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press, selected=yes",
+      "notes": [
+        "Selected press returns to selected-primary (not strong)."
       ]
     },
     {
@@ -224,7 +292,7 @@
       "geometryOverrides": {},
       "figmaVariant": "state=focus, selected=no",
       "notes": [
-        "Keyboard highlight via data-keyboard-focus; Figma uses a 2px border — code uses outline + -2px offset to avoid layout shift.",
+        "Keyboard highlight via data-keyboard-focus; Figma uses a 2px border \u2014 code uses outline + -2px offset to avoid layout shift.",
         "Not the outer FOCUS_RING used on the trigger."
       ]
     },
@@ -247,6 +315,38 @@
     },
     {
       "when": {
+        "itemState": "disabled",
+        "selected": false,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "text": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled, selected=no",
+      "notes": [
+        "Default/defaultError only \u2014 uses disabled text token, not opacity fade. Checklist deferred."
+      ]
+    },
+    {
+      "when": {
+        "itemState": "disabled",
+        "selected": true,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "text": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled, selected=yes",
+      "notes": [
+        "Selected disabled: gray fill + inverse disabled text (not faded selected purple)."
+      ]
+    },
+    {
+      "when": {
         "itemType": "defaultError",
         "itemState": "focus",
         "mode": "light"
@@ -260,6 +360,53 @@
       "figmaVariant": "itemType=defaultError, state=focus",
       "notes": [
         "Destructive keyboard focus: white fill + error flush outline."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "defaultError",
+        "itemState": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-error-light)",
+        "text": "var(--text-error-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "itemType=defaultError, state=hover",
+      "notes": [
+        "Destructive hover: error-light fill, primary error label."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "defaultError",
+        "itemState": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-error-light)",
+        "text": "var(--text-error-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "itemType=defaultError, state=press",
+      "notes": [
+        "Destructive press keeps error-light; label deepens to error-secondary (not solid error + white)."
+      ]
+    },
+    {
+      "when": {
+        "itemType": "defaultError",
+        "itemState": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-disabled-error)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "itemType=defaultError, state=disabled",
+      "notes": [
+        "Destructive disabled uses text-disabled-error (no opacity fade)."
       ]
     },
     {
@@ -290,7 +437,7 @@
       },
       "figmaVariant": "hasStartIcon=false",
       "notes": [
-        "Text-only item — no leading icon slot reserved."
+        "Text-only item \u2014 no leading icon slot reserved."
       ]
     },
     {
@@ -335,6 +482,38 @@
       "mode"
     ],
     "cases": [
+      {
+        "id": "dropdown-medium-input-primary-press-light",
+        "figmaNodeId": "964:10658",
+        "figmaVariant": "size=medium, labelStyle=thick, color=primary, state=press",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "role": "input",
+          "color": "primary",
+          "labelStyle": "thick",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Dropdown"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "triggerHeight": "40px"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-medium-input-primary-press-light",
+        "referenceScreenshot": "captures/figma-dropdown-button-press.png",
+        "browserScreenshot": "captures/browser-dropdown-button-press.png",
+        "result": "pass",
+        "mismatches": []
+      },
       {
         "id": "dropdown-large-input-icon-bottomleft-light",
         "figmaNodeId": "15857:100677",
@@ -561,17 +740,19 @@
   },
   "acceptedDifferences": [],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error, 0 warn (info: state-recipes)",
-    "typecheck": "pnpm typecheck → pass",
-    "build": "pnpm build → pass",
-    "docsBuild": "pnpm build:docs → pass",
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn (info: state-recipes)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
     "correctionPasses": [
-      "Removed Grow + disablePortal=false→true so fixture transition:none and capture regions keep the menu",
+      "Removed Grow + disablePortal=false\u2192true so fixture transition:none and capture regions keep the menu",
       "Fixed Popper anchorEl via callback state so defaultOpen opens on first paint",
       "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791",
       "Checklist menu width/minWidth max-content so Action Row labels never wrap; option labels ellipsize; options list pb 4; pressed states (neutral tertiary / error primary)",
       "2026-07-20: text-only items (optional startIcon), menuSeparator, menuOptGroup; itemType default/defaultError",
-      "2026-07-21: focus/hover parity — trigger outline:none + tertiary hover; keyboard item focus outline 2px / offset -2px (brand-light / selected-inverse / error) distinct from pointer hover tertiary; suppress trigger ring while item has keyboard focus"
+      "2026-07-21: focus/hover parity \u2014 trigger outline:none + tertiary hover; keyboard item focus outline 2px / offset -2px (brand-light / selected-inverse / error) distinct from pointer hover tertiary; suppress trigger ring while item has keyboard focus",
+      "2026-07-24: Menu Item default/defaultError states vs 896:3791 \u2014 destructive press error-light + text-error-secondary; selected hover:not(:active)=strong / :active=primary; disabled tokens (no opacity). Checklist deferred.",
+      "2026-07-24: Dropdown Button trigger :active + force-pseudo press uses tertiary (parity with outlined Button)."
     ]
   }
 }

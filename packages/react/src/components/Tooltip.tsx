@@ -5,6 +5,10 @@ import Box from "@mui/material/Box";
 import type { ReactElement, ReactNode } from "react";
 import { FaIcon } from "../icons/FaIcon";
 import type { FaIconName } from "../icons/faProRegularCodepoints";
+import {
+  readSurfaceDurationMs,
+  useExperimentalMotion,
+} from "../theme/experimentalMotion";
 
 /**
  * Figma Arrow is 6×4 (w×h). MUI sizes the arrow square via `fontSize`;
@@ -16,6 +20,8 @@ const ARROW_HEIGHT_PX = Math.round(ARROW_SIZE_PX * 0.71);
 const ARROW_EDGE_INSET_PX = 12;
 
 type EdgeAxis = "horizontal" | "vertical";
+type CaretSide = "top" | "bottom" | "left" | "right";
+type CaretAlign = "start" | "center" | "end";
 
 /** Where to pin the caret on the bubble for *-start / *-end placements. */
 function arrowEdgePin(
@@ -99,53 +105,45 @@ function createArrowEdgeModifier(
   };
 }
 
-export interface TooltipProps
-  extends Omit<MuiTooltipProps, "title" | "arrow"> {
-  /** Tooltip label (Figma `text`). */
-  title: ReactNode;
-  children: ReactElement;
-  /**
-   * Show caret (Figma `hasCaret`). Maps to MUI `arrow`.
-   * @default true
-   */
-  hasCaret?: boolean;
-  /**
-   * Leading FA icon. Omit for no icon (Figma’s boolean `startIcon` is
-   * collapsed into presence of this prop).
-   */
-  iconName?: FaIconName | (string & {});
-  /**
-   * MUI placement (where the tooltip sits relative to the trigger).
-   * `*-start` / `*-end` also pin the caret to that edge of the bubble.
-   * @default "bottom"
-   */
-  placement?: MuiTooltipProps["placement"];
+/** Edge of the bubble that faces the trigger (where the caret sits). */
+function placementToCaretSide(
+  placement: NonNullable<MuiTooltipProps["placement"]>,
+): CaretSide {
+  const value = String(placement);
+  if (value.startsWith("top")) return "bottom";
+  if (value.startsWith("left")) return "right";
+  if (value.startsWith("right")) return "left";
+  return "top";
 }
 
-/**
- * CADS Tooltip — inverse surface with optional caret and start icon.
- * Spec: Figma Tooltip `1990:7125` / key `8f604de25a1742f20b6e6f1dd3680bdfdbda2234`.
- *
- * Accepts the full MUI Tooltip prop surface (except `title` shape and `arrow`,
- * which are driven by CADS `title` / `hasCaret`). Position with MUI `placement`.
- */
-export function Tooltip({
-  children,
-  title,
-  hasCaret = true,
-  iconName,
-  placement = "bottom",
-  slotProps,
-  ...rest
-}: TooltipProps) {
-  // Caret tip 4px from trigger; without caret, bubble gap is 6px.
-  const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
-  const edgePin = arrowEdgePin(placement ?? "bottom");
-  const resolvedIcon = iconName
-    ? ((iconName as FaIconName) || "face-smile")
-    : null;
+function placementToCaretAlign(
+  placement: NonNullable<MuiTooltipProps["placement"]>,
+): CaretAlign {
+  const value = String(placement);
+  if (value.endsWith("-start")) return "start";
+  if (value.endsWith("-end")) return "end";
+  return "center";
+}
 
-  const content = (
+function placementToSurfaceOrigin(
+  placement: NonNullable<MuiTooltipProps["placement"]>,
+): string {
+  const value = String(placement);
+  if (value.startsWith("top")) return "bottom center";
+  if (value.startsWith("bottom")) return "top center";
+  if (value.startsWith("left")) return "center right";
+  if (value.startsWith("right")) return "center left";
+  return "center";
+}
+
+function TooltipLabel({
+  title,
+  iconName,
+}: {
+  title: ReactNode;
+  iconName: FaIconName | null;
+}) {
+  return (
     <Box
       component="span"
       sx={{
@@ -159,7 +157,7 @@ export function Tooltip({
         textAlign: "left",
       }}
     >
-      {resolvedIcon ? (
+      {iconName ? (
         <Box
           component="span"
           aria-hidden
@@ -177,7 +175,7 @@ export function Tooltip({
           }}
         >
           <FaIcon
-            name={resolvedIcon}
+            name={iconName}
             fontSize="14px"
             style={{
               width: 14,
@@ -211,11 +209,223 @@ export function Tooltip({
       </Box>
     </Box>
   );
+}
+
+/** Static caret for surfaceOnly — mirrors MUI’s 6×6 diamond tip. */
+function TooltipCaret({
+  side,
+  align,
+}: {
+  side: CaretSide;
+  align: CaretAlign;
+}) {
+  const horizontal = side === "top" || side === "bottom";
+  const justify =
+    align === "start" ? "flex-start" : align === "end" ? "flex-end" : "center";
+  const alignItems =
+    align === "start" ? "flex-start" : align === "end" ? "flex-end" : "center";
+
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        display: "flex",
+        flexShrink: 0,
+        zIndex: 1,
+        ...(horizontal
+          ? {
+              width: "100%",
+              justifyContent: justify,
+              ...(align === "start"
+                ? { pl: `${ARROW_EDGE_INSET_PX}px` }
+                : align === "end"
+                  ? { pr: `${ARROW_EDGE_INSET_PX}px` }
+                  : null),
+              ...(side === "top"
+                ? { mb: `-${ARROW_HEIGHT_PX}px` }
+                : { mt: `-${ARROW_HEIGHT_PX}px` }),
+            }
+          : {
+              alignSelf: "stretch",
+              alignItems,
+              ...(align === "start"
+                ? { pt: `${ARROW_EDGE_INSET_PX}px` }
+                : align === "end"
+                  ? { pb: `${ARROW_EDGE_INSET_PX}px` }
+                  : null),
+              ...(side === "left"
+                ? { mr: `-${ARROW_HEIGHT_PX}px` }
+                : { ml: `-${ARROW_HEIGHT_PX}px` }),
+            }),
+      }}
+    >
+      <Box
+        sx={{
+          width: ARROW_SIZE_PX,
+          height: ARROW_SIZE_PX,
+          backgroundColor: "var(--background-neutral-primary-inverse)",
+          transform: "rotate(45deg)",
+          flexShrink: 0,
+        }}
+      />
+    </Box>
+  );
+}
+
+const bubbleSx = {
+  backgroundColor: "var(--background-neutral-primary-inverse)",
+  color: "var(--text-neutral-primary-inverse)",
+  borderRadius: "var(--radius-sm)",
+  fontFamily: "var(--font-body)",
+  fontSize: "var(--text-body-sm)",
+  lineHeight: "var(--leading-body-sm)",
+  padding: "4px 12px",
+  // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
+  maxWidth: 256,
+  minWidth: 64,
+  width: "max-content",
+  boxSizing: "border-box" as const,
+  boxShadow: "var(--shadow-md)",
+  textAlign: "left" as const,
+  whiteSpace: "normal" as const,
+};
+
+/**
+ * Inline tooltip chrome (bubble + optional caret) for fixtures / Inspect.
+ * No Popper, trigger, or portal — the surface is the measurable root.
+ */
+function TooltipSurface({
+  title,
+  hasCaret,
+  iconName,
+  placement,
+}: {
+  title: ReactNode;
+  hasCaret: boolean;
+  iconName: FaIconName | null;
+  placement: NonNullable<MuiTooltipProps["placement"]>;
+}) {
+  const side = placementToCaretSide(placement);
+  const align = placementToCaretAlign(placement);
+  const horizontal = side === "top" || side === "bottom";
+
+  const bubble = (
+    <Box
+      component="span"
+      className="cads-tooltip-surface"
+      sx={{
+        ...bubbleSx,
+        display: "inline-block",
+        position: "relative",
+        zIndex: 0,
+        /* Grow from the edge nearest the trigger. */
+        "--cads-surface-origin": placementToSurfaceOrigin(placement),
+      }}
+    >
+      <TooltipLabel title={title} iconName={iconName} />
+    </Box>
+  );
+
+  return (
+    <Box
+      data-cads-component="Tooltip"
+      role="tooltip"
+      sx={{
+        display: "inline-flex",
+        flexDirection: horizontal ? "column" : "row",
+        alignItems: "center",
+        maxWidth: 256,
+      }}
+    >
+      {(side === "top" || side === "left") && hasCaret ? (
+        <TooltipCaret side={side} align={align} />
+      ) : null}
+      {bubble}
+      {(side === "bottom" || side === "right") && hasCaret ? (
+        <TooltipCaret side={side} align={align} />
+      ) : null}
+    </Box>
+  );
+}
+
+export interface TooltipProps
+  extends Omit<MuiTooltipProps, "title" | "arrow" | "children"> {
+  /** Tooltip label (Figma `text`). */
+  title: ReactNode;
+  /**
+   * Trigger element. Required for anchored mode; omit with `surfaceOnly`.
+   */
+  children?: ReactElement;
+  /**
+   * Show caret (Figma `hasCaret`). Maps to MUI `arrow`.
+   * @default true
+   */
+  hasCaret?: boolean;
+  /**
+   * Leading FA icon. Omit for no icon (Figma’s boolean `startIcon` is
+   * collapsed into presence of this prop).
+   */
+  iconName?: FaIconName | (string & {});
+  /**
+   * MUI placement (where the tooltip sits relative to the trigger).
+   * `*-start` / `*-end` also pin the caret to that edge of the bubble.
+   * @default "bottom"
+   */
+  placement?: MuiTooltipProps["placement"];
+  /**
+   * Render bubble (+ caret) inline without Popper / trigger.
+   * Used by docs Inspect and static fixtures.
+   */
+  surfaceOnly?: boolean;
+}
+
+/**
+ * CADS Tooltip — inverse surface with optional caret and start icon.
+ * Spec: Figma Tooltip `1990:7125` / key `8f604de25a1742f20b6e6f1dd3680bdfdbda2234`.
+ *
+ * Accepts the full MUI Tooltip prop surface (except `title` shape and `arrow`,
+ * which are driven by CADS `title` / `hasCaret`). Position with MUI `placement`.
+ * Pass `surfaceOnly` for static previews (no trigger / portal).
+ */
+export function Tooltip({
+  children,
+  title,
+  hasCaret = true,
+  iconName,
+  placement = "bottom",
+  surfaceOnly = false,
+  slotProps,
+  enterDelay,
+  leaveDelay,
+  ...rest
+}: TooltipProps) {
+  // Caret tip 4px from trigger; without caret, bubble gap is 6px.
+  const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
+  const edgePin = arrowEdgePin(placement ?? "bottom");
+  const resolvedIcon = iconName
+    ? ((iconName as FaIconName) || "face-smile")
+    : null;
+  const experimentalMotion = useExperimentalMotion();
+  const surfaceMs = readSurfaceDurationMs();
+
+  if (surfaceOnly) {
+    return (
+      <TooltipSurface
+        title={title}
+        hasCaret={hasCaret}
+        iconName={resolvedIcon}
+        placement={placement ?? "bottom"}
+      />
+    );
+  }
+
+  const content = <TooltipLabel title={title} iconName={resolvedIcon} />;
 
   const {
     popper: popperSlot,
     tooltip: tooltipSlot,
     arrow: arrowSlot,
+    transition: transitionSlot,
     ...otherSlots
   } = slotProps ?? {};
 
@@ -241,8 +451,17 @@ export function Tooltip({
       title={content}
       arrow={hasCaret}
       placement={placement}
+      /* Symmetric Surface-paced enter/exit; no sticky leave delay. */
+      enterDelay={enterDelay ?? (experimentalMotion ? 300 : undefined)}
+      leaveDelay={leaveDelay ?? (experimentalMotion ? 0 : undefined)}
       slotProps={{
         ...otherSlots,
+        transition: {
+          ...transitionSlot,
+          ...(experimentalMotion
+            ? { timeout: { enter: surfaceMs, exit: surfaceMs } }
+            : null),
+        },
         popper: {
           ...popperSlot,
           popperOptions: {
@@ -261,24 +480,26 @@ export function Tooltip({
         },
         tooltip: {
           ...tooltipSlot,
+          // MUI Tooltip slot typings omit data-* attrs; class drives Surface recipe.
+          className: [
+            "cads-tooltip-surface",
+            tooltipSlot &&
+            typeof tooltipSlot === "object" &&
+            "className" in tooltipSlot &&
+            tooltipSlot.className
+              ? String(tooltipSlot.className)
+              : "",
+          ]
+            .filter(Boolean)
+            .join(" "),
           sx: {
-            backgroundColor: "var(--background-neutral-primary-inverse)",
-            color: "var(--text-neutral-primary-inverse)",
-            borderRadius: "var(--radius-sm)",
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body-sm)",
-            lineHeight: "var(--leading-body-sm)",
-            padding: "4px 12px",
-            // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
-            maxWidth: 256,
-            minWidth: 64,
-            width: "max-content",
-            boxSizing: "border-box",
-            boxShadow: "var(--shadow-md)",
+            ...bubbleSx,
             // Kill MUI’s placement margins — gap is controlled via offset above.
             margin: "0 !important",
-            textAlign: "left",
-            whiteSpace: "normal",
+            /* Grow from the edge nearest the trigger. */
+            "--cads-surface-origin": placementToSurfaceOrigin(
+              placement ?? "bottom",
+            ),
             ...(tooltipSlot &&
             typeof tooltipSlot === "object" &&
             "sx" in tooltipSlot &&
@@ -307,7 +528,7 @@ export function Tooltip({
         },
       }}
     >
-      {children}
+      {children as ReactElement}
     </MuiTooltip>
   );
 }

@@ -16,6 +16,7 @@ import {
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
+import { useExperimentalMotion } from "../theme/experimentalMotion";
 
 export type ToggleSize = ControlSize;
 
@@ -65,6 +66,8 @@ export interface ToggleProps
 
 const HANDLE_MOTION =
   "left var(--duration-medium) var(--easing-emphasized), background-color var(--duration-short) var(--easing-standard)";
+/** Used when `experimentalMotion` is on (via `data-cads-indicator` CSS). */
+const HANDLE_MOTION_EXPERIMENTAL = "var(--transition-indicator)";
 const ICON_MOTION =
   "opacity var(--duration-short) var(--easing-standard)";
 
@@ -101,6 +104,10 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     const controlled = checked !== undefined;
     const [uncontrolled, setUncontrolled] = useState(defaultChecked);
     const isOn = controlled ? Boolean(checked) : uncontrolled;
+    const experimentalMotion = useExperimentalMotion();
+    const handleMotion = experimentalMotion
+      ? HANDLE_MOTION_EXPERIMENTAL
+      : HANDLE_MOTION;
 
     const handleClick: ButtonBaseProps["onClick"] = (event) => {
       onClick?.(event);
@@ -142,6 +149,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         onClick={handleClick}
         disableRipple
         focusRipple={false}
+        data-cads-toggle=""
         sx={{
           boxSizing: "border-box",
           position: "relative",
@@ -240,6 +248,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         {/* Sliding handle */}
         <span
           aria-hidden
+          data-cads-indicator=""
           style={{
             position: "absolute",
             top: dims.pad,
@@ -251,7 +260,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
             height: dims.handle,
             borderRadius: "var(--radius-round)",
             backgroundColor: handleBg,
-            transition: HANDLE_MOTION,
+            transition: handleMotion,
             pointerEvents: "none",
           }}
         />

@@ -207,12 +207,17 @@ export const cadsManifest: {
       ],
       variableDependencies: [
         "--background-selected-primary",
+        "--background-selected-strong",
         "--background-brand-light",
+        "--background-neutral-primary",
         "--background-neutral-tertiary",
         "--border-selected-primary",
+        "--border-selected-strong",
         "--border-focused-primary",
         "--border-focused-inverse",
         "--text-selected-primary",
+        "--text-neutral-primary",
+        "--text-neutral-tertiary",
         "--border-neutral-secondary",
         "--control-height-medium",
         "--transition-colors",
@@ -222,6 +227,7 @@ export const cadsManifest: {
         "Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.",
         "Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.",
         "Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).",
+        "Unselected press softens label/icon to --text-neutral-tertiary (hover keeps --text-neutral-primary); selected press keeps --text-selected-primary.",
         "Focus uses outline 2px with -2px offset (brand-light / focused-inverse) — same flush recipe as Dropdown menu items, not outer FOCUS_RING.",
         "Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
         "Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.",
@@ -535,12 +541,14 @@ export const cadsManifest: {
       ],
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
+        "Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.",
         "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
         "options may include {type:\"separator\"} and {type:\"group\",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.",
         'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',
         'menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.',
         "Selected menu items use selected tokens — never brand fills.",
         "Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.",
+        "Menu item press: neutral softens to text-neutral-tertiary; destructive keeps error-light + text-error-secondary; selected press returns to selected-primary (hover uses selected-strong).",
         "Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone.",
       ],
       example: `<Dropdown role="input" label="Sort" width="hug" options={[{type:"group",label:"Recent"},{value:"a",label:"Option A"},{type:"separator"},{value:"b",label:"Option B"}]} defaultValue="a" />`,
@@ -1389,6 +1397,31 @@ export const cadsManifest: {
         { name: "onAction", type: "() => void" },
         { name: "isDismissible", type: "boolean", default: "true" },
         { name: "onClose", type: "() => void" },
+        {
+          name: "open",
+          type: "boolean",
+          description:
+            "Controlled visibility for the snackbar host. Omit for inline/fixture surface-only render.",
+        },
+        {
+          name: "placement",
+          type: '"topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter" | "bottomRight"',
+          default: '"bottomCenter"',
+          description:
+            "Viewport corner/edge when hosted (MUI Snackbar anchorOrigin).",
+        },
+        {
+          name: "offset",
+          type: "number",
+          default: "64",
+          description: "Distance in px from the pinned viewport edge(s).",
+        },
+        {
+          name: "surfaceOnly",
+          type: "boolean",
+          description:
+            "Render elevated chrome without the snackbar portal. Default when open is omitted.",
+        },
       ],
       variableDependencies: [
         "--background-brand-light",
@@ -1399,10 +1432,10 @@ export const cadsManifest: {
       usageRules: [
         "Figma uses sentiment=primary for brand chrome (not brand).",
         "Action is locked to outlined secondary at small size. Always pass actionLabel.",
-        "Toast is a presentational surface — host apps own queueing / auto-dismiss timing.",
+        "Pass open + placement to host via MUI Snackbar; omit open (or surfaceOnly) for inline/fixture chrome. Host apps still own queueing / auto-dismiss timing.",
         "Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide.",
       ],
-      example: `<Toast sentiment="success" hasAction actionLabel="View">This is a toast.</Toast>`,
+      example: `<Toast open placement="bottomCenter" sentiment="success" hasAction actionLabel="View" onClose={hide}>This is a toast.</Toast>`,
     },
     {
       name: "NotificationBanner",
@@ -1511,6 +1544,65 @@ export const cadsManifest: {
       example: `<Tag color="success" size="medium" label="Passed" />`,
     },
     {
+      name: "IconTooltip",
+      exportName: "IconTooltip",
+      importFrom: "@codeai/cads-react",
+      description:
+        "Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
+      props: [
+        { name: "title", type: "ReactNode", required: true },
+        {
+          name: "iconName",
+          type: "FaIconName | string",
+          default: '"circle-info"',
+          description: "FA icon rendered as the trigger affordance.",
+        },
+        {
+          name: "color",
+          type: '"primary" | "secondary" | "tertiary"',
+          default: '"tertiary"',
+          description:
+            "primary → brand; secondary → neutral-primary; tertiary → neutral-quaternary (muted).",
+        },
+        {
+          name: "size",
+          type: '"large" | "medium" | "small" | "extraSmall"',
+          default: '"medium"',
+          description: "Glyph size on the shared control size scale.",
+        },
+        {
+          name: "placement",
+          type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
+          default: '"top"',
+          description: "MUI placement, passed through to Tooltip.",
+        },
+        { name: "hasCaret", type: "boolean", default: "true" },
+        {
+          name: "aria-label",
+          type: "string",
+          description:
+            "Accessible trigger name. Falls back to title when title is a plain string; required when title is rich content.",
+        },
+      ],
+      variableDependencies: [
+        "--text-brand-primary",
+        "--text-neutral-primary",
+        "--text-neutral-quaternary",
+        "--border-focused-primary",
+        "--background-neutral-primary-inverse",
+        "--text-neutral-primary-inverse",
+        "--radius-sm",
+        "--shadow-md",
+      ],
+      usageRules: [
+        "No hover/press/border chrome on the icon itself — only a required focus-visible ring.",
+        "Composes Tooltip for positioning/caret; does not reimplement tooltip surface.",
+        "No exact Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1 — implemented docs-driven from the Tooltip spec + shared icon color/size conventions (see docs/STATUS.md).",
+        "Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, …) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props).",
+      ],
+      example: `<IconTooltip title="Help text" color="tertiary" placement="top" />`,
+    },
+    {
       name: "Tooltip",
       exportName: "Tooltip",
       importFrom: "@codeai/cads-react",
@@ -1523,7 +1615,12 @@ export const cadsManifest: {
       },
       props: [
         { name: "title", type: "ReactNode", required: true },
-        { name: "children", type: "ReactElement", required: true },
+        {
+          name: "children",
+          type: "ReactElement",
+          description:
+            "Trigger element. Required for anchored mode; omit with surfaceOnly.",
+        },
         {
           name: "placement",
           type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
@@ -1538,6 +1635,12 @@ export const cadsManifest: {
           description:
             "Leading FA icon. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).",
         },
+        {
+          name: "surfaceOnly",
+          type: "boolean",
+          description:
+            "Render bubble (+ caret) inline without Popper / trigger. Used by docs Inspect and static previews.",
+        },
       ],
       variableDependencies: [
         "--background-neutral-primary-inverse",
@@ -1551,6 +1654,7 @@ export const cadsManifest: {
         "Prefer supplementary hints — avoid sole source of critical info.",
         "Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).",
         "Icons render only when iconName is set — there is no separate boolean gate.",
+        "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
         "Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).",
       ],
       example: `<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>`,
@@ -1603,8 +1707,9 @@ export const cadsManifest: {
       usageRules: [
         "Well suited to guided walkthroughs (stepper + Back/Next).",
         "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
+        "caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned).",
       ],
-      example: `<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3" surfaceOnly />`,
+      example: `<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3"><Button>Open</Button></Popover>`,
     },
     {
       name: "Drawer",

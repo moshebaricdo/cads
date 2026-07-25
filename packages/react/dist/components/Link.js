@@ -130,6 +130,7 @@ const Link = forwardRef(
           ref,
           className,
           "aria-disabled": "true",
+          "data-cads-press": "",
           sx: sharedSx,
           ...spanRest,
           children: content
@@ -144,6 +145,7 @@ const Link = forwardRef(
         className,
         href,
         onClick: handleClick,
+        "data-cads-press": "",
         sx: sharedSx,
         ...rest,
         children: content

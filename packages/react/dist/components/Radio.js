@@ -76,6 +76,7 @@ const Radio = forwardRef(
         disabled,
         icon: /* @__PURE__ */ jsx(RadioUncheckedIcon, { box: dims.box }),
         checkedIcon: /* @__PURE__ */ jsx(RadioCheckedIcon, { box: dims.box, dot: dims.dot }),
+        "data-cads-press": "",
         sx: {
           padding: 0,
           margin: 0,

@@ -32,6 +32,7 @@ const Chip = forwardRef(function Chip2({
       focusRipple: false,
       disableRipple: true,
       "aria-pressed": selected,
+      "data-cads-press": "",
       sx: {
         display: "inline-flex",
         alignItems: "center",

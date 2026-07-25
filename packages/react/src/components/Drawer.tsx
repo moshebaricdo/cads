@@ -71,6 +71,7 @@ function DrawerSurface({
       ref={surfaceRef}
       className={className}
       data-cads-component="Drawer"
+      data-cads-surface=""
       role="dialog"
       aria-modal={false}
       sx={{
@@ -89,6 +90,8 @@ function DrawerSurface({
         // Medium elevation cast upward (drawer sits at the bottom edge).
         boxShadow:
           "0 -10px 15px -3px rgb(0 0 0 / 10%), 0 -4px 6px -4px rgb(0 0 0 / 10%)",
+        /* Surface recipe: grow from the bottom edge. */
+        "--cads-surface-origin": "bottom center",
       }}
     >
       <Box

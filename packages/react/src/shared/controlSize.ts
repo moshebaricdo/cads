@@ -239,6 +239,9 @@ export const FOCUS_RING =
 /** Shared color/chrome transition — uses CADS motion variables. */
 export const TRANSITION_COLORS = "var(--transition-colors)";
 
+/** Quieter fade for high-frequency tints (menu hover, soft state changes). */
+export const TRANSITION_FADE = "var(--transition-fade)";
+
 /**
  * Chip size matrix from Figma Chip set (`5881:2187`).
  * Heights match CONTROL_HEIGHT; horizontal padding is slightly tighter than Button.
@@ -945,7 +948,11 @@ export const TAG_SIZE: Record<
 
 /** Toast chrome from Figma Toast (`10587:14942`) — single size, elevated. */
 export const TOAST_CHROME = {
-  width: "18.75rem", // 300
+  /**
+   * Figma symbol width for the default string ("This is a toast.").
+   * Surface layout is hug — this is a reference size, not a hard CSS width.
+   */
+  defaultWidthPx: 300,
   paddingInline: "0.875rem 0.75rem", // 14 / 12
   paddingBlock: "0.75rem", // 12
   gap: "1rem", // 16

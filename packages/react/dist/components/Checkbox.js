@@ -62,6 +62,7 @@ const Checkbox = forwardRef(
         icon: /* @__PURE__ */ jsx(CheckboxGlyph, { size, status: "off" }),
         checkedIcon: /* @__PURE__ */ jsx(CheckboxGlyph, { size, status: "on" }),
         indeterminateIcon: /* @__PURE__ */ jsx(CheckboxGlyph, { size, status: "indeterminate" }),
+        "data-cads-press": "",
         sx: {
           padding: 0,
           margin: 0,

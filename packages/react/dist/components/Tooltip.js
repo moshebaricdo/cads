@@ -2,6 +2,7 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import MuiTooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { FaIcon } from '../icons/FaIcon.js';
+import { useExperimentalMotion, readSurfaceDurationMs } from '../theme/experimentalMotion.js';
 
 const ARROW_SIZE_PX = 6;
 const ARROW_HEIGHT_PX = Math.round(ARROW_SIZE_PX * 0.71);
@@ -70,19 +71,32 @@ function createArrowEdgeModifier(pin) {
     }
   };
 }
-function Tooltip({
-  children,
+function placementToCaretSide(placement) {
+  const value = String(placement);
+  if (value.startsWith("top")) return "bottom";
+  if (value.startsWith("left")) return "right";
+  if (value.startsWith("right")) return "left";
+  return "top";
+}
+function placementToCaretAlign(placement) {
+  const value = String(placement);
+  if (value.endsWith("-start")) return "start";
+  if (value.endsWith("-end")) return "end";
+  return "center";
+}
+function placementToSurfaceOrigin(placement) {
+  const value = String(placement);
+  if (value.startsWith("top")) return "bottom center";
+  if (value.startsWith("bottom")) return "top center";
+  if (value.startsWith("left")) return "center right";
+  if (value.startsWith("right")) return "center left";
+  return "center";
+}
+function TooltipLabel({
   title,
-  hasCaret = true,
-  iconName,
-  placement = "bottom",
-  slotProps,
-  ...rest
+  iconName
 }) {
-  const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
-  const edgePin = arrowEdgePin(placement ?? "bottom");
-  const resolvedIcon = iconName ? iconName || "face-smile" : null;
-  const content = /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxs(
     Box,
     {
       component: "span",
@@ -97,7 +111,7 @@ function Tooltip({
         textAlign: "left"
       },
       children: [
-        resolvedIcon ? /* @__PURE__ */ jsx(
+        iconName ? /* @__PURE__ */ jsx(
           Box,
           {
             component: "span",
@@ -117,7 +131,7 @@ function Tooltip({
             children: /* @__PURE__ */ jsx(
               FaIcon,
               {
-                name: resolvedIcon,
+                name: iconName,
                 fontSize: "14px",
                 style: {
                   width: 14,
@@ -155,10 +169,144 @@ function Tooltip({
       ]
     }
   );
+}
+function TooltipCaret({
+  side,
+  align
+}) {
+  const horizontal = side === "top" || side === "bottom";
+  const justify = align === "start" ? "flex-start" : align === "end" ? "flex-end" : "center";
+  const alignItems = align === "start" ? "flex-start" : align === "end" ? "flex-end" : "center";
+  return /* @__PURE__ */ jsx(
+    Box,
+    {
+      "aria-hidden": true,
+      sx: {
+        display: "flex",
+        flexShrink: 0,
+        zIndex: 1,
+        ...horizontal ? {
+          width: "100%",
+          justifyContent: justify,
+          ...align === "start" ? { pl: `${ARROW_EDGE_INSET_PX}px` } : align === "end" ? { pr: `${ARROW_EDGE_INSET_PX}px` } : null,
+          ...side === "top" ? { mb: `-${ARROW_HEIGHT_PX}px` } : { mt: `-${ARROW_HEIGHT_PX}px` }
+        } : {
+          alignSelf: "stretch",
+          alignItems,
+          ...align === "start" ? { pt: `${ARROW_EDGE_INSET_PX}px` } : align === "end" ? { pb: `${ARROW_EDGE_INSET_PX}px` } : null,
+          ...side === "left" ? { mr: `-${ARROW_HEIGHT_PX}px` } : { ml: `-${ARROW_HEIGHT_PX}px` }
+        }
+      },
+      children: /* @__PURE__ */ jsx(
+        Box,
+        {
+          sx: {
+            width: ARROW_SIZE_PX,
+            height: ARROW_SIZE_PX,
+            backgroundColor: "var(--background-neutral-primary-inverse)",
+            transform: "rotate(45deg)",
+            flexShrink: 0
+          }
+        }
+      )
+    }
+  );
+}
+const bubbleSx = {
+  backgroundColor: "var(--background-neutral-primary-inverse)",
+  color: "var(--text-neutral-primary-inverse)",
+  borderRadius: "var(--radius-sm)",
+  fontFamily: "var(--font-body)",
+  fontSize: "var(--text-body-sm)",
+  lineHeight: "var(--leading-body-sm)",
+  padding: "4px 12px",
+  // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
+  maxWidth: 256,
+  minWidth: 64,
+  width: "max-content",
+  boxSizing: "border-box",
+  boxShadow: "var(--shadow-md)",
+  textAlign: "left",
+  whiteSpace: "normal"
+};
+function TooltipSurface({
+  title,
+  hasCaret,
+  iconName,
+  placement
+}) {
+  const side = placementToCaretSide(placement);
+  const align = placementToCaretAlign(placement);
+  const horizontal = side === "top" || side === "bottom";
+  const bubble = /* @__PURE__ */ jsx(
+    Box,
+    {
+      component: "span",
+      className: "cads-tooltip-surface",
+      sx: {
+        ...bubbleSx,
+        display: "inline-block",
+        position: "relative",
+        zIndex: 0,
+        /* Grow from the edge nearest the trigger. */
+        "--cads-surface-origin": placementToSurfaceOrigin(placement)
+      },
+      children: /* @__PURE__ */ jsx(TooltipLabel, { title, iconName })
+    }
+  );
+  return /* @__PURE__ */ jsxs(
+    Box,
+    {
+      "data-cads-component": "Tooltip",
+      role: "tooltip",
+      sx: {
+        display: "inline-flex",
+        flexDirection: horizontal ? "column" : "row",
+        alignItems: "center",
+        maxWidth: 256
+      },
+      children: [
+        (side === "top" || side === "left") && hasCaret ? /* @__PURE__ */ jsx(TooltipCaret, { side, align }) : null,
+        bubble,
+        (side === "bottom" || side === "right") && hasCaret ? /* @__PURE__ */ jsx(TooltipCaret, { side, align }) : null
+      ]
+    }
+  );
+}
+function Tooltip({
+  children,
+  title,
+  hasCaret = true,
+  iconName,
+  placement = "bottom",
+  surfaceOnly = false,
+  slotProps,
+  enterDelay,
+  leaveDelay,
+  ...rest
+}) {
+  const offsetDistance = hasCaret ? 4 + ARROW_HEIGHT_PX : 6;
+  const edgePin = arrowEdgePin(placement ?? "bottom");
+  const resolvedIcon = iconName ? iconName || "face-smile" : null;
+  const experimentalMotion = useExperimentalMotion();
+  const surfaceMs = readSurfaceDurationMs();
+  if (surfaceOnly) {
+    return /* @__PURE__ */ jsx(
+      TooltipSurface,
+      {
+        title,
+        hasCaret,
+        iconName: resolvedIcon,
+        placement: placement ?? "bottom"
+      }
+    );
+  }
+  const content = /* @__PURE__ */ jsx(TooltipLabel, { title, iconName: resolvedIcon });
   const {
     popper: popperSlot,
     tooltip: tooltipSlot,
     arrow: arrowSlot,
+    transition: transitionSlot,
     ...otherSlots
   } = slotProps ?? {};
   const existingPopperOptions = popperSlot && typeof popperSlot === "object" && "popperOptions" in popperSlot && popperSlot.popperOptions && typeof popperSlot.popperOptions === "object" ? popperSlot.popperOptions : null;
@@ -170,8 +318,14 @@ function Tooltip({
       title: content,
       arrow: hasCaret,
       placement,
+      enterDelay: enterDelay ?? (experimentalMotion ? 300 : void 0),
+      leaveDelay: leaveDelay ?? (experimentalMotion ? 0 : void 0),
       slotProps: {
         ...otherSlots,
+        transition: {
+          ...transitionSlot,
+          ...experimentalMotion ? { timeout: { enter: surfaceMs, exit: surfaceMs } } : null
+        },
         popper: {
           ...popperSlot,
           popperOptions: {
@@ -190,24 +344,19 @@ function Tooltip({
         },
         tooltip: {
           ...tooltipSlot,
+          // MUI Tooltip slot typings omit data-* attrs; class drives Surface recipe.
+          className: [
+            "cads-tooltip-surface",
+            tooltipSlot && typeof tooltipSlot === "object" && "className" in tooltipSlot && tooltipSlot.className ? String(tooltipSlot.className) : ""
+          ].filter(Boolean).join(" "),
           sx: {
-            backgroundColor: "var(--background-neutral-primary-inverse)",
-            color: "var(--text-neutral-primary-inverse)",
-            borderRadius: "var(--radius-sm)",
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body-sm)",
-            lineHeight: "var(--leading-body-sm)",
-            padding: "4px 12px",
-            // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
-            maxWidth: 256,
-            minWidth: 64,
-            width: "max-content",
-            boxSizing: "border-box",
-            boxShadow: "var(--shadow-md)",
+            ...bubbleSx,
             // Kill MUI’s placement margins — gap is controlled via offset above.
             margin: "0 !important",
-            textAlign: "left",
-            whiteSpace: "normal",
+            /* Grow from the edge nearest the trigger. */
+            "--cads-surface-origin": placementToSurfaceOrigin(
+              placement ?? "bottom"
+            ),
             ...tooltipSlot && typeof tooltipSlot === "object" && "sx" in tooltipSlot && tooltipSlot.sx && typeof tooltipSlot.sx === "object" ? tooltipSlot.sx : null
           }
         },

@@ -3,8 +3,10 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { forwardRef, useId, useState } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
 import { TOGGLE_SIZE, FOCUS_RING, TRANSITION_COLORS } from '../shared/controlSize.js';
+import { useExperimentalMotion } from '../theme/experimentalMotion.js';
 
 const HANDLE_MOTION = "left var(--duration-medium) var(--easing-emphasized), background-color var(--duration-short) var(--easing-standard)";
+const HANDLE_MOTION_EXPERIMENTAL = "var(--transition-indicator)";
 const ICON_MOTION = "opacity var(--duration-short) var(--easing-standard)";
 const Toggle = forwardRef(
   function Toggle2({
@@ -31,6 +33,8 @@ const Toggle = forwardRef(
     const controlled = checked !== void 0;
     const [uncontrolled, setUncontrolled] = useState(defaultChecked);
     const isOn = controlled ? Boolean(checked) : uncontrolled;
+    const experimentalMotion = useExperimentalMotion();
+    const handleMotion = experimentalMotion ? HANDLE_MOTION_EXPERIMENTAL : HANDLE_MOTION;
     const handleClick = (event) => {
       onClick?.(event);
       if (event.defaultPrevented || disabled) return;
@@ -56,6 +60,7 @@ const Toggle = forwardRef(
         onClick: handleClick,
         disableRipple: true,
         focusRipple: false,
+        "data-cads-toggle": "",
         sx: {
           boxSizing: "border-box",
           position: "relative",
@@ -141,6 +146,7 @@ const Toggle = forwardRef(
             "span",
             {
               "aria-hidden": true,
+              "data-cads-indicator": "",
               style: {
                 position: "absolute",
                 top: dims.pad,
@@ -150,7 +156,7 @@ const Toggle = forwardRef(
                 height: dims.handle,
                 borderRadius: "var(--radius-round)",
                 backgroundColor: handleBg,
-                transition: HANDLE_MOTION,
+                transition: handleMotion,
                 pointerEvents: "none"
               }
             }

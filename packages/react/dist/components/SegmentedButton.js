@@ -201,10 +201,13 @@ const SegmentedButton = forwardRef(
                   backgroundColor: selected ? "var(--background-selected-primary)" : "var(--background-neutral-tertiary)",
                   borderColor: selected ? "var(--border-selected-strong)" : unselectedBorder
                 },
-                "&:active": {
+                /* Unselected press: tertiary fill + tertiary label/icon (Figma 8000:4771).
+                   Selected press: strong fill/border; label stays selected-primary. */
+                '&:active, [data-cads-force-pseudo="press"] &': {
                   zIndex: 2,
                   backgroundColor: selected ? "var(--background-selected-strong)" : "var(--background-neutral-tertiary)",
-                  borderColor: selected ? "var(--border-selected-strong)" : unselectedBorder
+                  borderColor: selected ? "var(--border-selected-strong)" : unselectedBorder,
+                  color: selected ? "var(--text-selected-primary)" : "var(--text-neutral-tertiary)"
                 },
                 "&.Mui-focusVisible": {
                   zIndex: 3,

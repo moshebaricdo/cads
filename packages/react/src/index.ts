@@ -1,5 +1,6 @@
 export { CadsProvider } from "./theme/CadsProvider";
 export type { CadsProviderProps } from "./theme/CadsProvider";
+export { useExperimentalMotion } from "./theme/experimentalMotion";
 
 export { Button } from "./components/Button";
 export type {
@@ -152,7 +153,11 @@ export { Alert } from "./components/Alert";
 export type { AlertProps, AlertSize, AlertSentiment } from "./components/Alert";
 
 export { Toast } from "./components/Toast";
-export type { ToastProps, ToastSentiment } from "./components/Toast";
+export type {
+  ToastProps,
+  ToastSentiment,
+  ToastPlacement,
+} from "./components/Toast";
 
 export { NotificationBanner } from "./components/NotificationBanner";
 export type {
@@ -166,6 +171,13 @@ export type { LinkProps, LinkSize, LinkType } from "./components/Link";
 
 export { Tooltip } from "./components/Tooltip";
 export type { TooltipProps } from "./components/Tooltip";
+
+export { IconTooltip } from "./components/IconTooltip";
+export type {
+  IconTooltipProps,
+  IconTooltipColor,
+  IconTooltipSize,
+} from "./components/IconTooltip";
 
 export { Popover } from "./components/Popover";
 export type {

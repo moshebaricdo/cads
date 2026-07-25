@@ -185,6 +185,7 @@ export const Link = forwardRef<HTMLAnchorElement | HTMLSpanElement, LinkProps>(
           ref={ref}
           className={className}
           aria-disabled="true"
+          data-cads-press=""
           sx={sharedSx}
           {...spanRest}
         >
@@ -200,6 +201,7 @@ export const Link = forwardRef<HTMLAnchorElement | HTMLSpanElement, LinkProps>(
         className={className}
         href={href}
         onClick={handleClick}
+        data-cads-press=""
         sx={sharedSx}
         {...rest}
       >

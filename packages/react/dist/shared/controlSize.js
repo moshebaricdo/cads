@@ -246,6 +246,7 @@ const ICON_TOGGLE_SIZE = {
 };
 const FOCUS_RING = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)";
 const TRANSITION_COLORS = "var(--transition-colors)";
+const TRANSITION_FADE = "var(--transition-fade)";
 const CHIP_SIZE = {
   large: {
     height: CONTROL_HEIGHT.large,
@@ -991,8 +992,11 @@ const TAG_SIZE = {
   }
 };
 const TOAST_CHROME = {
-  width: "18.75rem",
-  // 300
+  /**
+   * Figma symbol width for the default string ("This is a toast.").
+   * Surface layout is hug — this is a reference size, not a hard CSS width.
+   */
+  defaultWidthPx: 300,
   paddingInline: "0.875rem 0.75rem",
   // 14 / 12
   paddingBlock: "0.75rem",
@@ -1037,6 +1041,6 @@ const NOTIFICATION_BANNER_CHROME = {
   // shape/md — 8px
 };
 
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };
+export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS, TRANSITION_FADE };
 //# sourceMappingURL=controlSize.js.map
 //# sourceMappingURL=controlSize.js.map

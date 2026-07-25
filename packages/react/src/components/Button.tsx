@@ -143,18 +143,18 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
   switch (color) {
     case "primary":
       return {
-        // Contained primary → brand fill
+        // Contained primary → brand fill; hover+press share brand-strong
         filledBg: "var(--background-brand-primary)",
         filledBgHover: "var(--background-brand-strong)",
-        filledBgPressed: "var(--background-brand-primary)",
+        filledBgPressed: "var(--background-brand-strong)",
         filledFg: "var(--text-neutral-white-fixed)",
         filledDisabledBg: "var(--background-disabled-brand)",
         filledDisabledFg: "var(--text-disabled-neutral-inverse)",
-        // Outlined primary → solid border
+        // Outlined primary → solid border; hover+press share tertiary fill
         outlinedBorder: "var(--border-neutral-solid)",
         outlinedFg: "var(--text-neutral-primary)",
         outlinedHoverBg: "var(--background-neutral-tertiary)",
-        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedPressedBg: "var(--background-neutral-tertiary)",
         outlinedDisabledBorder: "var(--border-disabled-neutral)",
         outlinedDisabledFg: "var(--text-disabled-neutral)",
         textFg: "var(--text-brand-primary)",
@@ -167,7 +167,7 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
       return {
         filledBg: "var(--background-error-primary)",
         filledBgHover: "var(--background-error-strong)",
-        filledBgPressed: "var(--background-error-primary)",
+        filledBgPressed: "var(--background-error-strong)",
         filledFg: "var(--text-neutral-white-fixed)",
         filledDisabledBg: "var(--background-disabled-error)",
         filledDisabledFg: "var(--text-disabled-neutral-inverse)",
@@ -188,7 +188,7 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
       return {
         filledBg: "var(--background-accent-orange-primary)",
         filledBgHover: "var(--background-accent-orange-strong)",
-        filledBgPressed: "var(--background-accent-orange-primary)",
+        filledBgPressed: "var(--background-accent-orange-strong)",
         filledFg: "var(--text-neutral-white-fixed)",
         filledDisabledBg: "var(--background-disabled-orange)",
         filledDisabledFg: "var(--text-disabled-neutral-inverse)",
@@ -216,7 +216,7 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
         outlinedBorder: "var(--border-neutral-secondary)",
         outlinedFg: "var(--text-neutral-quaternary)",
         outlinedHoverBg: "var(--background-neutral-quaternary)",
-        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedPressedBg: "var(--background-neutral-quaternary)",
         outlinedDisabledBorder: "var(--border-disabled-neutral)",
         outlinedDisabledFg: "var(--text-disabled-neutral)",
         textFg: "var(--text-neutral-quaternary)",
@@ -228,7 +228,7 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
     case "secondary":
     default:
       return {
-        // Contained secondary → primary-inverse fill
+        // Contained secondary: hover deepens to octonary; press returns to inverse
         filledBg: "var(--background-neutral-primary-inverse)",
         filledBgHover: "var(--background-neutral-octonary)",
         filledBgPressed: "var(--background-neutral-primary-inverse)",
@@ -238,7 +238,7 @@ function colorRecipe(color: ResolvedButtonColor): ColorRecipe {
         outlinedBorder: "var(--border-neutral-secondary)",
         outlinedFg: "var(--text-neutral-primary)",
         outlinedHoverBg: "var(--background-neutral-tertiary)",
-        outlinedPressedBg: "var(--background-neutral-primary)",
+        outlinedPressedBg: "var(--background-neutral-tertiary)",
         outlinedDisabledBorder: "var(--border-disabled-neutral)",
         outlinedDisabledFg: "var(--text-disabled-neutral)",
         textFg: "var(--text-neutral-primary)",
@@ -271,8 +271,12 @@ function variantStyles(
       backgroundColor: c.filledBg,
       color: c.filledFg,
       border: "1px solid transparent",
-      "&:hover": { backgroundColor: c.filledBgHover },
-      "&:active": { backgroundColor: c.filledBgPressed },
+      '&:hover, [data-cads-force-pseudo="hover"] &': {
+        backgroundColor: c.filledBgHover,
+      },
+      '&:active, [data-cads-force-pseudo="press"] &': {
+        backgroundColor: c.filledBgPressed,
+      },
       "&.Mui-disabled": {
         backgroundColor: c.filledDisabledBg,
         color: c.filledDisabledFg,
@@ -290,8 +294,10 @@ function variantStyles(
       backgroundColor: "var(--background-neutral-primary)",
       color: c.outlinedFg,
       border: `1px solid ${c.outlinedBorder}`,
-      "&:hover": { backgroundColor: c.outlinedHoverBg },
-      "&:active": {
+      '&:hover, [data-cads-force-pseudo="hover"] &': {
+        backgroundColor: c.outlinedHoverBg,
+      },
+      '&:active, [data-cads-force-pseudo="press"] &': {
         backgroundColor: c.outlinedPressedBg,
         color: c.outlinedFg,
       },
@@ -308,8 +314,10 @@ function variantStyles(
     backgroundColor: "transparent",
     color: c.textFg,
     border: "1px solid transparent",
-    "&:hover": { backgroundColor: c.textHoverBg },
-    "&:active": {
+    '&:hover, [data-cads-force-pseudo="hover"] &': {
+      backgroundColor: c.textHoverBg,
+    },
+    '&:active, [data-cads-force-pseudo="press"] &': {
       backgroundColor: c.textPressedBg,
       color: c.textFgPressed,
     },
@@ -366,6 +374,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={showLoading ? undefined : onClick}
         startIcon={!iconOnly && startIcon ? startIcon : undefined}
         endIcon={!iconOnly && endIcon ? endIcon : undefined}
+        data-cads-component="Button"
+        data-cads-press=""
         sx={{
           "@keyframes cads-button-spin": {
             "100%": { transform: "rotate(360deg)" },

@@ -100,14 +100,15 @@ function colorRecipe(color: IconToggleColor): ColorRecipe {
       return {
         on: "var(--text-success-primary-fixed)",
         hoverIcon: "var(--text-success-primary-fixed)",
-        pressIcon: "var(--text-success-secondary)",
+        // Figma press keeps primary-fixed (same as hover), not *-secondary.
+        pressIcon: "var(--text-success-primary-fixed)",
         surface: "var(--background-success-light)",
       };
     case "error":
       return {
         on: "var(--text-error-primary-fixed)",
         hoverIcon: "var(--text-error-primary-fixed)",
-        pressIcon: "var(--text-error-secondary)",
+        pressIcon: "var(--text-error-primary-fixed)",
         surface: "var(--background-error-light)",
       };
     case "brand":
@@ -115,7 +116,7 @@ function colorRecipe(color: IconToggleColor): ColorRecipe {
       return {
         on: "var(--text-brand-primary-fixed)",
         hoverIcon: "var(--text-brand-primary-fixed)",
-        pressIcon: "var(--text-brand-secondary)",
+        pressIcon: "var(--text-brand-primary-fixed)",
         surface: "var(--background-brand-light)",
       };
   }
@@ -181,7 +182,10 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     const isOn = controlled ? Boolean(pressed) : uncontrolled;
     const dims = ICON_TOGGLE_SIZE[size];
     const recipe = colorRecipe(color);
-    const offIcon = "var(--text-neutral-quaternary)";
+    const offIcon =
+      color === "primary"
+        ? "var(--text-neutral-primary)"
+        : "var(--text-neutral-quaternary)";
     const disabledIcon = "var(--text-disabled-neutral)";
 
     return (
@@ -191,6 +195,7 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
         disabled={disabled}
         aria-pressed={isOn}
         aria-label={ariaLabel}
+        data-cads-press=""
         onClick={(e) => {
           onClick?.(e);
           if (!e.defaultPrevented) {

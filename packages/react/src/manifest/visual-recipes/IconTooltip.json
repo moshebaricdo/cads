@@ -1,0 +1,255 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "IconTooltip",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": null,
+    "componentKey": null,
+    "relatedNodeIds": ["1990:7125"],
+    "retrievedAt": "2026-07-25",
+    "designContextCaptured": false
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-07-25: search_design_system + Tooltip (1990:7125) get_metadata found no Icon Tooltip / info-icon component set in DGekOeToRVifvFAhfqpeC1 — implemented docs-driven (see figmaComponentPropsSnapshot.json notes).",
+      "2026-07-25: color axis expanded to primary|secondary|tertiary; catalog section moved to Messaging."
+    ]
+  },
+  "axes": {
+    "public": {
+      "color": ["primary", "secondary", "tertiary"],
+      "size": ["large", "medium", "small", "extraSmall"],
+      "placement": [
+        "bottom-start", "bottom", "bottom-end",
+        "top-start", "top", "top-end",
+        "left-start", "left", "left-end",
+        "right-start", "right", "right-end"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": { "iconPx": "18" },
+      "medium": { "iconPx": "16" },
+      "small": { "iconPx": "14" },
+      "extraSmall": { "iconPx": "12" }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "0",
+      "borderWidth": "0",
+      "radius": "var(--radius-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "",
+      "size": "",
+      "weight": "",
+      "lineHeight": ""
+    },
+    "icon": {
+      "family": "solid",
+      "size": "16"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "color": "primary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "icon": "var(--text-brand-primary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": null,
+      "notes": ["No Figma variant — docs-driven color role."]
+    },
+    {
+      "when": {
+        "color": "secondary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "icon": "var(--text-neutral-primary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": null,
+      "notes": ["No Figma variant — docs-driven color role."]
+    },
+    {
+      "when": {
+        "color": "tertiary",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "icon": "var(--text-neutral-quaternary)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": null,
+      "notes": ["No Figma variant — docs-driven color role."]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["size", "color", "state", "mode"],
+    "cases": [
+      {
+        "id": "icon-tooltip-large-primary-default-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "size": "large", "color": "primary", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "18" },
+        "expectedVariables": ["--text-brand-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-medium-secondary-default-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "size": "medium", "color": "secondary", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "16" },
+        "expectedVariables": ["--text-neutral-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-medium-tertiary-default-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "size": "medium", "color": "tertiary", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "16" },
+        "expectedVariables": ["--text-neutral-quaternary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-small-primary-default-dark",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "dark",
+        "props": { "size": "small", "color": "primary", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "14" },
+        "expectedVariables": ["--text-brand-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-xs-tertiary-default-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "size": "extraSmall", "color": "tertiary", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "12" },
+        "expectedVariables": ["--text-neutral-quaternary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-medium-tertiary-focus-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "size": "medium", "color": "tertiary", "title": "Help text" },
+        "state": "focus",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--border-focused-primary"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": [],
+        "notes": ["No hover/press chrome by design — only default and focus states apply."]
+      },
+      {
+        "id": "icon-tooltip-open-top-primary-light",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "light",
+        "props": { "color": "primary", "placement": "top", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 240, "height": 140, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": [],
+        "notes": ["Bubble/caret reuse Tooltip's committed recipe (see Tooltip.json); this case only verifies composition."]
+      },
+      {
+        "id": "icon-tooltip-open-bottom-tertiary-dark",
+        "figmaNodeId": null,
+        "figmaVariant": null,
+        "mode": "dark",
+        "props": { "color": "tertiary", "placement": "bottom", "title": "Help text" },
+        "state": "default",
+        "viewport": { "width": 240, "height": 140, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pass",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "description": "No Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1.",
+      "reason": "Confirmed via search_design_system + Tooltip (1990:7125) metadata inspection; implemented docs-driven per task instructions.",
+      "owner": "task instructions (2026-07-25)",
+      "affectedCases": ["all"]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "non-strict pnpm figma:audit-props: IconTooltip entry 0 findings",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": []
+  }
+}

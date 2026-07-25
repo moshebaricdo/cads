@@ -5,6 +5,11 @@ import { MessagingSentiment } from '../shared/messagingSentiment.js';
 
 /** Figma Toast `sentiment` (uses `primary` for brand chrome). */
 type ToastSentiment = Exclude<MessagingSentiment, "brand" | "orange">;
+/**
+ * Viewport corner / edge for the snackbar host (MUI `anchorOrigin`).
+ * @default "bottomCenter"
+ */
+type ToastPlacement = "topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter" | "bottomRight";
 interface ToastProps {
     /**
      * Figma `sentiment`.
@@ -40,13 +45,36 @@ interface ToastProps {
      */
     isDismissible?: boolean;
     onClose?: () => void;
+    /**
+     * Controlled visibility for the snackbar host.
+     * When omitted, Toast renders as an inline surface (fixtures / static previews).
+     */
+    open?: boolean;
+    /**
+     * Viewport placement when hosted in the snackbar portal.
+     * @default "bottomCenter"
+     */
+    placement?: ToastPlacement;
+    /**
+     * Distance in px from the viewport edge(s) the toast is pinned to.
+     * @default 64
+     */
+    offset?: number;
+    /**
+     * Render only the elevated surface (no snackbar portal). Fixtures use this;
+     * also the default when `open` is omitted.
+     */
+    surfaceOnly?: boolean;
     className?: string;
     role?: string;
 }
 /**
  * CADS Toast — temporary elevated feedback notification.
  * Spec: Figma Toast `10587:14942` / key `29c36f3d7ec051b81e7dc42a724d9097a680f2ee`.
+ *
+ * Presentational when `open` is omitted (fixtures). Pass `open` to host via
+ * MUI Snackbar with viewport `placement` + `offset`.
  */
 declare const Toast: react.ForwardRefExoticComponent<ToastProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Toast, type ToastProps, type ToastSentiment };
+export { Toast, type ToastPlacement, type ToastProps, type ToastSentiment };

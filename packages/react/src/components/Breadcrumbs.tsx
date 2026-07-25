@@ -396,14 +396,19 @@ function BreadcrumbLink({
 
   if (item.href != null) {
     return (
-      <a {...shared} href={item.href} onClick={item.onClick}>
+      <a {...shared} href={item.href} onClick={item.onClick} data-cads-press="">
         {content}
       </a>
     );
   }
 
   return (
-    <button type="button" {...shared} onClick={item.onClick}>
+    <button
+      type="button"
+      {...shared}
+      onClick={item.onClick}
+      data-cads-press=""
+    >
       {content}
     </button>
   );
@@ -569,6 +574,7 @@ function BreadcrumbOverflow({
           aria-expanded={open}
           aria-controls={open ? menuId : undefined}
           data-cads-breadcrumb-overflow=""
+          data-cads-press=""
           onClick={() => {
             setOpen((v) => {
               const next = !v;
@@ -592,6 +598,7 @@ function BreadcrumbOverflow({
             role="menu"
             aria-labelledby={triggerId}
             data-cads-breadcrumb-overflow-menu=""
+            data-cads-surface=""
             elevation={0}
             sx={{
               mt: 0,
@@ -602,6 +609,7 @@ function BreadcrumbOverflow({
               overflow: "hidden",
               minWidth: 120,
               py: "4px",
+              "--cads-surface-origin": "top left",
             }}
           >
             {items.map(({ item, index }) => {

@@ -3,10 +3,13 @@ import { ReactNode, ReactElement } from 'react';
 import { TooltipProps as TooltipProps$1 } from '@mui/material/Tooltip';
 import { FaIconName } from '../icons/faProRegularCodepoints.js';
 
-interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow"> {
+interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow" | "children"> {
     /** Tooltip label (Figma `text`). */
     title: ReactNode;
-    children: ReactElement;
+    /**
+     * Trigger element. Required for anchored mode; omit with `surfaceOnly`.
+     */
+    children?: ReactElement;
     /**
      * Show caret (Figma `hasCaret`). Maps to MUI `arrow`.
      * @default true
@@ -23,6 +26,11 @@ interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow"> {
      * @default "bottom"
      */
     placement?: TooltipProps$1["placement"];
+    /**
+     * Render bubble (+ caret) inline without Popper / trigger.
+     * Used by docs Inspect and static fixtures.
+     */
+    surfaceOnly?: boolean;
 }
 /**
  * CADS Tooltip — inverse surface with optional caret and start icon.
@@ -30,7 +38,8 @@ interface TooltipProps extends Omit<TooltipProps$1, "title" | "arrow"> {
  *
  * Accepts the full MUI Tooltip prop surface (except `title` shape and `arrow`,
  * which are driven by CADS `title` / `hasCaret`). Position with MUI `placement`.
+ * Pass `surfaceOnly` for static previews (no trigger / portal).
  */
-declare function Tooltip({ children, title, hasCaret, iconName, placement, slotProps, ...rest }: TooltipProps): react.JSX.Element;
+declare function Tooltip({ children, title, hasCaret, iconName, placement, surfaceOnly, slotProps, enterDelay, leaveDelay, ...rest }: TooltipProps): react.JSX.Element;
 
 export { Tooltip, type TooltipProps };

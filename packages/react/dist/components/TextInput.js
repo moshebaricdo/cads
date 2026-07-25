@@ -150,15 +150,19 @@ const INTERACTIVE_STYLES = `
 .${SHELL_CLASS}[data-disabled="true"] .${CONTROL_CLASS}::placeholder {
   color: var(--text-disabled-neutral);
 }
-.${SHELL_CLASS}:hover:not([data-disabled="true"]):not([data-readonly="true"]) {
+/* Hover/press only when not focused \u2014 focused fields stay white (no flicker). */
+.${SHELL_CLASS}:hover:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]),
+[data-cads-force-pseudo="hover"] .${SHELL_CLASS}:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]) {
   background-color: var(--background-neutral-secondary) !important;
 }
 .${SHELL_CLASS}:focus-within:not([data-disabled="true"]) {
   box-shadow: ${FOCUS_RING};
   background-color: var(--background-neutral-primary) !important;
 }
-.${SHELL_CLASS}:active:not([data-disabled="true"]):not([data-readonly="true"]) {
-  background-color: var(--background-neutral-primary) !important;
+/* Figma building-block state=press \u2014 secondary fill while unfocused only. */
+.${SHELL_CLASS}:active:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]),
+[data-cads-force-pseudo="press"] .${SHELL_CLASS}:not(:focus-within):not([data-disabled="true"]):not([data-readonly="true"]) {
+  background-color: var(--background-neutral-secondary) !important;
 }
 .${SHELL_CLASS} .${CONTROL_CLASS} {
   cursor: inherit;

@@ -11,6 +11,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
+import { useSurfacePresence } from "../theme/experimentalMotion";
 import { Button } from "./Button";
 import { CloseIconButton } from "./CloseIconButton";
 
@@ -102,6 +103,13 @@ export interface PopoverProps {
 type CaretSide = "top" | "bottom" | "left" | "right";
 type CaretAlign = "start" | "center" | "end";
 
+/** Diamond edge length; -6px seam overlap leaves ~6px tip past the card. */
+const CARET_SIZE_PX = 12;
+const CARET_TIP_PX = 6;
+/** Tip clearance from trigger (matches Tooltip); no-caret gap is a hair larger. */
+const POPOVER_OFFSET_WITH_CARET_PX = 4 + CARET_TIP_PX;
+const POPOVER_OFFSET_NO_CARET_PX = 8;
+
 function parseCaret(placement: PopoverCaretPlacement): {
   side: CaretSide;
   align: CaretAlign;
@@ -142,6 +150,70 @@ function parseCaret(placement: PopoverCaretPlacement): {
   return { side: "right", align };
 }
 
+/**
+ * Figma `caretPlacement` names the caret edge on the card (e.g. bottomLeft =
+ * caret on the card’s bottom, toward the start). Invert that into MUI Popper
+ * placement so the caret stays pointed at the trigger.
+ */
+function caretPlacementToPopper(
+  placement: PopoverCaretPlacement,
+):
+  | "top"
+  | "top-start"
+  | "top-end"
+  | "bottom"
+  | "bottom-start"
+  | "bottom-end"
+  | "left"
+  | "left-start"
+  | "left-end"
+  | "right"
+  | "right-start"
+  | "right-end" {
+  const { side, align } = parseCaret(placement);
+  // Caret on the card’s bottom → card sits above the trigger → Popper "top".
+  const popperSide =
+    side === "bottom"
+      ? "top"
+      : side === "top"
+        ? "bottom"
+        : side === "left"
+          ? "right"
+          : "left";
+  if (align === "center") return popperSide;
+  return `${popperSide}-${align}` as
+    | "top-start"
+    | "top-end"
+    | "bottom-start"
+    | "bottom-end"
+    | "left-start"
+    | "left-end"
+    | "right-start"
+    | "right-end";
+}
+
+/** Surface enter grows from the edge/corner nearest the trigger. */
+function caretPlacementToSurfaceOrigin(placement: PopoverCaretPlacement): string {
+  const { side, align } = parseCaret(placement);
+  const edge =
+    side === "bottom"
+      ? "bottom"
+      : side === "top"
+        ? "top"
+        : side === "left"
+          ? "left"
+          : "right";
+  if (align === "center") {
+    return side === "left" || side === "right"
+      ? `center ${edge}`
+      : `${edge} center`;
+  }
+  if (side === "bottom" || side === "top") {
+    return `${edge} ${align === "start" ? "left" : "right"}`;
+  }
+  return `${align === "start" ? "top" : "bottom"} ${edge}`;
+}
+
 function Caret({
   side,
   align,
@@ -179,8 +251,8 @@ function Caret({
     >
       <Box
         sx={{
-          width: 12,
-          height: 12,
+          width: CARET_SIZE_PX,
+          height: CARET_SIZE_PX,
           backgroundColor: "var(--background-neutral-primary)",
           borderRight: "1px solid var(--border-neutral-primary)",
           borderBottom: "1px solid var(--border-neutral-primary)",
@@ -194,12 +266,12 @@ function Caret({
                   : "rotate(-45deg)",
           margin:
             side === "bottom"
-              ? "-6px 0 0"
+              ? `-${CARET_TIP_PX}px 0 0`
               : side === "top"
-                ? "0 0 -6px"
+                ? `0 0 -${CARET_TIP_PX}px`
                 : side === "left"
-                  ? "0 -6px 0 0"
-                  : "0 0 0 -6px",
+                  ? `0 -${CARET_TIP_PX}px 0 0`
+                  : `0 0 0 -${CARET_TIP_PX}px`,
         }}
       />
     </Box>
@@ -245,6 +317,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const controlled = openProp !== undefined;
     const open = controlled ? Boolean(openProp) : uncontrolledOpen;
+    const { mounted: surfaceMounted, exiting: surfaceExiting } =
+      useSurfacePresence(open);
 
     const trigger =
       isValidElement(children) && children.type !== undefined
@@ -429,8 +503,14 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
       </Box>
     );
 
+    // Surface on the card+caret unit so enter/exit scales and fades together
+    // (caret used to sit outside data-cads-surface and pop off after the card).
     const withCaret = (
       <Box
+        data-cads-surface=""
+        {...(surfaceExiting
+          ? { "data-cads-surface-state": "exit" }
+          : {})}
         sx={{
           display: "inline-flex",
           flexDirection:
@@ -438,6 +518,9 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
           alignItems: "center",
           maxWidth: 500,
           minWidth: 300,
+          /* Grow from the trigger-aligned edge/corner. */
+          "--cads-surface-origin":
+            caretPlacementToSurfaceOrigin(caretPlacement),
         }}
       >
         {(side === "bottom" || side === "right") && card}
@@ -466,20 +549,29 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <>
         {triggerEl}
         <Popper
-          open={open}
+          open={surfaceMounted}
           anchorEl={anchorEl}
-          placement={
-            side === "bottom"
-              ? "top"
-              : side === "top"
-                ? "bottom"
-                : side === "left"
-                  ? "right"
-                  : "left"
-          }
+          placement={caretPlacementToPopper(caretPlacement)}
           style={{ zIndex: 1400 }}
+          modifiers={[
+            {
+              name: "offset",
+              options: {
+                offset: [
+                  0,
+                  hasCaret
+                    ? POPOVER_OFFSET_WITH_CARET_PX
+                    : POPOVER_OFFSET_NO_CARET_PX,
+                ],
+              },
+            },
+          ]}
         >
-          <ClickAwayListener onClickAway={() => setOpen(false)}>
+          <ClickAwayListener
+            onClickAway={() => {
+              if (!surfaceExiting) setOpen(false);
+            }}
+          >
             <Box>{withCaret}</Box>
           </ClickAwayListener>
         </Popper>

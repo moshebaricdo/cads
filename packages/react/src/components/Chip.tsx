@@ -86,6 +86,7 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
       focusRipple={false}
       disableRipple
       aria-pressed={selected}
+      data-cads-press=""
       sx={{
         display: "inline-flex",
         alignItems: "center",

@@ -316,6 +316,10 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
               borderColor: selected
                 ? "var(--border-selected-strong)"
                 : "var(--border-neutral-secondary)",
+              /* Match Segmented Button Block: unselected press softens primary label/icon. */
+              ...(!selected && !nav
+                ? { color: "var(--text-neutral-tertiary)" }
+                : null),
             },
         "&.Mui-focusVisible": isDisabled
           ? {}

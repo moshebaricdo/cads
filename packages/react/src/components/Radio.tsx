@@ -105,6 +105,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(
         disabled={disabled}
         icon={<RadioUncheckedIcon box={dims.box} />}
         checkedIcon={<RadioCheckedIcon box={dims.box} dot={dims.dot} />}
+        data-cads-press=""
         sx={{
           padding: 0,
           margin: 0,

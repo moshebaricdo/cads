@@ -10,17 +10,18 @@
       "16146:3517",
       "15857:99804"
     ],
-    "retrievedAt": "2026-07-21",
+    "retrievedAt": "2026-07-24",
     "designContextCaptured": true
   },
   "change": {
     "taskPath": "figma-update",
-    "previousRecipe": "2026-07-16 initial TextInput recipe",
+    "previousRecipe": "2026-07-21 startIcon TextInput recipe",
     "figmaChanges": [
       "Building block field variants gained boolean startIcon + text startIconName (FA Solid smile).",
       "Start icon is field-only; area variants have no startIcon property.",
       "Icon gaps: L/M 10px, S 8px, XS 6px. Glyph: L 18 / M 16 / S 14 / XS 12.",
-      "Start icon color: primary → --text-neutral-primary; secondary → --text-neutral-placeholder (incl. filled/readOnly/error). disabled → --text-disabled-neutral."
+      "Start icon color: primary \u2192 --text-neutral-primary; secondary \u2192 --text-neutral-placeholder (incl. filled/readOnly/error). disabled \u2192 --text-disabled-neutral.",
+      "2026-07-24: state=press uses --background-neutral-secondary (same as hover); code was incorrectly resetting :active to primary white."
     ]
   },
   "axes": {
@@ -162,6 +163,20 @@
       "geometryOverrides": {},
       "figmaVariant": "state=hover",
       "notes": []
+    },
+    {
+      "when": {
+        "state": "press",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press",
+      "notes": [
+        "Press shares secondary fill with hover (Figma 16146:3517). Distinct from Dropdown Button tertiary press."
+      ]
     },
     {
       "when": {
@@ -321,6 +336,37 @@
         "fixturePath": "/fixtures/components?component=TextInput&case=text-input-small-field-primary-focus-light",
         "referenceScreenshot": "captures/figma-text-input-set.png",
         "browserScreenshot": "fixture:/fixtures/components?component=TextInput&case=text-input-small-field-primary-focus-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "text-input-medium-field-primary-press-light",
+        "figmaNodeId": "16146:3941",
+        "figmaVariant": "size=medium, type=field, color=primary, state=press, isFilled=no",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "multiline": false,
+          "color": "primary",
+          "label": "Field label",
+          "helperText": "Helper text",
+          "placeholder": "Placeholder"
+        },
+        "state": "press",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "fieldHeight": "40px"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "/fixtures/components?component=TextInput&case=text-input-medium-field-primary-press-light",
+        "referenceScreenshot": "captures/figma-text-input-press.png",
+        "browserScreenshot": "captures/browser-text-input-press.png",
         "result": "pass",
         "mismatches": []
       },
@@ -609,14 +655,14 @@
     }
   ],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error, 0 warn (info: state-recipes)",
-    "typecheck": "pnpm typecheck → pass",
-    "build": "pnpm build → pass",
-    "docsBuild": "pnpm build:docs → pass",
+    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn (info: state-recipes)",
+    "typecheck": "pnpm typecheck \u2192 pass",
+    "build": "pnpm build \u2192 pass",
+    "docsBuild": "pnpm build:docs \u2192 pass",
     "correctionPasses": [
       "Measured large field height 48px and extraSmall 24px in fixture (browser_get_bounding_box)",
       "Verified error border + circle-xmark helper, focus FOCUS_RING vars, secondary border, readonly/disabled chrome vs building block 16146:3517",
-      "2026-07-21: startIcon field shell — icon geometry L18/M16/S14/XS12, gaps 10/10/8/6; readOnly icon stays primary; disabled icon uses disabled text",
+      "2026-07-21: startIcon field shell \u2014 icon geometry L18/M16/S14/XS12, gaps 10/10/8/6; readOnly icon stays primary; disabled icon uses disabled text",
       "2026-07-21: secondary startIcon uses --text-neutral-placeholder (Figma 16146:3857 / 16146:3859 / 16178:84)"
     ]
   }

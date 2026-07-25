@@ -193,7 +193,9 @@ const Pagination = forwardRef(
         "&:active": isDisabled ? {} : {
           zIndex: 2,
           backgroundColor: selected ? "var(--background-selected-strong)" : "var(--background-neutral-tertiary)",
-          borderColor: selected ? "var(--border-selected-strong)" : "var(--border-neutral-secondary)"
+          borderColor: selected ? "var(--border-selected-strong)" : "var(--border-neutral-secondary)",
+          /* Match Segmented Button Block: unselected press softens primary label/icon. */
+          ...!selected && !nav ? { color: "var(--text-neutral-tertiary)" } : null
         },
         "&.Mui-focusVisible": isDisabled ? {} : {
           zIndex: 3,

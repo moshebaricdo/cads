@@ -26,7 +26,7 @@ import {
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
-
+import { useSurfacePresence } from "../theme/experimentalMotion";
 export type DropdownSize = ControlSize;
 export type DropdownRole = "input" | "action";
 export type DropdownMenuType = "default" | "checklist";
@@ -226,6 +226,44 @@ function placementToPopper(
     default:
       return "bottom-start";
   }
+}
+
+/** Grow the Surface recipe from the corner that stays pinned to the trigger. */
+function placementToSurfaceOrigin(placement: DropdownMenuPlacement): string {
+  switch (placement) {
+    case "bottomRight":
+      return "top right";
+    case "topLeft":
+      return "bottom left";
+    case "topRight":
+      return "bottom right";
+    case "bottomLeft":
+    default:
+      return "top left";
+  }
+}
+
+/**
+ * Popper anchor that ignores press-scale on the trigger.
+ * `getBoundingClientRect` includes transforms; a releasing `:active` scale
+ * otherwise shoves the menu ~1–2px as the button eases back to 1.
+ * Reconstruct the unscaled border box (uniform scale about center).
+ */
+function createLayoutStableAnchor(el: HTMLElement): {
+  getBoundingClientRect: () => DOMRect;
+  contextElement: HTMLElement;
+} {
+  return {
+    contextElement: el,
+    getBoundingClientRect: () => {
+      const visual = el.getBoundingClientRect();
+      const width = el.offsetWidth;
+      const height = el.offsetHeight;
+      const left = visual.left - (width - visual.width) / 2;
+      const top = visual.top - (height - visual.height) / 2;
+      return new DOMRect(left, top, width, height);
+    },
+  };
 }
 
 function asArray(value: string | string[] | undefined): string[] {
@@ -544,17 +582,30 @@ function MenuItemRow({
 }) {
   const dims = MENU_ITEM_SIZE[size];
   const destructive = Boolean(option.destructive) && role === "action";
-  const showStartIcon =
-    menuType !== "checklist" && Boolean(option.iconName);
-  const textColor = destructive
-    ? "var(--text-error-primary)"
+  const isChecklist = menuType === "checklist";
+  const showStartIcon = !isChecklist && Boolean(option.iconName);
+  // Checklist disabled chrome is a separate Figma pass — keep opacity fade there.
+  // Default / defaultError use explicit disabled tokens (Figma Menu Item 896:3791).
+  const useDisabledTokens = Boolean(option.disabled) && !isChecklist;
+  const textColor = useDisabledTokens
+    ? destructive
+      ? "var(--text-disabled-error)"
+      : selected
+        ? "var(--text-disabled-neutral-inverse)"
+        : "var(--text-disabled-neutral)"
+    : destructive
+      ? "var(--text-error-primary)"
+      : selected
+        ? "var(--text-selected-primary)"
+        : "var(--text-neutral-primary)";
+  // Base chrome only — hover / keyboard-focus / press use CSS state recipes.
+  const bg = useDisabledTokens
+    ? selected
+      ? "var(--background-disabled-neutral)"
+      : "var(--background-neutral-primary)"
     : selected
-      ? "var(--text-selected-primary)"
-      : "var(--text-neutral-primary)";
-  // Base chrome only — hover / keyboard-focus / press are CSS recipes.
-  const bg = selected
-    ? "var(--background-selected-primary)"
-    : "var(--background-neutral-primary)";
+      ? "var(--background-selected-primary)"
+      : "var(--background-neutral-primary)";
 
   return (
     <div
@@ -587,7 +638,6 @@ function MenuItemRow({
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
-        gap: showStartIcon || menuType === "checklist" ? dims.gap : 0,
         width: "100%",
         boxSizing: "border-box",
         paddingLeft: dims.paddingLeft,
@@ -596,78 +646,85 @@ function MenuItemRow({
         backgroundColor: bg,
         color: textColor,
         cursor: option.disabled ? "default" : "pointer",
-        opacity: option.disabled ? 0.5 : 1,
+        // Checklist keeps the prior fade until its disabled recipe is synced.
+        opacity: option.disabled && isChecklist ? 0.5 : 1,
         fontFamily: "var(--font-body)",
         fontWeight: 400,
         fontSize: dims.fontSize,
         lineHeight: dims.lineHeight,
         textAlign: "left",
-        transition: TRANSITION_COLORS,
       }}
     >
-      {menuType === "checklist" ? (
-        <span
-          aria-hidden
-          style={{
-            boxSizing: "border-box",
-            width: dims.checkbox,
-            height: dims.checkbox,
-            borderRadius: "var(--radius-sm)",
-            flexShrink: 0,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: selected
-              ? "var(--background-selected-primary-inverse)"
-              : "var(--background-neutral-primary)",
-            border: selected
-              ? "none"
-              : "2px solid var(--border-neutral-solid)",
-            color: "var(--text-selected-primary-inverse)",
-          }}
-        >
-          {selected ? (
-            <FaIcon
-              name="check"
-              fontSize={
-                size === "large"
-                  ? "0.875rem"
-                  : size === "extraSmall"
-                    ? "0.625rem"
-                    : "0.75rem"
-              }
-            />
-          ) : null}
-        </span>
-      ) : showStartIcon ? (
-        <span
-          aria-hidden
-          style={{
-            width: dims.iconSlot,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-            color: textColor,
-          }}
-        >
-          <FaIcon
-            name={option.iconName!}
-            fontSize={dims.iconPx}
-          />
-        </span>
-      ) : null}
       <span
         style={{
-          flex: "1 1 auto",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          gap: showStartIcon || isChecklist ? dims.gap : 0,
           minWidth: 0,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          textAlign: "left",
+          maxWidth: "100%",
         }}
       >
-        {option.label}
+        {menuType === "checklist" ? (
+          <span
+            aria-hidden
+            style={{
+              boxSizing: "border-box",
+              width: dims.checkbox,
+              height: dims.checkbox,
+              borderRadius: "var(--radius-sm)",
+              flexShrink: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: selected
+                ? "var(--background-selected-primary-inverse)"
+                : "var(--background-neutral-primary)",
+              border: selected
+                ? "none"
+                : "2px solid var(--border-neutral-solid)",
+              color: "var(--text-selected-primary-inverse)",
+            }}
+          >
+            {selected ? (
+              <FaIcon
+                name="check"
+                fontSize={
+                  size === "large"
+                    ? "0.875rem"
+                    : size === "extraSmall"
+                      ? "0.625rem"
+                      : "0.75rem"
+                }
+              />
+            ) : null}
+          </span>
+        ) : showStartIcon ? (
+          <span
+            aria-hidden
+            style={{
+              width: dims.iconSlot,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <FaIcon name={option.iconName!} fontSize={dims.iconPx} />
+          </span>
+        ) : null}
+        <span
+          style={{
+            flex: "1 1 auto",
+            minWidth: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textAlign: "left",
+          }}
+        >
+          {option.label}
+        </span>
       </span>
     </div>
   );
@@ -786,8 +843,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       anchorRef.current = node;
       setAnchorEl((prev) => (prev === node ? prev : node));
     }, []);
+    const popperAnchor = useMemo(
+      () => (anchorEl ? createLayoutStableAnchor(anchorEl) : null),
+      [anchorEl],
+    );
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const open = openProp ?? uncontrolledOpen;
+    const { mounted: surfaceMounted, exiting: surfaceExiting } =
+      useSurfacePresence(open && Boolean(anchorEl));
 
     useLayoutEffect(() => {
       if (!open) return;
@@ -805,7 +868,6 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const [highlightMode, setHighlightMode] = useState<"keyboard" | "pointer">(
       "pointer",
     );
-
     const setOpen = useCallback(
       (next: boolean) => {
         if (openProp === undefined) setUncontrolledOpen(next);
@@ -1024,8 +1086,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 
     const menu = (
       <Popper
-        open={open && Boolean(anchorEl)}
-        anchorEl={anchorEl}
+        open={surfaceMounted}
+        anchorEl={popperAnchor}
         placement={placementToPopper(menuPlacement)}
         disablePortal
         style={{
@@ -1043,6 +1105,10 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           aria-labelledby={triggerId}
           aria-multiselectable={isChecklist || undefined}
           data-cads-dropdown-menu=""
+          data-cads-surface=""
+          {...(surfaceExiting
+            ? { "data-cads-surface-state": "exit" }
+            : {})}
           data-menu-type={resolvedMenuType}
           elevation={0}
           onKeyDown={onKeyDown}
@@ -1060,8 +1126,10 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             minWidth: menuPanelMinWidthCss,
             textAlign: "left",
             // Icon menus: 4px vertical padding. Checklist: options list owns
-            // the vertical padding (pt/pb 4; pb sits above the Action Row).
+            // the vertical padding (pt/pb 4; pb sits above Action Row).
             py: isChecklist ? 0 : "4px",
+            // Pin the enter-scale to the trigger-aligned corner (avoids ~2px drift).
+            "--cads-surface-origin": placementToSurfaceOrigin(menuPlacement),
           }}
         >
           <div
@@ -1178,7 +1246,11 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 .cads-dropdown-trigger {
   outline: none;
 }
-.cads-dropdown-trigger:hover:not(:disabled) {
+/* Figma Dropdown Button state=hover|press — tertiary fill (matches outlined Button). */
+.cads-dropdown-trigger:hover:not(:disabled),
+.cads-dropdown-trigger:active:not(:disabled),
+[data-cads-force-pseudo="hover"] .cads-dropdown-trigger:not(:disabled),
+[data-cads-force-pseudo="press"] .cads-dropdown-trigger:not(:disabled) {
   background-color: var(--background-neutral-tertiary) !important;
 }
 .cads-dropdown-trigger:focus-visible {
@@ -1189,7 +1261,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 [data-cads-dropdown]:has([data-keyboard-focus="true"]) .MuiButton-root.Mui-focusVisible {
   box-shadow: none !important;
 }
-/* Pointer hover — Figma Menu Item / Dropdown Button state=hover */
+/* Pointer hover / press — Figma Menu Item state=hover|press (896:3791) */
 [data-cads-dropdown-item]:not([aria-disabled="true"]):not([aria-selected="true"]):not([data-destructive="true"]):not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-neutral-tertiary) !important;
 }
@@ -1200,12 +1272,18 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 [data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):not([data-keyboard-focus="true"]):hover {
   background-color: var(--background-error-light) !important;
 }
+/* Destructive press: keep error-light fill; deepen label to error-secondary (not solid error + white). */
 [data-cads-dropdown-item][data-destructive="true"]:not([aria-disabled="true"]):active:not([data-keyboard-focus="true"]) {
-  background-color: var(--background-error-primary) !important;
-  color: var(--text-neutral-white-fixed) !important;
+  background-color: var(--background-error-light) !important;
+  color: var(--text-error-secondary) !important;
 }
-[data-cads-dropdown-item][aria-selected="true"]:not([data-keyboard-focus="true"]):hover {
+/* Selected hover uses strong; press returns to selected-primary (Figma state=press, selected=yes). */
+[data-cads-dropdown-item][aria-selected="true"]:not([aria-disabled="true"]):not([data-keyboard-focus="true"]):hover:not(:active) {
   background-color: var(--background-selected-strong) !important;
+}
+[data-cads-dropdown-item][aria-selected="true"]:not([aria-disabled="true"]):active:not([data-keyboard-focus="true"]) {
+  background-color: var(--background-selected-primary) !important;
+  color: var(--text-selected-primary) !important;
 }
 /* Keyboard focus — Figma Menu Item state=focus (2px flush ring, not FOCUS_RING).
    Use outline + negative offset so geometry does not shift like a real border. */
@@ -1214,7 +1292,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
   outline: 2px solid var(--border-focused-primary);
   outline-offset: -2px;
 }
-[data-cads-dropdown-item][aria-selected="true"][data-keyboard-focus="true"] {
+[data-cads-dropdown-item][aria-selected="true"]:not([aria-disabled="true"])[data-keyboard-focus="true"] {
   background-color: var(--background-selected-primary) !important;
   color: var(--text-selected-primary) !important;
   outline: 2px solid var(--border-selected-primary-inverse);
@@ -1329,6 +1407,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             startIconName={ap.startIconName}
             endIconName="chevron-down"
             disabled={disabled}
+            data-cads-dropdown-trigger="action"
             aria-haspopup="menu"
             aria-expanded={open}
             aria-controls={open ? listId : undefined}

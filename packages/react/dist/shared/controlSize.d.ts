@@ -65,6 +65,8 @@ declare const ICON_TOGGLE_SIZE: Record<ControlSize, {
 declare const FOCUS_RING = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)";
 /** Shared color/chrome transition — uses CADS motion variables. */
 declare const TRANSITION_COLORS = "var(--transition-colors)";
+/** Quieter fade for high-frequency tints (menu hover, soft state changes). */
+declare const TRANSITION_FADE = "var(--transition-fade)";
 /**
  * Chip size matrix from Figma Chip set (`5881:2187`).
  * Heights match CONTROL_HEIGHT; horizontal padding is slightly tighter than Button.
@@ -262,7 +264,11 @@ declare const TAG_SIZE: Record<"large" | "medium" | "small", {
 }>;
 /** Toast chrome from Figma Toast (`10587:14942`) — single size, elevated. */
 declare const TOAST_CHROME: {
-    width: string;
+    /**
+     * Figma symbol width for the default string ("This is a toast.").
+     * Surface layout is hug — this is a reference size, not a hard CSS width.
+     */
+    defaultWidthPx: number;
     paddingInline: string;
     paddingBlock: string;
     gap: string;
@@ -292,4 +298,4 @@ declare const NOTIFICATION_BANNER_CHROME: {
     radius: string;
 };
 
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, type ControlSize, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, type LinkControlSize, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };
+export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, type ControlSize, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, type LinkControlSize, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS, TRANSITION_FADE };

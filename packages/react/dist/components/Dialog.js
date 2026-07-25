@@ -72,6 +72,7 @@ function DialogSurface({
             role: "dialog",
             "aria-modal": true,
             "data-cads-component": "Dialog",
+            "data-cads-surface": "",
             sx: {
               zIndex: 1,
               position: "relative",
@@ -88,7 +89,8 @@ function DialogSurface({
               backgroundColor: "var(--background-neutral-primary)",
               border: "1px solid var(--border-neutral-primary)",
               borderRadius: "var(--radius-xl)",
-              boxShadow: "var(--shadow-lg)"
+              boxShadow: "var(--shadow-lg)",
+              "--cads-surface-origin": "center"
             },
             children: [
               isCustom ? /* @__PURE__ */ jsx(Box, { sx: { width: "100%", minHeight: 130 }, children }) : /* @__PURE__ */ jsxs(Fragment, { children: [

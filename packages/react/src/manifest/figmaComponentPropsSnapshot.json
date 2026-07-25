@@ -2156,6 +2156,26 @@
           "reason": "Dismiss control click handler."
         },
         {
+          "name": "open",
+          "category": "state",
+          "reason": "Controlled snackbar visibility. Code-only host API (Figma Toast is chrome-only)."
+        },
+        {
+          "name": "placement",
+          "category": "layout",
+          "reason": "Viewport anchor (MUI Snackbar anchorOrigin). Code-only host API."
+        },
+        {
+          "name": "offset",
+          "category": "layout",
+          "reason": "Distance from pinned viewport edge(s). Code-only host API; default 64."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/inline chrome without snackbar portal. Default when open is omitted."
+        },
+        {
           "name": "role",
           "category": "accessibility",
           "reason": "ARIA role for the toast surface."
@@ -2168,7 +2188,8 @@
       "notes": [
         "Figma Toast sentiment=primary maps to brand chrome tokens (Alert/Banner use brand).",
         "Action Button is locked to outlined secondary at small size.",
-        "2026-07-23: Figma boolean hasIcon collapsed into iconName (undefined = sentiment default, false = hide, string = override) — MUI Alert icon={false} convention."
+        "2026-07-23: Figma boolean hasIcon collapsed into iconName (undefined = sentiment default, false = hide, string = override) — MUI Alert icon={false} convention.",
+        "2026-07-25: Host API — open + placement + offset via MUI Snackbar; Surface motion (data-cads-surface + useSurfacePresence)."
       ]
     },
     {
@@ -2420,6 +2441,58 @@
         "Figma axis remains caretPlacement (four edges). Code API uses MUI placement only (Figma top → placement bottom; *-start/*-end pin caret near that edge).",
         "2026-07-23: long labels wrap at maxWidth 256 (left-aligned); start icon stays on the first text line.",
         "2026-07-23: Figma boolean startIcon collapsed into presence of iconName (unset = no icon)."
+      ]
+    },
+    {
+      "cadsName": "IconTooltip",
+      "figmaName": null,
+      "variantProperties": {},
+      "designOnlyAxes": [],
+      "axisToCodeProp": {},
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Tooltip label text, passed through to Tooltip.title."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Trigger affordance glyph; no Figma component set exists for this pattern (see notes)."
+        },
+        {
+          "name": "color",
+          "category": "composition",
+          "reason": "Icon color role (primary=brand, secondary=neutral-primary, tertiary=neutral-quaternary) — docs-driven, no Figma axis to map from."
+        },
+        {
+          "name": "size",
+          "category": "composition",
+          "reason": "Glyph size on the shared control size scale — docs-driven, no Figma axis to map from."
+        },
+        {
+          "name": "placement",
+          "category": "composition",
+          "reason": "Passed through to Tooltip's MUI placement, mirrors Tooltip.placement."
+        },
+        {
+          "name": "hasCaret",
+          "category": "composition",
+          "reason": "Passed through to Tooltip.hasCaret."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible trigger name fallback when title is not a plain string."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "focus"
+      ],
+      "escalate": [],
+      "notes": [
+        "2026-07-25: New component. Searched CADS Figma DGekOeToRVifvFAhfqpeC1 via search_design_system (\"icon tooltip\", \"info icon\") and inspected the Tooltip frame (1990:7125) metadata for a sibling variant — no Icon Tooltip / info-icon-affordance component set exists in this file. Implemented docs-driven from the agent task's suggested API (title/iconName/color/size/placement) plus the existing Tooltip spec and shared icon color/size conventions (CloseIconButton icon sizing, IconToggle focus ring). Accepted per task instructions; revisit if/when Figma adds a matching component."
       ]
     },
     {

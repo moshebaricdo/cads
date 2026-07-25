@@ -75,6 +75,7 @@ function ModalSurface({
       ref={surfaceRef}
       className={className}
       data-cads-component="Modal"
+      data-cads-surface=""
       role="dialog"
       aria-modal
       sx={{
@@ -88,6 +89,7 @@ function ModalSurface({
         border: "1px solid var(--border-neutral-primary)",
         borderRadius: "var(--radius-xl)",
         boxShadow: "var(--shadow-lg)",
+        "--cads-surface-origin": "center",
       }}
     >
       <Box

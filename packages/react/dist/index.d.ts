@@ -1,4 +1,5 @@
 export { CadsProvider, CadsProviderProps } from './theme/CadsProvider.js';
+export { useExperimentalMotion } from './theme/experimentalMotion.js';
 export { Button, ButtonColor, ButtonProps, ButtonSize, ButtonVariant } from './components/Button.js';
 export { CloseIconButton, CloseIconButtonColor, CloseIconButtonProps, CloseIconButtonSize } from './components/CloseIconButton.js';
 export { SegmentedButton, SegmentedButtonOption, SegmentedButtonProps, SegmentedButtonSize } from './components/SegmentedButton.js';
@@ -18,10 +19,11 @@ export { LabelCompactPagesArgs, Pagination, PaginationLayout, PaginationProps, P
 export { LabelDisplayedRowsArgs, TablePagination, TablePaginationProps, TablePaginationSize } from './components/TablePagination.js';
 export { Tag, TagColor, TagProps, TagSize, TagTone } from './components/Tag.js';
 export { Alert, AlertProps, AlertSentiment, AlertSize } from './components/Alert.js';
-export { Toast, ToastProps, ToastSentiment } from './components/Toast.js';
+export { Toast, ToastPlacement, ToastProps, ToastSentiment } from './components/Toast.js';
 export { NotificationBanner, NotificationBannerFillStyle, NotificationBannerProps, NotificationBannerSentiment } from './components/NotificationBanner.js';
 export { Link, LinkProps, LinkSize, LinkType } from './components/Link.js';
 export { Tooltip, TooltipProps } from './components/Tooltip.js';
+export { IconTooltip, IconTooltipColor, IconTooltipProps, IconTooltipSize } from './components/IconTooltip.js';
 export { Popover, PopoverCaretPlacement, PopoverContent, PopoverProps } from './components/Popover.js';
 export { Drawer, DrawerProps, DrawerType } from './components/Drawer.js';
 export { Dialog, DialogProps, DialogType } from './components/Dialog.js';

@@ -29,6 +29,7 @@ function ModalSurface({
       ref: surfaceRef,
       className,
       "data-cads-component": "Modal",
+      "data-cads-surface": "",
       role: "dialog",
       "aria-modal": true,
       sx: {
@@ -41,7 +42,8 @@ function ModalSurface({
         backgroundColor: "var(--background-neutral-primary)",
         border: "1px solid var(--border-neutral-primary)",
         borderRadius: "var(--radius-xl)",
-        boxShadow: "var(--shadow-lg)"
+        boxShadow: "var(--shadow-lg)",
+        "--cads-surface-origin": "center"
       },
       children: [
         /* @__PURE__ */ jsxs(

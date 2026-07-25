@@ -100,6 +100,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
         indeterminateIcon={
           <CheckboxGlyph size={size} status="indeterminate" />
         }
+        data-cads-press=""
         sx={{
           padding: 0,
           margin: 0,

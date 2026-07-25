@@ -1,11 +1,16 @@
-import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
+import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 import Box from '@mui/material/Box';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Popper from '@mui/material/Popper';
 import { forwardRef, useId, useState, isValidElement, cloneElement } from 'react';
+import { useSurfacePresence } from '../theme/experimentalMotion.js';
 import { Button } from './Button.js';
 import { CloseIconButton } from './CloseIconButton.js';
 
+const CARET_SIZE_PX = 12;
+const CARET_TIP_PX = 6;
+const POPOVER_OFFSET_WITH_CARET_PX = 4 + CARET_TIP_PX;
+const POPOVER_OFFSET_NO_CARET_PX = 8;
 function parseCaret(placement) {
   if (placement.startsWith("bottom")) {
     const align2 = placement === "bottomLeft" ? "start" : placement === "bottomRight" ? "end" : "center";
@@ -21,6 +26,23 @@ function parseCaret(placement) {
   }
   const align = placement === "rightTop" ? "start" : placement === "rightBottom" ? "end" : "center";
   return { side: "right", align };
+}
+function caretPlacementToPopper(placement) {
+  const { side, align } = parseCaret(placement);
+  const popperSide = side === "bottom" ? "top" : side === "top" ? "bottom" : side === "left" ? "right" : "left";
+  if (align === "center") return popperSide;
+  return `${popperSide}-${align}`;
+}
+function caretPlacementToSurfaceOrigin(placement) {
+  const { side, align } = parseCaret(placement);
+  const edge = side === "bottom" ? "bottom" : side === "top" ? "top" : side === "left" ? "left" : "right";
+  if (align === "center") {
+    return side === "left" || side === "right" ? `center ${edge}` : `${edge} center`;
+  }
+  if (side === "bottom" || side === "top") {
+    return `${edge} ${align === "start" ? "left" : "right"}`;
+  }
+  return `${align === "start" ? "top" : "bottom"} ${edge}`;
 }
 function Caret({
   side,
@@ -53,13 +75,13 @@ function Caret({
         Box,
         {
           sx: {
-            width: 12,
-            height: 12,
+            width: CARET_SIZE_PX,
+            height: CARET_SIZE_PX,
             backgroundColor: "var(--background-neutral-primary)",
             borderRight: "1px solid var(--border-neutral-primary)",
             borderBottom: "1px solid var(--border-neutral-primary)",
             transform: side === "bottom" ? "rotate(45deg)" : side === "top" ? "rotate(225deg)" : side === "left" ? "rotate(135deg)" : "rotate(-45deg)",
-            margin: side === "bottom" ? "-6px 0 0" : side === "top" ? "0 0 -6px" : side === "left" ? "0 -6px 0 0" : "0 0 0 -6px"
+            margin: side === "bottom" ? `-${CARET_TIP_PX}px 0 0` : side === "top" ? `0 0 -${CARET_TIP_PX}px` : side === "left" ? `0 -${CARET_TIP_PX}px 0 0` : `0 0 0 -${CARET_TIP_PX}px`
           }
         }
       )
@@ -98,6 +120,7 @@ const Popover = forwardRef(
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const controlled = openProp !== void 0;
     const open = controlled ? Boolean(openProp) : uncontrolledOpen;
+    const { mounted: surfaceMounted, exiting: surfaceExiting } = useSurfacePresence(open);
     const trigger = isValidElement(children) && children.type !== void 0 ? children : null;
     const customFromChildren = !trigger && children != null ? children : null;
     const resolvedCustom = customContent ?? customFromChildren;
@@ -278,12 +301,16 @@ const Popover = forwardRef(
     const withCaret = /* @__PURE__ */ jsxs(
       Box,
       {
+        "data-cads-surface": "",
+        ...surfaceExiting ? { "data-cads-surface-state": "exit" } : {},
         sx: {
           display: "inline-flex",
           flexDirection: side === "top" || side === "bottom" ? "column" : "row",
           alignItems: "center",
           maxWidth: 500,
-          minWidth: 300
+          minWidth: 300,
+          /* Grow from the trigger-aligned edge/corner. */
+          "--cads-surface-origin": caretPlacementToSurfaceOrigin(caretPlacement)
         },
         children: [
           (side === "bottom" || side === "right") && card,
@@ -310,11 +337,30 @@ const Popover = forwardRef(
       /* @__PURE__ */ jsx(
         Popper,
         {
-          open,
+          open: surfaceMounted,
           anchorEl,
-          placement: side === "bottom" ? "top" : side === "top" ? "bottom" : side === "left" ? "right" : "left",
+          placement: caretPlacementToPopper(caretPlacement),
           style: { zIndex: 1400 },
-          children: /* @__PURE__ */ jsx(ClickAwayListener, { onClickAway: () => setOpen(false), children: /* @__PURE__ */ jsx(Box, { children: withCaret }) })
+          modifiers: [
+            {
+              name: "offset",
+              options: {
+                offset: [
+                  0,
+                  hasCaret ? POPOVER_OFFSET_WITH_CARET_PX : POPOVER_OFFSET_NO_CARET_PX
+                ]
+              }
+            }
+          ],
+          children: /* @__PURE__ */ jsx(
+            ClickAwayListener,
+            {
+              onClickAway: () => {
+                if (!surfaceExiting) setOpen(false);
+              },
+              children: /* @__PURE__ */ jsx(Box, { children: withCaret })
+            }
+          )
         }
       )
     ] });

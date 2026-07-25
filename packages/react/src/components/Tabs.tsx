@@ -3,8 +3,10 @@ import {
   forwardRef,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type FocusEvent,
   type KeyboardEvent,
   type ReactNode,
@@ -17,6 +19,7 @@ import {
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
+import { useExperimentalMotion } from "../theme/experimentalMotion";
 import { CloseIconButton } from "./CloseIconButton";
 
 export type TabsSize = ControlSize;
@@ -90,13 +93,23 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
 ) {
   const dims = TABS_SIZE[size];
   const groupId = useId();
+  const listRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Array<HTMLElement | null>>([]);
+  const indicatorReadyRef = useRef(false);
   const controlled = valueProp !== undefined;
   const [uncontrolled, setUncontrolled] = useState(
     defaultValue ?? items.find((item) => !item.disabled)?.value,
   );
   const value = controlled ? valueProp : uncontrolled;
   const isSecondary = type === "secondary";
+  const experimentalMotion = useExperimentalMotion();
+  /* Secondary contained chrome doesn't suit a sliding Indicator. */
+  const useIndicator = experimentalMotion && !isSecondary;
+  const [indicatorBox, setIndicatorBox] = useState<{
+    left: number;
+    width: number;
+  } | null>(null);
+  const [indicatorAnimated, setIndicatorAnimated] = useState(false);
 
   const selectValue = (next: string) => {
     if (!controlled) setUncontrolled(next);
@@ -113,6 +126,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     focusableIndexes[0] ??
     -1;
 
+  const selectedIndex = items.findIndex((item) => item.value === value);
+
   const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
   const tabStopIndex = focusableIndexes.includes(focusedIndex)
     ? focusedIndex
@@ -122,6 +137,53 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   useEffect(() => {
     setFocusedIndex(selectedFocusableIndex);
   }, [selectedFocusableIndex]);
+
+  const measureIndicator = () => {
+    const list = listRef.current;
+    const tab =
+      selectedIndex >= 0 ? tabRefs.current[selectedIndex] : null;
+    if (!list || !tab) {
+      setIndicatorBox(null);
+      return;
+    }
+    const listRect = list.getBoundingClientRect();
+    const tabRect = tab.getBoundingClientRect();
+    setIndicatorBox({
+      left: tabRect.left - listRect.left + list.scrollLeft,
+      width: tabRect.width,
+    });
+    if (!indicatorReadyRef.current) {
+      indicatorReadyRef.current = true;
+      // Enable Indicator transition only after the first laid-out frame.
+      requestAnimationFrame(() => setIndicatorAnimated(true));
+    }
+  };
+
+  useLayoutEffect(() => {
+    if (!useIndicator) {
+      indicatorReadyRef.current = false;
+      setIndicatorAnimated(false);
+      setIndicatorBox(null);
+      return;
+    }
+    measureIndicator();
+  }, [useIndicator, value, items, size, type, selectedIndex]);
+
+  useEffect(() => {
+    if (!useIndicator) return;
+    const list = listRef.current;
+    if (!list || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => measureIndicator());
+    ro.observe(list);
+    for (const tab of tabRefs.current) {
+      if (tab) ro.observe(tab);
+    }
+    window.addEventListener("resize", measureIndicator);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measureIndicator);
+    };
+  }, [useIndicator, items.length, size, type, value]);
 
   const focusTab = (index: number) => {
     setFocusedIndex(index);
@@ -189,14 +251,38 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     setFocusedIndex(selectedFocusableIndex);
   };
 
+  const setListRef = (node: HTMLDivElement | null) => {
+    listRef.current = node;
+    if (typeof ref === "function") ref(node);
+    else if (ref) ref.current = node;
+  };
+
+  const indicatorStyle: CSSProperties | undefined =
+    useIndicator && indicatorBox
+      ? {
+          position: "absolute",
+          left: indicatorBox.left,
+          width: indicatorBox.width,
+          height: 2,
+          bottom: 0,
+          boxSizing: "border-box",
+          backgroundColor: "var(--border-selected-primary)",
+          pointerEvents: "none",
+          zIndex: 1,
+          transition: indicatorAnimated ? undefined : "none",
+        }
+      : undefined;
+
   return (
     <div
-      ref={ref}
+      ref={setListRef}
       role="tablist"
       aria-label={ariaLabel}
       className={className}
+      data-cads-tabs=""
       onBlur={onTablistBlur}
       style={{
+        position: "relative",
         display: "flex",
         alignItems: isSecondary ? "flex-end" : "stretch",
         gap: isSecondary ? dims.secondaryGroupGap : dims.primaryGroupGap,
@@ -204,6 +290,14 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         boxSizing: "border-box",
       }}
     >
+      {useIndicator && indicatorBox ? (
+        <span
+          aria-hidden
+          data-cads-indicator=""
+          data-cads-tabs-indicator="primary"
+          style={indicatorStyle}
+        />
+      ) : null}
       {items.map((item, index) => {
         const selected = item.value === value;
         const disabled = Boolean(item.disabled);
@@ -226,6 +320,38 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         const accessibleName =
           item["aria-label"] ??
           (typeof item.label === "string" ? item.label : undefined);
+
+        /* Primary + Indicator: underline lives on the sliding chrome. */
+        const selectedChrome = isSecondary
+          ? selected
+            ? {
+                backgroundColor: "var(--background-neutral-primary)",
+                borderTop: "1px solid var(--border-neutral-primary)",
+                borderLeft: "1px solid var(--border-neutral-primary)",
+                borderRight: "1px solid var(--border-neutral-primary)",
+                borderBottom: "none",
+                color: "var(--text-selected-primary-inverse)",
+              }
+            : {
+                backgroundColor: "var(--background-neutral-secondary)",
+                border: "1px solid var(--border-neutral-primary)",
+                color: "var(--text-neutral-quaternary)",
+              }
+          : selected
+            ? {
+                backgroundColor: "transparent",
+                border: "none",
+                borderBottom: useIndicator
+                  ? "2px solid transparent"
+                  : "2px solid var(--border-selected-primary)",
+                color: "var(--text-selected-primary-inverse)",
+              }
+            : {
+                backgroundColor: "transparent",
+                border: "none",
+                borderBottom: "2px solid transparent",
+                color: "var(--text-neutral-quaternary)",
+              };
 
         return (
           <ButtonBase
@@ -289,36 +415,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
               borderRadius: isSecondary
                 ? "var(--radius-sm) var(--radius-sm) 0 0"
                 : 0,
-              /* Primary underline / secondary chrome */
-              ...(isSecondary
-                ? selected
-                  ? {
-                      backgroundColor: "var(--background-neutral-primary)",
-                      borderTop: "1px solid var(--border-neutral-primary)",
-                      borderLeft: "1px solid var(--border-neutral-primary)",
-                      borderRight: "1px solid var(--border-neutral-primary)",
-                      borderBottom: "none",
-                      color: "var(--text-selected-primary-inverse)",
-                    }
-                  : {
-                      backgroundColor: "var(--background-neutral-secondary)",
-                      border: "1px solid var(--border-neutral-primary)",
-                      color: "var(--text-neutral-quaternary)",
-                    }
-                : selected
-                  ? {
-                      backgroundColor: "transparent",
-                      border: "none",
-                      borderBottom:
-                        "2px solid var(--border-selected-primary)",
-                      color: "var(--text-selected-primary-inverse)",
-                    }
-                  : {
-                      backgroundColor: "transparent",
-                      border: "none",
-                      borderBottom: "2px solid transparent",
-                      color: "var(--text-neutral-quaternary)",
-                    }),
+              ...selectedChrome,
               "&:hover": disabled
                 ? undefined
                 : isSecondary
@@ -333,7 +430,14 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
                       }
                   : selected
                     ? {
-                        borderBottomColor: "var(--border-selected-strong)",
+                        // Primary underline hover strength is owned by the Indicator
+                        // (see experimentalMotion CSS) when the flag is on.
+                        ...(useIndicator
+                          ? {}
+                          : {
+                              borderBottomColor:
+                                "var(--border-selected-strong)",
+                            }),
                         color: "var(--text-selected-primary-inverse)",
                       }
                     : {

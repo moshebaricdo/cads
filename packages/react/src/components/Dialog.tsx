@@ -118,6 +118,7 @@ function DialogSurface({
         role="dialog"
         aria-modal
         data-cads-component="Dialog"
+        data-cads-surface=""
         sx={{
           zIndex: 1,
           position: "relative",
@@ -139,6 +140,7 @@ function DialogSurface({
           border: "1px solid var(--border-neutral-primary)",
           borderRadius: "var(--radius-xl)",
           boxShadow: "var(--shadow-lg)",
+          "--cads-surface-origin": "center",
         }}
       >
         {isCustom ? (

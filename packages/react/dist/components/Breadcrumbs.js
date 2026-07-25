@@ -260,9 +260,18 @@ function BreadcrumbLink({
     return /* @__PURE__ */ jsx("span", { ...shared, "aria-disabled": "true", children: content });
   }
   if (item.href != null) {
-    return /* @__PURE__ */ jsx("a", { ...shared, href: item.href, onClick: item.onClick, children: content });
+    return /* @__PURE__ */ jsx("a", { ...shared, href: item.href, onClick: item.onClick, "data-cads-press": "", children: content });
   }
-  return /* @__PURE__ */ jsx("button", { type: "button", ...shared, onClick: item.onClick, children: content });
+  return /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      ...shared,
+      onClick: item.onClick,
+      "data-cads-press": "",
+      children: content
+    }
+  );
 }
 const OVERFLOW_MENU_ITEM = {
   large: {
@@ -388,6 +397,7 @@ function BreadcrumbOverflow({
                 "aria-expanded": open,
                 "aria-controls": open ? menuId : void 0,
                 "data-cads-breadcrumb-overflow": "",
+                "data-cads-press": "",
                 onClick: () => {
                   setOpen((v) => {
                     const next = !v;
@@ -414,6 +424,7 @@ function BreadcrumbOverflow({
                     role: "menu",
                     "aria-labelledby": triggerId,
                     "data-cads-breadcrumb-overflow-menu": "",
+                    "data-cads-surface": "",
                     elevation: 0,
                     sx: {
                       mt: 0,
@@ -423,7 +434,8 @@ function BreadcrumbOverflow({
                       boxShadow: "var(--shadow-md)",
                       overflow: "hidden",
                       minWidth: 120,
-                      py: "4px"
+                      py: "4px",
+                      "--cads-surface-origin": "top left"
                     },
                     children: items.map(({ item, index }) => {
                       const disabled = Boolean(item.disabled);

@@ -1,4 +1,5 @@
 export { CadsProvider } from './theme/CadsProvider.js';
+export { useExperimentalMotion } from './theme/experimentalMotion.js';
 export { Button } from './components/Button.js';
 export { CloseIconButton } from './components/CloseIconButton.js';
 export { SegmentedButton } from './components/SegmentedButton.js';
@@ -22,6 +23,7 @@ export { Toast } from './components/Toast.js';
 export { NotificationBanner } from './components/NotificationBanner.js';
 export { Link } from './components/Link.js';
 export { Tooltip } from './components/Tooltip.js';
+export { IconTooltip } from './components/IconTooltip.js';
 export { Popover } from './components/Popover.js';
 export { Drawer } from './components/Drawer.js';
 export { Dialog } from './components/Dialog.js';

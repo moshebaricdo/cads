@@ -108,6 +108,7 @@ export const CloseIconButton = forwardRef<
       disableRipple
       aria-label={ariaLabel}
       data-cads-component="CloseIconButton"
+      data-cads-press=""
       sx={{
         display: "inline-flex",
         alignItems: "center",
