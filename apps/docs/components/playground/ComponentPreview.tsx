@@ -29,6 +29,7 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
   Link: lazy(() => import("./previews/LinkPreview")),
   Breadcrumbs: lazy(() => import("./previews/BreadcrumbsPreview")),
   Tabs: lazy(() => import("./previews/TabsPreview")),
+  Pagination: lazy(() => import("./previews/PaginationPreview")),
   Alert: lazy(() => import("./previews/AlertPreview")),
   Toast: lazy(() => import("./previews/ToastPreview")),
   NotificationBanner: lazy(() => import("./previews/NotificationBannerPreview")),

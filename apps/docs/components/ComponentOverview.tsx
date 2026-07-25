@@ -1,23 +1,68 @@
 "use client";
 
-import { Link } from "@codeai/cads-react";
+import { Link, Tag, Tooltip } from "@codeai/cads-react";
+import type { ComponentStatus } from "@/lib/componentExternalLinks";
 import styles from "./ComponentOverview.module.css";
+
+const STATUS_PRESENTATION: Record<
+  ComponentStatus,
+  { label: string; color: "warning" | "error" | "info"; tooltip: string }
+> = {
+  notInProduction: {
+    label: "Not in Production",
+    color: "warning",
+    tooltip:
+      "Available for use in Figma only. This component has not shipped to the production component library yet.",
+  },
+  deprecated: {
+    label: "Deprecated",
+    color: "error",
+    tooltip:
+      "Kept for existing usage only. Avoid it in new work and migrate to the documented replacement.",
+  },
+  experimental: {
+    label: "Experimental",
+    color: "info",
+    tooltip:
+      "Safe to explore in prototypes, but the API and visuals can still change without notice.",
+  },
+};
 
 export function ComponentOverview({
   title,
   description,
   figmaUrl,
   storybookUrl,
+  status,
 }: {
   title: string;
   description: string;
   figmaUrl: string;
   storybookUrl?: string;
+  status?: ComponentStatus;
 }) {
+  const statusPresentation = status
+    ? STATUS_PRESENTATION[status]
+    : undefined;
+
   return (
     <header className={styles.root}>
       <div className={styles.copy}>
-        <h1 className={styles.title}>{title}</h1>
+        <div className={styles.titleRow}>
+          <h1 className={styles.title}>{title}</h1>
+          {statusPresentation ? (
+            <Tooltip title={statusPresentation.tooltip} placement="bottom">
+              {/* Tag takes a fixed prop set, so the tooltip needs a host element. */}
+              <span className={styles.statusTag} tabIndex={0}>
+                <Tag
+                  size="small"
+                  color={statusPresentation.color}
+                  label={statusPresentation.label}
+                />
+              </span>
+            </Tooltip>
+          ) : null}
+        </div>
         <p className={styles.lead}>{description}</p>
       </div>
       <div className={styles.links}>

@@ -58,6 +58,13 @@ export const DROPDOWN_PROP_SHEETS: PropSheet[] = [
         default: '"hug"',
         description: 'Input-role only. "hug", "full", or a CSS length.',
       },
+      {
+        name: "menuWidth",
+        type: '"hug" | "trigger" | number | `${number}%`',
+        default: '"hug"',
+        description:
+          'Menu sizing: content hug, trigger width, px minimum, or exact trigger-relative percentage.',
+      },
     ],
   },
   {

@@ -39,6 +39,8 @@ export function LivePlayground({ code }: { code: string }) {
         Drawer: cads.Drawer,
         Dialog: cads.Dialog,
         Modal: cads.Modal,
+        Pagination: cads.Pagination,
+        TablePagination: cads.TablePagination,
         FaIcon: icons.FaIcon,
       });
     });

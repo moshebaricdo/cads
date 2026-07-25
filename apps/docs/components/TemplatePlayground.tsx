@@ -287,7 +287,7 @@ export function TemplatePlayground({
               <div
                 key={`defaultChecked:${String(values.defaultChecked)}:defaultOpen:${String(values.defaultOpen)}:opts:${JSON.stringify(values.optionEdits ?? {})}`}
                 style={
-                  values.fullWidth
+                  values.fullWidth || component.exportName === "Pagination"
                     ? { width: "100%", minWidth: 0 }
                     : undefined
                 }

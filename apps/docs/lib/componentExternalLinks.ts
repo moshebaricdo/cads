@@ -7,11 +7,21 @@
 export const STORYBOOK_BASE =
   "https://code-dot-org.github.io/code-dot-org/component-library-storybook";
 
+export type ComponentStatus =
+  | "notInProduction"
+  | "deprecated"
+  | "experimental";
+
 export type ComponentExternalLinks = {
   /** Material UI API or component docs URL. */
   muiDocsUrl?: string;
   /** Storybook entry id, e.g. `designsystem-tooltip--docs`. */
   storybookId?: string;
+  /**
+   * Exceptional lifecycle state shown on the component page.
+   * Components with no Storybook entry default to `notInProduction`.
+   */
+  status?: ComponentStatus;
 };
 
 export const COMPONENT_EXTERNAL_LINKS: Record<string, ComponentExternalLinks> =
@@ -96,6 +106,12 @@ export const COMPONENT_EXTERNAL_LINKS: Record<string, ComponentExternalLinks> =
       muiDocsUrl: "https://mui.com/material-ui/api/tabs/",
       storybookId: "designsystem-tabs--docs",
     },
+    Pagination: {
+      muiDocsUrl: "https://mui.com/material-ui/api/pagination/",
+    },
+    TablePagination: {
+      muiDocsUrl: "https://mui.com/material-ui/api/table-pagination/",
+    },
     Tooltip: {
       muiDocsUrl: "https://mui.com/material-ui/api/tooltip/",
       storybookId: "designsystem-tooltip--docs",
@@ -130,4 +146,12 @@ export function getComponentStorybookUrl(
   const id = COMPONENT_EXTERNAL_LINKS[exportName]?.storybookId;
   if (!id) return undefined;
   return `${STORYBOOK_BASE}/?path=/docs/${id}`;
+}
+
+export function getComponentStatus(
+  exportName: string,
+): ComponentStatus | undefined {
+  const externalLinks = COMPONENT_EXTERNAL_LINKS[exportName];
+  if (externalLinks?.status) return externalLinks.status;
+  return externalLinks?.storybookId ? undefined : "notInProduction";
 }

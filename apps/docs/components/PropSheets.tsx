@@ -69,7 +69,7 @@ export function PropSheets({
   muiDocsUrl,
 }: {
   sheets: PropSheet[];
-  /** Shown on the first sheet heading only. */
+  /** Shown on the first sheet heading when the sheet has no muiDocsUrl. */
   muiDocsUrl?: string;
 }) {
   if (!sheets.length) return null;
@@ -79,7 +79,9 @@ export function PropSheets({
         <PropSheetTable
           key={sheet.title}
           {...sheet}
-          muiDocsUrl={index === 0 ? muiDocsUrl : undefined}
+          muiDocsUrl={
+            sheet.muiDocsUrl ?? (index === 0 ? muiDocsUrl : undefined)
+          }
         />
       ))}
     </div>

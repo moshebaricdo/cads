@@ -18,6 +18,7 @@ const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
   Link: () => import("./cases/Link"),
   Breadcrumbs: () => import("./cases/Breadcrumbs"),
   Tabs: () => import("./cases/Tabs"),
+  Pagination: () => import("./cases/Pagination"),
   Alert: () => import("./cases/Alert"),
   Toast: () => import("./cases/Toast"),
   NotificationBanner: () => import("./cases/NotificationBanner"),

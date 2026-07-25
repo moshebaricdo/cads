@@ -6,6 +6,8 @@ import type {
 export type PropSheet = {
   title: string;
   props: CadsPropDef[];
+  /** Optional per-sheet MUI docs link (falls back to page-level URL on first sheet). */
+  muiDocsUrl?: string;
 };
 
 /** Nested playground targets that can replace the top-level props panel. */

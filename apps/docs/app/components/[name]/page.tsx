@@ -14,13 +14,17 @@ import {
 } from "@/lib/propSheets";
 import {
   getComponentMuiDocsUrl,
+  getComponentStatus,
   getComponentStorybookUrl,
 } from "@/lib/componentExternalLinks";
 import pageStyles from "@/components/DocsTemplatePage.module.css";
 
 export function generateStaticParams() {
   return cadsManifest.components
-    .filter((c) => c.exportName !== "FaIcon")
+    .filter(
+      (c) =>
+        c.exportName !== "FaIcon" && c.exportName !== "TablePagination",
+    )
     .map((c) => ({ name: c.name.toLowerCase() }));
 }
 
@@ -45,6 +49,7 @@ export default async function ComponentPage({
     COMPONENT_PROP_SHEETS[component.exportName] ??
     defaultPropSheets(component);
   const storybookUrl = getComponentStorybookUrl(component.exportName);
+  const status = getComponentStatus(component.exportName);
   const muiDocsUrl = getComponentMuiDocsUrl(component.exportName);
 
   return (
@@ -54,6 +59,7 @@ export default async function ComponentPage({
         description={component.description}
         figmaUrl={figmaUrl}
         storybookUrl={storybookUrl}
+        status={status}
       />
 
       <TemplatePlayground

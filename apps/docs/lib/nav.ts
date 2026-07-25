@@ -52,6 +52,7 @@ export const COMPONENT_SECTIONS = [
       { exportName: "Link", label: "Links" },
       { exportName: "Breadcrumbs", label: "Breadcrumbs" },
       { exportName: "Tabs", label: "Tabs" },
+      { exportName: "Pagination", label: "Pagination" },
     ],
   },
   {

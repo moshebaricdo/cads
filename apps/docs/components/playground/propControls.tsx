@@ -18,6 +18,10 @@ export const SKIP_PROPS = new Set([
   "onPrimaryAction",
   "onSecondaryAction",
   "onOpenChange",
+  "onPageChange",
+  "onRowsPerPageChange",
+  "labelDisplayedRows",
+  "rowsPerPageOptions",
   "sx",
   "className",
   "style",
@@ -104,6 +108,7 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
   appearance: [
     "variant",
     "type",
+    "demoType",
     "color",
     "size",
     "sentiment",
@@ -122,14 +127,16 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "startsFrom",
     "placement",
     "caretPlacement",
-    "hasCaret",
     "content",
+    "width",
+    "menuWidth",
+    // Booleans trail within the section (also enforced by orderedControls).
+    "hasCaret",
     "isExternal",
     "hasIcon",
     "hasIcons",
     "hideIcon",
     "arrow",
-    "width",
     "iconOnly",
   ],
   content: [
@@ -147,7 +154,6 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "topIconName",
     "helperText",
     "helperIconName",
-    "showHelper",
     "displayValue",
     "expandText",
     "actionLabel",
@@ -157,6 +163,10 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "secondaryActionLabel",
     "stepperText",
     "count",
+    "page",
+    "rowsPerPage",
+    "labelRowsPerPage",
+    "showHelper",
   ],
   value: ["defaultValue", "min", "max", "step"],
   state: [
@@ -173,9 +183,17 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "indeterminate",
   ],
   behavior: [
+    "layout",
+    "rows",
+    "maxItems",
+    "itemsBeforeCollapse",
+    "itemsAfterCollapse",
+    "autoHideDuration",
+    "siblingCount",
+    "boundaryCount",
+    // Booleans trail within the section (also enforced by orderedControls).
     "fullWidth",
     "multiline",
-    "rows",
     "showDisplayValue",
     "showLabelRow",
     "showControls",
@@ -192,10 +210,8 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "dismissible",
     "showClose",
     "dense",
-    "maxItems",
-    "itemsBeforeCollapse",
-    "itemsAfterCollapse",
-    "autoHideDuration",
+    "showFirstButton",
+    "showLastButton",
   ],
   a11y: ["aria-label", "id", "name"],
 };
@@ -283,6 +299,25 @@ export function isPropVisible(
   ) {
     return false;
   }
+  if (exportName === "Pagination") {
+    const demoType = String(values.demoType ?? "page");
+    // Preview always drives `page` as controlled state.
+    if (prop.name === "defaultPage") return false;
+    const pageOnly = new Set([
+      "showFirstButton",
+      "showLastButton",
+      "siblingCount",
+      "boundaryCount",
+      "layout",
+      "labelCompactPages",
+    ]);
+    const tableOnly = new Set([
+      "rowsPerPage",
+      "labelRowsPerPage",
+    ]);
+    if (demoType === "page" && tableOnly.has(prop.name)) return false;
+    if (demoType === "table" && pageOnly.has(prop.name)) return false;
+  }
   return true;
 }
 
@@ -327,6 +362,35 @@ export function playgroundExtraProps(
       },
     ];
   }
+  // Pagination: Figma type axis — switches page vs table export in one playground.
+  if (exportName === "Pagination") {
+    const extras: CadsPropDef[] = [
+      {
+        name: "demoType",
+        type: '"page" | "table"',
+        default: '"page"',
+        description:
+          "Figma type — page (Pagination) or table (TablePagination).",
+      },
+    ];
+    if (String(values.demoType ?? "page") === "table") {
+      extras.push(
+        {
+          name: "rowsPerPage",
+          type: "number",
+          default: "10",
+          description: "Rows shown per page.",
+        },
+        {
+          name: "labelRowsPerPage",
+          type: "string",
+          default: '"Rows per page"',
+          description: "Label before the rows-per-page control.",
+        },
+      );
+    }
+    return extras;
+  }
   return [];
 }
 
@@ -347,6 +411,10 @@ export function orderedControls(props: CadsPropDef[]): {
     if (!bucket?.length) continue;
     const priority = GROUP_MEMBERS[group];
     const sorted = [...bucket].sort((a, b) => {
+      // Toggles always trail other control kinds within a section.
+      const aBool = isBooleanType(a.type) ? 1 : 0;
+      const bBool = isBooleanType(b.type) ? 1 : 0;
+      if (aBool !== bBool) return aBool - bBool;
       const ai = priority.indexOf(a.name);
       const bi = priority.indexOf(b.name);
       if (ai !== -1 && bi !== -1) return ai - bi;
@@ -440,6 +508,9 @@ export function controlKind(
   },
 ): "enum" | "boolean" | "text" | "number" | "skip" {
   if (!options?.ignoreSkipList && SKIP_PROPS.has(prop.name)) return "skip";
+  // Mixed keyword / number / percentage API; text control accepts hug,
+  // trigger, 120, or 70% (propsToCode normalizes numeric strings).
+  if (prop.name === "menuWidth") return "text";
   if (prop.type.includes("=>")) return "skip";
   if (prop.type.includes("ReactElement")) return "skip";
   if (prop.name === "children") {
@@ -604,6 +675,21 @@ export function initialValues(
     values.endIconName = "";
     // Ready for icon-only mode; control is only shown when iconOnly is on.
     values.iconName = "smile";
+  }
+  if (component.exportName === "Pagination") {
+    values.demoType = "page";
+    // Keep the on-load trail narrow enough that layout=auto stays segmented
+    // inside the playground stage.
+    values.count = 5;
+    values.page = 3;
+    values.layout = "auto";
+    values.showFirstButton = false;
+    values.showLastButton = false;
+    values.siblingCount = 1;
+    values.boundaryCount = 1;
+    values.rowsPerPage = 10;
+    values.labelRowsPerPage = "Rows per page";
+    values["aria-label"] = "Pagination";
   }
   if (component.exportName === "Slider") {
     values.label = values.label || "Field label";
@@ -834,6 +920,7 @@ export function propsToCode(
       key === "demoIconItem" ||
       key === "demoIconOnly" ||
       key === "demoItemIcons" ||
+      key === "demoType" ||
       key === "optionEdits" ||
       key === "startIcon" ||
       key === "endIcon" ||
@@ -894,6 +981,14 @@ export function propsToCode(
     }
     if (typeof val === "number") {
       attrs.push(`${key}={${val}}`);
+      continue;
+    }
+    if (
+      key === "menuWidth" &&
+      typeof val === "string" &&
+      /^-?\d+(\.\d+)?$/.test(val.trim())
+    ) {
+      attrs.push(`${key}={${val.trim()}}`);
       continue;
     }
     attrs.push(`${key}=${JSON.stringify(String(val))}`);
@@ -1005,6 +1100,35 @@ export function propsToCode(
       ]),
     );
     if (values.defaultValue == null) attrs.push(`defaultValue="a"`);
+  }
+
+  if (exportName === "Pagination" && String(values.demoType ?? "page") === "table") {
+    // Emit TablePagination snippet; strip page-only attrs already skipped above.
+    const tableAttrs = attrs.filter(
+      (a) =>
+        !a.startsWith("showFirstButton") &&
+        !a.startsWith("showLastButton") &&
+        !a.startsWith("siblingCount") &&
+        !a.startsWith("boundaryCount") &&
+        !a.startsWith("defaultPage") &&
+        !a.startsWith("layout") &&
+        !a.startsWith("labelCompactPages"),
+    );
+    if (!tableAttrs.some((a) => a.startsWith("count="))) {
+      tableAttrs.unshift(`count={100}`);
+    }
+    if (!tableAttrs.some((a) => a.startsWith("page="))) {
+      tableAttrs.push(`page={1}`);
+    }
+    if (!tableAttrs.some((a) => a.startsWith("rowsPerPage="))) {
+      tableAttrs.push(`rowsPerPage={10}`);
+    }
+    tableAttrs.push(`onPageChange={() => {}}`);
+    const indented =
+      tableAttrs.length === 0
+        ? ""
+        : `\n${tableAttrs.map((a) => `  ${a}`).join("\n")}\n`;
+    return `<TablePagination${indented}/>`;
   }
 
   if (exportName === "Link") {
@@ -1155,6 +1279,20 @@ export function applyValueUpdate(
       updated.min = 0;
       updated.max = 100;
       updated.defaultValue = 50;
+    }
+  }
+  if (exportName === "Pagination" && name === "demoType") {
+    if (next === "table") {
+      updated.count = 100;
+      updated.page = 1;
+      updated.size = "small";
+      updated.rowsPerPage = updated.rowsPerPage ?? 10;
+      updated["aria-label"] = "Table pagination";
+    } else {
+      updated.count = 5;
+      updated.page = 3;
+      updated.size = "medium";
+      updated["aria-label"] = "Pagination";
     }
   }
   // Turning on ticks with the default step=1 would paint ~101 labels — use a

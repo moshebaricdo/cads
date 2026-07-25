@@ -11,6 +11,24 @@
   max-width: 560px;
 }
 
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.statusTag {
+  display: inline-flex;
+  border-radius: var(--radius-sm);
+  transform: translateY(-6px);
+}
+
+.statusTag:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
 /* CADS Heading XL / Semi Bold — default heading weight */
 .title {
   margin: 0;

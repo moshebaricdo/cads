@@ -235,6 +235,7 @@ Props:
 - `menuType`: "default" | "checklist" (default "default") — default = single-select list (item iconName optional); checklist = multi-select (input-only)
 - `menuPlacement`: "bottomLeft" | "bottomRight" | "topLeft" | "topRight" (default "bottomLeft")
 - `width`: string (default "hug") — Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.
+- `menuWidth`: "hug" | "trigger" | number | `${number}%` (default "hug") — Menu panel sizing. "hug" fits content (never narrower than the trigger); "trigger" locks to the trigger; a number sets a px minimum; a percentage is an exact trigger-relative width.
 - `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted).
 - `label`: ReactNode
 - `helperText`: ReactNode
@@ -261,6 +262,7 @@ Usage rules:
 - menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.
 - options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
 - Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
+- menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.
 - Selected menu items use selected tokens — never brand fills.
 - Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.
 - Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone.
@@ -530,6 +532,72 @@ Usage rules:
 Example:
 ```tsx
 <Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />
+```
+
+### Pagination
+
+Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).
+
+Import: `import { Pagination } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `count`: number [required] — Total number of pages.
+- `page`: number — 1-based current page (controlled).
+- `defaultPage`: number — Initial page when uncontrolled.
+- `onChange`: (event, page: number) => void — Called when the page changes.
+- `layout`: "auto" | "segmented" | "compact" (default "auto") — Narrow-container behavior. auto swaps to compact (prev + Page X of Y + next) when the segmented trail would overflow.
+- `labelCompactPages`: (args: { page: number; count: number }) => ReactNode — Formats the compact-mode label. Default "Page X of Y".
+- `showFirstButton`: boolean (default true) — Show jump-to-first (Figma hasFirstLast).
+- `showLastButton`: boolean (default true) — Show jump-to-last (Figma hasFirstLast).
+- `siblingCount`: number (default 1) — Pages shown on each side of the current page.
+- `boundaryCount`: number (default 1) — Pages always shown at the start and end.
+- `disabled`: boolean
+- `aria-label`: string
+
+Usage rules:
+- Page type uses Segmented Button Block geometry with nav chrome tweaks (secondary fill + quaternary icons on first/prev/next/last).
+- Selected page uses selected tokens — never brand fills.
+- Disabled (group or boundary item): transparent fill + disabled border/text; selected-while-disabled uses disabled-neutral fill + inverse text.
+- layout defaults to auto: when the segmented trail would overflow, swap to compact prev + Page X of Y + next (no wrap). Use layout=segmented to force the trail (scrolls if needed) or layout=compact always.
+- For table footers use TablePagination (same Figma set, type=table).
+- Additional MUI Pagination props are available; see MUI docs from the props table.
+
+Example:
+```tsx
+<Pagination count={10} page={4} showFirstButton showLastButton aria-label="Pagination" />
+```
+
+### TablePagination
+
+Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.
+
+Import: `import { TablePagination } from "@codeai/cads-react"`
+
+Props:
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
+- `count`: number [required] — Total number of rows.
+- `page`: number [required] — 0-based page index (MUI TablePagination).
+- `rowsPerPage`: number [required]
+- `onPageChange`: (event, newPage: number) => void [required]
+- `onRowsPerPageChange`: (event) => void
+- `rowsPerPageOptions`: Array<number | { value: number; label: string }> (default [10, 25, 50, 100])
+- `labelRowsPerPage`: ReactNode (default "Rows per page")
+- `labelDisplayedRows`: (args) => ReactNode — Formats the range text (from-to of count).
+- `disabled`: boolean
+- `aria-label`: string
+
+Usage rules:
+- Composes Dropdown (input, secondary, hug field + menuWidth=trigger) and Button (outlined secondary iconOnly).
+- Rows-per-page uses role=input so the menu highlights the current value; menu matches the hugged trigger width.
+- Desktop follows Figma: one horizontal row with a vertical divider.
+- At 760px and below, stacks rows-per-page above range/nav and hides the divider. Mobile stack gap L16 / M12 / S8 / XS6.
+- page is 0-based (MUI TablePagination convention); Pagination page is 1-based.
+- Documented on the Pagination component page with a dedicated props table.
+
+Example:
+```tsx
+<TablePagination count={100} page={1} rowsPerPage={10} onPageChange={() => {}} onRowsPerPageChange={() => {}} />
 ```
 
 ### Alert
