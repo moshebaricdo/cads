@@ -260,6 +260,7 @@ Props:
 
 Usage rules:
 - role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
+- Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.
 - menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.
 - options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
 - Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
@@ -740,7 +741,7 @@ Props:
 Usage rules:
 - No hover/press/border chrome on the icon itself — only a required focus-visible ring.
 - Composes Tooltip for positioning/caret; does not reimplement tooltip surface.
-- No exact Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1 — implemented docs-driven from the Tooltip spec + shared icon color/size conventions (see docs/STATUS.md).
+- Figma Info Tooltip (17051:27346) models size × color × state; hover/focus variants pin a Tooltip instance above the icon. placement/hasCaret stay code-only — Figma covers the default top placement.
 - Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, …) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props).
 
 Example:

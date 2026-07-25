@@ -50,6 +50,7 @@ const TablePagination = forwardRef(
         role: "navigation",
         "aria-label": ariaLabel ?? "Table pagination",
         className,
+        "data-cads-component": "TablePagination",
         sx: {
           display: "inline-flex",
           flexDirection: "row",

@@ -50,14 +50,60 @@ Last updated: 2026-07-25
 - [x] **Motion library rollout (2026-07-24)** — Recipe-by-need across the catalog: Press on discrete pressables (skip flush groups), Surface on every overlay enter, Indicator on Toggle + Tabs sliding chrome. See evidence summary below.
 - [x] **Dropdown Menu Item state sync (2026-07-24)** — Figma `896:3791` default/defaultError recipes: destructive press stays `error-light` + `text-error-secondary`; selected press returns to `selected-primary` (hover still `selected-strong`); disabled uses `--text-disabled-*` / `--background-disabled-neutral` (no opacity fade). Checklist itemType left unchanged.
 - [x] **Pressed-state consistency (2026-07-24)** — Button / TextInput / Dropdown Button aligned to Figma after Motions-era state cleanup. Contained press keeps `*-strong` (secondary returns to inverse); outlined + Dropdown trigger press keep tertiary; TextInput press keeps secondary (no white flash). See evidence summary below.
-- [x] **Icon Tooltip (2026-07-25)** — new docs-driven component (no matching Figma set found in `DGekOeToRVifvFAhfqpeC1`): bare info-style icon affordance that composes `Tooltip` for the bubble/caret, with no button chrome — only a required focus ring. Catalogued under Messaging. `color` primary (brand) / secondary (neutral-primary) / tertiary (neutral-quaternary, default), shared control `size` scale, `iconName` default `circle-info`. See evidence summary below.
+- [x] **Icon Tooltip (2026-07-25)** — new component: bare info-style icon affordance that composes `Tooltip` for the bubble/caret, with no button chrome — only a required focus ring. Catalogued under Messaging. `color` primary (brand) / secondary (neutral-primary) / tertiary (neutral-quaternary, default), shared control `size` scale, `iconName` default `circle-info`. Implemented docs-driven, then **published back to Figma** as `Info Tooltip` `17051:27346`. See evidence summary below.
+- [x] **Info Tooltip Figma set — code → design (2026-07-25)** — first component authored *into* the CADS Figma file from code via MCP (`use_figma`): 48 variants (4 sizes × 3 colors × 4 states) on page `17044:8135`, bound to semantic variables and the shared focus-ring effect style; hover/focus variants pin a nested `Tooltip` instance above the glyph. Snapshot / visual recipe / `figma.code-connect.json` / `cadsManifest` now carry the node + component key. See evidence summary below.
 - [x] **Motion springs (2026-07-25)** — `motion.spring.fast|moderate|slow` (Apple duration+bounce) in `@codeai/cads-variables`; Indicator on Toggle/Tabs uses `spring.moderate` via Motion when `experimentalMotion` is on (CSS easing remains the fallback). Docs sidebar floating highlight snaps instantly (no spring chase). See evidence summary below.
 - [x] **Overlay portal + z-index layers (2026-07-25)** — Dropdown menus portal by default (fixes playground/overflow clipping); fixture `disablePortal` escape hatch; code-owned `--z-*` ladder (drawer 1200 / modal·dropdown·popover 1300 / toast 1400 / tooltip 1500) wired through theme + Poppers; Popover click-away ignores nested menus; Dialog/Modal/Drawer `disableEnforceFocus` for nested focus; Shape page Stacking table.
+
+## Info Tooltip Figma set (code → design) — evidence summary
+
+```text
+Task path: code → design (reverse parity build)
+Components: IconTooltip → Figma "Info Tooltip"
+Figma output (authored 2026-07-25 via Figma MCP use_figma):
+  - page 17044:8135, component set 17051:27346,
+    key 2136f83f6a3b9e32d1687b074eda81b74c13b186
+  - 48 variants: size (large 18 / medium 16 / small 14 / extraSmall 12)
+    × color (primary / secondary / tertiary) × state (default / hover / focus / disabled)
+  - text property iconName#17051:0 (default "circle-info") bound to the glyph;
+    glyph is a FA 7 Pro Solid ligature text node, matching the file's icon convention
+  - variables: text/brand/primary, text/neutral/primary, text/neutral/quaternary,
+    text/state/disabled/neutral, shape/sm (6 = --radius-sm); focus uses the shared
+    Button focus-ring effect style (4px border/state/focused/primary + 2px background)
+  - hover/focus variants nest the Tooltip variant caretPlacement=bottom (16416:1189)
+    as an exposed instance inside a 256px bottom-aligned "tooltipAnchor" frame, so the
+    caret tip sits 4px above the glyph and re-centers when the copy is edited
+  - grid follows the CADS page convention (Close Icon Button 6368:7269): color runs
+    left→right as columns, size × state stacks top→bottom as rows; Size badges label
+    each size block on the left rail, state labels per row, color labels above the
+    columns, guideline dividers between columns and size blocks
+Correction loop (5 passes, each re-screenshotted in Figma):
+  1. component roots kept createComponent's default 100px height → hug both axes
+  2. focus ring did not render on a fill-less frame → Button's Z: Special Alpha fill
+     + clipsContent on the trigger
+  3. tooltip copy edits shifted the bubble off-center (absolute x is not overridable
+     in an instance) → centering anchor frame
+  4. outer-column tooltips crossed the set border → inset the grid 45px / 25px
+  5. design review: grid axes were size-as-columns → transposed to the page convention
+     (color as columns, size × state as rows); children reordered row-major, default
+     variant unchanged, page frame / section / info panel re-proportioned
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (IconTooltip entry:
+    nodeId, componentKey, size/color/state axes, state as designOnly)
+  - packages/react/src/manifest/visual-recipes/IconTooltip.json (publicNodeId set,
+    hover + disabled recipes, per-case figmaVariant references)
+  - figma.code-connect.json + cadsManifest figma block
+Open: hover and disabled coverage cases are `pending` — they need a browser capture
+  pass (no browser automation available in this session; component code unchanged).
+Accepted differences: Figma models only the default top placement (placement/hasCaret
+  stay code-only); no pressed variant (code has no press chrome); Figma default variant
+  is large/primary vs code medium/tertiary (same divergence as Button).
+```
 
 ## Icon Tooltip — evidence summary
 
 ```text
-Task path: new component (docs-driven, no Figma match)
+Task path: new component (docs-driven; Figma set added later the same day — see above)
 Components: IconTooltip
 Figma evidence (checked 2026-07-25, file DGekOeToRVifvFAhfqpeC1):
   - search_design_system("icon tooltip"/"info icon") returned only unrelated
@@ -65,14 +111,13 @@ Figma evidence (checked 2026-07-25, file DGekOeToRVifvFAhfqpeC1):
     "InformationCircle2" icon from a deprecated icon kit) — no match in this file
   - get_metadata on the Tooltip public node (1990:7125) shows only caretPlacement
     variants (top/bottom/left/right) — no sibling Icon Tooltip / info-icon variant
-  - Conclusion: no Icon Tooltip component set exists in CADS Figma today.
+  - Conclusion at the time: no Icon Tooltip component set existed in CADS Figma.
     Implemented from the task's suggested API + existing Tooltip spec + shared
     icon size/color conventions (CloseIconButton icon sizing, IconToggle focus
-    ring). Accepted per task instructions; revisit if Figma adds a match.
+    ring). Superseded by the code → design build above.
 Spec artifacts:
-  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (IconTooltip entry,
-    figmaName null, all props under codeOnlyProps, notes explain the no-match search)
-  - packages/react/src/manifest/visual-recipes/IconTooltip.json (designContextCaptured: false)
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (IconTooltip entry)
+  - packages/react/src/manifest/visual-recipes/IconTooltip.json
 API: title (required), iconName (default "circle-info"), color
   primary|secondary|tertiary (default tertiary → quaternary), size
   large|medium|small|extraSmall (default medium), placement (passthrough to
@@ -89,8 +134,8 @@ API audit: pnpm figma:audit-props (non-strict; no strict run — pre-existing
   Tooltip.surfaceOnly gap in the snapshot predates this change and is unrelated)
 Verification: pnpm typecheck; pnpm build:react; pnpm build:docs
 Accepted differences:
-  - No Figma component set to diff against (see Figma evidence above) — geometry
-    and color roles are docs-driven, not pixel-matched to a design reference
+  - No Figma component set to diff against at implementation time — geometry and
+    color roles were docs-driven; the Figma set was later generated from them
 ```
 
 ## Pressed-state consistency — evidence summary

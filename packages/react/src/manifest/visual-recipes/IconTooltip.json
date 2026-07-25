@@ -140,8 +140,8 @@
     "cases": [
       {
         "id": "icon-tooltip-large-primary-default-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=large, color=primary, state=default",
         "mode": "light",
         "props": { "size": "large", "color": "primary", "title": "Help text" },
         "state": "default",
@@ -156,8 +156,8 @@
       },
       {
         "id": "icon-tooltip-medium-secondary-default-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=medium, color=secondary, state=default",
         "mode": "light",
         "props": { "size": "medium", "color": "secondary", "title": "Help text" },
         "state": "default",
@@ -172,8 +172,8 @@
       },
       {
         "id": "icon-tooltip-medium-tertiary-default-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=medium, color=tertiary, state=default",
         "mode": "light",
         "props": { "size": "medium", "color": "tertiary", "title": "Help text" },
         "state": "default",
@@ -188,8 +188,8 @@
       },
       {
         "id": "icon-tooltip-small-primary-default-dark",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=small, color=primary, state=default",
         "mode": "dark",
         "props": { "size": "small", "color": "primary", "title": "Help text" },
         "state": "default",
@@ -204,8 +204,8 @@
       },
       {
         "id": "icon-tooltip-xs-tertiary-default-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=extraSmall, color=tertiary, state=default",
         "mode": "light",
         "props": { "size": "extraSmall", "color": "tertiary", "title": "Help text" },
         "state": "default",
@@ -220,8 +220,8 @@
       },
       {
         "id": "icon-tooltip-medium-tertiary-focus-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=medium, color=tertiary, state=focus",
         "mode": "light",
         "props": { "size": "medium", "color": "tertiary", "title": "Help text" },
         "state": "focus",
@@ -237,8 +237,8 @@
       },
       {
         "id": "icon-tooltip-open-top-primary-light",
-        "figmaNodeId": null,
-        "figmaVariant": null,
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=medium, color=primary, state=hover",
         "mode": "light",
         "props": { "color": "primary", "placement": "top", "title": "Help text" },
         "state": "default",
@@ -267,22 +267,78 @@
         "browserScreenshot": null,
         "result": "pass",
         "mismatches": []
+      },
+      {
+        "id": "icon-tooltip-large-tertiary-hover-light",
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=large, color=tertiary, state=hover",
+        "mode": "light",
+        "props": { "size": "large", "color": "tertiary", "title": "More info" },
+        "state": "hover",
+        "viewport": { "width": 240, "height": 140, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "18", "caretGapPx": "4" },
+        "expectedVariables": ["--text-neutral-quaternary", "--background-neutral-primary-inverse"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Added with the Figma set (2026-07-25). Figma side verified; needs a browser hover capture to close the loop."
+        ]
+      },
+      {
+        "id": "icon-tooltip-medium-tertiary-disabled-light",
+        "figmaNodeId": "17051:27346",
+        "figmaVariant": "size=medium, color=tertiary, state=disabled",
+        "mode": "light",
+        "props": { "size": "medium", "color": "tertiary", "title": "More info", "triggerProps": { "disabled": true } },
+        "state": "disabled",
+        "viewport": { "width": 96, "height": 96, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "iconPx": "16" },
+        "expectedVariables": ["--text-disabled-neutral"],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/IconTooltip.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Disabled is reachable only through triggerProps.disabled; the fixture has no disabled case yet."
+        ]
       }
     ]
   },
   "acceptedDifferences": [
     {
-      "description": "No Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1.",
-      "reason": "Confirmed via search_design_system + Tooltip (1990:7125) metadata inspection; implemented docs-driven per task instructions.",
-      "owner": "task instructions (2026-07-25)",
+      "description": "Figma models only the default top placement (caret below the bubble); placement and hasCaret stay code-only.",
+      "reason": "The 12 MUI placements come from the Tooltip set (1990:7125); duplicating them on Info Tooltip would multiply 48 variants by 12 for no design value.",
+      "owner": "agent build session (2026-07-25)",
+      "affectedCases": ["icon-tooltip-open-bottom-tertiary-dark"]
+    },
+    {
+      "description": "Figma has no pressed variant.",
+      "reason": "The code trigger keeps a transparent background on :active, so press has no distinct visual recipe to model.",
+      "owner": "agent build session (2026-07-25)",
+      "affectedCases": ["all"]
+    },
+    {
+      "description": "Figma default variant is size=large, color=primary; code defaults are size=medium, color=tertiary.",
+      "reason": "Figma default follows the variant grid reading order (same divergence as Button 15724:18791); code defaults follow the most common usage.",
+      "owner": "agent build session (2026-07-25)",
       "affectedCases": ["all"]
     }
   ],
   "evidence": {
-    "apiAudit": "non-strict pnpm figma:audit-props: IconTooltip entry 0 findings",
+    "apiAudit": "pnpm figma:audit-props -- --strict: IconTooltip 0 error / 0 warn / 0 escalate",
     "typecheck": "pass",
     "build": "pass",
     "docsBuild": "pass",
-    "correctionPasses": []
+    "correctionPasses": [
+      "2026-07-25 code→design pass 1: component roots kept Figma's default 100px height (createComponent default) — set both axes to hug, recaptured.",
+      "2026-07-25 code→design pass 2: focus ring did not render on a fill-less frame — matched Button's convention (Z: Special Alpha fill + clipsContent on the trigger), recaptured.",
+      "2026-07-25 code→design pass 3: editing tooltip copy shifted the bubble off-center because absolute x cannot be overridden in an instance — wrapped each tooltip in a bottom-aligned 256px centering anchor, recaptured.",
+      "2026-07-25 code→design pass 4: outer-column tooltips overflowed the component-set border — inset the variant grid 45px horizontally / 25px vertically, recaptured.",
+      "2026-07-25 code→design pass 5 (design review): grid axes did not match CADS page convention — transposed so color runs left→right as columns and size × state stacks top→bottom as rows (matches Close Icon Button 6368:7269). Variant children reordered row-major; default variant unchanged."
+    ]
   }
 }

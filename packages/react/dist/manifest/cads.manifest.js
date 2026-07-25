@@ -1456,6 +1456,11 @@ const cadsManifest = {
       exportName: "IconTooltip",
       importFrom: "@codeai/cads-react",
       description: "Info-style icon that is purely a Tooltip affordance \u2014 no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17051:27346",
+        componentKey: "2136f83f6a3b9e32d1687b074eda81b74c13b186"
+      },
       props: [
         { name: "title", type: "ReactNode", required: true },
         {
@@ -1502,7 +1507,7 @@ const cadsManifest = {
       usageRules: [
         "No hover/press/border chrome on the icon itself \u2014 only a required focus-visible ring.",
         "Composes Tooltip for positioning/caret; does not reimplement tooltip surface.",
-        "No exact Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1 \u2014 implemented docs-driven from the Tooltip spec + shared icon color/size conventions (see docs/STATUS.md).",
+        "Figma Info Tooltip (17051:27346) models size \xD7 color \xD7 state; hover/focus variants pin a Tooltip instance above the icon. placement/hasCaret stay code-only \u2014 Figma covers the default top placement.",
         "Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, \u2026) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props)."
       ],
       example: `<IconTooltip title="Help text" color="tertiary" placement="top" />`

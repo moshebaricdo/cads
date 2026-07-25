@@ -59,9 +59,9 @@ export interface IconTooltipProps
  * keyboard focus. Composes `Tooltip` for positioning/caret — this component
  * only owns the trigger glyph.
  *
- * No exact Figma component set exists for this pattern in `DGekOeToRVifvFAhfqpeC1`
- * (see `docs/STATUS.md`); the API below is implemented docs-driven from the
- * CADS `Tooltip` spec + shared icon color/size conventions.
+ * Spec: Figma Info Tooltip `17051:27346` (size × color × state), authored from
+ * this implementation. `placement` / `hasCaret` come from the `Tooltip` set
+ * (`1990:7125`); Figma only models the default top placement.
  */
 export const IconTooltip = forwardRef<HTMLButtonElement, IconTooltipProps>(
   function IconTooltip(

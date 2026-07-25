@@ -118,7 +118,7 @@ export const COMPONENT_EXTERNAL_LINKS: Record<string, ComponentExternalLinks> =
     },
     IconTooltip: {
       muiDocsUrl: "https://mui.com/material-ui/api/tooltip/",
-      // No dedicated Storybook story yet; docs-driven component (no Figma match).
+      // No dedicated Storybook story yet; Figma set 17051:27346 was authored from this code.
     },
     Popover: {
       muiDocsUrl: "https://mui.com/material-ui/api/popover/",

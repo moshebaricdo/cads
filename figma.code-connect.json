@@ -165,6 +165,13 @@
       "snippet": "import { Tooltip, Button } from \"@codeai/cads-react\";\n\n<Tooltip title=\"{title}\" placement=\"bottom\"><Button>{label}</Button></Tooltip>"
     },
     {
+      "componentName": "IconTooltip",
+      "figmaNodeId": "17051:27346",
+      "componentKey": "2136f83f6a3b9e32d1687b074eda81b74c13b186",
+      "source": "@codeai/cads-react",
+      "snippet": "import { IconTooltip } from \"@codeai/cads-react\";\n\n<IconTooltip title=\"{title}\" size=\"medium\" color=\"tertiary\" placement=\"top\" />"
+    },
+    {
       "componentName": "Popover",
       "figmaNodeId": "16426:681",
       "componentKey": "b524d42ecd329068d1cfa45de2b79e874f9f6cf0",
