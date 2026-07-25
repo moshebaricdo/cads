@@ -1,13 +1,14 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-23
+Last updated: 2026-07-24
 
 ## Done (scaffold complete)
 
 - [x] Monorepo scaffold (pnpm, changesets, CI, Git-URL / committed `dist/`)
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
 - [x] Color CSS vars use semantic names **without** `--ds-` prefix (e.g. `--background-brand-primary`)
-- [x] `@codeai/cads-react` — Figma-parity Actions: Button, SegmentedButton, IconToggle (+ labeled); FieldWrapper, TextInput (+ deprecated TextField alias), Dropdown (input/action); Checkbox, Radio, Toggle; Slider, Chip, ChipGroup; Alert, Toast, NotificationBanner, Tag; Link, Breadcrumbs, Tabs; **Tooltip**, **Popover**, **Drawer**, **Dialog**, **Modal**; plus FaIcon (solid/regular/brands)
+- [x] `@codeai/cads-react` — Figma-parity Actions: Button, SegmentedButton, IconToggle (+ labeled); FieldWrapper, TextInput (+ deprecated TextField alias), Dropdown (input/action); Checkbox, Radio, Toggle; Slider, Chip, ChipGroup; Alert, Toast, NotificationBanner, Tag; Link, Breadcrumbs, Tabs; **Pagination** + **TablePagination**; **Tooltip**, **Popover**, **Drawer**, **Dialog**, **Modal**; plus FaIcon (solid/regular/brands)
+- [x] **Pagination + TablePagination (2026-07-24)** — Figma set `17007:19104` type=page|table; one docs page + playground type switch + two props tables; see evidence summary below
 - [x] **Button color=orange (2026-07-23)** — contained-only run-button accent; outlined/text fall back to primary (mirrors tertiary→secondary). Props table notes for orange + tertiary restrictions.
 - [x] **Icon boolean → presence API (2026-07-23)** — collapsed Figma show/hide booleans into optional `*IconName` / `iconName` on TextInput, Chip/ChipGroup, Tooltip, Dropdown items (same pattern as Button/Tag). Alert/Toast use MUI-style `iconName={false}` to hide (omit = sentiment default). Toggle `hasIcons` kept (dual track icon defaults).
 - [x] **TextInput start icon (2026-07-21)** — Figma building-block `startIcon` + `startIconName` (field-only); see evidence summary below
@@ -43,6 +44,43 @@ Last updated: 2026-07-23
 - [x] **Typography foundation cleanup (2026-07-21)** — Matches Color page template: `FoundationHeader` → sections → foundation pagination. Text styles tabbed to match Figma Typography page (Heading / Body / Overline / Label / Link / Mono — all published styles), divider list with no card surfaces, families table last. Shared `.dividedList` in `FoundationPage.module.css`. Shape + Motion still on card surfaces — same template pass next.
 - [x] **Color variables sync with Figma (2026-07-23)** — Live Figma Semantic Colors = 148 (matches Lab2 Jul 21 sync). Promoted `codeAiColorSystem.json` + `figmaVariablesSnapshot.json`; renamed `text/accent/{pink,orange}/strong` → `secondary` (`--text-accent-*-secondary`); added `--border-neutral-black-fixed` / `--border-neutral-white-fixed`. Follow-up: remapped `text/brand/secondary` Light `purple/70` → `purple/90` (`#1D1590`) after live mapping audit (missed by snapshot/Lab2 promotion). Skill now requires second-pass live alias audit + LLM-as-judge spot-check. Exporter already supported roles; docs Color page + CSS export buttons read regenerated JSON. New agent skill: `.cursor/skills/cads-figma-color-sync`.
 - [x] **Neutral gray hex refresh (2026-07-23)** — Live `use_figma` audit: `neutral/gray/10` `#DBDDE2` → `#E1E3E6`, `gray/20` `#CCD1D7` → `#D3D6DA`; updated 9 semantic `fallbackHex` consumers + theme divider fallback; second-pass mapping audit **0 / 0 / 0**; high-risk spot-check clean.
+
+## Pagination + TablePagination — evidence summary
+
+```text
+Task path: new component
+Components: Pagination, TablePagination
+Figma evidence (retrieved 2026-07-24, file DGekOeToRVifvFAhfqpeC1):
+  - Pagination set 17007:19104 / key 9f27562cc11f74ff5019ad281149a183c1510ecf
+  - Page: ↪ ✈️ Paginator 17007:18077
+  - Related: Segmented Button Block 8000:4554; Dropdown Button; Button outlined secondary iconOnly
+  - Axes: size L–XS × type page|table; boolean hasFirstLast (default true)
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (both exports)
+  - packages/react/src/manifest/visual-recipes/Pagination.json
+  - packages/react/src/manifest/visual-recipes/TablePagination.json
+Coverage: page 6 cases + table 5 cases (sizes, light/dark, no-first-last)
+Correction loop:
+  - Page type: SegmentedButton geometry + nav chrome tweak
+    (secondary fill + quaternary icons on first/prev/next/last)
+  - Selected page: selected primary fill/border + selected text (mint)
+  - Ellipsis: FA ellipsis on primary fill (not MUI "…")
+  - Custom ButtonBase items (avoid MUI PaginationItem selected/ellipsis overrides)
+  - Fixed FA codepoints chevron-left/right (were Unicode 〈〉 2329/232a → f053/f054)
+  - Table type: desktop horizontal + divider; at ≤760px stacked; rows-per-page Dropdown role=input (selected value); mobile gap L16/M12/S8/XS6
+  - Page type: layout=auto swaps to compact prev + Page X of Y + next when narrow; playground preview provides a real constrained container
+  - Browser captures vs Figma 17015:1624 / 17019:4213
+API notes:
+  - Figma type axis is design-only → two exports (MUI Pagination vs TablePagination)
+  - hasFirstLast → showFirstButton + showLastButton (default true)
+  - Docs: one Navigation page, playground demoType switch, two props tables + MUI links
+API audit: 0 error / 0 warn / 0 escalate (strict)
+Verification: pnpm figma:audit-props -- --strict; pnpm typecheck; pnpm build
+Accepted differences:
+  - Page trail content follows MUI sibling/boundary algorithm; Figma mocks a fixed decorative trail
+  - Page layout=auto compact swap (Figma shows segmented trail only)
+  - Table stacks clusters vertically with no divider only at ≤760px (desktop matches Figma)
+```
 
 ## Toggle compact + hasIcons — evidence summary
 
