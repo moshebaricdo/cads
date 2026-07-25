@@ -56,7 +56,7 @@
   &:hover:not(:global(.Mui-disabled)) {
     background-color: var(--tab-bg-hover, var(--tab-bg));
     color: var(--tab-fg-hover, var(--tab-fg));
-    border-bottom-color: var(--tab-border-bottom-hover, var(--tab-border-bottom, transparent));
+    border-bottom: var(--tab-border-bottom-hover, var(--tab-border-bottom, none));
   }
 
   &:active:not(:global(.Mui-disabled)) {

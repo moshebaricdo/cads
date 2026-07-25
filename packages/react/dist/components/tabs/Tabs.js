@@ -211,7 +211,7 @@ const Gr = hr(function({
             "--tab-py": o ? "0" : t.primaryPadY,
             "--tab-font-size": o ? t.secondaryFontSize : t.primaryFontSize,
             "--tab-line-height": o ? t.secondaryLineHeight : t.primaryLineHeight,
-            "--tab-radius": o ? "var(--radius-sm) var(--radius-sm) 0 0" : "0",
+            "--tab-radius": o ? "var(--shape-sm) var(--shape-sm) 0 0" : "0",
             "--tab-overflow": o ? "hidden" : "visible",
             ...d && o ? { minWidth: t.secondaryIconOnlyMinWidth } : {},
             ...pr

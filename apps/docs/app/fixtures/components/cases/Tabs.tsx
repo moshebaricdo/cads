@@ -124,4 +124,44 @@ export const cases: FixtureCase[] = [
         />
       ),
     },
+    {
+      id: "tabs-large-primary-selected-hover-dark",
+      mode: "dark",
+      state: "hover",
+      viewport: { width: 480, height: 100 },
+      render: () => (
+        <Tabs
+          type="primary"
+          size="large"
+          aria-label="Tabs"
+          defaultValue="a"
+          items={[
+            { value: "a", label: "Tab Label" },
+            { value: "b", label: "Tab Label" },
+            { value: "c", label: "Tab Label" },
+            { value: "d", label: "Tab Label" },
+          ]}
+        />
+      ),
+    },
+    {
+      id: "tabs-medium-secondary-hover-light",
+      mode: "light",
+      state: "hover",
+      viewport: { width: 480, height: 80 },
+      render: () => (
+        <Tabs
+          type="secondary"
+          size="medium"
+          aria-label="Tabs"
+          defaultValue="a"
+          items={[
+            { value: "a", label: "Tab Label" },
+            { value: "b", label: "Tab Label" },
+            { value: "c", label: "Tab Label" },
+            { value: "d", label: "Tab Label" },
+          ]}
+        />
+      ),
+    },
   ];

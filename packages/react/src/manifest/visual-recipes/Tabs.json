@@ -12,11 +12,11 @@
     "relatedComponentKeys": [
       "6bdc7c7da3d1d1193ec90ba2bf1d52c03cf01e39"
     ],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-07-25",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "code-only-fix",
     "previousRecipe": null,
     "figmaChanges": []
   },
@@ -188,6 +188,33 @@
         "border": "var(--border-neutral-primary)"
       },
       "figmaVariant": "secondary current"
+    },
+    {
+      "when": {
+        "type": "secondary",
+        "isCurrent": true,
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary) on top/left/right; no bottom border"
+      },
+      "figmaVariant": "secondary current hover"
+    },
+    {
+      "when": {
+        "type": "primary",
+        "isCurrent": true,
+        "state": "hover",
+        "mode": "dark"
+      },
+      "variables": {
+        "text": "var(--text-selected-primary-inverse)",
+        "underline": "var(--border-selected-strong)"
+      },
+      "figmaVariant": "primary current hover"
     }
   ],
   "coverage": {
@@ -331,8 +358,8 @@
       },
       {
         "id": "tabs-large-primary-hover-light",
-        "figmaNodeId": "6240:7203",
-        "figmaVariant": "primary inactive hover",
+        "figmaNodeId": "6240:7396",
+        "figmaVariant": "size=large, type=primary, state=hover, iconOnly=No, isCurrent=no",
         "mode": "light",
         "props": {
           "type": "primary",
@@ -344,15 +371,89 @@
           "height": 100,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
+        "expectedGeometry": {
+          "underline": "2px transparent — inactive hover has no underline in Figma"
+        },
         "expectedVariables": [
           "--text-neutral-primary"
         ],
         "fixturePath": "/fixtures/components?component=Tabs&case=tabs-large-primary-hover-light",
-        "referenceScreenshot": "",
+        "referenceScreenshot": "captures/figma-tabs-primary-inactive-hover.png",
         "browserScreenshot": "captures/browser-tabs-large-primary-hover-light.png",
         "result": "pass",
-        "mismatches": []
+        "mismatches": [
+          {
+            "category": "state",
+            "description": "Hovering an inactive primary tab painted a 2px currentColor underline (#121212). The SCSS hover rule assigned the border shorthand custom property --tab-border-bottom to the border-bottom-color longhand, which is invalid at computed-value time and falls back to currentcolor. Fixed by using the border-bottom shorthand; recaptured as 2px transparent."
+          }
+        ]
+      },
+      {
+        "id": "tabs-large-primary-selected-hover-dark",
+        "figmaNodeId": "16465:16740",
+        "figmaVariant": "size=large, type=primary, state=hover, iconOnly=No, isCurrent=yes",
+        "mode": "dark",
+        "props": {
+          "type": "primary",
+          "size": "large"
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 480,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "underline": "2px solid"
+        },
+        "expectedVariables": [
+          "--border-selected-strong",
+          "--text-selected-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-large-primary-selected-hover-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-large-primary-selected-hover-dark.png",
+        "result": "pass",
+        "mismatches": [
+          {
+            "category": "variable-color",
+            "description": "Selected primary tab hover kept the rest-state underline (--border-selected-primary #CCF1D0) instead of --border-selected-strong (#9BE3A3), because the same invalid border-bottom-color declaration resolved to currentcolor. Light mode hid this since both tokens resolve to #1F1976 there. Fixed with the border-bottom shorthand."
+          }
+        ]
+      },
+      {
+        "id": "tabs-medium-secondary-hover-light",
+        "figmaNodeId": "16496:1643",
+        "figmaVariant": "size=medium, type=secondary, state=hover, iconOnly=No, isCurrent=no",
+        "mode": "light",
+        "props": {
+          "type": "secondary",
+          "size": "medium"
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "border": "1px solid on all sides"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary",
+          "--border-neutral-primary",
+          "--text-neutral-primary"
+        ],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-medium-secondary-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-medium-secondary-hover-light.png",
+        "result": "pass",
+        "mismatches": [
+          {
+            "category": "variable-color",
+            "description": "Hovering an inactive secondary tab painted its bottom border currentColor (#121212) instead of --border-neutral-primary (#D3D6DA), from the same invalid border-bottom-color declaration. Fixed with the border-bottom shorthand."
+          }
+        ]
       }
     ]
   },
@@ -363,6 +464,7 @@
     "build": "pnpm build — pass",
     "docsBuild": "pnpm build:docs — pass",
     "correctionPasses": [
+      "Hover regression from the SCSS-module refactor: border-bottom-color received the --tab-border-bottom shorthand, so every hover state fell back to currentcolor. Switched hover to the border-bottom shorthand and reverified primary/secondary × light/dark × selected/inactive with real Playwright hover, plus the experimental-motion indicator path.",
       "FaIcon alias home→house (Figma shortcode; FA glyph house)",
       "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
       "Link hover textDecoration:none to beat docs global a:hover underline",

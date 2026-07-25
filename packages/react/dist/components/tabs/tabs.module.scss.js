@@ -1,12 +1,12 @@
-import './tabs.css';const t = "_tablist_1n6yo_1", a = "_indicator_1n6yo_14", o = "_tab_1n6yo_1", n = {
+import './tabs.css';const t = "_tablist_16yrp_1", a = "_indicator_16yrp_14", s = "_tab_16yrp_1", i = {
   tablist: t,
   indicator: a,
-  tab: o
+  tab: s
 };
 export {
-  n as default,
+  i as default,
   a as indicator,
-  o as tab,
+  s as tab,
   t as tablist
 };
 //# sourceMappingURL=tabs.module.scss.js.map
