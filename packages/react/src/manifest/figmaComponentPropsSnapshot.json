@@ -8,6 +8,7 @@
     "Boolean Figma values Yes/No/yes/no/on/off normalize to boolean in code.",
     "Segmented Button page 587:1268 contains Group + Block; Group is the public API; Block is internal.",
     "SegmentedButton: removed invented labelStyle + color (Group color=Primary only; labels always Body Semi Bold).",
+    "Pagination page 17007:18077 / set 17007:19104 — Figma type=page → Pagination, type=table → TablePagination (docs on Pagination page).",
     "Code-only props carry a category and rationale so API divergences are explicit and auditable."
   ],
   "components": [
@@ -798,6 +799,11 @@
           "name": "width",
           "category": "layout",
           "reason": "Input-role layout control (hug = static width from longest option/placeholder; full; or CSS length). Not a Figma variant axis."
+        },
+        {
+          "name": "menuWidth",
+          "category": "layout",
+          "reason": "Menu panel sizing (hug | trigger | px minimum | trigger-relative percentage). Code-only — dense numeric menus vs spacious form selects. Not a Figma variant axis."
         }
       ],
       "stateRecipes": [
@@ -1747,6 +1753,229 @@
       "escalate": [],
       "notes": [
         "Accepted: isCurrent-vs-value: Accepted \u2014 do not expose isCurrent on public Tabs API. (figma: Tab Item exposes isCurrent per instance.; code: Tab Group owns selection via value/defaultValue like SegmentedButton.)"
+      ]
+    },
+    {
+      "cadsName": "Pagination",
+      "figmaName": "Pagination",
+      "nodeId": "17007:19104",
+      "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+      "pageId": "17007:18077",
+      "symbolCount": 16,
+      "variantProperties": {
+        "size": [
+          "large",
+          "medium",
+          "small",
+          "extraSmall"
+        ],
+        "type": [
+          "page",
+          "table"
+        ],
+        "state": [
+          "default",
+          "disabled"
+        ]
+      },
+      "related": {
+        "segmentedButtonBlock": {
+          "figmaName": "Segmented Button Block",
+          "nodeId": "8000:4554",
+          "componentKey": "d8dbdc672ccdc6755ae409e31e5517571424384e",
+          "notes": "Page type composes Segmented Button Blocks with pagination-specific chrome (nav segments use background-neutral-secondary + text-neutral-quaternary; page/ellipsis keep primary fill)."
+        }
+      },
+      "designOnlyAxes": [
+        "type",
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "type": null,
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "count",
+          "category": "content",
+          "reason": "MUI Pagination page count; Figma mocks a fixed trail."
+        },
+        {
+          "name": "page",
+          "category": "controlled-state",
+          "reason": "1-based current page (MUI Pagination)."
+        },
+        {
+          "name": "defaultPage",
+          "category": "controlled-state",
+          "reason": "Uncontrolled initial page."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Reports page changes."
+        },
+        {
+          "name": "layout",
+          "category": "layout",
+          "reason": "auto|segmented|compact — narrow containers swap to compact prev + Page X of Y + next (not a Figma axis)."
+        },
+        {
+          "name": "labelCompactPages",
+          "category": "content",
+          "reason": "Formatter for compact-mode page label (default 'Page X of Y')."
+        },
+        {
+          "name": "showFirstButton",
+          "category": "layout",
+          "reason": "Maps Figma boolean hasFirstLast (default true) together with showLastButton."
+        },
+        {
+          "name": "showLastButton",
+          "category": "layout",
+          "reason": "Maps Figma boolean hasFirstLast (default true) together with showFirstButton."
+        },
+        {
+          "name": "siblingCount",
+          "category": "layout",
+          "reason": "MUI sibling page count around the current page."
+        },
+        {
+          "name": "boundaryCount",
+          "category": "layout",
+          "reason": "MUI boundary page count at start/end."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Disables all items; Figma Block state=disabled recipe."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name for the pagination navigation."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Figma type=page maps to Pagination; type=table maps to TablePagination (separate export). Docs host both on the Pagination page.",
+        "hasFirstLast Figma boolean is exposed as showFirstButton + showLastButton (MUI-compatible).",
+        "layout=auto (default) swaps to compact prev + Page X of Y + next when the segmented trail would overflow."
+      ]
+    },
+    {
+      "cadsName": "TablePagination",
+      "figmaName": "Pagination",
+      "nodeId": "17007:19104",
+      "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+      "pageId": "17007:18077",
+      "symbolCount": 16,
+      "variantProperties": {
+        "size": [
+          "large",
+          "medium",
+          "small",
+          "extraSmall"
+        ],
+        "type": [
+          "page",
+          "table"
+        ],
+        "state": [
+          "default",
+          "disabled"
+        ]
+      },
+      "related": {
+        "dropdownButton": {
+          "figmaName": "Dropdown Button",
+          "notes": "Rows-per-page control: Dropdown role=input (selected value in menu), color=secondary, width=hug, menuWidth=trigger. External 'Rows per page' label stays a sibling."
+        },
+        "button": {
+          "figmaName": "Button",
+          "notes": "Prev/next: Button outlined secondary iconOnly with chevron-left/right."
+        }
+      },
+      "designOnlyAxes": [
+        "type",
+        "state"
+      ],
+      "axisToCodeProp": {
+        "size": "size",
+        "type": null,
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "count",
+          "category": "content",
+          "reason": "Total row count (MUI TablePagination)."
+        },
+        {
+          "name": "page",
+          "category": "controlled-state",
+          "reason": "0-based page index (MUI TablePagination)."
+        },
+        {
+          "name": "rowsPerPage",
+          "category": "controlled-state",
+          "reason": "Rows shown per page."
+        },
+        {
+          "name": "onPageChange",
+          "category": "event",
+          "reason": "Called when prev/next changes the page."
+        },
+        {
+          "name": "onRowsPerPageChange",
+          "category": "event",
+          "reason": "Called when the rows-per-page Dropdown changes."
+        },
+        {
+          "name": "rowsPerPageOptions",
+          "category": "content",
+          "reason": "Options for the rows-per-page Dropdown."
+        },
+        {
+          "name": "labelRowsPerPage",
+          "category": "content",
+          "reason": "Label before the rows-per-page control (default 'Rows per page')."
+        },
+        {
+          "name": "labelDisplayedRows",
+          "category": "content",
+          "reason": "Formatter for the range text (default 'from-to of count')."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Disables controls."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Accessible name for the table pagination region."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "press",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "Implements Figma Pagination type=table. Public docs live on the Pagination page with a second props table.",
+        "Desktop matches Figma's horizontal layout + divider. At 760px and below, code stacks rows-per-page above range/nav and hides the divider; mobile stack gap L16/M12/S8/XS6."
       ]
     },
     {

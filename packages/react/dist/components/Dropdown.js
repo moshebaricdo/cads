@@ -32,6 +32,25 @@ function resolveInputWidth(width = "hug") {
     maxWidth: "100%"
   };
 }
+function resolveMenuPanelWidth(menuWidth = "hug", triggerWidthPx) {
+  if (menuWidth === "trigger") {
+    const px = Math.max(0, triggerWidthPx);
+    return { width: px, minWidth: px };
+  }
+  if (typeof menuWidth === "number") {
+    const min = Math.max(menuWidth, triggerWidthPx);
+    return { width: "max-content", minWidth: min };
+  }
+  if (menuWidth.endsWith("%")) {
+    const ratio = Number.parseFloat(menuWidth) / 100;
+    const px = Math.max(0, triggerWidthPx * ratio);
+    return { width: px, minWidth: px };
+  }
+  return {
+    width: "max-content",
+    minWidth: Math.max(0, triggerWidthPx) || "max-content"
+  };
+}
 function placementToPopper(placement) {
   switch (placement) {
     case "bottomRight":
@@ -343,6 +362,7 @@ function MenuItemRow({
       style: {
         display: "flex",
         alignItems: "center",
+        justifyContent: "flex-start",
         gap: showStartIcon || menuType === "checklist" ? dims.gap : 0,
         width: "100%",
         boxSizing: "border-box",
@@ -357,8 +377,8 @@ function MenuItemRow({
         fontWeight: 400,
         fontSize: dims.fontSize,
         lineHeight: dims.lineHeight,
-        transition: TRANSITION_COLORS,
-        minWidth: 0
+        textAlign: "left",
+        transition: TRANSITION_COLORS
       },
       children: [
         menuType === "checklist" ? /* @__PURE__ */ jsx(
@@ -411,11 +431,12 @@ function MenuItemRow({
           "span",
           {
             style: {
-              minWidth: 0,
               flex: "1 1 auto",
+              minWidth: 0,
               overflow: "hidden",
               textOverflow: "ellipsis",
-              whiteSpace: "nowrap"
+              whiteSpace: "nowrap",
+              textAlign: "left"
             },
             children: option.label
           }
@@ -479,7 +500,6 @@ function MenuGroupRow({
         lineHeight: dims.lineHeight,
         letterSpacing: "var(--tracking-overline)",
         textTransform: "uppercase",
-        minWidth: 0,
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
@@ -490,7 +510,6 @@ function MenuGroupRow({
         "span",
         {
           style: {
-            minWidth: 0,
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap"
@@ -507,6 +526,7 @@ const Dropdown = forwardRef(
       size = "medium",
       menuType = "default",
       menuPlacement = "bottomLeft",
+      menuWidth = "hug",
       options,
       open: openProp,
       defaultOpen = false,
@@ -580,13 +600,15 @@ const Dropdown = forwardRef(
     ]);
     const hugCandidates = useMemo(() => {
       if (!isInput) return void 0;
-      const placeholder = inputProps?.placeholder ?? "Dropdown";
-      const candidates = [
-        placeholder,
-        ...itemOptions.map((o) => o.label)
-      ];
+      const candidates = itemOptions.map((o) => o.label);
+      if (inputProps?.placeholder != null && inputProps.placeholder !== "") {
+        candidates.push(inputProps.placeholder);
+      }
       if (isChecklist) {
         candidates.push(`${itemOptions.length} selected`);
+      }
+      if (candidates.length === 0) {
+        candidates.push(inputProps?.placeholder ?? "Dropdown");
       }
       return candidates;
     }, [isInput, inputProps?.placeholder, itemOptions, isChecklist]);
@@ -699,6 +721,9 @@ const Dropdown = forwardRef(
       }
     };
     const resolvedMenuType = isInput && (inputProps?.menuType ?? menuType) === "checklist" ? "checklist" : "default";
+    const menuPanelWidth = isChecklist ? { width: "max-content", minWidth: "max-content" } : resolveMenuPanelWidth(menuWidth, anchorEl?.offsetWidth ?? 0);
+    const menuPanelMinWidthCss = typeof menuPanelWidth.minWidth === "number" ? `${menuPanelWidth.minWidth}px` : menuPanelWidth.minWidth;
+    const menuPanelWidthCss = typeof menuPanelWidth.width === "number" ? `${menuPanelWidth.width}px` : menuPanelWidth.width;
     const menu = /* @__PURE__ */ jsx(
       Popper,
       {
@@ -708,7 +733,8 @@ const Dropdown = forwardRef(
         disablePortal: true,
         style: {
           zIndex: 1400,
-          ...isChecklist ? { width: "max-content", minWidth: "max-content" } : null
+          width: menuPanelWidthCss,
+          minWidth: menuPanelMinWidthCss
         },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } }
@@ -734,10 +760,9 @@ const Dropdown = forwardRef(
               backgroundColor: "var(--background-neutral-primary)",
               boxShadow: "var(--shadow-md)",
               overflow: "hidden",
-              // Checklist (Figma Menu List 971:4280): hug the Action Row so
-              // footer labels stay fully visible at every size.
-              width: isChecklist ? "max-content" : void 0,
-              minWidth: isChecklist ? "max-content" : isInput ? 180 : 120,
+              width: menuPanelWidthCss,
+              minWidth: menuPanelMinWidthCss,
+              textAlign: "left",
               // Icon menus: 4px vertical padding. Checklist: options list owns
               // the vertical padding (pt/pb 4; pb sits above the Action Row).
               py: isChecklist ? 0 : "4px"

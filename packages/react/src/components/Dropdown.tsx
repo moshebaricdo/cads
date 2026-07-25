@@ -39,13 +39,27 @@ export type DropdownLabelStyle = "thick" | "thin";
 export type DropdownColor = "primary" | "secondary";
 /**
  * Input-role field width.
- * - `"hug"` (default): static width from the longest option / placeholder
- *   (selection changes do not resize the field; longer text ellipsizes)
+ * - `"hug"` (default): static width from the longest option (and an explicit
+ *   `placeholder` when set). Selection changes do not resize the field;
+ *   longer text ellipsizes.
  * - `"full"`: fill the parent
  * - CSS length: e.g. `"12rem"`, `"240px"`, `"50%"`, `"min(100%, 20rem)"`
  * - number: treated as pixels
  */
 export type DropdownFieldWidth = "hug" | "full" | number | (string & {});
+
+/**
+ * Menu panel horizontal sizing (both roles).
+ * - `"hug"` (default): fit content; never narrower than the trigger
+ * - `"trigger"`: lock to the trigger width (long labels ellipsize)
+ * - number: minimum width in px; still grows with longer content
+ * - percentage string: exact width relative to the trigger (e.g. `"70%"`)
+ */
+export type DropdownMenuWidth =
+  | "hug"
+  | "trigger"
+  | number
+  | `${number}%`;
 
 /** Selectable menu row (Figma Dropdown Menu Item `896:3791`). */
 export interface DropdownItemOption {
@@ -93,6 +107,11 @@ interface DropdownBaseProps {
   size?: DropdownSize;
   menuType?: DropdownMenuType;
   menuPlacement?: DropdownMenuPlacement;
+  /**
+   * Menu panel width behavior.
+   * @default "hug"
+   */
+  menuWidth?: DropdownMenuWidth;
   options: DropdownOption[];
   open?: boolean;
   defaultOpen?: boolean;
@@ -152,6 +171,30 @@ function resolveInputWidth(width: DropdownFieldWidth = "hug"): {
     rootWidth: resolved,
     triggerWidth: "100%",
     maxWidth: "100%",
+  };
+}
+
+function resolveMenuPanelWidth(
+  menuWidth: DropdownMenuWidth = "hug",
+  triggerWidthPx: number,
+): { width: CSSProperties["width"]; minWidth: CSSProperties["minWidth"] } {
+  if (menuWidth === "trigger") {
+    const px = Math.max(0, triggerWidthPx);
+    return { width: px, minWidth: px };
+  }
+  if (typeof menuWidth === "number") {
+    const min = Math.max(menuWidth, triggerWidthPx);
+    return { width: "max-content", minWidth: min };
+  }
+  if (menuWidth.endsWith("%")) {
+    const ratio = Number.parseFloat(menuWidth) / 100;
+    const px = Math.max(0, triggerWidthPx * ratio);
+    return { width: px, minWidth: px };
+  }
+  // hug — content width, never narrower than the trigger (no absolute floor)
+  return {
+    width: "max-content",
+    minWidth: Math.max(0, triggerWidthPx) || "max-content",
   };
 }
 
@@ -543,6 +586,7 @@ function MenuItemRow({
       style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "flex-start",
         gap: showStartIcon || menuType === "checklist" ? dims.gap : 0,
         width: "100%",
         boxSizing: "border-box",
@@ -557,8 +601,8 @@ function MenuItemRow({
         fontWeight: 400,
         fontSize: dims.fontSize,
         lineHeight: dims.lineHeight,
+        textAlign: "left",
         transition: TRANSITION_COLORS,
-        minWidth: 0,
       }}
     >
       {menuType === "checklist" ? (
@@ -615,11 +659,12 @@ function MenuItemRow({
       ) : null}
       <span
         style={{
-          minWidth: 0,
           flex: "1 1 auto",
+          minWidth: 0,
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
+          textAlign: "left",
         }}
       >
         {option.label}
@@ -683,7 +728,6 @@ function MenuGroupRow({
         lineHeight: dims.lineHeight,
         letterSpacing: "var(--tracking-overline)",
         textTransform: "uppercase",
-        minWidth: 0,
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
@@ -693,7 +737,6 @@ function MenuGroupRow({
     >
       <span
         style={{
-          minWidth: 0,
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
@@ -717,6 +760,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       size = "medium",
       menuType = "default",
       menuPlacement = "bottomLeft",
+      menuWidth = "hug",
       options,
       open: openProp,
       defaultOpen = false,
@@ -813,16 +857,20 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       selectedSet,
     ]);
 
-    /** Static hug width: longest option / placeholder / checklist summary. */
+    /** Static hug width: longest option / explicit placeholder / checklist summary. */
     const hugCandidates = useMemo(() => {
       if (!isInput) return undefined;
-      const placeholder = inputProps?.placeholder ?? "Dropdown";
-      const candidates: ReactNode[] = [
-        placeholder,
-        ...itemOptions.map((o) => o.label),
-      ];
+      const candidates: ReactNode[] = itemOptions.map((o) => o.label);
+      // Only an explicit placeholder participates in hug sizing. The display
+      // fallback ("Dropdown") must not inflate width when a value is selected.
+      if (inputProps?.placeholder != null && inputProps.placeholder !== "") {
+        candidates.push(inputProps.placeholder);
+      }
       if (isChecklist) {
         candidates.push(`${itemOptions.length} selected`);
+      }
+      if (candidates.length === 0) {
+        candidates.push(inputProps?.placeholder ?? "Dropdown");
       }
       return candidates;
     }, [isInput, inputProps?.placeholder, itemOptions, isChecklist]);
@@ -961,8 +1009,19 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     // Instant open (no Grow): fixtures disable CSS transitions, which can leave
     // MUI Transition children stuck at opacity 0. disablePortal keeps the menu
     // inside the component tree for deterministic capture regions.
-    // Checklist menus size to max-content so the Action Row ("Select all" /
-    // "Clear all") always fits on one line; option labels ellipsize.
+    // Checklist always hugs max-content so the Action Row stays on one line.
+    const menuPanelWidth = isChecklist
+      ? ({ width: "max-content", minWidth: "max-content" } as const)
+      : resolveMenuPanelWidth(menuWidth, anchorEl?.offsetWidth ?? 0);
+    const menuPanelMinWidthCss =
+      typeof menuPanelWidth.minWidth === "number"
+        ? `${menuPanelWidth.minWidth}px`
+        : menuPanelWidth.minWidth;
+    const menuPanelWidthCss =
+      typeof menuPanelWidth.width === "number"
+        ? `${menuPanelWidth.width}px`
+        : menuPanelWidth.width;
+
     const menu = (
       <Popper
         open={open && Boolean(anchorEl)}
@@ -971,7 +1030,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         disablePortal
         style={{
           zIndex: 1400,
-          ...(isChecklist ? { width: "max-content", minWidth: "max-content" } : null),
+          width: menuPanelWidthCss,
+          minWidth: menuPanelMinWidthCss,
         }}
         modifiers={[
           { name: "offset", options: { offset: [0, 4] } },
@@ -996,10 +1056,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             backgroundColor: "var(--background-neutral-primary)",
             boxShadow: "var(--shadow-md)",
             overflow: "hidden",
-            // Checklist (Figma Menu List 971:4280): hug the Action Row so
-            // footer labels stay fully visible at every size.
-            width: isChecklist ? "max-content" : undefined,
-            minWidth: isChecklist ? "max-content" : isInput ? 180 : 120,
+            width: menuPanelWidthCss,
+            minWidth: menuPanelMinWidthCss,
+            textAlign: "left",
             // Icon menus: 4px vertical padding. Checklist: options list owns
             // the vertical padding (pt/pb 4; pb sits above the Action Row).
             py: isChecklist ? 0 : "4px",

@@ -200,6 +200,24 @@ declare const SEGMENTED_SIZE: Record<ControlSize, {
     iconOnlyPadding: string;
 }>;
 /**
+ * Table Pagination layout gaps.
+ * Control heights reuse Button / Dropdown size matrices.
+ * Desktop follows Figma's horizontal layout; mobile stacks at 760px with
+ * gaps L 16 / M 12 / S 8 / XS 6 and hides the divider.
+ */
+declare const TABLE_PAGINATION_SIZE: Record<ControlSize, {
+    height: string;
+    /** Desktop horizontal gap between clusters and divider. */
+    groupGap: string;
+    /** Mobile vertical gap between the two clusters. */
+    mobileGroupGap: string;
+    /** Horizontal gap within each cluster. */
+    clusterGap: string;
+    dividerHeight: string;
+    fontSize: string;
+    lineHeight: string;
+}>;
+/**
  * Link size matrix from Figma Link (`3480:5546`).
  * Includes Link-only `extraExtraSmall` (body/xxs) — do not add to ControlSize.
  */
@@ -274,4 +292,4 @@ declare const NOTIFICATION_BANNER_CHROME: {
     radius: string;
 };
 
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, type ControlSize, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, type LinkControlSize, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };
+export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, type ControlSize, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, type LinkControlSize, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };

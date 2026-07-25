@@ -1,0 +1,289 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "TablePagination",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17007:19104",
+    "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-07-24",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ]
+    },
+    "designOnly": [
+      "type",
+      "state"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "height": 48,
+        "groupGap": 24,
+        "mobileGroupGap": 16,
+        "clusterGap": 16,
+        "dividerHeight": 16,
+        "fontSize": 18,
+        "lineHeight": 28
+      },
+      "medium": {
+        "height": 40,
+        "groupGap": 24,
+        "mobileGroupGap": 12,
+        "clusterGap": 16,
+        "dividerHeight": 16,
+        "fontSize": 16,
+        "lineHeight": 24
+      },
+      "small": {
+        "height": 32,
+        "groupGap": 16,
+        "mobileGroupGap": 8,
+        "clusterGap": 8,
+        "dividerHeight": 16,
+        "fontSize": 14,
+        "lineHeight": 22
+      },
+      "extraSmall": {
+        "height": 24,
+        "groupGap": 16,
+        "mobileGroupGap": 6,
+        "clusterGap": 8,
+        "dividerHeight": 16,
+        "fontSize": 12,
+        "lineHeight": 18
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "desktop groups 24/24/16/16; clusters 16/16/8/8; mobile stack L16/M12/S8/XS6",
+      "direction": "desktop row + divider; at ≤760px column with no divider",
+      "borderWidth": "1px on dropdown + icon buttons",
+      "radius": "var(--radius-sm) on controls",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "weight": "400 (labels) / 600 (dropdown value)",
+      "size": "size-scaled body",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "Font Awesome 7 Pro Solid",
+      "size": "Button iconOnly size scale"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "part": "label",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "text": "var(--text-neutral-tertiary)"
+      },
+      "figmaVariant": "type=table Rows per page / range"
+    },
+    {
+      "when": {
+        "part": "desktop-divider",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "border": "var(--border-neutral-primary)"
+      },
+      "figmaVariant": "type=table vertical rule (hidden at ≤760px)"
+    },
+    {
+      "when": {
+        "part": "control",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "figmaVariant": "Dropdown input secondary, field hug + menuWidth trigger; Button outlined secondary iconOnly"
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "tablepagination-large-light",
+        "figmaNodeId": "17015:3581",
+        "figmaVariant": "size=large, type=table",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "count": 100,
+          "page": 1,
+          "rowsPerPage": 10
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 140,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 112
+        },
+        "expectedVariables": [
+          "--text-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "tablepagination-medium-light",
+        "figmaNodeId": "17019:4213",
+        "figmaVariant": "size=medium, type=table",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "count": 100,
+          "page": 1,
+          "rowsPerPage": 10
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 92
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "tablepagination-small-light",
+        "figmaNodeId": "17019:4251",
+        "figmaVariant": "size=small, type=table",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "count": 100,
+          "page": 1,
+          "rowsPerPage": 10
+        },
+        "state": "default",
+        "viewport": {
+          "width": 280,
+          "height": 100,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 72
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "tablepagination-xs-light",
+        "figmaNodeId": "17019:4289",
+        "figmaVariant": "size=extraSmall, type=table",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "count": 100,
+          "page": 1,
+          "rowsPerPage": 10
+        },
+        "state": "default",
+        "viewport": {
+          "width": 260,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 54
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "tablepagination-medium-dark",
+        "figmaNodeId": "17019:4213",
+        "figmaVariant": "size=medium, type=table",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "count": 100,
+          "page": 1,
+          "rowsPerPage": 10
+        },
+        "state": "default",
+        "viewport": {
+          "width": 320,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 92
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "id": "table-mobile-stack-no-divider",
+      "summary": "At 760px and below, code stacks rows-per-page and range/nav vertically with no divider. Desktop matches Figma's horizontal row and rule. Mobile stack gaps L16/M12/S8/XS6 are product UX.",
+      "figma": "Horizontal clusters + 1px divider",
+      "code": "Desktop matches Figma; mobile flex-direction column and divider omitted"
+    }
+  ],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

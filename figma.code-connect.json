@@ -116,6 +116,20 @@
       "snippet": "import { Tabs } from \"@codeai/cads-react\";\n\n<Tabs type=\"primary\" size=\"medium\" defaultValue=\"a\" items={[{ value: \"a\", label: \"Tab Label\" }, { value: \"b\", label: \"Tab Label\" }]} />"
     },
     {
+      "componentName": "Pagination",
+      "figmaNodeId": "17007:19104",
+      "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+      "source": "@codeai/cads-react",
+      "snippet": "import { Pagination } from \"@codeai/cads-react\";\n\n<Pagination count={10} page={4} aria-label=\"Pagination\" />"
+    },
+    {
+      "componentName": "TablePagination",
+      "figmaNodeId": "17007:19104",
+      "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+      "source": "@codeai/cads-react",
+      "snippet": "import { TablePagination } from \"@codeai/cads-react\";\n\n<TablePagination count={100} page={1} rowsPerPage={10} onPageChange={() => {}} />"
+    },
+    {
       "componentName": "Alert",
       "figmaNodeId": "2133:4160",
       "componentKey": "dbe516b76486882d3508633715c5e4e999c183db",

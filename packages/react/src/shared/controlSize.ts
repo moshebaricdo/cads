@@ -711,6 +711,65 @@ export const SEGMENTED_SIZE: Record<
 };
 
 /**
+ * Table Pagination layout gaps.
+ * Control heights reuse Button / Dropdown size matrices.
+ * Desktop follows Figma's horizontal layout; mobile stacks at 760px with
+ * gaps L 16 / M 12 / S 8 / XS 6 and hides the divider.
+ */
+export const TABLE_PAGINATION_SIZE: Record<
+  ControlSize,
+  {
+    height: string;
+    /** Desktop horizontal gap between clusters and divider. */
+    groupGap: string;
+    /** Mobile vertical gap between the two clusters. */
+    mobileGroupGap: string;
+    /** Horizontal gap within each cluster. */
+    clusterGap: string;
+    dividerHeight: string;
+    fontSize: string;
+    lineHeight: string;
+  }
+> = {
+  large: {
+    height: CONTROL_HEIGHT.large,
+    groupGap: "1.5rem", // 24px
+    mobileGroupGap: "var(--space-xs)", // 16px
+    clusterGap: "var(--space-xs)", // 16px
+    dividerHeight: "1rem", // 16px
+    fontSize: "var(--text-body-lg)",
+    lineHeight: "var(--leading-body-lg)",
+  },
+  medium: {
+    height: CONTROL_HEIGHT.medium,
+    groupGap: "1.5rem", // 24px
+    mobileGroupGap: "0.75rem", // 12px
+    clusterGap: "var(--space-xs)", // 16px
+    dividerHeight: "1rem", // 16px
+    fontSize: "var(--text-body-md)",
+    lineHeight: "var(--leading-body-md)",
+  },
+  small: {
+    height: CONTROL_HEIGHT.small,
+    groupGap: "var(--space-xs)", // 16px
+    mobileGroupGap: "0.5rem", // 8px
+    clusterGap: "0.5rem", // 8px
+    dividerHeight: "1rem", // 16px
+    fontSize: "var(--text-body-sm)",
+    lineHeight: "var(--leading-body-sm)",
+  },
+  extraSmall: {
+    height: CONTROL_HEIGHT.extraSmall,
+    groupGap: "var(--space-xs)", // 16px
+    mobileGroupGap: "0.375rem", // 6px
+    clusterGap: "0.5rem", // 8px
+    dividerHeight: "1rem", // 16px
+    fontSize: "var(--text-body-xs)",
+    lineHeight: "var(--leading-body-xs)",
+  },
+};
+
+/**
  * Link size matrix from Figma Link (`3480:5546`).
  * Includes Link-only `extraExtraSmall` (body/xxs) — do not add to ControlSize.
  */

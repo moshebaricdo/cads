@@ -14,6 +14,8 @@ export { SLIDER_CENTER_RANGE, SLIDER_DEFAULT_WIDTH, SLIDER_SIDE_RANGE, Slider, r
 export { Chip } from './components/Chip.js';
 export { ChipGroup } from './components/ChipGroup.js';
 export { Tabs } from './components/Tabs.js';
+export { Pagination } from './components/Pagination.js';
+export { TablePagination } from './components/TablePagination.js';
 export { Tag } from './components/Tag.js';
 export { Alert } from './components/Alert.js';
 export { Toast } from './components/Toast.js';

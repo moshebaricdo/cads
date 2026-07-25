@@ -1,0 +1,393 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "Pagination",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17007:19104",
+    "componentKey": "9f27562cc11f74ff5019ad281149a183c1510ecf",
+    "relatedNodeIds": [
+      "8000:4554"
+    ],
+    "relatedComponentKeys": [
+      "d8dbdc672ccdc6755ae409e31e5517571424384e"
+    ],
+    "retrievedAt": "2026-07-24",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "size": [
+        "large",
+        "medium",
+        "small",
+        "extraSmall"
+      ]
+    },
+    "designOnly": [
+      "type",
+      "state",
+      "hasFirstLast"
+    ],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "large": {
+        "height": 48,
+        "pageMinWidth": 48,
+        "paddingInline": 16,
+        "paddingBlock": 10,
+        "iconOnlyPadding": 12,
+        "iconPx": 19,
+        "fontSize": 18,
+        "lineHeight": 28
+      },
+      "medium": {
+        "height": 40,
+        "pageMinWidth": 40,
+        "paddingInline": 12,
+        "paddingBlock": 8,
+        "iconOnlyPadding": 10,
+        "iconPx": 16,
+        "fontSize": 16,
+        "lineHeight": 24
+      },
+      "small": {
+        "height": 32,
+        "pageMinWidth": 32,
+        "paddingInline": 10,
+        "paddingBlock": 5,
+        "iconOnlyPadding": 7,
+        "iconPx": 14,
+        "fontSize": 14,
+        "lineHeight": 22
+      },
+      "extraSmall": {
+        "height": 24,
+        "pageMinWidth": 24,
+        "paddingInline": 8,
+        "paddingBlock": 2,
+        "iconOnlyPadding": 4,
+        "iconPx": 12,
+        "fontSize": 12,
+        "lineHeight": 18
+      }
+    },
+    "layout": {
+      "padding": "SEGMENTED_SIZE",
+      "gap": "-1 (shared borders)",
+      "borderWidth": "1px",
+      "radius": "var(--radius-sm) on first/last only",
+      "overlap": "marginLeft -1px between items"
+    },
+    "typography": {
+      "family": "var(--font-body)",
+      "weight": "600",
+      "size": "size-scaled body",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "Font Awesome 7 Pro Solid",
+      "size": "size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "item": "page",
+        "selected": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)"
+      },
+      "figmaVariant": "type=page page number",
+      "notes": [
+        "Same chrome as Segmented Button Block unselected."
+      ]
+    },
+    {
+      "when": {
+        "item": "page",
+        "selected": true,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "text": "var(--text-selected-primary)"
+      },
+      "figmaVariant": "type=page isActive=yes"
+    },
+    {
+      "when": {
+        "item": "nav",
+        "selected": false,
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "var(--border-neutral-secondary)",
+        "icon": "var(--text-neutral-quaternary)"
+      },
+      "figmaVariant": "type=page first/prev/next/last",
+      "notes": [
+        "Case-specific tweak vs SegmentedButton: nav segments use secondary fill + quaternary icon."
+      ]
+    },
+    {
+      "when": {
+        "item": "ellipsis",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "icon": "var(--text-neutral-primary)"
+      },
+      "figmaVariant": "type=page ellipsis iconOnly",
+      "notes": [
+        "FA ellipsis solid; page chrome (not nav chrome)."
+      ]
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "selected": false,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "transparent",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "figmaVariant": "state=disabled unselected",
+      "notes": [
+        "Applies to group disabled and boundary-disabled nav items. No secondary fill."
+      ]
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "selected": true,
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral-inverse)"
+      },
+      "figmaVariant": "state=disabled isActive=yes"
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "size",
+      "mode",
+      "showFirstLast",
+      "selected"
+    ],
+    "cases": [
+      {
+        "id": "pagination-page-large-light",
+        "figmaNodeId": "17015:3405",
+        "figmaVariant": "size=large, type=page",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "count": 10,
+          "page": 4,
+          "showFirstButton": true,
+          "showLastButton": true,
+          "siblingCount": 1,
+          "boundaryCount": 1
+        },
+        "state": "default",
+        "viewport": {
+          "width": 520,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 48
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--background-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "pagination-page-medium-light",
+        "figmaNodeId": "17015:1624",
+        "figmaVariant": "size=medium, type=page",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "count": 10,
+          "page": 4,
+          "showFirstButton": true,
+          "showLastButton": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 520,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 40
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "pagination-page-small-light",
+        "figmaNodeId": "17015:1664",
+        "figmaVariant": "size=small, type=page",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "count": 10,
+          "page": 4
+        },
+        "state": "default",
+        "viewport": {
+          "width": 420,
+          "height": 64,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 32
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "pagination-page-xs-light",
+        "figmaNodeId": "17015:1704",
+        "figmaVariant": "size=extraSmall, type=page",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "count": 10,
+          "page": 4
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 56,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 24
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "pagination-page-medium-dark",
+        "figmaNodeId": "17015:1624",
+        "figmaVariant": "size=medium, type=page",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "count": 10,
+          "page": 4
+        },
+        "state": "default",
+        "viewport": {
+          "width": 520,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": 40
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "pagination-page-no-first-last-light",
+        "figmaNodeId": "17015:1624",
+        "figmaVariant": "hasFirstLast=false",
+        "mode": "light",
+        "props": {
+          "size": "medium",
+          "count": 10,
+          "page": 4,
+          "showFirstButton": false,
+          "showLastButton": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Pagination.tsx",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "id": "page-compact-auto",
+      "summary": "At narrow widths, layout=auto swaps to compact prev + Page X of Y + next instead of horizontal scroll. Figma only shows the segmented trail.",
+      "figma": "Segmented page trail only",
+      "code": "layout auto|segmented|compact; default auto"
+    },
+    {
+      "id": "page-trail-algorithm",
+      "summary": "Page trail content follows MUI sibling/boundary algorithm; Figma mocks a fixed decorative trail.",
+      "figma": "Fixed decorative trail in mock",
+      "code": "MUI Pagination item algorithm"
+    }
+  ],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

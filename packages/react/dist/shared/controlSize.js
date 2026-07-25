@@ -752,6 +752,60 @@ const SEGMENTED_SIZE = {
     // 4px
   }
 };
+const TABLE_PAGINATION_SIZE = {
+  large: {
+    height: CONTROL_HEIGHT.large,
+    groupGap: "1.5rem",
+    // 24px
+    mobileGroupGap: "var(--space-xs)",
+    // 16px
+    clusterGap: "var(--space-xs)",
+    // 16px
+    dividerHeight: "1rem",
+    // 16px
+    fontSize: "var(--text-body-lg)",
+    lineHeight: "var(--leading-body-lg)"
+  },
+  medium: {
+    height: CONTROL_HEIGHT.medium,
+    groupGap: "1.5rem",
+    // 24px
+    mobileGroupGap: "0.75rem",
+    // 12px
+    clusterGap: "var(--space-xs)",
+    // 16px
+    dividerHeight: "1rem",
+    // 16px
+    fontSize: "var(--text-body-md)",
+    lineHeight: "var(--leading-body-md)"
+  },
+  small: {
+    height: CONTROL_HEIGHT.small,
+    groupGap: "var(--space-xs)",
+    // 16px
+    mobileGroupGap: "0.5rem",
+    // 8px
+    clusterGap: "0.5rem",
+    // 8px
+    dividerHeight: "1rem",
+    // 16px
+    fontSize: "var(--text-body-sm)",
+    lineHeight: "var(--leading-body-sm)"
+  },
+  extraSmall: {
+    height: CONTROL_HEIGHT.extraSmall,
+    groupGap: "var(--space-xs)",
+    // 16px
+    mobileGroupGap: "0.375rem",
+    // 6px
+    clusterGap: "0.5rem",
+    // 8px
+    dividerHeight: "1rem",
+    // 16px
+    fontSize: "var(--text-body-xs)",
+    lineHeight: "var(--leading-body-xs)"
+  }
+};
 const LINK_SIZE = {
   large: {
     fontSize: "var(--text-body-lg)",
@@ -983,6 +1037,6 @@ const NOTIFICATION_BANNER_CHROME = {
   // shape/md — 8px
 };
 
-export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };
+export { ALERT_SIZE, BREADCRUMB_SIZE, BUTTON_SIZE, CHECKBOX_SIZE, CHIP_SIZE, CONTROL_HEIGHT, FIELD_WRAPPER_SIZE, FOCUS_RING, ICON_TOGGLE_SIZE, LINK_SIZE, NOTIFICATION_BANNER_CHROME, RADIO_SIZE, SEGMENTED_SIZE, SLIDER_CHROME, TABLE_PAGINATION_SIZE, TABS_SIZE, TAG_SIZE, TEXT_INPUT_SIZE, TOAST_CHROME, TOGGLE_SIZE, TRANSITION_COLORS };
 //# sourceMappingURL=controlSize.js.map
 //# sourceMappingURL=controlSize.js.map

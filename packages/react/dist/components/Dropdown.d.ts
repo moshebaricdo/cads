@@ -14,13 +14,22 @@ type DropdownLabelStyle = "thick" | "thin";
 type DropdownColor = "primary" | "secondary";
 /**
  * Input-role field width.
- * - `"hug"` (default): static width from the longest option / placeholder
- *   (selection changes do not resize the field; longer text ellipsizes)
+ * - `"hug"` (default): static width from the longest option (and an explicit
+ *   `placeholder` when set). Selection changes do not resize the field;
+ *   longer text ellipsizes.
  * - `"full"`: fill the parent
  * - CSS length: e.g. `"12rem"`, `"240px"`, `"50%"`, `"min(100%, 20rem)"`
  * - number: treated as pixels
  */
 type DropdownFieldWidth = "hug" | "full" | number | (string & {});
+/**
+ * Menu panel horizontal sizing (both roles).
+ * - `"hug"` (default): fit content; never narrower than the trigger
+ * - `"trigger"`: lock to the trigger width (long labels ellipsize)
+ * - number: minimum width in px; still grows with longer content
+ * - percentage string: exact width relative to the trigger (e.g. `"70%"`)
+ */
+type DropdownMenuWidth = "hug" | "trigger" | number | `${number}%`;
 /** Selectable menu row (Figma Dropdown Menu Item `896:3791`). */
 interface DropdownItemOption {
     type?: "item";
@@ -50,6 +59,11 @@ interface DropdownBaseProps {
     size?: DropdownSize;
     menuType?: DropdownMenuType;
     menuPlacement?: DropdownMenuPlacement;
+    /**
+     * Menu panel width behavior.
+     * @default "hug"
+     */
+    menuWidth?: DropdownMenuWidth;
     options: DropdownOption[];
     open?: boolean;
     defaultOpen?: boolean;
@@ -107,4 +121,4 @@ type DropdownProps = DropdownInputProps | DropdownActionProps;
  */
 declare const Dropdown: react.ForwardRefExoticComponent<DropdownProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Dropdown, type DropdownActionProps, type DropdownColor, type DropdownFieldWidth, type DropdownGroupOption, type DropdownInputProps, type DropdownItemOption, type DropdownLabelStyle, type DropdownMenuPlacement, type DropdownMenuType, type DropdownOption, type DropdownProps, type DropdownRole, type DropdownSeparatorOption, type DropdownSize };
+export { Dropdown, type DropdownActionProps, type DropdownColor, type DropdownFieldWidth, type DropdownGroupOption, type DropdownInputProps, type DropdownItemOption, type DropdownLabelStyle, type DropdownMenuPlacement, type DropdownMenuType, type DropdownMenuWidth, type DropdownOption, type DropdownProps, type DropdownRole, type DropdownSeparatorOption, type DropdownSize };

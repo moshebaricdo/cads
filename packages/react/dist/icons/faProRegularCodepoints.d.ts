@@ -707,8 +707,8 @@ declare const FA_PRO_SOLID_CODEPOINTS: {
     readonly "chess-rook-piece": "f448";
     readonly chestnut: "e3f6";
     readonly "chevron-down": "f078";
-    readonly "chevron-left": "2329";
-    readonly "chevron-right": "232a";
+    readonly "chevron-left": "f053";
+    readonly "chevron-right": "f054";
     readonly "chevron-up": "f077";
     readonly "chevrons-down": "f322";
     readonly "chevrons-left": "f323";

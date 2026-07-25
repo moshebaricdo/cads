@@ -423,6 +423,12 @@ const cadsManifest = {
           description: 'Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.'
         },
         {
+          name: "menuWidth",
+          type: '"hug" | "trigger" | number | `${number}%`',
+          default: '"hug"',
+          description: 'Menu panel sizing. "hug" fits content (never narrower than the trigger); "trigger" locks to the trigger; a number sets a px minimum; a percentage is an exact trigger-relative width.'
+        },
+        {
           name: "options",
           type: "DropdownOption[]",
           required: true,
@@ -477,6 +483,7 @@ const cadsManifest = {
         "menuType=checklist is input-only; menuType=default is single-select \u2014 item icons are per-option (iconName), not a list-level mode.",
         'options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.',
         'Input-role width defaults to hug (static width from the longest option/placeholder \u2014 selection does not resize the field). Use "full" or a CSS length otherwise.',
+        'menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.',
         "Selected menu items use selected tokens \u2014 never brand fills.",
         "Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) \u2014 not the same recipe as hover.",
         "Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal \u2014 do not import standalone."
@@ -1026,6 +1033,190 @@ const cadsManifest = {
         "Tabs may not be used as standalone Tab Items \u2014 always via Tabs."
       ],
       example: `<Tabs type="primary" size="medium" defaultValue="a" items={[{value:"a",label:"Tab Label"},{value:"b",label:"Tab Label"}]} />`
+    },
+    {
+      name: "Pagination",
+      exportName: "Pagination",
+      importFrom: "@codeai/cads-react",
+      description: "Page pagination \u2014 segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17007:19104",
+        componentKey: "9f27562cc11f74ff5019ad281149a183c1510ecf"
+      },
+      props: [
+        {
+          name: "size",
+          type: '"large" | "medium" | "small" | "extraSmall"',
+          default: '"medium"'
+        },
+        {
+          name: "count",
+          type: "number",
+          required: true,
+          description: "Total number of pages."
+        },
+        {
+          name: "page",
+          type: "number",
+          description: "1-based current page (controlled)."
+        },
+        {
+          name: "defaultPage",
+          type: "number",
+          description: "Initial page when uncontrolled."
+        },
+        {
+          name: "onChange",
+          type: "(event, page: number) => void",
+          description: "Called when the page changes."
+        },
+        {
+          name: "layout",
+          type: '"auto" | "segmented" | "compact"',
+          default: '"auto"',
+          description: "Narrow-container behavior. auto swaps to compact (prev + Page X of Y + next) when the segmented trail would overflow."
+        },
+        {
+          name: "labelCompactPages",
+          type: "(args: { page: number; count: number }) => ReactNode",
+          description: 'Formats the compact-mode label. Default "Page X of Y".'
+        },
+        {
+          name: "showFirstButton",
+          type: "boolean",
+          default: "true",
+          description: "Show jump-to-first (Figma hasFirstLast)."
+        },
+        {
+          name: "showLastButton",
+          type: "boolean",
+          default: "true",
+          description: "Show jump-to-last (Figma hasFirstLast)."
+        },
+        {
+          name: "siblingCount",
+          type: "number",
+          default: "1",
+          description: "Pages shown on each side of the current page."
+        },
+        {
+          name: "boundaryCount",
+          type: "number",
+          default: "1",
+          description: "Pages always shown at the start and end."
+        },
+        { name: "disabled", type: "boolean" },
+        { name: "aria-label", type: "string" }
+      ],
+      variableDependencies: [
+        "--background-neutral-primary",
+        "--background-neutral-secondary",
+        "--background-neutral-tertiary",
+        "--background-selected-primary",
+        "--background-selected-strong",
+        "--background-disabled-neutral",
+        "--background-brand-light",
+        "--border-neutral-secondary",
+        "--border-selected-primary",
+        "--border-selected-strong",
+        "--border-focused-primary",
+        "--border-focused-inverse",
+        "--border-disabled-neutral",
+        "--text-neutral-primary",
+        "--text-neutral-tertiary",
+        "--text-neutral-quaternary",
+        "--text-selected-primary",
+        "--text-disabled-neutral",
+        "--text-disabled-neutral-inverse",
+        "--radius-sm"
+      ],
+      usageRules: [
+        "Page type uses Segmented Button Block geometry with nav chrome tweaks (secondary fill + quaternary icons on first/prev/next/last).",
+        "Selected page uses selected tokens \u2014 never brand fills.",
+        "Disabled (group or boundary item): transparent fill + disabled border/text; selected-while-disabled uses disabled-neutral fill + inverse text.",
+        "layout defaults to auto: when the segmented trail would overflow, swap to compact prev + Page X of Y + next (no wrap). Use layout=segmented to force the trail (scrolls if needed) or layout=compact always.",
+        "For table footers use TablePagination (same Figma set, type=table).",
+        "Additional MUI Pagination props are available; see MUI docs from the props table."
+      ],
+      example: `<Pagination count={10} page={4} showFirstButton showLastButton aria-label="Pagination" />`
+    },
+    {
+      name: "TablePagination",
+      exportName: "TablePagination",
+      importFrom: "@codeai/cads-react",
+      description: "Table footer pagination \u2014 rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17007:19104",
+        componentKey: "9f27562cc11f74ff5019ad281149a183c1510ecf"
+      },
+      props: [
+        {
+          name: "size",
+          type: '"large" | "medium" | "small" | "extraSmall"',
+          default: '"medium"'
+        },
+        {
+          name: "count",
+          type: "number",
+          required: true,
+          description: "Total number of rows."
+        },
+        {
+          name: "page",
+          type: "number",
+          required: true,
+          description: "0-based page index (MUI TablePagination)."
+        },
+        {
+          name: "rowsPerPage",
+          type: "number",
+          required: true
+        },
+        {
+          name: "onPageChange",
+          type: "(event, newPage: number) => void",
+          required: true
+        },
+        {
+          name: "onRowsPerPageChange",
+          type: "(event) => void"
+        },
+        {
+          name: "rowsPerPageOptions",
+          type: "Array<number | { value: number; label: string }>",
+          default: "[10, 25, 50, 100]"
+        },
+        {
+          name: "labelRowsPerPage",
+          type: "ReactNode",
+          default: '"Rows per page"'
+        },
+        {
+          name: "labelDisplayedRows",
+          type: "(args) => ReactNode",
+          description: "Formats the range text (from-to of count)."
+        },
+        { name: "disabled", type: "boolean" },
+        { name: "aria-label", type: "string" }
+      ],
+      variableDependencies: [
+        "--text-neutral-tertiary",
+        "--border-neutral-primary",
+        "--border-neutral-secondary",
+        "--background-neutral-primary",
+        "--radius-sm"
+      ],
+      usageRules: [
+        "Composes Dropdown (input, secondary, hug field + menuWidth=trigger) and Button (outlined secondary iconOnly).",
+        "Rows-per-page uses role=input so the menu highlights the current value; menu matches the hugged trigger width.",
+        "Desktop follows Figma: one horizontal row with a vertical divider.",
+        "At 760px and below, stacks rows-per-page above range/nav and hides the divider. Mobile stack gap L16 / M12 / S8 / XS6.",
+        "page is 0-based (MUI TablePagination convention); Pagination page is 1-based.",
+        "Documented on the Pagination component page with a dedicated props table."
+      ],
+      example: `<TablePagination count={100} page={1} rowsPerPage={10} onPageChange={() => {}} onRowsPerPageChange={() => {}} />`
     },
     {
       name: "Alert",

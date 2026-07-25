@@ -67,6 +67,7 @@ export type {
   DropdownLabelStyle,
   DropdownColor,
   DropdownFieldWidth,
+  DropdownMenuWidth,
 } from "./components/Dropdown";
 
 export { Checkbox } from "./components/Checkbox";
@@ -128,6 +129,21 @@ export type {
   TabsSize,
   TabsType,
 } from "./components/Tabs";
+
+export { Pagination } from "./components/Pagination";
+export type {
+  PaginationProps,
+  PaginationSize,
+  PaginationLayout,
+  LabelCompactPagesArgs,
+} from "./components/Pagination";
+
+export { TablePagination } from "./components/TablePagination";
+export type {
+  TablePaginationProps,
+  TablePaginationSize,
+  LabelDisplayedRowsArgs,
+} from "./components/TablePagination";
 
 export { Tag } from "./components/Tag";
 export type { TagProps, TagColor, TagSize, TagTone } from "./components/Tag";
