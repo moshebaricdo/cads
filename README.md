@@ -59,8 +59,6 @@ Status reflects whether a matching component has shipped in the [production Stor
 
 ## Experiments
 
-Work in this repo that isn’t a settled production standard yet — safe to explore, expect change.
-
 ### Motion
 
 Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Opt in with `CadsProvider experimentalMotion` — off by default.

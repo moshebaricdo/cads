@@ -54,6 +54,11 @@ Last updated: 2026-07-25
 - [x] **Info Tooltip Figma set — code → design (2026-07-25)** — first component authored *into* the CADS Figma file from code via MCP (`use_figma`): 48 variants (4 sizes × 3 colors × 4 states) on page `17044:8135`, bound to semantic variables and the shared focus-ring effect style; hover/focus variants pin a nested `Tooltip` instance above the glyph. Snapshot / visual recipe / `figma.code-connect.json` / `cadsManifest` now carry the node + component key. See evidence summary below.
 - [x] **Motion springs (2026-07-25)** — `motion.spring.fast|moderate|slow` (Apple duration+bounce) in `@codeai/cads-variables`; Indicator on Toggle/Tabs uses `spring.moderate` via Motion when `experimentalMotion` is on (CSS easing remains the fallback). Docs sidebar floating highlight snaps instantly (no spring chase). See evidence summary below.
 - [x] **Overlay portal + z-index layers (2026-07-25)** — Dropdown menus portal by default (fixes playground/overflow clipping); fixture `disablePortal` escape hatch; code-owned `--z-*` ladder (drawer 1200 / modal·dropdown·popover 1300 / toast 1400 / tooltip 1500) wired through theme + Poppers; Popover click-away ignores nested menus; Dialog/Modal/Drawer `disableEnforceFocus` for nested focus; Shape page Stacking table.
+- [x] **SCSS modules organization (2026-07-25)** — Docs + react style cleanup:
+  - **Docs:** `globals.css` trimmed to ~84 lines (imports/reset/base only); shell/nav/playground/docs-ui extracted to SCSS modules; all prior `.module.css` → `.module.scss`; foundation styles split (`FoundationPage` shared + color/spacing/typography/core locals); dead selectors pruned.
+  - **React:** `@codeai/cads-react` build **tsup → Vite 6** (CSS modules + `libInjectCss`); every catalog component in a kebab folder (`Component.tsx` + `componentName.module.scss` + `types.ts` + `index.ts`); public API is the barrel. Recipe in `AGENTS.md`.
+  - Verify: `pnpm typecheck` + `pnpm build:react` + `pnpm build:docs` green.
+- [x] **Barrel-only imports (2026-07-25)** — docs/fixtures/playground + artifact `CadsProvider` now import from `@codeai/cads-react`; removed `./components/*` + `./theme/*` export maps and PascalCase deep-import shims (kept deprecated `TextField` alias). Optional follow-up: per-component READMEs/tests.
 
 ## Info Tooltip Figma set (code → design) — evidence summary
 

@@ -111,6 +111,52 @@ Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **
 - Keep docs props / variable pages generated from source (manifest or TS), not hand-written duplicates that can drift.
 - After changing docs nav, Storybook links in `componentExternalLinks`, or [`docs/experiments.json`](docs/experiments.json), run `pnpm generate:readme` (also runs on `pnpm build:docs`).
 
+### Component folder recipe (`@codeai/cads-react`)
+
+Co-locate each component (source organization — public API is the barrel only):
+
+```text
+packages/react/src/components/notification-banner/
+  NotificationBanner.tsx
+  notificationBanner.module.scss
+  types.ts
+  index.ts
+```
+
+- MUI for structure; **styles in SCSS modules** via `className` (not large `sx` blobs). Dynamic chrome may use CSS custom properties set inline.
+- Public API is the package barrel only (`import { X } from "@codeai/cads-react"`). Do not add `./components/*` export maps or PascalCase deep-import shims.
+- Build: Vite library mode (`pnpm build:react`) with CSS modules; do not use tsup.
+
+#### CSS modules vs MUI Emotion specificity
+
+MUI injects Emotion styles at runtime with compound class selectors (e.g. `.MuiButton-root.MuiButton-contained`), reaching specificity 0,2,0 or higher. A plain CSS module class (0,1,0) **will lose**. To guarantee CADS styles win:
+
+- **Double `:global()` specificity bump** — write the root selector as:
+
+  ```scss
+  .root:global(.MuiButton-root):global(.MuiButton-root) { ... }
+  ```
+
+  This yields specificity **0,3,0** and beats any MUI compound selector without resorting to `!important`. Substitute the appropriate MUI class for each component:
+  - `MuiButton-root` → Button
+  - `MuiButtonBase-root` → SegmentedButton, Tabs, Toggle
+  - `MuiIconButton-root` → IconToggle, CloseIconButton
+
+- **Never put interactive colors in React `style={{ backgroundColor }}`** — MUI's own hover/active Emotion styles override inline `backgroundColor`. Instead, set CSS custom properties on `style` and consume them in SCSS where pseudo-classes (`:hover`, `:active`) can override per state.
+
+  ```tsx
+  // Good: set vars, let SCSS handle states
+  style={{ '--btn-bg': bg, '--btn-bg-hover': bgHover } as CSSProperties}
+  ```
+
+  ```scss
+  // SCSS consumes them
+  background-color: var(--btn-bg);
+  &:hover { background-color: var(--btn-bg-hover); }
+  ```
+
+  See `Button` (`button.module.scss`) and `Toggle` (`toggle.module.scss`) as reference implementations.
+
 ---
 
 ## Verification
