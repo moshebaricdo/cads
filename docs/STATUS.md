@@ -1,6 +1,6 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-24
+Last updated: 2026-07-25
 
 ## Done (scaffold complete)
 
@@ -45,11 +45,14 @@ Last updated: 2026-07-24
 - [x] **Color variables sync with Figma (2026-07-23)** — Live Figma Semantic Colors = 148 (matches Lab2 Jul 21 sync). Promoted `codeAiColorSystem.json` + `figmaVariablesSnapshot.json`; renamed `text/accent/{pink,orange}/strong` → `secondary` (`--text-accent-*-secondary`); added `--border-neutral-black-fixed` / `--border-neutral-white-fixed`. Follow-up: remapped `text/brand/secondary` Light `purple/70` → `purple/90` (`#1D1590`) after live mapping audit (missed by snapshot/Lab2 promotion). Skill now requires second-pass live alias audit + LLM-as-judge spot-check. Exporter already supported roles; docs Color page + CSS export buttons read regenerated JSON. New agent skill: `.cursor/skills/cads-figma-color-sync`.
 - [x] **Neutral gray hex refresh (2026-07-23)** — Live `use_figma` audit: `neutral/gray/10` `#DBDDE2` → `#E1E3E6`, `gray/20` `#CCD1D7` → `#D3D6DA`; updated 9 semantic `fallbackHex` consumers + theme divider fallback; second-pass mapping audit **0 / 0 / 0**; high-risk spot-check clean.
 - [x] **CADS Motion experiment (2026-07-24)** — Named recipes Press / Surface / Indicator (+ Highlight chase vars, deferred) in `@codeai/cads-variables`; foundation docs on `/variables/core` with Experimental status Tag; `CadsProvider experimentalMotion` flag (default off).
+- [x] **Motion duration ladder (2026-07-25)** — Consolidated to four primitives: instant `0` / fast `100` / short `150` / medium `200`. Recipes (Press/Surface/Indicator/Fade/Chase) pick from that ladder; Duration docs no longer list recipe-owned ms as peer tokens.
 - [x] **Motion foundation page (2026-07-25)** — `/variables/core` matches Color/Shape template (recipes + durations + easing with copyable vars); DialKit playground removed; contained mini-UI card demos Press / Surface / Indicator together.
 - [x] **Motion library rollout (2026-07-24)** — Recipe-by-need across the catalog: Press on discrete pressables (skip flush groups), Surface on every overlay enter, Indicator on Toggle + Tabs sliding chrome. See evidence summary below.
 - [x] **Dropdown Menu Item state sync (2026-07-24)** — Figma `896:3791` default/defaultError recipes: destructive press stays `error-light` + `text-error-secondary`; selected press returns to `selected-primary` (hover still `selected-strong`); disabled uses `--text-disabled-*` / `--background-disabled-neutral` (no opacity fade). Checklist itemType left unchanged.
 - [x] **Pressed-state consistency (2026-07-24)** — Button / TextInput / Dropdown Button aligned to Figma after Motions-era state cleanup. Contained press keeps `*-strong` (secondary returns to inverse); outlined + Dropdown trigger press keep tertiary; TextInput press keeps secondary (no white flash). See evidence summary below.
 - [x] **Icon Tooltip (2026-07-25)** — new docs-driven component (no matching Figma set found in `DGekOeToRVifvFAhfqpeC1`): bare info-style icon affordance that composes `Tooltip` for the bubble/caret, with no button chrome — only a required focus ring. Catalogued under Messaging. `color` primary (brand) / secondary (neutral-primary) / tertiary (neutral-quaternary, default), shared control `size` scale, `iconName` default `circle-info`. See evidence summary below.
+- [x] **Motion springs (2026-07-25)** — `motion.spring.fast|moderate|slow` (Apple duration+bounce) in `@codeai/cads-variables`; Indicator on Toggle/Tabs uses `spring.moderate` via Motion when `experimentalMotion` is on (CSS easing remains the fallback); docs sidebar floating highlight uses `spring.fast` (site-only — not catalog Highlight chase / not dropdown menus). See evidence summary below.
+- [x] **Overlay portal + z-index layers (2026-07-25)** — Dropdown menus portal by default (fixes playground/overflow clipping); fixture `disablePortal` escape hatch; code-owned `--z-*` ladder (drawer 1200 / modal·dropdown·popover 1300 / toast 1400 / tooltip 1500) wired through theme + Poppers; Popover click-away ignores nested menus; Dialog/Modal/Drawer `disableEnforceFocus` for nested focus; Shape page Stacking table.
 
 ## Icon Tooltip — evidence summary
 
@@ -115,10 +118,16 @@ Accepted differences: none
 
 ```text
 Recipes (CSS vars + TS):
+  Duration ladder: --duration-instant|fast|short|medium (0 / 100 / 150 / 200)
+  Spring ladder (JS-only): motion.spring.fast|moderate|slow
+    fast 0.12s b0 · moderate 0.2s b0.05 · slow 0.32s b0.08
+  Recipes pick from ladder: Press=short, Surface=medium, Fade/Chase=fast
+  Indicator → spring.moderate when experimentalMotion (CSS medium+emphasized fallback)
   --motion-press-* / --motion-surface-* / --motion-indicator-* / --motion-highlight-chase-*
   --transition-press|surface|indicator|highlight-chase; --easing-out
   --transition-indicator includes width (Tabs sliding chrome)
 Flag: CadsProvider experimentalMotion (default false) + data-cads-experimental-motion
+Dep: motion (^12) on @codeai/cads-react for Indicator springs; springTransition() helper
 Press (data-cads-press):
   Button, CloseIconButton, IconToggle, Chip, Checkbox, Radio, Link,
   Dropdown menu-item content (inner wrapper), Breadcrumb links/buttons + overflow trigger
@@ -128,15 +137,17 @@ Surface (data-cads-surface):
   Popover, Dropdown menu, Drawer (origin bottom), Dialog, Modal,
   Tooltip (origin toward placement), Breadcrumbs overflow menu,
   Toast (origin toward viewport placement; snackbar host)
-Indicator (data-cads-indicator):
-  Toggle handle; Tabs primary underline only (secondary Tabs skip Indicator)
+Indicator (data-cads-indicator + data-cads-indicator-spring):
+  Toggle handle (x transform + nested face for press scale);
+  Tabs primary underline (left/width); secondary Tabs skip Indicator
 Surface exit: useSurfacePresence + cads-surface-out on Popover / Dropdown / Toast
 Tooltip: MUI Grow timed to --motion-surface-duration; leaveDelay 0 (no CSS keyframe fight)
 Toast: open + placement + offset (default 64) via MUI Snackbar; transitionDuration 0 when Surface on
 Slider thumb: no Press (MUI position transform fights scale)
 TextInput: hover/press suppressed while :focus-within (stays white)
-Highlight chase → deferred
-Docs: /variables/core foundation page + mini-UI card (Press / Surface / Indicator)
+Highlight chase → deferred in catalog (no dropdown row chase — keyboard noise)
+Docs site-only: DocsNavScroller floating highlight uses spring.fast (not a DS menu pattern)
+Docs: /variables/core — Spring primitives tab + mini-UI card
 Verification: pnpm typecheck; pnpm build
 ```
 
@@ -362,7 +373,7 @@ API notes:
 API audit: 0 error / 0 warn / 0 escalate (strict)
 Verification: pnpm figma:audit-props -- --strict; pnpm typecheck; pnpm build; pnpm build:docs
 Accepted differences:
-  - Dialog default width may hug ~680px vs Figma sample 630px for long body copy (minWidth 630 / maxWidth 800)
+  - Dialog width matches Modal: fill (`width: 100%`) up to maxWidth 800; no minWidth (responsive as viewport shrinks)
   - Popover caret is CSS diamond vs Figma vector asset (geometry ±2px)
 ```
 
@@ -371,7 +382,7 @@ Accepted differences:
 Priority order for the next agent sessions:
 
 1. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
-2. **Motion follow-ups** — Highlight-chase recipe (vars exist, no component yet); optional SegmentedButton sliding Indicator; keep foundation page in sync if timings change.
+2. **Motion follow-ups** — Catalog Highlight-chase still deferred (docs sidebar is the only chase); optional SegmentedButton sliding Indicator; feel-check spring.moderate bounce on rapid Toggle/Tabs.
 3. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
 4. **End-to-end portable skill hosts** — download from Pages `/ai` (or local ZIP) and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Later: when prod publishes FA7 on `dsco.code.org`, switch runtime/`@font-face` to those CDN assets and stop inlining OTFs.
 5. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
