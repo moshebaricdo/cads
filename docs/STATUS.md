@@ -41,9 +41,104 @@ Last updated: 2026-07-24
 - [x] **Docs overview + component page template (2026-07-21)** — component pages use narrow centered column on `--background-neutral-secondary` (`DocsTemplatePage`); overview redesigned as short path: CADS intro → Core styles / Components destination cards → For Agents callout → Resources (Storybook, Figma, Brand guidelines).
 - [x] **Docs foundations pass (2026-07-21)** — Color condensed into one-line primitive and current-theme semantic ramps; Shape now owns radii, elevation, and spacing; Motion is a focused, explicitly experimental duration/easing standard.
 - [x] **Color CSS exporter (2026-07-21)** — Lab2 prod-shaped export (`primitiveColors.css` + `colors.css` with `data-theme`) ported into `@codeai/cads-variables` (`buildPrimitiveColorsCss` / `buildSemanticColorsCss`); Color page exports each file from its section (no zip). Header links to CADS Figma Color + production `component-library-styles`.
-- [x] **Typography foundation cleanup (2026-07-21)** — Matches Color page template: `FoundationHeader` → sections → foundation pagination. Text styles tabbed to match Figma Typography page (Heading / Body / Overline / Label / Link / Mono — all published styles), divider list with no card surfaces, families table last. Shared `.dividedList` in `FoundationPage.module.css`. Shape + Motion still on card surfaces — same template pass next.
+- [x] **Typography foundation cleanup (2026-07-21)** — Matches Color page template: `FoundationHeader` → sections → foundation pagination. Text styles tabbed to match Figma Typography page (Heading / Body / Overline / Label / Link / Mono — all published styles), divider list with no card surfaces, families table last. Shared `.dividedList` in `FoundationPage.module.css`. Motion foundation page now matches (2026-07-25); Shape still uses sample tiles (appropriate for radius/elevation).
 - [x] **Color variables sync with Figma (2026-07-23)** — Live Figma Semantic Colors = 148 (matches Lab2 Jul 21 sync). Promoted `codeAiColorSystem.json` + `figmaVariablesSnapshot.json`; renamed `text/accent/{pink,orange}/strong` → `secondary` (`--text-accent-*-secondary`); added `--border-neutral-black-fixed` / `--border-neutral-white-fixed`. Follow-up: remapped `text/brand/secondary` Light `purple/70` → `purple/90` (`#1D1590`) after live mapping audit (missed by snapshot/Lab2 promotion). Skill now requires second-pass live alias audit + LLM-as-judge spot-check. Exporter already supported roles; docs Color page + CSS export buttons read regenerated JSON. New agent skill: `.cursor/skills/cads-figma-color-sync`.
 - [x] **Neutral gray hex refresh (2026-07-23)** — Live `use_figma` audit: `neutral/gray/10` `#DBDDE2` → `#E1E3E6`, `gray/20` `#CCD1D7` → `#D3D6DA`; updated 9 semantic `fallbackHex` consumers + theme divider fallback; second-pass mapping audit **0 / 0 / 0**; high-risk spot-check clean.
+- [x] **CADS Motion experiment (2026-07-24)** — Named recipes Press / Surface / Indicator (+ Highlight chase vars, deferred) in `@codeai/cads-variables`; foundation docs on `/variables/core` with Experimental status Tag; `CadsProvider experimentalMotion` flag (default off).
+- [x] **Motion foundation page (2026-07-25)** — `/variables/core` matches Color/Shape template (recipes + durations + easing with copyable vars); DialKit playground removed; contained mini-UI card demos Press / Surface / Indicator together.
+- [x] **Motion library rollout (2026-07-24)** — Recipe-by-need across the catalog: Press on discrete pressables (skip flush groups), Surface on every overlay enter, Indicator on Toggle + Tabs sliding chrome. See evidence summary below.
+- [x] **Dropdown Menu Item state sync (2026-07-24)** — Figma `896:3791` default/defaultError recipes: destructive press stays `error-light` + `text-error-secondary`; selected press returns to `selected-primary` (hover still `selected-strong`); disabled uses `--text-disabled-*` / `--background-disabled-neutral` (no opacity fade). Checklist itemType left unchanged.
+- [x] **Pressed-state consistency (2026-07-24)** — Button / TextInput / Dropdown Button aligned to Figma after Motions-era state cleanup. Contained press keeps `*-strong` (secondary returns to inverse); outlined + Dropdown trigger press keep tertiary; TextInput press keeps secondary (no white flash). See evidence summary below.
+- [x] **Icon Tooltip (2026-07-25)** — new docs-driven component (no matching Figma set found in `DGekOeToRVifvFAhfqpeC1`): bare info-style icon affordance that composes `Tooltip` for the bubble/caret, with no button chrome — only a required focus ring. Catalogued under Messaging. `color` primary (brand) / secondary (neutral-primary) / tertiary (neutral-quaternary, default), shared control `size` scale, `iconName` default `circle-info`. See evidence summary below.
+
+## Icon Tooltip — evidence summary
+
+```text
+Task path: new component (docs-driven, no Figma match)
+Components: IconTooltip
+Figma evidence (checked 2026-07-25, file DGekOeToRVifvFAhfqpeC1):
+  - search_design_system("icon tooltip"/"info icon") returned only unrelated
+    external libraries (old DSCO Tooltip component set, a standalone
+    "InformationCircle2" icon from a deprecated icon kit) — no match in this file
+  - get_metadata on the Tooltip public node (1990:7125) shows only caretPlacement
+    variants (top/bottom/left/right) — no sibling Icon Tooltip / info-icon variant
+  - Conclusion: no Icon Tooltip component set exists in CADS Figma today.
+    Implemented from the task's suggested API + existing Tooltip spec + shared
+    icon size/color conventions (CloseIconButton icon sizing, IconToggle focus
+    ring). Accepted per task instructions; revisit if Figma adds a match.
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (IconTooltip entry,
+    figmaName null, all props under codeOnlyProps, notes explain the no-match search)
+  - packages/react/src/manifest/visual-recipes/IconTooltip.json (designContextCaptured: false)
+API: title (required), iconName (default "circle-info"), color
+  primary|secondary|tertiary (default tertiary → quaternary), size
+  large|medium|small|extraSmall (default medium), placement (passthrough to
+  Tooltip, default "top"), hasCaret (passthrough, default true), aria-label
+  (falls back to title when it's a plain string)
+Coverage: 8 fixture cases (apps/docs/app/fixtures/components/cases/IconTooltip.tsx)
+  — size × color sentinels (large/primary, medium/secondary, medium/tertiary,
+  small/primary dark, extraSmall/tertiary), keyboard focus ring, and two
+  open-tooltip placements (top/light, bottom/dark) reusing Tooltip's bubble.
+Wiring: cadsManifest (Messaging, after Tag), packages/react/src/index.ts export,
+  apps/docs/lib/nav.ts (Messaging "Icon Tooltip"), ComponentPreview + IconTooltipPreview,
+  componentExternalLinks (MUI Tooltip API link, no Storybook id → notInProduction status)
+API audit: pnpm figma:audit-props (non-strict; no strict run — pre-existing
+  Tooltip.surfaceOnly gap in the snapshot predates this change and is unrelated)
+Verification: pnpm typecheck; pnpm build:react; pnpm build:docs
+Accepted differences:
+  - No Figma component set to diff against (see Figma evidence above) — geometry
+    and color roles are docs-driven, not pixel-matched to a design reference
+```
+
+## Pressed-state consistency — evidence summary
+
+```text
+Task path: Figma update
+Components: Button, TextInput, Dropdown (input trigger)
+Figma evidence (retrieved 2026-07-24, file DGekOeToRVifvFAhfqpeC1):
+  - Button 15724:18791 (pressed recipes across contained/outlined/text)
+  - Text Input Building Block 16146:3517 (state=press → --background-neutral-secondary)
+  - Dropdown Button 964:10677 (state=press → --background-neutral-tertiary)
+Spec artifacts:
+  - packages/react/src/manifest/visual-recipes/Button.json (new)
+  - TextInput.json + Dropdown.json press recipes + coverage cases
+Coverage: 6 Playwright press fixtures pass (computed CSS vars)
+  - contained primary/secondary/error/orange; outlined primary; text primary
+  - TextInput medium primary press; Dropdown medium primary press
+Correction loop: code was resetting contained/outlined press to default fills; TextInput :active was white
+API audit: pnpm figma:audit-props -- --strict
+Verification: pnpm typecheck; pnpm build
+Accepted differences: none
+```
+
+## CADS Motion experiment / library rollout — evidence summary
+
+```text
+Recipes (CSS vars + TS):
+  --motion-press-* / --motion-surface-* / --motion-indicator-* / --motion-highlight-chase-*
+  --transition-press|surface|indicator|highlight-chase; --easing-out
+  --transition-indicator includes width (Tabs sliding chrome)
+Flag: CadsProvider experimentalMotion (default false) + data-cads-experimental-motion
+Press (data-cads-press):
+  Button, CloseIconButton, IconToggle, Chip, Checkbox, Radio, Link,
+  Dropdown menu-item content (inner wrapper), Breadcrumb links/buttons + overflow trigger
+  Dropdown triggers skip Press scale (action keeps attr; Surface owns open motion)
+  Skip: SegmentedButton, Pagination segmented items, Tabs tabs, TextInput, Slider
+Surface (data-cads-surface):
+  Popover, Dropdown menu, Drawer (origin bottom), Dialog, Modal,
+  Tooltip (origin toward placement), Breadcrumbs overflow menu,
+  Toast (origin toward viewport placement; snackbar host)
+Indicator (data-cads-indicator):
+  Toggle handle; Tabs primary underline only (secondary Tabs skip Indicator)
+Surface exit: useSurfacePresence + cads-surface-out on Popover / Dropdown / Toast
+Tooltip: MUI Grow timed to --motion-surface-duration; leaveDelay 0 (no CSS keyframe fight)
+Toast: open + placement + offset (default 64) via MUI Snackbar; transitionDuration 0 when Surface on
+Slider thumb: no Press (MUI position transform fights scale)
+TextInput: hover/press suppressed while :focus-within (stays white)
+Highlight chase → deferred
+Docs: /variables/core foundation page + mini-UI card (Press / Surface / Indicator)
+Verification: pnpm typecheck; pnpm build
+```
 
 ## Pagination + TablePagination — evidence summary
 
@@ -276,13 +371,14 @@ Accepted differences:
 Priority order for the next agent sessions:
 
 1. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
-2. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
-3. **End-to-end portable skill hosts** — download from Pages `/ai` (or local ZIP) and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Later: when prod publishes FA7 on `dsco.code.org`, switch runtime/`@font-face` to those CDN assets and stop inlining OTFs.
-4. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
-5. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
-6. **Publish / hosting** — push to GitHub when ready; decide org (`code-dot-org` vs other); optionally deploy docs (Vercel / GH Pages).
-7. **Prototype gallery** — replace the placeholder with real inspectable prototypes.
-8. **Harness automation (later)** — REST snapshot refresh/change fingerprint with PAT; CI strict audit; Playwright pairwise fixture generation and normalized pixel baselines.
+2. **Motion follow-ups** — Highlight-chase recipe (vars exist, no component yet); optional SegmentedButton sliding Indicator; keep foundation page in sync if timings change.
+3. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
+4. **End-to-end portable skill hosts** — download from Pages `/ai` (or local ZIP) and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Later: when prod publishes FA7 on `dsco.code.org`, switch runtime/`@font-face` to those CDN assets and stop inlining OTFs.
+5. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
+6. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
+7. **Publish / hosting** — push to GitHub when ready; decide org (`code-dot-org` vs other); optionally deploy docs (Vercel / GH Pages).
+8. **Prototype gallery** — replace the placeholder with real inspectable prototypes.
+9. **Harness automation (later)** — REST snapshot refresh/change fingerprint with PAT; CI strict audit; Playwright pairwise fixture generation and normalized pixel baselines.
 
 ## Explicit non-goals (for now)
 
