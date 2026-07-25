@@ -93,9 +93,9 @@ export const controlHeights = {
 
 /**
  * Motion / transition variables.
- * Figma has no duration/easing collection yet — these are a small CADS set for
- * control chrome (hover/press fills, borders). Focus rings use short so they
- * don't feel lagged.
+ * Figma has no duration/easing collection yet — chrome durations plus experimental
+ * micro-interaction recipes (Press / Surface / Indicator / Highlight chase).
+ * Focus rings use short so they don't feel lagged.
  */
 export const motion = {
   durationInstant: "0ms",
@@ -103,6 +103,38 @@ export const motion = {
   durationMedium: "200ms",
   easingStandard: "cubic-bezier(0.4, 0, 0.2, 1)",
   easingEmphasized: "cubic-bezier(0.2, 0, 0, 1)",
+  /** Ease-out for user-initiated feedback (snappy start, soft settle). */
+  easingOut: "cubic-bezier(0.23, 1, 0.32, 1)",
+  /** Active scale feedback on pressable controls. */
+  press: {
+    scale: "0.97",
+    duration: "140ms",
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+  },
+  /** Overlay / menu enter-exit (opacity + slight scale). */
+  surface: {
+    fromScale: "0.96",
+    duration: "180ms",
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+  },
+  /** Committed selection chrome that moves (toggle handle, selected pill). */
+  indicator: {
+    duration: "200ms",
+    easing: "cubic-bezier(0.2, 0, 0, 1)",
+  },
+  /**
+   * Soft opacity/chrome fade — shorter and quieter than `--transition-colors`.
+   * Use for menu-item hover fills and other high-frequency tint changes.
+   */
+  fade: {
+    duration: "100ms",
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+  },
+  /** Ephemeral hover highlight that follows the pointer across list rows. */
+  highlightChase: {
+    duration: "120ms",
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+  },
 } as const;
 
 /** Flat CSS custom-property map for non-color variables. */
@@ -169,7 +201,25 @@ export function nonColorCssVars(): Record<string, string> {
     "--duration-medium": motion.durationMedium,
     "--easing-standard": motion.easingStandard,
     "--easing-emphasized": motion.easingEmphasized,
+    "--easing-out": motion.easingOut,
+    "--motion-press-scale": motion.press.scale,
+    "--motion-press-duration": motion.press.duration,
+    "--motion-press-easing": motion.press.easing,
+    "--motion-surface-from-scale": motion.surface.fromScale,
+    "--motion-surface-duration": motion.surface.duration,
+    "--motion-surface-easing": motion.surface.easing,
+    "--motion-indicator-duration": motion.indicator.duration,
+    "--motion-indicator-easing": motion.indicator.easing,
+    "--motion-fade-duration": motion.fade.duration,
+    "--motion-fade-easing": motion.fade.easing,
+    "--motion-highlight-chase-duration": motion.highlightChase.duration,
+    "--motion-highlight-chase-easing": motion.highlightChase.easing,
     "--transition-colors": `background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)`,
+    "--transition-fade": `background-color var(--motion-fade-duration) var(--motion-fade-easing), color var(--motion-fade-duration) var(--motion-fade-easing), border-color var(--motion-fade-duration) var(--motion-fade-easing), opacity var(--motion-fade-duration) var(--motion-fade-easing)`,
+    "--transition-press": `transform var(--motion-press-duration) var(--motion-press-easing)`,
+    "--transition-surface": `opacity var(--motion-surface-duration) var(--motion-surface-easing), transform var(--motion-surface-duration) var(--motion-surface-easing)`,
+    "--transition-indicator": `left var(--motion-indicator-duration) var(--motion-indicator-easing), width var(--motion-indicator-duration) var(--motion-indicator-easing), transform var(--motion-indicator-duration) var(--motion-indicator-easing), background-color var(--duration-short) var(--easing-standard)`,
+    "--transition-highlight-chase": `top var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), height var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), opacity var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing)`,
     "--font-fa-pro": '"Font Awesome 7 Pro"',
     "--font-fa-brands": '"Font Awesome 7 Brands"',
   };

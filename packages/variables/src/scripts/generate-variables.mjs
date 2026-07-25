@@ -113,8 +113,31 @@ const NON_COLOR = {
   "--duration-medium": "200ms",
   "--easing-standard": "cubic-bezier(0.4, 0, 0.2, 1)",
   "--easing-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+  "--easing-out": "cubic-bezier(0.23, 1, 0.32, 1)",
+  "--motion-press-scale": "0.97",
+  "--motion-press-duration": "140ms",
+  "--motion-press-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+  "--motion-surface-from-scale": "0.96",
+  "--motion-surface-duration": "180ms",
+  "--motion-surface-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+  "--motion-indicator-duration": "200ms",
+  "--motion-indicator-easing": "cubic-bezier(0.2, 0, 0, 1)",
+  "--motion-fade-duration": "100ms",
+  "--motion-fade-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+  "--motion-highlight-chase-duration": "120ms",
+  "--motion-highlight-chase-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
   "--transition-colors":
     "background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)",
+  "--transition-fade":
+    "background-color var(--motion-fade-duration) var(--motion-fade-easing), color var(--motion-fade-duration) var(--motion-fade-easing), border-color var(--motion-fade-duration) var(--motion-fade-easing), opacity var(--motion-fade-duration) var(--motion-fade-easing)",
+  "--transition-press":
+    "transform var(--motion-press-duration) var(--motion-press-easing)",
+  "--transition-surface":
+    "opacity var(--motion-surface-duration) var(--motion-surface-easing), transform var(--motion-surface-duration) var(--motion-surface-easing)",
+  "--transition-indicator":
+    "left var(--motion-indicator-duration) var(--motion-indicator-easing), width var(--motion-indicator-duration) var(--motion-indicator-easing), transform var(--motion-indicator-duration) var(--motion-indicator-easing), background-color var(--duration-short) var(--easing-standard)",
+  "--transition-highlight-chase":
+    "top var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), height var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), opacity var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing)",
 };
 
 function nonColorBlock(indent = "  ") {
@@ -148,6 +171,17 @@ ${SYNTAX_LIGHT}
 .dark {
 ${dark}
 ${SYNTAX_DARK}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-press-duration: 0ms;
+    --motion-surface-duration: 80ms;
+    --motion-indicator-duration: 80ms;
+    --motion-highlight-chase-duration: 0ms;
+    --motion-surface-from-scale: 1;
+    --motion-press-scale: 1;
+  }
 }
 `;
 }
