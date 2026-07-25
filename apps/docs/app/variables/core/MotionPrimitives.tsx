@@ -6,7 +6,6 @@ import { useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
 import styles from "../FoundationPage.module.css";
 import { EasingChart } from "./EasingChart";
-import { ScaleSample } from "./ScaleSample";
 
 const CHROME_DURATIONS = [
   {
@@ -44,19 +43,6 @@ const RECIPE_DURATIONS = [
   },
 ] as const;
 
-const SCALES = [
-  {
-    token: "motion-press-scale",
-    variable: "--motion-press-scale",
-    value: motion.press.scale,
-  },
-  {
-    token: "motion-surface-from-scale",
-    variable: "--motion-surface-from-scale",
-    value: motion.surface.fromScale,
-  },
-] as const;
-
 const EASINGS = [
   {
     token: "easing-standard",
@@ -81,7 +67,6 @@ const EASINGS = [
 const TABS = [
   { value: "duration", label: "Duration" },
   { value: "easing", label: "Easing" },
-  { value: "scale", label: "Scale" },
 ] as const;
 
 type TabValue = (typeof TABS)[number]["value"];
@@ -156,25 +141,7 @@ function EasingPanel() {
   );
 }
 
-function ScalePanel() {
-  return (
-    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
-      {SCALES.map((item) => (
-        <div className={styles.shapeItem} key={item.token}>
-          <ScaleSample variable={item.variable} scale={item.value} />
-          <div className={styles.rangeHeader}>
-            <CopyName className={styles.copyName} copyValue={item.variable}>
-              {item.token}
-            </CopyName>
-            <span className={styles.rangeCount}>{item.value}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** Tabbed Duration / Easing / Scale specimens — same pattern as Color / Typography. */
+/** Tabbed Duration / Easing specimens — same pattern as Color / Typography. */
 export function MotionPrimitives() {
   const [tab, setTab] = useState<TabValue>("duration");
 
@@ -189,13 +156,7 @@ export function MotionPrimitives() {
         items={[...TABS]}
       />
       <div className={styles.primitivePanel}>
-        {tab === "duration" ? (
-          <DurationPanel />
-        ) : tab === "easing" ? (
-          <EasingPanel />
-        ) : (
-          <ScalePanel />
-        )}
+        {tab === "duration" ? <DurationPanel /> : <EasingPanel />}
       </div>
     </div>
   );

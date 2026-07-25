@@ -12,42 +12,36 @@ const SURFACE_EXIT_MS = 180;
 
 type Recipe = {
   id: "press" | "surface" | "indicator";
-  name: string;
-  transition: string;
+  /** Transition variable token — displayed as the recipe title (copies `--{token}`). */
+  token: string;
   vars: string[];
 };
 
 const RECIPES: Recipe[] = [
   {
     id: "press",
-    name: "Press",
-    transition: "--transition-press",
+    token: "transition-press",
     vars: [
       "--motion-press-scale",
       "--motion-press-duration",
       "--motion-press-easing",
-      "--transition-press",
     ],
   },
   {
     id: "surface",
-    name: "Surface",
-    transition: "--transition-surface",
+    token: "transition-surface",
     vars: [
       "--motion-surface-from-scale",
       "--motion-surface-duration",
       "--motion-surface-easing",
-      "--transition-surface",
     ],
   },
   {
     id: "indicator",
-    name: "Indicator",
-    transition: "--transition-indicator",
+    token: "transition-indicator",
     vars: [
       "--motion-indicator-duration",
       "--motion-indicator-easing",
-      "--transition-indicator",
     ],
   },
 ];
@@ -165,9 +159,9 @@ export function RecipeDemos() {
             <div className={styles.shapeMeta}>
               <CopyName
                 className={styles.copyName}
-                copyValue={recipe.transition}
+                copyValue={`--${recipe.token}`}
               >
-                {recipe.name}
+                {recipe.token}
               </CopyName>
               <ul className={styles.recipeVars}>
                 {recipe.vars.map((variable) => (

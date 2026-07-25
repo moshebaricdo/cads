@@ -39,9 +39,8 @@ export default function MotionPage() {
           Primitives
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Duration, easing, and scale values recipes and chrome build from —
-          including recipe-owned timings and scales alongside the shared chrome
-          steps.
+          Individual motion properties. Recipes support most usages, but you can also 
+          create your own custom motion patterns by combining primitives.
         </p>
         <div className={styles.sectionContent}>
           <MotionPrimitives />

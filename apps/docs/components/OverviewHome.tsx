@@ -103,8 +103,8 @@ export function OverviewHome() {
           Prototyping with CADS
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Prototype outside the monorepo with a portable skill that embeds the
-          real CADS runtime — no npm packages required.
+          You can prototype with CADS in any LLM using a portable skill generated from the CADS schema.
+          The skill is self-contained and doesn't require any external dependencies. 
         </p>
         <div className={styles.sectionAction}>
           <Button href={withBasePath("/ai")} size="small" color="secondary">
