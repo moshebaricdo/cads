@@ -129,7 +129,6 @@ function DialogSurface({
           gap: "28px",
           boxSizing: "border-box",
           width: "100%",
-          minWidth: 630,
           maxWidth: 800,
           padding: isCustom
             ? "30px"
@@ -307,6 +306,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
           p: "56px 24px",
           backgroundColor: SCRIM,
           minHeight: 360,
+          width: "100%",
+          height: "100%",
+          boxSizing: "border-box",
         }}
       >
         {surface}
@@ -319,6 +321,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
       open={open}
       onClose={(_e, _reason) => onClose?.()}
       maxWidth={false}
+      fullWidth
+      /* Allow focus in body-portaled Dropdown / Popover menus nested inside. */
+      disableEnforceFocus
       slotProps={{
         backdrop: {
           sx: { backgroundColor: SCRIM },
@@ -328,8 +333,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
             background: "transparent",
             boxShadow: "none",
             overflow: "visible",
-            maxWidth: "none",
-            m: 0,
+            maxWidth: 800,
+            width: "100%",
+            m: "24px",
           },
         },
       }}

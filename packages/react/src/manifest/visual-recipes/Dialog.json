@@ -31,7 +31,6 @@
   "geometry": {
     "sizes": {
       "default": {
-        "minWidth": "630",
         "maxWidth": "800",
         "padding": "40 56",
         "gap": "28",
@@ -96,7 +95,7 @@
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
-          "minWidth": "630",
+          "maxWidth": "800",
           "radius": "12",
           "padding": "40 56"
         },

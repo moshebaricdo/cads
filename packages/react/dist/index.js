@@ -1,5 +1,5 @@
 export { CadsProvider } from './theme/CadsProvider.js';
-export { useExperimentalMotion } from './theme/experimentalMotion.js';
+export { springTransition, useExperimentalMotion } from './theme/experimentalMotion.js';
 export { Button } from './components/Button.js';
 export { CloseIconButton } from './components/CloseIconButton.js';
 export { SegmentedButton } from './components/SegmentedButton.js';

@@ -1,6 +1,10 @@
 export { CadsProvider } from "./theme/CadsProvider";
 export type { CadsProviderProps } from "./theme/CadsProvider";
-export { useExperimentalMotion } from "./theme/experimentalMotion";
+export {
+  useExperimentalMotion,
+  springTransition,
+} from "./theme/experimentalMotion";
+export type { MotionSpringName } from "./theme/experimentalMotion";
 
 export { Button } from "./components/Button";
 export type {

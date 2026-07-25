@@ -1,5 +1,7 @@
 "use client";
 
+import { motion as motionVars } from "@codeai/cads-variables";
+import type { Transition } from "motion/react";
 import {
   createContext,
   useContext,
@@ -18,21 +20,34 @@ export function useExperimentalMotion(): boolean {
   return useContext(ExperimentalMotionContext);
 }
 
-/** Read `--motion-surface-duration` from the document (fallback 180ms). */
+export type MotionSpringName = keyof typeof motionVars.spring;
+
+/**
+ * Motion spring transition from CADS presets. Snaps when reduced motion.
+ */
+export function springTransition(
+  name: MotionSpringName,
+  reduceMotion: boolean | null | undefined,
+): Transition {
+  if (reduceMotion) return { duration: 0 };
+  return motionVars.spring[name];
+}
+
+/** Read `--motion-surface-duration` from the document (fallback 200ms = medium). */
 export function readSurfaceDurationMs(): number {
-  if (typeof document === "undefined") return 180;
+  if (typeof document === "undefined") return 200;
   const raw = getComputedStyle(document.documentElement)
     .getPropertyValue("--motion-surface-duration")
     .trim();
   if (raw.endsWith("ms")) {
     const n = Number.parseFloat(raw);
-    return Number.isFinite(n) ? n : 180;
+    return Number.isFinite(n) ? n : 200;
   }
   if (raw.endsWith("s")) {
     const n = Number.parseFloat(raw) * 1000;
-    return Number.isFinite(n) ? n : 180;
+    return Number.isFinite(n) ? n : 200;
   }
-  return 180;
+  return 200;
 }
 
 /**
@@ -141,7 +156,11 @@ export const EXPERIMENTAL_MOTION_CSS = `
     transform: scale(var(--motion-surface-from-scale));
   }
 }
-[data-cads-indicator] {
+/*
+ * CSS Indicator fallback. Spring path sets data-cads-indicator-spring and
+ * drives transform via Motion — skip the CSS transition so they don’t fight.
+ */
+[data-cads-indicator]:not([data-cads-indicator-spring]) {
   transition: var(--transition-indicator);
 }
 /* Tabs primary underline: match selected-strong on hover of the selected tab. */
@@ -149,18 +168,36 @@ export const EXPERIMENTAL_MOTION_CSS = `
   [data-cads-tabs-indicator="primary"] {
   background-color: var(--border-selected-strong);
 }
-/* Toggle handle: slight press-scale while the switch is held. */
+/*
+ * Toggle handle press-scale. Spring path nests the painted face so Motion’s
+ * x transform and CSS scale don’t clobber each other.
+ */
 @media (hover: hover) and (pointer: fine) {
-  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator] {
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator]:not([data-cads-indicator-spring]) {
     transform: scale(var(--motion-press-scale));
   }
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator-face] {
+    transform: scale(var(--motion-press-scale));
+  }
+}
+[data-cads-indicator-face] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: inherit;
+  transition: transform var(--motion-press-duration) var(--motion-press-easing);
 }
 @media (prefers-reduced-motion: reduce) {
   [data-cads-press]:active:not(:disabled):not(.Mui-disabled):not([aria-disabled="true"]) {
     transform: none;
   }
-  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator] {
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator]:not([data-cads-indicator-spring]),
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator-face] {
     transform: none;
+  }
+  [data-cads-indicator-face] {
+    transition: none;
   }
   [data-cads-surface] {
     animation: none;

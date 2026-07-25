@@ -552,7 +552,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
           open={surfaceMounted}
           anchorEl={anchorEl}
           placement={caretPlacementToPopper(caretPlacement)}
-          style={{ zIndex: 1400 }}
+          style={{ zIndex: "var(--z-popover)" }}
           modifiers={[
             {
               name: "offset",
@@ -568,7 +568,17 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
           ]}
         >
           <ClickAwayListener
-            onClickAway={() => {
+            onClickAway={(event) => {
+              // Body-portaled menus are outside this surface; ignore them so a
+              // Dropdown inside the Popover does not dismiss the host.
+              const target = event.target;
+              if (
+                target instanceof Element &&
+                (target.closest("[data-cads-dropdown-menu]") ||
+                  target.closest("[data-cads-breadcrumb-overflow-menu]"))
+              ) {
+                return;
+              }
               if (!surfaceExiting) setOpen(false);
             }}
           >

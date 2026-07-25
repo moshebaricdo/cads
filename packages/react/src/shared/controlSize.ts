@@ -135,6 +135,11 @@ export const TOGGLE_SIZE: Record<
     handle: string;
     /** Inset from track edge to handle / track padding. */
     pad: string;
+    /**
+     * Off→on handle travel in px (track − handle − 2×pad). Used by the
+     * experimental Indicator spring (`x` transform) so Motion stays in px.
+     */
+    handleTravelPx: number;
     iconPx: string;
     /** Figma flex gap between handle and icon flex band. */
     iconGap: string;
@@ -152,6 +157,7 @@ export const TOGGLE_SIZE: Record<
     trackHeight: "1.375rem", // 22px — matches Checkbox/Radio large
     handle: "1.125rem", // 18px
     pad: "0.125rem", // 2px
+    handleTravelPx: 20, // 42 − 18 − 4
     iconPx: "0.75rem", // 12px
     iconGap: "0.375rem", // 6px
     iconInsetLeft: "0.5rem", // 8px
@@ -165,6 +171,7 @@ export const TOGGLE_SIZE: Record<
     trackHeight: "1.25rem", // 20px — matches Checkbox/Radio medium
     handle: "1rem", // 16px
     pad: "0.125rem", // 2px
+    handleTravelPx: 18, // 38 − 16 − 4
     iconPx: "0.6875rem", // 11px
     iconGap: "0.25rem", // 4px
     iconInsetLeft: "0.375rem", // 6px
@@ -178,6 +185,7 @@ export const TOGGLE_SIZE: Record<
     trackHeight: "1.125rem", // 18px — matches Checkbox/Radio small
     handle: "0.875rem", // 14px
     pad: "0.125rem", // 2px
+    handleTravelPx: 16, // 34 − 14 − 4
     iconPx: "0.625rem", // 10px
     iconGap: "0.25rem", // 4px
     iconInsetLeft: "0.375rem", // 6px
@@ -191,6 +199,7 @@ export const TOGGLE_SIZE: Record<
     trackHeight: "1rem", // 16px — matches Checkbox/Radio extraSmall
     handle: "0.75rem", // 12px
     pad: "0.125rem", // 2px
+    handleTravelPx: 14, // 30 − 12 − 4
     iconPx: "0.5625rem", // 9px
     iconGap: "0.25rem", // 4px
     iconInsetLeft: "0.375rem", // 6px

@@ -314,7 +314,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
           backgroundColor: SCRIM,
           minHeight: 400,
           width: "100%",
-          maxWidth: 800,
+          height: "100%",
+          boxSizing: "border-box",
         }}
       >
         {surface}
@@ -328,6 +329,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
       onClose={(_e, _reason) => onClose?.()}
       maxWidth={false}
       fullWidth
+      /* Allow focus in body-portaled Dropdown / Popover menus nested inside. */
+      disableEnforceFocus
       slotProps={{
         backdrop: {
           sx: { backgroundColor: SCRIM },

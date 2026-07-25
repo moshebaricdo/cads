@@ -1,10 +1,13 @@
 import ButtonBase, {
   type ButtonBaseProps,
 } from "@mui/material/ButtonBase";
+import { motion as motionVars } from "@codeai/cads-variables";
+import { motion, useReducedMotion } from "motion/react";
 import {
   forwardRef,
   useId,
   useState,
+  type CSSProperties,
   type MouseEvent,
   type ReactNode,
 } from "react";
@@ -16,7 +19,10 @@ import {
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
-import { useExperimentalMotion } from "../theme/experimentalMotion";
+import {
+  springTransition,
+  useExperimentalMotion,
+} from "../theme/experimentalMotion";
 
 export type ToggleSize = ControlSize;
 
@@ -66,8 +72,6 @@ export interface ToggleProps
 
 const HANDLE_MOTION =
   "left var(--duration-medium) var(--easing-emphasized), background-color var(--duration-short) var(--easing-standard)";
-/** Used when `experimentalMotion` is on (via `data-cads-indicator` CSS). */
-const HANDLE_MOTION_EXPERIMENTAL = "var(--transition-indicator)";
 const ICON_MOTION =
   "opacity var(--duration-short) var(--easing-standard)";
 
@@ -105,9 +109,11 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     const [uncontrolled, setUncontrolled] = useState(defaultChecked);
     const isOn = controlled ? Boolean(checked) : uncontrolled;
     const experimentalMotion = useExperimentalMotion();
-    const handleMotion = experimentalMotion
-      ? HANDLE_MOTION_EXPERIMENTAL
-      : HANDLE_MOTION;
+    const reduceMotion = useReducedMotion();
+    const indicatorSpring = springTransition(
+      motionVars.indicator.spring,
+      reduceMotion,
+    );
 
     const handleClick: ButtonBaseProps["onClick"] = (event) => {
       onClick?.(event);
@@ -245,25 +251,55 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           </>
         ) : null}
 
-        {/* Sliding handle */}
-        <span
-          aria-hidden
-          data-cads-indicator=""
-          style={{
-            position: "absolute",
-            top: dims.pad,
-            left: isOn
-              ? `calc(100% - ${dims.handle} - ${dims.pad})`
-              : dims.pad,
-            boxSizing: "border-box",
-            width: dims.handle,
-            height: dims.handle,
-            borderRadius: "var(--radius-round)",
-            backgroundColor: handleBg,
-            transition: handleMotion,
-            pointerEvents: "none",
-          }}
-        />
+        {/* Sliding handle — spring Indicator when experimentalMotion is on. */}
+        {experimentalMotion ? (
+          <motion.span
+            aria-hidden
+            data-cads-indicator=""
+            data-cads-indicator-spring=""
+            initial={false}
+            animate={{ x: isOn ? dims.handleTravelPx : 0 }}
+            transition={indicatorSpring}
+            style={{
+              position: "absolute",
+              top: dims.pad,
+              left: dims.pad,
+              boxSizing: "border-box",
+              width: dims.handle,
+              height: dims.handle,
+              borderRadius: "var(--radius-round)",
+              /* Paint lives on the face so press-scale doesn’t leave a halo. */
+              backgroundColor: "transparent",
+              pointerEvents: "none",
+            }}
+          >
+            <span
+              data-cads-indicator-face=""
+              style={{ backgroundColor: handleBg }}
+            />
+          </motion.span>
+        ) : (
+          <span
+            aria-hidden
+            data-cads-indicator=""
+            style={
+              {
+                position: "absolute",
+                top: dims.pad,
+                left: isOn
+                  ? `calc(100% - ${dims.handle} - ${dims.pad})`
+                  : dims.pad,
+                boxSizing: "border-box",
+                width: dims.handle,
+                height: dims.handle,
+                borderRadius: "var(--radius-round)",
+                backgroundColor: handleBg,
+                transition: HANDLE_MOTION,
+                pointerEvents: "none",
+              } satisfies CSSProperties
+            }
+          />
+        )}
       </ButtonBase>
     );
 

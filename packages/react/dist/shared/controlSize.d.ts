@@ -43,6 +43,11 @@ declare const TOGGLE_SIZE: Record<ControlSize, {
     handle: string;
     /** Inset from track edge to handle / track padding. */
     pad: string;
+    /**
+     * Off→on handle travel in px (track − handle − 2×pad). Used by the
+     * experimental Indicator spring (`x` transform) so Motion stays in px.
+     */
+    handleTravelPx: number;
     iconPx: string;
     /** Figma flex gap between handle and icon flex band. */
     iconGap: string;

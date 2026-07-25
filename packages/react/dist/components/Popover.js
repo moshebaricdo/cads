@@ -340,7 +340,7 @@ const Popover = forwardRef(
           open: surfaceMounted,
           anchorEl,
           placement: caretPlacementToPopper(caretPlacement),
-          style: { zIndex: 1400 },
+          style: { zIndex: "var(--z-popover)" },
           modifiers: [
             {
               name: "offset",
@@ -355,7 +355,11 @@ const Popover = forwardRef(
           children: /* @__PURE__ */ jsx(
             ClickAwayListener,
             {
-              onClickAway: () => {
+              onClickAway: (event) => {
+                const target = event.target;
+                if (target instanceof Element && (target.closest("[data-cads-dropdown-menu]") || target.closest("[data-cads-breadcrumb-overflow-menu]"))) {
+                  return;
+                }
                 if (!surfaceExiting) setOpen(false);
               },
               children: /* @__PURE__ */ jsx(Box, { children: withCaret })

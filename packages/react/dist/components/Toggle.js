@@ -1,12 +1,13 @@
 import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
 import ButtonBase from '@mui/material/ButtonBase';
+import { motion } from '@codeai/cads-variables';
+import { useReducedMotion, motion as motion$1 } from 'motion/react';
 import { forwardRef, useId, useState } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
 import { TOGGLE_SIZE, FOCUS_RING, TRANSITION_COLORS } from '../shared/controlSize.js';
-import { useExperimentalMotion } from '../theme/experimentalMotion.js';
+import { useExperimentalMotion, springTransition } from '../theme/experimentalMotion.js';
 
 const HANDLE_MOTION = "left var(--duration-medium) var(--easing-emphasized), background-color var(--duration-short) var(--easing-standard)";
-const HANDLE_MOTION_EXPERIMENTAL = "var(--transition-indicator)";
 const ICON_MOTION = "opacity var(--duration-short) var(--easing-standard)";
 const Toggle = forwardRef(
   function Toggle2({
@@ -34,7 +35,11 @@ const Toggle = forwardRef(
     const [uncontrolled, setUncontrolled] = useState(defaultChecked);
     const isOn = controlled ? Boolean(checked) : uncontrolled;
     const experimentalMotion = useExperimentalMotion();
-    const handleMotion = experimentalMotion ? HANDLE_MOTION_EXPERIMENTAL : HANDLE_MOTION;
+    const reduceMotion = useReducedMotion();
+    const indicatorSpring = springTransition(
+      motion.indicator.spring,
+      reduceMotion
+    );
     const handleClick = (event) => {
       onClick?.(event);
       if (event.defaultPrevented || disabled) return;
@@ -142,7 +147,36 @@ const Toggle = forwardRef(
               }
             )
           ] }) : null,
-          /* @__PURE__ */ jsx(
+          experimentalMotion ? /* @__PURE__ */ jsx(
+            motion$1.span,
+            {
+              "aria-hidden": true,
+              "data-cads-indicator": "",
+              "data-cads-indicator-spring": "",
+              initial: false,
+              animate: { x: isOn ? dims.handleTravelPx : 0 },
+              transition: indicatorSpring,
+              style: {
+                position: "absolute",
+                top: dims.pad,
+                left: dims.pad,
+                boxSizing: "border-box",
+                width: dims.handle,
+                height: dims.handle,
+                borderRadius: "var(--radius-round)",
+                /* Paint lives on the face so press-scale doesn’t leave a halo. */
+                backgroundColor: "transparent",
+                pointerEvents: "none"
+              },
+              children: /* @__PURE__ */ jsx(
+                "span",
+                {
+                  "data-cads-indicator-face": "",
+                  style: { backgroundColor: handleBg }
+                }
+              )
+            }
+          ) : /* @__PURE__ */ jsx(
             "span",
             {
               "aria-hidden": true,
@@ -156,7 +190,7 @@ const Toggle = forwardRef(
                 height: dims.handle,
                 borderRadius: "var(--radius-round)",
                 backgroundColor: handleBg,
-                transition: handleMotion,
+                transition: HANDLE_MOTION,
                 pointerEvents: "none"
               }
             }

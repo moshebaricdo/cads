@@ -44,7 +44,6 @@
         "gap": "8",
         "radius": "6",
         "maxWidth": "256",
-        "minWidth": "64",
         "width": "hug",
         "textWrap": "word-break / left-aligned",
         "iconAlign": "flex-start (first line)"
@@ -59,8 +58,7 @@
       "triggerGapWithCaret": "4",
       "triggerGapWithoutCaret": "6",
       "caretSize": "6×4",
-      "maxWidth": "256",
-      "minWidth": "64"
+      "maxWidth": "256"
     },
     "typography": {
       "family": "var(--font-body)",
@@ -291,7 +289,7 @@
       {
         "at": "2026-07-23",
         "mismatch": "Long title stayed on one line past 256px",
-        "fix": "whiteSpace normal + minWidth 0 + overflow-wrap on text; bubble maxWidth 256 / minWidth 64; items-start icon",
+        "fix": "whiteSpace normal + minWidth 0 + overflow-wrap on text; bubble maxWidth 256; items-start icon",
         "measured": "long case width=256 height=96; iconTop===textTop; short case width≈89 (hug)"
       }
     ]

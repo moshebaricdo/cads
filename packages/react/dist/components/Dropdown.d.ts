@@ -69,6 +69,11 @@ interface DropdownBaseProps {
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     disabled?: boolean;
+    /**
+     * Keep the menu in-tree (no body portal). Fixtures / capture regions only.
+     * @default false
+     */
+    disablePortal?: boolean;
     className?: string;
     style?: CSSProperties;
     "aria-label"?: string;

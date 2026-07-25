@@ -1,5 +1,5 @@
 export { CadsProvider, CadsProviderProps } from './theme/CadsProvider.js';
-export { useExperimentalMotion } from './theme/experimentalMotion.js';
+export { MotionSpringName, springTransition, useExperimentalMotion } from './theme/experimentalMotion.js';
 export { Button, ButtonColor, ButtonProps, ButtonSize, ButtonVariant } from './components/Button.js';
 export { CloseIconButton, CloseIconButtonColor, CloseIconButtonProps, CloseIconButtonSize } from './components/CloseIconButton.js';
 export { SegmentedButton, SegmentedButtonOption, SegmentedButtonProps, SegmentedButtonSize } from './components/SegmentedButton.js';
@@ -32,6 +32,8 @@ export { BreadcrumbItem, Breadcrumbs, BreadcrumbsProps, BreadcrumbsSize } from '
 export { ControlSize } from './shared/controlSize.js';
 export { CADS_FIGMA_FILE_KEY, CadsComponentManifest, CadsPropDef, cadsManifest } from './manifest/cads.manifest.js';
 import 'react';
+import '@codeai/cads-variables';
+import 'motion/react';
 import '@mui/material/Button';
 import './icons/faProRegularCodepoints.js';
 import '@mui/material/ButtonBase';

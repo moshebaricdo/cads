@@ -1,4 +1,6 @@
 import ButtonBase from "@mui/material/ButtonBase";
+import { motion as motionVars } from "@codeai/cads-variables";
+import { motion, useReducedMotion } from "motion/react";
 import {
   forwardRef,
   useEffect,
@@ -19,7 +21,10 @@ import {
   TRANSITION_COLORS,
   type ControlSize,
 } from "../shared/controlSize";
-import { useExperimentalMotion } from "../theme/experimentalMotion";
+import {
+  springTransition,
+  useExperimentalMotion,
+} from "../theme/experimentalMotion";
 import { CloseIconButton } from "./CloseIconButton";
 
 export type TabsSize = ControlSize;
@@ -103,6 +108,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const value = controlled ? valueProp : uncontrolled;
   const isSecondary = type === "secondary";
   const experimentalMotion = useExperimentalMotion();
+  const reduceMotion = useReducedMotion();
   /* Secondary contained chrome doesn't suit a sliding Indicator. */
   const useIndicator = experimentalMotion && !isSecondary;
   const [indicatorBox, setIndicatorBox] = useState<{
@@ -110,6 +116,10 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     width: number;
   } | null>(null);
   const [indicatorAnimated, setIndicatorAnimated] = useState(false);
+  const indicatorSpring = springTransition(
+    motionVars.indicator.spring,
+    reduceMotion || !indicatorAnimated,
+  );
 
   const selectValue = (next: string) => {
     if (!controlled) setUncontrolled(next);
@@ -257,22 +267,6 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     else if (ref) ref.current = node;
   };
 
-  const indicatorStyle: CSSProperties | undefined =
-    useIndicator && indicatorBox
-      ? {
-          position: "absolute",
-          left: indicatorBox.left,
-          width: indicatorBox.width,
-          height: 2,
-          bottom: 0,
-          boxSizing: "border-box",
-          backgroundColor: "var(--border-selected-primary)",
-          pointerEvents: "none",
-          zIndex: 1,
-          transition: indicatorAnimated ? undefined : "none",
-        }
-      : undefined;
-
   return (
     <div
       ref={setListRef}
@@ -291,11 +285,28 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       }}
     >
       {useIndicator && indicatorBox ? (
-        <span
+        <motion.span
           aria-hidden
           data-cads-indicator=""
+          data-cads-indicator-spring=""
           data-cads-tabs-indicator="primary"
-          style={indicatorStyle}
+          initial={false}
+          animate={{
+            left: indicatorBox.left,
+            width: indicatorBox.width,
+          }}
+          transition={indicatorSpring}
+          style={
+            {
+              position: "absolute",
+              height: 2,
+              bottom: 0,
+              boxSizing: "border-box",
+              backgroundColor: "var(--border-selected-primary)",
+              pointerEvents: "none",
+              zIndex: 1,
+            } satisfies CSSProperties
+          }
         />
       ) : null}
       {items.map((item, index) => {

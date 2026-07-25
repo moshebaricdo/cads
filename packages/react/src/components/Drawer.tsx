@@ -263,6 +263,8 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
       onClose={(_e, _reason) => onClose?.()}
       hideBackdrop
       disableScrollLock
+      /* Allow focus in body-portaled Dropdown / Popover menus nested inside. */
+      disableEnforceFocus
       slotProps={{
         paper: {
           sx: {

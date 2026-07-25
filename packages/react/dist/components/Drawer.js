@@ -224,6 +224,7 @@ const Drawer = forwardRef(function Drawer2({
       onClose: (_e, _reason) => onClose?.(),
       hideBackdrop: true,
       disableScrollLock: true,
+      disableEnforceFocus: true,
       slotProps: {
         paper: {
           sx: {

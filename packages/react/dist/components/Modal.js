@@ -278,7 +278,8 @@ const Modal = forwardRef(function Modal2({
           backgroundColor: SCRIM,
           minHeight: 400,
           width: "100%",
-          maxWidth: 800
+          height: "100%",
+          boxSizing: "border-box"
         },
         children: surface
       }
@@ -291,6 +292,7 @@ const Modal = forwardRef(function Modal2({
       onClose: (_e, _reason) => onClose?.(),
       maxWidth: false,
       fullWidth: true,
+      disableEnforceFocus: true,
       slotProps: {
         backdrop: {
           sx: { backgroundColor: SCRIM }

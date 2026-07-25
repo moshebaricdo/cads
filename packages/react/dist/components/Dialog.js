@@ -83,7 +83,6 @@ function DialogSurface({
               gap: "28px",
               boxSizing: "border-box",
               width: "100%",
-              minWidth: 630,
               maxWidth: 800,
               padding: isCustom ? "30px" : isIconTop ? "56px 56px 40px" : "40px 56px",
               backgroundColor: "var(--background-neutral-primary)",
@@ -261,7 +260,10 @@ const Dialog = forwardRef(function Dialog2({
           justifyContent: "center",
           p: "56px 24px",
           backgroundColor: SCRIM,
-          minHeight: 360
+          minHeight: 360,
+          width: "100%",
+          height: "100%",
+          boxSizing: "border-box"
         },
         children: surface
       }
@@ -273,6 +275,8 @@ const Dialog = forwardRef(function Dialog2({
       open,
       onClose: (_e, _reason) => onClose?.(),
       maxWidth: false,
+      fullWidth: true,
+      disableEnforceFocus: true,
       slotProps: {
         backdrop: {
           sx: { backgroundColor: SCRIM }
@@ -282,8 +286,9 @@ const Dialog = forwardRef(function Dialog2({
             background: "transparent",
             boxShadow: "none",
             overflow: "visible",
-            maxWidth: "none",
-            m: 0
+            maxWidth: 800,
+            width: "100%",
+            m: "24px"
           }
         }
       },

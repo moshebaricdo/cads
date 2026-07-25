@@ -590,7 +590,7 @@ function BreadcrumbOverflow({
           open={open}
           anchorEl={anchorRef.current}
           placement="bottom-start"
-          style={{ zIndex: 1400 }}
+          style={{ zIndex: "var(--z-dropdown)" }}
           modifiers={[{ name: "offset", options: { offset: [0, 4] } }]}
         >
           <Paper

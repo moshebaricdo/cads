@@ -220,9 +220,8 @@ const bubbleSx = {
   fontSize: "var(--text-body-sm)",
   lineHeight: "var(--leading-body-sm)",
   padding: "4px 12px",
-  // Figma: max-w 256 / min-w 64; hug short labels, wrap long ones.
+  // Figma: max-w 256; hug short labels, wrap long ones.
   maxWidth: 256,
-  minWidth: 64,
   width: "max-content",
   boxSizing: "border-box",
   boxShadow: "var(--shadow-md)",

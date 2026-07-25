@@ -117,6 +117,11 @@ interface DropdownBaseProps {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   disabled?: boolean;
+  /**
+   * Keep the menu in-tree (no body portal). Fixtures / capture regions only.
+   * @default false
+   */
+  disablePortal?: boolean;
   className?: string;
   style?: CSSProperties;
   "aria-label"?: string;
@@ -823,6 +828,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       defaultOpen = false,
       onOpenChange,
       disabled = false,
+      disablePortal = false,
       className,
       style,
       "aria-label": ariaLabel,
@@ -1068,10 +1074,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         ? "checklist"
         : "default";
 
-    // Instant open (no Grow): fixtures disable CSS transitions, which can leave
-    // MUI Transition children stuck at opacity 0. disablePortal keeps the menu
-    // inside the component tree for deterministic capture regions.
     // Checklist always hugs max-content so the Action Row stays on one line.
+    // Portal by default so overflow:hidden ancestors (e.g. docs playground)
+    // cannot clip the menu; fixtures pass disablePortal for capture regions.
     const menuPanelWidth = isChecklist
       ? ({ width: "max-content", minWidth: "max-content" } as const)
       : resolveMenuPanelWidth(menuWidth, anchorEl?.offsetWidth ?? 0);
@@ -1089,14 +1094,21 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         open={surfaceMounted}
         anchorEl={popperAnchor}
         placement={placementToPopper(menuPlacement)}
-        disablePortal
+        disablePortal={disablePortal}
         style={{
-          zIndex: 1400,
+          zIndex: "var(--z-dropdown)",
           width: menuPanelWidthCss,
           minWidth: menuPanelMinWidthCss,
         }}
         modifiers={[
           { name: "offset", options: { offset: [0, 4] } },
+          // Fixtures / inspect: honor menuPlacement exactly (no viewport flip).
+          ...(disablePortal
+            ? [
+                { name: "flip", enabled: false },
+                { name: "preventOverflow", enabled: false },
+              ]
+            : []),
         ]}
       >
         <Paper

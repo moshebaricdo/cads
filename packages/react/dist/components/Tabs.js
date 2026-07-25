@@ -1,9 +1,11 @@
 import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 import ButtonBase from '@mui/material/ButtonBase';
+import { motion } from '@codeai/cads-variables';
+import { useReducedMotion, motion as motion$1 } from 'motion/react';
 import { forwardRef, useId, useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { FaIcon } from '../icons/FaIcon.js';
 import { TABS_SIZE, FOCUS_RING, TRANSITION_COLORS } from '../shared/controlSize.js';
-import { useExperimentalMotion } from '../theme/experimentalMotion.js';
+import { useExperimentalMotion, springTransition } from '../theme/experimentalMotion.js';
 import { CloseIconButton } from './CloseIconButton.js';
 
 function resolveIconName(name) {
@@ -35,9 +37,14 @@ const Tabs = forwardRef(function Tabs2({
   const value = controlled ? valueProp : uncontrolled;
   const isSecondary = type === "secondary";
   const experimentalMotion = useExperimentalMotion();
+  const reduceMotion = useReducedMotion();
   const useIndicator = experimentalMotion && !isSecondary;
   const [indicatorBox, setIndicatorBox] = useState(null);
   const [indicatorAnimated, setIndicatorAnimated] = useState(false);
+  const indicatorSpring = springTransition(
+    motion.indicator.spring,
+    reduceMotion || !indicatorAnimated
+  );
   const selectValue = (next) => {
     if (!controlled) setUncontrolled(next);
     onChange?.(next);
@@ -151,18 +158,6 @@ const Tabs = forwardRef(function Tabs2({
     if (typeof ref === "function") ref(node);
     else if (ref) ref.current = node;
   };
-  const indicatorStyle = useIndicator && indicatorBox ? {
-    position: "absolute",
-    left: indicatorBox.left,
-    width: indicatorBox.width,
-    height: 2,
-    bottom: 0,
-    boxSizing: "border-box",
-    backgroundColor: "var(--border-selected-primary)",
-    pointerEvents: "none",
-    zIndex: 1,
-    transition: indicatorAnimated ? void 0 : "none"
-  } : void 0;
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -182,12 +177,27 @@ const Tabs = forwardRef(function Tabs2({
       },
       children: [
         useIndicator && indicatorBox ? /* @__PURE__ */ jsx(
-          "span",
+          motion$1.span,
           {
             "aria-hidden": true,
             "data-cads-indicator": "",
+            "data-cads-indicator-spring": "",
             "data-cads-tabs-indicator": "primary",
-            style: indicatorStyle
+            initial: false,
+            animate: {
+              left: indicatorBox.left,
+              width: indicatorBox.width
+            },
+            transition: indicatorSpring,
+            style: {
+              position: "absolute",
+              height: 2,
+              bottom: 0,
+              boxSizing: "border-box",
+              backgroundColor: "var(--border-selected-primary)",
+              pointerEvents: "none",
+              zIndex: 1
+            }
           }
         ) : null,
         items.map((item, index) => {

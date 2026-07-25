@@ -566,6 +566,7 @@ const Dropdown = forwardRef(
       defaultOpen = false,
       onOpenChange,
       disabled = false,
+      disablePortal = false,
       className,
       style,
       "aria-label": ariaLabel
@@ -769,14 +770,19 @@ const Dropdown = forwardRef(
         open: surfaceMounted,
         anchorEl: popperAnchor,
         placement: placementToPopper(menuPlacement),
-        disablePortal: true,
+        disablePortal,
         style: {
-          zIndex: 1400,
+          zIndex: "var(--z-dropdown)",
           width: menuPanelWidthCss,
           minWidth: menuPanelMinWidthCss
         },
         modifiers: [
-          { name: "offset", options: { offset: [0, 4] } }
+          { name: "offset", options: { offset: [0, 4] } },
+          // Fixtures / inspect: honor menuPlacement exactly (no viewport flip).
+          ...disablePortal ? [
+            { name: "flip", enabled: false },
+            { name: "preventOverflow", enabled: false }
+          ] : []
         ],
         children: /* @__PURE__ */ jsxs(
           Paper,

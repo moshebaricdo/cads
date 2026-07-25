@@ -1,21 +1,26 @@
+import { motion } from '@codeai/cads-variables';
 import { createContext, useContext, useState, useRef, useEffect } from 'react';
 
 const ExperimentalMotionContext = createContext(false);
 function useExperimentalMotion() {
   return useContext(ExperimentalMotionContext);
 }
+function springTransition(name, reduceMotion) {
+  if (reduceMotion) return { duration: 0 };
+  return motion.spring[name];
+}
 function readSurfaceDurationMs() {
-  if (typeof document === "undefined") return 180;
+  if (typeof document === "undefined") return 200;
   const raw = getComputedStyle(document.documentElement).getPropertyValue("--motion-surface-duration").trim();
   if (raw.endsWith("ms")) {
     const n = Number.parseFloat(raw);
-    return Number.isFinite(n) ? n : 180;
+    return Number.isFinite(n) ? n : 200;
   }
   if (raw.endsWith("s")) {
     const n = Number.parseFloat(raw) * 1e3;
-    return Number.isFinite(n) ? n : 180;
+    return Number.isFinite(n) ? n : 200;
   }
-  return 180;
+  return 200;
 }
 function useSurfacePresence(open) {
   const experimentalMotion = useExperimentalMotion();
@@ -107,7 +112,11 @@ const EXPERIMENTAL_MOTION_CSS = `
     transform: scale(var(--motion-surface-from-scale));
   }
 }
-[data-cads-indicator] {
+/*
+ * CSS Indicator fallback. Spring path sets data-cads-indicator-spring and
+ * drives transform via Motion \u2014 skip the CSS transition so they don\u2019t fight.
+ */
+[data-cads-indicator]:not([data-cads-indicator-spring]) {
   transition: var(--transition-indicator);
 }
 /* Tabs primary underline: match selected-strong on hover of the selected tab. */
@@ -115,18 +124,36 @@ const EXPERIMENTAL_MOTION_CSS = `
   [data-cads-tabs-indicator="primary"] {
   background-color: var(--border-selected-strong);
 }
-/* Toggle handle: slight press-scale while the switch is held. */
+/*
+ * Toggle handle press-scale. Spring path nests the painted face so Motion\u2019s
+ * x transform and CSS scale don\u2019t clobber each other.
+ */
 @media (hover: hover) and (pointer: fine) {
-  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator] {
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator]:not([data-cads-indicator-spring]) {
     transform: scale(var(--motion-press-scale));
   }
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator-face] {
+    transform: scale(var(--motion-press-scale));
+  }
+}
+[data-cads-indicator-face] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: inherit;
+  transition: transform var(--motion-press-duration) var(--motion-press-easing);
 }
 @media (prefers-reduced-motion: reduce) {
   [data-cads-press]:active:not(:disabled):not(.Mui-disabled):not([aria-disabled="true"]) {
     transform: none;
   }
-  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator] {
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator]:not([data-cads-indicator-spring]),
+  [data-cads-toggle]:active:not(.Mui-disabled) [data-cads-indicator-face] {
     transform: none;
+  }
+  [data-cads-indicator-face] {
+    transition: none;
   }
   [data-cads-surface] {
     animation: none;
@@ -136,6 +163,6 @@ const EXPERIMENTAL_MOTION_CSS = `
 }
 `;
 
-export { EXPERIMENTAL_MOTION_CSS, ExperimentalMotionContext, readSurfaceDurationMs, useExperimentalMotion, useSurfacePresence };
+export { EXPERIMENTAL_MOTION_CSS, ExperimentalMotionContext, readSurfaceDurationMs, springTransition, useExperimentalMotion, useSurfacePresence };
 //# sourceMappingURL=experimentalMotion.js.map
 //# sourceMappingURL=experimentalMotion.js.map
