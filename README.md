@@ -2,7 +2,7 @@
 
 The CodeAI Design System (CADS) is a collection of design primitives and components that power our signed-in product experience.
 
-Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-). This repo is the implementation that stays with it — variables, React components, and the docs site.
+Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-). This repo is an interactive documentation and prototyping resource for the design system. It aims to maintain 1:1 parity with Figma as the source of truth. These components are built entirely on top of MUI React components. This is **not** the production component library used on the CodeAI platform and is not available for import as such.
 
 **Docs:** [https://moshebaricdo.github.io/cads/](https://moshebaricdo.github.io/cads/)
 
@@ -10,23 +10,23 @@ Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/Code
 
 ### Getting started
 
-- **Overview** — What CADS is and where to go next.
-- **For Agents** — Portable skill and how to prototype with CADS from an LLM.
+- **Overview** — What CADS is and where to get started.
+- **For Agents** — Info and download option for the portable skill that packages the CADS Docs runtime for fully standalone prototyping in any major AI tool.
 
 ### Foundations
 
 - **Color** — Primitives for core brand colors, semantics for how they apply in product.
 - **Typography** — Space Grotesk for display, Geist for body, Google Sans Code for mono.
-- **Shape** — Radius, elevation, spacing, and stacking.
-- **Motion** _(experimental)_ — Micro-interaction recipes on a shared duration and easing ladder.
+- **Shape** — Radius, elevation, spacing, and z-index/stacking.
+- **Motion** _(experimental)_ — Micro-interaction recipes built on shared duration, easing, spring, and scale ladders.
 
 ### Components
 
-Reusable UI building blocks, grouped the same way as Figma (Actions, Inputs, Navigation, Messaging, Overlays). Each page has a playground, props, and usage notes.
+Reusable UI building blocks, grouped by type (Actions, Inputs, Navigation, Messaging, Overlays), with a playground/inspector, props sheets, and usage notes.
 
 ## Components
 
-Status reflects whether a matching component has shipped in the [production Storybook](https://code-dot-org.github.io/code-dot-org/component-library-storybook/). “Not in production” means it’s available here (and usually in Figma) but hasn’t landed in that library yet.
+Status reflects whether a matching component has shipped in the [production Storybook](https://code-dot-org.github.io/code-dot-org/component-library-storybook/). “Not in production” means it’s available here and in Figma but hasn’t landed in the production library yet. With the transition from DSCO to CADS, nearly every component here and in Figma differs in some way from what is currently in production.
 
 | Component | Group | Status |
 | --- | --- | --- |

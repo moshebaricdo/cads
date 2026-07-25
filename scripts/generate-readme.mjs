@@ -19,8 +19,9 @@ const FIGMA_URL =
   "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-";
 
 const RESOURCE_BLURBS = {
-  "/": "What CADS is and where to go next.",
-  "/ai": "Portable skill and how to prototype with CADS from an LLM.",
+  "/": "What CADS is and where to get started.",
+  "/ai":
+    "Info and download option for the portable skill that packages the CADS Docs runtime for fully standalone prototyping in any major AI tool.",
 };
 
 const FOUNDATION_BLURBS = {
@@ -29,9 +30,9 @@ const FOUNDATION_BLURBS = {
   "/variables/typography":
     "Space Grotesk for display, Geist for body, Google Sans Code for mono.",
   "/variables/spacing":
-    "Radius, elevation, spacing, and stacking.",
+    "Radius, elevation, spacing, and z-index/stacking.",
   "/variables/core":
-    "Micro-interaction recipes on a shared duration and easing ladder.",
+    "Micro-interaction recipes built on shared duration, easing, spring, and scale ladders.",
 };
 
 function read(relPath) {
@@ -176,7 +177,7 @@ function buildReadme() {
 
 The CodeAI Design System (CADS) is a collection of design primitives and components that power our signed-in product experience.
 
-Design lives in [Figma](${FIGMA_URL}). This repo is the implementation that stays with it — variables, React components, and the docs site.
+Design lives in [Figma](${FIGMA_URL}). This repo is an interactive documentation and prototyping resource for the design system. It aims to maintain 1:1 parity with Figma as the source of truth. These components are built entirely on top of MUI React components. This is **not** the production component library used on the CodeAI platform and is not available for import as such.
 
 **Docs:** [${DOCS_URL}](${DOCS_URL})
 
@@ -192,19 +193,17 @@ ${bulletList(foundations, FOUNDATION_BLURBS)}
 
 ### Components
 
-Reusable UI building blocks, grouped the same way as Figma (${sectionNames}). Each page has a playground, props, and usage notes.
+Reusable UI building blocks, grouped by type (${sectionNames}), with a playground/inspector, props sheets, and usage notes.
 
 ## Components
 
-Status reflects whether a matching component has shipped in the [production Storybook](https://code-dot-org.github.io/code-dot-org/component-library-storybook/). “Not in production” means it’s available here (and usually in Figma) but hasn’t landed in that library yet.
+Status reflects whether a matching component has shipped in the [production Storybook](https://code-dot-org.github.io/code-dot-org/component-library-storybook/). “Not in production” means it’s available here and in Figma but hasn’t landed in the production library yet. With the transition from DSCO to CADS, nearly every component here and in Figma differs in some way from what is currently in production.
 
 | Component | Group | Status |
 | --- | --- | --- |
 ${componentRows}
 
 ## Experiments
-
-Work in this repo that isn’t a settled production standard yet — safe to explore, expect change.
 
 ${experimentBlocks}
 

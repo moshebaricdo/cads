@@ -64,7 +64,7 @@ function InspectCompositeCenter({
     const host = hostRef.current;
     if (!host) return;
 
-    function sync() {
+    const sync = () => {
       const dropdown = host.querySelector("[data-cads-dropdown]");
       const menu = host.querySelector("[data-cads-dropdown-menu]");
       if (!(dropdown instanceof HTMLElement)) {
@@ -89,7 +89,7 @@ function InspectCompositeCenter({
         bottom: Math.max(0, floating.bottom - root.bottom),
         left: Math.max(0, root.left - floating.left),
       });
-    }
+    };
 
     const raf = requestAnimationFrame(() => {
       sync();
