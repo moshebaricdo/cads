@@ -8,13 +8,13 @@ import { Button, SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import s from "./DocsShell.module.scss";
 import {
   DocsNavChildren,
   DocsNavItem,
   DocsNavSection,
 } from "@/components/DocsNavItem";
 import { DocsNavScroller } from "@/components/DocsNavScroller";
-import { getComponentStatus } from "@/lib/componentExternalLinks";
 import {
   COMPONENT_SECTIONS,
   FOUNDATIONS_NAV,
@@ -204,7 +204,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
         alt={chromeCollapsed && !isMobile ? "" : "CodeAI"}
         width={128}
         height={22}
-        className="docs-topbar-logo docs-topbar-logo--full"
+        className={`${s.topbarLogo} ${s.topbarLogoFull}`}
         priority
       />
       <Image
@@ -212,7 +212,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
         alt=""
         width={24}
         height={24}
-        className="docs-topbar-logo docs-topbar-logo--mark docs-topbar-logo--mark-light"
+        className={`${s.topbarLogo} ${s.topbarLogoMark} ${s.topbarLogoMarkLight}`}
         aria-hidden
         priority
       />
@@ -221,7 +221,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
         alt=""
         width={24}
         height={24}
-        className="docs-topbar-logo docs-topbar-logo--mark docs-topbar-logo--mark-dark"
+        className={`${s.topbarLogo} ${s.topbarLogoMark} ${s.topbarLogoMarkDark}`}
         aria-hidden
         priority
       />
@@ -263,7 +263,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className="docs-shell"
+      className={`docs-shell ${s.shell}`}
       data-sidebar={
         isMobile ? "expanded" : sidebarCollapsed ? "collapsed" : "expanded"
       }
@@ -271,8 +271,8 @@ export function DocsShell({ children }: { children: ReactNode }) {
       data-mobile-drawer={drawerOpen ? "open" : undefined}
       style={shellStyle}
     >
-      <header className="docs-topbar">
-        <div className="docs-mobile-menu">
+      <header className={s.topbar}>
+        <div className={s.mobileMenu}>
           <Button
             variant="outlined"
             color="secondary"
@@ -286,22 +286,22 @@ export function DocsShell({ children }: { children: ReactNode }) {
           />
         </div>
 
-        <div className="docs-topbar-brand-cell">
+        <div className={s.topbarBrandCell}>
           {chromeCollapsed ? (
-            <div className="docs-topbar-brand" aria-hidden>
+            <div className={s.topbarBrand} aria-hidden>
               {brandLogos}
             </div>
           ) : (
             <Link
               href="/"
-              className="docs-topbar-brand"
+              className={s.topbarBrand}
               aria-label="CodeAI home"
             >
               {brandLogos}
             </Link>
           )}
 
-          <div className="docs-sidebar-toggle">
+          <div className={s.sidebarToggle}>
             <Button
               variant="outlined"
               color="secondary"
@@ -321,10 +321,10 @@ export function DocsShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <div className="docs-topbar-main">
+        <div className={s.topbarMain}>
           <Link
             href="/"
-            className="docs-topbar-brand docs-topbar-brand--mobile"
+            className={`${s.topbarBrand} ${s.topbarBrandMobile}`}
             aria-label="CodeAI home"
           >
             <Image
@@ -332,7 +332,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
               alt=""
               width={24}
               height={24}
-              className="docs-topbar-logo docs-topbar-logo--favicon docs-topbar-logo--mark-light"
+              className={`${s.topbarLogo} ${s.topbarLogoFavicon} ${s.topbarLogoMarkLight}`}
               priority
             />
             <Image
@@ -340,16 +340,16 @@ export function DocsShell({ children }: { children: ReactNode }) {
               alt=""
               width={24}
               height={24}
-              className="docs-topbar-logo docs-topbar-logo--favicon docs-topbar-logo--mark-dark"
+              className={`${s.topbarLogo} ${s.topbarLogoFavicon} ${s.topbarLogoMarkDark}`}
               priority
             />
           </Link>
 
-          <div className="docs-search docs-search--topbar">
+          <div className={`${s.search} ${s.searchTopbar}`}>
             {renderSearchField()}
           </div>
 
-          <div className="docs-topbar-right">
+          <div className={s.topbarRight}>
             <SegmentedButton
               size="extraSmall"
               iconOnly
@@ -365,27 +365,27 @@ export function DocsShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="docs-body">
+      <div className={s.body}>
         {drawerOpen ? (
           <button
             type="button"
-            className="docs-sidebar-scrim"
+            className={s.sidebarScrim}
             aria-label="Close navigation"
             onClick={closeDrawer}
           />
         ) : null}
 
-        <div className="docs-sidebar-slot">
+        <div className={s.sidebarSlot}>
           <aside
             id="docs-sidebar"
-            className="docs-sidebar"
+            className={s.sidebar}
             style={{
               top: TOPBAR_HEIGHT,
               height: `calc(100vh - ${TOPBAR_HEIGHT}px)`,
             }}
           >
             <DocsNavScroller
-              className="docs-sidebar-scroll"
+              className={s.sidebarScroll}
               activeKey={`${pathname}|${chromeCollapsed}|${query}|${Object.entries(
                 openSections,
               )
@@ -480,7 +480,6 @@ export function DocsShell({ children }: { children: ReactNode }) {
                           );
                           if (!component) return null;
                           const href = componentHref(component.name);
-                          const status = getComponentStatus(item.exportName);
                           return (
                             <DocsNavItem
                               key={item.exportName}
@@ -488,7 +487,6 @@ export function DocsShell({ children }: { children: ReactNode }) {
                               href={href}
                               label={item.label}
                               active={pathname === href}
-                              notInProduction={status === "notInProduction"}
                             />
                           );
                         })}
@@ -499,12 +497,12 @@ export function DocsShell({ children }: { children: ReactNode }) {
               </DocsNavSection>
             </DocsNavScroller>
 
-            <div className="docs-sidebar-search">{renderSearchField()}</div>
+            <div className={s.sidebarSearch}>{renderSearchField()}</div>
           </aside>
         </div>
 
-        <main className="docs-main">
-          <div className="docs-main-inner">{children}</div>
+        <main className={`docs-main ${s.main}`}>
+          <div className={`docs-main-inner ${s.mainInner}`}>{children}</div>
         </main>
       </div>
     </div>

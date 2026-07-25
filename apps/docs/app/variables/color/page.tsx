@@ -1,6 +1,6 @@
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { FoundationHeader } from "@/components/FoundationHeader";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import { adjacentFoundations } from "@/lib/nav";
 import { ColorPageContent } from "./ColorPageContent";
 

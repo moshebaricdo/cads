@@ -1,10 +1,11 @@
 "use client";
 
 import { Button, Link } from "@codeai/cads-react";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
-import overviewStyles from "@/components/ComponentOverview.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
+import overviewStyles from "@/components/ComponentOverview.module.scss";
+import ui from "@/components/docs-ui.module.scss";
 import { withBasePath } from "@/lib/basePath";
-import styles from "./ForAgents.module.css";
+import styles from "./ForAgents.module.scss";
 
 const SKILL_ZIP_ROUTE = withBasePath("/downloads/cads-prototyping.zip");
 
@@ -55,10 +56,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
       </header>
 
       <section className={styles.section} aria-labelledby="claude">
-        <h2 id="claude" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="claude" className={`${ui.h2} ${styles.sectionTitle}`}>
           Claude
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           Upload the ZIP under Customize <Arrow /> Skills, and make sure to enable{" "}
           <code>cads-prototyping</code>. When you next ask Claude to create a prototype and 
           reference the skill, it will return self-contained HTML with the CADS components 
@@ -67,10 +68,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
       </section>
 
       <section className={styles.section} aria-labelledby="chatgpt">
-        <h2 id="chatgpt" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="chatgpt" className={`${ui.h2} ${styles.sectionTitle}`}>
           ChatGPT
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           Skills have been buried a bit in ChatGPT, the easiest way is to
           navigate to{" "}
           <Link
@@ -89,10 +90,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
       </section>
 
       <section className={styles.section} aria-labelledby="gemini">
-        <h2 id="gemini" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="gemini" className={`${ui.h2} ${styles.sectionTitle}`}>
           Gemini
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           There is no dedicated skill support in Gemini that I could find. 
           There is potentially a way to upload skills through Gemini Spark (?)
           but I haven't bothered to explore it, it's Gemini.
@@ -100,10 +101,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
       </section>
 
       <section className={styles.section} aria-labelledby="cursor">
-        <h2 id="cursor" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="cursor" className={`${ui.h2} ${styles.sectionTitle}`}>
           Cursor
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           Inside of your project, just drop the ZIP into any agent thread and request
           that it install the skill. You can then reference the skill when building prototypes.
         </p>

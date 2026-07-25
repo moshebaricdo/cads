@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
+import styles from "./motion.module.scss";
 
 const TRAVEL_MS = 500;
 

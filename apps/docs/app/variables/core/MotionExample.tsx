@@ -22,7 +22,7 @@ import {
   writeMotionFlagToSession,
 } from "@/lib/experimentalMotionFlag";
 import { DEMO_DROPDOWN_OPTIONS } from "@/components/playground/previews/shared";
-import styles from "./MotionExample.module.css";
+import styles from "./MotionExample.module.scss";
 
 const TOPIC_OPTIONS = [
   { value: "apps", label: "Apps" },

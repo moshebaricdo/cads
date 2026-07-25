@@ -19,6 +19,8 @@ import {
   propsToCode,
 } from "./playground/propControls";
 import { CopyButton } from "./CopyControls";
+import s from "./InteractivePlayground.module.scss";
+import ui from "./docs-ui.module.scss";
 
 const LivePlayground = dynamic(
   () => import("./LivePlayground").then((m) => m.LivePlayground),
@@ -59,10 +61,10 @@ export function InteractivePlayground({
     );
 
   return (
-    <div className="docs-playground">
-      <div className="docs-playground-grid">
+    <div className={s.playground}>
+      <div className={s.grid}>
         <div
-          className="docs-playground-stage"
+          className={s.stage}
           style={
             values.fullWidth ? { justifyContent: "stretch" } : undefined
           }
@@ -81,12 +83,12 @@ export function InteractivePlayground({
             />
           </div>
         </div>
-        <div className="docs-playground-panel">
-          <div className="docs-playground-panel-header">
-            <span className="docs-overline">Props</span>
+        <div className={s.panel}>
+          <div className={s.panelHeader}>
+            <span className={ui.overline}>Props</span>
             <button
               type="button"
-              className="docs-copy-btn"
+              className={ui.copyBtn}
               style={{ position: "static" }}
               onClick={() => setValues(initialValues(component))}
             >
@@ -95,9 +97,9 @@ export function InteractivePlayground({
           </div>
           <div>
             {groups.map(({ group, props }) => (
-              <section key={group} className="docs-inspector-section">
+              <section key={group} className={s.inspectorSection}>
                 {groups.length > 1 ? (
-                  <h4 className="docs-inspector-title">
+                  <h4 className={s.inspectorTitle}>
                     {GROUP_LABELS[group]}
                   </h4>
                 ) : null}
@@ -114,8 +116,8 @@ export function InteractivePlayground({
             {component.exportName === "Dropdown" &&
             values.role !== "action" &&
             values.menuType !== "checklist" ? (
-              <section className="docs-inspector-section">
-                <h4 className="docs-inspector-title">
+              <section className={s.inspectorSection}>
+                <h4 className={s.inspectorTitle}>
                   Menu items (playground)
                 </h4>
                 <ControlField
@@ -133,8 +135,8 @@ export function InteractivePlayground({
               </section>
             ) : null}
             {component.exportName === "Breadcrumbs" ? (
-              <section className="docs-inspector-section">
-                <h4 className="docs-inspector-title">
+              <section className={s.inspectorSection}>
+                <h4 className={s.inspectorTitle}>
                   Item icon (playground)
                 </h4>
                 <ControlField
@@ -190,8 +192,8 @@ export function InteractivePlayground({
               </section>
             ) : null}
             {component.exportName === "IconToggle" ? (
-              <section className="docs-inspector-section">
-                <h4 className="docs-inspector-title">
+              <section className={s.inspectorSection}>
+                <h4 className={s.inspectorTitle}>
                   Dual toggle (playground)
                 </h4>
                 <ControlField
@@ -224,7 +226,7 @@ export function InteractivePlayground({
                 />
                 {values.dualToggle ? (
                   <>
-                    <p className="docs-inspector-note">
+                    <p className={s.inspectorNote}>
                       First toggle — use color / iconName / aria-label above
                     </p>
                     <ControlField
@@ -273,7 +275,7 @@ export function InteractivePlayground({
           </div>
         </div>
       </div>
-      <div className="docs-playground-code">
+      <div className={s.code}>
         <div style={{ position: "relative", padding: "12px 16px" }}>
           <pre
             style={{

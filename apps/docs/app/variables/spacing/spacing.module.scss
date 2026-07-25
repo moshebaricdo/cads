@@ -1,0 +1,71 @@
+/* Shape page — radius, elevation, spacing sample styles */
+
+.radiusSample,
+.shadowSample,
+.spacingSample {
+  padding: 0;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 2px;
+  }
+}
+
+.radiusSample {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-brand-primary);
+  border-radius: var(--sample-radius);
+  background: var(--background-brand-light);
+}
+
+.shadowSample {
+  width: 100%;
+  height: 72px;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+  box-shadow: var(--sample-shadow);
+}
+
+.spacingStack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.spacingRow {
+  display: grid;
+  grid-template-columns: 20% minmax(0, 1fr);
+  grid-template-rows: var(--sample-space);
+  column-gap: 16px;
+  align-items: start;
+}
+
+.spacingLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+  overflow: visible;
+}
+
+.spacingRow:first-child .spacingLabel {
+  transform: translateY(-3px);
+}
+
+/* Tighten half-leading so the first line sits flush with the sample top. */
+.tightLine {
+  line-height: 1;
+}
+
+.spacingSample {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border-brand-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-brand-light);
+}

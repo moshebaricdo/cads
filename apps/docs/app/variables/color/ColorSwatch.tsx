@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Tooltip } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
+import styles from "./color.module.scss";
 
 export type InkScheme = "ramp" | "black-alpha" | "white-alpha";
 export type InkTheme = "light" | "dark";

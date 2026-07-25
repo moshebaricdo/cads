@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import colorSystemJson from "@codeai/cads-variables/data/color-system.json";
 import { Tabs } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
+import ui from "@/components/docs-ui.module.scss";
+import shared from "../FoundationPage.module.scss";
+import local from "./color.module.scss";
 import { ColorExportButton } from "./ColorExportButton";
 import { ColorSwatch } from "./ColorSwatch";
 
@@ -144,12 +146,12 @@ function Range({
   }[];
 }) {
   return (
-    <div className={styles.range}>
-      <div className={styles.rangeHeader}>
-        <h3 className={styles.rangeName}>{name}</h3>
-        <span className={styles.rangeCount}>{swatches.length}</span>
+    <div className={local.range}>
+      <div className={shared.rangeHeader}>
+        <h3 className={shared.rangeName}>{name}</h3>
+        <span className={shared.rangeCount}>{swatches.length}</span>
       </div>
-      <div className={styles.swatchRange}>
+      <div className={local.swatchRange}>
         {swatches.map((swatch) => (
           <ColorSwatch
             key={swatch.id}
@@ -178,7 +180,7 @@ function CollectionTabs({
   const [value, setValue] = useState(items[0]?.value ?? "");
 
   return (
-    <div className={styles.tabbedContent}>
+    <div className={shared.tabbedContent}>
       <Tabs
         type="primary"
         size="small"
@@ -187,7 +189,7 @@ function CollectionTabs({
         onChange={setValue}
         items={items}
       />
-      <div className={styles.rangeList}>{panels[value]}</div>
+      <div className={local.rangeList}>{panels[value]}</div>
     </div>
   );
 }
@@ -232,19 +234,19 @@ export function ColorPageContent() {
 
   return (
     <>
-      <section className={styles.section} aria-labelledby="primitive-colors">
-        <h2 id="primitive-colors" className={`docs-h2 ${styles.sectionTitle}`}>
+      <section className={shared.section} aria-labelledby="primitive-colors">
+        <h2 id="primitive-colors" className={`${ui.h2} ${shared.sectionTitle}`}>
           Primitive colors
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
           Our core colors and their ramps, broken down into brand, sentiment, and neutral families.
           Primitives are used to build the semantic colors and are not light/dark theme aware, they should not
           be used directly in the product.
         </p>
-        <div className={styles.sectionAction}>
+        <div className={shared.sectionAction}>
           <ColorExportButton kind="primitive" />
         </div>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <CollectionTabs
             ariaLabel="Primitive color collections"
             items={primitiveItems.map(({ collection }) => ({
@@ -277,19 +279,19 @@ export function ColorPageContent() {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="semantic-colors">
-        <h2 id="semantic-colors" className={`docs-h2 ${styles.sectionTitle}`}>
+      <section className={shared.section} aria-labelledby="semantic-colors">
+        <h2 id="semantic-colors" className={`${ui.h2} ${shared.sectionTitle}`}>
           Semantic colors
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
           Semantic colors are broken into three primary families: backgrounds, text, and borders.
           They assign primitives to specific contexts and are carefully crafted to ensure 
           proper contrast, support consistent usage of colors in the UI, and are theme aware.
         </p>
-        <div className={styles.sectionAction}>
+        <div className={shared.sectionAction}>
           <ColorExportButton kind="semantic" />
         </div>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <CollectionTabs
             ariaLabel="Semantic color collections"
             items={semanticItems.map(({ collection }) => ({

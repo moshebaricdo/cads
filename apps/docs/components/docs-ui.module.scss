@@ -1,0 +1,181 @@
+.eyebrow {
+  font-size: var(--text-body-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-brand-primary);
+  margin: 0 0 8px;
+}
+
+.h1 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-heading-lg);
+  line-height: var(--leading-heading-lg);
+  letter-spacing: var(--tracking-heading-display);
+  margin: 0 0 8px;
+}
+
+.lead {
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  color: var(--text-neutral-secondary);
+  max-width: 640px;
+  margin: 0;
+}
+
+.h2 {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-heading-xs);
+  line-height: var(--leading-heading-xs);
+  margin: 0 0 4px;
+}
+
+.section {
+  margin-top: var(--space-l);
+}
+
+.sectionDesc {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+  margin: 0 0 16px;
+  max-width: 640px;
+}
+
+.overline {
+  font-size: var(--text-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-neutral-secondary);
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+  padding: 20px;
+}
+
+a.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-colors);
+
+  &:hover {
+    text-decoration: none;
+    border-color: var(--border-neutral-secondary);
+    background: var(--background-neutral-secondary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Code block with copy affordance */
+.codeblock {
+  position: relative;
+  margin: 0;
+
+  pre {
+    margin: 0;
+    padding: 14px 16px;
+    line-height: var(--leading-body-xs);
+  }
+}
+
+.copyBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: var(--control-height-extra-small);
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-primary);
+  color: var(--text-neutral-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: var(--transition-colors);
+
+  &:hover {
+    color: var(--text-neutral-primary);
+    border-color: var(--border-neutral-secondary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 1px;
+  }
+}
+
+/* Variable chips */
+.varChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-sm);
+  background: var(--background-neutral-secondary);
+  color: var(--text-neutral-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-xxs);
+  cursor: pointer;
+  transition: var(--transition-colors);
+
+  &:hover {
+    border-color: var(--border-neutral-secondary);
+    background: var(--background-neutral-tertiary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 1px;
+  }
+}
+
+/* Tables */
+.tableWrap {
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--background-neutral-secondary);
+    border-bottom: 1px solid var(--border-neutral-primary);
+    color: var(--text-neutral-secondary);
+    font-size: var(--text-body-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-neutral-primary);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}

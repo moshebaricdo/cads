@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { Link, Tag, Tooltip } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
-import overviewStyles from "./ComponentOverview.module.css";
+import overviewStyles from "./ComponentOverview.module.scss";
 
 export type FoundationHeaderLink = {
   href: string;

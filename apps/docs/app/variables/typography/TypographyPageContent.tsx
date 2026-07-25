@@ -3,7 +3,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { typography } from "@codeai/cads-variables";
 import { SegmentedButton, Tabs } from "@codeai/cads-react";
-import styles from "../FoundationPage.module.css";
+import ui from "@/components/docs-ui.module.scss";
+import shared from "../FoundationPage.module.scss";
+import local from "./typography.module.scss";
 
 type WeightOption = {
   value: string;
@@ -365,13 +367,13 @@ function StyleRow({
   ].join(" · ");
 
   return (
-    <div className={styles.specimen}>
+    <div className={local.specimen}>
       <div
         ref={sampleRef}
         className={[
-          styles.specimenSample,
-          measure ? styles.specimenSampleMeasure : null,
-          style.underline ? styles.specimenSampleLink : null,
+          local.specimenSample,
+          measure ? local.specimenSampleMeasure : null,
+          style.underline ? local.specimenSampleLink : null,
         ]
           .filter(Boolean)
           .join(" ")}
@@ -390,8 +392,8 @@ function StyleRow({
           textDecoration: style.underline ? "underline" : undefined,
         }}
       />
-      <div className={styles.specimenMeta}>
-        <span className={styles.specimenValue}>{metrics}</span>
+      <div className={local.specimenMeta}>
+        <span className={local.specimenValue}>{metrics}</span>
       </div>
     </div>
   );
@@ -424,30 +426,30 @@ export function TypographyPageContent() {
     activeWeight?.label ?? activeTab.styles[0]?.weightLabel ?? "Regular";
 
   return (
-    <section className={styles.section} aria-labelledby="type-styles">
-      <h2 id="type-styles" className={`docs-h2 ${styles.sectionTitle}`}>
+    <section className={shared.section} aria-labelledby="type-styles">
+      <h2 id="type-styles" className={`${ui.h2} ${shared.sectionTitle}`}>
         Text styles
       </h2>
-      <p className={`docs-section-desc ${styles.sectionBody}`}>
+      <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
         Text styles are broken into headings, body, overline, label, link, and
         mono. Each one pairs a size token (like heading-xxl or body-xs) with a
         family, weight, and tracking so you can match Figma without guessing.
         Semi Bold is the default heading weight.
       </p>
-      <div className={styles.sectionContent}>
-        <div className={styles.tabbedContent}>
-          <div className={styles.tabRow}>
+      <div className={shared.sectionContent}>
+        <div className={shared.tabbedContent}>
+          <div className={local.tabRow}>
             <Tabs
               type="primary"
               size="small"
-              className={styles.tabsFlush}
+              className={local.tabsFlush}
               aria-label="Typography style groups"
               value={tab}
               onChange={setTab}
               items={STYLE_TABS.map(({ value, label }) => ({ value, label }))}
             />
             {weightOptions ? (
-              <div className={styles.tabWeight}>
+              <div className={local.tabWeight}>
                 <SegmentedButton
                   size="extraSmall"
                   value={weightKey}
@@ -466,7 +468,7 @@ export function TypographyPageContent() {
               </div>
             ) : null}
           </div>
-          <div className={styles.dividedList}>
+          <div className={shared.dividedList}>
             {activeTab.styles.map((style) => (
               <StyleRow
                 key={style.label}

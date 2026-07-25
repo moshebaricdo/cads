@@ -1,0 +1,128 @@
+.playground {
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 310px);
+}
+
+.stage {
+  position: relative;
+  padding: 40px 32px;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-right: 1px solid var(--border-neutral-primary);
+  background-color: var(--background-neutral-primary);
+  background-image: radial-gradient(
+    var(--background-neutral-alpha-10) 1px,
+    transparent 1px
+  );
+  background-size: 16px 16px;
+}
+
+.panel {
+  background: var(--background-neutral-primary);
+  max-height: 480px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.inspectorSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-neutral-primary);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.inspectorTitle {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.inspectorTitleCaps {
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-neutral-placeholder);
+}
+
+.inspectorField {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+}
+
+.inspectorLabel {
+  font-size: var(--text-body-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-body-xs);
+  color: var(--text-neutral-primary);
+}
+
+.inspectorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 26px;
+}
+
+.inspectorControl {
+  flex: 0 0 auto;
+  width: 148px;
+}
+
+.inspectorNote {
+  margin: 0;
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  color: var(--text-neutral-quaternary);
+}
+
+.code {
+  border-top: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-secondary);
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    border-right: none;
+    border-bottom: 1px solid var(--border-neutral-primary);
+  }
+}

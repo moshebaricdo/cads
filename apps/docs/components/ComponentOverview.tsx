@@ -2,7 +2,7 @@
 
 import { Link, Tag, Tooltip } from "@codeai/cads-react";
 import type { ComponentStatus } from "@/lib/componentExternalLinks";
-import styles from "./ComponentOverview.module.css";
+import styles from "./ComponentOverview.module.scss";
 
 const STATUS_PRESENTATION: Record<
   ComponentStatus,

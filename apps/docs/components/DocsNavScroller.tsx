@@ -10,6 +10,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
+import s from "./DocsNavItem.module.scss";
 
 type Box = { x: number; y: number; width: number; height: number };
 
@@ -31,10 +32,10 @@ function measureBox(root: HTMLElement, el: HTMLElement): Box {
 function findActiveItem(root: HTMLElement): HTMLElement | null {
   return (
     root.querySelector<HTMLElement>(
-      '.docs-nav-item[data-active="true"]:not(.docs-nav-item--child)',
+      `.docs-nav-item[data-active="true"]:not(.${s.itemChild})`,
     ) ??
     root.querySelector<HTMLElement>(
-      '.docs-nav-item--child[data-active="true"]',
+      `.${s.itemChild}[data-active="true"]`,
     )
   );
 }
@@ -215,7 +216,7 @@ export function DocsNavScroller({
     >
       {activeBox ? (
         <div
-          className="docs-nav-highlight docs-nav-highlight--active"
+          className={`${s.highlight} ${s.highlightActive}`}
           aria-hidden
           data-hover={activeHovered || undefined}
           style={boxStyle(activeBox)}
@@ -224,7 +225,7 @@ export function DocsNavScroller({
 
       {hoverBox ? (
         <div
-          className="docs-nav-highlight docs-nav-highlight--hover"
+          className={s.highlight}
           aria-hidden
           style={boxStyle(hoverBox)}
         />

@@ -6,7 +6,7 @@ import type {
 } from "@codeai/cads-react/manifest";
 import { Dropdown, TextInput, Toggle } from "@codeai/cads-react";
 import { buildDemoBreadcrumbItems } from "./previews/shared";
-import inspectorStyles from "./inspector.module.css";
+import inspectorStyles from "./inspector.module.scss";
 
 /** Props that are driven by interaction / too complex for simple controls. */
 export const SKIP_PROPS = new Set([

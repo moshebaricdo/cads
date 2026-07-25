@@ -1,8 +1,9 @@
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { FoundationHeader } from "@/components/FoundationHeader";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
+import ui from "@/components/docs-ui.module.scss";
 import { adjacentFoundations } from "@/lib/nav";
-import styles from "../FoundationPage.module.css";
+import shared from "../FoundationPage.module.scss";
 import { MotionExample, MotionExperimentOptions } from "./MotionExample";
 import { MotionPrimitives } from "./MotionPrimitives";
 import { RecipeDemos } from "./RecipeDemos";
@@ -20,58 +21,58 @@ export default function MotionPage() {
         with careful consideration of its context and usage while defining standard motion patterns."
       />
 
-      <section className={styles.section} aria-labelledby="motion-recipes">
-        <h2 id="motion-recipes" className={`docs-h2 ${styles.sectionTitle}`}>
+      <section className={shared.section} aria-labelledby="motion-recipes">
+        <h2 id="motion-recipes" className={`${ui.h2} ${shared.sectionTitle}`}>
           Recipes
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
           Recipes are a predefined set of motion patterns based on interaction type that can be applied
           to components. They combine primitive variable properties like duration and easing to create a 
           consistent and predictable motion experience.
         </p>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <RecipeDemos />
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="motion-primitives">
-        <h2 id="motion-primitives" className={`docs-h2 ${styles.sectionTitle}`}>
+      <section className={shared.section} aria-labelledby="motion-primitives">
+        <h2 id="motion-primitives" className={`${ui.h2} ${shared.sectionTitle}`}>
           Primitives
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
           Duration ladder (0 / 100 / 150 / 200), easings, and spring presets
           (fast / moderate / slow). Recipes pick from these — springs are for
           interruptible Indicator travel and pointer chase only.
         </p>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <MotionPrimitives />
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="motion-in-use">
-        <h2 id="motion-in-use" className={`docs-h2 ${styles.sectionTitle}`}>
+      <section className={shared.section} aria-labelledby="motion-in-use">
+        <h2 id="motion-in-use" className={`${ui.h2} ${shared.sectionTitle}`}>
           In action
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
           Interact with the components in this mini-UI to see how Motion feels
           in context.
         </p>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <MotionExample />
         </div>
       </section>
 
       <section
-        className={styles.section}
+        className={shared.section}
         aria-labelledby="motion-experiment-options"
       >
         <h2
           id="motion-experiment-options"
-          className={`docs-h2 ${styles.sectionTitle}`}
+          className={`${ui.h2} ${shared.sectionTitle}`}
         >
           Experiment options
         </h2>
-        <div className={styles.sectionContent}>
+        <div className={shared.sectionContent}>
           <MotionExperimentOptions />
         </div>
       </section>

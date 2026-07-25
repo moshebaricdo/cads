@@ -17,7 +17,7 @@ import {
   getComponentStatus,
   getComponentStorybookUrl,
 } from "@/lib/componentExternalLinks";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
 
 export function generateStaticParams() {
   return cadsManifest.components

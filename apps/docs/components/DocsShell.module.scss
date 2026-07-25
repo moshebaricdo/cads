@@ -1,0 +1,354 @@
+@property --docs-sidebar-width {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 220px;
+}
+
+.shell {
+  --docs-sidebar-width: 220px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-neutral-secondary);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  height: 48px;
+  background: var(--background-neutral-primary);
+  border-bottom: 1px solid var(--border-neutral-primary);
+  box-sizing: border-box;
+}
+
+.topbarBrandCell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: var(--docs-sidebar-width);
+  padding: 12px 12px 12px 18px;
+  border-right: 1px solid var(--border-neutral-primary);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: width var(--duration-medium) var(--easing-out);
+
+  .shell[data-sidebar="collapsed"] & {
+    justify-content: center;
+    padding: 12px;
+  }
+}
+
+.topbarBrand {
+  position: relative;
+  display: block;
+  width: 128px;
+  height: 24px;
+  text-decoration: none;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition:
+    width var(--duration-medium) var(--easing-out),
+    opacity var(--duration-short) var(--easing-out);
+
+  .shell[data-sidebar="collapsed"] & {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+  }
+
+  .shell[data-sidebar="expanded"] a#{&}:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  .shell[data-sidebar="expanded"] a#{&}:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 2px;
+  }
+}
+
+.topbarLogo {
+  display: block;
+  object-fit: contain;
+}
+
+.topbarLogoFull {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 128px;
+  height: 22px;
+  opacity: 1;
+  transform: translateY(-50%);
+  transition: opacity var(--duration-short) var(--easing-out);
+
+  :global(.dark) & {
+    filter: invert(1);
+  }
+
+  .shell[data-sidebar="collapsed"] & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.topbarLogoMark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--duration-short) var(--easing-out);
+
+  .shell[data-sidebar="collapsed"] & {
+    opacity: 1;
+  }
+}
+
+.topbarLogoMarkDark {
+  display: none;
+
+  :global(.dark) & {
+    display: block;
+  }
+}
+
+.topbarLogoMarkLight {
+  :global(.dark) & {
+    display: none;
+  }
+}
+
+.sidebarToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--easing-out);
+
+  .topbarBrandCell:hover &,
+  &:focus-within:has(:focus-visible) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .shell[data-sidebar="collapsed"] & {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: 1;
+  }
+}
+
+/* Collapsed: mark yields to the expand control on hover. */
+.shell[data-sidebar="collapsed"] .topbarBrandCell:hover .topbarBrand {
+  opacity: 0;
+}
+
+.topbarMain {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.search {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+.topbarBrandMobile {
+  display: none;
+}
+
+.sidebarSearch {
+  display: none;
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.sidebarSlot {
+  flex: 0 0 var(--docs-sidebar-width);
+  width: var(--docs-sidebar-width);
+  min-width: 0;
+  transition:
+    width var(--duration-medium) var(--easing-out),
+    flex-basis var(--duration-medium) var(--easing-out);
+}
+
+.sidebar {
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-primary);
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebarScroll {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  padding-top: 6px;
+  box-sizing: border-box;
+
+  .shell[data-sidebar="collapsed"] & {
+    padding-top: 12px;
+    overflow-x: hidden;
+  }
+}
+
+.sidebarScrim {
+  display: none;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  background: var(--background-neutral-primary);
+}
+
+.mainInner {
+  max-width: 980px;
+  padding: 44px 48px 96px;
+}
+
+.topbarLogoFavicon {
+  /* placeholder for mobile favicon override */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbarBrandCell,
+  .sidebarSlot,
+  .topbarBrand,
+  .topbarLogoFull,
+  .topbarLogoMark,
+  .sidebarToggle {
+    transition: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .mobileMenu {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 12px 4px 12px 12px;
+    box-sizing: border-box;
+  }
+
+  .topbarBrandCell {
+    display: none;
+  }
+
+  .topbarMain {
+    padding-left: 4px;
+  }
+
+  .topbarBrandMobile {
+    display: block;
+    width: 24px;
+    height: 24px;
+    pointer-events: auto;
+  }
+
+  .topbarLogoFavicon {
+    position: static;
+    width: 24px;
+    height: 24px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .searchTopbar {
+    display: none;
+  }
+
+  .mainInner {
+    padding: 28px 20px 28px;
+  }
+
+  .sidebarSlot {
+    flex: 0 0 0;
+    width: 0;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .sidebar {
+    display: none;
+    border-right: none;
+  }
+
+  .shell[data-mobile-drawer="open"] .sidebar {
+    display: flex;
+    position: fixed;
+    top: var(--docs-topbar-height, 48px);
+    left: 0;
+    z-index: 40;
+    width: var(--docs-sidebar-drawer-width, 220px);
+    height: calc(100vh - var(--docs-topbar-height, 48px));
+    box-shadow: var(--shadow-lg);
+    border-right: 1px solid var(--border-neutral-primary);
+  }
+
+  .sidebarSearch {
+    display: block;
+    flex-shrink: 0;
+    padding: 12px;
+    border-top: 1px solid var(--border-neutral-primary);
+    background: var(--background-neutral-primary);
+    box-sizing: border-box;
+  }
+
+  .sidebarScrim {
+    display: block;
+    position: fixed;
+    top: var(--docs-topbar-height, 48px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: color-mix(in srgb, var(--text-neutral-primary) 28%, transparent);
+    cursor: pointer;
+  }
+}

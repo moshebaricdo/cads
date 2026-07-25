@@ -9,7 +9,7 @@ import {
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
-import styles from "./PlaygroundInspectOverlay.module.css";
+import styles from "./PlaygroundInspectOverlay.module.scss";
 
 const POPOVER_GAP = 6;
 const RULER_STEP = 8;

@@ -5,7 +5,8 @@ import { Tabs, Tooltip } from "@codeai/cads-react";
 import { motion as m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
-import styles from "../FoundationPage.module.css";
+import shared from "../FoundationPage.module.scss";
+import local from "./motion.module.scss";
 import { EasingChart } from "./EasingChart";
 
 const DURATIONS = [
@@ -103,24 +104,24 @@ type TabValue = (typeof TABS)[number]["value"];
 
 function DurationPanel() {
   return (
-    <div className={styles.durationGrid}>
+    <div className={local.durationGrid}>
       {DURATIONS.map((item) => (
         <div
-          className={styles.shapeItem}
+          className={shared.shapeItem}
           key={item.token}
           style={{ "--demo-duration": item.value } as CSSProperties}
         >
-          <div className={styles.durationSample} tabIndex={0}>
-            <div className={styles.motionDot} />
+          <div className={local.durationSample} tabIndex={0}>
+            <div className={local.motionDot} />
           </div>
-          <div className={styles.shapeMeta}>
-            <div className={styles.rangeHeader}>
-              <CopyName className={styles.copyName} copyValue={item.variable}>
+          <div className={shared.shapeMeta}>
+            <div className={shared.rangeHeader}>
+              <CopyName className={shared.copyName} copyValue={item.variable}>
                 {item.token}
               </CopyName>
-              <span className={styles.rangeCount}>{item.value}</span>
+              <span className={shared.rangeCount}>{item.value}</span>
             </div>
-            <p className={styles.recipeBody}>{item.use}</p>
+            <p className={local.recipeBody}>{item.use}</p>
           </div>
         </div>
       ))}
@@ -162,14 +163,14 @@ function ScaleSample({
     >
       <button
         type="button"
-        className={styles.scaleSample}
+        className={local.scaleSample}
         style={{ "--demo-scale": value } as CSSProperties}
         aria-label={`Copy ${variable}`}
         onClick={handleCopy}
       >
-        <div className={styles.scaleStage}>
-          <div className={styles.scaleGhost} aria-hidden />
-          <div className={styles.scaleShape} />
+        <div className={local.scaleStage}>
+          <div className={local.scaleGhost} aria-hidden />
+          <div className={local.scaleShape} />
         </div>
       </button>
     </Tooltip>
@@ -178,18 +179,18 @@ function ScaleSample({
 
 function ScalePanel() {
   return (
-    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+    <div className={`${shared.shapeGrid} ${local.recipeGrid}`}>
       {SCALES.map((item) => (
-        <div className={styles.shapeItem} key={item.token}>
+        <div className={shared.shapeItem} key={item.token}>
           <ScaleSample variable={item.variable} value={item.value} />
-          <div className={styles.shapeMeta}>
-            <div className={styles.rangeHeader}>
-              <CopyName className={styles.copyName} copyValue={item.variable}>
+          <div className={shared.shapeMeta}>
+            <div className={shared.rangeHeader}>
+              <CopyName className={shared.copyName} copyValue={item.variable}>
                 {item.token}
               </CopyName>
-              <span className={styles.rangeCount}>{item.value}</span>
+              <span className={shared.rangeCount}>{item.value}</span>
             </div>
-            <p className={styles.recipeBody}>{item.use}</p>
+            <p className={local.recipeBody}>{item.use}</p>
           </div>
         </div>
       ))}
@@ -199,17 +200,17 @@ function ScalePanel() {
 
 function EasingPanel() {
   return (
-    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+    <div className={`${shared.shapeGrid} ${local.recipeGrid}`}>
       {EASINGS.map((item) => (
-        <div className={styles.shapeItem} key={item.token}>
+        <div className={shared.shapeItem} key={item.token}>
           <EasingChart value={item.value} variable={item.variable} />
-          <div className={styles.shapeMeta}>
-            <CopyName className={styles.copyName} copyValue={item.variable}>
+          <div className={shared.shapeMeta}>
+            <CopyName className={shared.copyName} copyValue={item.variable}>
               {item.token}
             </CopyName>
-            <p className={styles.recipeBody}>{item.use}</p>
+            <p className={local.recipeBody}>{item.use}</p>
             <CopyName
-              className={styles.copyValue}
+              className={shared.copyValue}
               copyValue={item.value}
               placement="bottom-start"
             >
@@ -255,13 +256,13 @@ function SpringSample({
     <button
       ref={trackRef}
       type="button"
-      className={styles.springSample}
+      className={local.springSample}
       aria-label={`Toggle ${label} spring demo`}
       aria-pressed={on}
       onClick={() => setOn((v) => !v)}
     >
       <m.div
-        className={styles.springThumb}
+        className={local.springThumb}
         initial={false}
         animate={{ x: on ? travel : 0 }}
         transition={reduceMotion ? { duration: 0 } : preset}
@@ -272,20 +273,20 @@ function SpringSample({
 
 function SpringPanel() {
   return (
-    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+    <div className={`${shared.shapeGrid} ${local.recipeGrid}`}>
       {SPRINGS.map((item) => (
-        <div className={styles.shapeItem} key={item.token}>
+        <div className={shared.shapeItem} key={item.token}>
           <SpringSample preset={item.preset} label={item.token} />
-          <div className={styles.shapeMeta}>
-            <div className={styles.rangeHeader}>
-              <CopyName className={styles.copyName} copyValue={item.copyValue}>
+          <div className={shared.shapeMeta}>
+            <div className={shared.rangeHeader}>
+              <CopyName className={shared.copyName} copyValue={item.copyValue}>
                 {item.token}
               </CopyName>
-              <span className={styles.rangeCount}>
+              <span className={shared.rangeCount}>
                 {item.preset.duration * 1000}ms · b{item.preset.bounce}
               </span>
             </div>
-            <p className={styles.recipeBody}>{item.use}</p>
+            <p className={local.recipeBody}>{item.use}</p>
           </div>
         </div>
       ))}
@@ -298,7 +299,7 @@ export function MotionPrimitives() {
   const [tab, setTab] = useState<TabValue>("duration");
 
   return (
-    <div className={styles.tabbedContent}>
+    <div className={shared.tabbedContent}>
       <Tabs
         type="primary"
         size="small"
@@ -307,7 +308,7 @@ export function MotionPrimitives() {
         onChange={(value) => setTab(value as TabValue)}
         items={[...TABS]}
       />
-      <div className={styles.primitivePanel}>
+      <div className={local.primitivePanel}>
         {tab === "duration" ? (
           <DurationPanel />
         ) : tab === "easing" ? (

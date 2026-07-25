@@ -3,7 +3,8 @@
 import { Link } from "@codeai/cads-react";
 import type { CadsPropDef } from "@codeai/cads-react/manifest";
 import type { PropSheet } from "@/lib/propSheets";
-import styles from "./PropSheets.module.css";
+import ui from "./docs-ui.module.scss";
+import styles from "./PropSheets.module.scss";
 
 function TypeCell({ type }: { type: string }) {
   return <code className={styles.propType}>{type}</code>;
@@ -30,8 +31,8 @@ function PropSheetTable({
           </Link>
         ) : null}
       </div>
-      <div className={`docs-table-wrap ${styles.tableWrap}`}>
-        <table className={`docs-table ${styles.table}`}>
+      <div className={`${ui.tableWrap} ${styles.tableWrap}`}>
+        <table className={`${ui.table} ${styles.table}`}>
           <thead>
             <tr>
               <th style={{ width: 140 }}>Prop</th>

@@ -1,0 +1,60 @@
+/* Color page — swatch & range primitives */
+
+.rangeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.range {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swatchRange {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8.8px;
+}
+
+.swatch {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 56px;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid #1212121a;
+  border-radius: var(--radius-md);
+  background-color: var(--swatch-color);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 2px;
+  }
+}
+
+:global(html.dark) .swatch {
+  border-color: #ffffff1a;
+}
+
+.swatchStep {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  color: var(--swatch-step-ink, #000000);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-short) var(--easing-standard);
+
+  .swatch:hover &,
+  .swatch:focus-visible & {
+    opacity: 1;
+  }
+}

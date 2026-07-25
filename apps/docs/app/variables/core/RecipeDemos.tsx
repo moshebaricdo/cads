@@ -4,7 +4,8 @@ import { Button, CadsProvider, Toggle } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
-import styles from "../FoundationPage.module.css";
+import shared from "../FoundationPage.module.scss";
+import local from "./motion.module.scss";
 
 const SURFACE_HOLD_MS = 2000;
 /** Match `--motion-surface-duration` (medium) so exit can finish before unmount. */
@@ -49,7 +50,7 @@ const RECIPES: Recipe[] = [
 
 function PressSample() {
   return (
-    <div className={`${styles.recipeSample} ${styles.pressSample}`}>
+    <div className={local.recipeSample}>
       <Button size="large" variant="contained" color="primary">
         Press me
       </Button>
@@ -89,10 +90,10 @@ function SurfaceSample() {
   const surfaceVisible = phase === "open" || phase === "exit";
 
   return (
-    <div className={`${styles.recipeSample} ${styles.surfaceSample}`}>
+    <div className={local.recipeSample}>
       <button
         type="button"
-        className={styles.surfaceTrigger}
+        className={local.surfaceTrigger}
         onClick={showSurface}
         disabled={phase !== "idle"}
         aria-label="Show surface"
@@ -107,7 +108,7 @@ function SurfaceSample() {
       </button>
       {surfaceVisible ? (
         <div
-          className={styles.surfacePanel}
+          className={local.surfacePanel}
           data-cads-surface=""
           {...(phase === "exit"
             ? { "data-cads-surface-state": "exit" }
@@ -116,8 +117,8 @@ function SurfaceSample() {
             { "--cads-surface-origin": "center" } as CSSProperties
           }
         >
-          <p className={styles.surfacePanelTitle}>Surface</p>
-          <p className={styles.surfacePanelBody}>
+          <p className={local.surfacePanelTitle}>Surface</p>
+          <p className={local.surfacePanelBody}>
             Menus, popovers, and toasts ease in from the trigger.
           </p>
         </div>
@@ -130,8 +131,8 @@ function IndicatorSample() {
   const [on, setOn] = useState(false);
 
   return (
-    <div className={`${styles.recipeSample} ${styles.indicatorSample}`}>
-      <div className={styles.jumboToggle}>
+    <div className={local.recipeSample}>
+      <div className={local.jumboToggle}>
         <Toggle
           size="large"
           checked={on}
@@ -153,22 +154,22 @@ function RecipeSample({ id }: { id: Recipe["id"] }) {
 export function RecipeDemos() {
   return (
     <CadsProvider experimentalMotion baseline={false}>
-      <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+      <div className={`${shared.shapeGrid} ${local.recipeGrid}`}>
         {RECIPES.map((recipe) => (
-          <div className={styles.shapeItem} key={recipe.id}>
+          <div className={`${shared.shapeItem} ${local.recipeItem}`} key={recipe.id}>
             <RecipeSample id={recipe.id} />
-            <div className={styles.shapeMeta}>
+            <div className={shared.shapeMeta}>
               <CopyName
-                className={styles.copyName}
+                className={shared.copyName}
                 copyValue={`--${recipe.token}`}
               >
                 {recipe.token}
               </CopyName>
-              <ul className={styles.recipeVars}>
+              <ul className={local.recipeVars}>
                 {recipe.vars.map((variable) => (
                   <li key={variable}>
                     <CopyName
-                      className={styles.copyValue}
+                      className={`${shared.copyValue} ${local.recipeVarValue}`}
                       copyValue={variable}
                     >
                       {variable}

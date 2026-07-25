@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@codeai/cads-react";
-import styles from "./ComponentPageNav.module.css";
+import styles from "./ComponentPageNav.module.scss";
 
 export type PageNavItem = {
   label: string;

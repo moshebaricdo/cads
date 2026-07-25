@@ -3,11 +3,12 @@
 import Image from "next/image";
 import NextLink from "next/link";
 import { Button, Link } from "@codeai/cads-react";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
-import overviewStyles from "@/components/ComponentOverview.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
+import overviewStyles from "@/components/ComponentOverview.module.scss";
 import { withBasePath } from "@/lib/basePath";
 import { STORYBOOK_BASE } from "@/lib/componentExternalLinks";
-import styles from "./OverviewHome.module.css";
+import ui from "@/components/docs-ui.module.scss";
+import styles from "./OverviewHome.module.scss";
 
 const FIGMA_URL =
   "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-";
@@ -104,10 +105,10 @@ export function OverviewHome() {
       </div>
 
       <section className={styles.section} aria-labelledby="overview-prototyping">
-        <h2 id="overview-prototyping" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="overview-prototyping" className={`${ui.h2} ${styles.sectionTitle}`}>
           Prototyping with CADS
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           You can prototype with CADS in any LLM using a portable skill generated from the CADS schema.
           The skill is self-contained and doesn't require any external dependencies. 
         </p>
@@ -119,7 +120,7 @@ export function OverviewHome() {
       </section>
 
       <section className={styles.section} aria-labelledby="overview-resources">
-        <h2 id="overview-resources" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="overview-resources" className={`${ui.h2} ${styles.sectionTitle}`}>
           Additional Resources
         </h2>
         <div className={styles.resourceRow}>

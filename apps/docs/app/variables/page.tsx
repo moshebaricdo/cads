@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { CodeBlock } from "@/components/docs-ui";
 import { FoundationHeader } from "@/components/FoundationHeader";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
-import styles from "./FoundationPage.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
+import ui from "@/components/docs-ui.module.scss";
+import styles from "./FoundationPage.module.scss";
 
 const FOUNDATION_CARDS = [
   {
@@ -44,10 +45,10 @@ export default function VariablesIndexPage() {
       />
 
       <section className={styles.section} aria-labelledby="setup">
-        <h2 id="setup" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="setup" className={`${ui.h2} ${styles.sectionTitle}`}>
           Setup
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           Import the stylesheet once at your app root. Every variable on the
           following pages is then available globally, with dark values applied
           under a <code>.dark</code> class on the root element.
@@ -58,12 +59,12 @@ export default function VariablesIndexPage() {
       </section>
 
       <section className={styles.section} aria-labelledby="explore">
-        <h2 id="explore" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="explore" className={`${ui.h2} ${styles.sectionTitle}`}>
           Explore the foundations
         </h2>
         <div className={styles.cardGrid}>
           {FOUNDATION_CARDS.map((card) => (
-            <Link key={card.href} href={card.href} className="docs-card">
+            <Link key={card.href} href={card.href} className={ui.card}>
               <div className={styles.cardTitle}>{card.title}</div>
               <p className={styles.cardBody}>{card.body}</p>
             </Link>
@@ -72,15 +73,15 @@ export default function VariablesIndexPage() {
       </section>
 
       <section className={styles.section} aria-labelledby="brand-vs-selected">
-        <h2 id="brand-vs-selected" className={`docs-h2 ${styles.sectionTitle}`}>
+        <h2 id="brand-vs-selected" className={`${ui.h2} ${styles.sectionTitle}`}>
           Brand vs selected
         </h2>
-        <p className={`docs-section-desc ${styles.sectionBody}`}>
+        <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
           The most common misuse in prototypes — these two ramps look similar
           but mean different things.
         </p>
         <div className={styles.cardGrid}>
-          <div className="docs-card">
+          <div className={ui.card}>
             <div className={styles.ruleTitle}>
               <span
                 aria-hidden
@@ -99,7 +100,7 @@ export default function VariablesIndexPage() {
               a user is invited to do.
             </p>
           </div>
-          <div className="docs-card">
+          <div className={ui.card}>
             <div className={styles.ruleTitle}>
               <span
                 aria-hidden

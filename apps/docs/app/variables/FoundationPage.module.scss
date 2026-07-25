@@ -1,0 +1,167 @@
+/* Foundation shared primitives — page chrome comes from DocsTemplatePage */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  scroll-margin-top: var(--space-xl);
+}
+
+.sectionTitle {
+  margin: 0 !important;
+}
+
+.sectionBody {
+  margin: 0 !important;
+  max-width: 560px;
+}
+
+/* section gap is 12px; add the rest to land at 24px below section copy */
+.sectionAction {
+  margin-top: 6px;
+}
+
+.sectionContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  margin-top: calc(var(--space-m) - 12px);
+}
+
+.dividedList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabbedContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.table {
+  width: 100%;
+  background: var(--background-neutral-primary);
+
+  :global(th) {
+    font-size: var(--text-body-xxs);
+    line-height: var(--leading-body-xxs);
+    color: var(--text-neutral-quaternary);
+  }
+}
+
+.shapeGrid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-s);
+  width: 100%;
+}
+
+.shapeItem {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.shapeMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  overflow-wrap: anywhere;
+}
+
+.rangeHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.rangeName {
+  margin: 0;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.rangeCount {
+  color: var(--text-neutral-quaternary);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-normal);
+}
+
+.copyName,
+.copyValue {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  cursor: pointer;
+  text-align: start;
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focused-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+.copyName {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.copyValue {
+  font-weight: var(--font-weight-normal);
+  color: var(--text-neutral-quaternary);
+  white-space: pre-line;
+}
+
+/* Variables index page */
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.cardTitle {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+  color: var(--text-brand-primary);
+}
+
+.cardBody {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+}
+
+.ruleTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.ruleSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--rule-swatch);
+}

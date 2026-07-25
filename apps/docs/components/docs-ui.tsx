@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { CopyButton, VarChip } from "./CopyControls";
+import ui from "./docs-ui.module.scss";
 
 export function PageHeader({
   eyebrow,
@@ -14,9 +15,9 @@ export function PageHeader({
 }) {
   return (
     <header style={{ marginBottom: "var(--space-m)" }}>
-      {eyebrow ? <p className="docs-eyebrow">{eyebrow}</p> : null}
-      <h1 className="docs-h1">{title}</h1>
-      {lead ? <p className="docs-lead">{lead}</p> : null}
+      {eyebrow ? <p className={ui.eyebrow}>{eyebrow}</p> : null}
+      <h1 className={ui.h1}>{title}</h1>
+      {lead ? <p className={ui.lead}>{lead}</p> : null}
       {children}
     </header>
   );
@@ -34,9 +35,9 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="docs-section">
-      <h2 className="docs-h2">{title}</h2>
-      {description ? <p className="docs-section-desc">{description}</p> : null}
+    <section id={id} className={ui.section}>
+      <h2 className={ui.h2}>{title}</h2>
+      {description ? <p className={ui.sectionDesc}>{description}</p> : null}
       {!description ? <div style={{ height: 12 }} /> : null}
       {children}
     </section>
@@ -45,7 +46,7 @@ export function Section({
 
 export function CodeBlock({ code }: { code: string }) {
   return (
-    <figure className="docs-codeblock">
+    <figure className={ui.codeblock}>
       <pre>
         <code>{code}</code>
       </pre>

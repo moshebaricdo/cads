@@ -1,6 +1,6 @@
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { FoundationHeader } from "@/components/FoundationHeader";
-import pageStyles from "@/components/DocsTemplatePage.module.css";
+import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import { STORYBOOK_BASE } from "@/lib/componentExternalLinks";
 import { adjacentFoundations } from "@/lib/nav";
 import { TypographyPageContent } from "./TypographyPageContent";

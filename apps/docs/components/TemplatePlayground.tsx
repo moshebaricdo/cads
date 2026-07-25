@@ -28,7 +28,7 @@ import {
 } from "./playground/propControls";
 import { CopyCodeIconButton } from "./CopyControls";
 import { NESTED_PLAYGROUND_TARGETS } from "@/lib/propSheets";
-import styles from "./TemplatePlayground.module.css";
+import styles from "./TemplatePlayground.module.scss";
 
 type Tab = "preview" | "code";
 

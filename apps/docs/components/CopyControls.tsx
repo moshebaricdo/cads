@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button, Tooltip } from "@codeai/cads-react";
+import ui from "./docs-ui.module.scss";
 
 function useCopied(resetMs = 1400): [boolean, (text: string) => void] {
   const [copied, setCopied] = useState(false);
@@ -30,7 +31,7 @@ export function CopyButton({ text }: { text: string }) {
   return (
     <button
       type="button"
-      className="docs-copy-btn"
+      className={ui.copyBtn}
       onClick={() => copy(text)}
       aria-label="Copy to clipboard"
     >
@@ -64,7 +65,7 @@ export function VarChip({ name }: { name: string }) {
   return (
     <button
       type="button"
-      className="docs-var-chip"
+      className={ui.varChip}
       onClick={() => copy(`var(${varName})`)}
       title={`Copy var(${varName})`}
     >

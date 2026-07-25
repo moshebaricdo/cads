@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import styles from "./syntax.module.css";
+import styles from "./syntax.module.scss";
 
 type TokenKind =
   | "tag"

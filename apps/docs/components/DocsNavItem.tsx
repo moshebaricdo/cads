@@ -5,6 +5,7 @@ import type { ReactElement, ReactNode } from "react";
 import { Tag, Tooltip, useExperimentalMotion } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import type { FaIconName } from "@codeai/cads-react/icons";
+import s from "./DocsNavItem.module.scss";
 
 /** Maps to Figma `resourceItem` type: topLevel | subItem (+ collapsible group). */
 export type DocsNavItemKind = "primary" | "child" | "group";
@@ -14,8 +15,6 @@ type SharedProps = {
   iconName?: FaIconName | (string & {});
   /** Shows a small Experimental Tag after the label. */
   experimental?: boolean;
-  /** Shows a small Not-in-production Tag after the label. */
-  notInProduction?: boolean;
   active?: boolean;
   kind?: DocsNavItemKind;
   /** Icon-only rail (30×30). Hides label/chevron; tooltips the label. */
@@ -48,7 +47,6 @@ export function DocsNavItem(props: DocsNavItemProps) {
     label,
     iconName,
     experimental = false,
-    notInProduction = false,
     active = false,
     kind = "primary",
     collapsed = false,
@@ -60,30 +58,28 @@ export function DocsNavItem(props: DocsNavItemProps) {
   const experimentalStateLabel = experimentalMotion ? "On" : "Off";
   const tooltipLabel = experimental
     ? `${label} (Experimental) (${experimentalStateLabel})`
-    : notInProduction
-      ? `${label} (Not in production)`
-      : label;
+    : label;
 
   const className = [
     "docs-nav-item",
-    isChild ? "docs-nav-item--child" : null,
-    isGroup ? "docs-nav-item--group" : null,
-    collapsed ? "docs-nav-item--collapsed" : null,
+    s.item,
+    isChild ? s.itemChild : null,
+    collapsed ? s.itemCollapsed : null,
   ]
     .filter(Boolean)
     .join(" ");
 
   const content = (
     <>
-      <span className="docs-nav-item-main">
+      <span className={s.itemMain}>
         {iconName ? (
           <FaIcon
             name={iconName}
             fontSize="12px"
-            className="docs-nav-item-icon"
+            className={s.itemIcon}
           />
         ) : null}
-        <span className="docs-nav-item-label">{label}</span>
+        <span className={s.itemLabel}>{label}</span>
       </span>
       {experimental && !collapsed ? (
         <Tooltip
@@ -92,29 +88,12 @@ export function DocsNavItem(props: DocsNavItemProps) {
           placement="top"
         >
           {/* Tag takes a fixed prop set, so the tooltip needs a host element. */}
-          <span className="docs-nav-item-tag" tabIndex={0}>
+          <span className={s.itemTag} tabIndex={0}>
             <Tag
               size="small"
               color={experimentalMotion ? "success" : "neutral"}
               startIconName="flask"
-              label={<span className="docs-sr-only">Experiment</span>}
-            />
-          </span>
-        </Tooltip>
-      ) : null}
-      {notInProduction && !collapsed ? (
-        <Tooltip
-          title="Not in production"
-          iconName={"circle-exclamation"}
-          hasCaret={false}
-          placement="top"
-        >
-          <span className="docs-nav-item-tag" tabIndex={0}>
-            <Tag
-              size="small"
-              color="warning"
-              startIconName="screwdriver-wrench"
-              label={<span className="docs-sr-only">Not in production</span>}
+              label={<span className={s.srOnly}>Experiment</span>}
             />
           </span>
         </Tooltip>
@@ -123,7 +102,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
         <FaIcon
           name={props.expanded ? "chevron-up" : "chevron-down"}
           fontSize="12px"
-          className="docs-nav-item-chevron"
+          className={s.itemChevron}
         />
       ) : null}
     </>
@@ -195,12 +174,12 @@ export function DocsNavSection({
 }) {
   return (
     <div
-      className="docs-nav-section"
+      className={`docs-nav-section ${s.section}`}
       data-nav-section={sectionId}
       data-collapsed={collapsed || undefined}
     >
-      <div className="docs-nav-section-label">{label}</div>
-      <div className="docs-nav-section-items">{children}</div>
+      <div className={`docs-nav-section-label ${s.sectionLabel}`}>{label}</div>
+      <div className={s.sectionItems}>{children}</div>
     </div>
   );
 }
@@ -221,11 +200,11 @@ export function DocsNavChildren({
   return (
     <div
       id={id}
-      className="docs-nav-children"
+      className={`docs-nav-children ${s.children}`}
       data-open={open || undefined}
       {...(!open ? { inert: true } : {})}
     >
-      <div className="docs-nav-children-inner">{children}</div>
+      <div className={s.childrenInner}>{children}</div>
     </div>
   );
 }

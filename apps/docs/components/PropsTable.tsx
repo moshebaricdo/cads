@@ -1,4 +1,5 @@
 import type { CadsPropDef } from "@codeai/cads-react/manifest";
+import ui from "./docs-ui.module.scss";
 
 function TypeCell({ type }: { type: string }) {
   const parts = type.split("|").map((p) => p.trim());
@@ -18,8 +19,8 @@ function TypeCell({ type }: { type: string }) {
 
 export function PropsTable({ props }: { props: CadsPropDef[] }) {
   return (
-    <div className="docs-table-wrap">
-      <table className="docs-table">
+    <div className={ui.tableWrap}>
+      <table className={ui.table}>
         <thead>
           <tr>
             <th>Name</th>
