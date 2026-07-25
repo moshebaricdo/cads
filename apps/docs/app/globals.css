@@ -26,6 +26,8 @@ body {
   background: var(--background-neutral-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Kill native rubber-band bounce at scroll edges. */
+  overscroll-behavior: none;
 }
 
 ::selection {
@@ -284,6 +286,13 @@ a.docs-card:focus-visible {
 /* Shell / chrome (Figma nav 16847:56410)                             */
 /* ---------------------------------------------------------------- */
 
+/* Lets width: var(--docs-sidebar-width) interpolate on expand/collapse. */
+@property --docs-sidebar-width {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 220px;
+}
+
 .docs-shell {
   --docs-sidebar-width: 220px;
   min-height: 100vh;
@@ -315,6 +324,7 @@ a.docs-card:focus-visible {
   border-right: 1px solid var(--border-neutral-primary);
   box-sizing: border-box;
   overflow: hidden;
+  transition: width var(--duration-medium) var(--easing-out);
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-topbar-brand-cell {
@@ -330,6 +340,9 @@ a.docs-card:focus-visible {
   text-decoration: none;
   flex-shrink: 0;
   overflow: hidden;
+  transition:
+    width var(--duration-medium) var(--easing-out),
+    opacity var(--duration-short) var(--easing-out);
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-topbar-brand {
@@ -361,6 +374,7 @@ a.docs-card:focus-visible {
   height: 22px;
   opacity: 1;
   transform: translateY(-50%);
+  transition: opacity var(--duration-short) var(--easing-out);
 }
 
 .dark .docs-topbar-logo--full {
@@ -376,6 +390,7 @@ a.docs-card:focus-visible {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
+  transition: opacity var(--duration-short) var(--easing-out);
 }
 
 .docs-topbar-logo--mark-dark {
@@ -407,6 +422,7 @@ a.docs-card:focus-visible {
   flex-shrink: 0;
   opacity: 0;
   pointer-events: none;
+  transition: opacity var(--duration-fast) var(--easing-out);
 }
 
 .docs-topbar-brand-cell:hover .docs-sidebar-toggle,
@@ -472,9 +488,13 @@ a.docs-card:focus-visible {
 }
 
 .docs-sidebar-slot {
+  /* No overflow:hidden / transform here — either breaks position:sticky. */
   flex: 0 0 var(--docs-sidebar-width);
   width: var(--docs-sidebar-width);
   min-width: 0;
+  transition:
+    width var(--duration-medium) var(--easing-out),
+    flex-basis var(--duration-medium) var(--easing-out);
 }
 
 .docs-sidebar {
@@ -490,12 +510,43 @@ a.docs-card:focus-visible {
 }
 
 .docs-sidebar-scroll {
+  position: relative;
   flex: 1;
   overflow: auto;
+  /* Was on :first-child section — highlight layers stole that selector. */
+  padding-top: 6px;
+  box-sizing: border-box;
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-sidebar-scroll {
+  padding-top: 12px;
   overflow-x: hidden;
+}
+
+/* Floating highlights under docs nav rows (DocsNavScroller + spring.fast). */
+.docs-nav-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--radius-sm);
+  background: var(--background-neutral-secondary);
+  pointer-events: none;
+  will-change: transform, width, height, opacity;
+}
+
+.docs-nav-highlight--active {
+  transition: background-color var(--duration-fast) var(--easing-out);
+}
+
+.docs-nav-highlight--active[data-hover] {
+  background: var(--background-neutral-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-nav-highlight--active {
+    transition: none;
+  }
 }
 
 .docs-sidebar-scrim {
@@ -523,10 +574,6 @@ a.docs-card:focus-visible {
   width: 100%;
   padding: 0 6px;
   box-sizing: border-box;
-}
-
-.docs-nav-section:first-child {
-  padding-top: 6px;
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-nav-section {
@@ -563,6 +610,10 @@ a.docs-card:focus-visible {
   white-space: nowrap;
   max-height: 48px;
   opacity: 1;
+  transition:
+    max-height var(--duration-medium) var(--easing-out),
+    padding var(--duration-medium) var(--easing-out),
+    opacity var(--duration-short) var(--easing-out);
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-nav-section-label {
@@ -571,10 +622,6 @@ a.docs-card:focus-visible {
   padding-bottom: 0;
   opacity: 0;
   pointer-events: none;
-}
-
-.docs-shell[data-sidebar="collapsed"] .docs-nav-section:first-child {
-  padding-top: 12px;
 }
 
 .docs-nav-section-items {
@@ -599,6 +646,8 @@ a.docs-card:focus-visible {
 }
 
 .docs-nav-item {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -618,9 +667,8 @@ a.docs-card:focus-visible {
   text-align: left;
   cursor: pointer;
   box-sizing: border-box;
-  transition:
-    color 125ms ease,
-    background-color 125ms ease;
+  /* Fill lives on .docs-nav-highlight; only color transitions here. */
+  transition: color var(--duration-fast) var(--easing-out);
 }
 
 .docs-nav-item--collapsed {
@@ -636,7 +684,6 @@ a.docs-card:focus-visible {
   .docs-nav-item:hover,
   .docs-nav-item--child[data-active="true"]:hover {
     text-decoration: none;
-    background: var(--background-neutral-secondary);
     color: var(--text-neutral-primary);
   }
 }
@@ -647,22 +694,18 @@ a.docs-card:focus-visible {
 
 .docs-nav-item:focus-visible {
   outline: none;
-  background: var(--background-neutral-secondary);
   color: var(--text-neutral-primary);
   box-shadow:
     0 0 0 2px var(--background-neutral-primary),
     0 0 0 4px var(--border-focused-primary);
 }
 
-/* Active top-level leaf + active folder — secondary fill. */
+/* Active row — text only; floating highlight supplies the fill. */
 .docs-nav-item[data-active="true"] {
-  background: var(--background-neutral-secondary);
   color: var(--text-neutral-primary);
 }
 
-/* Active sub-item — text emphasis only (hover fill still allowed above). */
 .docs-nav-item--child[data-active="true"] {
-  background: transparent;
   color: var(--text-neutral-primary);
   font-weight: var(--font-weight-semibold);
 }
@@ -756,9 +799,34 @@ a.docs-card:focus-visible {
 }
 
 .docs-nav-children {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-medium) var(--easing-out);
+}
+
+.docs-nav-children[data-open] {
+  grid-template-rows: 1fr;
+}
+
+.docs-nav-children-inner {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-topbar-brand-cell,
+  .docs-sidebar-slot,
+  .docs-topbar-brand,
+  .docs-topbar-logo--full,
+  .docs-topbar-logo--mark,
+  .docs-sidebar-toggle,
+  .docs-nav-section-label,
+  .docs-nav-children {
+    transition: none;
+  }
 }
 
 /* ---------------------------------------------------------------- */

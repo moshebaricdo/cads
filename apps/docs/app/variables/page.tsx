@@ -19,7 +19,7 @@ const FOUNDATION_CARDS = [
   {
     href: "/variables/spacing",
     title: "Shape",
-    body: "Border radius, elevation, and spacing — corners, depth, and the shared ramp for layout gaps.",
+    body: "Border radius, elevation, spacing, and stacking — corners, depth, gaps, and overlay z-index.",
   },
   {
     href: "/variables/core",

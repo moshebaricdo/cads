@@ -50,7 +50,7 @@ export function DrawerPlaygroundPreview({
   );
 
   if (inspect) {
-    return <div style={{ width: "100%" }}>{drawer}</div>;
+    return <div style={{ width: "100%", height: "100%" }}>{drawer}</div>;
   }
 
   return (
@@ -112,11 +112,7 @@ export function DialogPlaygroundPreview({
   );
 
   if (inspect) {
-    return (
-      <div style={{ width: "100%", maxWidth: 800, marginInline: "auto" }}>
-        {dialog}
-      </div>
-    );
+    return <div style={{ width: "100%", height: "100%" }}>{dialog}</div>;
   }
 
   return (
@@ -166,7 +162,7 @@ export function ModalPlaygroundPreview({
   );
 
   if (inspect) {
-    return <div style={{ width: "100%" }}>{modal}</div>;
+    return <div style={{ width: "100%", height: "100%" }}>{modal}</div>;
   }
 
   return (

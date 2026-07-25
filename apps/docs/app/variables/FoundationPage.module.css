@@ -392,6 +392,13 @@
   /* Motion recipes share .shapeGrid; stacks on narrow viewports. */
 }
 
+.durationGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-s);
+  width: 100%;
+}
+
 .recipeSample,
 .easingSample {
   position: relative;
@@ -439,48 +446,6 @@
 .recipeVars .copyValue {
   line-height: 16px;
   width: 100%;
-}
-
-/* Nested tiles: dashed frame = 100%, inner = scaled recipe value. */
-.scaleSample {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  align-self: stretch;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  user-select: none;
-}
-
-.scaleSample:focus-visible {
-  outline: 2px solid var(--border-focused-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-md);
-}
-
-.scaleFrame {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 112px;
-  box-sizing: border-box;
-  border: 1px dashed var(--border-brand-strong);
-  background: var(--background-brand-light);
-  border-radius: var(--radius-lg);
-}
-
-.scaleSampleInner {
-  display: block;
-  position: absolute;
-  inset: 0;
-  box-sizing: border-box;
-  border: 1px solid var(--border-brand-primary);
-  border-radius: var(--radius-md);
-  background: var(--background-brand-primary);
-  transform: scale(var(--demo-scale));
-  transform-origin: center;
 }
 
 .surfaceTrigger {
@@ -565,6 +530,40 @@
   user-select: none;
 }
 
+.springSample {
+  --spring-handle: 30px;
+  --spring-inset: 4px;
+  position: relative;
+  width: 100%;
+  height: calc(var(--spring-handle) + (var(--spring-inset) * 2) + 2px);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-round);
+  background: var(--background-neutral-primary);
+  cursor: pointer;
+  user-select: none;
+  font: inherit;
+  color: inherit;
+}
+
+.springSample:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+.springThumb {
+  position: absolute;
+  top: var(--spring-inset);
+  left: var(--spring-inset);
+  width: var(--spring-handle);
+  height: var(--spring-handle);
+  border-radius: var(--radius-round);
+  background: var(--background-brand-primary);
+}
+
 .durationSample:focus-visible {
   outline: 2px solid var(--border-focused-primary);
   outline-offset: 2px;
@@ -590,15 +589,77 @@
 
 .easingSample {
   /* Fixed height so Duration / Easing / Scale panels stay roughly even. */
-  height: 112px;
+  height: 134px;
   padding: 12px 14px;
   box-sizing: border-box;
   cursor: pointer;
 }
 
+.scaleSample {
+  position: relative;
+  width: 100%;
+  height: 134px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scaleSample:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+/* Content-box stack — padding on .scaleSample insets this, not the absolute ghost. */
+.scaleStage {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.scaleGhost {
+  position: absolute;
+  inset: 0;
+  border: 0.5px dashed var(--border-neutral-secondary);
+  background: var(--background-brand-light);
+  border-radius: 9px;
+}
+
+.scaleShape {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: var(--background-brand-primary);
+  transform: scale(1);
+  transition: transform var(--duration-short) var(--easing-out);
+}
+
+.scaleSample:hover .scaleShape,
+.scaleSample:focus-within .scaleShape {
+  transform: scale(var(--demo-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scaleShape {
+    transition: none;
+  }
+}
+
 .primitivePanel {
   /* Covers Duration’s Chrome + Recipes stacks so tab switches don’t jump. */
-  min-height: 182px;
+  min-height: 204px;
 }
 
 .easingSample:focus-visible {

@@ -8,7 +8,12 @@ import { Button, SegmentedButton, TextInput } from "@codeai/cads-react";
 import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { DocsNavItem, DocsNavSection } from "@/components/DocsNavItem";
+import {
+  DocsNavChildren,
+  DocsNavItem,
+  DocsNavSection,
+} from "@/components/DocsNavItem";
+import { DocsNavScroller } from "@/components/DocsNavScroller";
 import { getComponentStatus } from "@/lib/componentExternalLinks";
 import {
   COMPONENT_SECTIONS,
@@ -379,9 +384,20 @@ export function DocsShell({ children }: { children: ReactNode }) {
               height: `calc(100vh - ${TOPBAR_HEIGHT}px)`,
             }}
           >
-            <div className="docs-sidebar-scroll">
+            <DocsNavScroller
+              className="docs-sidebar-scroll"
+              activeKey={`${pathname}|${chromeCollapsed}|${query}|${Object.entries(
+                openSections,
+              )
+                .map(([id, open]) => (open ? id : ""))
+                .join(",")}`}
+            >
               {resources.length > 0 ? (
-                <DocsNavSection label="Resources" collapsed={chromeCollapsed}>
+                <DocsNavSection
+                  label="Resources"
+                  sectionId="resources"
+                  collapsed={chromeCollapsed}
+                >
                   {resources.map((item) => (
                     <DocsNavItem
                       key={item.href}
@@ -396,7 +412,11 @@ export function DocsShell({ children }: { children: ReactNode }) {
               ) : null}
 
               {foundations.length > 0 ? (
-                <DocsNavSection label="Foundations" collapsed={chromeCollapsed}>
+                <DocsNavSection
+                  label="Foundations"
+                  sectionId="foundations"
+                  collapsed={chromeCollapsed}
+                >
                   {foundations.map((item) => (
                     <DocsNavItem
                       key={item.href}
@@ -413,7 +433,11 @@ export function DocsShell({ children }: { children: ReactNode }) {
                 </DocsNavSection>
               ) : null}
 
-              <DocsNavSection label="Components" collapsed={chromeCollapsed}>
+              <DocsNavSection
+                label="Components"
+                sectionId="components"
+                collapsed={chromeCollapsed}
+              >
                 {COMPONENT_SECTIONS.map((section) => {
                   const open =
                     !chromeCollapsed &&
@@ -449,33 +473,31 @@ export function DocsShell({ children }: { children: ReactNode }) {
                         collapsed={chromeCollapsed}
                         onClick={() => toggleSection(section.id)}
                       />
-                      {open ? (
-                        <div id={panelId} className="docs-nav-children">
-                          {visibleItems.map((item) => {
-                            const component = componentsByExport.get(
-                              item.exportName,
-                            );
-                            if (!component) return null;
-                            const href = componentHref(component.name);
-                            const status = getComponentStatus(item.exportName);
-                            return (
-                              <DocsNavItem
-                                key={item.exportName}
-                                kind="child"
-                                href={href}
-                                label={item.label}
-                                active={pathname === href}
-                                notInProduction={status === "notInProduction"}
-                              />
-                            );
-                          })}
-                        </div>
-                      ) : null}
+                      <DocsNavChildren id={panelId} open={open}>
+                        {visibleItems.map((item) => {
+                          const component = componentsByExport.get(
+                            item.exportName,
+                          );
+                          if (!component) return null;
+                          const href = componentHref(component.name);
+                          const status = getComponentStatus(item.exportName);
+                          return (
+                            <DocsNavItem
+                              key={item.exportName}
+                              kind="child"
+                              href={href}
+                              label={item.label}
+                              active={pathname === href}
+                              notInProduction={status === "notInProduction"}
+                            />
+                          );
+                        })}
+                      </DocsNavChildren>
                     </div>
                   );
                 })}
               </DocsNavSection>
-            </div>
+            </DocsNavScroller>
 
             <div className="docs-sidebar-search">{renderSearchField()}</div>
           </aside>

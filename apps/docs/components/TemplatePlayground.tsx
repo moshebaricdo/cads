@@ -111,10 +111,15 @@ export function TemplatePlayground({
       (component.exportName === "Drawer" ||
         component.exportName === "Dialog" ||
         component.exportName === "Modal"));
-  /** Modal/Drawer inspect: tight stage inset so the surface fills the canvas. */
+  /** Modal/Dialog/Drawer inspect: tight stage inset so the surface fills the canvas. */
   const inspectOverlayStage =
     inspect &&
-    (component.exportName === "Modal" || component.exportName === "Drawer");
+    (component.exportName === "Modal" ||
+      component.exportName === "Dialog" ||
+      component.exportName === "Drawer");
+  /** Dropdown inspect opens the menu in-tree — keep stage centered with room. */
+  const inspectDropdownStage =
+    inspect && component.exportName === "Dropdown";
 
   const setValue = (name: string, next: unknown) =>
     setValues((prev) =>
@@ -308,18 +313,37 @@ export function TemplatePlayground({
             <div
               ref={stageRef}
               className={styles.stage}
+              data-docs-playground-stage=""
               onClickCapture={onStageClickCapture}
               style={{
                 ...(stretchPreview ? { justifyContent: "stretch" } : null),
                 ...(inspectOverlayStage
-                  ? { padding: "20px 0 20px 20px" }
+                  ? {
+                      padding: "20px 0 0 20px",
+                      alignItems: "stretch",
+                    }
+                  : null),
+                ...(inspectDropdownStage
+                  ? {
+                      overflow: "visible",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }
                   : null),
               }}
             >
               <div
                 key={`defaultChecked:${String(values.defaultChecked)}:defaultOpen:${String(values.defaultOpen)}:opts:${JSON.stringify(values.optionEdits ?? {})}`}
                 style={
-                  stretchPreview ? { width: "100%", minWidth: 0 } : undefined
+                  stretchPreview
+                    ? {
+                        width: "100%",
+                        minWidth: 0,
+                        ...(inspectOverlayStage
+                          ? { height: "100%", minHeight: 0 }
+                          : null),
+                      }
+                    : undefined
                 }
                 className={[
                   styles.preview,

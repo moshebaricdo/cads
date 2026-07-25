@@ -40,6 +40,7 @@ export const cases: FixtureCase[] = [
           label="Field label"
           helperText="Helper text"
           defaultOpen
+          disablePortal
           options={ICON_OPTIONS}
           defaultValue="a"
         />
@@ -57,6 +58,7 @@ export const cases: FixtureCase[] = [
           menuPlacement="bottomRight"
           label="Field label"
           defaultOpen
+          disablePortal
           options={ICON_OPTIONS}
           defaultValue={["a", "b"]}
         />
@@ -74,6 +76,7 @@ export const cases: FixtureCase[] = [
           menuPlacement="bottomLeft"
           label="Button"
           defaultOpen
+          disablePortal
           options={ACTION_OPTIONS}
         />
       ),
@@ -91,6 +94,7 @@ export const cases: FixtureCase[] = [
             menuPlacement="topLeft"
             label="Field label"
             defaultOpen
+            disablePortal
             options={ICON_OPTIONS}
             defaultValue="b"
           />
@@ -116,6 +120,7 @@ export const cases: FixtureCase[] = [
             menuPlacement="topRight"
             label="Button"
             defaultOpen
+            disablePortal
             options={ACTION_OPTIONS}
           />
         </div>
@@ -133,6 +138,7 @@ export const cases: FixtureCase[] = [
           menuPlacement="bottomLeft"
           label="Field label"
           defaultOpen
+          disablePortal
           options={ICON_OPTIONS}
           defaultValue="a"
         />
@@ -151,6 +157,7 @@ export const cases: FixtureCase[] = [
           label="Field label"
           helperText="Text-only + groups + separator"
           defaultOpen
+          disablePortal
           options={TEXT_GROUPED_OPTIONS}
           defaultValue="a"
         />

@@ -1,4 +1,9 @@
-import { elevation, shape, spacing } from "@codeai/cads-variables";
+import {
+  elevation,
+  shape,
+  spacing,
+  zIndexLayers,
+} from "@codeai/cads-variables";
 import type { CSSProperties } from "react";
 import { FoundationHeader } from "@/components/FoundationHeader";
 import { ComponentPageNav } from "@/components/ComponentPageNav";
@@ -35,7 +40,7 @@ export default function ShapePage() {
     <div className={pageStyles.page}>
       <FoundationHeader
         title="Shape"
-        lead="The CADS shape system is broken into three categories: border radius, elevation, and spacing. Radius handles corners, elevation handles depth, and spacing is the shared ramp for layout gaps."
+        lead="The CADS shape system is broken into four categories: border radius, elevation, spacing, and stacking. Radius handles corners, elevation handles depth, spacing is the shared ramp for layout gaps, and stacking is the overlay z-index ladder."
       />
 
       <section className={styles.section} aria-labelledby="border-radius">
@@ -144,6 +149,48 @@ export default function ShapePage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="stacking">
+        <h2 id="stacking" className={`docs-h2 ${styles.sectionTitle}`}>
+          Stacking
+        </h2>
+        <p className={`docs-section-desc ${styles.sectionBody}`}>
+          Stacking is a code-owned z-index ladder for portaled overlays — separate
+          from elevation shadows. Menus and popovers share the modal layer so a
+          Dropdown inside a Dialog or Popover paints above its host by mount
+          order. Local in-component stacking (tabs, segmented controls) does not
+          use these tokens.
+        </p>
+        <div className={styles.sectionContent}>
+          <div className="docs-table-wrap">
+            <table className={`docs-table ${styles.table}`}>
+              <thead>
+                <tr>
+                  <th scope="col">Variable</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zIndexLayers.map((layer) => (
+                  <tr key={layer.key}>
+                    <td>
+                      <CopyName
+                        className={styles.copyName}
+                        copyValue={layer.variable}
+                      >
+                        {layer.variable}
+                      </CopyName>
+                    </td>
+                    <td>{layer.value}</td>
+                    <td>{layer.use}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

@@ -8,6 +8,7 @@ export type PreviewProps = {
   /**
    * When true (playground Inspect mode), triggered overlays render their
    * surface inline — centered, no trigger — so they can be measured.
+   * Dropdown instead forces the menu open in-tree (`disablePortal`).
    */
   inspect?: boolean;
 };

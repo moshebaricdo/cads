@@ -15,7 +15,8 @@
   background: var(--background-neutral-primary);
   border: 1px solid var(--border-neutral-primary);
   border-radius: var(--radius-xl);
-  transition: var(--transition-colors);
+  /* Colors always; press scale when experimental motion injects [data-cads-press]:active. */
+  transition: var(--transition-colors), var(--transition-press);
 }
 
 .card:hover {

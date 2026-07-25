@@ -86,7 +86,12 @@ export function OverviewHome() {
 
       <div className={styles.destinations}>
         {DESTINATIONS.map((item) => (
-          <NextLink key={item.href} href={item.href} className={styles.card}>
+          <NextLink
+            key={item.href}
+            href={item.href}
+            className={styles.card}
+            data-cads-press=""
+          >
             <div className={styles.graphic}>
               <ThemeGraphic kind={item.graphic} />
             </div>

@@ -7,8 +7,8 @@ import { CopyName } from "../spacing/CopyName";
 import styles from "../FoundationPage.module.css";
 
 const SURFACE_HOLD_MS = 2000;
-/** Match `--motion-surface-duration` so exit can finish before unmount. */
-const SURFACE_EXIT_MS = 180;
+/** Match `--motion-surface-duration` (medium) so exit can finish before unmount. */
+const SURFACE_EXIT_MS = 200;
 
 type Recipe = {
   id: "press" | "surface" | "indicator";
@@ -23,8 +23,8 @@ const RECIPES: Recipe[] = [
     token: "transition-press",
     vars: [
       "--motion-press-scale",
-      "--motion-press-duration",
-      "--motion-press-easing",
+      "--duration-short",
+      "--easing-out",
     ],
   },
   {
@@ -32,16 +32,17 @@ const RECIPES: Recipe[] = [
     token: "transition-surface",
     vars: [
       "--motion-surface-from-scale",
-      "--motion-surface-duration",
-      "--motion-surface-easing",
+      "--duration-medium",
+      "--easing-out",
     ],
   },
   {
     id: "indicator",
     token: "transition-indicator",
     vars: [
-      "--motion-indicator-duration",
-      "--motion-indicator-easing",
+      "motion.spring.moderate",
+      "--duration-medium",
+      "--easing-emphasized",
     ],
   },
 ];

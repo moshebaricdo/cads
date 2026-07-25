@@ -1,45 +1,73 @@
 "use client";
 
 import { motion } from "@codeai/cads-variables";
-import { Tabs } from "@codeai/cads-react";
-import { useState, type CSSProperties } from "react";
+import { Tabs, Tooltip } from "@codeai/cads-react";
+import { motion as m, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
 import styles from "../FoundationPage.module.css";
 import { EasingChart } from "./EasingChart";
 
-const CHROME_DURATIONS = [
+const DURATIONS = [
   {
     token: "duration-instant",
     variable: "--duration-instant",
     value: motion.durationInstant,
+    use: "Hard cut / reduced-motion press",
+  },
+  {
+    token: "duration-fast",
+    variable: "--duration-fast",
+    value: motion.durationFast,
+    use: "High-frequency tint (Fade, Highlight chase)",
   },
   {
     token: "duration-short",
     variable: "--duration-short",
     value: motion.durationShort,
+    use: "Chrome color + Press feedback",
   },
   {
     token: "duration-medium",
     variable: "--duration-medium",
     value: motion.durationMedium,
+    use: "Travel + overlay enter (Surface); Indicator uses spring.moderate",
   },
 ] as const;
 
-const RECIPE_DURATIONS = [
+const SPRINGS = [
   {
-    token: "motion-press-duration",
-    variable: "--motion-press-duration",
-    value: motion.press.duration,
+    token: "spring.fast",
+    copyValue: "motion.spring.fast",
+    preset: motion.spring.fast,
+    use: "Pointer chase / docs nav highlight",
   },
   {
-    token: "motion-surface-duration",
-    variable: "--motion-surface-duration",
-    value: motion.surface.duration,
+    token: "spring.moderate",
+    copyValue: "motion.spring.moderate",
+    preset: motion.spring.moderate,
+    use: "Indicator (Toggle handle, Tabs underline)",
   },
   {
-    token: "motion-indicator-duration",
-    variable: "--motion-indicator-duration",
-    value: motion.indicator.duration,
+    token: "spring.slow",
+    copyValue: "motion.spring.slow",
+    preset: motion.spring.slow,
+    use: "Drag release / drawer settle only",
+  },
+] as const;
+
+const SCALES = [
+  {
+    token: "motion-press-scale",
+    variable: "--motion-press-scale",
+    value: motion.press.scale,
+    use: "Active feedback on pressable controls",
+  },
+  {
+    token: "motion-surface-from-scale",
+    variable: "--motion-surface-from-scale",
+    value: motion.surface.fromScale,
+    use: "Overlay / menu enter start scale",
   },
 ] as const;
 
@@ -60,29 +88,23 @@ const EASINGS = [
     token: "easing-emphasized",
     variable: "--easing-emphasized",
     value: motion.easingEmphasized,
-    use: "Committed selection travel (Indicator)",
+    use: "CSS Indicator fallback (non-spring / reduced-motion)",
   },
 ] as const;
 
 const TABS = [
   { value: "duration", label: "Duration" },
   { value: "easing", label: "Easing" },
+  { value: "spring", label: "Spring" },
+  { value: "scale", label: "Scale" },
 ] as const;
 
 type TabValue = (typeof TABS)[number]["value"];
 
-function DurationTracks({
-  items,
-}: {
-  items: readonly {
-    token: string;
-    variable: string;
-    value: string;
-  }[];
-}) {
+function DurationPanel() {
   return (
-    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
-      {items.map((item) => (
+    <div className={styles.durationGrid}>
+      {DURATIONS.map((item) => (
         <div
           className={styles.shapeItem}
           key={item.token}
@@ -91,11 +113,14 @@ function DurationTracks({
           <div className={styles.durationSample} tabIndex={0}>
             <div className={styles.motionDot} />
           </div>
-          <div className={styles.rangeHeader}>
-            <CopyName className={styles.copyName} copyValue={item.variable}>
-              {item.token}
-            </CopyName>
-            <span className={styles.rangeCount}>{item.value}</span>
+          <div className={styles.shapeMeta}>
+            <div className={styles.rangeHeader}>
+              <CopyName className={styles.copyName} copyValue={item.variable}>
+                {item.token}
+              </CopyName>
+              <span className={styles.rangeCount}>{item.value}</span>
+            </div>
+            <p className={styles.recipeBody}>{item.use}</p>
           </div>
         </div>
       ))}
@@ -103,15 +128,71 @@ function DurationTracks({
   );
 }
 
-function DurationPanel() {
+function ScaleSample({
+  variable,
+  value,
+}: {
+  variable: string;
+  value: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (copyTimer.current) clearTimeout(copyTimer.current);
+    },
+    [],
+  );
+
+  function handleCopy() {
+    void navigator.clipboard?.writeText(variable).then(() => {
+      setCopied(true);
+      if (copyTimer.current) clearTimeout(copyTimer.current);
+      copyTimer.current = setTimeout(() => setCopied(false), 1200);
+    });
+  }
+
   return (
-    <div className={styles.rangeList}>
-      <div>
-        <DurationTracks items={CHROME_DURATIONS} />
-      </div>
-      <div>
-        <DurationTracks items={RECIPE_DURATIONS} />
-      </div>
+    <Tooltip
+      title={copied ? "Copied" : variable}
+      hasCaret={false}
+      placement="top"
+      iconName={copied ? "check" : undefined}
+    >
+      <button
+        type="button"
+        className={styles.scaleSample}
+        style={{ "--demo-scale": value } as CSSProperties}
+        aria-label={`Copy ${variable}`}
+        onClick={handleCopy}
+      >
+        <div className={styles.scaleStage}>
+          <div className={styles.scaleGhost} aria-hidden />
+          <div className={styles.scaleShape} />
+        </div>
+      </button>
+    </Tooltip>
+  );
+}
+
+function ScalePanel() {
+  return (
+    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+      {SCALES.map((item) => (
+        <div className={styles.shapeItem} key={item.token}>
+          <ScaleSample variable={item.variable} value={item.value} />
+          <div className={styles.shapeMeta}>
+            <div className={styles.rangeHeader}>
+              <CopyName className={styles.copyName} copyValue={item.variable}>
+                {item.token}
+              </CopyName>
+              <span className={styles.rangeCount}>{item.value}</span>
+            </div>
+            <p className={styles.recipeBody}>{item.use}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -141,7 +222,78 @@ function EasingPanel() {
   );
 }
 
-/** Tabbed Duration / Easing specimens — same pattern as Color / Typography. */
+const SPRING_HANDLE_PX = 30;
+const SPRING_INSET_PX = 4;
+
+function SpringSample({
+  preset,
+  label,
+}: {
+  preset: (typeof SPRINGS)[number]["preset"];
+  label: string;
+}) {
+  const trackRef = useRef<HTMLButtonElement>(null);
+  const [on, setOn] = useState(false);
+  const [travel, setTravel] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const measure = () => {
+      setTravel(
+        Math.max(0, el.clientWidth - SPRING_HANDLE_PX - SPRING_INSET_PX * 2),
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <button
+      ref={trackRef}
+      type="button"
+      className={styles.springSample}
+      aria-label={`Toggle ${label} spring demo`}
+      aria-pressed={on}
+      onClick={() => setOn((v) => !v)}
+    >
+      <m.div
+        className={styles.springThumb}
+        initial={false}
+        animate={{ x: on ? travel : 0 }}
+        transition={reduceMotion ? { duration: 0 } : preset}
+      />
+    </button>
+  );
+}
+
+function SpringPanel() {
+  return (
+    <div className={`${styles.shapeGrid} ${styles.recipeGrid}`}>
+      {SPRINGS.map((item) => (
+        <div className={styles.shapeItem} key={item.token}>
+          <SpringSample preset={item.preset} label={item.token} />
+          <div className={styles.shapeMeta}>
+            <div className={styles.rangeHeader}>
+              <CopyName className={styles.copyName} copyValue={item.copyValue}>
+                {item.token}
+              </CopyName>
+              <span className={styles.rangeCount}>
+                {item.preset.duration * 1000}ms · b{item.preset.bounce}
+              </span>
+            </div>
+            <p className={styles.recipeBody}>{item.use}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Tabbed Duration / Easing / Spring / Scale specimens. */
 export function MotionPrimitives() {
   const [tab, setTab] = useState<TabValue>("duration");
 
@@ -156,7 +308,15 @@ export function MotionPrimitives() {
         items={[...TABS]}
       />
       <div className={styles.primitivePanel}>
-        {tab === "duration" ? <DurationPanel /> : <EasingPanel />}
+        {tab === "duration" ? (
+          <DurationPanel />
+        ) : tab === "easing" ? (
+          <EasingPanel />
+        ) : tab === "spring" ? (
+          <SpringPanel />
+        ) : (
+          <ScalePanel />
+        )}
       </div>
     </div>
   );

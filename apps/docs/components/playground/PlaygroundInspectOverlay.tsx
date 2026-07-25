@@ -14,7 +14,7 @@ import styles from "./PlaygroundInspectOverlay.module.css";
 const POPOVER_GAP = 6;
 const RULER_STEP = 8;
 const RULER_LABEL_STEP = 32;
-/** Above Dropdown menu (1400) and typical MUI layers. */
+/** Above overlay layers (`--z-tooltip` 1500) and typical MUI stacking. */
 const INSPECT_Z = 10000;
 
 type BoxSides = {
@@ -382,6 +382,9 @@ function labelFor(el: HTMLElement): string {
   if (el.hasAttribute("data-cads-dropdown-item")) return "MENU ITEM";
   if (el.hasAttribute("data-cads-dropdown-trigger")) return "BUTTON";
   if (el.getAttribute("data-cads-dropdown") != null) return "DROPDOWN";
+  if (el.hasAttribute("data-docs-inspect-composite")) {
+    if (el.querySelector("[data-cads-dropdown]")) return "DROPDOWN";
+  }
   if (el.getAttribute("role") === "switch") return "BUTTON";
   return el.tagName.toUpperCase();
 }
@@ -510,7 +513,7 @@ function readMeasure(el: HTMLElement): Measure {
     return map;
   };
   const authored = authoredFor(el);
-  const rect = el.getBoundingClientRect();
+  const rect = inspectRect(el);
   const padding = readSides(styles, "padding");
   const margin = readSides(styles, "margin");
   const gap = parsePx(styles.gap || styles.columnGap || styles.rowGap);
@@ -620,6 +623,49 @@ function previewRoot(stage: HTMLElement): HTMLElement {
 }
 
 /**
+ * Floating surfaces (Dropdown Popper menu, Breadcrumbs overflow) are
+ * position:absolute / portaled siblings — excluded from the host’s border box.
+ * Union them in so rulers span the open chrome.
+ */
+function inspectRect(el: HTMLElement): {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+} {
+  const rect = el.getBoundingClientRect();
+  let top = rect.top;
+  let left = rect.left;
+  let right = rect.right;
+  let bottom = rect.bottom;
+
+  const floatingSelectors = [
+    "[data-cads-dropdown-menu]",
+    "[data-cads-breadcrumb-overflow-menu]",
+  ];
+  for (const selector of floatingSelectors) {
+    // Only union menus owned by this host (or nested under it when in-tree).
+    const menus = el.querySelectorAll(selector);
+    for (const menu of menus) {
+      if (!(menu instanceof HTMLElement)) continue;
+      const m = menu.getBoundingClientRect();
+      if (m.width <= 0 && m.height <= 0) continue;
+      top = Math.min(top, m.top);
+      left = Math.min(left, m.left);
+      right = Math.max(right, m.right);
+      bottom = Math.max(bottom, m.bottom);
+    }
+  }
+
+  return {
+    top,
+    left,
+    width: Math.max(0, right - left),
+    height: Math.max(0, bottom - top),
+  };
+}
+
+/**
  * Primary preview component for idle inspect (Fluid Functionalism-style):
  * prefer the preview’s direct child (the control root), else largest node.
  */
@@ -627,16 +673,24 @@ function pickDefaultTarget(stage: HTMLElement): HTMLElement | null {
   const root = previewRoot(stage);
 
   for (const child of Array.from(root.children)) {
-    if (child instanceof HTMLElement && isInspectableNode(stage, child)) {
-      return child;
+    if (!(child instanceof HTMLElement) || !isInspectableNode(stage, child)) {
+      continue;
     }
+    // Padded inspect composite (Dropdown open menu) — rulers span this box.
+    if (child.hasAttribute("data-docs-inspect-composite")) return child;
+    // Other wrappers — prefer the control root inside.
+    const nested = child.querySelector<HTMLElement>(
+      "[data-cads-dropdown], [data-cads-component]",
+    );
+    if (nested && isInspectableNode(stage, nested)) return nested;
+    return child;
   }
 
   let best: HTMLElement | null = null;
   let bestArea = 0;
   for (const node of root.querySelectorAll<HTMLElement>("*")) {
     if (!isInspectableNode(stage, node)) continue;
-    const rect = node.getBoundingClientRect();
+    const rect = inspectRect(node);
     const area = rect.width * rect.height;
     if (area <= 0 || area <= bestArea) continue;
     best = node;
@@ -933,12 +987,35 @@ export function PlaygroundInspectOverlay({
     const preview = stageEl.querySelector("[data-docs-playground-preview]");
     if (preview) ro.observe(preview);
 
+    // Open menus don't change the preview's layout size — observe them and
+    // re-sync when Dropdown/Breadcrumbs mount floating chrome in-tree.
+    function observeFloating() {
+      const el = stageRef.current;
+      if (!el) return;
+      for (const menu of el.querySelectorAll(
+        "[data-cads-dropdown-menu], [data-cads-breadcrumb-overflow-menu]",
+      )) {
+        if (menu instanceof HTMLElement) ro.observe(menu);
+      }
+    }
+    observeFloating();
+    syncDefault();
+
+    const mo = new MutationObserver(() => {
+      observeFloating();
+      syncDefault();
+    });
+    if (preview) {
+      mo.observe(preview, { childList: true, subtree: true });
+    }
+
     return () => {
       stageEl.removeEventListener("mousemove", onMove);
       stageEl.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScrollOrResize, true);
       window.removeEventListener("resize", onScrollOrResize);
       ro.disconnect();
+      mo.disconnect();
     };
   }, [enabled, stageRef]);
 

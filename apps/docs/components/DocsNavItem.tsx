@@ -40,7 +40,8 @@ export type DocsNavItemProps = LinkProps | ButtonProps;
 
 /**
  * Docs-only sidebar row — not a CADS library component.
- * Spec: Figma sidebar `16847:56434`. Hover fill is a snappy CSS fade.
+ * Spec: Figma sidebar `16847:56434`. Fill comes from DocsNavScroller’s
+ * floating spring highlight (not per-row fades).
  */
 export function DocsNavItem(props: DocsNavItemProps) {
   const {
@@ -182,20 +183,49 @@ export function DocsNavItem(props: DocsNavItemProps) {
 
 export function DocsNavSection({
   label,
+  sectionId,
   children,
   collapsed = false,
 }: {
   label: string;
+  /** Stable key for hover-chase section boundaries. */
+  sectionId: string;
   children: ReactNode;
   collapsed?: boolean;
 }) {
   return (
     <div
       className="docs-nav-section"
+      data-nav-section={sectionId}
       data-collapsed={collapsed || undefined}
     >
       <div className="docs-nav-section-label">{label}</div>
       <div className="docs-nav-section-items">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * Animated expand/collapse for component sub-item lists.
+ * CSS grid 0fr→1fr keeps sticky/layout stable (no Motion height:auto).
+ */
+export function DocsNavChildren({
+  id,
+  open,
+  children,
+}: {
+  id: string;
+  open: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      id={id}
+      className="docs-nav-children"
+      data-open={open || undefined}
+      {...(!open ? { inert: true } : {})}
+    >
+      <div className="docs-nav-children-inner">{children}</div>
     </div>
   );
 }

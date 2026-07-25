@@ -39,8 +39,9 @@ export default function MotionPage() {
           Primitives
         </h2>
         <p className={`docs-section-desc ${styles.sectionBody}`}>
-          Individual motion properties. Recipes support most usages, but you can also 
-          create your own custom motion patterns by combining primitives.
+          Duration ladder (0 / 100 / 150 / 200), easings, and spring presets
+          (fast / moderate / slow). Recipes pick from these — springs are for
+          interruptible Indicator travel and pointer chase only.
         </p>
         <div className={styles.sectionContent}>
           <MotionPrimitives />
