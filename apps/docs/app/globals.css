@@ -28,6 +28,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background: var(--background-brand-primary);
+  color: var(--text-neutral-white-fixed);
+}
+
 a {
   color: var(--text-brand-primary);
   text-decoration: none;
@@ -690,6 +695,28 @@ a.docs-card:focus-visible {
   max-width: 160px;
 }
 
+.docs-nav-item-tag {
+  flex-shrink: 0;
+}
+
+.docs-nav-item-tag [data-cads-component="Tag"] {
+  pointer-events: none;
+  width: 20px;
+  padding-left: 4.5px;
+}
+
+.docs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .docs-nav-item--collapsed .docs-nav-item-label {
   opacity: 0;
   max-width: 0;
@@ -699,12 +726,13 @@ a.docs-card:focus-visible {
 .docs-nav-item-chevron {
   flex-shrink: 0;
   color: var(--text-neutral-placeholder);
+  width: 20px;
 }
 
 /* subItem — Body 4 Regular, indented under icon+gap. */
 .docs-nav-item--child {
   justify-content: flex-start;
-  padding: 6px 16px 6px 34px;
+  padding: 6px 12px 6px 34px;
   font-weight: var(--font-weight-normal);
   color: var(--text-neutral-tertiary);
 }

@@ -9,6 +9,7 @@ import { cadsManifest } from "@codeai/cads-react/manifest";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DocsNavItem, DocsNavSection } from "@/components/DocsNavItem";
+import { getComponentStatus } from "@/lib/componentExternalLinks";
 import {
   COMPONENT_SECTIONS,
   FOUNDATIONS_NAV,
@@ -402,6 +403,9 @@ export function DocsShell({ children }: { children: ReactNode }) {
                       href={item.href}
                       label={item.label}
                       iconName={item.iconName}
+                      experimental={
+                        "experimental" in item ? item.experimental : undefined
+                      }
                       active={pathname === item.href}
                       collapsed={chromeCollapsed}
                     />
@@ -453,6 +457,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                             );
                             if (!component) return null;
                             const href = componentHref(component.name);
+                            const status = getComponentStatus(item.exportName);
                             return (
                               <DocsNavItem
                                 key={item.exportName}
@@ -460,6 +465,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                                 href={href}
                                 label={item.label}
                                 active={pathname === href}
+                                notInProduction={status === "notInProduction"}
                               />
                             );
                           })}

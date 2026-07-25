@@ -103,6 +103,18 @@ export function TemplatePlayground({
   const code = propsToCode(component.exportName, values);
   const highlighted = useMemo(() => highlightJsx(code), [code]);
   const showPropsPanel = tab === "preview";
+  /** Overlay surfaces need the stage width when Inspect forces surfaceOnly. */
+  const stretchPreview =
+    Boolean(values.fullWidth) ||
+    component.exportName === "Pagination" ||
+    (inspect &&
+      (component.exportName === "Drawer" ||
+        component.exportName === "Dialog" ||
+        component.exportName === "Modal"));
+  /** Modal/Drawer inspect: tight stage inset so the surface fills the canvas. */
+  const inspectOverlayStage =
+    inspect &&
+    (component.exportName === "Modal" || component.exportName === "Drawer");
 
   const setValue = (name: string, next: unknown) =>
     setValues((prev) =>
@@ -185,6 +197,23 @@ export function TemplatePlayground({
         values: {
           label,
           value: String(edits.value ?? itemValue),
+          disabled: Boolean(edits.disabled),
+        },
+      });
+      return;
+    }
+
+    if (targetId === "chipItem") {
+      setSelection({
+        targetId,
+        itemValue,
+        values: {
+          label: String(
+            edits.label ?? item.getAttribute("data-label") ?? itemValue,
+          ),
+          value: String(edits.value ?? itemValue),
+          startIconName: String(edits.startIconName ?? ""),
+          endIconName: String(edits.endIconName ?? ""),
           disabled: Boolean(edits.disabled),
         },
       });
@@ -280,16 +309,17 @@ export function TemplatePlayground({
               ref={stageRef}
               className={styles.stage}
               onClickCapture={onStageClickCapture}
-              style={
-                values.fullWidth ? { justifyContent: "stretch" } : undefined
-              }
+              style={{
+                ...(stretchPreview ? { justifyContent: "stretch" } : null),
+                ...(inspectOverlayStage
+                  ? { padding: "20px 0 20px 20px" }
+                  : null),
+              }}
             >
               <div
                 key={`defaultChecked:${String(values.defaultChecked)}:defaultOpen:${String(values.defaultOpen)}:opts:${JSON.stringify(values.optionEdits ?? {})}`}
                 style={
-                  values.fullWidth || component.exportName === "Pagination"
-                    ? { width: "100%", minWidth: 0 }
-                    : undefined
+                  stretchPreview ? { width: "100%", minWidth: 0 } : undefined
                 }
                 className={[
                   styles.preview,
@@ -304,6 +334,7 @@ export function TemplatePlayground({
                 <ComponentPreview
                   exportName={component.exportName}
                   values={values}
+                  inspect={inspect}
                 />
               </div>
               <PlaygroundInspectOverlay stageRef={stageRef} enabled={inspect} />

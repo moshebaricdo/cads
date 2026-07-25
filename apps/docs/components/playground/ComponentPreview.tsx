@@ -6,8 +6,8 @@ import {
   type ComponentType,
   type LazyExoticComponent,
 } from "react";
+import type { PreviewProps } from "./previews/shared";
 
-type PreviewProps = { values: Record<string, unknown> };
 type PreviewComp = ComponentType<PreviewProps>;
 
 const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
@@ -35,6 +35,7 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
   NotificationBanner: lazy(() => import("./previews/NotificationBannerPreview")),
   Tag: lazy(() => import("./previews/TagPreview")),
   Tooltip: lazy(() => import("./previews/TooltipPreview")),
+  IconTooltip: lazy(() => import("./previews/IconTooltipPreview")),
   Popover: lazy(() => import("./previews/PopoverPreview")),
   Drawer: lazy(() => import("./previews/DrawerPreview")),
   Dialog: lazy(() => import("./previews/DialogPreview")),
@@ -44,15 +45,17 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
 export function ComponentPreview({
   exportName,
   values,
+  inspect = false,
 }: {
   exportName: string;
   values: Record<string, unknown>;
+  inspect?: boolean;
 }) {
   const Preview = PREVIEWS[exportName];
   if (!Preview) return null;
   return (
     <Suspense fallback={<div style={{ minHeight: 80 }} aria-hidden />}>
-      <Preview values={values} />
+      <Preview values={values} inspect={inspect} />
     </Suspense>
   );
 }

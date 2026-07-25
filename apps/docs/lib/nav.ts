@@ -14,7 +14,12 @@ export const FOUNDATIONS_NAV = [
   { href: "/variables/color", label: "Color", iconName: "palette" },
   { href: "/variables/typography", label: "Typography", iconName: "text-size" },
   { href: "/variables/spacing", label: "Shape", iconName: "draw-square" },
-  { href: "/variables/core", label: "Motion", iconName: "play-pause" },
+  {
+    href: "/variables/core",
+    label: "Motion",
+    iconName: "play-pause",
+    experimental: true,
+  },
 ] as const;
 
 export const COMPONENT_SECTIONS = [
@@ -41,7 +46,7 @@ export const COMPONENT_SECTIONS = [
       { exportName: "Radio", label: "Radio Button" },
       { exportName: "Toggle", label: "Toggle" },
       { exportName: "Slider", label: "Slider" },
-      { exportName: "Chip", label: "Chips" },
+      { exportName: "ChipGroup", label: "Chips" },
     ],
   },
   {
@@ -64,6 +69,7 @@ export const COMPONENT_SECTIONS = [
       { exportName: "Toast", label: "Toast" },
       { exportName: "NotificationBanner", label: "Notification Banner" },
       { exportName: "Tag", label: "Tag" },
+      { exportName: "IconTooltip", label: "Icon Tooltip" },
     ],
   },
   {

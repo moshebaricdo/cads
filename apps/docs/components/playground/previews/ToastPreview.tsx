@@ -1,14 +1,23 @@
 "use client";
 
+import { useState } from "react";
+import { Button } from "@codeai/cads-react/components/Button";
 import { Toast } from "@codeai/cads-react/components/Toast";
+import type { ToastPlacement } from "@codeai/cads-react/components/Toast";
 import type { FaIconName } from "@codeai/cads-react/icons";
+import type { PreviewProps } from "./shared";
 
+/**
+ * Toast playground — trigger + snackbar host (`open` / `placement` / `offset`).
+ * Surface enter/exit follows experimental motion when the docs flag is on.
+ * Inspect mode shows the elevated surface inline (no trigger / portal).
+ */
 export default function ToastPreview({
   values,
-}: {
-  values: Record<string, unknown>;
-}) {
+  inspect = false,
+}: PreviewProps) {
   const v = values;
+  const [open, setOpen] = useState(false);
   const iconName = String(v.iconName ?? "").trim();
   const actionStart = String(v.actionStartIconName ?? "").trim();
   const actionEnd = String(v.actionEndIconName ?? "").trim();
@@ -16,8 +25,17 @@ export default function ToastPreview({
     v.hasIcon === false
       ? false
       : ((iconName || undefined) as FaIconName | undefined);
-  return (
+  const offsetRaw = Number(v.offset);
+  const offset = Number.isFinite(offsetRaw) ? offsetRaw : 64;
+
+  const toast = (
     <Toast
+      open={inspect ? undefined : open}
+      surfaceOnly={inspect || undefined}
+      placement={
+        (v.placement as ToastPlacement | undefined) ?? "bottomCenter"
+      }
+      offset={offset}
       sentiment={
         v.sentiment as
           | "primary"
@@ -37,8 +55,27 @@ export default function ToastPreview({
       }
       actionEndIconName={(actionEnd || undefined) as FaIconName | undefined}
       isDismissible={v.isDismissible !== false}
+      onClose={() => setOpen(false)}
     >
       {String(v.children ?? "This is a toast.")}
     </Toast>
+  );
+
+  if (inspect) return toast;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
+      <Button size="medium" onClick={() => setOpen((prev) => !prev)}>
+        {open ? "Hide toast" : "Show toast"}
+      </Button>
+      {toast}
+    </div>
   );
 }

@@ -31,16 +31,25 @@
   width: 22px;
 }
 
-/* Brand wash across the strip — hover only. */
+/* Brand wash for the hovered span — positioned within the component ruler. */
 .rulerShade {
   position: absolute;
-  inset: 0;
   z-index: 0;
   background: color-mix(
     in srgb,
     var(--background-brand-primary) 10%,
     transparent
   );
+}
+
+.rulerH .rulerShade {
+  top: 0;
+  bottom: 0;
+}
+
+.rulerV .rulerShade {
+  left: 0;
+  right: 0;
 }
 
 .tick {

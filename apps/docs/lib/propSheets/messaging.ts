@@ -134,6 +134,31 @@ const TOAST_PROP_SHEETS: PropSheet[] = [
         type: "() => void",
         description: "Dismiss handler.",
       },
+      {
+        name: "open",
+        type: "boolean",
+        description:
+          "Controlled visibility for the snackbar host. Omit for inline/fixture surface-only render.",
+      },
+      {
+        name: "placement",
+        type: '"topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter" | "bottomRight"',
+        default: '"bottomCenter"',
+        description:
+          "Viewport corner/edge when hosted (MUI Snackbar anchorOrigin).",
+      },
+      {
+        name: "offset",
+        type: "number",
+        default: "64",
+        description: "Distance in px from the pinned viewport edge(s).",
+      },
+      {
+        name: "surfaceOnly",
+        type: "boolean",
+        description:
+          "Render elevated chrome without the snackbar portal. Default when open is omitted.",
+      },
     ],
   },
 ];
@@ -272,12 +297,64 @@ const TAG_PROP_SHEETS: PropSheet[] = [
   },
 ];
 
+const ICON_TOOLTIP_PROP_SHEETS: PropSheet[] = [
+  {
+    title: "Props — IconTooltip",
+    props: [
+      {
+        name: "title",
+        type: "ReactNode",
+        required: true,
+        description: "Brief contextual text shown in the tooltip bubble.",
+      },
+      {
+        name: "iconName",
+        type: "FaIconName | string",
+        default: '"circle-info"',
+        description: "FA icon rendered as the trigger affordance.",
+      },
+      {
+        name: "color",
+        type: '"primary" | "secondary" | "tertiary"',
+        default: '"tertiary"',
+        description:
+          "primary → brand; secondary → neutral-primary; tertiary → neutral-quaternary.",
+      },
+      {
+        name: "size",
+        type: '"large" | "medium" | "small" | "extraSmall"',
+        default: '"medium"',
+        description: "Glyph size on the shared control size scale.",
+      },
+      {
+        name: "placement",
+        type: '"bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end"',
+        default: '"top"',
+        description: "MUI placement, passed through to Tooltip.",
+      },
+      {
+        name: "hasCaret",
+        type: "boolean",
+        default: "true",
+        description: "Show the pointing caret.",
+      },
+      {
+        name: "aria-label",
+        type: "string",
+        description:
+          "Accessible trigger name. Falls back to title when title is a plain string.",
+      },
+    ],
+  },
+];
+
 /** Prop sheets for Messaging section components. */
 export const MESSAGING_PROP_SHEETS: Record<string, PropSheet[]> = {
   Alert: ALERT_PROP_SHEETS,
   Toast: TOAST_PROP_SHEETS,
   NotificationBanner: NOTIFICATION_BANNER_PROP_SHEETS,
   Tag: TAG_PROP_SHEETS,
+  IconTooltip: ICON_TOOLTIP_PROP_SHEETS,
 };
 
 export const MESSAGING_NESTED_TARGETS: Record<

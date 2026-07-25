@@ -2,6 +2,16 @@
 
 import type { FaIconName } from "@codeai/cads-react/icons";
 
+/** Shared props for lazy playground preview chunks. */
+export type PreviewProps = {
+  values: Record<string, unknown>;
+  /**
+   * When true (playground Inspect mode), triggered overlays render their
+   * surface inline — centered, no trigger — so they can be measured.
+   */
+  inspect?: boolean;
+};
+
 /** Input-role demo: common sort menu (docs playground default). */
 export const DEMO_DROPDOWN_OPTIONS = [
   { value: "recent", label: "Recently updated" },

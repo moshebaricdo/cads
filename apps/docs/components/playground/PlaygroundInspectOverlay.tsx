@@ -863,9 +863,9 @@ export function PlaygroundInspectOverlay({
 }) {
   const [mounted, setMounted] = useState(false);
   const [stage, setStage] = useState<StageBounds | null>(null);
-  /** Primary preview component — rulers always show this when idle. */
+  /** Primary preview component — rulers always span this (idle + nested hover). */
   const [defaultMeasure, setDefaultMeasure] = useState<Measure | null>(null);
-  /** Hovered node — drives guides / popover; also overrides ruler span. */
+  /** Hovered node — drives guides / popover / ruler highlight band. */
   const [hoverMeasure, setHoverMeasure] = useState<Measure | null>(null);
 
   useEffect(() => {
@@ -944,13 +944,29 @@ export function PlaygroundInspectOverlay({
 
   if (!enabled || !mounted || !stage) return null;
 
-  // Idle: primary component on rulers. Hover: that node’s span + grid guides.
+  // Rulers always span the primary component. Hover only shades a band on
+  // those rulers + draws guides/box on the nested target.
+  const rulerMeasure = defaultMeasure ?? hoverMeasure;
   const measure = hoverMeasure ?? defaultMeasure;
   const hovering = hoverMeasure != null;
-  const spanLeft = measure ? measure.left - stage.left : 0;
-  const spanTop = measure ? measure.top - stage.top : 0;
-  const hSpanMarks = measure ? spanRulerMarks(measure.width) : [];
-  const vSpanMarks = measure ? spanRulerMarks(measure.height) : [];
+  const spanLeft = rulerMeasure ? rulerMeasure.left - stage.left : 0;
+  const spanTop = rulerMeasure ? rulerMeasure.top - stage.top : 0;
+  const hSpanMarks = rulerMeasure ? spanRulerMarks(rulerMeasure.width) : [];
+  const vSpanMarks = rulerMeasure ? spanRulerMarks(rulerMeasure.height) : [];
+  const hoverBandH =
+    hovering && hoverMeasure && rulerMeasure
+      ? {
+          left: hoverMeasure.left - rulerMeasure.left,
+          width: hoverMeasure.width,
+        }
+      : null;
+  const hoverBandV =
+    hovering && hoverMeasure && rulerMeasure
+      ? {
+          top: hoverMeasure.top - rulerMeasure.top,
+          height: hoverMeasure.height,
+        }
+      : null;
 
   let popoverStyle: CSSProperties | undefined;
   if (measure && hovering) {
@@ -992,8 +1008,8 @@ export function PlaygroundInspectOverlay({
       aria-hidden
       style={{ zIndex: INSPECT_Z }}
     >
-      {/* Span-only rulers: ticks hang from the stage edge over the component’s
-          occupied range. Idle = ticks + numbers; hover adds the shade. */}
+      {/* Span-only rulers over the primary component. Nested hover shades a
+          band on these rulers — it does not shrink the ruler span. */}
       <div
         className={styles.stageFrame}
         style={{
@@ -1003,13 +1019,21 @@ export function PlaygroundInspectOverlay({
           height: stage.height,
         }}
       >
-        {measure ? (
+        {rulerMeasure ? (
           <>
             <div
               className={styles.rulerH}
-              style={{ left: spanLeft, width: measure.width }}
+              style={{ left: spanLeft, width: rulerMeasure.width }}
             >
-              {hovering ? <div className={styles.rulerShade} /> : null}
+              {hoverBandH ? (
+                <div
+                  className={styles.rulerShade}
+                  style={{
+                    left: hoverBandH.left,
+                    width: hoverBandH.width,
+                  }}
+                />
+              ) : null}
               {hSpanMarks.map((mark) => (
                 <span
                   key={`h-${mark.offset}`}
@@ -1024,9 +1048,17 @@ export function PlaygroundInspectOverlay({
             </div>
             <div
               className={styles.rulerV}
-              style={{ top: spanTop, height: measure.height }}
+              style={{ top: spanTop, height: rulerMeasure.height }}
             >
-              {hovering ? <div className={styles.rulerShade} /> : null}
+              {hoverBandV ? (
+                <div
+                  className={styles.rulerShade}
+                  style={{
+                    top: hoverBandV.top,
+                    height: hoverBandV.height,
+                  }}
+                />
+              ) : null}
               {vSpanMarks.map((mark) => (
                 <span
                   key={`v-${mark.offset}`}

@@ -70,6 +70,21 @@ export const cases: FixtureCase[] = [
       ),
     },
     {
+      id: "text-input-medium-field-primary-press-light",
+      mode: "light",
+      state: "press",
+      viewport: { width: 360, height: 140 },
+      render: () => (
+        <TextInput
+          size="medium"
+          color="primary"
+          label="Field label"
+          helperText="Helper text"
+          placeholder="Placeholder"
+        />
+      ),
+    },
+    {
       id: "text-input-medium-field-readonly-light",
       mode: "light",
       state: "readOnly",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactElement, ReactNode } from "react";
-import { Tooltip } from "@codeai/cads-react";
+import { Tag, Tooltip, useExperimentalMotion } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import type { FaIconName } from "@codeai/cads-react/icons";
 
@@ -12,6 +12,10 @@ export type DocsNavItemKind = "primary" | "child" | "group";
 type SharedProps = {
   label: string;
   iconName?: FaIconName | (string & {});
+  /** Shows a small Experimental Tag after the label. */
+  experimental?: boolean;
+  /** Shows a small Not-in-production Tag after the label. */
+  notInProduction?: boolean;
   active?: boolean;
   kind?: DocsNavItemKind;
   /** Icon-only rail (30×30). Hides label/chevron; tooltips the label. */
@@ -42,13 +46,22 @@ export function DocsNavItem(props: DocsNavItemProps) {
   const {
     label,
     iconName,
+    experimental = false,
+    notInProduction = false,
     active = false,
     kind = "primary",
     collapsed = false,
   } = props;
 
+  const experimentalMotion = useExperimentalMotion();
   const isGroup = kind === "group";
   const isChild = kind === "child";
+  const experimentalStateLabel = experimentalMotion ? "On" : "Off";
+  const tooltipLabel = experimental
+    ? `${label} (Experimental) (${experimentalStateLabel})`
+    : notInProduction
+      ? `${label} (Not in production)`
+      : label;
 
   const className = [
     "docs-nav-item",
@@ -71,6 +84,40 @@ export function DocsNavItem(props: DocsNavItemProps) {
         ) : null}
         <span className="docs-nav-item-label">{label}</span>
       </span>
+      {experimental && !collapsed ? (
+        <Tooltip
+          title={`Experiment (${experimentalStateLabel})`}
+          hasCaret={false}
+          placement="top"
+        >
+          {/* Tag takes a fixed prop set, so the tooltip needs a host element. */}
+          <span className="docs-nav-item-tag" tabIndex={0}>
+            <Tag
+              size="small"
+              color={experimentalMotion ? "success" : "neutral"}
+              startIconName="flask"
+              label={<span className="docs-sr-only">Experiment</span>}
+            />
+          </span>
+        </Tooltip>
+      ) : null}
+      {notInProduction && !collapsed ? (
+        <Tooltip
+          title="Not in production"
+          iconName={"circle-exclamation"}
+          hasCaret={false}
+          placement="top"
+        >
+          <span className="docs-nav-item-tag" tabIndex={0}>
+            <Tag
+              size="small"
+              color="warning"
+              startIconName="screwdriver-wrench"
+              label={<span className="docs-sr-only">Not in production</span>}
+            />
+          </span>
+        </Tooltip>
+      ) : null}
       {isGroup && !collapsed ? (
         <FaIcon
           name={props.expanded ? "chevron-up" : "chevron-down"}
@@ -92,7 +139,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
           rel="noreferrer"
           className={className}
           data-active={active || undefined}
-          aria-label={collapsed ? label : undefined}
+          aria-label={collapsed ? tooltipLabel : undefined}
         >
           {content}
         </a>
@@ -103,7 +150,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
           href={props.href}
           className={className}
           data-active={active || undefined}
-          aria-label={collapsed ? label : undefined}
+          aria-label={collapsed ? tooltipLabel : undefined}
         >
           {content}
         </Link>
@@ -116,7 +163,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
         className={className}
         data-active={active || undefined}
         aria-expanded={collapsed ? undefined : props.expanded}
-        aria-label={collapsed ? label : undefined}
+        aria-label={collapsed ? tooltipLabel : undefined}
         onClick={props.onClick}
       >
         {content}
@@ -127,7 +174,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
   if (!collapsed) return node;
 
   return (
-    <Tooltip title={label} hasCaret={false} placement="right">
+    <Tooltip title={tooltipLabel} hasCaret={false} placement="right">
       {node}
     </Tooltip>
   );

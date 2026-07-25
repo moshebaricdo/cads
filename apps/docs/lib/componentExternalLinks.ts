@@ -116,6 +116,10 @@ export const COMPONENT_EXTERNAL_LINKS: Record<string, ComponentExternalLinks> =
       muiDocsUrl: "https://mui.com/material-ui/api/tooltip/",
       storybookId: "designsystem-tooltip--docs",
     },
+    IconTooltip: {
+      muiDocsUrl: "https://mui.com/material-ui/api/tooltip/",
+      // No dedicated Storybook story yet; docs-driven component (no Figma match).
+    },
     Popover: {
       muiDocsUrl: "https://mui.com/material-ui/api/popover/",
       storybookId: "designsystem-popover--docs",

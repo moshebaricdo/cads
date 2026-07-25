@@ -1,0 +1,201 @@
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  background: var(--background-neutral-primary);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 8px 8px 12px;
+  border-bottom: 1px solid var(--border-neutral-primary);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.toolbarActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Tabs own the hairline; stretch so the rail is edge-to-edge. */
+.tabsRail {
+  width: 100%;
+}
+
+.tabsRail :global([data-cads-tabs]) {
+  width: 100%;
+  padding-inline: 12px;
+  box-sizing: border-box;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  min-height: 400px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-right: 1px solid var(--border-neutral-primary);
+  background: var(--background-neutral-secondary);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  min-width: 0;
+}
+
+.mainHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mainTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mainTitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-neutral-primary);
+}
+
+.mainMeta {
+  margin: 0;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  color: var(--text-neutral-quaternary);
+}
+
+.mainBody {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-secondary);
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 180px;
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--background-neutral-primary);
+}
+
+.checklistLabel {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: var(--text-body-xxs);
+  line-height: var(--leading-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-neutral-quaternary);
+  background: var(--background-neutral-secondary);
+  border-bottom: 1px solid var(--border-neutral-primary);
+}
+
+.checklistList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-neutral-primary);
+}
+
+.checklistItem:last-child {
+  border-bottom: none;
+}
+
+.mainFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-neutral-primary);
+}
+
+.footerSpacer {
+  flex: 1 1 auto;
+  min-width: 8px;
+}
+
+.flagRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  flex-shrink: 0;
+}
+
+.flagHint {
+  margin: 0;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  color: var(--text-neutral-quaternary);
+}
+
+.flagHint code {
+  font-family: var(--font-mono);
+  font-size: inherit;
+}
+
+@media (max-width: 640px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border-neutral-primary);
+  }
+}

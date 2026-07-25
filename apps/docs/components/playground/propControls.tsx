@@ -189,6 +189,7 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "itemsBeforeCollapse",
     "itemsAfterCollapse",
     "autoHideDuration",
+    "offset",
     "siblingCount",
     "boundaryCount",
     // Booleans trail within the section (also enforced by orderedControls).
@@ -651,8 +652,18 @@ export function initialValues(
     values.startIconName = "";
     values.endIconName = "";
   }
+  if (component.exportName === "ChipGroup") {
+    values.label = "Interests";
+    values.helperText = "Select all that apply";
+    values.helperIconName = "";
+    values.showHelper = true;
+  }
   if (component.exportName === "Tooltip") {
     values.iconName = "";
+  }
+  if (component.exportName === "IconTooltip") {
+    values.title = "Help text";
+    values["aria-label"] = "More info";
   }
   if (component.exportName === "Alert" || component.exportName === "Toast") {
     values.hasIcon = true;
@@ -1026,6 +1037,35 @@ export function propsToCode(
     );
   }
 
+  if (exportName === "ChipGroup") {
+    const edits =
+      values.optionEdits && typeof values.optionEdits === "object"
+        ? (values.optionEdits as Record<string, Record<string, unknown>>)
+        : {};
+    const options = [
+      { slot: "art", value: "art", label: "Art" },
+      { slot: "music", value: "music", label: "Music" },
+      { slot: "sports", value: "sports", label: "Sports" },
+      { slot: "coding", value: "coding", label: "Coding" },
+    ].map((opt) => {
+      const edit = edits[opt.slot] ?? {};
+      const lit: CodeLiteral = {
+        value: String(edit.value ?? opt.value),
+        label: String(edit.label ?? opt.label),
+      };
+      const start = iconNameValue(edit.startIconName);
+      const end = iconNameValue(edit.endIconName);
+      if (start) lit.startIconName = start;
+      if (end) lit.endIconName = end;
+      if (edit.disabled) lit.disabled = true;
+      return lit;
+    });
+    attrs.push(formatArrayProp("options", options));
+    if (values.defaultValue == null) {
+      attrs.push(`defaultValue={["art"]}`);
+    }
+  }
+
   if (exportName === "Dropdown") {
     const role = String(values.role ?? "input");
     if (role === "action") {
@@ -1172,14 +1212,26 @@ export function propsToCode(
   ${label}
 </Link>`;
   }
-  if (exportName === "Alert" || exportName === "Toast") {
+  if (exportName === "Alert") {
     const message =
-      String(values.children ?? "").trim() ||
-      (exportName === "Alert" ? "This is an alert." : "This is a toast.");
-    if (!attrs.length) return `<${exportName}>${message}</${exportName}>`;
-    return `<${exportName}${indentedAttrs}>
+      String(values.children ?? "").trim() || "This is an alert.";
+    if (!attrs.length) return `<Alert>${message}</Alert>`;
+    return `<Alert${indentedAttrs}>
   ${message}
-</${exportName}>`;
+</Alert>`;
+  }
+  if (exportName === "Toast") {
+    const message =
+      String(values.children ?? "").trim() || "This is a toast.";
+    return `<>
+  <Button onClick={() => setOpen(true)}>Show toast</Button>
+  <Toast
+    open={open}
+    onClose={() => setOpen(false)}${attrs.length ? `\n${attrs.map((a) => `    ${a}`).join("\n")}` : ""}
+  >
+    ${message}
+  </Toast>
+</>`;
   }
   if (exportName === "Radio") {
     const edits =
@@ -1221,6 +1273,14 @@ export function propsToCode(
     return `<Tooltip${indentedAttrs}>
   <Button>Hover me</Button>
 </Tooltip>`;
+  }
+  if (exportName === "Popover") {
+    return `<Popover
+  open={open}
+  onOpenChange={setOpen}${attrs.length ? `\n${attrs.map((a) => `  ${a}`).join("\n")}` : ""}
+>
+  <Button>Open popover</Button>
+</Popover>`;
   }
   if (exportName === "Drawer") {
     return `<>

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import type { FixtureCase } from "./cases/shared";
 
 const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
+  Button: () => import("./cases/Button"),
   CloseIconButton: () => import("./cases/CloseIconButton"),
   FieldWrapper: () => import("./cases/FieldWrapper"),
   TextInput: () => import("./cases/TextInput"),
@@ -24,6 +25,7 @@ const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
   NotificationBanner: () => import("./cases/NotificationBanner"),
   Tag: () => import("./cases/Tag"),
   Tooltip: () => import("./cases/Tooltip"),
+  IconTooltip: () => import("./cases/IconTooltip"),
   Popover: () => import("./cases/Popover"),
   Drawer: () => import("./cases/Drawer"),
   Dialog: () => import("./cases/Dialog"),

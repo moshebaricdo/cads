@@ -534,6 +534,84 @@ const CHIP_PROP_SHEETS: PropSheet[] = [
   },
 ];
 
+const CHIP_GROUP_PROP_SHEETS: PropSheet[] = [
+  {
+    title: "Props — ChipGroup",
+    props: [
+      {
+        name: "size",
+        type: '"large" | "medium" | "small" | "extraSmall"',
+        default: '"medium"',
+        description: "Pill height and type scale for every chip.",
+      },
+      {
+        name: "color",
+        type: '"primary" | "secondary"',
+        default: '"primary"',
+        description: "Unselected border treatment.",
+      },
+      {
+        name: "labelStyle",
+        type: '"thick" | "thin"',
+        default: '"thick"',
+        description: "Chip label weight.",
+      },
+      {
+        name: "label",
+        type: "ReactNode",
+        description: "Field label above the chip set.",
+      },
+      {
+        name: "helperText",
+        type: "ReactNode",
+        description: "Helper or validation message below.",
+      },
+      {
+        name: "helperIconName",
+        type: "FaIconName",
+        description: "Optional icon beside helper text.",
+      },
+      {
+        name: "showHelper",
+        type: "boolean",
+        default: "true",
+        description: "Show helper row when helperText is set.",
+      },
+      {
+        name: "options",
+        type: "ChipGroupOption[]",
+        required: true,
+        description: "Chip options (value + label; optional icons).",
+      },
+      {
+        name: "value",
+        type: "string[]",
+        description: "Controlled selected values (multi-select).",
+      },
+      {
+        name: "defaultValue",
+        type: "string[]",
+        description: "Uncontrolled initial selected values.",
+      },
+      {
+        name: "onChange",
+        type: "(value: string[]) => void",
+        description: "Called when the selection changes.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        description: "Disables the whole group.",
+      },
+      {
+        name: "aria-label",
+        type: "string",
+        description: "Accessible name when the field label is insufficient.",
+      },
+    ],
+  },
+];
+
 /** Prop sheets for Inputs section (Dropdown already curated). */
 export const INPUTS_PROP_SHEETS: Record<string, PropSheet[]> = {
   Dropdown: DROPDOWN_PROP_SHEETS,
@@ -544,6 +622,7 @@ export const INPUTS_PROP_SHEETS: Record<string, PropSheet[]> = {
   Toggle: TOGGLE_PROP_SHEETS,
   Slider: SLIDER_PROP_SHEETS,
   Chip: CHIP_PROP_SHEETS,
+  ChipGroup: CHIP_GROUP_PROP_SHEETS,
 };
 
 const RADIO_NESTED_TARGETS: NestedPlaygroundTarget[] = [
@@ -570,7 +649,42 @@ const RADIO_NESTED_TARGETS: NestedPlaygroundTarget[] = [
   },
 ];
 
+const CHIP_GROUP_NESTED_TARGETS: NestedPlaygroundTarget[] = [
+  {
+    id: "chipItem",
+    label: "Chip",
+    props: [
+      {
+        name: "label",
+        type: "string",
+        description: "Chip label text.",
+      },
+      {
+        name: "value",
+        type: "string",
+        description: "Option value in the group.",
+      },
+      {
+        name: "startIconName",
+        type: "FaIconName",
+        description: "Leading FA icon. Omit when unset.",
+      },
+      {
+        name: "endIconName",
+        type: "FaIconName",
+        description: "Trailing FA icon. Omit when unset.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        description: "Disables this chip only.",
+      },
+    ],
+  },
+];
+
 export const INPUTS_NESTED_TARGETS: Record<string, NestedPlaygroundTarget[]> = {
   Dropdown: DROPDOWN_NESTED_TARGETS,
   Radio: RADIO_NESTED_TARGETS,
+  ChipGroup: CHIP_GROUP_NESTED_TARGETS,
 };

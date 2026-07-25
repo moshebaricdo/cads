@@ -10,6 +10,24 @@ import {
 
 export const cases: FixtureCase[] = [
     {
+      id: "dropdown-medium-input-primary-press-light",
+      mode: "light",
+      state: "press",
+      viewport: { width: 360, height: 140 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size="medium"
+          color="primary"
+          labelStyle="thick"
+          label="Field label"
+          helperText="Helper text"
+          placeholder="Dropdown"
+          options={ICON_OPTIONS}
+        />
+      ),
+    },
+    {
       id: "dropdown-large-input-icon-bottomleft-light",
       mode: "light",
       viewport: { width: 420, height: 360 },

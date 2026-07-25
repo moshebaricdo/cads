@@ -113,6 +113,7 @@ Usage rules:
 - Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.
 - Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.
 - Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).
+- Unselected press softens label/icon to --text-neutral-tertiary (hover keeps --text-neutral-primary); selected press keeps --text-selected-primary.
 - Focus uses outline 2px with -2px offset (brand-light / focused-inverse) — same flush recipe as Dropdown menu items, not outer FOCUS_RING.
 - Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).
 - Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.
@@ -265,6 +266,7 @@ Usage rules:
 - menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.
 - Selected menu items use selected tokens — never brand fills.
 - Trigger focus uses outer FOCUS_RING; menu-item keyboard focus uses outline 2px with -2px offset (brand-light / selected / error) — not the same recipe as hover.
+- Menu item press: neutral softens to text-neutral-tertiary; destructive keeps error-light + text-error-secondary; selected press returns to selected-primary (hover uses selected-strong).
 - Dropdown Button / Menu List / Menu Item / menuSeparator / menuOptGroup are internal — do not import standalone.
 
 Example:
@@ -647,16 +649,20 @@ Props:
 - `onAction`: () => void
 - `isDismissible`: boolean (default true)
 - `onClose`: () => void
+- `open`: boolean — Controlled visibility for the snackbar host. Omit for inline/fixture surface-only render.
+- `placement`: "topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter" | "bottomRight" (default "bottomCenter") — Viewport corner/edge when hosted (MUI Snackbar anchorOrigin).
+- `offset`: number (default 64) — Distance in px from the pinned viewport edge(s).
+- `surfaceOnly`: boolean — Render elevated chrome without the snackbar portal. Default when open is omitted.
 
 Usage rules:
 - Figma uses sentiment=primary for brand chrome (not brand).
 - Action is locked to outlined secondary at small size. Always pass actionLabel.
-- Toast is a presentational surface — host apps own queueing / auto-dismiss timing.
+- Pass open + placement to host via MUI Snackbar; omit open (or surfaceOnly) for inline/fixture chrome. Host apps still own queueing / auto-dismiss timing.
 - Status sentiments supply default icons when iconName is omitted; set iconName={false} to hide.
 
 Example:
 ```tsx
-<Toast sentiment="success" hasAction actionLabel="View">This is a toast.</Toast>
+<Toast open placement="bottomCenter" sentiment="success" hasAction actionLabel="View" onClose={hide}>This is a toast.</Toast>
 ```
 
 ### NotificationBanner
@@ -716,6 +722,32 @@ Example:
 <Tag color="success" size="medium" label="Passed" />
 ```
 
+### IconTooltip
+
+Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.
+
+Import: `import { IconTooltip } from "@codeai/cads-react"`
+
+Props:
+- `title`: ReactNode [required]
+- `iconName`: FaIconName | string (default "circle-info") — FA icon rendered as the trigger affordance.
+- `color`: "primary" | "secondary" | "tertiary" (default "tertiary") — primary → brand; secondary → neutral-primary; tertiary → neutral-quaternary (muted).
+- `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Glyph size on the shared control size scale.
+- `placement`: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end" (default "top") — MUI placement, passed through to Tooltip.
+- `hasCaret`: boolean (default true)
+- `aria-label`: string — Accessible trigger name. Falls back to title when title is a plain string; required when title is rich content.
+
+Usage rules:
+- No hover/press/border chrome on the icon itself — only a required focus-visible ring.
+- Composes Tooltip for positioning/caret; does not reimplement tooltip surface.
+- No exact Figma component set exists for this pattern in DGekOeToRVifvFAhfqpeC1 — implemented docs-driven from the Tooltip spec + shared icon color/size conventions (see docs/STATUS.md).
+- Also accepts other Tooltip/MUI Tooltip props (enterDelay, slotProps, …) except iconName (reserved for the trigger glyph) and surfaceOnly, plus a triggerProps escape hatch for the underlying icon trigger (ButtonBase props).
+
+Example:
+```tsx
+<IconTooltip title="Help text" color="tertiary" placement="top" />
+```
+
 ### Tooltip
 
 Small hover/focus overlay with brief contextual text on an inverse surface.
@@ -724,16 +756,18 @@ Import: `import { Tooltip } from "@codeai/cads-react"`
 
 Props:
 - `title`: ReactNode [required]
-- `children`: ReactElement [required]
+- `children`: ReactElement — Trigger element. Required for anchored mode; omit with surfaceOnly.
 - `placement`: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "left-start" | "left" | "left-end" | "right-start" | "right" | "right-end" (default "bottom") — MUI placement — where the tooltip sits relative to the trigger. *-start / *-end pin the caret near that edge.
 - `hasCaret`: boolean (default true)
 - `iconName`: FaIconName | string — Leading FA icon. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).
+- `surfaceOnly`: boolean — Render bubble (+ caret) inline without Popper / trigger. Used by docs Inspect and static previews.
 
 Usage rules:
 - Child must be able to hold a ref (forwardRef element).
 - Prefer supplementary hints — avoid sole source of critical info.
 - Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).
 - Icons render only when iconName is set — there is no separate boolean gate.
+- Pass a trigger child for anchored mode, or use surfaceOnly for static previews.
 - Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).
 
 Example:
@@ -770,10 +804,11 @@ Props:
 Usage rules:
 - Well suited to guided walkthroughs (stepper + Back/Next).
 - Pass a trigger child for anchored mode, or use surfaceOnly for static previews.
+- caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned).
 
 Example:
 ```tsx
-<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3" surfaceOnly />
+<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3"><Button>Open</Button></Popover>
 ```
 
 ### Drawer
