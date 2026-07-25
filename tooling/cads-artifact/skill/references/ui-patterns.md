@@ -130,7 +130,7 @@ Structure it as:
 
 ## 5. Type rules
 
-- Space Grotesk (`headingLarge` in prototype specs / `--font-heading`) only
+- Space Grotesk (`headingLarge` in prototype specs / `--font-family-heading`) only
   at display sizes — page titles and dialog headlines. Everything else is
   the body family.
 - Body copy in cards is small (`bodySmall`) and `--text-neutral-secondary`;

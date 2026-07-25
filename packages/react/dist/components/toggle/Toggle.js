@@ -3,13 +3,13 @@ import U from "@mui/material/ButtonBase";
 import { motion as Z } from "@codeai/cads-variables";
 import { useReducedMotion as _, motion as q } from "motion/react";
 import { forwardRef as A, useId as D, useState as J } from "react";
-import { FaIcon as b } from "../../icons/FaIcon.js";
+import { FaIcon as x } from "../../icons/FaIcon.js";
 import { TOGGLE_SIZE as K } from "../../shared/controlSize.js";
 import { useExperimentalMotion as Q, springTransition as V } from "../../theme/experimentalMotion.js";
 import r from "./toggle.module.scss.js";
-const lt = A(
+const la = A(
   function({
-    size: x = "medium",
+    size: b = "medium",
     label: o,
     labelPlacement: s = "left",
     checked: p,
@@ -25,14 +25,14 @@ const lt = A(
     onClick: l,
     ...R
   }, G) {
-    const T = D(), u = I ?? T, m = `${u}-label`, t = K[x], g = p !== void 0, [z, E] = J(k), a = g ? !!p : z, F = Q(), H = _(), M = V(
+    const T = D(), u = I ?? T, m = `${u}-label`, a = K[b], g = p !== void 0, [z, E] = J(k), t = g ? !!p : z, F = Q(), H = _(), M = V(
       Z.indicator.spring,
       H
     ), L = (c) => {
       if (l == null || l(c), c.defaultPrevented || n) return;
-      const v = !a;
+      const v = !t;
       g || E(v), i == null || i(c, v);
-    }, P = n ? "var(--background-disabled-neutral)" : a ? "var(--background-selected-primary)" : "var(--background-neutral-septenary)", j = a ? "var(--background-selected-strong)" : "var(--background-neutral-octonary)", h = n ? "var(--background-neutral-primary)" : a ? "var(--background-selected-primary-inverse)" : "var(--background-neutral-primary)", O = n ? "var(--text-disabled-neutral-inverse)" : a ? "var(--text-selected-primary)" : "var(--text-neutral-primary-inverse)", f = /* @__PURE__ */ d(
+    }, P = n ? "var(--background-disabled-neutral)" : t ? "var(--background-selected-primary)" : "var(--background-neutral-septenary)", j = t ? "var(--background-selected-strong)" : "var(--background-neutral-octonary)", h = n ? "var(--background-neutral-primary)" : t ? "var(--background-selected-primary-inverse)" : "var(--background-neutral-primary)", O = n ? "var(--text-disabled-neutral-inverse)" : t ? "var(--text-selected-primary)" : "var(--text-neutral-primary-inverse)", f = /* @__PURE__ */ d(
       U,
       {
         ...R,
@@ -41,19 +41,19 @@ const lt = A(
         type: "button",
         role: "switch",
         disabled: n,
-        "aria-checked": a,
+        "aria-checked": t,
         "aria-label": o == null ? N : void 0,
         "aria-labelledby": o != null ? m : void 0,
         onClick: L,
         disableRipple: !0,
         focusRipple: !1,
         "data-cads-toggle": "",
-        "data-on": a ? "true" : "false",
+        "data-on": t ? "true" : "false",
         className: r.track,
         style: {
-          width: t.trackWidth,
-          height: t.trackHeight,
-          padding: t.pad,
+          width: a.trackWidth,
+          height: a.trackHeight,
+          padding: a.pad,
           cursor: n ? "not-allowed" : "pointer",
           "--cads-toggle-bg": P,
           "--cads-toggle-bg-hover": j,
@@ -68,11 +68,11 @@ const lt = A(
                 "aria-hidden": !0,
                 className: r.iconSlot,
                 style: {
-                  left: t.iconInsetLeft,
-                  width: `calc(100% - ${t.iconInsetLeft} - ${t.iconGap} - ${t.handle} - ${t.pad})`,
-                  opacity: a ? 1 : 0
+                  left: a.iconInsetLeft,
+                  width: `calc(100% - ${a.iconInsetLeft} - ${a.iconGap} - ${a.handle} - ${a.pad})`,
+                  opacity: t ? 1 : 0
                 },
-                children: /* @__PURE__ */ e(b, { name: w, family: "solid", fontSize: t.iconPx })
+                children: /* @__PURE__ */ e(x, { name: w, family: "solid", fontSize: a.iconPx })
               }
             ),
             /* @__PURE__ */ e(
@@ -81,11 +81,11 @@ const lt = A(
                 "aria-hidden": !0,
                 className: r.iconSlot,
                 style: {
-                  right: t.iconInsetRight,
-                  width: `calc(100% - ${t.iconInsetRight} - ${t.iconGap} - ${t.handle} - ${t.pad})`,
-                  opacity: a ? 0 : 1
+                  right: a.iconInsetRight,
+                  width: `calc(100% - ${a.iconInsetRight} - ${a.iconGap} - ${a.handle} - ${a.pad})`,
+                  opacity: t ? 0 : 1
                 },
-                children: /* @__PURE__ */ e(b, { name: S, family: "solid", fontSize: t.iconPx })
+                children: /* @__PURE__ */ e(x, { name: S, family: "solid", fontSize: a.iconPx })
               }
             )
           ] }) : null,
@@ -97,13 +97,13 @@ const lt = A(
               "data-cads-indicator-spring": "",
               className: r.handleSpring,
               initial: !1,
-              animate: { x: a ? t.handleTravelPx : 0 },
+              animate: { x: t ? a.handleTravelPx : 0 },
               transition: M,
               style: {
-                top: t.pad,
-                left: t.pad,
-                width: t.handle,
-                height: t.handle
+                top: a.pad,
+                left: a.pad,
+                width: a.handle,
+                height: a.handle
               },
               children: /* @__PURE__ */ e(
                 "span",
@@ -121,10 +121,10 @@ const lt = A(
               "data-cads-indicator": "",
               className: r.handle,
               style: {
-                top: t.pad,
-                left: a ? `calc(100% - ${t.handle} - ${t.pad})` : t.pad,
-                width: t.handle,
-                height: t.handle,
+                top: a.pad,
+                left: t ? `calc(100% - ${a.handle} - ${a.pad})` : a.pad,
+                width: a.handle,
+                height: a.handle,
                 backgroundColor: h
               }
             }
@@ -138,10 +138,10 @@ const lt = A(
       {
         id: m,
         style: {
-          fontFamily: "var(--font-body)",
+          fontFamily: "var(--font-family-main)",
           fontWeight: 400,
-          fontSize: t.fontSize,
-          lineHeight: t.lineHeight,
+          fontSize: a.fontSize,
+          lineHeight: a.lineHeight,
           color: "var(--text-neutral-primary)",
           whiteSpace: "nowrap"
         },
@@ -154,7 +154,7 @@ const lt = A(
         style: {
           display: "inline-flex",
           alignItems: "center",
-          gap: t.labelGap,
+          gap: a.labelGap,
           cursor: n ? "not-allowed" : "pointer"
         },
         children: [
@@ -167,6 +167,6 @@ const lt = A(
   }
 );
 export {
-  lt as Toggle
+  la as Toggle
 };
 //# sourceMappingURL=Toggle.js.map

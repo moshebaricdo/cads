@@ -38,31 +38,31 @@ const textStyles: Record<
   CSSProperties
 > = {
   headingLarge: {
-    fontFamily: "var(--font-heading)",
+    fontFamily: "var(--font-family-heading)",
     fontSize: "var(--text-heading-xl)",
     fontWeight: 500,
     lineHeight: "var(--leading-heading-xl)",
     letterSpacing: "var(--tracking-heading-display)",
   },
   headingMedium: {
-    fontFamily: "var(--font-heading)",
+    fontFamily: "var(--font-family-heading)",
     fontSize: "var(--text-heading-lg)",
     fontWeight: 500,
     lineHeight: "var(--leading-heading-lg)",
   },
   headingSmall: {
-    fontFamily: "var(--font-heading)",
+    fontFamily: "var(--font-family-heading)",
     fontSize: "var(--text-heading-sm)",
     fontWeight: 500,
     lineHeight: "var(--leading-heading-sm)",
   },
   body: {
-    fontFamily: "var(--font-body)",
+    fontFamily: "var(--font-family-main)",
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
   },
   bodySmall: {
-    fontFamily: "var(--font-body)",
+    fontFamily: "var(--font-family-main)",
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
   },
@@ -74,7 +74,7 @@ function space(value: unknown): string | undefined {
     typeof value === "string" &&
     ["xs", "s", "m", "l", "xl", "xxl"].includes(value)
   ) {
-    return `var(--space-${value})`;
+    return `var(--spacing-p-${value})`;
   }
   return undefined;
 }
@@ -107,7 +107,7 @@ function renderLayout(node: PrototypeNode, key: string): ReactNode {
     Object.assign(style, {
       background: "var(--background-neutral-primary)",
       border: "1px solid var(--border-neutral-primary)",
-      borderRadius: "var(--radius-lg)",
+      borderRadius: "var(--shape-lg)",
       boxShadow: "var(--shadow-sm)",
     });
   }
@@ -154,7 +154,7 @@ function PrototypeCanvas({ spec }: { spec: PrototypeSpec }) {
       className: spec.theme === "dark" ? "dark" : undefined,
       style: {
         minHeight: "100vh",
-        padding: "var(--space-l)",
+        padding: "var(--spacing-p-l)",
         background: "var(--background-neutral-secondary)",
         color: "var(--text-neutral-primary)",
         boxSizing: "border-box",

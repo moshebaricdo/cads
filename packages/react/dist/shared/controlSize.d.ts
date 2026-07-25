@@ -18,7 +18,7 @@ export declare const BUTTON_SIZE: Record<ControlSize, {
 /**
  * Checkbox box + label geometry from Figma Checkbox / Checkbox + Label.
  * Box sizes are independent of CONTROL_HEIGHT (22 / 20 / 18 / 16).
- * Corner radius uses `--radius-sm` (6px).
+ * Corner radius uses `--shape-sm` (6px).
  */
 export declare const CHECKBOX_SIZE: Record<ControlSize, {
     box: string;
@@ -237,7 +237,7 @@ export declare const LINK_SIZE: Record<LinkControlSize, {
 }>;
 /**
  * Alert size matrix from Figma Alert (`2133:4160`).
- * Surface radius is `--radius-md` (8px) in the component.
+ * Surface radius is `--shape-md` (8px) in the component.
  */
 export declare const ALERT_SIZE: Record<ControlSize, {
     minHeight: string;

@@ -361,7 +361,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
             {label != null ? (
               <span
                 id={labelId}
-                style={{ fontWeight: "var(--font-weight-semibold)" }}
+                style={{ fontWeight: "var(--font-weight-semi-bold)" }}
               >
                 {label}
               </span>
@@ -369,7 +369,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
               <span />
             )}
             {showDisplayValue ? (
-              <span style={{ fontWeight: "var(--font-weight-normal)" }}>
+              <span style={{ fontWeight: "var(--font-weight-regular)" }}>
                 {resolvedDisplay}
               </span>
             ) : null}

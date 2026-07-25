@@ -1,14 +1,12 @@
 /**
- * Generate dist/variables.css + src/generated/cssVars.ts from the
- * ColorSystem document and non-color variable definitions.
+ * Generate split CSS files + variables.css barrel + src/generated/cssVars.ts.
+ *
+ * Requires a prior `tsup` build so builders can be imported from dist/.
+ * Package scripts: `"generate": "tsup && node src/scripts/generate-variables.mjs"`.
  */
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-import {
-  colorSystemToCssVarBlock,
-  resolveColorSystemToCssVars,
-} from "./colorSystemToCss.mjs";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "../..");
@@ -19,143 +17,46 @@ const COLOR_SYSTEM_PATH = path.join(
   "codeAiColorSystem.json",
 );
 const DIST_DIR = path.join(PKG_ROOT, "dist");
-const GENERATED_DIR = path.join(PKG_ROOT, "src", "generated");
+const SRC_DIR = path.join(PKG_ROOT, "src");
+const GENERATED_DIR = path.join(SRC_DIR, "generated");
 
-const SYNTAX_LIGHT = `  --syntax-attribute: #B34800;
-  --syntax-comment: #69788A;
-  --syntax-keyword: #4C42CF;
-  --syntax-number: #0B43A3;
-  --syntax-property: #B5004F;
-  --syntax-punctuation: #596069;
-  --syntax-selector: #1A7F85;
-  --syntax-string: #1F7028;
-  --syntax-tag: #3228B7;
-  --syntax-value: #1570D1;`;
-
-const SYNTAX_DARK = `  --syntax-attribute: #FFA868;
-  --syntax-comment: #87909A;
-  --syntax-keyword: #ACA8EA;
-  --syntax-number: #94D7FF;
-  --syntax-property: #F07FB0;
-  --syntax-punctuation: #B7BCC2;
-  --syntax-selector: #56B6C2;
-  --syntax-string: #7CDB87;
-  --syntax-tag: #6F67D9;
-  --syntax-value: #61AFEF;`;
-
-/** Mirrors nonColorVariables.ts — kept inline so generate needs no TS compile. */
-const NON_COLOR = {
-  "--font-heading": '"Space Grotesk", sans-serif',
-  "--font-body": '"Geist", sans-serif',
-  "--font-mono": '"Google Sans Code", "Courier New", monospace',
-  "--font-weight-bold": "700",
-  "--font-weight-semibold": "600",
-  "--font-weight-medium": "500",
-  "--font-weight-normal": "400",
-  "--text-heading-xxl": "48px",
-  "--text-heading-xl": "38px",
-  "--text-heading-lg": "28px",
-  "--text-heading-md": "24px",
-  "--text-heading-sm": "22px",
-  "--text-heading-xs": "20px",
-  "--leading-heading-xxl": "52px",
-  "--leading-heading-xl": "40px",
-  "--leading-heading-lg": "36px",
-  "--leading-heading-md": "32px",
-  "--leading-heading-sm": "30px",
-  "--leading-heading-xs": "28px",
-  "--text-body-lg": "18px",
-  "--text-body-md": "16px",
-  "--text-body-sm": "14px",
-  "--text-body-xs": "12px",
-  "--text-body-xxs": "10px",
-  "--leading-body-lg": "28px",
-  "--leading-body-md": "24px",
-  "--leading-body-sm": "22px",
-  "--leading-body-xs": "18px",
-  "--leading-body-xxs": "16px",
-  "--tracking-heading-display": "-0.01em",
-  "--tracking-overline": "0.08em",
-  "--tracking-none": "0",
-  "--radius-sm": "6px",
-  "--radius-md": "8px",
-  "--radius-lg": "10px",
-  "--radius-xl": "12px",
-  "--radius-round": "999px",
-  "--space-xxs": "8px",
-  "--space-xs": "16px",
-  "--space-s": "24px",
-  "--space-m": "32px",
-  "--space-l": "40px",
-  "--space-xl": "48px",
-  "--space-xxl": "56px",
-  "--space-xxxl": "64px",
-  "--shadow-sm": "0 4px 7px rgb(0 0 0 / 7%), 0 2px 2px rgb(0 0 0 / 7%)",
-  "--shadow-md":
-    "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
-  "--shadow-lg":
-    "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)",
-  /* Stacking — code-owned; keep in sync with nonColorVariables.ts `zIndex`.
-   * Dropdown/Popover share modal layer so nested overlays stack by DOM order. */
-  "--z-drawer": "1200",
-  "--z-modal": "1300",
-  "--z-dropdown": "1300",
-  "--z-popover": "1300",
-  "--z-toast": "1400",
-  "--z-tooltip": "1500",
-  "--control-height-large": "48px",
-  "--control-height-medium": "40px",
-  "--control-height-small": "32px",
-  "--control-height-extra-small": "24px",
-  /* Aliases for prior short names — remove once consumers migrate */
-  "--control-height-l": "48px",
-  "--control-height-m": "40px",
-  "--control-height-s": "32px",
-  "--control-height-xs": "24px",
-  "--font-fa-pro": '"Font Awesome 7 Pro"',
-  "--font-fa-brands": '"Font Awesome 7 Brands"',
-  "--ring": "var(--border-focused-primary)",
-  /* Motion — no Figma collection yet; keep in sync with nonColorVariables.ts.
-   * Duration ladder: instant 0 / fast 100 / short 150 / medium 200.
-   * Recipe durations pick from that ladder (literals so getComputedStyle resolves). */
-  "--duration-instant": "0ms",
-  "--duration-fast": "100ms",
-  "--duration-short": "150ms",
-  "--duration-medium": "200ms",
-  "--easing-standard": "cubic-bezier(0.4, 0, 0.2, 1)",
-  "--easing-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
-  "--easing-out": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--motion-press-scale": "0.97",
-  "--motion-press-duration": "150ms",
-  "--motion-press-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--motion-surface-from-scale": "0.96",
-  "--motion-surface-duration": "200ms",
-  "--motion-surface-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--motion-indicator-duration": "200ms",
-  "--motion-indicator-easing": "cubic-bezier(0.2, 0, 0, 1)",
-  "--motion-fade-duration": "100ms",
-  "--motion-fade-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--motion-highlight-chase-duration": "100ms",
-  "--motion-highlight-chase-easing": "cubic-bezier(0.23, 1, 0.32, 1)",
-  "--transition-colors":
-    "background-color var(--duration-short) var(--easing-standard), color var(--duration-short) var(--easing-standard), border-color var(--duration-short) var(--easing-standard), box-shadow var(--duration-short) var(--easing-standard), opacity var(--duration-short) var(--easing-standard)",
-  "--transition-fade":
-    "background-color var(--motion-fade-duration) var(--motion-fade-easing), color var(--motion-fade-duration) var(--motion-fade-easing), border-color var(--motion-fade-duration) var(--motion-fade-easing), opacity var(--motion-fade-duration) var(--motion-fade-easing)",
-  "--transition-press":
-    "transform var(--motion-press-duration) var(--motion-press-easing)",
-  "--transition-surface":
-    "opacity var(--motion-surface-duration) var(--motion-surface-easing), transform var(--motion-surface-duration) var(--motion-surface-easing)",
-  "--transition-indicator":
-    "left var(--motion-indicator-duration) var(--motion-indicator-easing), width var(--motion-indicator-duration) var(--motion-indicator-easing), transform var(--motion-indicator-duration) var(--motion-indicator-easing), background-color var(--duration-short) var(--easing-standard)",
-  "--transition-highlight-chase":
-    "top var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), height var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), opacity var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing)",
+const SYNTAX_LIGHT = {
+  "--syntax-attribute": "#B34800",
+  "--syntax-comment": "#69788A",
+  "--syntax-keyword": "#4C42CF",
+  "--syntax-number": "#0B43A3",
+  "--syntax-property": "#B5004F",
+  "--syntax-punctuation": "#596069",
+  "--syntax-selector": "#1A7F85",
+  "--syntax-string": "#1F7028",
+  "--syntax-tag": "#3228B7",
+  "--syntax-value": "#1570D1",
 };
 
-function nonColorBlock(indent = "  ") {
-  return Object.entries(NON_COLOR)
-    .map(([name, value]) => `${indent}${name}: ${value};`)
-    .join("\n");
-}
+const SYNTAX_DARK = {
+  "--syntax-attribute": "#FFA868",
+  "--syntax-comment": "#87909A",
+  "--syntax-keyword": "#ACA8EA",
+  "--syntax-number": "#94D7FF",
+  "--syntax-property": "#F07FB0",
+  "--syntax-punctuation": "#B7BCC2",
+  "--syntax-selector": "#56B6C2",
+  "--syntax-string": "#7CDB87",
+  "--syntax-tag": "#6F67D9",
+  "--syntax-value": "#61AFEF",
+};
+
+const CSS_FILES = [
+  "primitiveColors.css",
+  "colors.css",
+  "fontVariables.css",
+  "typographyVariables.css",
+  "shapeAndSpacingVariables.css",
+  "motionVariables.css",
+  "variables.css",
+];
+
+const SCSS_FILES = ["typography.module.scss"];
 
 function loadColorSystem() {
   if (!fs.existsSync(COLOR_SYSTEM_PATH)) {
@@ -164,49 +65,89 @@ function loadColorSystem() {
   return JSON.parse(fs.readFileSync(COLOR_SYSTEM_PATH, "utf-8"));
 }
 
-function buildCss(system) {
-  const light = colorSystemToCssVarBlock(system, "light");
-  const dark = colorSystemToCssVarBlock(system, "dark");
-  const nonColor = nonColorBlock();
+function cssDecls(entries, indent = "  ") {
+  return Object.entries(entries)
+    .map(([name, value]) => `${indent}${name}: ${value};`)
+    .join("\n");
+}
+
+function buildBarrelCss(residual) {
+  const imports = [
+    "primitiveColors.css",
+    "colors.css",
+    "fontVariables.css",
+    "typographyVariables.css",
+    "shapeAndSpacingVariables.css",
+    "motionVariables.css",
+  ]
+    .map((file) => `@import "./${file}";`)
+    .join("\n");
 
   return `/* Auto-generated by @codeai/cads-variables. Do not edit manually.
- * Source: src/data/codeAiColorSystem.json + non-color variable definitions
+ * Barrel: imports split files + residual control-height / ring / syntax vars.
  * Figma SoT: DGekOeToRVifvFAhfqpeC1
  */
+${imports}
+
 :root {
-${nonColor}
-${light}
-${SYNTAX_LIGHT}
+${cssDecls(residual)}
+${cssDecls(SYNTAX_LIGHT)}
 }
 
 .dark {
-${dark}
-${SYNTAX_DARK}
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --motion-press-duration: 0ms;
-    --motion-surface-duration: 100ms;
-    --motion-indicator-duration: 100ms;
-    --motion-highlight-chase-duration: 0ms;
-    --motion-surface-from-scale: 1;
-    --motion-press-scale: 1;
-  }
+${cssDecls(SYNTAX_DARK)}
 }
 `;
 }
 
-function main() {
+function writeGenerated(filename, contents) {
+  fs.writeFileSync(path.join(DIST_DIR, filename), contents, "utf-8");
+  fs.writeFileSync(path.join(SRC_DIR, filename), contents, "utf-8");
+}
+
+async function main() {
+  const distIndex = path.join(DIST_DIR, "index.js");
+  if (!fs.existsSync(distIndex)) {
+    throw new Error(
+      `Missing ${distIndex}. Run tsup before generate-variables.mjs.`,
+    );
+  }
+
+  const {
+    buildPrimitiveColorsCss,
+    buildSemanticColorsCss,
+    buildFontVariablesCss,
+    buildTypographyVariablesCss,
+    buildShapeAndSpacingCss,
+    buildMotionCss,
+    buildResidualCssVars,
+    buildTypographyModuleScss,
+    resolveColorSystemToCssVars,
+    nonColorCssVars,
+  } = await import(pathToFileURL(distIndex).href);
+
   const system = loadColorSystem();
-  const css = buildCss(system);
+  const vars = nonColorCssVars();
 
   fs.mkdirSync(DIST_DIR, { recursive: true });
   fs.mkdirSync(GENERATED_DIR, { recursive: true });
 
-  const cssPath = path.join(DIST_DIR, "variables.css");
-  fs.writeFileSync(cssPath, css, "utf-8");
-  fs.writeFileSync(path.join(PKG_ROOT, "src", "variables.css"), css, "utf-8");
+  const outputs = {
+    "primitiveColors.css": buildPrimitiveColorsCss(system),
+    "colors.css": buildSemanticColorsCss(system, { includeDarkClass: true }),
+    /* Runtime keeps --font-family-mono (system stack); prod export omits it. */
+    "fontVariables.css": buildFontVariablesCss(vars, { includeMono: true }),
+    "typographyVariables.css": buildTypographyVariablesCss(vars),
+    "shapeAndSpacingVariables.css": buildShapeAndSpacingCss(vars),
+    "motionVariables.css": buildMotionCss(vars),
+    "variables.css": buildBarrelCss(buildResidualCssVars(vars)),
+    "typography.module.scss": buildTypographyModuleScss(),
+  };
+
+  for (const filename of [...CSS_FILES, ...SCSS_FILES]) {
+    writeGenerated(filename, outputs[filename]);
+    console.log(`Generated: ${path.join(DIST_DIR, filename)}`);
+  }
 
   const light = Object.fromEntries(resolveColorSystemToCssVars(system, "light"));
   const dark = Object.fromEntries(resolveColorSystemToCssVars(system, "dark"));
@@ -217,9 +158,10 @@ export const colorVarsDark = ${JSON.stringify(dark, null, 2)} as const;
 export type ColorVarName = keyof typeof colorVarsLight;
 `;
   fs.writeFileSync(path.join(GENERATED_DIR, "cssVars.ts"), cssVarsTs, "utf-8");
-
-  console.log(`Generated: ${cssPath}`);
   console.log(`Generated: ${path.join(GENERATED_DIR, "cssVars.ts")}`);
 }
 
-main();
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

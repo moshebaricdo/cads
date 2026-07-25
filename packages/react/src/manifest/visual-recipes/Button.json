@@ -73,13 +73,13 @@
       "padding": "size-scaled",
       "gap": "size-scaled",
       "borderWidth": "1px",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "size-scaled",
-      "weight": "var(--font-weight-semibold)",
+      "weight": "var(--font-weight-semi-bold)",
       "lineHeight": "size-scaled"
     },
     "icon": {

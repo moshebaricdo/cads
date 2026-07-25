@@ -82,11 +82,11 @@
       "padding": "type/size scaled",
       "gap": "type/size scaled",
       "borderWidth": "primary underline 2px selected; secondary 1px neutral; group bottom 1px",
-      "radius": "secondary: top corners var(--radius-sm)",
+      "radius": "secondary: top corners var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "weight": "600",
       "size": "size-scaled",
       "lineHeight": "size-scaled"

@@ -6,11 +6,11 @@
   height: var(--chip-height);
   padding-inline: var(--chip-px);
   padding-block: var(--chip-py);
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   border: 1px solid var(--chip-border);
   background-color: var(--chip-bg);
   color: var(--chip-fg);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--chip-font-size);
   line-height: var(--chip-line-height);
   font-weight: var(--chip-font-weight);

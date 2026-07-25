@@ -95,12 +95,12 @@
       "padding": "2px track pad; handle slides via absolute left; icons in fixed left/right slots",
       "gap": "size-scaled label gap",
       "borderWidth": "0 (press on uses inset 2px selected-strong)",
-      "radius": "var(--radius-round)",
+      "radius": "var(--shape-round)",
       "overlap": "0",
       "motion": "handle left --duration-medium --easing-emphasized; icons opacity --duration-short"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "size-scaled body",
       "weight": "400",
       "lineHeight": "size-scaled body"

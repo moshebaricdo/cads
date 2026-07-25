@@ -6,7 +6,7 @@ const e = {
 }, r = {
   large: {
     height: e.large,
-    paddingInline: "var(--space-xs)",
+    paddingInline: "var(--spacing-p-xs)",
     // 16px
     paddingBlock: "0.625rem",
     // 10px
@@ -21,7 +21,7 @@ const e = {
   },
   medium: {
     height: e.medium,
-    paddingInline: "var(--space-xs)",
+    paddingInline: "var(--spacing-p-xs)",
     // 16px
     paddingBlock: "0.5rem",
     // 8px
@@ -343,7 +343,7 @@ const e = {
     height: e.large,
     areaHeight: "6.5rem",
     // 104px
-    paddingInline: "var(--space-xs)",
+    paddingInline: "var(--spacing-p-xs)",
     // 16px
     paddingBlock: "0.625rem",
     // 10px
@@ -358,7 +358,7 @@ const e = {
     height: e.medium,
     areaHeight: "5.5rem",
     // 88px
-    paddingInline: "var(--space-xs)",
+    paddingInline: "var(--spacing-p-xs)",
     // 16px
     paddingBlock: "0.5rem",
     // 8px
@@ -687,7 +687,7 @@ const e = {
 }, y = {
   large: {
     height: e.large,
-    paddingInline: "var(--space-xs)",
+    paddingInline: "var(--spacing-p-xs)",
     // 16px
     paddingBlock: "0.625rem",
     // 10px
@@ -750,9 +750,9 @@ const e = {
     height: e.large,
     groupGap: "1.5rem",
     // 24px
-    mobileGroupGap: "var(--space-xs)",
+    mobileGroupGap: "var(--spacing-p-xs)",
     // 16px
-    clusterGap: "var(--space-xs)",
+    clusterGap: "var(--spacing-p-xs)",
     // 16px
     dividerHeight: "1rem",
     // 16px
@@ -765,7 +765,7 @@ const e = {
     // 24px
     mobileGroupGap: "0.75rem",
     // 12px
-    clusterGap: "var(--space-xs)",
+    clusterGap: "var(--spacing-p-xs)",
     // 16px
     dividerHeight: "1rem",
     // 16px
@@ -774,7 +774,7 @@ const e = {
   },
   small: {
     height: e.small,
-    groupGap: "var(--space-xs)",
+    groupGap: "var(--spacing-p-xs)",
     // 16px
     mobileGroupGap: "0.5rem",
     // 8px
@@ -787,7 +787,7 @@ const e = {
   },
   extraSmall: {
     height: e.extraSmall,
-    groupGap: "var(--space-xs)",
+    groupGap: "var(--spacing-p-xs)",
     // 16px
     mobileGroupGap: "0.375rem",
     // 6px
@@ -1001,7 +1001,7 @@ const e = {
   // 16
   iconSlot: "1.25rem",
   // 20
-  radius: "var(--radius-md)",
+  radius: "var(--shape-md)",
   // shape/md — 8px
   shadow: "var(--shadow-lg)"
 }, H = {
@@ -1024,7 +1024,7 @@ const e = {
   titleLineHeight: "var(--leading-body-lg)",
   descriptionSize: "var(--text-body-sm)",
   descriptionLineHeight: "var(--leading-body-sm)",
-  radius: "var(--radius-md)"
+  radius: "var(--shape-md)"
   // shape/md — 8px
 };
 export {

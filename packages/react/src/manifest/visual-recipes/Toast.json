@@ -50,11 +50,11 @@
       "padding": "12/14",
       "gap": "16",
       "borderWidth": "1",
-      "radius": "var(--radius-md) / 8px",
+      "radius": "var(--shape-md) / 8px",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "var(--text-body-md)",
       "weight": "400",
       "lineHeight": "var(--leading-body-md)"

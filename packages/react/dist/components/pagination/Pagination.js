@@ -39,7 +39,7 @@ const ve = ee(
     siblingCount: I = 1,
     boundaryCount: M = 1,
     disabled: g = !1,
-    count: p = 1,
+    count: f = 1,
     page: N,
     defaultPage: U = 1,
     onChange: y,
@@ -74,13 +74,13 @@ const ve = ee(
           return;
         }
         v.current > 0 && r >= v.current && h(!1);
-      }, f = new ResizeObserver(o);
-      return f.observe(e), o(), () => f.disconnect();
+      }, p = new ResizeObserver(o);
+      return p.observe(e), o(), () => p.disconnect();
     }, [
       l,
       x,
       d,
-      p,
+      f,
       c,
       I,
       M,
@@ -89,7 +89,7 @@ const ve = ee(
       g
     ]);
     const Z = (e) => {
-      const o = oe(e.type), f = le(e.type), r = !!e.selected, s = !!(g || e.disabled), t = o || f;
+      const o = oe(e.type), p = le(e.type), r = !!e.selected, s = !!(g || e.disabled), t = o || p;
       let z = e.page;
       t && (z = /* @__PURE__ */ n($, { name: se(e.type), fontSize: i.iconPx }));
       const B = {
@@ -101,7 +101,7 @@ const ve = ee(
         borderColor: "var(--border-disabled-neutral)",
         color: "var(--text-disabled-neutral-inverse)"
       };
-      if (f)
+      if (p)
         return /* @__PURE__ */ n(
           "div",
           {
@@ -126,8 +126,8 @@ const ve = ee(
         borderColor: r ? "var(--border-selected-primary)" : "var(--border-neutral-secondary)",
         backgroundColor: r ? "var(--background-selected-primary)" : o ? "var(--background-neutral-secondary)" : "var(--background-neutral-primary)",
         color: r ? "var(--text-selected-primary)" : o ? "var(--text-neutral-quaternary)" : "var(--text-neutral-primary)",
-        fontFamily: "var(--font-body)",
-        fontWeight: "var(--font-weight-semibold)",
+        fontFamily: "var(--font-family-main)",
+        fontWeight: "var(--font-weight-semi-bold)",
         fontSize: i.fontSize,
         lineHeight: i.lineHeight,
         textTransform: "none",
@@ -180,7 +180,7 @@ const ve = ee(
       margin: 0,
       listStyle: "none",
       overflowY: "hidden",
-      borderRadius: "var(--radius-sm)",
+      borderRadius: "var(--shape-sm)",
       scrollbarWidth: "thin"
     }, P = {
       display: "inline-flex",
@@ -199,12 +199,12 @@ const ve = ee(
       },
       "& .MuiPagination-ul > li:first-of-type .CadsPagination-item": {
         marginLeft: "0 !important",
-        borderTopLeftRadius: "var(--radius-sm)",
-        borderBottomLeftRadius: "var(--radius-sm)"
+        borderTopLeftRadius: "var(--shape-sm)",
+        borderBottomLeftRadius: "var(--shape-sm)"
       },
       "& .MuiPagination-ul > li:last-of-type .CadsPagination-item": {
-        borderTopRightRadius: "var(--radius-sm)",
-        borderBottomRightRadius: "var(--radius-sm)"
+        borderTopRightRadius: "var(--shape-sm)",
+        borderBottomRightRadius: "var(--shape-sm)"
       }
     }, F = {
       display: "inline-flex",
@@ -217,7 +217,7 @@ const ve = ee(
       "& .MuiPagination-ul > li:last-of-type .CadsPagination-item": P["& .MuiPagination-ul > li:last-of-type .CadsPagination-item"]
     }, E = {
       disabled: g,
-      count: p,
+      count: f,
       page: c,
       onChange: C,
       showFirstButton: R,
@@ -254,7 +254,7 @@ const ve = ee(
               }
             }
           ),
-          /* @__PURE__ */ n("span", { className: u.compactLabel, children: D({ page: c, count: p }) }),
+          /* @__PURE__ */ n("span", { className: u.compactLabel, children: D({ page: c, count: f }) }),
           /* @__PURE__ */ n(
             _,
             {
@@ -264,7 +264,7 @@ const ve = ee(
               iconOnly: !0,
               startIconName: "chevron-right",
               "aria-label": "Go to next page",
-              disabled: g || c >= p,
+              disabled: g || c >= f,
               onClick: (e) => {
                 C(e, c + 1);
               }

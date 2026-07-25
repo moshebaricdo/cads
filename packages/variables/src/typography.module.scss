@@ -1,0 +1,320 @@
+// Generated from CADS — do not hand-edit; re-export from the Typography foundation page.
+// Drop-in companion to fontVariables.css (same role as prod typography.module.scss).
+// Requires prod's existing font.scss for main-font-* mixins.
+@use 'font.scss' as font;
+
+@mixin heading-common {
+  color: var(--text-neutral-primary);
+  margin: 0 0 0.5em 0;
+}
+
+@mixin heading-xxl {
+  @include heading-common;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semi-bold);
+  font-size: 3rem;
+  line-height: 1.08;
+  letter-spacing: -0.03rem;
+}
+
+@mixin heading-xl {
+  @include heading-common;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semi-bold);
+  font-size: 2.375rem;
+  line-height: 1.05;
+  letter-spacing: -0.03rem;
+}
+
+@mixin heading-lg {
+  @include heading-common;
+  @include font.main-font-semi-bold;
+  font-size: 1.75rem;
+  line-height: 1.29;
+}
+
+@mixin heading-md {
+  @include heading-common;
+  @include font.main-font-semi-bold;
+  font-size: 1.5rem;
+  line-height: 1.33;
+}
+
+@mixin heading-sm {
+  @include heading-common;
+  @include font.main-font-semi-bold;
+  font-size: 1.375rem;
+  line-height: 1.36;
+}
+
+@mixin heading-xs {
+  @include heading-common;
+  @include font.main-font-semi-bold;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+@mixin paragraph-common {
+  @include font.main-font-regular;
+  color: var(--text-neutral-primary);
+  margin-bottom: 1em;
+}
+
+@mixin body-one {
+  @include paragraph-common;
+  font-size: var(--font-size-body-lg);
+  line-height: 1.4;
+}
+
+@mixin body-two {
+  @include paragraph-common;
+  font-size: var(--font-size-body-md);
+  line-height: 1.48;
+}
+
+@mixin body-three {
+  @include paragraph-common;
+  font-size: var(--font-size-body-sm);
+  line-height: 1.54;
+}
+
+@mixin body-four {
+  @include paragraph-common;
+  font-size: var(--font-size-body-xs);
+  line-height: 1.64;
+}
+
+@mixin overline-common {
+  @include paragraph-common;
+  @include font.main-font-semi-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04rem;
+}
+
+@mixin overline-one {
+  @include overline-common;
+  font-size: 0.875rem;
+  line-height: 1.54;
+}
+
+@mixin overline-two {
+  @include overline-common;
+  font-size: 0.813rem;
+  line-height: 1.64;
+}
+
+@mixin overline-three {
+  @include overline-common;
+  font-size: 0.688rem;
+  line-height: 1.76;
+}
+
+@mixin strong {
+  font-weight: var(--font-weight-semi-bold);
+}
+
+@mixin em {
+  font-style: italic;
+}
+
+@mixin figcaption {
+  @include font.main-font-semi-bold;
+  color: var(--text-neutral-primary);
+  font-size: 0.875rem;
+  line-height: 1.54;
+  margin: 0.5em 0 1em;
+}
+
+.heading-xxl {
+  @include heading-xxl;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-xxl;
+    }
+  }
+}
+.heading-xl {
+  @include heading-xl;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-xl;
+    }
+  }
+}
+.heading-lg {
+  @include heading-lg;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-lg;
+    }
+  }
+}
+.heading-md {
+  @include heading-md;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-md;
+    }
+  }
+}
+.heading-sm {
+  @include heading-sm;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-sm;
+    }
+  }
+}
+.heading-xs {
+  @include heading-xs;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include heading-xs;
+    }
+  }
+}
+
+.body-one {
+  @include body-one;
+  &.wrapper {
+    p,
+    li {
+      @include body-one;
+    }
+  }
+}
+
+.body-two {
+  @include body-two;
+  &.wrapper {
+    p,
+    li {
+      @include body-two;
+    }
+  }
+}
+
+.body-three {
+  @include body-three;
+  &.wrapper {
+    p,
+    li {
+      @include body-three;
+    }
+  }
+}
+
+.body-four {
+  @include body-four;
+  &.wrapper {
+    p,
+    li {
+      @include body-four;
+    }
+  }
+}
+
+.overline-one {
+  @include overline-one;
+  &.wrapper {
+    p,
+    li {
+      @include overline-one;
+    }
+  }
+}
+
+.overline-two {
+  @include overline-two;
+  &.wrapper {
+    p,
+    li {
+      @include overline-two;
+    }
+  }
+}
+
+.overline-three {
+  @include overline-three;
+  &.wrapper {
+    p,
+    li {
+      @include overline-three;
+    }
+  }
+}
+
+strong,
+.strong {
+  @include strong;
+  &.wrapper strong {
+    @include strong;
+  }
+}
+
+em,
+.em {
+  @include em;
+  &.wrapper em {
+    @include em;
+  }
+}
+
+figcaption,
+.figcaption {
+  @include figcaption;
+  &.wrapper figcaption {
+    @include figcaption;
+  }
+}
+
+.no-margin {
+  margin: 0;
+  &.wrapper {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li {
+      margin: 0;
+    }
+
+    ol,
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}

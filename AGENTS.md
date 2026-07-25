@@ -10,7 +10,7 @@ Standalone **CodeAI Design System (CADS)** platform:
 
 | Path | Package | Role |
 |---|---|---|
-| `packages/variables` | `@codeai/cads-variables` | Design variables (color, type, spacing/shape, elevation) → CSS + TS + MUI theme |
+| `packages/variables` | `@codeai/cads-variables` | Design variables (color, type, spacing/shape, elevation, motion) → prod-shaped split CSS + barrel `variables.css` + TS + MUI theme |
 | `packages/react` | `@codeai/cads-react` | MUI-wrapped CADS components + icons (`@codeai/cads-react/icons`) |
 | `apps/docs` | `@codeai/cads-docs` | Designer-grade docs mini-site (Next.js) |
 | `tooling/figma-sync` | `@codeai/cads-figma-sync` | Figma → variables sync |
@@ -96,7 +96,7 @@ pnpm artifact:package  # Runtime + skill ZIP only (packages already built; used 
 
 Docs are deployed to GitHub Pages from `main` via `.github/workflows/deploy-docs.yml` → `https://moshebaricdo.github.io/cads/`.
 
-After changing `codeAiColorSystem.json` or non-color variable definitions, always regenerate and rebuild consumers.
+After changing `codeAiColorSystem.json` or non-color variable definitions, always regenerate and rebuild consumers (`pnpm generate:variables` / `pnpm build`). Generated CSS is split for prod ingest — `primitiveColors.css`, `colors.css`, `fontVariables.css`, `shapeAndSpacingVariables.css`, `motionVariables.css` — plus CADS runtime `typographyVariables.css` and exportable `typography.module.scss` (depends on prod’s existing `font.scss`). `variables.css` is an `@import` barrel. Foundation docs pages Export each collection.
 
 Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **source** (Turbopack/webpack aliases in `apps/docs/next.config.mjs`), so component edits hot-reload without rebuilding `dist/`. Still run `pnpm build:react` before commit/publish (committed `dist/`). Production `pnpm build:docs` uses `dist/` via package `exports`. Avoid wiping `packages/*/dist` under a stale server that was started before source aliases — if `.next` corrupts, delete `apps/docs/.next` and restart. For a local static preview, prefer `pnpm build:docs` then serve `apps/docs/out`.
 
@@ -104,7 +104,7 @@ Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **
 
 ## Styling & component rules (summary)
 
-- Use semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--radius-sm`, `--space-m`) — **no hard-coded hex**, no `--ds-*` prefix.
+- Use semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--shape-sm`, `--spacing-p-m`) — **no hard-coded hex**, no `--ds-*` prefix.
 - Brand tokens for CTAs/links; **selected** tokens for filled selected chrome; never paint selected surfaces with brand fills.
 - Control heights via `size`: large 48 / medium 40 / small 32 / extraSmall 24.
 - Only props/variants listed in `cadsManifest` — do not invent APIs.

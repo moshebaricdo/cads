@@ -65,7 +65,7 @@ const y = f(
           "& .MuiFormControlLabel-label": {
             fontSize: o.fontSize,
             lineHeight: o.lineHeight,
-            fontWeight: d === "thick" ? "var(--font-weight-semibold)" : "var(--font-weight-normal)"
+            fontWeight: d === "thick" ? "var(--font-weight-semi-bold)" : "var(--font-weight-regular)"
           },
           "& .MuiRadio-root": {
             paddingTop: o.controlPaddingTop

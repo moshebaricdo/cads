@@ -6,8 +6,8 @@
 .bubble {
   background-color: var(--background-neutral-primary-inverse);
   color: var(--text-neutral-primary-inverse);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
+  border-radius: var(--shape-sm);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
   padding: 4px 12px;
@@ -43,7 +43,7 @@
 .labelText {
   flex: 1 1 auto;
   min-width: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-sm);
   font-weight: 400;
   line-height: var(--leading-body-sm);

@@ -6,14 +6,14 @@
   padding-inline: var(--tag-px);
   padding-block: var(--tag-py);
   gap: var(--tag-gap);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   border: 1px solid var(--tag-border);
   background-color: var(--tag-bg);
   color: var(--tag-fg);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--tag-font-size);
   line-height: var(--tag-line-height);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   white-space: nowrap;
 }
 

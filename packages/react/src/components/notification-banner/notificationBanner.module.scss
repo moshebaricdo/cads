@@ -11,11 +11,11 @@
   max-width: 100%;
   padding: 1rem;
   gap: 1.5rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   border: 1px solid var(--nb-border);
   background-color: var(--nb-bg);
   overflow: hidden;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
 
   &.fullWidth {
     width: 100%;
@@ -41,7 +41,7 @@
   flex-shrink: 0;
   width: 2.875rem;
   height: 2.875rem;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   border: 3px solid var(--nb-icon-ring);
   background-color: var(--background-neutral-primary);
   color: var(--nb-icon-color);
@@ -67,7 +67,7 @@
   color: var(--text-neutral-primary);
   font-size: var(--text-body-lg);
   line-height: var(--leading-body-lg);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
 }
 
 .description {
@@ -75,7 +75,7 @@
   color: var(--text-neutral-secondary);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-regular);
 }
 
 .trailing {

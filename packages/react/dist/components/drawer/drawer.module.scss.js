@@ -1,7 +1,7 @@
-import './drawer.css';const t = "_surface_1ixga_6", s = "_inner_1ixga_20", i = "_header_1ixga_31", e = "_title_1ixga_42", o = "_description_1ixga_51", _ = "_customSlot_1ixga_59", c = "_actions_1ixga_71", n = {
+import './drawer.css';const t = "_surface_kqb3n_6", n = "_inner_kqb3n_20", s = "_header_kqb3n_31", e = "_title_kqb3n_42", o = "_description_kqb3n_51", _ = "_customSlot_kqb3n_59", c = "_actions_kqb3n_71", i = {
   surface: t,
-  inner: s,
-  header: i,
+  inner: n,
+  header: s,
   title: e,
   description: o,
   customSlot: _,
@@ -10,10 +10,10 @@ import './drawer.css';const t = "_surface_1ixga_6", s = "_inner_1ixga_20", i = "
 export {
   c as actions,
   _ as customSlot,
-  n as default,
+  i as default,
   o as description,
-  i as header,
-  s as inner,
+  s as header,
+  n as inner,
   t as surface,
   e as title
 };

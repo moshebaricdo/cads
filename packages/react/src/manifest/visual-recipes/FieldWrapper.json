@@ -85,9 +85,9 @@
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "var(--text-body-md)",
-      "weight": "var(--font-weight-semibold)",
+      "weight": "var(--font-weight-semi-bold)",
       "lineHeight": "var(--leading-body-md)"
     },
     "icon": {

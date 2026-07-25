@@ -1,24 +1,24 @@
-import './notificationBanner.css';const t = "_banner_17w2s_7", n = "_fullWidth_17w2s_20", s = "_body_17w2s_27", _ = "_icon_17w2s_35", o = "_copy_17w2s_53", i = "_title_17w2s_62", c = "_description_17w2s_70", l = "_trailing_17w2s_78", e = "_actions_17w2s_85", a = {
-  banner: t,
-  fullWidth: n,
-  body: s,
+import './notificationBanner.css';const i = "_banner_imkxp_7", t = "_fullWidth_imkxp_20", n = "_body_imkxp_27", _ = "_icon_imkxp_35", o = "_copy_imkxp_53", c = "_title_imkxp_62", s = "_description_imkxp_70", p = "_trailing_imkxp_78", l = "_actions_imkxp_85", e = {
+  banner: i,
+  fullWidth: t,
+  body: n,
   icon: _,
   copy: o,
-  title: i,
-  description: c,
-  trailing: l,
-  actions: e
+  title: c,
+  description: s,
+  trailing: p,
+  actions: l
 };
 export {
-  e as actions,
-  t as banner,
-  s as body,
+  l as actions,
+  i as banner,
+  n as body,
   o as copy,
-  a as default,
-  c as description,
-  n as fullWidth,
+  e as default,
+  s as description,
+  t as fullWidth,
   _ as icon,
-  i as title,
-  l as trailing
+  c as title,
+  p as trailing
 };
 //# sourceMappingURL=notificationBanner.module.scss.js.map

@@ -54,11 +54,11 @@
       "padding": "16",
       "gap": "24",
       "borderWidth": "1",
-      "radius": "var(--radius-md) / 8px",
+      "radius": "var(--shape-md) / 8px",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "title body/lg + description body/sm",
       "weight": "600/400",
       "lineHeight": "body"

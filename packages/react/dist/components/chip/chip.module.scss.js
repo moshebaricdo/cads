@@ -1,4 +1,4 @@
-import './chip.css';const o = "_root_11zpb_1", t = {
+import './chip.css';const o = "_root_jqpgp_1", t = {
   root: o
 };
 export {

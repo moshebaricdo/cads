@@ -1,11 +1,11 @@
-import './tag.css';const t = "_root_qsuau_1", o = "_content_qsuau_20", n = "_label_qsuau_27", s = {
+import './tag.css';const t = "_root_1tm4p_1", o = "_content_1tm4p_20", n = "_label_1tm4p_27", e = {
   root: t,
   content: o,
   label: n
 };
 export {
   o as content,
-  s as default,
+  e as default,
   n as label,
   t as root
 };

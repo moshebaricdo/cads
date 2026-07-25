@@ -1,18 +1,18 @@
-import './pagination.css';const e = "_root_c5of3_1", o = "_measureHidden_c5of3_9", c = "_measureInner_c5of3_18", s = "_compactCluster_c5of3_22", t = "_compactLabel_c5of3_29", _ = "_ellipsis_c5of3_38", a = {
+import './pagination.css';const e = "_root_1cf09_1", c = "_measureHidden_1cf09_9", s = "_measureInner_1cf09_18", t = "_compactCluster_1cf09_22", o = "_compactLabel_1cf09_29", _ = "_ellipsis_1cf09_38", a = {
   root: e,
-  measureHidden: o,
-  measureInner: c,
-  compactCluster: s,
-  compactLabel: t,
+  measureHidden: c,
+  measureInner: s,
+  compactCluster: t,
+  compactLabel: o,
   ellipsis: _
 };
 export {
-  s as compactCluster,
-  t as compactLabel,
+  t as compactCluster,
+  o as compactLabel,
   a as default,
   _ as ellipsis,
-  o as measureHidden,
-  c as measureInner,
+  c as measureHidden,
+  s as measureInner,
   e as root
 };
 //# sourceMappingURL=pagination.module.scss.js.map

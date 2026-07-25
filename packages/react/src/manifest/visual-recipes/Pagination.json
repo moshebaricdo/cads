@@ -83,11 +83,11 @@
       "padding": "SEGMENTED_SIZE",
       "gap": "-1 (shared borders)",
       "borderWidth": "1px",
-      "radius": "var(--radius-sm) on first/last only",
+      "radius": "var(--shape-sm) on first/last only",
       "overlap": "marginLeft -1px between items"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "weight": "600",
       "size": "size-scaled body",
       "lineHeight": "size-scaled"

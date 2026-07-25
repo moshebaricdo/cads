@@ -1,16 +1,16 @@
-import './toggle.css';const n = "_track_14t40_1", t = "_handle_14t40_29", a = "_handleSpring_14t40_37", c = "_handleFace_14t40_45", e = "_iconSlot_14t40_52", _ = {
+import './toggle.css';const n = "_track_bpisn_1", a = "_handle_bpisn_29", c = "_handleSpring_bpisn_37", e = "_handleFace_bpisn_45", t = "_iconSlot_bpisn_52", _ = {
   track: n,
-  handle: t,
-  handleSpring: a,
-  handleFace: c,
-  iconSlot: e
+  handle: a,
+  handleSpring: c,
+  handleFace: e,
+  iconSlot: t
 };
 export {
   _ as default,
-  t as handle,
-  c as handleFace,
-  a as handleSpring,
-  e as iconSlot,
+  a as handle,
+  e as handleFace,
+  c as handleSpring,
+  t as iconSlot,
   n as track
 };
 //# sourceMappingURL=toggle.module.scss.js.map

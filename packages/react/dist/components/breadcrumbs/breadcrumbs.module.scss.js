@@ -1,17 +1,17 @@
-import './breadcrumbs.css';const e = "_link_thh4s_1", o = "_overflow_thh4s_44", t = "_trail_thh4s_75", l = "_separator_thh4s_85", r = "_overflowMenuItem_thh4s_96", s = "_overflowMenuItemLabel_thh4s_124", _ = {
+import './breadcrumbs.css';const e = "_link_1x7ck_1", o = "_overflow_1x7ck_44", t = "_trail_1x7ck_75", l = "_separator_1x7ck_85", r = "_overflowMenuItem_1x7ck_96", _ = "_overflowMenuItemLabel_1x7ck_124", n = {
   link: e,
   overflow: o,
   trail: t,
   separator: l,
   overflowMenuItem: r,
-  overflowMenuItemLabel: s
+  overflowMenuItemLabel: _
 };
 export {
-  _ as default,
+  n as default,
   e as link,
   o as overflow,
   r as overflowMenuItem,
-  s as overflowMenuItemLabel,
+  _ as overflowMenuItemLabel,
   l as separator,
   t as trail
 };

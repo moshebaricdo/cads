@@ -97,8 +97,8 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
             lineHeight: dims.lineHeight,
             fontWeight:
               labelStyle === "thick"
-                ? "var(--font-weight-semibold)"
-                : "var(--font-weight-normal)",
+                ? "var(--font-weight-semi-bold)"
+                : "var(--font-weight-regular)",
           },
         }}
       />

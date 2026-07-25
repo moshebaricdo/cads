@@ -277,7 +277,7 @@ function K({
                     sx: {
                       mt: 0,
                       border: "1px solid var(--border-neutral-primary)",
-                      borderRadius: "var(--radius-sm)",
+                      borderRadius: "var(--shape-sm)",
                       backgroundColor: "var(--background-neutral-primary)",
                       boxShadow: "var(--shadow-md)",
                       overflow: "hidden",

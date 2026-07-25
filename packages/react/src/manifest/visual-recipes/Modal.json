@@ -46,7 +46,7 @@
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "var(--text-heading-lg)",
       "weight": "600",
       "lineHeight": "var(--leading-heading-lg)"
@@ -100,7 +100,7 @@
           "radius": "12"
         },
         "expectedVariables": [
-          "--radius-xl",
+          "--shape-xl",
           "--shadow-lg"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",

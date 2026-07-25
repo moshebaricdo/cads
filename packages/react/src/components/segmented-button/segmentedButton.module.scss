@@ -3,7 +3,7 @@
   align-items: stretch;
   gap: 0;
   overflow: hidden;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
 }
 
 .segment:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
@@ -20,8 +20,8 @@
   border-top-right-radius: var(--seg-tr);
   border-bottom-right-radius: var(--seg-br);
   border-bottom-left-radius: var(--seg-bl);
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semi-bold);
   font-size: var(--seg-font-size);
   line-height: var(--seg-line-height);
   text-transform: none;

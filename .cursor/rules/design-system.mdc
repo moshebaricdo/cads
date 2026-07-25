@@ -12,6 +12,6 @@ alwaysApply: false
 - Import `@codeai/cads-variables/variables.css` once at the app root.
 - Use semantic color variables (e.g. `--background-brand-primary`) — never hard-coded hex, never invent color aliases, never use a `--ds-` prefix.
 - Brand tokens for CTAs/links; selected tokens for filled selected chrome; focused for focus rings.
-- Prefer CADS typography variables (`--font-heading`, `--text-body-*`, etc.) over raw px.
+- Prefer CADS typography variables (`--font-family-heading`, `--font-family-main`, `--text-body-*`, etc.) over raw px.
 - Control heights via component `size` props (`large` / `medium` / `small` / `extraSmall`) — do not invent heights.
 - Consult `cadsManifest` before adding or inventing props.

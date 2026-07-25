@@ -108,8 +108,8 @@ function g({
 const B = {
   backgroundColor: "var(--background-neutral-primary-inverse)",
   color: "var(--text-neutral-primary-inverse)",
-  borderRadius: "var(--radius-sm)",
-  fontFamily: "var(--font-body)",
+  borderRadius: "var(--shape-sm)",
+  fontFamily: "var(--font-family-main)",
   fontSize: "var(--text-body-sm)",
   lineHeight: "var(--leading-body-sm)",
   padding: "4px 12px",

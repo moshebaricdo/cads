@@ -1,4 +1,4 @@
-export { M as MotionSpringPreset, Z as ZIndexLayer, c as controlHeights, e as elevation, m as motion, n as nonColorCssVars, s as shape, a as spacing, t as typography, z as zIndex, b as zIndexLayers } from './nonColorVariables-C6Ash4Qh.js';
+export { M as MotionSpringPreset, Z as ZIndexLayer, c as controlHeights, e as elevation, m as motion, n as nonColorCssVars, p as pxToRem, s as shape, a as spacing, t as typography, z as zIndex, b as zIndexLayers } from './nonColorVariables-BquPjLSN.js';
 
 declare const colorVarsLight: {
     readonly "background-neutral-primary": "#FFFFFF";
@@ -375,7 +375,54 @@ declare function compareSemanticExportNames(a: string, b: string): number;
  */
 declare function comparePrimitiveExportNames(a: string, b: string): number;
 declare function buildPrimitiveColorsCss(system: ColorSystemExportDoc): string;
-declare function buildSemanticColorsCss(system: ColorSystemExportDoc): string;
+type SemanticColorsCssOptions = {
+    /**
+     * When true, dark theme selector is `.dark, [data-theme='Dark']` so the
+     * CADS runtime `.dark` class keeps working. Prod export omits `.dark`.
+     */
+    includeDarkClass?: boolean;
+};
+declare function buildSemanticColorsCss(system: ColorSystemExportDoc, options?: SemanticColorsCssOptions): string;
+/** Resolve semantic tokens to flat hex maps (e.g. `--background-brand-primary`). */
+declare function resolveColorSystemToCssVars(system: ColorSystemExportDoc, mode: ThemeKey): Map<string, string>;
+
+/**
+ * Prod-shaped CSS export builders for non-color CADS variables.
+ *
+ * Mirrors the component-library-styles file split:
+ *  - fontVariables.css (families, weights, body sizes — prod-shaped)
+ *  - typographyVariables.css (CADS runtime type scale — --text-* / --leading-*)
+ *  - shapeAndSpacingVariables.css (prod shape/spacing + CADS shadow/z)
+ *  - motionVariables.css (CADS motion — net-new vs prod)
+ */
+type FontVariablesCssOptions = {
+    /**
+     * Include `--font-family-mono` (system stack). Prod fontVariables.css omits
+     * mono — set true for CADS runtime so code samples have a token.
+     */
+    includeMono?: boolean;
+};
+/**
+ * Prod-shaped `fontVariables.css`: families (+ Noto i18n), full weight ladder,
+ * and `--font-size-body-*` in rem. Does not include FA font vars (residual) or
+ * Barlow legacy families.
+ */
+declare function buildFontVariablesCss(_vars?: Record<string, string>, options?: FontVariablesCssOptions): string;
+/** CADS runtime type scale (`--text-*` / `--leading-*` / `--tracking-*`). Not a prod file. */
+declare function buildTypographyVariablesCss(vars?: Record<string, string>): string;
+declare function buildShapeAndSpacingCss(vars?: Record<string, string>): string;
+declare function buildMotionCss(vars?: Record<string, string>): string;
+/** Residual vars that stay in the variables.css barrel (not a separate export). */
+declare function buildResidualCssVars(vars?: Record<string, string>): Record<string, string>;
+
+/**
+ * Prod-shaped `typography.module.scss` for product ingest.
+ *
+ * Depends on prod's existing `font.scss` (`@use 'font.scss' as font`) for the
+ * stable `main-font-*` weight mixins — we do not regenerate that file (also
+ * holds legacy FA CDN URL vars that CADS does not own).
+ */
+declare function buildTypographyModuleScss(): string;
 
 /** Figma file key for the CADS design system. */
 declare const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
@@ -384,4 +431,4 @@ declare function cssVar(name: string): string;
 /** @deprecated Use `cssVar` — `--ds-*` prefix removed. */
 declare const ds: typeof cssVar;
 
-export { CADS_FIGMA_FILE_KEY, type ColorSystemExportDoc, type ColorVarName, type PrimitiveFamily, type PrimitiveStep, type SemanticToken, type ThemeKey, UNSET_PRIMITIVE_HEX, buildPrimitiveColorsCss, buildSemanticColorsCss, colorVarsDark, colorVarsLight, comparePrimitiveExportNames, compareSemanticExportNames, cssVar, ds, isUnsetPrimitiveHex, primitiveVarName, semanticExportVarName };
+export { CADS_FIGMA_FILE_KEY, type ColorSystemExportDoc, type ColorVarName, type FontVariablesCssOptions, type PrimitiveFamily, type PrimitiveStep, type SemanticColorsCssOptions, type SemanticToken, type ThemeKey, UNSET_PRIMITIVE_HEX, buildFontVariablesCss, buildMotionCss, buildPrimitiveColorsCss, buildResidualCssVars, buildSemanticColorsCss, buildShapeAndSpacingCss, buildTypographyModuleScss, buildTypographyVariablesCss, colorVarsDark, colorVarsLight, comparePrimitiveExportNames, compareSemanticExportNames, cssVar, ds, isUnsetPrimitiveHex, primitiveVarName, resolveColorSystemToCssVars, semanticExportVarName };

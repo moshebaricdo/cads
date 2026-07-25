@@ -3,7 +3,7 @@
   display: flex;
   width: 100%;
   min-width: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   border-width: 1px;
   border-style: solid;
   overflow: clip;
@@ -21,7 +21,7 @@
   border: none;
   border-radius: 0;
   background-color: transparent;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-weight: 400;
   outline: none;
   cursor: inherit;

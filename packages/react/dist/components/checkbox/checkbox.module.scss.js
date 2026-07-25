@@ -1,12 +1,12 @@
-import './checkbox.css';const o = "_box_1fvqu_3", r = "_root_1fvqu_18", t = "_labelWrapper_1fvqu_79", e = {
+import './checkbox.css';const o = "_box_1day7_3", a = "_root_1day7_18", r = "_labelWrapper_1day7_79", t = {
   box: o,
-  root: r,
-  labelWrapper: t
+  root: a,
+  labelWrapper: r
 };
 export {
   o as box,
-  e as default,
-  t as labelWrapper,
-  r as root
+  t as default,
+  r as labelWrapper,
+  a as root
 };
 //# sourceMappingURL=checkbox.module.scss.js.map

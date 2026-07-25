@@ -78,11 +78,11 @@
       "padding": "0",
       "gap": "size-scaled trail gap",
       "borderWidth": "0",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "weight": "600",
       "size": "size-scaled",
       "lineHeight": "size-scaled"

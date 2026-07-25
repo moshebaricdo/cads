@@ -368,7 +368,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
             ? dims.secondaryLineHeight
             : dims.primaryLineHeight,
           "--tab-radius": isSecondary
-            ? "var(--radius-sm) var(--radius-sm) 0 0"
+            ? "var(--shape-sm) var(--shape-sm) 0 0"
             : "0",
           "--tab-overflow": isSecondary ? "hidden" : "visible",
           ...(iconOnly && isSecondary

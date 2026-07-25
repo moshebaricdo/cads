@@ -100,11 +100,11 @@
       "padding": "size-scaled",
       "gap": "2px",
       "borderWidth": "1px",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "size-scaled",
       "weight": "400",
       "lineHeight": "size-scaled"

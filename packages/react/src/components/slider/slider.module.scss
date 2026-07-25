@@ -6,7 +6,7 @@
   align-items: stretch;
   max-width: 100%;
   box-sizing: border-box;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
 }
 
 .labelRow {
@@ -76,10 +76,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-xxs);
   line-height: var(--leading-body-xxs);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-regular);
   color: var(--text-neutral-primary);
   white-space: nowrap;
 }

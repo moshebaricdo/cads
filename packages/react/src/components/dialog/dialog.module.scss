@@ -28,7 +28,7 @@
   margin-bottom: -30px;
   width: 64px;
   height: 64px;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   background-color: var(--background-brand-primary);
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -50,7 +50,7 @@
   max-width: 800px;
   background-color: var(--background-neutral-primary);
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-xl);
+  border-radius: var(--shape-xl);
   box-shadow: var(--shadow-lg);
 
   &.default {
@@ -81,7 +81,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   background-color: var(--background-neutral-tertiary);
   flex-shrink: 0;
 }
@@ -96,7 +96,7 @@
 
 .title {
   margin: 0;
-  font-family: var(--font-heading);
+  font-family: var(--font-family-heading);
   font-weight: 600;
   font-size: var(--text-heading-xl);
   line-height: var(--leading-heading-xl);
@@ -105,7 +105,7 @@
 }
 
 .description {
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-weight: 400;
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);

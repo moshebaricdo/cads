@@ -44,7 +44,7 @@
       "padding": "0",
       "gap": "0",
       "borderWidth": "0",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {

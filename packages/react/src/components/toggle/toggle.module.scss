@@ -3,7 +3,7 @@
   position: relative;
   display: inline-block;
   flex-shrink: 0;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   overflow: hidden;
   transition: var(--transition-colors);
   -webkit-tap-highlight-color: transparent;
@@ -39,7 +39,7 @@
 .handle {
   position: absolute;
   box-sizing: border-box;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   pointer-events: none;
   transition: left var(--duration-medium) var(--easing-emphasized),
     background-color var(--duration-short) var(--easing-standard);
@@ -48,7 +48,7 @@
 .handleSpring {
   position: absolute;
   box-sizing: border-box;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   background-color: transparent;
   pointer-events: none;
 }

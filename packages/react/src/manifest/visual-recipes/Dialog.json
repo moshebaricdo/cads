@@ -45,7 +45,7 @@
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-heading)",
+      "family": "var(--font-family-heading)",
       "size": "var(--text-heading-xl)",
       "weight": "600",
       "lineHeight": "var(--leading-heading-xl)"
@@ -100,9 +100,9 @@
           "padding": "40 56"
         },
         "expectedVariables": [
-          "--radius-xl",
+          "--shape-xl",
           "--shadow-lg",
-          "--font-heading"
+          "--font-family-heading"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
         "result": "pass",
@@ -130,7 +130,7 @@
         },
         "expectedVariables": [
           "--background-brand-primary",
-          "--radius-round"
+          "--shape-round"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
         "result": "pass",
@@ -158,7 +158,7 @@
           "radius": "12"
         },
         "expectedVariables": [
-          "--radius-xl"
+          "--shape-xl"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
         "result": "pass",

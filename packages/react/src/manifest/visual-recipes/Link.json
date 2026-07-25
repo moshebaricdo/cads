@@ -71,11 +71,11 @@
       "padding": "0",
       "gap": "size-scaled",
       "borderWidth": "0",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "weight": "600",
       "size": "size-scaled body",
       "lineHeight": "size-scaled body"

@@ -238,8 +238,8 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
           : nav
             ? "var(--text-neutral-quaternary)"
             : "var(--text-neutral-primary)",
-        fontFamily: "var(--font-body)",
-        fontWeight: "var(--font-weight-semibold)",
+        fontFamily: "var(--font-family-main)",
+        fontWeight: "var(--font-weight-semi-bold)",
         fontSize: dims.fontSize,
         lineHeight: dims.lineHeight,
         textTransform: "none" as const,
@@ -325,7 +325,7 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
       margin: 0,
       listStyle: "none",
       overflowY: "hidden" as const,
-      borderRadius: "var(--radius-sm)",
+      borderRadius: "var(--shape-sm)",
       scrollbarWidth: "thin" as const,
     };
 
@@ -350,12 +350,12 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
       },
       "& .MuiPagination-ul > li:first-of-type .CadsPagination-item": {
         marginLeft: "0 !important",
-        borderTopLeftRadius: "var(--radius-sm)",
-        borderBottomLeftRadius: "var(--radius-sm)",
+        borderTopLeftRadius: "var(--shape-sm)",
+        borderBottomLeftRadius: "var(--shape-sm)",
       },
       "& .MuiPagination-ul > li:last-of-type .CadsPagination-item": {
-        borderTopRightRadius: "var(--radius-sm)",
-        borderBottomRightRadius: "var(--radius-sm)",
+        borderTopRightRadius: "var(--shape-sm)",
+        borderBottomRightRadius: "var(--shape-sm)",
       },
     };
 

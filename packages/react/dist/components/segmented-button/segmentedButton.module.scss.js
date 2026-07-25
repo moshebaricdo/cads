@@ -1,4 +1,4 @@
-import './segmentedButton.css';const e = "_group_1gpkw_1", s = "_segment_1gpkw_9", t = {
+import './segmentedButton.css';const e = "_group_1avpn_1", s = "_segment_1avpn_9", t = {
   group: e,
   segment: s
 };

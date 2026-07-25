@@ -145,7 +145,7 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
             gap: "2px",
             position: "relative",
             width: "100%",
-            fontFamily: "var(--font-body)",
+            fontFamily: "var(--font-family-main)",
             ...style,
           }}
         >
@@ -155,8 +155,8 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
               htmlFor={controlId}
               style={{
                 display: "block",
-                fontFamily: "var(--font-body)",
-                fontWeight: "var(--font-weight-semibold)" as unknown as number,
+                fontFamily: "var(--font-family-main)",
+                fontWeight: "var(--font-weight-semi-bold)" as unknown as number,
                 fontSize: dims.labelFontSize,
                 lineHeight: dims.labelLineHeight,
                 color: labelColor,
@@ -200,7 +200,7 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
               </span>
               <span
                 style={{
-                  fontFamily: "var(--font-body)",
+                  fontFamily: "var(--font-family-main)",
                   fontWeight: 400,
                   fontSize: dims.helperFontSize,
                   lineHeight: dims.helperLineHeight,

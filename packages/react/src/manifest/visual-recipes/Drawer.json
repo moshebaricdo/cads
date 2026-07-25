@@ -42,7 +42,7 @@
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "var(--text-heading-lg)",
       "weight": "600",
       "lineHeight": "var(--leading-heading-lg)"
@@ -125,7 +125,7 @@
         },
         "expectedVariables": [
           "--background-neutral-secondary",
-          "--radius-lg"
+          "--shape-lg"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
         "result": "pass",

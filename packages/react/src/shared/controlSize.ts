@@ -28,7 +28,7 @@ export const BUTTON_SIZE: Record<
 > = {
   large: {
     height: CONTROL_HEIGHT.large,
-    paddingInline: "var(--space-xs)", // 16px
+    paddingInline: "var(--spacing-p-xs)", // 16px
     paddingBlock: "0.625rem", // 10px
     gap: "0.556em", // 10px @ 18px type
     fontSize: "var(--text-body-lg)",
@@ -38,7 +38,7 @@ export const BUTTON_SIZE: Record<
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
-    paddingInline: "var(--space-xs)", // 16px
+    paddingInline: "var(--spacing-p-xs)", // 16px
     paddingBlock: "0.5rem", // 8px
     gap: "0.5em", // 8px @ 16px type
     fontSize: "var(--text-body-md)",
@@ -71,7 +71,7 @@ export const BUTTON_SIZE: Record<
 /**
  * Checkbox box + label geometry from Figma Checkbox / Checkbox + Label.
  * Box sizes are independent of CONTROL_HEIGHT (22 / 20 / 18 / 16).
- * Corner radius uses `--radius-sm` (6px).
+ * Corner radius uses `--shape-sm` (6px).
  */
 export const CHECKBOX_SIZE: Record<
   ControlSize,
@@ -358,7 +358,7 @@ export const TEXT_INPUT_SIZE: Record<
   large: {
     height: CONTROL_HEIGHT.large,
     areaHeight: "6.5rem", // 104px
-    paddingInline: "var(--space-xs)", // 16px
+    paddingInline: "var(--spacing-p-xs)", // 16px
     paddingBlock: "0.625rem", // 10px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
@@ -368,7 +368,7 @@ export const TEXT_INPUT_SIZE: Record<
   medium: {
     height: CONTROL_HEIGHT.medium,
     areaHeight: "5.5rem", // 88px
-    paddingInline: "var(--space-xs)", // 16px
+    paddingInline: "var(--spacing-p-xs)", // 16px
     paddingBlock: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
@@ -682,7 +682,7 @@ export const SEGMENTED_SIZE: Record<
 > = {
   large: {
     height: CONTROL_HEIGHT.large,
-    paddingInline: "var(--space-xs)", // 16px
+    paddingInline: "var(--spacing-p-xs)", // 16px
     paddingBlock: "0.625rem", // 10px
     gap: "0.5rem", // 8px
     fontSize: "var(--text-body-lg)",
@@ -746,8 +746,8 @@ export const TABLE_PAGINATION_SIZE: Record<
   large: {
     height: CONTROL_HEIGHT.large,
     groupGap: "1.5rem", // 24px
-    mobileGroupGap: "var(--space-xs)", // 16px
-    clusterGap: "var(--space-xs)", // 16px
+    mobileGroupGap: "var(--spacing-p-xs)", // 16px
+    clusterGap: "var(--spacing-p-xs)", // 16px
     dividerHeight: "1rem", // 16px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
@@ -756,14 +756,14 @@ export const TABLE_PAGINATION_SIZE: Record<
     height: CONTROL_HEIGHT.medium,
     groupGap: "1.5rem", // 24px
     mobileGroupGap: "0.75rem", // 12px
-    clusterGap: "var(--space-xs)", // 16px
+    clusterGap: "var(--spacing-p-xs)", // 16px
     dividerHeight: "1rem", // 16px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
   },
   small: {
     height: CONTROL_HEIGHT.small,
-    groupGap: "var(--space-xs)", // 16px
+    groupGap: "var(--spacing-p-xs)", // 16px
     mobileGroupGap: "0.5rem", // 8px
     clusterGap: "0.5rem", // 8px
     dividerHeight: "1rem", // 16px
@@ -772,7 +772,7 @@ export const TABLE_PAGINATION_SIZE: Record<
   },
   extraSmall: {
     height: CONTROL_HEIGHT.extraSmall,
-    groupGap: "var(--space-xs)", // 16px
+    groupGap: "var(--spacing-p-xs)", // 16px
     mobileGroupGap: "0.375rem", // 6px
     clusterGap: "0.5rem", // 8px
     dividerHeight: "1rem", // 16px
@@ -830,7 +830,7 @@ export const LINK_SIZE: Record<
 
 /**
  * Alert size matrix from Figma Alert (`2133:4160`).
- * Surface radius is `--radius-md` (8px) in the component.
+ * Surface radius is `--shape-md` (8px) in the component.
  */
 export const ALERT_SIZE: Record<
   ControlSize,
@@ -971,7 +971,7 @@ export const TOAST_CHROME = {
   lineHeight: "var(--leading-body-md)",
   iconPx: "1rem", // 16
   iconSlot: "1.25rem", // 20
-  radius: "var(--radius-md)", // shape/md — 8px
+  radius: "var(--shape-md)", // shape/md — 8px
   shadow: "var(--shadow-lg)",
 };
 
@@ -989,5 +989,5 @@ export const NOTIFICATION_BANNER_CHROME = {
   titleLineHeight: "var(--leading-body-lg)",
   descriptionSize: "var(--text-body-sm)",
   descriptionLineHeight: "var(--leading-body-sm)",
-  radius: "var(--radius-md)", // shape/md — 8px
+  radius: "var(--shape-md)", // shape/md — 8px
 };

@@ -28,7 +28,7 @@ Toggle dark mode by adding/removing `.dark` on an ancestor.
 
 - Only use components listed in `cadsManifest.components`.
 - Only use props/variants declared on each manifest entry.
-- Style with semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--radius-sm`, `--space-m`). **No hex literals. No `--ds-` prefix.**
+- Style with semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--shape-sm`, `--spacing-p-m`). **No hex literals. No `--ds-` prefix.**
 - Brand = CTAs / links / primary actions. Selected = filled selected chrome. Never paint selected surfaces with brand fills.
 - Control heights via `size`: `large` 48 / `medium` 40 / `small` 32 / `extraSmall` 24.
 - Icons: `FaIcon` from `@codeai/cads-react/icons` with FA Pro names.

@@ -4,11 +4,59 @@
  * Color semantics live in codeAiColorSystem.json and are resolved at generate time.
  */
 
+/** Prod i18n fallback stack (Noto Sans script coverage). */
+const NOTO_SANS_FALLBACKS = [
+  "Noto Sans",
+  "Noto Sans Arabic",
+  "Noto Sans Armenian",
+  "Noto Sans Bengali",
+  "Noto Sans SC",
+  "Noto Sans TC",
+  "Noto Sans Devanagari",
+  "Noto Sans Georgian",
+  "Noto Sans Hebrew",
+  "Noto Sans JP",
+  "Noto Sans Kannada",
+  "Noto Sans Khmer",
+  "Noto Sans KR",
+  "Noto Sans Myanmar",
+  "Noto Sans Sinhala",
+  "Noto Sans Tamil",
+  "Noto Sans Telugu",
+  "Noto Sans Thai",
+  "Noto Sans Thaana",
+  "Noto Sans Math",
+  "sans-serif",
+] as const;
+
+const GENERIC_FAMILIES = new Set([
+  "serif",
+  "sans-serif",
+  "monospace",
+  "cursive",
+  "fantasy",
+  "system-ui",
+  "ui-monospace",
+  "ui-sans-serif",
+  "ui-serif",
+  "ui-rounded",
+]);
+
+function fontStack(...faces: string[]): string {
+  return faces
+    .map((face) => (GENERIC_FAMILIES.has(face) ? face : `'${face}'`))
+    .join(", ");
+}
+
 export const typography = {
   fontFamily: {
-    heading: '"Space Grotesk", sans-serif',
-    body: '"Geist", sans-serif',
-    mono: '"Google Sans Code", "Courier New", monospace',
+    heading: fontStack("Space Grotesk", "Geist", ...NOTO_SANS_FALLBACKS),
+    body: fontStack("Geist", ...NOTO_SANS_FALLBACKS),
+    /**
+     * No brand mono in prod — browser / system monospace.
+     * Docs may override with a specimen face (e.g. Google Sans Code) locally.
+     */
+    mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
   fontWeight: {
     bold: "700",
@@ -254,54 +302,68 @@ export const motion = {
   },
 } as const;
 
-/** Flat CSS custom-property map for non-color variables. */
+/**
+ * Convert a px literal (e.g. `"6px"`) to rem at a 16px root.
+ * Used so CSS emission matches prod rem ramps while TS objects keep px for MUI.
+ */
+export function pxToRem(pxValue: string): string {
+  const px = Number.parseFloat(pxValue);
+  if (Number.isNaN(px)) return pxValue;
+  const rem = px / 16;
+  // Prefer compact forms that match prod (0.375rem, not 0.3750rem).
+  return `${Number(rem.toFixed(4))}rem`;
+}
+
+/** Flat CSS custom-property map for non-color variables (prod-aligned names). */
 export function nonColorCssVars(): Record<string, string> {
   return {
-    "--font-heading": typography.fontFamily.heading,
-    "--font-body": typography.fontFamily.body,
-    "--font-mono": typography.fontFamily.mono,
+    "--font-family-heading": typography.fontFamily.heading,
+    "--font-family-main": typography.fontFamily.body,
+    "--font-family-mono": typography.fontFamily.mono,
     "--font-weight-bold": typography.fontWeight.bold,
-    "--font-weight-semibold": typography.fontWeight.semibold,
+    "--font-weight-semi-bold": typography.fontWeight.semibold,
     "--font-weight-medium": typography.fontWeight.medium,
-    "--font-weight-normal": typography.fontWeight.normal,
-    "--text-heading-xxl": typography.fontSize.headingXxl,
-    "--text-heading-xl": typography.fontSize.headingXl,
-    "--text-heading-lg": typography.fontSize.headingLg,
-    "--text-heading-md": typography.fontSize.headingMd,
-    "--text-heading-sm": typography.fontSize.headingSm,
-    "--text-heading-xs": typography.fontSize.headingXs,
-    "--leading-heading-xxl": typography.lineHeight.headingXxl,
-    "--leading-heading-xl": typography.lineHeight.headingXl,
-    "--leading-heading-lg": typography.lineHeight.headingLg,
-    "--leading-heading-md": typography.lineHeight.headingMd,
-    "--leading-heading-sm": typography.lineHeight.headingSm,
-    "--leading-heading-xs": typography.lineHeight.headingXs,
-    "--text-body-lg": typography.fontSize.bodyLg,
-    "--text-body-md": typography.fontSize.bodyMd,
-    "--text-body-sm": typography.fontSize.bodySm,
-    "--text-body-xs": typography.fontSize.bodyXs,
-    "--text-body-xxs": typography.fontSize.bodyXxs,
-    "--leading-body-lg": typography.lineHeight.bodyLg,
-    "--leading-body-md": typography.lineHeight.bodyMd,
-    "--leading-body-sm": typography.lineHeight.bodySm,
-    "--leading-body-xs": typography.lineHeight.bodyXs,
-    "--leading-body-xxs": typography.lineHeight.bodyXxs,
+    "--font-weight-regular": typography.fontWeight.normal,
+    /* Prod uses rem for type sizes (16px root). TS keeps px for Figma parity. */
+    "--text-heading-xxl": pxToRem(typography.fontSize.headingXxl),
+    "--text-heading-xl": pxToRem(typography.fontSize.headingXl),
+    "--text-heading-lg": pxToRem(typography.fontSize.headingLg),
+    "--text-heading-md": pxToRem(typography.fontSize.headingMd),
+    "--text-heading-sm": pxToRem(typography.fontSize.headingSm),
+    "--text-heading-xs": pxToRem(typography.fontSize.headingXs),
+    "--leading-heading-xxl": pxToRem(typography.lineHeight.headingXxl),
+    "--leading-heading-xl": pxToRem(typography.lineHeight.headingXl),
+    "--leading-heading-lg": pxToRem(typography.lineHeight.headingLg),
+    "--leading-heading-md": pxToRem(typography.lineHeight.headingMd),
+    "--leading-heading-sm": pxToRem(typography.lineHeight.headingSm),
+    "--leading-heading-xs": pxToRem(typography.lineHeight.headingXs),
+    "--text-body-lg": pxToRem(typography.fontSize.bodyLg),
+    "--text-body-md": pxToRem(typography.fontSize.bodyMd),
+    "--text-body-sm": pxToRem(typography.fontSize.bodySm),
+    "--text-body-xs": pxToRem(typography.fontSize.bodyXs),
+    "--text-body-xxs": pxToRem(typography.fontSize.bodyXxs),
+    "--leading-body-lg": pxToRem(typography.lineHeight.bodyLg),
+    "--leading-body-md": pxToRem(typography.lineHeight.bodyMd),
+    "--leading-body-sm": pxToRem(typography.lineHeight.bodySm),
+    "--leading-body-xs": pxToRem(typography.lineHeight.bodyXs),
+    "--leading-body-xxs": pxToRem(typography.lineHeight.bodyXxs),
     "--tracking-heading-display": typography.letterSpacing.headingDisplay,
     "--tracking-overline": typography.letterSpacing.overline,
     "--tracking-none": typography.letterSpacing.none,
-    "--radius-sm": shape.radiusSm,
-    "--radius-md": shape.radiusMd,
-    "--radius-lg": shape.radiusLg,
-    "--radius-xl": shape.radiusXl,
-    "--radius-round": shape.radiusRound,
-    "--space-xxs": spacing.xxs,
-    "--space-xs": spacing.xs,
-    "--space-s": spacing.s,
-    "--space-m": spacing.m,
-    "--space-l": spacing.l,
-    "--space-xl": spacing.xl,
-    "--space-xxl": spacing.xxl,
-    "--space-xxxl": spacing.xxxl,
+    /* Prod shapeAndSpacingVariables.css — rem at 16px root. */
+    "--shape-sm": pxToRem(shape.radiusSm),
+    "--shape-md": pxToRem(shape.radiusMd),
+    "--shape-lg": pxToRem(shape.radiusLg),
+    "--shape-xl": pxToRem(shape.radiusXl),
+    "--shape-round": pxToRem(shape.radiusRound),
+    "--spacing-p-xxs": pxToRem(spacing.xxs),
+    "--spacing-p-xs": pxToRem(spacing.xs),
+    "--spacing-p-s": pxToRem(spacing.s),
+    "--spacing-p-m": pxToRem(spacing.m),
+    "--spacing-p-l": pxToRem(spacing.l),
+    "--spacing-p-xl": pxToRem(spacing.xl),
+    "--spacing-p-xxl": pxToRem(spacing.xxl),
+    "--spacing-p-xxxl": pxToRem(spacing.xxxl),
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,

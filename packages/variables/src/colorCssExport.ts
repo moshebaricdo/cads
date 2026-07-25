@@ -359,7 +359,18 @@ function tokenValue(
   return fallback ? fallback.toLowerCase() : "transparent";
 }
 
-export function buildSemanticColorsCss(system: ColorSystemExportDoc): string {
+export type SemanticColorsCssOptions = {
+  /**
+   * When true, dark theme selector is `.dark, [data-theme='Dark']` so the
+   * CADS runtime `.dark` class keeps working. Prod export omits `.dark`.
+   */
+  includeDarkClass?: boolean;
+};
+
+export function buildSemanticColorsCss(
+  system: ColorSystemExportDoc,
+  options: SemanticColorsCssOptions = {},
+): string {
   const stepById = new Map<string, PrimitiveStep>();
   const familyByStepId = new Map<string, PrimitiveFamily>();
   for (const family of system.families ?? []) {
@@ -385,6 +396,10 @@ export function buildSemanticColorsCss(system: ColorSystemExportDoc): string {
     return lines.sort(([a], [b]) => compareSemanticExportNames(a, b));
   };
 
+  const darkSelector = options.includeDarkClass
+    ? ".dark,\n[data-theme='Dark']"
+    : "[data-theme='Dark']";
+
   return [
     "/* CADS Semantic Colors */",
     "",
@@ -398,7 +413,82 @@ export function buildSemanticColorsCss(system: ColorSystemExportDoc): string {
     cssBlock(":root,\n[data-theme='Light']", buildLines("light")),
     "",
     "/* Dark Theme Semantic Colors */",
-    cssBlock("[data-theme='Dark']", buildLines("dark")),
+    cssBlock(darkSelector, buildLines("dark")),
     "",
   ].join("\n");
+}
+
+/* ---------------------------------------------------------------------------
+ * Hex resolution (for generated/cssVars.ts + MUI theme)
+ * ------------------------------------------------------------------------- */
+
+function buildStepIndex(
+  system: ColorSystemExportDoc,
+): Map<string, PrimitiveStep> {
+  const steps = new Map<string, PrimitiveStep>();
+  for (const family of system.families ?? []) {
+    for (const step of family.steps ?? []) {
+      steps.set(step.id, step);
+    }
+  }
+  return steps;
+}
+
+function semanticHex(
+  system: ColorSystemExportDoc,
+  token: SemanticToken,
+  mode: ThemeKey,
+  steps: Map<string, PrimitiveStep>,
+  cache = new Map<string, string>(),
+  stack = new Set<string>(),
+): string | null {
+  const cacheKey = `${token.id}::${mode}`;
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
+
+  if (stack.has(token.id)) {
+    return token.fallbackHex?.[mode]?.toUpperCase() ?? null;
+  }
+  stack.add(token.id);
+
+  let resolved: string | null = null;
+  const refId = token.ref?.[mode];
+  if (refId) {
+    const step = steps.get(refId);
+    if (step?.hex) resolved = step.hex.toUpperCase();
+  }
+  if (!resolved) {
+    const semanticRef = token.semanticRef?.[mode];
+    if (semanticRef) {
+      const target = system.semantics?.find((item) => item.id === semanticRef);
+      if (target) {
+        resolved = semanticHex(system, target, mode, steps, cache, stack);
+      }
+    }
+  }
+  if (!resolved) {
+    const fallback = token.fallbackHex?.[mode];
+    resolved = fallback ? fallback.toUpperCase() : null;
+  }
+
+  stack.delete(token.id);
+  if (resolved) cache.set(cacheKey, resolved);
+  return resolved;
+}
+
+/** Resolve semantic tokens to flat hex maps (e.g. `--background-brand-primary`). */
+export function resolveColorSystemToCssVars(
+  system: ColorSystemExportDoc,
+  mode: ThemeKey,
+): Map<string, string> {
+  const steps = buildStepIndex(system);
+  const output = new Map<string, string>();
+
+  for (const token of system.semantics ?? []) {
+    const hex = semanticHex(system, token, mode, steps);
+    if (!hex) continue;
+    output.set(semanticExportVarName(system, token), hex);
+  }
+
+  return output;
 }

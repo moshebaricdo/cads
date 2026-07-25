@@ -99,7 +99,7 @@ export const cadsManifest: {
         "--border-focused-primary",
         "--border-neutral-solid",
         "--control-height-medium",
-        "--radius-sm",
+        "--shape-sm",
         "--transition-colors",
         "--text-disabled-neutral-inverse",
       ],
@@ -224,7 +224,7 @@ export const cadsManifest: {
       ],
       usageRules: [
         "Use selected tokens (fill + border + text) for the active segment — never brand fills for selected chrome.",
-        "Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.",
+        "Segments are connected with -1px overlap; first/last get --shape-sm on outer corners only.",
         "Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.",
         "Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).",
         "Unselected press softens label/icon to --text-neutral-tertiary (hover keeps --text-neutral-primary); selected press keeps --text-selected-primary.",
@@ -292,7 +292,7 @@ export const cadsManifest: {
         "--text-neutral-quaternary",
         "--text-disabled-neutral",
         "--control-height-medium",
-        "--radius-sm",
+        "--shape-sm",
         "--transition-colors",
       ],
       usageRules: [
@@ -426,7 +426,7 @@ export const cadsManifest: {
         "--text-neutral-primary",
         "--text-disabled-neutral",
         "--control-height-medium",
-        "--radius-sm",
+        "--shape-sm",
       ],
       usageRules: [
         "Prefer TextInput over the deprecated TextField alias.",
@@ -536,7 +536,7 @@ export const cadsManifest: {
         "--text-neutral-quaternary",
         "--tracking-overline",
         "--shadow-md",
-        "--radius-sm",
+        "--shape-sm",
         "--background-brand-primary",
       ],
       usageRules: [
@@ -595,7 +595,7 @@ export const cadsManifest: {
         "--border-selected-primary",
         "--border-focused-primary",
         "--text-selected-primary",
-        "--radius-sm",
+        "--shape-sm",
       ],
       usageRules: [
         "Checked / indeterminate fills use selected tokens — never brand fills.",
@@ -883,7 +883,7 @@ export const cadsManifest: {
         "--text-selected-primary",
         "--border-neutral-solid",
         "--border-neutral-secondary",
-        "--radius-round",
+        "--shape-round",
       ],
       usageRules: [
         "Selected chrome uses selected tokens — never brand fills.",
@@ -938,7 +938,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-selected-primary",
         "--border-neutral-solid",
-        "--radius-round",
+        "--shape-round",
       ],
       usageRules: [
         "Multi-select: value is string[]. Selected chips use selected tokens.",
@@ -1217,7 +1217,7 @@ export const cadsManifest: {
         "--text-selected-primary",
         "--text-disabled-neutral",
         "--text-disabled-neutral-inverse",
-        "--radius-sm",
+        "--shape-sm",
       ],
       usageRules: [
         "Page type uses Segmented Button Block geometry with nav chrome tweaks (secondary fill + quaternary icons on first/prev/next/last).",
@@ -1295,7 +1295,7 @@ export const cadsManifest: {
         "--border-neutral-primary",
         "--border-neutral-secondary",
         "--background-neutral-primary",
-        "--radius-sm",
+        "--shape-sm",
       ],
       usageRules: [
         "Composes Dropdown (input, secondary, hug field + menuWidth=trigger) and Button (outlined secondary iconOnly).",
@@ -1352,7 +1352,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-brand-light",
         "--border-brand-mid",
-        "--radius-md",
+        "--shape-md",
         "--text-brand-primary-fixed",
       ],
       usageRules: [
@@ -1426,7 +1426,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-brand-light",
         "--border-brand-mid",
-        "--radius-md",
+        "--shape-md",
         "--shadow-lg",
       ],
       usageRules: [
@@ -1484,7 +1484,7 @@ export const cadsManifest: {
         "--background-neutral-primary",
         "--border-brand-primary",
         "--background-brand-light",
-        "--radius-md",
+        "--shape-md",
       ],
       usageRules: [
         "title and description are required.",
@@ -1534,7 +1534,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-neutral-tertiary",
         "--border-neutral-secondary",
-        "--radius-sm",
+        "--shape-sm",
       ],
       usageRules: [
         "Not the same as Chip (selectable). Use Tag for status/category labels.",
@@ -1596,7 +1596,7 @@ export const cadsManifest: {
         "--border-focused-primary",
         "--background-neutral-primary-inverse",
         "--text-neutral-primary-inverse",
-        "--radius-sm",
+        "--shape-sm",
         "--shadow-md",
       ],
       usageRules: [
@@ -1650,7 +1650,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-neutral-primary-inverse",
         "--text-neutral-primary-inverse",
-        "--radius-sm",
+        "--shape-sm",
         "--shadow-md",
         "--text-body-sm",
       ],
@@ -1706,7 +1706,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-neutral-primary",
         "--border-neutral-primary",
-        "--radius-lg",
+        "--shape-lg",
         "--shadow-md",
       ],
       usageRules: [
@@ -1808,9 +1808,9 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-neutral-primary",
         "--background-brand-primary",
-        "--radius-xl",
+        "--shape-xl",
         "--shadow-lg",
-        "--font-heading",
+        "--font-family-heading",
         "--text-heading-xl",
       ],
       usageRules: [
@@ -1858,7 +1858,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--background-neutral-primary",
         "--background-neutral-tertiary",
-        "--radius-xl",
+        "--shape-xl",
         "--shadow-lg",
         "--text-heading-lg",
       ],

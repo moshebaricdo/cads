@@ -27,7 +27,7 @@ function segmentCornerVars(
   index: number,
   count: number,
 ): CSSProperties {
-  const r = "var(--radius-sm)";
+  const r = "var(--shape-sm)";
   const isFirst = index === 0;
   const isLast = index === count - 1;
   if (isFirst && isLast) {

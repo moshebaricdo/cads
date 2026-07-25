@@ -59,7 +59,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--border-focused-primary",
         "--border-neutral-solid",
         "--control-height-medium",
-        "--radius-sm",
+        "--shape-sm",
         "--transition-colors",
         "--text-disabled-neutral-inverse"
       ],
@@ -181,7 +181,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       ],
       usageRules: [
         "Use selected tokens (fill + border + text) for the active segment — never brand fills for selected chrome.",
-        "Segments are connected with -1px overlap; first/last get --radius-sm on outer corners only.",
+        "Segments are connected with -1px overlap; first/last get --shape-sm on outer corners only.",
         "Labels are always Body Semi Bold — do not invent labelStyle / thick|thin.",
         "Figma Group exposes color=Primary only; unselected border is always --border-neutral-secondary (not a consumer prop).",
         "Unselected press softens label/icon to --text-neutral-tertiary (hover keeps --text-neutral-primary); selected press keeps --text-selected-primary.",
@@ -246,7 +246,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--text-neutral-quaternary",
         "--text-disabled-neutral",
         "--control-height-medium",
-        "--radius-sm",
+        "--shape-sm",
         "--transition-colors"
       ],
       usageRules: [
@@ -376,7 +376,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--text-neutral-primary",
         "--text-disabled-neutral",
         "--control-height-medium",
-        "--radius-sm"
+        "--shape-sm"
       ],
       usageRules: [
         "Prefer TextInput over the deprecated TextField alias.",
@@ -480,7 +480,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--text-neutral-quaternary",
         "--tracking-overline",
         "--shadow-md",
-        "--radius-sm",
+        "--shape-sm",
         "--background-brand-primary"
       ],
       usageRules: [
@@ -538,7 +538,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--border-selected-primary",
         "--border-focused-primary",
         "--text-selected-primary",
-        "--radius-sm"
+        "--shape-sm"
       ],
       usageRules: [
         "Checked / indeterminate fills use selected tokens — never brand fills.",
@@ -811,7 +811,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--text-selected-primary",
         "--border-neutral-solid",
         "--border-neutral-secondary",
-        "--radius-round"
+        "--shape-round"
       ],
       usageRules: [
         "Selected chrome uses selected tokens — never brand fills.",
@@ -865,7 +865,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-selected-primary",
         "--border-neutral-solid",
-        "--radius-round"
+        "--shape-round"
       ],
       usageRules: [
         "Multi-select: value is string[]. Selected chips use selected tokens.",
@@ -1136,7 +1136,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--text-selected-primary",
         "--text-disabled-neutral",
         "--text-disabled-neutral-inverse",
-        "--radius-sm"
+        "--shape-sm"
       ],
       usageRules: [
         "Page type uses Segmented Button Block geometry with nav chrome tweaks (secondary fill + quaternary icons on first/prev/next/last).",
@@ -1213,7 +1213,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--border-neutral-primary",
         "--border-neutral-secondary",
         "--background-neutral-primary",
-        "--radius-sm"
+        "--shape-sm"
       ],
       usageRules: [
         "Composes Dropdown (input, secondary, hug field + menuWidth=trigger) and Button (outlined secondary iconOnly).",
@@ -1268,7 +1268,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-brand-light",
         "--border-brand-mid",
-        "--radius-md",
+        "--shape-md",
         "--text-brand-primary-fixed"
       ],
       usageRules: [
@@ -1337,7 +1337,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-brand-light",
         "--border-brand-mid",
-        "--radius-md",
+        "--shape-md",
         "--shadow-lg"
       ],
       usageRules: [
@@ -1394,7 +1394,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--background-neutral-primary",
         "--border-brand-primary",
         "--background-brand-light",
-        "--radius-md"
+        "--shape-md"
       ],
       usageRules: [
         "title and description are required.",
@@ -1441,7 +1441,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-neutral-tertiary",
         "--border-neutral-secondary",
-        "--radius-sm"
+        "--shape-sm"
       ],
       usageRules: [
         "Not the same as Chip (selectable). Use Tag for status/category labels.",
@@ -1500,7 +1500,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--border-focused-primary",
         "--background-neutral-primary-inverse",
         "--text-neutral-primary-inverse",
-        "--radius-sm",
+        "--shape-sm",
         "--shadow-md"
       ],
       usageRules: [
@@ -1549,7 +1549,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-neutral-primary-inverse",
         "--text-neutral-primary-inverse",
-        "--radius-sm",
+        "--shape-sm",
         "--shadow-md",
         "--text-body-sm"
       ],
@@ -1604,7 +1604,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-neutral-primary",
         "--border-neutral-primary",
-        "--radius-lg",
+        "--shape-lg",
         "--shadow-md"
       ],
       usageRules: [
@@ -1703,9 +1703,9 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-neutral-primary",
         "--background-brand-primary",
-        "--radius-xl",
+        "--shape-xl",
         "--shadow-lg",
-        "--font-heading",
+        "--font-family-heading",
         "--text-heading-xl"
       ],
       usageRules: [
@@ -1752,7 +1752,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--background-neutral-primary",
         "--background-neutral-tertiary",
-        "--radius-xl",
+        "--shape-xl",
         "--shadow-lg",
         "--text-heading-lg"
       ],

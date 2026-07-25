@@ -1,18 +1,18 @@
-import './alert.css';const t = "_root_h70du_7", o = "_fullWidth_h70du_21", n = "_content_h70du_28", _ = "_iconWrap_h70du_36", c = "_text_h70du_54", i = "_trailing_h70du_64", l = {
+import './alert.css';const t = "_root_iv6ep_7", o = "_fullWidth_iv6ep_21", n = "_content_iv6ep_28", i = "_iconWrap_iv6ep_36", _ = "_text_iv6ep_54", e = "_trailing_iv6ep_64", c = {
   root: t,
   fullWidth: o,
   content: n,
-  iconWrap: _,
-  text: c,
-  trailing: i
+  iconWrap: i,
+  text: _,
+  trailing: e
 };
 export {
   n as content,
-  l as default,
+  c as default,
   o as fullWidth,
-  _ as iconWrap,
+  i as iconWrap,
   t as root,
-  c as text,
-  i as trailing
+  _ as text,
+  e as trailing
 };
 //# sourceMappingURL=alert.module.scss.js.map

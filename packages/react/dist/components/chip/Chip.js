@@ -27,7 +27,7 @@ const $ = C(function({
     "--chip-gap": a.gap,
     "--chip-font-size": a.fontSize,
     "--chip-line-height": a.lineHeight,
-    "--chip-font-weight": b === "thick" ? "var(--font-weight-semibold)" : "var(--font-weight-normal)",
+    "--chip-font-weight": b === "thick" ? "var(--font-weight-semi-bold)" : "var(--font-weight-regular)",
     "--chip-border": r ? "transparent" : o,
     "--chip-bg": r ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
     "--chip-fg": r ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",

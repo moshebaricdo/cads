@@ -74,11 +74,11 @@
       "gap": "desktop groups 24/24/16/16; clusters 16/16/8/8; mobile stack L16/M12/S8/XS6",
       "direction": "desktop row + divider; at ≤760px column with no divider",
       "borderWidth": "1px on dropdown + icon buttons",
-      "radius": "var(--radius-sm) on controls",
+      "radius": "var(--shape-sm) on controls",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "weight": "400 (labels) / 600 (dropdown value)",
       "size": "size-scaled body",
       "lineHeight": "size-scaled"

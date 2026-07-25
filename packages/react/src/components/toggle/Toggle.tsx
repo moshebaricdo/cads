@@ -193,7 +193,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       <span
         id={labelId}
         style={{
-          fontFamily: "var(--font-body)",
+          fontFamily: "var(--font-family-main)",
           fontWeight: 400,
           fontSize: dims.fontSize,
           lineHeight: dims.lineHeight,

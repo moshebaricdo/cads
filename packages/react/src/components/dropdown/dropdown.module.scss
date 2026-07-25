@@ -20,11 +20,11 @@
   gap: var(--dd-gap);
   padding-inline: var(--dd-px);
   padding-block: var(--dd-py);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   border: 1px solid var(--dd-border);
   background-color: var(--dd-bg);
   color: var(--dd-fg);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-weight: var(--dd-font-weight);
   font-size: var(--dd-font-size);
   line-height: var(--dd-line-height);
@@ -82,7 +82,7 @@
   flex-direction: column;
   align-items: stretch;
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   background-color: var(--background-neutral-primary);
   box-shadow: var(--shadow-md);
   overflow: hidden;
@@ -113,7 +113,7 @@
   color: var(--dd-item-fg);
   cursor: var(--dd-item-cursor, pointer);
   opacity: var(--dd-item-opacity, 1);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-weight: 400;
   font-size: var(--dd-item-font-size);
   line-height: var(--dd-item-line-height);
@@ -201,7 +201,7 @@
   box-sizing: border-box;
   width: var(--dd-checkbox);
   height: var(--dd-checkbox);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -254,7 +254,7 @@
   padding-right: var(--dd-group-pr);
   background-color: var(--background-neutral-primary);
   color: var(--text-neutral-quaternary);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-weight: 600;
   font-size: var(--dd-group-font-size);
   line-height: var(--dd-group-line-height);

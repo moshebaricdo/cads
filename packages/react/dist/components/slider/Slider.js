@@ -2,9 +2,9 @@ import { jsxs as p, jsx as s } from "react/jsx-runtime";
 import oe from "@mui/material/Slider";
 import { forwardRef as le, useId as G, useState as se } from "react";
 import { Button as z } from "../button/Button.js";
-import { FaIcon as ce } from "../../icons/FaIcon.js";
-import { SLIDER_CHROME as r, FIELD_WRAPPER_SIZE as ue, TRANSITION_COLORS as de } from "../../shared/controlSize.js";
-import c from "./slider.module.scss.js";
+import { FaIcon as ue } from "../../icons/FaIcon.js";
+import { SLIDER_CHROME as r, FIELD_WRAPPER_SIZE as ce, TRANSITION_COLORS as de } from "../../shared/controlSize.js";
+import u from "./slider.module.scss.js";
 const A = 300, be = {
   min: 0,
   max: 100,
@@ -24,7 +24,7 @@ function pe(e, i, l) {
   const t = Number(i), o = Number(l), a = o - t;
   if (!(a > 0))
     return { left: "50%", width: "0%", hidden: !0, extendLeft: !1 };
-  const u = t <= 0 && o >= 0 ? 0 : (t + o) / 2, n = (Number(e) - t) / a, d = (u - t) / a;
+  const c = t <= 0 && o >= 0 ? 0 : (t + o) / 2, n = (Number(e) - t) / a, d = (c - t) / a;
   return Math.abs(n - d) < 1e-6 ? {
     left: `${d * 100}%`,
     width: "0%",
@@ -46,13 +46,13 @@ function L(e, i) {
   return e != null && Number.isFinite(Number(e)) ? Number(e) : i;
 }
 function ge(e, i, l, t) {
-  const o = e === "center" ? me : be, a = L(i, o.min), u = L(l, o.max);
+  const o = e === "center" ? me : be, a = L(i, o.min), c = L(l, o.max);
   let n;
   return Array.isArray(t) ? n = t.map(
     (d) => Number.isFinite(Number(d)) ? Number(d) : o.defaultValue
   ) : n = L(t, o.defaultValue), {
     min: a,
-    max: u,
+    max: c,
     defaultValue: n
   };
 }
@@ -62,7 +62,7 @@ function ke(e, i, l) {
   if (l == null || !(l > 0)) return [e, i];
   const t = [], o = Math.floor((i - e) / l + 1e-9);
   for (let a = 0; a <= o; a++) {
-    const u = e + a * l, n = a === o && Math.abs(u - i) <= Math.abs(l) * 1e-6 ? i : u;
+    const c = e + a * l, n = a === o && Math.abs(c - i) <= Math.abs(l) * 1e-6 ? i : c;
     t.push(Number(n.toPrecision(12)));
   }
   return t.length >= 2 ? t : [e, i];
@@ -76,7 +76,7 @@ function xe({
   withControlOffsets: l
 }) {
   const t = e.length;
-  return /* @__PURE__ */ p("div", { "aria-hidden": !0, className: c.tickRow, children: [
+  return /* @__PURE__ */ p("div", { "aria-hidden": !0, className: u.tickRow, children: [
     l ? /* @__PURE__ */ s(
       "div",
       {
@@ -90,32 +90,32 @@ function xe({
     /* @__PURE__ */ s(
       "div",
       {
-        className: c.tickInner,
+        className: u.tickInner,
         style: {
           height: `calc(${r.stepperTickHeight} + ${r.stepperTickGap} + ${r.stepperLabelHeight})`
         },
         children: e.map((o, a) => {
-          const u = t > 1 ? a / (t - 1) : 0, n = ve(o);
+          const c = t > 1 ? a / (t - 1) : 0, n = ve(o);
           return /* @__PURE__ */ p(
             "div",
             {
-              className: c.tick,
+              className: u.tick,
               style: {
-                left: `calc(${r.knobInset} + (100% - 2 * ${r.knobInset}) * ${u})`,
+                left: `calc(${r.knobInset} + (100% - 2 * ${r.knobInset}) * ${c})`,
                 gap: r.stepperTickGap
               },
               children: [
                 /* @__PURE__ */ s(
                   "div",
                   {
-                    className: `${c.tickMark} ${i ? c.tickMarkDisabled : ""}`,
+                    className: `${u.tickMark} ${i ? u.tickMarkDisabled : ""}`,
                     style: { height: r.stepperTickHeight }
                   }
                 ),
                 /* @__PURE__ */ s(
                   "span",
                   {
-                    className: `${c.tickLabel} ${i ? c.tickLabelDisabled : ""}`,
+                    className: `${u.tickLabel} ${i ? u.tickLabelDisabled : ""}`,
                     style: { height: r.stepperLabelHeight },
                     children: n
                   }
@@ -145,7 +145,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
   label: t,
   displayValue: o,
   showDisplayValue: a = !0,
-  showLabelRow: u = !0,
+  showLabelRow: c = !0,
   helperText: n,
   helperIconName: d = "face-smile",
   showHelper: V = !0,
@@ -165,7 +165,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
   sx: q,
   ...J
 }, K) {
-  const H = G(), E = G(), v = ue[i], Q = he(B, C), { min: m, max: N, defaultValue: X } = ge(
+  const H = G(), E = G(), v = ce[i], Q = he(B, C), { min: m, max: N, defaultValue: X } = ge(
     w,
     U,
     j,
@@ -185,17 +185,17 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
   return /* @__PURE__ */ p(
     "div",
     {
-      className: c.wrapper,
+      className: u.wrapper,
       style: {
         gap: r.stackGap,
         width: Q
       },
       children: [
-        u && (t != null || a) ? /* @__PURE__ */ p("div", { className: c.labelRow, children: [
+        c && (t != null || a) ? /* @__PURE__ */ p("div", { className: u.labelRow, children: [
           /* @__PURE__ */ p(
             "div",
             {
-              className: c.labelInner,
+              className: u.labelInner,
               style: {
                 color: b ? "var(--text-disabled-neutral)" : x ? "var(--text-error-primary)" : "var(--text-neutral-primary)",
                 fontSize: v.labelFontSize,
@@ -206,11 +206,11 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                   "span",
                   {
                     id: H,
-                    style: { fontWeight: "var(--font-weight-semibold)" },
+                    style: { fontWeight: "var(--font-weight-semi-bold)" },
                     children: t
                   }
                 ) : /* @__PURE__ */ s("span", {}),
-                a ? /* @__PURE__ */ s("span", { style: { fontWeight: "var(--font-weight-normal)" }, children: ne }) : null
+                a ? /* @__PURE__ */ s("span", { style: { fontWeight: "var(--font-weight-regular)" }, children: ne }) : null
               ]
             }
           ),
@@ -218,7 +218,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
             "div",
             {
               id: E,
-              className: c.helperRow,
+              className: u.helperRow,
               style: {
                 gap: v.helperGap,
                 paddingBottom: r.helperPaddingBottom,
@@ -228,7 +228,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
               },
               children: [
                 /* @__PURE__ */ s(
-                  ce,
+                  ue,
                   {
                     name: x ? "circle-xmark" : fe(d),
                     fontSize: v.helperIconPx
@@ -242,13 +242,13 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
         /* @__PURE__ */ p(
           "div",
           {
-            className: c.barSection,
+            className: u.barSection,
             style: { gap: r.stackGap },
             children: [
               /* @__PURE__ */ p(
                 "div",
                 {
-                  className: c.barRow,
+                  className: u.barRow,
                   style: {
                     gap: r.controlGap,
                     height: r.trackHeight
@@ -279,7 +279,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                         disabled: b,
                         marks: !1,
                         onChange: (y, g) => re(y, g),
-                        "aria-labelledby": t && u ? H : void 0,
+                        "aria-labelledby": t && c ? H : void 0,
                         "aria-describedby": D ? E : void 0,
                         "aria-label": Z,
                         sx: {

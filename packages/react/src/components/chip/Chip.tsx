@@ -52,8 +52,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
     "--chip-line-height": dims.lineHeight,
     "--chip-font-weight":
       labelStyle === "thick"
-        ? "var(--font-weight-semibold)"
-        : "var(--font-weight-normal)",
+        ? "var(--font-weight-semi-bold)"
+        : "var(--font-weight-regular)",
     "--chip-border": selected ? "transparent" : borderDefault,
     "--chip-bg": selected
       ? "var(--background-selected-primary)"

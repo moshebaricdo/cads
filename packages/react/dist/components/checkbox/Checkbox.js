@@ -1,15 +1,15 @@
 import { jsx as o } from "react/jsx-runtime";
 import d from "@mui/material/Checkbox";
-import b from "@mui/material/FormControlLabel";
-import { forwardRef as u } from "react";
+import u from "@mui/material/FormControlLabel";
+import { forwardRef as b } from "react";
 import { FaIcon as x } from "../../icons/FaIcon.js";
 import { CHECKBOX_SIZE as s } from "../../shared/controlSize.js";
 import a from "./checkbox.module.scss.js";
-function r({
-  size: m,
+function n({
+  size: c,
   status: t
 }) {
-  const e = s[m];
+  const e = s[c];
   return /* @__PURE__ */ o(
     "span",
     {
@@ -30,24 +30,24 @@ function r({
     }
   );
 }
-const F = u(
+const F = b(
   function({
     label: t,
     labelStyle: e = "thin",
     size: i = "medium",
-    disabled: c = !1,
+    disabled: m = !1,
     sx: f,
     ...h
   }, p) {
-    const n = s[i], l = /* @__PURE__ */ o(
+    const r = s[i], l = /* @__PURE__ */ o(
       d,
       {
         ref: p,
         disableRipple: !0,
-        disabled: c,
-        icon: /* @__PURE__ */ o(r, { size: i, status: "off" }),
-        checkedIcon: /* @__PURE__ */ o(r, { size: i, status: "on" }),
-        indeterminateIcon: /* @__PURE__ */ o(r, { size: i, status: "indeterminate" }),
+        disabled: m,
+        icon: /* @__PURE__ */ o(n, { size: i, status: "off" }),
+        checkedIcon: /* @__PURE__ */ o(n, { size: i, status: "on" }),
+        indeterminateIcon: /* @__PURE__ */ o(n, { size: i, status: "indeterminate" }),
         "data-cads-press": "",
         className: a.root,
         sx: {
@@ -60,21 +60,21 @@ const F = u(
       }
     );
     return t == null ? l : /* @__PURE__ */ o(
-      b,
+      u,
       {
         control: l,
         label: t,
-        disabled: c,
+        disabled: m,
         className: a.labelWrapper,
         sx: {
-          gap: n.gap,
+          gap: r.gap,
           "& .MuiCheckbox-root": {
-            marginTop: n.labelAlignOffset
+            marginTop: r.labelAlignOffset
           },
           "& .MuiFormControlLabel-label": {
-            fontSize: n.fontSize,
-            lineHeight: n.lineHeight,
-            fontWeight: e === "thick" ? "var(--font-weight-semibold)" : "var(--font-weight-normal)"
+            fontSize: r.fontSize,
+            lineHeight: r.lineHeight,
+            fontWeight: e === "thick" ? "var(--font-weight-semi-bold)" : "var(--font-weight-regular)"
           }
         }
       }

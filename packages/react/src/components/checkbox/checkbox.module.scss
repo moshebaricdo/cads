@@ -1,7 +1,7 @@
 /* Checkbox interactive state chrome — CSS vars set on MUI root drive glyph colors. */
 
 .box {
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   border-width: 2px;
   border-style: solid;
   box-sizing: border-box;
@@ -80,7 +80,7 @@
   align-items: flex-start;
 
   :global(.MuiFormControlLabel-label) {
-    font-family: var(--font-body);
+    font-family: var(--font-family-main);
     color: var(--text-neutral-primary);
   }
 

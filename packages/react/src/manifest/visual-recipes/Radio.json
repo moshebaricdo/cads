@@ -85,11 +85,11 @@
       "padding": "0 (circle); labeled control +2px top on L/M/S, 0 on XS",
       "gap": "8px L/M, 6px S/XS",
       "borderWidth": "2px",
-      "radius": "var(--radius-round)",
+      "radius": "var(--shape-round)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "size-scaled",
       "weight": "thin=400 / thick=600",
       "lineHeight": "size-scaled"
@@ -325,7 +325,7 @@
           "fontWeight": "600"
         },
         "expectedVariables": [
-          "--font-weight-semibold"
+          "--font-weight-semi-bold"
         ],
         "fixturePath": "",
         "referenceScreenshot": "captures/figma-radio-label.png",
@@ -416,7 +416,7 @@
           "gap": "6px"
         },
         "expectedVariables": [
-          "--font-weight-semibold"
+          "--font-weight-semi-bold"
         ],
         "fixturePath": "",
         "referenceScreenshot": "captures/figma-radio-label.png",

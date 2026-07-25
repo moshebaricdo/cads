@@ -73,11 +73,11 @@
       "padding": "0 (box); 2px top offset when labeled on L/M/S, 0 on XS",
       "gap": "8px (L/M) / 6px (S/XS)",
       "borderWidth": "2px",
-      "radius": "var(--radius-sm)",
+      "radius": "var(--shape-sm)",
       "overlap": "0"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "size-scaled",
       "weight": "thin=400 / thick=600",
       "lineHeight": "size-scaled"
@@ -297,7 +297,7 @@
           "box": "22px",
           "gap": "8px",
           "borderWidth": "2px",
-          "radius": "var(--radius-sm)"
+          "radius": "var(--shape-sm)"
         },
         "expectedVariables": [
           "--background-neutral-primary",

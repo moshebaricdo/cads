@@ -61,7 +61,7 @@
       "maxWidth": "256"
     },
     "typography": {
-      "family": "var(--font-body)",
+      "family": "var(--font-family-main)",
       "size": "var(--text-body-sm)",
       "weight": "400",
       "lineHeight": "var(--leading-body-sm)"

@@ -5,7 +5,7 @@ import { FaIcon as R } from "../../icons/FaIcon.js";
 import { SEGMENTED_SIZE as z } from "../../shared/controlSize.js";
 import k from "./segmentedButton.module.scss.js";
 function X(l, o) {
-  const t = "var(--radius-sm)", d = l === 0, c = l === o - 1;
+  const t = "var(--shape-sm)", d = l === 0, c = l === o - 1;
   return d && c ? { "--seg-tl": t, "--seg-tr": t, "--seg-bl": t, "--seg-br": t } : d ? { "--seg-tl": t, "--seg-tr": "0", "--seg-bl": t, "--seg-br": "0" } : c ? { "--seg-tl": "0", "--seg-tr": t, "--seg-bl": "0", "--seg-br": t } : { "--seg-tl": "0", "--seg-tr": "0", "--seg-bl": "0", "--seg-br": "0" };
 }
 function Y(l, o, t, d, c) {

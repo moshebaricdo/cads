@@ -8,6 +8,7 @@ export {
   controlHeights,
   motion,
   nonColorCssVars,
+  pxToRem,
 } from "./nonColorVariables";
 export type { MotionSpringPreset, ZIndexLayer } from "./nonColorVariables";
 
@@ -23,6 +24,7 @@ export {
   comparePrimitiveExportNames,
   buildPrimitiveColorsCss,
   buildSemanticColorsCss,
+  resolveColorSystemToCssVars,
 } from "./colorCssExport";
 export type {
   ThemeKey,
@@ -30,7 +32,19 @@ export type {
   PrimitiveFamily,
   SemanticToken,
   ColorSystemExportDoc,
+  SemanticColorsCssOptions,
 } from "./colorCssExport";
+
+export {
+  buildFontVariablesCss,
+  buildTypographyVariablesCss,
+  buildShapeAndSpacingCss,
+  buildMotionCss,
+  buildResidualCssVars,
+} from "./nonColorCssExport";
+export type { FontVariablesCssOptions } from "./nonColorCssExport";
+
+export { buildTypographyModuleScss } from "./typographyScssExport";
 
 /** Figma file key for the CADS design system. */
 export const CADS_FIGMA_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";

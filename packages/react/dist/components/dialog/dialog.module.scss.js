@@ -1,33 +1,33 @@
-import './dialog.css';const t = "_scrim_1wtuo_6", o = "_outerWrap_1wtuo_18", c = "_iconBadge_1wtuo_26", _ = "_surface_1wtuo_40", n = "_iconTop_1wtuo_59", s = "_customContent_1wtuo_62", e = "_contentWrap_1wtuo_66", u = "_imageSlot_1wtuo_74", i = "_copy_1wtuo_86", a = "_title_1wtuo_94", r = "_description_1wtuo_104", p = "_actions_1wtuo_112", w = "_customSlot_1wtuo_118", l = {
+import './dialog.css';const t = "_scrim_1ea3p_6", o = "_outerWrap_1ea3p_18", c = "_iconBadge_1ea3p_26", e = "_surface_1ea3p_40", _ = "_iconTop_1ea3p_59", n = "_customContent_1ea3p_62", a = "_contentWrap_1ea3p_66", s = "_imageSlot_1ea3p_74", p = "_copy_1ea3p_86", i = "_title_1ea3p_94", r = "_description_1ea3p_104", u = "_actions_1ea3p_112", l = "_customSlot_1ea3p_118", m = {
   scrim: t,
   outerWrap: o,
   iconBadge: c,
-  surface: _,
-  default: "_default_1wtuo_56",
-  iconTop: n,
-  customContent: s,
-  contentWrap: e,
-  imageSlot: u,
-  copy: i,
-  title: a,
+  surface: e,
+  default: "_default_1ea3p_56",
+  iconTop: _,
+  customContent: n,
+  contentWrap: a,
+  imageSlot: s,
+  copy: p,
+  title: i,
   description: r,
-  actions: p,
-  customSlot: w
+  actions: u,
+  customSlot: l
 };
 export {
-  p as actions,
-  e as contentWrap,
-  i as copy,
-  s as customContent,
-  w as customSlot,
-  l as default,
+  u as actions,
+  a as contentWrap,
+  p as copy,
+  n as customContent,
+  l as customSlot,
+  m as default,
   r as description,
   c as iconBadge,
-  n as iconTop,
-  u as imageSlot,
+  _ as iconTop,
+  s as imageSlot,
   o as outerWrap,
   t as scrim,
-  _ as surface,
-  a as title
+  e as surface,
+  i as title
 };
 //# sourceMappingURL=dialog.module.scss.js.map

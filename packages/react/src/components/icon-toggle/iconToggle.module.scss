@@ -2,7 +2,7 @@
   width: var(--it-size);
   height: var(--it-size);
   padding: var(--it-padding);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   color: inherit;
   background-color: transparent;
   transition: var(--transition-colors);
@@ -48,8 +48,8 @@
 }
 
 .label {
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-normal);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
   color: var(--text-neutral-primary);
   white-space: nowrap;
   font-size: var(--it-label-font-size);
