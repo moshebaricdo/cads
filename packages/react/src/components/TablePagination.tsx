@@ -116,6 +116,7 @@ export const TablePagination = forwardRef<HTMLDivElement, TablePaginationProps>(
         role="navigation"
         aria-label={ariaLabel ?? "Table pagination"}
         className={className}
+        data-cads-component="TablePagination"
         sx={{
           display: "inline-flex",
           flexDirection: "row",

@@ -385,6 +385,10 @@ function labelFor(el: HTMLElement): string {
   if (el.hasAttribute("data-docs-inspect-composite")) {
     if (el.querySelector("[data-cads-dropdown]")) return "DROPDOWN";
   }
+  const cadsName = el.getAttribute("data-cads-component");
+  if (cadsName) {
+    return cadsName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase();
+  }
   if (el.getAttribute("role") === "switch") return "BUTTON";
   return el.tagName.toUpperCase();
 }
@@ -666,6 +670,31 @@ function inspectRect(el: HTMLElement): {
 }
 
 /**
+ * Outermost `[data-cads-component]` under host (shallowest depth). Falls back
+ * to a Dropdown root. Needed for composites like TablePagination that embed a
+ * Dropdown + Buttons — without this, rulers lock onto the rows-per-page
+ * Dropdown only.
+ */
+function pickPrimaryControl(host: HTMLElement): HTMLElement | null {
+  let best: HTMLElement | null = null;
+  let bestDepth = Number.POSITIVE_INFINITY;
+  for (const el of host.querySelectorAll<HTMLElement>("[data-cads-component]")) {
+    let depth = 0;
+    let node: HTMLElement | null = el;
+    while (node && node !== host) {
+      depth += 1;
+      node = node.parentElement;
+    }
+    if (depth < bestDepth) {
+      bestDepth = depth;
+      best = el;
+    }
+  }
+  if (best) return best;
+  return host.querySelector<HTMLElement>("[data-cads-dropdown]");
+}
+
+/**
  * Primary preview component for idle inspect (Fluid Functionalism-style):
  * prefer the preview’s direct child (the control root), else largest node.
  */
@@ -678,10 +707,8 @@ function pickDefaultTarget(stage: HTMLElement): HTMLElement | null {
     }
     // Padded inspect composite (Dropdown open menu) — rulers span this box.
     if (child.hasAttribute("data-docs-inspect-composite")) return child;
-    // Other wrappers — prefer the control root inside.
-    const nested = child.querySelector<HTMLElement>(
-      "[data-cads-dropdown], [data-cads-component]",
-    );
+    // Other wrappers — prefer the outermost control root inside.
+    const nested = pickPrimaryControl(child);
     if (nested && isInspectableNode(stage, nested)) return nested;
     return child;
   }

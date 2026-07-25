@@ -484,6 +484,7 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
       <div
         ref={setRootRef}
         className="CadsPagination-root"
+        data-cads-component="Pagination"
         style={{
           /* Full width so layout=auto can measure the parent; center the
              hug-sized segmented/compact control inside that measure box. */
