@@ -41,7 +41,7 @@ export type DocsNavItemProps = LinkProps | ButtonProps;
 /**
  * Docs-only sidebar row — not a CADS library component.
  * Spec: Figma sidebar `16847:56434`. Fill comes from DocsNavScroller’s
- * floating spring highlight (not per-row fades).
+ * floating highlight (not per-row fades).
  */
 export function DocsNavItem(props: DocsNavItemProps) {
   const {
@@ -188,7 +188,7 @@ export function DocsNavSection({
   collapsed = false,
 }: {
   label: string;
-  /** Stable key for hover-chase section boundaries. */
+  /** Stable key for the nav section (Resources / Foundations / Components). */
   sectionId: string;
   children: ReactNode;
   collapsed?: boolean;

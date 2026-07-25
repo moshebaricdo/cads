@@ -1,12 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
@@ -24,13 +24,6 @@ function measureBox(root: HTMLElement, el: HTMLElement): Box {
   };
 }
 
-function sectionKey(el: HTMLElement): string {
-  return (
-    el.closest("[data-nav-section]")?.getAttribute("data-nav-section") ??
-    "__root"
-  );
-}
-
 /**
  * Fill goes on the group folder / top-level leaf. Active children are
  * text-only (bold + primary) — same as the pre-highlight docs pattern.
@@ -46,20 +39,17 @@ function findActiveItem(root: HTMLElement): HTMLElement | null {
   );
 }
 
-/**
- * Snappier than `spring.fast` so the fill keeps up with CSS
- * `duration-medium` submenu expand/collapse.
- */
-const CHASE_SPRING = { type: "spring" as const, duration: 0.08, bounce: 0 };
+function boxStyle(box: Box): CSSProperties {
+  return {
+    transform: `translate(${box.x}px, ${box.y}px)`,
+    width: box.width,
+    height: box.height,
+  };
+}
 
 /**
  * Docs-only floating nav highlights — not a CADS catalog pattern.
- *
- * Hover is keyed by top-level nav section (Resources / Foundations /
- * Components). Within Components it springs continuously across group
- * folders and subitems. Crossing Resources ↔ Foundations ↔ Components
- * remounts (fade) instead of sliding. Active fill springs when the same
- * row is displaced by a submenu; snaps when the active row changes.
+ * Highlights snap instantly (no spring / chase / fade).
  */
 export function DocsNavScroller({
   children,
@@ -72,44 +62,32 @@ export function DocsNavScroller({
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const hoverElRef = useRef<HTMLElement | null>(null);
-  const activeElRef = useRef<HTMLElement | null>(null);
   const clearHoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
-  const reduceMotion = useReducedMotion();
 
   const [activeBox, setActiveBox] = useState<Box | null>(null);
-  const [activeVisible, setActiveVisible] = useState(false);
-  /** Snap when switching active rows; spring when the same row is displaced. */
-  const [activeSnap, setActiveSnap] = useState(true);
   /** Pointer over the active row — darkens fill to tertiary. */
   const [activeHovered, setActiveHovered] = useState(false);
-
-  const [hover, setHover] = useState<{
-    section: string;
-    box: Box;
-  } | null>(null);
+  const [hoverBox, setHoverBox] = useState<Box | null>(null);
 
   const syncHover = useCallback(() => {
     const root = rootRef.current;
     const el = hoverElRef.current;
     if (!root || !el || !root.contains(el)) {
       hoverElRef.current = null;
-      setHover(null);
+      setHoverBox(null);
       setActiveHovered(false);
       return;
     }
     const active = findActiveItem(root);
     if (active === el) {
-      setHover(null);
+      setHoverBox(null);
       setActiveHovered(true);
       return;
     }
     setActiveHovered(false);
-    setHover({
-      section: sectionKey(el),
-      box: measureBox(root, el),
-    });
+    setHoverBox(measureBox(root, el));
   }, []);
 
   const syncActive = useCallback(() => {
@@ -117,16 +95,11 @@ export function DocsNavScroller({
     if (!root) return;
     const active = findActiveItem(root);
     if (!active) {
-      activeElRef.current = null;
-      setActiveVisible(false);
+      setActiveBox(null);
       return;
     }
-    const sameRow = activeElRef.current === active;
-    activeElRef.current = active;
-    setActiveSnap(!sameRow || Boolean(reduceMotion));
     setActiveBox(measureBox(root, active));
-    setActiveVisible(true);
-  }, [reduceMotion]);
+  }, []);
 
   const syncHighlights = useCallback(() => {
     syncActive();
@@ -161,7 +134,7 @@ export function DocsNavScroller({
       clearHoverTimerRef.current = null;
     }
     hoverElRef.current = null;
-    setHover(null);
+    setHoverBox(null);
     setActiveHovered(false);
   }
 
@@ -182,7 +155,7 @@ export function DocsNavScroller({
     clearHoverTimerRef.current = setTimeout(() => {
       clearHoverTimerRef.current = null;
       hoverElRef.current = null;
-      setHover(null);
+      setHoverBox(null);
       setActiveHovered(false);
     }, 40);
   }
@@ -213,16 +186,13 @@ export function DocsNavScroller({
     hoverElRef.current = item;
     const active = findActiveItem(root);
     if (active === item) {
-      setHover(null);
+      setHoverBox(null);
       setActiveHovered(true);
       return;
     }
 
     setActiveHovered(false);
-    setHover({
-      section: sectionKey(item),
-      box: measureBox(root, item),
-    });
+    setHoverBox(measureBox(root, item));
   }
 
   function onPointerLeave() {
@@ -236,12 +206,6 @@ export function DocsNavScroller({
     [],
   );
 
-  const fade = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.08, ease: "easeOut" as const };
-  const travel = reduceMotion ? { duration: 0 } : CHASE_SPRING;
-  const activeTravel = activeSnap ? { duration: 0 } : travel;
-
   return (
     <div
       ref={rootRef}
@@ -249,62 +213,22 @@ export function DocsNavScroller({
       onPointerOver={onPointerOver}
       onPointerLeave={onPointerLeave}
     >
-      <motion.div
-        className="docs-nav-highlight docs-nav-highlight--active"
-        aria-hidden
-        data-hover={activeHovered || undefined}
-        initial={false}
-        animate={{
-          x: activeBox?.x ?? 0,
-          y: activeBox?.y ?? 0,
-          width: activeBox?.width ?? 0,
-          height: activeBox?.height ?? 0,
-          opacity: activeVisible && activeBox ? 1 : 0,
-        }}
-        transition={{
-          x: activeTravel,
-          y: activeTravel,
-          width: activeTravel,
-          height: activeTravel,
-          opacity: fade,
-        }}
-      />
+      {activeBox ? (
+        <div
+          className="docs-nav-highlight docs-nav-highlight--active"
+          aria-hidden
+          data-hover={activeHovered || undefined}
+          style={boxStyle(activeBox)}
+        />
+      ) : null}
 
-      {/*
-        key=section remounts when crossing Resources / Foundations / Components.
-        Within Components, one key → continuous spring across groups + subitems.
-      */}
-      <AnimatePresence>
-        {hover ? (
-          <motion.div
-            key={hover.section}
-            className="docs-nav-highlight docs-nav-highlight--hover"
-            aria-hidden
-            initial={{
-              opacity: 0,
-              x: hover.box.x,
-              y: hover.box.y,
-              width: hover.box.width,
-              height: hover.box.height,
-            }}
-            animate={{
-              opacity: 1,
-              x: hover.box.x,
-              y: hover.box.y,
-              width: hover.box.width,
-              height: hover.box.height,
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              opacity: fade,
-              x: travel,
-              y: travel,
-              width: travel,
-              height: travel,
-            }}
-          />
-        ) : null}
-      </AnimatePresence>
+      {hoverBox ? (
+        <div
+          className="docs-nav-highlight docs-nav-highlight--hover"
+          aria-hidden
+          style={boxStyle(hoverBox)}
+        />
+      ) : null}
 
       {children}
     </div>

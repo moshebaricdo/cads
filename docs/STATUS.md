@@ -51,7 +51,7 @@ Last updated: 2026-07-25
 - [x] **Dropdown Menu Item state sync (2026-07-24)** — Figma `896:3791` default/defaultError recipes: destructive press stays `error-light` + `text-error-secondary`; selected press returns to `selected-primary` (hover still `selected-strong`); disabled uses `--text-disabled-*` / `--background-disabled-neutral` (no opacity fade). Checklist itemType left unchanged.
 - [x] **Pressed-state consistency (2026-07-24)** — Button / TextInput / Dropdown Button aligned to Figma after Motions-era state cleanup. Contained press keeps `*-strong` (secondary returns to inverse); outlined + Dropdown trigger press keep tertiary; TextInput press keeps secondary (no white flash). See evidence summary below.
 - [x] **Icon Tooltip (2026-07-25)** — new docs-driven component (no matching Figma set found in `DGekOeToRVifvFAhfqpeC1`): bare info-style icon affordance that composes `Tooltip` for the bubble/caret, with no button chrome — only a required focus ring. Catalogued under Messaging. `color` primary (brand) / secondary (neutral-primary) / tertiary (neutral-quaternary, default), shared control `size` scale, `iconName` default `circle-info`. See evidence summary below.
-- [x] **Motion springs (2026-07-25)** — `motion.spring.fast|moderate|slow` (Apple duration+bounce) in `@codeai/cads-variables`; Indicator on Toggle/Tabs uses `spring.moderate` via Motion when `experimentalMotion` is on (CSS easing remains the fallback); docs sidebar floating highlight uses `spring.fast` (site-only — not catalog Highlight chase / not dropdown menus). See evidence summary below.
+- [x] **Motion springs (2026-07-25)** — `motion.spring.fast|moderate|slow` (Apple duration+bounce) in `@codeai/cads-variables`; Indicator on Toggle/Tabs uses `spring.moderate` via Motion when `experimentalMotion` is on (CSS easing remains the fallback). Docs sidebar floating highlight snaps instantly (no spring chase). See evidence summary below.
 - [x] **Overlay portal + z-index layers (2026-07-25)** — Dropdown menus portal by default (fixes playground/overflow clipping); fixture `disablePortal` escape hatch; code-owned `--z-*` ladder (drawer 1200 / modal·dropdown·popover 1300 / toast 1400 / tooltip 1500) wired through theme + Poppers; Popover click-away ignores nested menus; Dialog/Modal/Drawer `disableEnforceFocus` for nested focus; Shape page Stacking table.
 
 ## Icon Tooltip — evidence summary
@@ -146,7 +146,7 @@ Toast: open + placement + offset (default 64) via MUI Snackbar; transitionDurati
 Slider thumb: no Press (MUI position transform fights scale)
 TextInput: hover/press suppressed while :focus-within (stays white)
 Highlight chase → deferred in catalog (no dropdown row chase — keyboard noise)
-Docs site-only: DocsNavScroller floating highlight uses spring.fast (not a DS menu pattern)
+Docs site-only: DocsNavScroller floating highlight snaps instantly (not a DS menu pattern)
 Docs: /variables/core — Spring primitives tab + mini-UI card
 Verification: pnpm typecheck; pnpm build
 ```

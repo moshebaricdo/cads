@@ -523,7 +523,7 @@ a.docs-card:focus-visible {
   overflow-x: hidden;
 }
 
-/* Floating highlights under docs nav rows (DocsNavScroller + spring.fast). */
+/* Floating highlights under docs nav rows (DocsNavScroller — instant snap). */
 .docs-nav-highlight {
   position: absolute;
   top: 0;
@@ -532,21 +532,10 @@ a.docs-card:focus-visible {
   border-radius: var(--radius-sm);
   background: var(--background-neutral-secondary);
   pointer-events: none;
-  will-change: transform, width, height, opacity;
-}
-
-.docs-nav-highlight--active {
-  transition: background-color var(--duration-fast) var(--easing-out);
 }
 
 .docs-nav-highlight--active[data-hover] {
   background: var(--background-neutral-tertiary);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .docs-nav-highlight--active {
-    transition: none;
-  }
 }
 
 .docs-sidebar-scrim {
@@ -584,7 +573,7 @@ a.docs-card:focus-visible {
 .docs-shell[data-sidebar="collapsed"] .docs-nav-section + .docs-nav-section {
   position: relative;
   margin-top: 8px;
-  padding-top: 8px;
+  padding-top: 12px;
 }
 
 .docs-shell[data-sidebar="collapsed"] .docs-nav-section + .docs-nav-section::before {
