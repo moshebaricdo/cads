@@ -3,7 +3,7 @@
 .rangeList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--spacing-p-xs);
 }
 
 .range {
@@ -29,7 +29,7 @@
   height: 56px;
   padding: 0;
   border: 1px solid #1212121a;
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   background-color: var(--swatch-color);
   cursor: pointer;
 
@@ -44,9 +44,9 @@
 }
 
 .swatchStep {
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: 14px;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: 1;
   color: var(--swatch-step-ink, #000000);
   opacity: 0;

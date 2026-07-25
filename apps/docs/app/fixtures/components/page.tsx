@@ -132,7 +132,7 @@ function FixtureBody() {
         minHeight: "100vh",
         background: "var(--background-neutral-primary)",
         color: "var(--text-neutral-primary)",
-        fontFamily: "var(--font-body)",
+        fontFamily: "var(--font-family-main)",
         padding: 24,
       }}
     >

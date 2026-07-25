@@ -87,7 +87,7 @@
 .tickLabel {
   position: absolute;
   z-index: 2;
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: 9px;
   font-weight: var(--font-weight-medium);
   line-height: 1;
@@ -149,7 +149,7 @@
     transparent
   );
   color: var(--text-neutral-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xxs);
   font-weight: var(--font-weight-medium);
   line-height: 1;
@@ -203,9 +203,9 @@
     transparent
   );
   color: var(--text-neutral-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: 1;
   z-index: 4;
   pointer-events: none;
@@ -215,12 +215,12 @@
   position: fixed;
   width: max-content;
   max-width: min(280px, calc(100vw - 16px));
-  padding: var(--space-xxs);
-  border-radius: var(--radius-sm);
+  padding: var(--spacing-p-xxs);
+  border-radius: var(--shape-sm);
   background: var(--background-neutral-primary-inverse);
   color: var(--text-neutral-primary-inverse);
   box-shadow: var(--shadow-md);
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xxs);
   line-height: var(--leading-body-xxs);
   white-space: nowrap;
@@ -229,7 +229,7 @@
 .popoverTitle {
   margin: 0 0 2px;
   font-size: var(--text-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: var(--leading-body-xxs);
   color: var(--text-neutral-primary-inverse);
   text-transform: uppercase;
@@ -237,5 +237,5 @@
 
 .popoverLine {
   color: var(--text-neutral-primary-inverse);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-regular);
 }

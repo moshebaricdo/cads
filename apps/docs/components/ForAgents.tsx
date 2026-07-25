@@ -36,10 +36,10 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
           </p>
         </div>
         {zipReady ? (
-          <div className={overviewStyles.links}>
+          <div className={overviewStyles.headerAction}>
             <Button
               href={SKILL_ZIP_ROUTE}
-              size="small"
+              size="extraSmall"
               color="secondary"
               startIconName="download"
             >

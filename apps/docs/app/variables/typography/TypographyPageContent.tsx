@@ -1,11 +1,31 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { typography } from "@codeai/cads-variables";
+import {
+  buildFontVariablesCss,
+  buildTypographyModuleScss,
+  pxToRem,
+  typography,
+} from "@codeai/cads-variables";
 import { SegmentedButton, Tabs } from "@codeai/cads-react";
+import { ExportCssButton } from "@/components/ExportCssButton";
 import ui from "@/components/docs-ui.module.scss";
 import shared from "../FoundationPage.module.scss";
 import local from "./typography.module.scss";
+
+/** Prod ingest: CSS vars + style recipes. Relies on prod's existing `font.scss`. */
+const TYPOGRAPHY_EXPORT_FILES = [
+  {
+    filename: "fontVariables.css",
+    build: () => buildFontVariablesCss(),
+    mimeType: "text/css;charset=utf-8",
+  },
+  {
+    filename: "typography.module.scss",
+    build: buildTypographyModuleScss,
+    mimeType: "text/x-scss;charset=utf-8",
+  },
+];
 
 type WeightOption = {
   value: string;
@@ -58,9 +78,30 @@ const MONO_WEIGHT_OPTIONS: WeightOption[] = [
 ];
 
 /** Use loaded next/font CSS variables — bare "Geist" / "Space Grotesk" names won't hit the VF files. */
-const FONT_HEADING = "var(--font-heading)";
-const FONT_BODY = "var(--font-body)";
-const FONT_MONO = "var(--font-mono)";
+const FONT_HEADING = "var(--font-family-heading)";
+const FONT_BODY = "var(--font-family-main)";
+const FONT_MONO = "var(--font-family-mono)";
+
+const FONT_FAMILIES = [
+  {
+    variable: "--font-family-heading",
+    label: "Heading",
+    family: "Space Grotesk",
+    use: "Display headings (H1–H2)",
+  },
+  {
+    variable: "--font-family-main",
+    label: "Main",
+    family: "Geist",
+    use: "Body copy, smaller headings, UI chrome",
+  },
+  {
+    variable: "--font-family-mono",
+    label: "Mono",
+    family: "System monospace",
+    use: "Code samples (no brand mono in prod — browser/system stack)",
+  },
+] as const;
 
 const HEADING_SIZES = [
   {
@@ -362,7 +403,7 @@ function StyleRow({
     style.tokenName,
     style.familyLabel,
     weightLabel,
-    `${style.size} / ${style.lineHeight}`,
+    `${pxToRem(style.size)} / ${pxToRem(style.lineHeight)}`,
     style.letterSpacingLabel ?? "0%",
   ].join(" · ");
 
@@ -384,9 +425,9 @@ function StyleRow({
         aria-label={`${style.label} sample`}
         style={{
           fontFamily: style.family,
-          fontSize: style.size,
+          fontSize: pxToRem(style.size),
           fontWeight: Number(weightValue),
-          lineHeight: style.lineHeight,
+          lineHeight: pxToRem(style.lineHeight),
           letterSpacing: style.letterSpacing,
           textTransform: style.uppercase ? "uppercase" : undefined,
           textDecoration: style.underline ? "underline" : undefined,
@@ -426,70 +467,112 @@ export function TypographyPageContent() {
     activeWeight?.label ?? activeTab.styles[0]?.weightLabel ?? "Regular";
 
   return (
-    <section className={shared.section} aria-labelledby="type-styles">
-      <h2 id="type-styles" className={`${ui.h2} ${shared.sectionTitle}`}>
-        Text styles
-      </h2>
-      <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
-        Text styles are broken into headings, body, overline, label, link, and
-        mono. Each one pairs a size token (like heading-xxl or body-xs) with a
-        family, weight, and tracking so you can match Figma without guessing.
-        Semi Bold is the default heading weight.
-      </p>
-      <div className={shared.sectionContent}>
-        <div className={shared.tabbedContent}>
-          <div className={local.tabRow}>
-            <Tabs
-              type="primary"
-              size="small"
-              className={local.tabsFlush}
-              aria-label="Typography style groups"
-              value={tab}
-              onChange={setTab}
-              items={STYLE_TABS.map(({ value, label }) => ({ value, label }))}
-            />
-            {weightOptions ? (
-              <div className={local.tabWeight}>
-                <SegmentedButton
-                  size="extraSmall"
-                  value={weightKey}
-                  onChange={(value) =>
-                    setWeightsByTab((current) => ({
-                      ...current,
-                      [tab]: value,
-                    }))
-                  }
-                  aria-label={`${activeTab.label} weight`}
-                  options={weightOptions.map((option) => ({
-                    value: option.value,
-                    label: option.label,
-                  }))}
-                />
-              </div>
-            ) : null}
-          </div>
-          <div className={shared.dividedList}>
-            {activeTab.styles.map((style) => (
-              <StyleRow
-                key={style.label}
-                style={style}
-                sample={activeTab.sample}
-                measure={tab === "body" || tab === "mono"}
-                weightValue={
-                  weightOptions
-                    ? weightValue
-                    : (style.weight ?? WEIGHTS.regular)
-                }
-                weightLabel={
-                  weightOptions
-                    ? weightLabel
-                    : (style.weightLabel ?? "Regular")
-                }
+    <>
+      <section className={shared.section} aria-labelledby="type-styles">
+        <h2 id="type-styles" className={`${ui.h2} ${shared.sectionTitle}`}>
+          Text styles
+        </h2>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
+          Text styles are broken into headings, body, overline, label, link, and
+          mono. Each one pairs a size token (like heading-xxl or body-xs) with a
+          family, weight, and tracking so you can match Figma without guessing.
+          Semi Bold is the default heading weight. Export downloads{" "}
+          <code>fontVariables.css</code> plus{" "}
+          <code>typography.module.scss</code> for prod ingest (uses prod&apos;s
+          existing <code>font.scss</code> mixins).
+        </p>
+        <div className={shared.sectionAction}>
+          <ExportCssButton files={TYPOGRAPHY_EXPORT_FILES} label="Export CSS" />
+        </div>
+        <div className={shared.sectionContent}>
+          <div className={shared.tabbedContent}>
+            <div className={local.tabRow}>
+              <Tabs
+                type="primary"
+                size="small"
+                className={local.tabsFlush}
+                aria-label="Typography style groups"
+                value={tab}
+                onChange={setTab}
+                items={STYLE_TABS.map(({ value, label }) => ({ value, label }))}
               />
-            ))}
+              {weightOptions ? (
+                <div className={local.tabWeight}>
+                  <SegmentedButton
+                    size="extraSmall"
+                    value={weightKey}
+                    onChange={(value) =>
+                      setWeightsByTab((current) => ({
+                        ...current,
+                        [tab]: value,
+                      }))
+                    }
+                    aria-label={`${activeTab.label} weight`}
+                    options={weightOptions.map((option) => ({
+                      value: option.value,
+                      label: option.label,
+                    }))}
+                  />
+                </div>
+              ) : null}
+            </div>
+            <div className={shared.dividedList}>
+              {activeTab.styles.map((style) => (
+                <StyleRow
+                  key={style.label}
+                  style={style}
+                  sample={activeTab.sample}
+                  measure={tab === "body" || tab === "mono"}
+                  weightValue={
+                    weightOptions
+                      ? weightValue
+                      : (style.weight ?? WEIGHTS.regular)
+                  }
+                  weightLabel={
+                    weightOptions
+                      ? weightLabel
+                      : (style.weightLabel ?? "Regular")
+                  }
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section className={shared.section} aria-labelledby="font-families">
+        <h2 id="font-families" className={`${ui.h2} ${shared.sectionTitle}`}>
+          Families
+        </h2>
+        <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
+          Space Grotesk for display headings, Geist for body and UI, system
+          monospace for code — no brand mono face in prod.
+        </p>
+        <div className={shared.sectionContent}>
+          <div className={ui.tableWrap}>
+            <table className={`${ui.table} ${shared.table}`}>
+              <thead>
+                <tr>
+                  <th scope="col">Variable</th>
+                  <th scope="col">Family</th>
+                  <th scope="col">Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                {FONT_FAMILIES.map((row) => (
+                  <tr key={row.variable}>
+                    <td>
+                      <code>{row.variable}</code>
+                    </td>
+                    <td>{row.family}</td>
+                    <td>{row.use}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

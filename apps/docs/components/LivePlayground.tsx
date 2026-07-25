@@ -58,7 +58,7 @@ export function LivePlayground({ code }: { code: string }) {
       <div
         style={{
           border: "1px solid var(--border-neutral-primary)",
-          borderRadius: "var(--radius-md)",
+          borderRadius: "var(--shape-md)",
           overflow: "hidden",
         }}
       >
@@ -83,7 +83,7 @@ export function LivePlayground({ code }: { code: string }) {
         >
           <LiveEditor
             style={{
-              fontFamily: "var(--font-mono)",
+              fontFamily: "var(--font-family-mono)",
               fontSize: 13,
               minHeight: 100,
               padding: 12,

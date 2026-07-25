@@ -1,6 +1,6 @@
 .root {
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   overflow: hidden;
   margin: 0;
   height: 450px;
@@ -112,7 +112,7 @@
   line-height: var(--leading-body-xxs);
   letter-spacing: var(--tracking-overline);
   text-transform: uppercase;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-placeholder);
 }
 
@@ -149,7 +149,7 @@
   border: none;
   background: transparent;
   padding: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-sm);
   line-height: 22px;
   color: var(--text-neutral-primary);

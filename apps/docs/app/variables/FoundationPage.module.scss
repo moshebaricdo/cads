@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  scroll-margin-top: var(--space-xl);
+  scroll-margin-top: var(--spacing-p-xl);
 }
 
 .sectionTitle {
@@ -26,8 +26,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
-  margin-top: calc(var(--space-m) - 12px);
+  gap: var(--spacing-p-xl);
+  margin-top: calc(var(--spacing-p-m) - 12px);
 }
 
 .dividedList {
@@ -40,7 +40,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-m);
+  gap: var(--spacing-p-m);
 }
 
 .table {
@@ -57,7 +57,7 @@
 .shapeGrid {
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--space-s);
+  gap: var(--spacing-p-s);
   width: 100%;
 }
 
@@ -88,7 +88,7 @@
   margin: 0;
   font-size: var(--text-body-xs);
   line-height: var(--leading-body-xs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-primary);
 }
 
@@ -96,7 +96,7 @@
   color: var(--text-neutral-quaternary);
   font-size: var(--text-body-xs);
   line-height: var(--leading-body-xs);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-regular);
 }
 
 .copyName,
@@ -114,17 +114,17 @@
   &:focus-visible {
     outline: 2px solid var(--border-focused-primary);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--shape-sm);
   }
 }
 
 .copyName {
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-primary);
 }
 
 .copyValue {
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-regular);
   color: var(--text-neutral-quaternary);
   white-space: pre-line;
 }
@@ -134,12 +134,12 @@
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-xs);
+  gap: var(--spacing-p-xs);
   width: 100%;
 }
 
 .cardTitle {
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   margin-bottom: 6px;
   color: var(--text-brand-primary);
 }
@@ -156,7 +156,7 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
 }
 
 .ruleSwatch {

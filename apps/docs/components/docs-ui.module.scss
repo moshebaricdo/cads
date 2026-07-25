@@ -1,6 +1,6 @@
 .eyebrow {
   font-size: var(--text-body-xs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   letter-spacing: var(--tracking-overline);
   text-transform: uppercase;
   color: var(--text-brand-primary);
@@ -8,8 +8,8 @@
 }
 
 .h1 {
-  font-family: var(--font-heading);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semi-bold);
   font-size: var(--text-heading-lg);
   line-height: var(--leading-heading-lg);
   letter-spacing: var(--tracking-heading-display);
@@ -25,15 +25,15 @@
 }
 
 .h2 {
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semi-bold);
   font-size: var(--text-heading-xs);
   line-height: var(--leading-heading-xs);
   margin: 0 0 4px;
 }
 
 .section {
-  margin-top: var(--space-l);
+  margin-top: var(--spacing-p-l);
 }
 
 .sectionDesc {
@@ -46,7 +46,7 @@
 
 .overline {
   font-size: var(--text-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   letter-spacing: var(--tracking-overline);
   text-transform: uppercase;
   color: var(--text-neutral-secondary);
@@ -55,7 +55,7 @@
 /* Cards */
 .card {
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   background: var(--background-neutral-primary);
   padding: 20px;
 }
@@ -96,13 +96,13 @@ a.card {
   right: 8px;
   height: var(--control-height-extra-small);
   padding: 0 10px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   border: 1px solid var(--border-neutral-primary);
   background: var(--background-neutral-primary);
   color: var(--text-neutral-secondary);
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   cursor: pointer;
   transition: var(--transition-colors);
 
@@ -124,10 +124,10 @@ a.card {
   gap: 6px;
   padding: 3px 8px;
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   background: var(--background-neutral-secondary);
   color: var(--text-neutral-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xxs);
   cursor: pointer;
   transition: var(--transition-colors);
@@ -146,7 +146,7 @@ a.card {
 /* Tables */
 .tableWrap {
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   overflow-x: auto;
 }
 
@@ -163,7 +163,7 @@ a.card {
     border-bottom: 1px solid var(--border-neutral-primary);
     color: var(--text-neutral-secondary);
     font-size: var(--text-body-xs);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semi-bold);
     letter-spacing: var(--tracking-overline);
     text-transform: uppercase;
     white-space: nowrap;

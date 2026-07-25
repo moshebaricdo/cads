@@ -5,6 +5,7 @@ import ui from "@/components/docs-ui.module.scss";
 import { adjacentFoundations } from "@/lib/nav";
 import shared from "../FoundationPage.module.scss";
 import { MotionExample, MotionExperimentOptions } from "./MotionExample";
+import { MotionExportButton } from "./MotionExportButton";
 import { MotionPrimitives } from "./MotionPrimitives";
 import { RecipeDemos } from "./RecipeDemos";
 
@@ -19,6 +20,7 @@ export default function MotionPage() {
         lead="CADS Motion is an experiment exploring how subtle micro-interactions can enhance the 
         tactile experience of the product. It carefully applies motion to each component
         with careful consideration of its context and usage while defining standard motion patterns."
+        action={<MotionExportButton />}
       />
 
       <section className={shared.section} aria-labelledby="motion-recipes">

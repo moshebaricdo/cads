@@ -13,10 +13,17 @@ import { adjacentFoundations } from "@/lib/nav";
 import shared from "../FoundationPage.module.scss";
 import local from "./spacing.module.scss";
 import { CopyName } from "./CopyName";
+import { ShapeExportButton } from "./ShapeExportButton";
 import { ShapeSample } from "./ShapeSample";
 
+const FIGMA_SHADOWS_URL =
+  "https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-?node-id=15817-32883";
+
+const PROD_SHAPE_SPACING_URL =
+  "https://github.com/code-dot-org/code-dot-org/blob/staging/frontend/packages/component-library-styles/shapeAndSpacingVariables.css";
+
 const RADII = Object.entries(shape).map(([name, value]) => {
-  const token = `radius-${name.replace("radius", "").toLowerCase()}`;
+  const token = `shape-${name.replace("radius", "").toLowerCase()}`;
   return {
     name,
     value,
@@ -43,6 +50,15 @@ export default function ShapePage() {
       <FoundationHeader
         title="Shape"
         lead="The CADS shape system is broken into four categories: border radius, elevation, spacing, and stacking. Radius handles corners, elevation handles depth, spacing is the shared ramp for layout gaps, and stacking is the overlay z-index ladder."
+        links={[
+          { href: FIGMA_SHADOWS_URL, label: "Open in Figma", external: true },
+          {
+            href: PROD_SHAPE_SPACING_URL,
+            label: "View in Github",
+            external: true,
+          },
+        ]}
+        action={<ShapeExportButton />}
       />
 
       <section className={shared.section} aria-labelledby="border-radius">
@@ -126,7 +142,7 @@ export default function ShapePage() {
         <div className={shared.sectionContent}>
           <div className={local.spacingStack}>
             {Object.entries(spacing).map(([name, value]) => {
-              const token = `space-${name}`;
+              const token = `spacing-p-${name}`;
               const variable = `--${token}`;
               return (
                 <div

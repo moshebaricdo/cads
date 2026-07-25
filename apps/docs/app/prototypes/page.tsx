@@ -18,7 +18,7 @@ export default function PrototypesPage() {
       <div
         style={{
           padding: 24,
-          borderRadius: "var(--radius-lg)",
+          borderRadius: "var(--shape-lg)",
           border: "1px dashed var(--border-neutral-primary)",
           background: "var(--background-neutral-secondary)",
         }}

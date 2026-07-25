@@ -1,11 +1,12 @@
 @import "@codeai/cads-variables/variables.css";
 @import "@codeai/cads-react/icons/fonts.css";
 
-/* Prefer next/font-loaded faces (variable files) over bare family names. */
+/* Prefer next/font-loaded faces (variable files) over bare family names.
+ * Mono: docs specimen override — package/runtime uses system monospace (no brand mono). */
 :root {
-  --font-heading: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  --font-body: var(--font-geist-sans), "Geist", sans-serif;
-  --font-mono: var(--font-google-sans-code), "Google Sans Code", "Courier New",
+  --font-family-heading: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-family-main: var(--font-geist-sans), "Geist", sans-serif;
+  --font-family-mono: var(--font-google-sans-code), "Google Sans Code", "Courier New",
     monospace;
 }
 
@@ -19,7 +20,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);
   color: var(--text-neutral-primary);
@@ -58,21 +59,21 @@ a.docs-nav-item:active {
 
 code,
 pre {
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xs);
 }
 
 code {
   background: var(--background-neutral-secondary);
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   padding: 1px 5px;
 }
 
 pre {
   background: var(--background-neutral-secondary);
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   padding: 12px 16px;
   overflow: auto;
 }

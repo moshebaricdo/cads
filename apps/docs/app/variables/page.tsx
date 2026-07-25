@@ -49,9 +49,15 @@ export default function VariablesIndexPage() {
           Setup
         </h2>
         <p className={`${ui.sectionDesc} ${styles.sectionBody}`}>
-          Import the stylesheet once at your app root. Every variable on the
-          following pages is then available globally, with dark values applied
-          under a <code>.dark</code> class on the root element.
+          Import the barrel once at your app root — it pulls in the prod-shaped
+          split files (<code>primitiveColors.css</code>, <code>colors.css</code>,{" "}
+          <code>fontVariables.css</code>, <code>shapeAndSpacingVariables.css</code>,{" "}
+          <code>motionVariables.css</code>, plus CADS runtime{" "}
+          <code>typographyVariables.css</code>). Dark values apply under a{" "}
+          <code>.dark</code> class or <code>data-theme=&quot;Dark&quot;</code>.
+          Foundation pages export prod-ready files; Typography also exports{" "}
+          <code>typography.module.scss</code> (uses prod&apos;s existing{" "}
+          <code>font.scss</code>).
         </p>
         <div style={{ width: "100%" }}>
           <CodeBlock code={`import "@codeai/cads-variables/variables.css";`} />

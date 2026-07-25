@@ -283,7 +283,7 @@ export function InteractivePlayground({
               padding: 0,
               border: "none",
               background: "transparent",
-              fontFamily: "var(--font-mono)",
+              fontFamily: "var(--font-family-mono)",
               fontSize: 13,
               whiteSpace: "pre-wrap",
               color: "var(--text-neutral-primary)",

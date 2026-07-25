@@ -14,7 +14,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <header style={{ marginBottom: "var(--space-m)" }}>
+    <header style={{ marginBottom: "var(--spacing-p-m)" }}>
       {eyebrow ? <p className={ui.eyebrow}>{eyebrow}</p> : null}
       <h1 className={ui.h1}>{title}</h1>
       {lead ? <p className={ui.lead}>{lead}</p> : null}

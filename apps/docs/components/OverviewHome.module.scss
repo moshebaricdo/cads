@@ -1,7 +1,7 @@
 .destinations {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
+  gap: var(--spacing-p-xs);
 }
 
 .card {
@@ -14,7 +14,7 @@
   color: inherit;
   background: var(--background-neutral-primary);
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-xl);
+  border-radius: var(--shape-xl);
   /* Colors always; press scale when experimental motion injects [data-cads-press]:active. */
   transition: var(--transition-colors), var(--transition-press);
 }
@@ -80,8 +80,8 @@
 
 .cardTitle {
   margin: 0;
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semi-bold);
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);
   color: var(--text-neutral-primary);
@@ -89,8 +89,8 @@
 
 .cardBody {
   margin: 0;
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-normal);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
   color: var(--text-neutral-secondary);
@@ -119,26 +119,26 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--spacing-p-xs);
 }
 
 .resourceItem {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--spacing-p-xs);
 }
 
 .resourceDot {
   flex-shrink: 0;
   width: 4px;
   height: 4px;
-  border-radius: var(--radius-round);
+  border-radius: var(--shape-round);
   background: var(--background-neutral-quaternary);
 }
 
 @media (max-width: 760px) {
   .resourceRow {
-    column-gap: var(--space-xs);
+    column-gap: var(--spacing-p-xs);
     row-gap: 4px;
   }
 

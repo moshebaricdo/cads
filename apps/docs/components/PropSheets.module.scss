@@ -1,7 +1,7 @@
 .root {
   display: flex;
   flex-direction: column;
-  gap: var(--space-l);
+  gap: var(--spacing-p-l);
 }
 
 .sheet {
@@ -14,13 +14,13 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-m);
+  gap: var(--spacing-p-m);
 }
 
 /* CADS Body MD + semibold — section / H5 */
 .heading {
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semi-bold);
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);
   color: var(--text-neutral-primary);
@@ -40,7 +40,7 @@
 
 .propName,
 .propType {
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--text-body-xs);
   line-height: var(--leading-body-xs);
   background: transparent;

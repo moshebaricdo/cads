@@ -53,7 +53,7 @@ export default function RadioPreview({
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        gap: "var(--space-xs, 8px)",
+        gap: "var(--spacing-p-xs, 8px)",
       }}
     >
       {options.map((opt) => (

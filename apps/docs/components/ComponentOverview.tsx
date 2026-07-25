@@ -1,28 +1,37 @@
 "use client";
 
 import { Link, Tag, Tooltip } from "@codeai/cads-react";
+import type { TagProps } from "@codeai/cads-react";
 import type { ComponentStatus } from "@/lib/componentExternalLinks";
 import styles from "./ComponentOverview.module.scss";
 
 const STATUS_PRESENTATION: Record<
   ComponentStatus,
-  { label: string; color: "warning" | "error" | "info"; tooltip: string }
+  {
+    label: string;
+    color: "warning" | "error" | "info";
+    tooltip: string;
+    iconName: NonNullable<TagProps["startIconName"]>;
+  }
 > = {
   notInProduction: {
     label: "Not in Production",
     color: "warning",
+    iconName: "circle-exclamation",
     tooltip:
       "Available for use in Figma only. This component has not shipped to the production component library yet.",
   },
   deprecated: {
     label: "Deprecated",
     color: "error",
+    iconName: "circle-xmark",
     tooltip:
       "Kept for existing usage only. Avoid it in new work and migrate to the documented replacement.",
   },
   experimental: {
     label: "Experimental",
     color: "info",
+    iconName: "flask",
     tooltip:
       "Safe to explore in prototypes, but the API and visuals can still change without notice.",
   },
@@ -58,6 +67,7 @@ export function ComponentOverview({
                   size="small"
                   color={statusPresentation.color}
                   label={statusPresentation.label}
+                  startIconName={statusPresentation.iconName}
                 />
               </span>
             </Tooltip>

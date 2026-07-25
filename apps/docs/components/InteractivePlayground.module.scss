@@ -1,6 +1,6 @@
 .playground {
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   overflow: hidden;
 }
 
@@ -64,7 +64,7 @@
 .inspectorTitle {
   margin: 0;
   font-size: var(--text-body-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-primary);
 }
 
@@ -86,7 +86,7 @@
 
 .inspectorLabel {
   font-size: var(--text-body-xs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: var(--leading-body-xs);
   color: var(--text-neutral-primary);
 }

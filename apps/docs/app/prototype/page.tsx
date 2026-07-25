@@ -35,7 +35,7 @@ function PrototypePageInner() {
 
   if (!spec) {
     return (
-      <main style={{ padding: "var(--space-l)" }}>
+      <main style={{ padding: "var(--spacing-p-l)" }}>
         <h1>CADS prototype</h1>
         <p>
           No valid prototype specification was provided. Create one through the
@@ -52,7 +52,7 @@ export default function PrototypePage() {
   return (
     <Suspense
       fallback={
-        <main style={{ padding: "var(--space-l)" }}>
+        <main style={{ padding: "var(--spacing-p-l)" }}>
           <p>Loading prototype…</p>
         </main>
       }

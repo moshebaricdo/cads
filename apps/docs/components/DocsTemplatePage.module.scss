@@ -3,7 +3,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-l);
+  gap: var(--spacing-p-l);
 }
 
 :global(.docs-main):has(.page) {
@@ -13,11 +13,11 @@
 :global(.docs-main):has(.page) :global(.docs-main-inner) {
   max-width: 800px;
   margin-inline: auto;
-  padding-block: var(--space-xxxl);
+  padding-block: var(--spacing-p-xxxl);
 }
 
 @media (max-width: 760px) {
   :global(.docs-main):has(.page) :global(.docs-main-inner) {
-    padding-block: var(--space-m);
+    padding-block: var(--spacing-p-m);
   }
 }

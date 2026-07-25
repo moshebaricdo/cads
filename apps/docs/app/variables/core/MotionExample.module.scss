@@ -4,7 +4,7 @@
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   background: var(--background-neutral-primary);
 }
 
@@ -27,10 +27,10 @@
 
 .title {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-primary);
 }
 
@@ -90,10 +90,10 @@
 
 .mainTitle {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-md);
   line-height: var(--leading-body-md);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--text-neutral-primary);
 }
 
@@ -117,7 +117,7 @@
   flex: 1 1 auto;
   min-height: 180px;
   border: 1px solid var(--border-neutral-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-md);
   overflow: hidden;
   background: var(--background-neutral-primary);
 }
@@ -127,7 +127,7 @@
   padding: 8px 12px;
   font-size: var(--text-body-xxs);
   line-height: var(--leading-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   letter-spacing: var(--tracking-overline);
   text-transform: uppercase;
   color: var(--text-neutral-quaternary);
@@ -185,7 +185,7 @@
 }
 
 .flagHint code {
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: inherit;
 }
 

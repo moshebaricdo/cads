@@ -66,9 +66,9 @@ export function FoundationHeader({
         </div>
         <p className={overviewStyles.lead}>{lead}</p>
       </div>
-      {hasLinks || hasAction ? (
+      {hasLinks ? (
         <div className={overviewStyles.links}>
-          {links?.map((link, index) => (
+          {links!.map((link, index) => (
             <span className={overviewStyles.linkItem} key={link.href}>
               {index > 0 ? (
                 <span className={overviewStyles.linkDot} aria-hidden />
@@ -85,10 +85,10 @@ export function FoundationHeader({
               </Link>
             </span>
           ))}
-          {hasAction ? (
-            <span className={overviewStyles.linkItem}>{action}</span>
-          ) : null}
         </div>
+      ) : null}
+      {hasAction ? (
+        <div className={overviewStyles.headerAction}>{action}</div>
       ) : null}
     </header>
   );

@@ -31,7 +31,7 @@
 .sectionLabel {
   padding: 14px 12px 12px;
   font-size: var(--text-body-xxs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: var(--leading-body-xxs);
   letter-spacing: var(--tracking-overline);
   text-transform: uppercase;
@@ -86,13 +86,13 @@
   height: 30px;
   padding: 6px 12px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   background: transparent;
   color: var(--text-neutral-tertiary);
   text-decoration: none;
-  font-family: var(--font-body);
+  font-family: var(--font-family-main);
   font-size: var(--text-body-xs);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: var(--leading-body-xs);
   text-align: left;
   cursor: pointer;
@@ -147,13 +147,13 @@
 
 .itemChild {
   justify-content: flex-start;
-  padding: 6px 12px 6px 34px;
-  font-weight: var(--font-weight-normal);
+  padding: 6px 12px 6px 35px;
+  font-weight: var(--font-weight-regular);
   color: var(--text-neutral-tertiary);
 
   &[data-active="true"] {
     color: var(--text-neutral-primary);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semi-bold);
   }
 
   &:focus-visible {
@@ -161,7 +161,7 @@
     box-shadow: none;
 
     .itemLabel {
-      border-radius: var(--radius-sm);
+      border-radius: var(--shape-sm);
       box-shadow:
         0 0 0 2px var(--background-neutral-primary),
         0 0 0 4px var(--border-focused-primary);
@@ -244,7 +244,7 @@
   top: 0;
   left: 0;
   z-index: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-sm);
   background: var(--background-neutral-secondary);
   pointer-events: none;
 

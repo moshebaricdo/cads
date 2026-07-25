@@ -238,7 +238,7 @@ function extractCssVar(value: string): string | null {
   return m?.[1] ?? null;
 }
 
-/** `var(--space-xs)` → `--space-xs` (keeps rem/em/multi-value lists intact). */
+/** `var(--spacing-p-xs)` → `--spacing-p-xs` (keeps rem/em/multi-value lists intact). */
 function unwrapCssVars(value: string): string {
   return value.replace(/var\(\s*(--[\w-]+)\s*(?:,[^)]+)?\)/g, "$1");
 }
