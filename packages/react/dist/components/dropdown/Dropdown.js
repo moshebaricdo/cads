@@ -1,12 +1,12 @@
 import { jsx as o, jsxs as D } from "react/jsx-runtime";
 import ce from "@mui/material/ClickAwayListener";
-import We from "@mui/material/Popper";
-import { forwardRef as De, useId as Le, useState as U, useRef as Re, useCallback as se, useMemo as V, useLayoutEffect as Be, useEffect as Me } from "react";
+import Le from "@mui/material/Popper";
+import { forwardRef as Me, useId as Re, useState as U, useRef as Ae, useCallback as se, useMemo as V, useLayoutEffect as Be, useEffect as Ee } from "react";
 import { Button as ee } from "../button/Button.js";
-import { FieldWrapper as Ae } from "../field-wrapper/FieldWrapper.js";
+import { FieldWrapper as He } from "../field-wrapper/FieldWrapper.js";
 import { FaIcon as G } from "../../icons/FaIcon.js";
-import { TEXT_INPUT_SIZE as Ee, BUTTON_SIZE as ze } from "../../shared/controlSize.js";
-import { useSurfacePresence as He } from "../../theme/experimentalMotion.js";
+import { TEXT_INPUT_SIZE as ze, BUTTON_SIZE as Te } from "../../shared/controlSize.js";
+import { useExperimentalMotion as $e, useSurfacePresence as Ce, surfaceMotionStateAttrs as Oe, experimentalMotionHostAttrs as Ue } from "../../theme/experimentalMotion.js";
 import s from "./dropdown.module.scss.js";
 function X(...t) {
   return t.filter(Boolean).join(" ");
@@ -17,7 +17,7 @@ function te(t) {
 function _(t) {
   return te(t) && !t.disabled;
 }
-function Te(t = "hug") {
+function Ve(t = "hug") {
   return t === "hug" ? {
     rootWidth: "max-content",
     triggerWidth: "auto",
@@ -28,7 +28,7 @@ function Te(t = "hug") {
     maxWidth: "100%"
   };
 }
-function $e(t = "hug", n) {
+function _e(t = "hug", n) {
   if (t === "trigger") {
     const d = Math.max(0, n);
     return { width: d, minWidth: d };
@@ -44,7 +44,7 @@ function $e(t = "hug", n) {
     minWidth: Math.max(0, n) || "max-content"
   };
 }
-function Ce(t) {
+function qe(t) {
   switch (t) {
     case "bottomRight":
       return "bottom-end";
@@ -57,7 +57,7 @@ function Ce(t) {
       return "bottom-start";
   }
 }
-function Oe(t) {
+function je(t) {
   switch (t) {
     case "bottomRight":
       return "top right";
@@ -70,12 +70,12 @@ function Oe(t) {
       return "top left";
   }
 }
-function Ue(t) {
+function Fe(t) {
   return {
     contextElement: t,
     getBoundingClientRect: () => {
-      const n = t.getBoundingClientRect(), d = t.offsetWidth, l = t.offsetHeight, u = n.left - (d - n.width) / 2, v = n.top - (l - n.height) / 2;
-      return new DOMRect(u, v, d, l);
+      const n = t.getBoundingClientRect(), d = t.offsetWidth, l = t.offsetHeight, u = n.left - (d - n.width) / 2, x = n.top - (l - n.height) / 2;
+      return new DOMRect(u, x, d, l);
     }
   };
 }
@@ -127,7 +127,7 @@ const me = {
     iconPx: "0.8125rem",
     checkbox: 16
   }
-}, Ve = {
+}, Ke = {
   large: {
     height: 32,
     paddingLeft: "1rem",
@@ -157,10 +157,10 @@ const me = {
     lineHeight: "var(--leading-body-xxs)"
   }
 };
-function _e(t, n, d, l) {
+function Ze(t, n, d, l) {
   return d ? "var(--border-disabled-neutral)" : n ? "var(--border-error-primary)" : l || t === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
 }
-function qe({
+function Ge({
   label: t,
   hugCandidates: n
 }) {
@@ -216,26 +216,26 @@ function qe({
     }
   ) : d;
 }
-function je({
+function Xe({
   size: t,
   color: n,
   labelStyle: d,
   label: l,
   hugCandidates: u,
-  startIconName: v,
+  startIconName: x,
   open: T,
   disabled: c,
   readOnly: p,
   error: $,
   required: I,
   onClick: y,
-  buttonRef: x,
+  buttonRef: v,
   id: L,
   listedBy: N,
-  ariaLabel: R,
+  ariaLabel: M,
   triggerWidth: h
 }) {
-  const w = Ee[t], g = ze[t], m = _e(n, $, c, p), k = !!(u != null && u.length), J = {
+  const w = ze[t], g = Te[t], m = Ze(n, $, c, p), k = !!(u != null && u.length), J = {
     "--dd-height": w.height,
     "--dd-px": w.paddingInline,
     "--dd-py": w.paddingBlock,
@@ -252,7 +252,7 @@ function je({
   return /* @__PURE__ */ D(
     "button",
     {
-      ref: x,
+      ref: v,
       type: "button",
       id: L,
       disabled: c || p,
@@ -260,7 +260,7 @@ function je({
       "aria-expanded": T,
       "aria-controls": N,
       "aria-required": I || void 0,
-      "aria-label": R,
+      "aria-label": M,
       onClick: y,
       "data-cads-dropdown-trigger": "input",
       ...k ? { "data-hug": "" } : {},
@@ -268,31 +268,31 @@ function je({
       style: J,
       children: [
         /* @__PURE__ */ D("span", { className: s.triggerContent, children: [
-          v ? /* @__PURE__ */ o(G, { name: v, fontSize: g.iconPx }) : null,
-          /* @__PURE__ */ o(qe, { label: l, hugCandidates: u })
+          x ? /* @__PURE__ */ o(G, { name: x, fontSize: g.iconPx }) : null,
+          /* @__PURE__ */ o(Ge, { label: l, hugCandidates: u })
         ] }),
         /* @__PURE__ */ o(G, { name: "chevron-down", fontSize: g.iconPx })
       ]
     }
   );
 }
-function Fe({
+function Je({
   option: t,
   size: n,
   selected: d,
   menuType: l,
   role: u,
-  active: v,
+  active: x,
   keyboardFocus: T,
   onSelect: c,
   onHighlight: p,
   id: $
 }) {
-  const I = me[n], y = !!t.destructive && u === "action", x = l === "checklist", L = !x && !!t.iconName, N = !!t.disabled && !x, R = x || L, g = {
+  const I = me[n], y = !!t.destructive && u === "action", v = l === "checklist", L = !v && !!t.iconName, N = !!t.disabled && !v, M = v || L, g = {
     "--dd-item-bg": N ? d ? "var(--background-disabled-neutral)" : "var(--background-neutral-primary)" : d ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
     "--dd-item-fg": N ? y ? "var(--text-disabled-error)" : d ? "var(--text-disabled-neutral-inverse)" : "var(--text-disabled-neutral)" : y ? "var(--text-error-primary)" : d ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",
     "--dd-item-cursor": t.disabled ? "default" : "pointer",
-    "--dd-item-opacity": String(t.disabled && x ? 0.5 : 1)
+    "--dd-item-opacity": String(t.disabled && v ? 0.5 : 1)
   };
   return /* @__PURE__ */ o(
     "div",
@@ -304,7 +304,7 @@ function Fe({
       "data-cads-dropdown-item": "",
       "data-value": t.value,
       "data-destructive": y ? "true" : void 0,
-      "data-active": v ? "true" : void 0,
+      "data-active": x ? "true" : void 0,
       "data-keyboard-focus": T ? "true" : void 0,
       tabIndex: -1,
       onMouseDown: (m) => {
@@ -318,7 +318,7 @@ function Fe({
       },
       className: s.item,
       style: g,
-      children: /* @__PURE__ */ D("span", { className: X(s.itemInner, R && s.itemInnerGap), children: [
+      children: /* @__PURE__ */ D("span", { className: X(s.itemInner, M && s.itemInnerGap), children: [
         l === "checklist" ? /* @__PURE__ */ o(
           "span",
           {
@@ -341,7 +341,7 @@ function Fe({
     }
   );
 }
-function Ke() {
+function Qe() {
   return /* @__PURE__ */ o(
     "div",
     {
@@ -353,7 +353,7 @@ function Ke() {
     }
   );
 }
-function Ze({ label: t }) {
+function Ye({ label: t }) {
   return /* @__PURE__ */ o(
     "div",
     {
@@ -364,65 +364,69 @@ function Ze({ label: t }) {
     }
   );
 }
-const at = De(
+const ct = Me(
   function(n, d) {
     const {
       size: l = "medium",
       menuType: u = "default",
-      menuPlacement: v = "bottomLeft",
+      menuPlacement: x = "bottomLeft",
       menuWidth: T = "hug",
       options: c,
       open: p,
       defaultOpen: $ = !1,
       onOpenChange: I,
       disabled: y = !1,
-      disablePortal: x = !1,
+      disablePortal: v = !1,
       className: L,
       style: N,
-      "aria-label": R
-    } = n, h = n.role === "input", w = Le(), g = `cads-dropdown-list-${w}`, m = `cads-dropdown-trigger-${w}`, [k, J] = U(null), Q = Re(null), q = se((e) => {
+      "aria-label": M
+    } = n, h = n.role === "input", w = Re(), g = `cads-dropdown-list-${w}`, m = `cads-dropdown-trigger-${w}`, [k, J] = U(null), Q = Ae(null), q = se((e) => {
       e && (Q.current = e, J((i) => i === e ? i : e));
     }, []), he = V(
-      () => k ? Ue(k) : null,
+      () => k ? Fe(k) : null,
       [k]
-    ), [fe, ge] = U($), f = p ?? fe, { mounted: pe, exiting: be } = He(f && !!k);
+    ), [fe, ge] = U($), f = p ?? fe, pe = $e(), {
+      mounted: be,
+      exiting: ye,
+      entering: xe
+    } = Ce(f && !!k);
     Be(() => {
       if (!f) return;
       const e = Q.current ?? document.getElementById(m);
       e && q(e);
     }, [f, m, q]);
-    const [Y, M] = U(-1), [ye, A] = U(
+    const [Y, A] = U(-1), [ve, B] = U(
       "pointer"
-    ), B = se(
+    ), R = se(
       (e) => {
-        p === void 0 && ge(e), I == null || I(e), e || (M(-1), A("pointer"));
+        p === void 0 && ge(e), I == null || I(e), e || (A(-1), B("pointer"));
       },
       [p, I]
-    ), r = h ? n : null, S = h && (u === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [ve, xe] = U(
+    ), r = h ? n : null, S = h && (u === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [we, ke] = U(
       () => ue(r == null ? void 0 : r.defaultValue)
-    ), E = (r == null ? void 0 : r.value) !== void 0 ? ue(r.value) : ve, j = V(
+    ), E = (r == null ? void 0 : r.value) !== void 0 ? ue(r.value) : we, j = V(
       () => new Set(E),
       [E]
-    ), z = V(() => c.filter(te), [c]), we = V(() => {
+    ), H = V(() => c.filter(te), [c]), Se = V(() => {
       if (!h) return n.label ?? "Button";
       const e = (r == null ? void 0 : r.placeholder) ?? "Dropdown";
       if (E.length === 0) return e;
-      const i = z.filter((a) => j.has(a.value)).map((a) => a.label);
+      const i = H.filter((a) => j.has(a.value)).map((a) => a.label);
       return i.length === 0 ? e : i.length === 1 ? i[0] : `${i.length} selected`;
     }, [
       h,
       n,
       r == null ? void 0 : r.placeholder,
       E,
-      z,
+      H,
       j
-    ]), ke = V(() => {
+    ]), Ie = V(() => {
       if (!h) return;
-      const e = z.map((i) => i.label);
-      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), S && e.push(`${z.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
-    }, [h, r == null ? void 0 : r.placeholder, z, S]), F = (e) => {
+      const e = H.map((i) => i.label);
+      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), S && e.push(`${H.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
+    }, [h, r == null ? void 0 : r.placeholder, H, S]), F = (e) => {
       var i;
-      r && (r.value === void 0 && xe(e), (i = r.onChange) == null || i.call(r, S ? e : e[0] ?? ""));
+      r && (r.value === void 0 && ke(e), (i = r.onChange) == null || i.call(r, S ? e : e[0] ?? ""));
     }, re = (e) => {
       var i;
       if (!e.disabled)
@@ -431,25 +435,25 @@ const at = De(
             const a = j.has(e.value) ? E.filter((b) => b !== e.value) : [...E, e.value];
             F(a);
           } else
-            F([e.value]), B(!1);
+            F([e.value]), R(!1);
         else
-          (i = n.onAction) == null || i.call(n, e.value), B(!1);
-    }, Se = () => {
+          (i = n.onAction) == null || i.call(n, e.value), R(!1);
+    }, Ne = () => {
       F(
-        z.filter((e) => !e.disabled).map((e) => e.value)
+        H.filter((e) => !e.disabled).map((e) => e.value)
       );
-    }, Ie = () => {
+    }, We = () => {
       F([]);
     }, ne = () => {
-      y || h && (r != null && r.readOnly) || B(!f);
+      y || h && (r != null && r.readOnly) || R(!f);
     };
-    Me(() => {
-      f || (M(-1), A("pointer"));
+    Ee(() => {
+      f || (A(-1), B("pointer"));
     }, [f]);
     const K = (e) => {
-      A("keyboard"), M(e);
+      B("keyboard"), A(e);
     }, ae = (e) => {
-      A("keyboard"), M((i) => {
+      B("keyboard"), A((i) => {
         let b = i < 0 ? e === 1 ? -1 : 0 : i;
         for (let O = 0; O < c.length; O++)
           if (b = e === 1 ? (b + 1) % c.length : (b - 1 + c.length) % c.length, _(c[b])) return b;
@@ -459,7 +463,7 @@ const at = De(
       var i;
       if (!f) {
         if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ")
-          if (e.preventDefault(), B(!0), e.key === "ArrowUp") {
+          if (e.preventDefault(), R(!0), e.key === "ArrowUp") {
             for (let a = c.length - 1; a >= 0; a--)
               if (_(c[a])) {
                 K(a);
@@ -472,7 +476,7 @@ const at = De(
         return;
       }
       if (e.key === "Escape") {
-        e.preventDefault(), B(!1), (i = Q.current) == null || i.focus();
+        e.preventDefault(), R(!1), (i = Q.current) == null || i.focus();
         return;
       }
       if (e.key === "ArrowDown" && (e.preventDefault(), ae(1)), e.key === "ArrowUp" && (e.preventDefault(), ae(-1)), e.key === "Home") {
@@ -493,7 +497,7 @@ const at = De(
         const a = Y >= 0 ? c[Y] : void 0;
         a && te(a) && re(a);
       }
-    }, ie = h && ((r == null ? void 0 : r.menuType) ?? u) === "checklist" ? "checklist" : "default", H = S ? { width: "max-content", minWidth: "max-content" } : $e(T, (k == null ? void 0 : k.offsetWidth) ?? 0), oe = typeof H.minWidth == "number" ? `${H.minWidth}px` : H.minWidth, de = typeof H.width == "number" ? `${H.width}px` : H.width, W = me[l], C = Ve[l], Ne = {
+    }, ie = h && ((r == null ? void 0 : r.menuType) ?? u) === "checklist" ? "checklist" : "default", z = S ? { width: "max-content", minWidth: "max-content" } : _e(T, (k == null ? void 0 : k.offsetWidth) ?? 0), oe = typeof z.minWidth == "number" ? `${z.minWidth}px` : z.minWidth, de = typeof z.width == "number" ? `${z.width}px` : z.width, W = me[l], C = Ke[l], De = {
       "--dd-panel-width": de,
       "--dd-panel-min-width": oe,
       "--dd-panel-py": S ? "0" : "4px",
@@ -512,14 +516,14 @@ const at = De(
       "--dd-group-font-size": C.fontSize,
       "--dd-group-line-height": C.lineHeight,
       "--dd-action-justify": l === "large" ? "space-between" : "flex-start",
-      "--cads-surface-origin": Oe(v)
+      "--cads-surface-origin": je(x)
     }, le = /* @__PURE__ */ o(
-      We,
+      Le,
       {
-        open: pe,
+        open: be,
         anchorEl: he,
-        placement: Ce(v),
-        disablePortal: x,
+        placement: qe(x),
+        disablePortal: v,
         style: {
           zIndex: "var(--z-dropdown)",
           width: de,
@@ -527,7 +531,7 @@ const at = De(
         },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } },
-          ...x ? [
+          ...v ? [
             { name: "flip", enabled: !1 },
             { name: "preventOverflow", enabled: !1 }
           ] : []
@@ -541,25 +545,26 @@ const at = De(
             "aria-multiselectable": S || void 0,
             "data-cads-dropdown-menu": "",
             "data-cads-surface": "",
-            ...be ? { "data-cads-surface-state": "exit" } : {},
+            ...Ue(pe),
+            ...Oe(xe, ye),
             "data-menu-type": ie,
             onKeyDown: P,
             className: s.menuPanel,
-            style: Ne,
+            style: De,
             children: [
               /* @__PURE__ */ o(
                 "div",
                 {
                   className: s.optionsList,
                   onMouseLeave: () => {
-                    M(-1), A("pointer");
+                    A(-1), B("pointer");
                   },
                   children: c.map((e, i) => {
                     if (e.type === "separator")
-                      return /* @__PURE__ */ o(Ke, {}, `${g}-sep-${i}`);
+                      return /* @__PURE__ */ o(Qe, {}, `${g}-sep-${i}`);
                     if (e.type === "group")
                       return /* @__PURE__ */ o(
-                        Ze,
+                        Ye,
                         {
                           label: e.label
                         },
@@ -567,7 +572,7 @@ const at = De(
                       );
                     const a = i === Y;
                     return /* @__PURE__ */ o(
-                      Fe,
+                      Je,
                       {
                         id: `${g}-opt-${i}`,
                         option: e,
@@ -576,10 +581,10 @@ const at = De(
                         menuType: ie,
                         role: n.role,
                         active: a,
-                        keyboardFocus: a && ye === "keyboard",
+                        keyboardFocus: a && ve === "keyboard",
                         onSelect: () => re(e),
                         onHighlight: () => {
-                          A("pointer"), M(i);
+                          B("pointer"), A(i);
                         }
                       },
                       e.value
@@ -601,7 +606,7 @@ const at = De(
                         size: l,
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
-                          e.stopPropagation(), Se();
+                          e.stopPropagation(), Ne();
                         },
                         children: "Select all"
                       }
@@ -614,7 +619,7 @@ const at = De(
                         size: l,
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
-                          e.stopPropagation(), Ie();
+                          e.stopPropagation(), We();
                         },
                         children: "Clear all"
                       }
@@ -628,12 +633,12 @@ const at = De(
       }
     );
     if (h) {
-      const e = n, i = e.error ? "error" : e.sentiment ?? "default", a = e.width ?? "hug", b = Te(a), O = a === "hug";
+      const e = n, i = e.error ? "error" : e.sentiment ?? "default", a = e.width ?? "hug", b = Ve(a), O = a === "hug";
       return /* @__PURE__ */ o(
         ce,
         {
           onClickAway: () => {
-            f && B(!1);
+            f && R(!1);
           },
           children: /* @__PURE__ */ D(
             "div",
@@ -650,7 +655,7 @@ const at = De(
               onKeyDown: P,
               children: [
                 /* @__PURE__ */ o(
-                  Ae,
+                  He,
                   {
                     size: l,
                     sentiment: i,
@@ -662,13 +667,13 @@ const at = De(
                     htmlFor: m,
                     disabled: y,
                     children: /* @__PURE__ */ o(
-                      je,
+                      Xe,
                       {
                         size: l,
                         color: e.color ?? "primary",
                         labelStyle: e.labelStyle ?? "thick",
-                        label: we,
-                        hugCandidates: O ? ke : void 0,
+                        label: Se,
+                        hugCandidates: O ? Ie : void 0,
                         startIconName: e.startIconName,
                         open: f,
                         disabled: y,
@@ -680,7 +685,7 @@ const at = De(
                         id: m,
                         listedBy: f ? g : void 0,
                         triggerWidth: b.triggerWidth,
-                        ariaLabel: typeof R == "string" ? R : typeof e.label == "string" ? void 0 : "Dropdown"
+                        ariaLabel: typeof M == "string" ? M : typeof e.label == "string" ? void 0 : "Dropdown"
                       }
                     )
                   }
@@ -697,7 +702,7 @@ const at = De(
       ce,
       {
         onClickAway: () => {
-          f && B(!1);
+          f && R(!1);
         },
         children: /* @__PURE__ */ D(
           "div",
@@ -723,7 +728,7 @@ const at = De(
                   "aria-haspopup": "menu",
                   "aria-expanded": f,
                   "aria-controls": f ? g : void 0,
-                  "aria-label": R,
+                  "aria-label": M,
                   onClick: ne,
                   children: Z.label ?? "Button"
                 }
@@ -737,6 +742,6 @@ const at = De(
   }
 );
 export {
-  at as Dropdown
+  ct as Dropdown
 };
 //# sourceMappingURL=Dropdown.js.map

@@ -17,6 +17,10 @@ import {
   BREADCRUMB_SIZE,
   type ControlSize,
 } from "../../shared/controlSize";
+import {
+  experimentalMotionHostAttrs,
+  useExperimentalMotion,
+} from "../../theme/experimentalMotion";
 import styles from "./breadcrumbs.module.scss";
 import type { BreadcrumbItem, BreadcrumbsProps } from "./types";
 
@@ -315,6 +319,7 @@ function BreadcrumbOverflow({
     OVERFLOW_MENU_ITEM[
       size === "large" || size === "medium" ? "small" : "extraSmall"
     ];
+  const experimentalMotion = useExperimentalMotion();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
@@ -448,6 +453,8 @@ function BreadcrumbOverflow({
             aria-labelledby={triggerId}
             data-cads-breadcrumb-overflow-menu=""
             data-cads-surface=""
+            data-cads-surface-state="enter"
+            {...experimentalMotionHostAttrs(experimentalMotion)}
             elevation={0}
             sx={{
               mt: 0,

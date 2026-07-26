@@ -8,6 +8,8 @@ import {
   resolveMessagingIconName,
 } from "../../shared/messagingSentiment";
 import {
+  experimentalMotionHostAttrs,
+  surfaceMotionStateAttrs,
   useExperimentalMotion,
   useSurfacePresence,
 } from "../../theme/experimentalMotion";
@@ -104,8 +106,10 @@ type ToastSurfaceProps = Omit<
   ToastProps,
   "open" | "placement" | "offset" | "surfaceOnly"
 > & {
+  surfaceEntering?: boolean;
   surfaceExiting?: boolean;
   surfaceOrigin?: string;
+  experimentalMotion?: boolean;
 };
 
 const ToastSurface = forwardRef<HTMLDivElement, ToastSurfaceProps>(
@@ -123,8 +127,10 @@ const ToastSurface = forwardRef<HTMLDivElement, ToastSurfaceProps>(
       onClose,
       className,
       role = "status",
+      surfaceEntering = false,
       surfaceExiting = false,
       surfaceOrigin = "bottom center",
+      experimentalMotion = false,
     },
     ref,
   ) {
@@ -154,7 +160,8 @@ const ToastSurface = forwardRef<HTMLDivElement, ToastSurfaceProps>(
         style={chromeVars}
         data-cads-component="Toast"
         data-cads-surface=""
-        {...(surfaceExiting ? { "data-cads-surface-state": "exit" } : {})}
+        {...experimentalMotionHostAttrs(experimentalMotion)}
+        {...surfaceMotionStateAttrs(surfaceEntering, surfaceExiting)}
       >
         <div className={styles.content}>
           {showIcon && resolvedIcon ? (
@@ -229,8 +236,11 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
   const experimentalMotion = useExperimentalMotion();
   const isSurfaceOnly = surfaceOnly ?? openProp === undefined;
   const open = Boolean(openProp);
-  const { mounted: surfaceMounted, exiting: surfaceExiting } =
-    useSurfacePresence(open);
+  const {
+    mounted: surfaceMounted,
+    exiting: surfaceExiting,
+    entering: surfaceEntering,
+  } = useSurfacePresence(open);
   const surfaceOrigin = placementToSurfaceOrigin(placement);
   const anchorOrigin = placementToAnchor(placement);
 
@@ -248,8 +258,10 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
       onClose={onClose}
       className={className}
       role={role}
+      surfaceEntering={!isSurfaceOnly && surfaceEntering}
       surfaceExiting={!isSurfaceOnly && surfaceExiting}
       surfaceOrigin={surfaceOrigin}
+      experimentalMotion={experimentalMotion}
     >
       {children}
     </ToastSurface>

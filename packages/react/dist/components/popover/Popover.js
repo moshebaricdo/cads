@@ -1,29 +1,29 @@
-import { jsxs as d, jsx as n, Fragment as rt } from "react/jsx-runtime";
-import nt from "@mui/material/Box";
-import st from "@mui/material/ClickAwayListener";
-import it from "@mui/material/Popper";
-import { forwardRef as lt, useId as at, useState as O, isValidElement as ct, cloneElement as dt } from "react";
-import { useSurfacePresence as ut } from "../../theme/experimentalMotion.js";
+import { jsxs as d, jsx as n, Fragment as it } from "react/jsx-runtime";
+import st from "@mui/material/Box";
+import lt from "@mui/material/ClickAwayListener";
+import at from "@mui/material/Popper";
+import { forwardRef as ct, useId as dt, useState as O, isValidElement as ut, cloneElement as mt } from "react";
+import { useExperimentalMotion as ft, useSurfacePresence as pt, surfaceMotionStateAttrs as gt, experimentalMotionHostAttrs as ht } from "../../theme/experimentalMotion.js";
 import { Button as R } from "../button/Button.js";
-import { CloseIconButton as mt } from "../close-icon-button/CloseIconButton.js";
+import { CloseIconButton as vt } from "../close-icon-button/CloseIconButton.js";
 import e from "./popover.module.scss.js";
-const ft = 10, pt = 8;
+const bt = 10, yt = 8;
 function y(o) {
   return o.startsWith("bottom") ? { side: "bottom", align: o === "bottomLeft" ? "start" : o === "bottomRight" ? "end" : "center" } : o.startsWith("top") ? { side: "top", align: o === "topLeft" ? "start" : o === "topRight" ? "end" : "center" } : o.startsWith("left") ? { side: "left", align: o === "leftTop" ? "start" : o === "leftBottom" ? "end" : "center" } : { side: "right", align: o === "rightTop" ? "start" : o === "rightBottom" ? "end" : "center" };
 }
-function gt(o) {
-  const { side: t, align: r } = y(o), s = t === "bottom" ? "top" : t === "top" ? "bottom" : t === "left" ? "right" : "left";
-  return r === "center" ? s : `${s}-${r}`;
+function xt(o) {
+  const { side: t, align: r } = y(o), i = t === "bottom" ? "top" : t === "top" ? "bottom" : t === "left" ? "right" : "left";
+  return r === "center" ? i : `${i}-${r}`;
 }
-function ht(o) {
-  const { side: t, align: r } = y(o), s = t === "bottom" ? "bottom" : t === "top" ? "top" : t === "left" ? "left" : "right";
-  return r === "center" ? t === "left" || t === "right" ? `center ${s}` : `${s} center` : t === "bottom" || t === "top" ? `${s} ${r === "start" ? "left" : "right"}` : `${r === "start" ? "top" : "bottom"} ${s}`;
+function Et(o) {
+  const { side: t, align: r } = y(o), i = t === "bottom" ? "bottom" : t === "top" ? "top" : t === "left" ? "left" : "right";
+  return r === "center" ? t === "left" || t === "right" ? `center ${i}` : `${i} center` : t === "bottom" || t === "top" ? `${i} ${r === "start" ? "left" : "right"}` : `${r === "start" ? "top" : "bottom"} ${i}`;
 }
 function m(...o) {
   return o.filter(Boolean).join(" ");
 }
-function vt({ side: o, align: t }) {
-  const r = o === "top" || o === "bottom", s = t === "start" ? "flex-start" : t === "end" ? "flex-end" : "center", f = t === "start" ? "flex-start" : t === "end" ? "flex-end" : "center";
+function Nt({ side: o, align: t }) {
+  const r = o === "top" || o === "bottom", i = t === "start" ? "flex-start" : t === "end" ? "flex-end" : "center", f = t === "start" ? "flex-start" : t === "end" ? "flex-end" : "center";
   return /* @__PURE__ */ n(
     "div",
     {
@@ -33,82 +33,86 @@ function vt({ side: o, align: t }) {
         r ? e.horizontal : e.vertical,
         e[o]
       ),
-      style: r ? { justifyContent: s } : { alignItems: f },
+      style: r ? { justifyContent: i } : { alignItems: f },
       children: /* @__PURE__ */ n("div", { className: m(e.caretDiamond, e[o]) })
     }
   );
 }
-const zt = lt(
+const St = ct(
   function({
     content: t = "textOnly",
     caretPlacement: r = "bottomLeft",
-    hasCaret: s = !0,
+    hasCaret: i = !0,
     title: f = "This is a really long title",
-    body: _ = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-    image: $,
-    customContent: C,
-    hasActionRow: F = !0,
+    body: S = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
+    image: _,
+    customContent: $,
+    hasActionRow: C = !0,
     hasStepper: x = !0,
-    stepperText: S = "1/3",
-    hasPrimaryAction: N = !0,
-    hasSecondaryAction: E = !0,
-    primaryActionLabel: L = "Next",
-    secondaryActionLabel: W = "Back",
-    onPrimaryAction: j,
-    onSecondaryAction: A,
-    isDismissible: V = !0,
+    stepperText: F = "1/3",
+    hasPrimaryAction: E = !0,
+    hasSecondaryAction: N = !0,
+    primaryActionLabel: A = "Next",
+    secondaryActionLabel: L = "Back",
+    onPrimaryAction: W,
+    onSecondaryAction: j,
+    isDismissible: M = !0,
     onClose: p,
     open: g,
     defaultOpen: T = !1,
     onOpenChange: h,
     children: u,
-    className: X,
-    surfaceOnly: D
-  }, H) {
-    const P = at(), [M, U] = O(null), [q, G] = O(T), k = g !== void 0, v = k ? !!g : q, { mounted: J, exiting: w } = ut(v), a = ct(u) && u.type !== void 0 ? u : null, K = !a && u != null ? u : null, Q = C ?? K, Y = D ?? (a == null && g == null && !T), b = (i) => {
-      k || G(i), h == null || h(i), i || p == null || p();
-    }, { side: l, align: Z } = y(r), tt = t !== "custom" && F && (N || E || x), z = /* @__PURE__ */ d(
+    className: V,
+    surfaceOnly: H
+  }, X) {
+    const P = dt(), [D, U] = O(null), [q, G] = O(T), k = g !== void 0, v = k ? !!g : q, J = ft(), {
+      mounted: K,
+      exiting: w,
+      entering: Q
+    } = pt(v), a = ut(u) && u.type !== void 0 ? u : null, Y = !a && u != null ? u : null, Z = $ ?? Y, tt = H ?? (a == null && g == null && !T), b = (s) => {
+      k || G(s), h == null || h(s), s || p == null || p();
+    }, { side: l, align: ot } = y(r), et = t !== "custom" && C && (E || N || x), z = /* @__PURE__ */ d(
       "div",
       {
-        ref: H,
-        className: m(e.card, e[t], X),
+        ref: X,
+        className: m(e.card, e[t], V),
         "data-cads-component": "Popover",
         role: "dialog",
         "aria-labelledby": t !== "custom" ? P : void 0,
         children: [
-          t === "textImage" ? /* @__PURE__ */ n("div", { className: e.imageSlot, children: $ }) : null,
-          t === "custom" ? /* @__PURE__ */ n("div", { className: e.customSlot, children: Q ?? /* @__PURE__ */ n("div", { className: e.customFallback, children: "Popover with custom content" }) }) : null,
+          t === "textImage" ? /* @__PURE__ */ n("div", { className: e.imageSlot, children: _ }) : null,
+          t === "custom" ? /* @__PURE__ */ n("div", { className: e.customSlot, children: Z ?? /* @__PURE__ */ n("div", { className: e.customFallback, children: "Popover with custom content" }) }) : null,
           t !== "custom" ? /* @__PURE__ */ d("div", { className: e.copy, children: [
             /* @__PURE__ */ n("div", { id: P, className: e.title, children: f }),
-            /* @__PURE__ */ n("div", { className: e.body, children: _ })
+            /* @__PURE__ */ n("div", { className: e.body, children: S })
           ] }) : null,
-          tt ? /* @__PURE__ */ d("div", { className: e.actionRow, children: [
-            x ? /* @__PURE__ */ n("div", { className: e.stepper, children: S }) : null,
+          et ? /* @__PURE__ */ d("div", { className: e.actionRow, children: [
+            x ? /* @__PURE__ */ n("div", { className: e.stepper, children: F }) : null,
             /* @__PURE__ */ d("div", { className: e.actionButtons, children: [
-              E ? /* @__PURE__ */ n(
+              N ? /* @__PURE__ */ n(
                 R,
                 {
                   size: "small",
                   variant: "outlined",
                   color: "secondary",
-                  onClick: A,
-                  children: W
+                  onClick: j,
+                  children: L
                 }
               ) : null,
-              N ? /* @__PURE__ */ n(
+              E ? /* @__PURE__ */ n(
                 R,
                 {
                   size: "small",
                   variant: "contained",
                   color: "primary",
-                  onClick: j,
-                  children: L
+                  onClick: W,
+                  children: A
                 }
               ) : null
             ] })
           ] }) : null,
-          V ? /* @__PURE__ */ n(
-            mt,
+          M ? /* @__PURE__ */ n(
+            vt,
             {
               onClick: () => b(!1),
               size: "small",
@@ -122,44 +126,45 @@ const zt = lt(
           ) : null
         ]
       }
-    ), ot = l === "top" || l === "bottom", B = /* @__PURE__ */ d(
+    ), rt = l === "top" || l === "bottom", B = /* @__PURE__ */ d(
       "div",
       {
         "data-cads-surface": "",
-        ...w ? { "data-cads-surface-state": "exit" } : {},
+        ...ht(J),
+        ...gt(Q, w),
         className: m(
           e.surfaceWrap,
-          ot ? e.horizontal : e.vertical
+          rt ? e.horizontal : e.vertical
         ),
         style: {
-          "--cads-surface-origin": ht(r)
+          "--cads-surface-origin": Et(r)
         },
         children: [
           (l === "bottom" || l === "right") && z,
-          s ? /* @__PURE__ */ n(vt, { side: l, align: Z }) : null,
+          i ? /* @__PURE__ */ n(Nt, { side: l, align: ot }) : null,
           (l === "top" || l === "left") && z
         ]
       }
     );
-    if (Y || !a)
+    if (tt || !a)
       return B;
-    const et = dt(a, {
+    const nt = mt(a, {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...a.props,
-      onClick: (i) => {
+      onClick: (s) => {
         var c, I;
-        (I = (c = a.props).onClick) == null || I.call(c, i), U(i.currentTarget), b(!v);
+        (I = (c = a.props).onClick) == null || I.call(c, s), U(s.currentTarget), b(!v);
       },
       "aria-expanded": v
     });
-    return /* @__PURE__ */ d(rt, { children: [
-      et,
+    return /* @__PURE__ */ d(it, { children: [
+      nt,
       /* @__PURE__ */ n(
-        it,
+        at,
         {
-          open: J,
-          anchorEl: M,
-          placement: gt(r),
+          open: K,
+          anchorEl: D,
+          placement: xt(r),
           style: { zIndex: "var(--z-popover)" },
           modifiers: [
             {
@@ -167,19 +172,19 @@ const zt = lt(
               options: {
                 offset: [
                   0,
-                  s ? ft : pt
+                  i ? bt : yt
                 ]
               }
             }
           ],
           children: /* @__PURE__ */ n(
-            st,
+            lt,
             {
-              onClickAway: (i) => {
-                const c = i.target;
+              onClickAway: (s) => {
+                const c = s.target;
                 c instanceof Element && (c.closest("[data-cads-dropdown-menu]") || c.closest("[data-cads-breadcrumb-overflow-menu]")) || w || b(!1);
               },
-              children: /* @__PURE__ */ n(nt, { children: B })
+              children: /* @__PURE__ */ n(st, { children: B })
             }
           )
         }
@@ -188,6 +193,6 @@ const zt = lt(
   }
 );
 export {
-  zt as Popover
+  St as Popover
 };
 //# sourceMappingURL=Popover.js.map

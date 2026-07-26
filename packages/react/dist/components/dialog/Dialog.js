@@ -1,4 +1,4 @@
-import { jsx as r, jsxs as t, Fragment as I } from "react/jsx-runtime";
+import { jsx as r, jsxs as i, Fragment as I } from "react/jsx-runtime";
 import S from "@mui/material/Dialog";
 import { forwardRef as w } from "react";
 import { FaIcon as C } from "../../icons/FaIcon.js";
@@ -6,14 +6,14 @@ import { Button as k } from "../button/Button.js";
 import { CloseIconButton as W } from "../close-icon-button/CloseIconButton.js";
 import e from "./dialog.module.scss.js";
 const z = "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)";
-function B(...i) {
-  return i.filter(Boolean).join(" ");
+function B(...t) {
+  return t.filter(Boolean).join(" ");
 }
 function T({
-  type: i,
+  type: t,
   title: s,
-  description: l,
-  hasImage: c,
+  description: c,
+  hasImage: l,
   image: d,
   topIconName: m,
   hasSecondaryAction: u,
@@ -23,13 +23,13 @@ function T({
   onSecondaryAction: g,
   isDismissable: x,
   onClose: v,
-  children: o,
+  children: a,
   className: b,
   surfaceRef: N
 }) {
-  const a = i === "iconTop", n = i === "customContent";
-  return /* @__PURE__ */ t("div", { className: B(e.outerWrap, b), children: [
-    a ? /* @__PURE__ */ r("div", { className: e.iconBadge, children: /* @__PURE__ */ r(
+  const o = t === "iconTop", n = t === "customContent";
+  return /* @__PURE__ */ i("div", { className: B(e.outerWrap, b), children: [
+    o ? /* @__PURE__ */ r("div", { className: e.iconBadge, children: /* @__PURE__ */ r(
       C,
       {
         name: m || "smile",
@@ -37,7 +37,7 @@ function T({
         style: { color: "var(--text-neutral-white-fixed)" }
       }
     ) }) : null,
-    /* @__PURE__ */ t(
+    /* @__PURE__ */ i(
       "div",
       {
         ref: N,
@@ -45,23 +45,24 @@ function T({
         "aria-modal": !0,
         "data-cads-component": "Dialog",
         "data-cads-surface": "",
+        "data-cads-surface-state": "enter",
         className: B(
           e.surface,
-          i === "default" && e.default,
-          a && e.iconTop,
+          t === "default" && e.default,
+          o && e.iconTop,
           n && e.customContent
         ),
         style: { "--cads-surface-origin": "center" },
         children: [
-          n ? /* @__PURE__ */ r("div", { className: e.customSlot, children: o }) : /* @__PURE__ */ t(I, { children: [
-            /* @__PURE__ */ t("div", { className: e.contentWrap, children: [
-              i === "default" && c ? /* @__PURE__ */ r("div", { className: e.imageSlot, children: d }) : null,
-              /* @__PURE__ */ t("div", { className: e.copy, children: [
+          n ? /* @__PURE__ */ r("div", { className: e.customSlot, children: a }) : /* @__PURE__ */ i(I, { children: [
+            /* @__PURE__ */ i("div", { className: e.contentWrap, children: [
+              t === "default" && l ? /* @__PURE__ */ r("div", { className: e.imageSlot, children: d }) : null,
+              /* @__PURE__ */ i("div", { className: e.copy, children: [
                 /* @__PURE__ */ r("h2", { className: e.title, children: s }),
-                /* @__PURE__ */ r("div", { className: e.description, children: l })
+                /* @__PURE__ */ r("div", { className: e.description, children: c })
               ] })
             ] }),
-            /* @__PURE__ */ t("div", { className: e.actions, children: [
+            /* @__PURE__ */ i("div", { className: e.actions, children: [
               u ? /* @__PURE__ */ r(
                 k,
                 {
@@ -104,8 +105,8 @@ function T({
 }
 const A = w(function({
   type: s = "default",
-  title: l = "Dialog Title",
-  description: c = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+  title: c = "Dialog Title",
+  description: l = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   hasImage: d = !1,
   image: m,
   topIconName: u = "smile",
@@ -115,10 +116,10 @@ const A = w(function({
   onPrimaryAction: g,
   onSecondaryAction: x,
   isDismissable: v = !0,
-  onClose: o,
+  onClose: a,
   children: b,
   open: N = !1,
-  surfaceOnly: a = !1,
+  surfaceOnly: o = !1,
   className: n
 }, D) {
   const y = /* @__PURE__ */ r(
@@ -126,8 +127,8 @@ const A = w(function({
     {
       surfaceRef: D,
       type: s,
-      title: l,
-      description: c,
+      title: c,
+      description: l,
       hasImage: d,
       image: m,
       topIconName: u,
@@ -137,16 +138,16 @@ const A = w(function({
       onPrimaryAction: g,
       onSecondaryAction: x,
       isDismissable: v,
-      onClose: o,
+      onClose: a,
       className: n,
       children: b
     }
   );
-  return a ? /* @__PURE__ */ r("div", { className: e.scrim, children: y }) : /* @__PURE__ */ r(
+  return o ? /* @__PURE__ */ r("div", { className: e.scrim, children: y }) : /* @__PURE__ */ r(
     S,
     {
       open: N,
-      onClose: (j, F) => o == null ? void 0 : o(),
+      onClose: (j, F) => a == null ? void 0 : a(),
       maxWidth: !1,
       fullWidth: !0,
       disableEnforceFocus: !0,

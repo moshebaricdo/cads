@@ -1,4 +1,4 @@
-import { jsx as e, jsxs as a } from "react/jsx-runtime";
+import { jsx as e, jsxs as t } from "react/jsx-runtime";
 import y from "@mui/material/Drawer";
 import { forwardRef as N } from "react";
 import { Button as w } from "../button/Button.js";
@@ -6,38 +6,39 @@ import { CloseIconButton as B } from "../close-icon-button/CloseIconButton.js";
 import r from "./drawer.module.scss.js";
 function D({
   type: v,
-  title: t,
+  title: o,
   description: i,
   hasDescription: s,
-  hasActionRow: n,
-  primaryActionLabel: c,
+  hasActionRow: c,
+  primaryActionLabel: n,
   secondaryActionLabel: l,
   onPrimaryAction: d,
   onSecondaryAction: u,
   children: m,
   isDismissible: f,
   onClose: h,
-  className: o,
+  className: a,
   surfaceRef: p
 }) {
-  return /* @__PURE__ */ a(
+  return /* @__PURE__ */ t(
     "div",
     {
       ref: p,
-      className: o ? `${r.surface} ${o}` : r.surface,
+      className: a ? `${r.surface} ${a}` : r.surface,
       "data-cads-component": "Drawer",
       "data-cads-surface": "",
+      "data-cads-surface-state": "enter",
       role: "dialog",
       "aria-modal": !1,
       style: { "--cads-surface-origin": "bottom center" },
       children: [
-        /* @__PURE__ */ a("div", { className: r.inner, children: [
-          /* @__PURE__ */ a("div", { className: r.header, children: [
-            /* @__PURE__ */ e("h2", { className: r.title, children: t }),
+        /* @__PURE__ */ t("div", { className: r.inner, children: [
+          /* @__PURE__ */ t("div", { className: r.header, children: [
+            /* @__PURE__ */ e("h2", { className: r.title, children: o }),
             s ? /* @__PURE__ */ e("div", { className: r.description, children: i }) : null
           ] }),
           v === "customContent" ? /* @__PURE__ */ e("div", { className: r.customSlot, children: m }) : null,
-          n ? /* @__PURE__ */ a("div", { className: r.actions, children: [
+          c ? /* @__PURE__ */ t("div", { className: r.actions, children: [
             /* @__PURE__ */ e(
               w,
               {
@@ -55,7 +56,7 @@ function D({
                 variant: "contained",
                 color: "primary",
                 onClick: d,
-                children: c
+                children: n
               }
             )
           ] }) : null
@@ -78,18 +79,18 @@ function D({
   );
 }
 const E = N(function({
-  type: t = "textOnly",
+  type: o = "textOnly",
   title: i = "This is a heading",
   description: s = "This is descriptive text.",
-  hasDescription: n = !0,
-  hasActionRow: c = !0,
+  hasDescription: c = !0,
+  hasActionRow: n = !0,
   primaryActionLabel: l = "Button",
   secondaryActionLabel: d = "Button",
   onPrimaryAction: u,
   onSecondaryAction: m,
   children: f,
   isDismissible: h = !0,
-  onClose: o,
+  onClose: a,
   open: p = !1,
   surfaceOnly: x = !1,
   className: g
@@ -98,17 +99,17 @@ const E = N(function({
     D,
     {
       surfaceRef: k,
-      type: t,
+      type: o,
       title: i,
       description: s,
-      hasDescription: n,
-      hasActionRow: c,
+      hasDescription: c,
+      hasActionRow: n,
       primaryActionLabel: l,
       secondaryActionLabel: d,
       onPrimaryAction: u,
       onSecondaryAction: m,
       isDismissible: h,
-      onClose: o,
+      onClose: a,
       className: g,
       children: f
     }
@@ -118,7 +119,7 @@ const E = N(function({
     {
       anchor: "bottom",
       open: p,
-      onClose: (S, z) => o == null ? void 0 : o(),
+      onClose: (S, z) => a == null ? void 0 : a(),
       hideBackdrop: !0,
       disableScrollLock: !0,
       disableEnforceFocus: !0,

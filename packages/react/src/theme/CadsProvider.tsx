@@ -44,7 +44,7 @@ export function CadsProvider({
           data-cads-root=""
           {...(experimentalMotion
             ? { "data-cads-experimental-motion": "" }
-            : {})}
+            : { "data-cads-experimental-motion-scope": "off" })}
           style={{ display: "contents" }}
         >
           {children}

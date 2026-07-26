@@ -1,100 +1,101 @@
-import { jsx as r, jsxs as S, Fragment as C } from "react/jsx-runtime";
-import D from "@mui/material/ClickAwayListener";
-import E from "@mui/material/Paper";
-import L from "@mui/material/Popper";
-import { forwardRef as z, useId as R, useMemo as N, Fragment as O, useState as M, useRef as H } from "react";
+import { jsx as t, jsxs as M, Fragment as D } from "react/jsx-runtime";
+import E from "@mui/material/ClickAwayListener";
+import L from "@mui/material/Paper";
+import z from "@mui/material/Popper";
+import { forwardRef as N, useId as C, useMemo as H, Fragment as O, useState as R, useRef as A } from "react";
 import { FaIcon as B } from "../../icons/FaIcon.js";
 import { BREADCRUMB_SIZE as I } from "../../shared/controlSize.js";
-import y from "./breadcrumbs.module.scss.js";
-function P(n, m, f, b) {
-  const u = Math.max(0, Math.floor(f)), l = Math.max(0, Math.floor(b)), d = Math.max(2, Math.floor(m));
-  if (n.length <= d)
-    return n.map((t, i) => ({ kind: "item", item: t, index: i }));
-  if (u + l >= n.length)
-    return n.map((t, i) => ({ kind: "item", item: t, index: i }));
-  const c = n.slice(0, u).map((t, i) => ({
+import { useExperimentalMotion as P, experimentalMotionHostAttrs as F } from "../../theme/experimentalMotion.js";
+import x from "./breadcrumbs.module.scss.js";
+function $(e, c, m, v) {
+  const f = Math.max(0, Math.floor(m)), l = Math.max(0, Math.floor(v)), h = Math.max(2, Math.floor(c));
+  if (e.length <= h)
+    return e.map((r, i) => ({ kind: "item", item: r, index: i }));
+  if (f + l >= e.length)
+    return e.map((r, i) => ({ kind: "item", item: r, index: i }));
+  const d = e.slice(0, f).map((r, i) => ({
     kind: "item",
-    item: t,
+    item: r,
     index: i
-  })), h = n.length - l, p = n.slice(u, h).map((t, i) => ({
-    item: t,
-    index: u + i
-  })), g = n.slice(h).map((t, i) => ({
+  })), b = e.length - l, g = e.slice(f, b).map((r, i) => ({
+    item: r,
+    index: f + i
+  })), p = e.slice(b).map((r, i) => ({
     kind: "item",
-    item: t,
-    index: h + i
+    item: r,
+    index: b + i
   }));
   return [
-    ...c,
-    { kind: "overflow", items: p },
-    ...g
+    ...d,
+    { kind: "overflow", items: g },
+    ...p
   ];
 }
-const q = z(
+const Y = N(
   function({
-    size: m = "medium",
-    items: f,
-    maxItems: b = 8,
-    itemsBeforeCollapse: u = 1,
+    size: c = "medium",
+    items: m,
+    maxItems: v = 8,
+    itemsBeforeCollapse: f = 1,
     itemsAfterCollapse: l = 1,
-    expandText: d = "Show path",
-    "aria-label": c = "Breadcrumb",
-    className: h,
-    style: p
-  }, g) {
-    const t = I[m], i = R(), s = f.some((e) => e.current), k = N(
-      () => P(f, b, u, l),
-      [f, b, u, l]
-    ), x = {
-      "--crumb-link-gap": t.linkGap,
-      "--crumb-font-size": t.fontSize,
-      "--crumb-line-height": t.lineHeight,
-      "--crumb-trail-gap": t.trailGap,
-      "--crumb-sep-box": t.sepBox
+    expandText: h = "Show path",
+    "aria-label": d = "Breadcrumb",
+    className: b,
+    style: g
+  }, p) {
+    const r = I[c], i = C(), y = m.some((u) => u.current), s = H(
+      () => $(m, v, f, l),
+      [m, v, f, l]
+    ), w = {
+      "--crumb-link-gap": r.linkGap,
+      "--crumb-font-size": r.fontSize,
+      "--crumb-line-height": r.lineHeight,
+      "--crumb-trail-gap": r.trailGap,
+      "--crumb-sep-box": r.sepBox
     };
-    return /* @__PURE__ */ r(
+    return /* @__PURE__ */ t(
       "nav",
       {
-        ref: g,
-        "aria-label": c,
-        className: h,
-        style: { ...x, ...p },
+        ref: p,
+        "aria-label": d,
+        className: b,
+        style: { ...w, ...g },
         "data-cads-breadcrumbs": "",
-        "data-size": m,
-        children: /* @__PURE__ */ r("ol", { className: y.trail, children: k.map((e, o) => {
-          const a = o === k.length - 1, v = e.kind === "item" ? e.item.key ?? `crumb-${e.index}` : `${i}-overflow`;
-          return /* @__PURE__ */ S(O, { children: [
-            /* @__PURE__ */ r("li", { children: e.kind === "item" ? /* @__PURE__ */ r(
-              F,
+        "data-size": c,
+        children: /* @__PURE__ */ t("ol", { className: x.trail, children: s.map((u, n) => {
+          const o = n === s.length - 1, a = u.kind === "item" ? u.item.key ?? `crumb-${u.index}` : `${i}-overflow`;
+          return /* @__PURE__ */ M(O, { children: [
+            /* @__PURE__ */ t("li", { children: u.kind === "item" ? /* @__PURE__ */ t(
+              U,
               {
-                item: e.item,
-                size: m,
-                isCurrent: !!e.item.current || !s && e.index === f.length - 1
+                item: u.item,
+                size: c,
+                isCurrent: !!u.item.current || !y && u.index === m.length - 1
               }
-            ) : /* @__PURE__ */ r(
-              K,
+            ) : /* @__PURE__ */ t(
+              _,
               {
-                size: m,
-                items: e.items,
+                size: c,
+                items: u.items,
                 menuId: `${i}-overflow-menu`,
-                expandText: d
+                expandText: h
               }
             ) }),
-            a ? null : /* @__PURE__ */ r("li", { "aria-hidden": !0, className: y.separator, children: /* @__PURE__ */ r(
+            o ? null : /* @__PURE__ */ t("li", { "aria-hidden": !0, className: x.separator, children: /* @__PURE__ */ t(
               B,
               {
                 name: "chevron-right",
                 family: "solid",
-                fontSize: t.sepIconPx
+                fontSize: r.sepIconPx
               }
             ) })
-          ] }, v);
+          ] }, a);
         }) })
       }
     );
   }
 );
-function A() {
+function K() {
   return {
     position: "absolute",
     width: 1,
@@ -107,41 +108,41 @@ function A() {
     border: 0
   };
 }
-function F({
-  item: n,
-  size: m,
-  isCurrent: f
+function U({
+  item: e,
+  size: c,
+  isCurrent: m
 }) {
-  const b = I[m], u = !!n.disabled, l = !!n.iconName, d = /* @__PURE__ */ S(C, { children: [
-    l ? /* @__PURE__ */ r(
+  const v = I[c], f = !!e.disabled, l = !!e.iconName, h = /* @__PURE__ */ M(D, { children: [
+    l ? /* @__PURE__ */ t(
       B,
       {
-        name: n.iconName,
+        name: e.iconName,
         family: "solid",
-        fontSize: b.iconPx,
-        title: n.iconOnly && typeof n.label == "string" ? n.label : void 0
+        fontSize: v.iconPx,
+        title: e.iconOnly && typeof e.label == "string" ? e.label : void 0
       }
     ) : null,
-    n.iconOnly ? l && typeof n.label == "string" ? null : /* @__PURE__ */ r("span", { style: A(), children: n.label }) : n.label
-  ] }), c = {
-    className: y.link,
+    e.iconOnly ? l && typeof e.label == "string" ? null : /* @__PURE__ */ t("span", { style: K(), children: e.label }) : e.label
+  ] }), d = {
+    className: x.link,
     "data-cads-breadcrumb-link": "",
-    "data-current": f ? "true" : void 0,
-    "data-disabled": u ? "true" : void 0,
+    "data-current": m ? "true" : void 0,
+    "data-disabled": f ? "true" : void 0,
     style: { position: "relative" }
   };
-  return f ? /* @__PURE__ */ r("span", { ...c, "aria-current": "page", children: d }) : u ? /* @__PURE__ */ r("span", { ...c, "aria-disabled": "true", children: d }) : n.href != null ? /* @__PURE__ */ r("a", { ...c, href: n.href, onClick: n.onClick, "data-cads-press": "", children: d }) : /* @__PURE__ */ r(
+  return m ? /* @__PURE__ */ t("span", { ...d, "aria-current": "page", children: h }) : f ? /* @__PURE__ */ t("span", { ...d, "aria-disabled": "true", children: h }) : e.href != null ? /* @__PURE__ */ t("a", { ...d, href: e.href, onClick: e.onClick, "data-cads-press": "", children: h }) : /* @__PURE__ */ t(
     "button",
     {
       type: "button",
-      ...c,
-      onClick: n.onClick,
+      ...d,
+      onClick: e.onClick,
       "data-cads-press": "",
-      children: d
+      children: h
     }
   );
 }
-const $ = {
+const V = {
   large: {
     paddingLeft: "1rem",
     paddingRight: "1.375rem",
@@ -171,16 +172,16 @@ const $ = {
     lineHeight: "var(--leading-body-xs)"
   }
 };
-function K({
-  size: n,
-  items: m,
-  menuId: f,
-  expandText: b
+function _({
+  size: e,
+  items: c,
+  menuId: m,
+  expandText: v
 }) {
-  const u = I[n], l = $[n === "large" || n === "medium" ? "small" : "extraSmall"], [d, c] = M(!1), [h, p] = M(-1), g = H(null), t = R(), i = (e, o) => {
-    const { item: a } = e;
+  const f = I[e], l = V[e === "large" || e === "medium" ? "small" : "extraSmall"], h = P(), [d, b] = R(!1), [g, p] = R(-1), r = A(null), i = C(), y = (n, o) => {
+    const { item: a } = n;
     if (!a.disabled) {
-      if (c(!1), p(-1), a.onClick) {
+      if (b(!1), p(-1), a.onClick) {
         a.onClick(
           o
         );
@@ -188,91 +189,93 @@ function K({
       }
       a.href && typeof window < "u" && window.location.assign(a.href);
     }
-  }, s = m.map((e, o) => e.item.disabled ? -1 : o).filter((e) => e >= 0), k = (e) => {
+  }, s = c.map((n, o) => n.item.disabled ? -1 : o).filter((n) => n >= 0), w = (n) => {
     var o;
     if (d)
-      switch (e.key) {
+      switch (n.key) {
         case "Escape":
-          e.stopPropagation(), e.preventDefault(), c(!1), p(-1), (o = g.current) == null || o.focus();
+          n.stopPropagation(), n.preventDefault(), b(!1), p(-1), (o = r.current) == null || o.focus();
           break;
         case "ArrowDown": {
-          if (e.preventDefault(), s.length === 0) break;
-          const a = s.indexOf(h), v = s[a === -1 ? 0 : (a + 1) % s.length];
-          p(v);
+          if (n.preventDefault(), s.length === 0) break;
+          const a = s.indexOf(g), k = s[a === -1 ? 0 : (a + 1) % s.length];
+          p(k);
           break;
         }
         case "ArrowUp": {
-          if (e.preventDefault(), s.length === 0) break;
-          const a = s.indexOf(h), v = s[a <= 0 ? s.length - 1 : (a - 1 + s.length) % s.length];
-          p(v);
+          if (n.preventDefault(), s.length === 0) break;
+          const a = s.indexOf(g), k = s[a <= 0 ? s.length - 1 : (a - 1 + s.length) % s.length];
+          p(k);
           break;
         }
         case "Enter":
         case " ": {
-          if (h < 0) break;
-          e.preventDefault();
-          const a = m[h];
-          a && !a.item.disabled && i(a, e);
+          if (g < 0) break;
+          n.preventDefault();
+          const a = c[g];
+          a && !a.item.disabled && y(a, n);
           break;
         }
       }
-  }, x = {
+  }, u = {
     "--menu-padding-left": l.paddingLeft,
     "--menu-padding-right": l.paddingRight,
     "--menu-padding-block": l.paddingBlock,
     "--menu-font-size": l.fontSize,
     "--menu-line-height": l.lineHeight
   };
-  return /* @__PURE__ */ r(
-    D,
+  return /* @__PURE__ */ t(
+    E,
     {
       onClickAway: () => {
-        d && (c(!1), p(-1));
+        d && (b(!1), p(-1));
       },
-      children: /* @__PURE__ */ S(
+      children: /* @__PURE__ */ M(
         "div",
         {
           style: { position: "relative", display: "inline-flex" },
-          onKeyDown: k,
+          onKeyDown: w,
           children: [
-            /* @__PURE__ */ r(
+            /* @__PURE__ */ t(
               "button",
               {
-                ref: g,
-                id: t,
+                ref: r,
+                id: i,
                 type: "button",
-                className: y.overflow,
-                "aria-label": b,
+                className: x.overflow,
+                "aria-label": v,
                 "aria-haspopup": "menu",
                 "aria-expanded": d,
-                "aria-controls": d ? f : void 0,
+                "aria-controls": d ? m : void 0,
                 "data-cads-breadcrumb-overflow": "",
                 "data-cads-press": "",
                 onClick: () => {
-                  c((e) => {
-                    const o = !e;
+                  b((n) => {
+                    const o = !n;
                     return p(o ? s[0] ?? -1 : -1), o;
                   });
                 },
-                children: /* @__PURE__ */ r(B, { name: "ellipsis", family: "solid", fontSize: u.sepIconPx })
+                children: /* @__PURE__ */ t(B, { name: "ellipsis", family: "solid", fontSize: f.sepIconPx })
               }
             ),
-            /* @__PURE__ */ r(
-              L,
+            /* @__PURE__ */ t(
+              z,
               {
                 open: d,
-                anchorEl: g.current,
+                anchorEl: r.current,
                 placement: "bottom-start",
                 style: { zIndex: "var(--z-dropdown)" },
                 modifiers: [{ name: "offset", options: { offset: [0, 4] } }],
-                children: /* @__PURE__ */ r(
-                  E,
+                children: /* @__PURE__ */ t(
+                  L,
                   {
-                    id: f,
+                    id: m,
                     role: "menu",
-                    "aria-labelledby": t,
+                    "aria-labelledby": i,
                     "data-cads-breadcrumb-overflow-menu": "",
                     "data-cads-surface": "",
+                    "data-cads-surface-state": "enter",
+                    ...F(h),
                     elevation: 0,
                     sx: {
                       mt: 0,
@@ -285,28 +288,28 @@ function K({
                       py: "4px",
                       "--cads-surface-origin": "top left"
                     },
-                    children: m.map(({ item: e, index: o }) => {
-                      const a = !!e.disabled;
-                      return /* @__PURE__ */ r(
+                    children: c.map(({ item: n, index: o }) => {
+                      const a = !!n.disabled;
+                      return /* @__PURE__ */ t(
                         "div",
                         {
                           role: "menuitem",
                           "aria-disabled": a || void 0,
                           "data-cads-dropdown-item": "",
-                          "data-active": o === h ? "true" : void 0,
+                          "data-active": o === g ? "true" : void 0,
                           tabIndex: -1,
-                          className: y.overflowMenuItem,
-                          style: x,
-                          onMouseDown: (w) => w.preventDefault(),
-                          onClick: (w) => {
-                            a || i({ item: e }, w);
+                          className: x.overflowMenuItem,
+                          style: u,
+                          onMouseDown: (S) => S.preventDefault(),
+                          onClick: (S) => {
+                            a || y({ item: n }, S);
                           },
                           onMouseEnter: () => {
                             a || p(o);
                           },
-                          children: /* @__PURE__ */ r("span", { className: y.overflowMenuItemLabel, children: e.label })
+                          children: /* @__PURE__ */ t("span", { className: x.overflowMenuItemLabel, children: n.label })
                         },
-                        e.key ?? `overflow-${o}`
+                        n.key ?? `overflow-${o}`
                       );
                     })
                   }
@@ -320,6 +323,6 @@ function K({
   );
 }
 export {
-  q as Breadcrumbs
+  Y as Breadcrumbs
 };
 //# sourceMappingURL=Breadcrumbs.js.map

@@ -12,7 +12,12 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { useSurfacePresence } from "../../theme/experimentalMotion";
+import {
+  experimentalMotionHostAttrs,
+  surfaceMotionStateAttrs,
+  useExperimentalMotion,
+  useSurfacePresence,
+} from "../../theme/experimentalMotion";
 import { Button } from "../button/index";
 import { CloseIconButton } from "../close-icon-button";
 import styles from "./popover.module.scss";
@@ -199,8 +204,12 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const controlled = openProp !== undefined;
     const open = controlled ? Boolean(openProp) : uncontrolledOpen;
-    const { mounted: surfaceMounted, exiting: surfaceExiting } =
-      useSurfacePresence(open);
+    const experimentalMotion = useExperimentalMotion();
+    const {
+      mounted: surfaceMounted,
+      exiting: surfaceExiting,
+      entering: surfaceEntering,
+    } = useSurfacePresence(open);
 
     const trigger =
       isValidElement(children) && children.type !== undefined
@@ -304,9 +313,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     const withCaret = (
       <div
         data-cads-surface=""
-        {...(surfaceExiting
-          ? { "data-cads-surface-state": "exit" }
-          : {})}
+        {...experimentalMotionHostAttrs(experimentalMotion)}
+        {...surfaceMotionStateAttrs(surfaceEntering, surfaceExiting)}
         className={cx(
           styles.surfaceWrap,
           horizontal ? styles.horizontal : styles.vertical,

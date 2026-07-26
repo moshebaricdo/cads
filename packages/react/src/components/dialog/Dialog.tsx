@@ -57,6 +57,7 @@ function DialogSurface({
         aria-modal
         data-cads-component="Dialog"
         data-cads-surface=""
+        data-cads-surface-state="enter"
         className={cx(
           styles.surface,
           type === "default" && styles.default,

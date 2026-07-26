@@ -31,6 +31,7 @@ function DrawerSurface({
       className={className ? `${styles.surface} ${className}` : styles.surface}
       data-cads-component="Drawer"
       data-cads-surface=""
+      data-cads-surface-state="enter"
       role="dialog"
       aria-modal={false}
       style={{ "--cads-surface-origin": "bottom center" } as React.CSSProperties}

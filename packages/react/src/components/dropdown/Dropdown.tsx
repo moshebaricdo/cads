@@ -23,7 +23,12 @@ import {
   TEXT_INPUT_SIZE,
   type ControlSize,
 } from "../../shared/controlSize";
-import { useSurfacePresence } from "../../theme/experimentalMotion";
+import {
+  experimentalMotionHostAttrs,
+  surfaceMotionStateAttrs,
+  useExperimentalMotion,
+  useSurfacePresence,
+} from "../../theme/experimentalMotion";
 import styles from "./dropdown.module.scss";
 import type {
   DropdownActionProps,
@@ -655,8 +660,12 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const open = openProp ?? uncontrolledOpen;
-    const { mounted: surfaceMounted, exiting: surfaceExiting } =
-      useSurfacePresence(open && Boolean(anchorEl));
+    const experimentalMotion = useExperimentalMotion();
+    const {
+      mounted: surfaceMounted,
+      exiting: surfaceExiting,
+      entering: surfaceEntering,
+    } = useSurfacePresence(open && Boolean(anchorEl));
 
     useLayoutEffect(() => {
       if (!open) return;
@@ -934,9 +943,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           aria-multiselectable={isChecklist || undefined}
           data-cads-dropdown-menu=""
           data-cads-surface=""
-          {...(surfaceExiting
-            ? { "data-cads-surface-state": "exit" }
-            : {})}
+          {...experimentalMotionHostAttrs(experimentalMotion)}
+          {...surfaceMotionStateAttrs(surfaceEntering, surfaceExiting)}
           data-menu-type={resolvedMenuType}
           onKeyDown={onKeyDown}
           className={styles.menuPanel}

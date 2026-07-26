@@ -1,4 +1,4 @@
-import './tabs.css';const t = "_tablist_16yrp_1", a = "_indicator_16yrp_14", s = "_tab_16yrp_1", i = {
+import './tabs.css';const t = "_tablist_1uxuy_1", a = "_indicator_1uxuy_14", s = "_tab_1uxuy_1", i = {
   tablist: t,
   indicator: a,
   tab: s
