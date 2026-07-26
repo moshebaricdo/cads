@@ -1,10 +1,9 @@
-/* Beat Popover `.card.custom` (20px) — module hashes prevent `:global(.custom)`. */
+/* Beat Popover `.card` width (300) — custom is unpadded; we own density. */
 .popover.popover {
   width: 260px;
   min-width: 260px;
   max-width: 280px;
   padding: 6px;
-  gap: 0;
 }
 
 .panel {

@@ -171,14 +171,23 @@
         },
         "expectedGeometry": {
           "width": "300",
-          "radius": "10"
+          "radius": "10",
+          "padding": "0"
         },
         "expectedVariables": [
           "--background-neutral-primary"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/page.tsx",
         "result": "pass",
-        "mismatches": [],
+        "mismatches": [
+          {
+            "axis": "padding",
+            "figma": "20px card padding on content=custom",
+            "code": "0 — custom is an unpadded blank canvas; fixture content owns density",
+            "reason": "Intentional API decision: consumers own padding for content=custom",
+            "owner": "platform"
+          }
+        ],
         "browserScreenshot": "captures/browser-popover-custom-light.png",
         "figmaScreenshot": "captures/figma-popover-set.png"
       },

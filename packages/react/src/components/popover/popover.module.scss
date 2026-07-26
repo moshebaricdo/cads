@@ -17,10 +17,15 @@
   box-shadow: var(--shadow-md);
   overflow: hidden;
 
-  &.textOnly,
-  &.custom {
+  &.textOnly {
     padding: 20px;
     gap: 16px;
+  }
+
+  /* Blank canvas — consumers own padding, gap, and density. */
+  &.custom {
+    padding: 0;
+    gap: 0;
   }
 
   &.textImage {
@@ -44,6 +49,7 @@
 }
 
 .customFallback {
+  padding: 20px;
   font-family: var(--font-family-main);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);

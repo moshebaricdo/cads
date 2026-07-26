@@ -33,7 +33,7 @@ export const cases: FixtureCase[] = [
       viewport: { width: 360, height: 120 },
       render: () => (
         <Popover content="custom" hasCaret={false} surfaceOnly>
-          Popover with custom content
+          <div style={{ padding: 20 }}>Popover with custom content</div>
         </Popover>
       ),
     },

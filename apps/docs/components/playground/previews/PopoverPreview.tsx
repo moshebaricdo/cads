@@ -50,7 +50,7 @@ export default function PopoverPreview({
     isDismissible: v.isDismissible !== false,
     customContent:
       content === "custom" ? (
-        <div>Popover with custom content</div>
+        <div style={{ padding: 20 }}>Popover with custom content</div>
       ) : undefined,
   } as const;
 

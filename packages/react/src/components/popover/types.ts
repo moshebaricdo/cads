@@ -39,7 +39,10 @@ export interface PopoverProps {
   body?: ReactNode;
   /** Image slot when `content="textImage"`. */
   image?: ReactNode;
-  /** Custom body when `content="custom"` (also accepts `children` as custom). */
+  /**
+   * Custom body when `content="custom"` (also accepts `children` as custom).
+   * Unpadded blank canvas — own padding and density in the slot.
+   */
   customContent?: ReactNode;
   /**
    * @default true

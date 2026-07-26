@@ -1611,7 +1611,8 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       usageRules: [
         "Well suited to guided walkthroughs (stepper + Back/Next).",
         "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
-        "caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned)."
+        "caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned).",
+        'content="custom" is an unpadded blank canvas — own padding and density in customContent.'
       ],
       example: '<Popover content="textOnly" title="Tour step" body="Learn about this control." stepperText="1/3"><Button>Open</Button></Popover>'
     },

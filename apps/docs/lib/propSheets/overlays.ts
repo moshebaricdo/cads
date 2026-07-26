@@ -80,7 +80,8 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
         {
           name: "customContent",
           type: "ReactNode",
-          description: "Custom body when content is custom.",
+          description:
+            "Custom body when content is custom. Unpadded blank canvas — own padding in the slot.",
         },
         {
           name: "hasActionRow",
