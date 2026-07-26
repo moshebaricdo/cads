@@ -1,10 +1,11 @@
 "use client";
 
-import { Button, Popover, Toggle } from "@codeai/cads-react";
+import { Button, Popover, Toggle, Tooltip } from "@codeai/cads-react";
 import Link from "next/link";
 import {
   Suspense,
   useId,
+  useRef,
   useState,
   type KeyboardEvent,
 } from "react";
@@ -87,8 +88,17 @@ function ExperimentRow({
 function ExperimentsControlInner() {
   const titleId = useId();
   const [open, setOpen] = useState(false);
+  const openRef = useRef(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
   const { enabled: motionEnabled, setFlag: setMotionFlag } =
     useDocsWideMotionFlag();
+
+  const setPopoverOpen = (next: boolean) => {
+    openRef.current = next;
+    setOpen(next);
+    // Click focuses the trigger; close tooltip before that focus can reopen it.
+    if (next) setTooltipOpen(false);
+  };
 
   return (
     <Popover
@@ -97,7 +107,7 @@ function ExperimentsControlInner() {
       hasCaret={false}
       isDismissible={false}
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={setPopoverOpen}
       className={s.popover}
       customContent={
         <div className={s.panel} aria-labelledby={titleId}>
@@ -111,22 +121,32 @@ function ExperimentsControlInner() {
                 experiment={experiment}
                 motionEnabled={motionEnabled}
                 onMotionChange={setMotionFlag}
-                onNavigate={() => setOpen(false)}
+                onNavigate={() => setPopoverOpen(false)}
               />
             ))}
           </ul>
         </div>
       }
     >
-      <Button
-        variant="outlined"
-        color="secondary"
-        size="extraSmall"
-        iconOnly
-        startIconName="flask"
-        aria-label="Experiments"
-        aria-haspopup="dialog"
-      />
+      <Tooltip
+        title="Experiments"
+        placement="bottom"
+        open={tooltipOpen}
+        onOpen={() => {
+          if (!openRef.current) setTooltipOpen(true);
+        }}
+        onClose={() => setTooltipOpen(false)}
+      >
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="extraSmall"
+          iconOnly
+          startIconName="flask"
+          aria-label="Experiments"
+          aria-haspopup="dialog"
+        />
+      </Tooltip>
     </Popover>
   );
 }

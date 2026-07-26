@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { GeistSans } from "geist/font/sans";
 import { Google_Sans_Code, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { DocsShell } from "@/components/DocsShell";
 import { Providers } from "@/components/Providers";
 import { withBasePath } from "@/lib/basePath";
+import { getThemeBootScript } from "@/lib/docsTheme";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -34,8 +36,14 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${GeistSans.variable} ${spaceGrotesk.variable} ${googleSansCode.variable}`}
+      suppressHydrationWarning
     >
       <body>
+        <Script
+          id="cads-docs-theme-boot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: getThemeBootScript() }}
+        />
         <Providers>
           <DocsShell>{children}</DocsShell>
         </Providers>

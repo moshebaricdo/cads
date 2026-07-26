@@ -24,6 +24,12 @@ import {
   componentHref,
   type ComponentSectionId,
 } from "@/lib/nav";
+import {
+  readDocsThemePreference,
+  resolveDocsDark,
+  writeDocsThemePreference,
+  type DocsThemePreference,
+} from "@/lib/docsTheme";
 
 /** Collapsed by default; the section containing the current page auto-opens. */
 const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
@@ -34,7 +40,6 @@ const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
   overlays: false,
 };
 
-const DARK_STORAGE_KEY = "cads-docs-dark";
 const SIDEBAR_STORAGE_KEY = "cads-docs-sidebar-collapsed";
 const SIDEBAR_WIDTH = 220;
 const SIDEBAR_COLLAPSED_WIDTH = 50;
@@ -57,7 +62,10 @@ function readSidebarCollapsed(): boolean {
 
 export function DocsShell({ children }: { children: ReactNode }) {
   const pathname = normalizePath(usePathname());
-  const [dark, setDark] = useState(false);
+  const [themePreference, setThemePreference] =
+    useState<DocsThemePreference>("system");
+  /** False until localStorage is read so we never overwrite a stored preference. */
+  const [themeReady, setThemeReady] = useState(false);
   const [search, setSearch] = useState("");
   const [openSections, setOpenSections] = useState(DEFAULT_OPEN);
   /** Desktop collapsed preference. Null until session storage is read. */
@@ -92,12 +100,8 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, [componentsByExport, pathname]);
 
   useEffect(() => {
-    try {
-      setDark(window.localStorage.getItem(DARK_STORAGE_KEY) === "1");
-    } catch {
-      /* storage unavailable */
-    }
-
+    setThemePreference(readDocsThemePreference());
+    setThemeReady(true);
     setCollapsed(readSidebarCollapsed());
 
     const mq = window.matchMedia(MOBILE_MQ);
@@ -117,14 +121,24 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (isCanvas) return;
-    document.documentElement.classList.toggle("dark", dark);
-    try {
-      window.localStorage.setItem(DARK_STORAGE_KEY, dark ? "1" : "0");
-    } catch {
-      /* storage unavailable */
+    if (!themeReady || isCanvas) return;
+    document.documentElement.classList.toggle(
+      "dark",
+      resolveDocsDark(themePreference),
+    );
+    writeDocsThemePreference(themePreference);
+  }, [themePreference, themeReady, isCanvas]);
+
+  useEffect(() => {
+    if (!themeReady || isCanvas || themePreference !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    function syncSystemTheme() {
+      document.documentElement.classList.toggle("dark", mq.matches);
     }
-  }, [dark, isCanvas]);
+    syncSystemTheme();
+    mq.addEventListener("change", syncSystemTheme);
+    return () => mq.removeEventListener("change", syncSystemTheme);
+  }, [themePreference, themeReady, isCanvas]);
 
   // Persist only after hydration so the default never overwrites the session preference.
   useEffect(() => {
@@ -356,12 +370,20 @@ export function DocsShell({ children }: { children: ReactNode }) {
             <SegmentedButton
               size="extraSmall"
               iconOnly
-              value={dark ? "dark" : "light"}
-              onChange={(value) => setDark(value === "dark")}
+              value={themePreference}
+              onChange={(value) =>
+                setThemePreference(value as DocsThemePreference)
+              }
               aria-label="Color mode"
               options={[
                 { value: "light", label: "Light", iconName: "sun" },
                 { value: "dark", label: "Dark", iconName: "moon" },
+                {
+                  value: "system",
+                  label: "System",
+                  iconName: "desktop",
+                  tooltip: "System",
+                },
               ]}
             />
           </div>
