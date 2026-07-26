@@ -14,7 +14,9 @@ import {
   DocsNavItem,
   DocsNavSection,
 } from "@/components/DocsNavItem";
+import nav from "./DocsNavItem.module.scss";
 import { DocsNavScroller } from "@/components/DocsNavScroller";
+import { ExperimentsControl } from "@/components/ExperimentsControl";
 import {
   COMPONENT_SECTIONS,
   FOUNDATIONS_NAV,
@@ -350,6 +352,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           </div>
 
           <div className={s.topbarRight}>
+            <ExperimentsControl />
             <SegmentedButton
               size="extraSmall"
               iconOnly
@@ -423,9 +426,6 @@ export function DocsShell({ children }: { children: ReactNode }) {
                       href={item.href}
                       label={item.label}
                       iconName={item.iconName}
-                      experimental={
-                        "experimental" in item ? item.experimental : undefined
-                      }
                       active={pathname === item.href}
                       collapsed={chromeCollapsed}
                     />
@@ -463,7 +463,11 @@ export function DocsShell({ children }: { children: ReactNode }) {
                   const panelId = `nav-section-${section.id}`;
                   const sectionActive = activeSectionId === section.id;
                   return (
-                    <div key={section.id} className="docs-nav-group">
+                    <div
+                      key={section.id}
+                      className={nav.group}
+                      data-open={open || undefined}
+                    >
                       <DocsNavItem
                         kind="group"
                         label={section.label}
@@ -502,7 +506,9 @@ export function DocsShell({ children }: { children: ReactNode }) {
         </div>
 
         <main className={`docs-main ${s.main}`}>
-          <div className={`docs-main-inner ${s.mainInner}`}>{children}</div>
+          <div className={`docs-main-inner ${s.mainInner}`}>
+            {children}
+          </div>
         </main>
       </div>
     </div>

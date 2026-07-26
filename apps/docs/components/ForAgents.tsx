@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Link } from "@codeai/cads-react";
+import { Button, Link, Tag, Tooltip } from "@codeai/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import overviewStyles from "@/components/ComponentOverview.module.scss";
 import ui from "@/components/docs-ui.module.scss";
@@ -27,7 +27,22 @@ export function ForAgents({ zipReady }: ForAgentsProps) {
     <div className={`${pageStyles.page} ${styles.page}`}>
       <header className={overviewStyles.root}>
         <div className={overviewStyles.copy}>
-          <h1 className={overviewStyles.title}>Using CADS with AI</h1>
+          <div className={overviewStyles.titleRow}>
+            <h1 className={overviewStyles.title}>Using CADS with AI</h1>
+            <Tooltip
+              title="This feature is experimental and actively being refined."
+              placement="bottom"
+            >
+              <span className={overviewStyles.statusTag} tabIndex={0}>
+                <Tag
+                  size="small"
+                  color="info"
+                  label="Experimental"
+                  startIconName="flask"
+                />
+              </span>
+            </Tooltip>
+          </div>
           <p className={overviewStyles.lead}>
             The CADS portable skill packages the CADS Docs runtime (components and styles) along 
             with general guidance for LLMs on how to best use it. It also provides context on our 

@@ -38,17 +38,11 @@
 
 .recipeVars {
   margin: 2px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
-
-/* Override for copyValue when nested inside recipeVars */
-.recipeVarValue {
-  line-height: 16px;
-  width: 100%;
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-neutral-quaternary);
+  white-space: pre-line;
 }
 
 .surfaceTrigger {

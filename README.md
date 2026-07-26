@@ -61,21 +61,21 @@ Status reflects whether a matching component has shipped in the [production Stor
 
 ### Motion
 
-Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Opt in with `CadsProvider experimentalMotion` — off by default.
+Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Off by default across docs.
 
 Docs: [`/variables/core`](https://moshebaricdo.github.io/cads/variables/core)
 
-### Portable prototyping skill
+### Portable skill
 
-A self-contained Agent Skills ZIP with the real CADS runtime and FA fonts inlined. Install it in Claude, ChatGPT, Gemini Spark, or Cursor to prototype without a monorepo checkout.
+Self-contained Agent Skills ZIP with the real CADS runtime — prototype without a monorepo checkout.
 
 Docs: [`/ai`](https://moshebaricdo.github.io/cads/ai)
 
 ### Local MCP
 
-Stdio MCP proof of concept: catalog search, constrained prototype schema, and validation against `cadsManifest`. Renders through the docs `/prototype` route.
+Stdio MCP proof of concept: catalog search, constrained prototype schema, and validation.
 
-In repo: [`tooling/cads-mcp`](tooling/cads-mcp)
+Docs: [`/prototype`](https://moshebaricdo.github.io/cads/prototype)
 
 ## Working in this repo
 

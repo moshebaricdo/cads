@@ -1,0 +1,89 @@
+/* Beat Popover `.card.custom` (20px) — module hashes prevent `:global(.custom)`. */
+.popover.popover {
+  width: 260px;
+  min-width: 260px;
+  max-width: 280px;
+  padding: 6px;
+  gap: 0;
+}
+
+.panel {
+  width: 100%;
+  min-width: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--shape-sm);
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-out);
+}
+
+.row:hover {
+  background: var(--background-neutral-secondary);
+  text-decoration: none;
+  color: inherit;
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
+}
+
+.rowCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.rowName {
+  margin: 0;
+  font-family: var(--font-family-main);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--text-neutral-primary);
+}
+
+.rowSummary {
+  margin: 0;
+  font-family: var(--font-family-main);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-neutral-tertiary);
+}
+
+.rowToggle {
+  flex-shrink: 0;
+  pointer-events: none;
+}

@@ -13,14 +13,7 @@ import {
   Toggle,
 } from "@codeai/cads-react";
 import type { FaIconName } from "@codeai/cads-react/icons";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useEffect, useState } from "react";
-import {
-  MOTION_FLAG_EVENT,
-  MOTION_FLAG_PARAM,
-  readMotionFlagFromSession,
-  writeMotionFlagToSession,
-} from "@/lib/experimentalMotionFlag";
+import { useEffect, useState } from "react";
 import { DEMO_DROPDOWN_OPTIONS } from "@/components/playground/previews/shared";
 import styles from "./MotionExample.module.scss";
 
@@ -90,7 +83,7 @@ const PROJECTS = {
 
 type StepItem = { label: string; done: boolean };
 
-function MotionExampleCard() {
+function MotionExampleCard({ previewMotion }: { previewMotion: boolean }) {
   const [tabValue, setTabValue] =
     useState<keyof typeof PROJECTS>("all");
   const [sort, setSort] = useState("recent");
@@ -109,7 +102,7 @@ function MotionExampleCard() {
   }, [tabValue]);
 
   return (
-    <CadsProvider experimentalMotion baseline={false}>
+    <CadsProvider experimentalMotion={previewMotion} baseline={false}>
       <div className={styles.card} aria-label="Projects browser example">
         <div className={styles.toolbar}>
           <div className={styles.titleRow}>
@@ -253,76 +246,23 @@ function MotionExampleCard() {
   );
 }
 
-function MotionExperimentOptionsInner() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [docsWideMotion, setDocsWideMotion] = useState(false);
-
-  useEffect(() => {
-    const sync = () => setDocsWideMotion(readMotionFlagFromSession());
-    sync();
-    window.addEventListener(MOTION_FLAG_EVENT, sync);
-    return () => window.removeEventListener(MOTION_FLAG_EVENT, sync);
-  }, []);
-
-  const setDocsWideMotionFlag = useCallback(
-    (next: boolean) => {
-      writeMotionFlagToSession(next);
-      setDocsWideMotion(next);
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(MOTION_FLAG_PARAM, next ? "1" : "0");
-      const query = params.toString();
-      router.replace(query ? `${pathname}?${query}` : pathname, {
-        scroll: false,
-      });
-    },
-    [pathname, router, searchParams],
-  );
-
-  return (
-    <div className={styles.flagRow}>
-      <Toggle
-        size="small"
-        label="Enable across docs"
-        labelPlacement="right"
-        checked={docsWideMotion}
-        onChange={(_, next) => setDocsWideMotionFlag(next)}
-      />
-      <p className={styles.flagHint}>
-        Flag: <code>?motion=1</code> /{" "}
-        <code>?motion=0</code>
-      </p>
-    </div>
-  );
-}
-
 /** Contained mini UI that exercises Press, Surface, and Indicator together. */
 export function MotionExample() {
-  return (
-    <Suspense
-      fallback={
-        <div className={styles.card} aria-busy>
-          <p className={styles.mainBody}>Loading example…</p>
-        </div>
-      }
-    >
-      <MotionExampleCard />
-    </Suspense>
-  );
-}
+  const [previewMotion, setPreviewMotion] = useState(true);
 
-/** Docs-wide experimental motion flag control. */
-export function MotionExperimentOptions() {
   return (
-    <Suspense
-      fallback={
-        <div className={styles.flagRow} aria-busy>
-          <p className={styles.flagHint}>Loading options…</p>
-        </div>
-      }
-    >
-      <MotionExperimentOptionsInner />
-    </Suspense>
+    <div className={styles.preview}>
+      <div className={styles.previewControls}>
+        <Toggle
+          size="small"
+          label="Motion preview on"
+          labelPlacement="right"
+          hasIcons={false}
+          checked={previewMotion}
+          onChange={(_, next) => setPreviewMotion(next)}
+        />
+      </div>
+      <MotionExampleCard previewMotion={previewMotion} />
+    </div>
   );
 }

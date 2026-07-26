@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactElement, ReactNode } from "react";
-import { Tag, Tooltip, useExperimentalMotion } from "@codeai/cads-react";
+import { Tooltip } from "@codeai/cads-react";
 import { FaIcon } from "@codeai/cads-react/icons";
 import type { FaIconName } from "@codeai/cads-react/icons";
 import s from "./DocsNavItem.module.scss";
@@ -13,8 +13,6 @@ export type DocsNavItemKind = "primary" | "child" | "group";
 type SharedProps = {
   label: string;
   iconName?: FaIconName | (string & {});
-  /** Shows a small Experimental Tag after the label. */
-  experimental?: boolean;
   active?: boolean;
   kind?: DocsNavItemKind;
   /** Icon-only rail (30×30). Hides label/chevron; tooltips the label. */
@@ -46,19 +44,13 @@ export function DocsNavItem(props: DocsNavItemProps) {
   const {
     label,
     iconName,
-    experimental = false,
     active = false,
     kind = "primary",
     collapsed = false,
   } = props;
 
-  const experimentalMotion = useExperimentalMotion();
   const isGroup = kind === "group";
   const isChild = kind === "child";
-  const experimentalStateLabel = experimentalMotion ? "On" : "Off";
-  const tooltipLabel = experimental
-    ? `${label} (Experimental) (${experimentalStateLabel})`
-    : label;
 
   const className = [
     "docs-nav-item",
@@ -81,23 +73,6 @@ export function DocsNavItem(props: DocsNavItemProps) {
         ) : null}
         <span className={s.itemLabel}>{label}</span>
       </span>
-      {experimental && !collapsed ? (
-        <Tooltip
-          title={`Experiment (${experimentalStateLabel})`}
-          hasCaret={false}
-          placement="top"
-        >
-          {/* Tag takes a fixed prop set, so the tooltip needs a host element. */}
-          <span className={s.itemTag} tabIndex={0}>
-            <Tag
-              size="small"
-              color={experimentalMotion ? "success" : "neutral"}
-              startIconName="flask"
-              label={<span className={s.srOnly}>Experiment</span>}
-            />
-          </span>
-        </Tooltip>
-      ) : null}
       {isGroup && !collapsed ? (
         <FaIcon
           name={props.expanded ? "chevron-up" : "chevron-down"}
@@ -119,7 +94,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
           rel="noreferrer"
           className={className}
           data-active={active || undefined}
-          aria-label={collapsed ? tooltipLabel : undefined}
+          aria-label={collapsed ? label : undefined}
         >
           {content}
         </a>
@@ -130,7 +105,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
           href={props.href}
           className={className}
           data-active={active || undefined}
-          aria-label={collapsed ? tooltipLabel : undefined}
+          aria-label={collapsed ? label : undefined}
         >
           {content}
         </Link>
@@ -143,7 +118,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
         className={className}
         data-active={active || undefined}
         aria-expanded={collapsed ? undefined : props.expanded}
-        aria-label={collapsed ? tooltipLabel : undefined}
+        aria-label={collapsed ? label : undefined}
         onClick={props.onClick}
       >
         {content}
@@ -154,7 +129,7 @@ export function DocsNavItem(props: DocsNavItemProps) {
   if (!collapsed) return node;
 
   return (
-    <Tooltip title={tooltipLabel} hasCaret={false} placement="right">
+    <Tooltip title={label} hasCaret={false} placement="right">
       {node}
     </Tooltip>
   );
@@ -185,8 +160,9 @@ export function DocsNavSection({
 }
 
 /**
- * Animated expand/collapse for component sub-item lists.
+ * Expand/collapse for component sub-item lists.
  * CSS grid 0fr→1fr keeps sticky/layout stable (no Motion height:auto).
+ * Duration only applies when the docs motion experiment is on.
  */
 export function DocsNavChildren({
   id,

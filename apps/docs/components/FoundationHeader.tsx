@@ -22,7 +22,7 @@ const STATUS_PRESENTATION: Record<
     color: "info",
     iconName: "flask",
     tooltip:
-      "Safe to explore in prototypes, but the API and visuals can still change without notice.",
+      "This feature is experimental and is not available in the production.",
   },
 };
 

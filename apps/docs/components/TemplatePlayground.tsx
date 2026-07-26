@@ -291,6 +291,7 @@ export function TemplatePlayground({
             <Toggle
               size="extraSmall"
               label="Inspect"
+              hasIcons={false}
               labelPlacement="right"
               checked={inspect}
               onChange={(_e, next) => setInspect(next)}

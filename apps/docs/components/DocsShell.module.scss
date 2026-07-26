@@ -35,7 +35,10 @@
   border-right: 1px solid var(--border-neutral-primary);
   box-sizing: border-box;
   overflow: hidden;
-  transition: width var(--duration-medium) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: width var(--duration-medium) var(--easing-out);
+  }
 
   .shell[data-sidebar="collapsed"] & {
     justify-content: center;
@@ -51,9 +54,12 @@
   text-decoration: none;
   flex-shrink: 0;
   overflow: hidden;
-  transition:
-    width var(--duration-medium) var(--easing-out),
-    opacity var(--duration-short) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition:
+      width var(--duration-medium) var(--easing-out),
+      opacity var(--duration-short) var(--easing-out);
+  }
 
   .shell[data-sidebar="collapsed"] & {
     width: 24px;
@@ -85,7 +91,10 @@
   height: 22px;
   opacity: 1;
   transform: translateY(-50%);
-  transition: opacity var(--duration-short) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: opacity var(--duration-short) var(--easing-out);
+  }
 
   :global(.dark) & {
     filter: invert(1);
@@ -106,7 +115,10 @@
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: opacity var(--duration-short) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: opacity var(--duration-short) var(--easing-out);
+  }
 
   .shell[data-sidebar="collapsed"] & {
     opacity: 1;
@@ -135,7 +147,10 @@
   flex-shrink: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-fast) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: opacity var(--duration-fast) var(--easing-out);
+  }
 
   .topbarBrandCell:hover &,
   &:focus-within:has(:focus-visible) {
@@ -187,7 +202,7 @@
 .topbarRight {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -204,9 +219,12 @@
   flex: 0 0 var(--docs-sidebar-width);
   width: var(--docs-sidebar-width);
   min-width: 0;
-  transition:
-    width var(--duration-medium) var(--easing-out),
-    flex-basis var(--duration-medium) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition:
+      width var(--duration-medium) var(--easing-out),
+      flex-basis var(--duration-medium) var(--easing-out);
+  }
 }
 
 .sidebar {
@@ -225,7 +243,7 @@
   position: relative;
   flex: 1;
   overflow: auto;
-  padding-top: 6px;
+  padding: 6px 0;
   box-sizing: border-box;
 
   .shell[data-sidebar="collapsed"] & {

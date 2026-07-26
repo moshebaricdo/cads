@@ -1,17 +1,17 @@
 [
   {
+    "id": "motion",
     "name": "Motion",
+    "description": "Micro-interaction recipes",
     "docs": "/variables/core",
-    "summary": "Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Opt in with `CadsProvider experimentalMotion` — off by default."
+    "summary": "Micro-interaction recipes (Press, Surface, Indicator) built from a shared duration, easing, and spring ladder. Off by default across docs.",
+    "controllable": true
   },
   {
-    "name": "Portable prototyping skill",
+    "id": "portable-skill",
+    "name": "Portable skill",
+    "description": "Agent Skills ZIP",
     "docs": "/ai",
-    "summary": "A self-contained Agent Skills ZIP with the real CADS runtime and FA fonts inlined. Install it in Claude, ChatGPT, Gemini Spark, or Cursor to prototype without a monorepo checkout."
-  },
-  {
-    "name": "Local MCP",
-    "path": "tooling/cads-mcp",
-    "summary": "Stdio MCP proof of concept: catalog search, constrained prototype schema, and validation against `cadsManifest`. Renders through the docs `/prototype` route."
+    "summary": "Self-contained Agent Skills ZIP with the real CADS runtime — prototype without a monorepo checkout."
   }
 ]

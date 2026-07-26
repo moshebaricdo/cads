@@ -41,7 +41,7 @@ const RECIPES: Recipe[] = [
     id: "indicator",
     token: "transition-indicator",
     vars: [
-      "motion.spring.moderate",
+      "--motion-spring-moderate",
       "--duration-medium",
       "--easing-emphasized",
     ],
@@ -112,7 +112,7 @@ function SurfaceSample() {
           data-cads-surface=""
           {...(phase === "exit"
             ? { "data-cads-surface-state": "exit" }
-            : {})}
+            : { "data-cads-surface-state": "enter" })}
           style={
             { "--cads-surface-origin": "center" } as CSSProperties
           }
@@ -165,18 +165,7 @@ export function RecipeDemos() {
               >
                 {recipe.token}
               </CopyName>
-              <ul className={local.recipeVars}>
-                {recipe.vars.map((variable) => (
-                  <li key={variable}>
-                    <CopyName
-                      className={`${shared.copyValue} ${local.recipeVarValue}`}
-                      copyValue={variable}
-                    >
-                      {variable}
-                    </CopyName>
-                  </li>
-                ))}
-              </ul>
+              <p className={local.recipeVars}>{recipe.vars.join("\n")}</p>
             </div>
           </div>
         ))}

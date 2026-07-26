@@ -40,10 +40,13 @@
   white-space: nowrap;
   max-height: 48px;
   opacity: 1;
-  transition:
-    max-height var(--duration-medium) var(--easing-out),
-    padding var(--duration-medium) var(--easing-out),
-    opacity var(--duration-short) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition:
+      max-height var(--duration-medium) var(--easing-out),
+      padding var(--duration-medium) var(--easing-out),
+      opacity var(--duration-short) var(--easing-out);
+  }
 
   :global(.docs-shell[data-sidebar="collapsed"]) & {
     max-height: 0;
@@ -68,7 +71,10 @@
 .group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+
+  &[data-open] {
+    gap: 4px;
+  }
 
   :global(.docs-shell[data-sidebar="collapsed"]) & {
     align-items: center;
@@ -97,7 +103,10 @@
   text-align: left;
   cursor: pointer;
   box-sizing: border-box;
-  transition: color var(--duration-fast) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: color var(--duration-fast) var(--easing-out);
+  }
 
   &:active {
     color: var(--text-neutral-primary);
@@ -191,39 +200,20 @@
   max-width: 160px;
 }
 
-.itemTag {
-  flex-shrink: 0;
-
-  [data-cads-component="Tag"] {
-    pointer-events: none;
-    width: 20px;
-    padding-left: 4.5px;
-  }
-}
-
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .itemChevron {
   flex-shrink: 0;
   color: var(--text-neutral-placeholder);
   width: 20px;
 }
 
-/* Animated expand/collapse */
+/* Animated expand/collapse (only when docs motion experiment is on) */
 .children {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--duration-medium) var(--easing-out);
+
+  :global([data-cads-experimental-motion]) & {
+    transition: grid-template-rows var(--duration-medium) var(--easing-out);
+  }
 
   &[data-open] {
     grid-template-rows: 1fr;

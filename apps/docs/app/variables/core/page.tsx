@@ -4,7 +4,8 @@ import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import ui from "@/components/docs-ui.module.scss";
 import { adjacentFoundations } from "@/lib/nav";
 import shared from "../FoundationPage.module.scss";
-import { MotionExample, MotionExperimentOptions } from "./MotionExample";
+import { MotionExample } from "./MotionExample";
+import { MotionExperimentToggle } from "./MotionExperimentToggle";
 import { MotionExportButton } from "./MotionExportButton";
 import { MotionPrimitives } from "./MotionPrimitives";
 import { RecipeDemos } from "./RecipeDemos";
@@ -64,18 +65,12 @@ export default function MotionPage() {
         </div>
       </section>
 
-      <section
-        className={shared.section}
-        aria-labelledby="motion-experiment-options"
-      >
-        <h2
-          id="motion-experiment-options"
-          className={`${ui.h2} ${shared.sectionTitle}`}
-        >
-          Experiment options
+      <section className={shared.section} aria-labelledby="motion-enable">
+        <h2 id="motion-enable" className={`${ui.h2} ${shared.sectionTitle}`}>
+          Enable experiment
         </h2>
-        <div className={shared.sectionContent}>
-          <MotionExperimentOptions />
+        <div className={shared.sectionAction}>
+          <MotionExperimentToggle />
         </div>
       </section>
 

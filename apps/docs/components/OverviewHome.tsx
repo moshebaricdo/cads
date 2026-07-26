@@ -113,7 +113,7 @@ export function OverviewHome() {
           The skill is self-contained and doesn't require any external dependencies. 
         </p>
         <div className={styles.sectionAction}>
-          <Button href={withBasePath("/ai")} size="small" color="secondary">
+          <Button href={withBasePath("/ai")} size="extraSmall" color="secondary">
             Learn more
           </Button>
         </div>

@@ -80,6 +80,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  /** Keep the Next.js "N" FAB off the stage / preview chrome. */
+  devIndicators: {
+    position: "bottom-right",
+  },
   transpilePackages: ["@codeai/cads-react", "@codeai/cads-variables"],
   reactStrictMode: true,
   experimental: {

@@ -7,7 +7,12 @@
 
 export const RESOURCES_NAV = [
   { href: "/", label: "Overview", iconName: "grid" },
-  { href: "/ai", label: "For Agents", iconName: "robot" },
+  {
+    href: "/ai",
+    label: "For Agents",
+    iconName: "robot",
+    experimental: true,
+  },
 ] as const;
 
 export const FOUNDATIONS_NAV = [
