@@ -1,10 +1,12 @@
-import './segmentedButton.css';const e = "_group_1avpn_1", s = "_segment_1avpn_9", t = {
-  group: e,
-  segment: s
+import './segmentedButton.css';const t = "_group_m6ekz_1", e = "_segmentTooltipHost_m6ekz_14", o = "_segment_m6ekz_14", s = {
+  group: t,
+  segmentTooltipHost: e,
+  segment: o
 };
 export {
-  t as default,
-  e as group,
-  s as segment
+  s as default,
+  t as group,
+  o as segment,
+  e as segmentTooltipHost
 };
 //# sourceMappingURL=segmentedButton.module.scss.js.map

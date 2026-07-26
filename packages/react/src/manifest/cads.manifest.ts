@@ -199,7 +199,7 @@ export const cadsManifest: {
           type: "SegmentedButtonOption[]",
           required: true,
           description:
-            "Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value.",
+            "Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value. Optional per-option `tooltip` (code-only) wraps that segment in Tooltip — useful for iconOnly.",
         },
         { name: "iconOnly", type: "boolean", description: "Square icon-only segments" },
         { name: "disabled", type: "boolean" },
@@ -232,6 +232,7 @@ export const cadsManifest: {
         "Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).",
         "Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.",
         "Prefer the group API; Segmented Button Block (8000:4554) is an internal building block.",
+        "Optional option.tooltip is code-only (not in Figma) — mirrors MUI's Tooltip-around-ToggleButton composition without fighting cloneElement.",
       ],
       example: `<SegmentedButton aria-label="View" options={[{value:"list",label:"List"},{value:"grid",label:"Grid"}]} defaultValue="list" />`,
     },

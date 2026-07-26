@@ -4,6 +4,21 @@
   gap: 0;
   overflow: hidden;
   border-radius: var(--shape-sm);
+
+  /* Overlap on any direct child (segment or disabled-tooltip host). */
+  > :not(:first-child) {
+    margin-left: -1px;
+  }
+}
+
+/* Host only when a disabled segment needs a tooltip (pointer-events). */
+.segmentTooltipHost {
+  display: inline-flex;
+  align-items: stretch;
+  flex: var(--seg-flex, 1 1 auto);
+  width: var(--seg-width, auto);
+  min-width: var(--seg-height);
+  z-index: var(--seg-z, 0);
 }
 
 .segment:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
@@ -31,8 +46,9 @@
   color: var(--seg-fg);
   z-index: var(--seg-z, 0);
 
-  &:not(:first-child) {
-    margin-left: -1px;
+  .segmentTooltipHost & {
+    width: 100%;
+    margin-left: 0;
   }
 
   &:hover {

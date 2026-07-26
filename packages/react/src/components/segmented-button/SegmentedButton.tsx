@@ -1,5 +1,6 @@
 import ButtonBase from "@mui/material/ButtonBase";
 import {
+  Fragment,
   forwardRef,
   useEffect,
   useId,
@@ -8,9 +9,12 @@ import {
   type CSSProperties,
   type FocusEvent,
   type KeyboardEvent,
+  type ReactElement,
+  type ReactNode,
 } from "react";
 import { FaIcon } from "../../icons/FaIcon";
 import { SEGMENTED_SIZE } from "../../shared/controlSize";
+import { Tooltip } from "../tooltip";
 import styles from "./segmentedButton.module.scss";
 import type {
   SegmentedButtonProps,
@@ -104,6 +108,41 @@ function segmentVars(
       ? "var(--text-selected-primary)"
       : "var(--text-disabled-neutral)",
   } as CSSProperties;
+}
+
+function segmentAccessibleName(
+  iconOnly: boolean,
+  label: ReactNode,
+  tooltip: ReactNode | undefined,
+): string | undefined {
+  if (!iconOnly) return undefined;
+  if (typeof label === "string" && label.trim()) return label;
+  if (typeof tooltip === "string" && tooltip.trim()) return tooltip;
+  return undefined;
+}
+
+/** MUI has no native ToggleButton tooltip — wrap like their docs, host when disabled. */
+function withSegmentTooltip(
+  tooltip: ReactNode | undefined,
+  isDisabled: boolean,
+  segment: ReactElement,
+  vars: CSSProperties,
+): ReactElement {
+  if (tooltip == null || tooltip === false || tooltip === "") return segment;
+
+  const trigger = isDisabled ? (
+    <span className={styles.segmentTooltipHost} style={vars}>
+      {segment}
+    </span>
+  ) : (
+    segment
+  );
+
+  return (
+    <Tooltip title={tooltip} placement="bottom">
+      {trigger}
+    </Tooltip>
+  );
 }
 
 /**
@@ -247,15 +286,20 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
             <FaIcon name={option.endIconName} fontSize={dims.iconPx} />
           ) : null;
           const vars = segmentVars(size, iconOnly, selected, index, options.length);
+          const accessibleName = segmentAccessibleName(
+            iconOnly,
+            option.label,
+            option.tooltip,
+          );
 
-          return (
+          const segment = (
             <ButtonBase
-              key={option.value}
               ref={(node) => {
                 segmentRefs.current[index] = node;
               }}
               role="radio"
               aria-checked={selected}
+              aria-label={accessibleName}
               id={`${groupId}-${option.value}`}
               tabIndex={index === tabStopIndex ? 0 : -1}
               disabled={isDisabled}
@@ -279,6 +323,12 @@ export const SegmentedButton = forwardRef<HTMLDivElement, SegmentedButtonProps>(
                 </>
               )}
             </ButtonBase>
+          );
+
+          return (
+            <Fragment key={option.value}>
+              {withSegmentTooltip(option.tooltip, isDisabled, segment, vars)}
+            </Fragment>
           );
         })}
       </div>

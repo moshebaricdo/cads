@@ -10,6 +10,11 @@ export interface SegmentedButtonOption {
   iconName?: FaIconName;
   endIconName?: FaIconName;
   disabled?: boolean;
+  /**
+   * Optional hover/focus tooltip for this segment.
+   * Useful for `iconOnly` groups where the label is not visible.
+   */
+  tooltip?: ReactNode;
 }
 
 export interface SegmentedButtonProps {

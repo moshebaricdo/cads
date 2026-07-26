@@ -88,7 +88,7 @@ export const ACTIONS_PROP_SHEETS: Record<string, PropSheet[]> = {
           type: "SegmentedButtonOption[]",
           required: true,
           description:
-            "Segment labels, icons, and values. Active segment derived from value.",
+            "Segment labels, icons, values, and optional per-segment tooltip (iconOnly).",
         },
         {
           name: "iconOnly",
