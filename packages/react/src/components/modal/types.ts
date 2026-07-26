@@ -10,11 +10,18 @@ export interface ModalProps {
   type?: ModalType;
   /** Figma `titleText`. */
   title?: ReactNode;
-  /** Body copy for image layouts; default type uses `children` / `customContent`. */
+  /**
+   * Default body copy (pre-seed text). Used when `children` is omitted.
+   * Applies to default and image layouts (text slot).
+   */
   body?: ReactNode;
   /** Image slot for vertical/horizontal types. */
   image?: ReactNode;
-  /** Custom body when `type="default"`. */
+  /**
+   * Custom content for the body text slot (Figma `customContent`).
+   * Replaces `body` for every `type` — full body on default; text column
+   * on image layouts (image slot stays fixed).
+   */
   children?: ReactNode;
   /**
    * @default true

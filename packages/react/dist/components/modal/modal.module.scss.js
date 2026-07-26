@@ -1,30 +1,30 @@
-import './modal.css';const t = "_scrim_1vvp9_6", o = "_surface_1vvp9_18", e = "_header_1vvp9_31", _ = "_title_1vvp9_41", a = "_bodyDefault_1vvp9_52", l = "_bodyDefaultText_1vvp9_58", r = "_bodyVertical_1vvp9_65", i = "_bodyHorizontal_1vvp9_74", c = "_imageSlotVertical_1vvp9_84", v = "_imageSlotHorizontal_1vvp9_93", n = "_textSlotHorizontal_1vvp9_103", s = "_footer_1vvp9_112", d = {
-  scrim: t,
-  surface: o,
+import './modal.css';const o = "_scrim_1qrof_7", t = "_surface_1qrof_19", e = "_header_1qrof_34", r = "_title_1qrof_45", _ = "_bodyDefault_1qrof_56", a = "_bodyVertical_1qrof_57", l = "_bodyHorizontal_1qrof_58", i = "_bodyDefaultText_1qrof_68", c = "_imageSlotVertical_1qrof_88", f = "_imageSlotHorizontal_1qrof_98", n = "_textSlotHorizontal_1qrof_108", s = "_footer_1qrof_117", d = {
+  scrim: o,
+  surface: t,
   header: e,
-  title: _,
-  bodyDefault: a,
-  bodyDefaultText: l,
-  bodyVertical: r,
-  bodyHorizontal: i,
+  title: r,
+  bodyDefault: _,
+  bodyVertical: a,
+  bodyHorizontal: l,
+  bodyDefaultText: i,
   imageSlotVertical: c,
-  imageSlotHorizontal: v,
+  imageSlotHorizontal: f,
   textSlotHorizontal: n,
   footer: s
 };
 export {
-  a as bodyDefault,
-  l as bodyDefaultText,
-  i as bodyHorizontal,
-  r as bodyVertical,
+  _ as bodyDefault,
+  i as bodyDefaultText,
+  l as bodyHorizontal,
+  a as bodyVertical,
   d as default,
   s as footer,
   e as header,
-  v as imageSlotHorizontal,
+  f as imageSlotHorizontal,
   c as imageSlotVertical,
-  t as scrim,
-  o as surface,
+  o as scrim,
+  t as surface,
   n as textSlotHorizontal,
-  _ as title
+  r as title
 };
 //# sourceMappingURL=modal.module.scss.js.map

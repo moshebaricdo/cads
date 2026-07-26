@@ -1,60 +1,64 @@
-import { jsx as r, jsxs as l } from "react/jsx-runtime";
+import { jsx as r, jsxs as o } from "react/jsx-runtime";
 import k from "@mui/material/Dialog";
 import { forwardRef as z } from "react";
 import { Button as y } from "../button/Button.js";
-import { CloseIconButton as I } from "../close-icon-button/CloseIconButton.js";
+import { CloseIconButton as D } from "../close-icon-button/CloseIconButton.js";
 import e from "./modal.module.scss.js";
-const M = "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)";
-function S({
-  type: t,
-  title: d,
-  body: n,
-  image: o,
+const I = "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)", M = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+function S(a, i) {
+  return a ?? /* @__PURE__ */ r("div", { className: e.bodyDefaultText, children: i ?? M });
+}
+function B({
+  type: a,
+  title: i,
+  body: c,
+  image: n,
   children: s,
-  hasSecondaryAction: c,
-  primaryActionLabel: m,
-  secondaryActionLabel: u,
+  hasSecondaryAction: d,
+  primaryActionLabel: u,
+  secondaryActionLabel: m,
   onPrimaryAction: f,
   onSecondaryAction: h,
   isDismissable: p,
-  onClose: v,
-  className: a,
-  surfaceRef: x
+  onClose: x,
+  className: t,
+  surfaceRef: v
 }) {
-  const i = n ?? "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
-  return /* @__PURE__ */ l(
+  const l = S(s, c);
+  return /* @__PURE__ */ o(
     "div",
     {
-      ref: x,
-      className: a ? `${e.surface} ${a}` : e.surface,
+      ref: v,
+      className: t ? `${e.surface} ${t}` : e.surface,
       "data-cads-component": "Modal",
       "data-cads-surface": "",
+      "data-cads-surface-state": "enter",
       role: "dialog",
       "aria-modal": !0,
       style: { "--cads-surface-origin": "center" },
       children: [
-        /* @__PURE__ */ l("div", { className: e.header, children: [
-          /* @__PURE__ */ r("h2", { className: e.title, children: d }),
-          p ? /* @__PURE__ */ r(I, { onClick: v, size: "large", color: "secondary" }) : null
+        /* @__PURE__ */ o("div", { className: e.header, children: [
+          /* @__PURE__ */ r("h2", { className: e.title, children: i }),
+          p ? /* @__PURE__ */ r(D, { onClick: x, size: "large", color: "secondary" }) : null
         ] }),
-        t === "default" ? /* @__PURE__ */ r("div", { className: e.bodyDefault, children: s ?? /* @__PURE__ */ r("div", { className: e.bodyDefaultText, children: i }) }) : null,
-        t === "verticalImage" ? /* @__PURE__ */ l("div", { className: e.bodyVertical, children: [
-          /* @__PURE__ */ r("div", { className: e.imageSlotVertical, children: o }),
-          /* @__PURE__ */ r("div", { className: e.bodyDefaultText, children: i })
+        a === "default" ? /* @__PURE__ */ r("div", { className: e.bodyDefault, children: l }) : null,
+        a === "verticalImage" ? /* @__PURE__ */ o("div", { className: e.bodyVertical, children: [
+          /* @__PURE__ */ r("div", { className: e.imageSlotVertical, children: n }),
+          l
         ] }) : null,
-        t === "horizontalImage" ? /* @__PURE__ */ l("div", { className: e.bodyHorizontal, children: [
-          /* @__PURE__ */ r("div", { className: e.imageSlotHorizontal, children: o }),
-          /* @__PURE__ */ r("div", { className: e.textSlotHorizontal, children: i })
+        a === "horizontalImage" ? /* @__PURE__ */ o("div", { className: e.bodyHorizontal, children: [
+          /* @__PURE__ */ r("div", { className: e.imageSlotHorizontal, children: n }),
+          /* @__PURE__ */ r("div", { className: e.textSlotHorizontal, children: l })
         ] }) : null,
-        /* @__PURE__ */ l("div", { className: e.footer, children: [
-          c ? /* @__PURE__ */ r(
+        /* @__PURE__ */ o("div", { className: e.footer, children: [
+          d ? /* @__PURE__ */ r(
             y,
             {
               size: "medium",
               variant: "outlined",
               color: "secondary",
               onClick: h,
-              children: u
+              children: m
             }
           ) : null,
           /* @__PURE__ */ r(
@@ -64,7 +68,7 @@ function S({
               variant: "contained",
               color: "primary",
               onClick: f,
-              children: m
+              children: u
             }
           )
         ] })
@@ -72,70 +76,73 @@ function S({
     }
   );
 }
-const C = z(function({
-  type: d = "default",
-  title: n = "Title",
-  body: o,
+const j = z(function({
+  type: i = "default",
+  title: c = "Title",
+  body: n,
   image: s,
-  children: c,
-  hasSecondaryAction: m = !0,
-  primaryActionLabel: u = "Button",
+  children: d,
+  hasSecondaryAction: u = !0,
+  primaryActionLabel: m = "Button",
   secondaryActionLabel: f = "Button",
   onPrimaryAction: h,
   onSecondaryAction: p,
-  isDismissable: v = !0,
-  onClose: a,
-  open: x = !1,
-  surfaceOnly: i = !1,
-  className: g
+  isDismissable: x = !0,
+  onClose: t,
+  open: v = !1,
+  surfaceOnly: l = !1,
+  className: b
 }, N) {
-  const b = /* @__PURE__ */ r(
-    S,
+  const g = /* @__PURE__ */ r(
+    B,
     {
       surfaceRef: N,
-      type: d,
-      title: n,
-      body: o,
+      type: i,
+      title: c,
+      body: n,
       image: s,
-      hasSecondaryAction: m,
-      primaryActionLabel: u,
+      hasSecondaryAction: u,
+      primaryActionLabel: m,
       secondaryActionLabel: f,
       onPrimaryAction: h,
       onSecondaryAction: p,
-      isDismissable: v,
-      onClose: a,
-      className: g,
-      children: c
+      isDismissable: x,
+      onClose: t,
+      className: b,
+      children: d
     }
   );
-  return i ? /* @__PURE__ */ r("div", { className: e.scrim, children: b }) : /* @__PURE__ */ r(
+  return l ? /* @__PURE__ */ r("div", { className: e.scrim, children: g }) : /* @__PURE__ */ r(
     k,
     {
-      open: x,
-      onClose: (B, w) => a == null ? void 0 : a(),
+      open: v,
+      onClose: (w, H) => t == null ? void 0 : t(),
       maxWidth: !1,
       fullWidth: !0,
       disableEnforceFocus: !0,
       slotProps: {
         backdrop: {
-          sx: { backgroundColor: M }
+          sx: { backgroundColor: I }
         },
         paper: {
           sx: {
             background: "transparent",
             boxShadow: "none",
-            overflow: "visible",
+            overflow: "hidden",
             maxWidth: 800,
+            maxHeight: "calc(100% - 48px)",
             width: "100%",
-            m: "24px"
+            m: "24px",
+            display: "flex",
+            flexDirection: "column"
           }
         }
       },
-      children: b
+      children: g
     }
   );
 });
 export {
-  C as Modal
+  j as Modal
 };
 //# sourceMappingURL=Modal.js.map

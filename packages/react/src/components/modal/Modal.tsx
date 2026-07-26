@@ -1,5 +1,5 @@
 import MuiDialog from "@mui/material/Dialog";
-import { forwardRef } from "react";
+import { forwardRef, type ReactNode } from "react";
 import { Button } from "../button/index";
 import { CloseIconButton } from "../close-icon-button";
 import styles from "./modal.module.scss";
@@ -9,6 +9,17 @@ export type { ModalProps, ModalType } from "./types";
 
 const SCRIM =
   "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)";
+
+const DEFAULT_BODY =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+
+/** Custom content (`children`) replaces the body text slot across all types. */
+function resolveContent(children: ReactNode, body: ReactNode): ReactNode {
+  if (children != null) return children;
+  return (
+    <div className={styles.bodyDefaultText}>{body ?? DEFAULT_BODY}</div>
+  );
+}
 
 function ModalSurface({
   type,
@@ -28,9 +39,7 @@ function ModalSurface({
 }: Omit<ModalProps, "open" | "surfaceOnly"> & {
   surfaceRef?: React.Ref<HTMLDivElement>;
 }) {
-  const defaultBody =
-    body ??
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+  const content = resolveContent(children, body);
 
   return (
     <div
@@ -38,6 +47,7 @@ function ModalSurface({
       className={className ? `${styles.surface} ${className}` : styles.surface}
       data-cads-component="Modal"
       data-cads-surface=""
+      data-cads-surface-state="enter"
       role="dialog"
       aria-modal
       style={{ "--cads-surface-origin": "center" } as React.CSSProperties}
@@ -50,24 +60,20 @@ function ModalSurface({
       </div>
 
       {type === "default" ? (
-        <div className={styles.bodyDefault}>
-          {children ?? (
-            <div className={styles.bodyDefaultText}>{defaultBody}</div>
-          )}
-        </div>
+        <div className={styles.bodyDefault}>{content}</div>
       ) : null}
 
       {type === "verticalImage" ? (
         <div className={styles.bodyVertical}>
           <div className={styles.imageSlotVertical}>{image}</div>
-          <div className={styles.bodyDefaultText}>{defaultBody}</div>
+          {content}
         </div>
       ) : null}
 
       {type === "horizontalImage" ? (
         <div className={styles.bodyHorizontal}>
           <div className={styles.imageSlotHorizontal}>{image}</div>
-          <div className={styles.textSlotHorizontal}>{defaultBody}</div>
+          <div className={styles.textSlotHorizontal}>{content}</div>
         </div>
       ) : null}
 
@@ -159,10 +165,13 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
           sx: {
             background: "transparent",
             boxShadow: "none",
-            overflow: "visible",
+            overflow: "hidden",
             maxWidth: 800,
+            maxHeight: "calc(100% - 48px)",
             width: "100%",
             m: "24px",
+            display: "flex",
+            flexDirection: "column",
           },
         },
       }}

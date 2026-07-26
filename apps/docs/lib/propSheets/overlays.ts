@@ -326,7 +326,8 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
         {
           name: "body",
           type: "ReactNode",
-          description: "Main content area.",
+          description:
+            "Default body copy (pre-seed). Used when children is omitted — full body on default, text slot on image layouts.",
         },
         {
           name: "image",
@@ -336,7 +337,8 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Additional custom content in the body.",
+          description:
+            "Custom content for the body text slot. Replaces body for every type; image layouts keep the fixed image slot.",
         },
         {
           name: "hasSecondaryAction",

@@ -1840,9 +1840,19 @@ export const cadsManifest: {
           default: '"default"',
         },
         { name: "title", type: "ReactNode" },
-        { name: "body", type: "ReactNode" },
+        {
+          name: "body",
+          type: "ReactNode",
+          description:
+            "Default body copy (pre-seed). Used when children is omitted — full body on default, text slot on image layouts.",
+        },
         { name: "image", type: "ReactNode" },
-        { name: "children", type: "ReactNode" },
+        {
+          name: "children",
+          type: "ReactNode",
+          description:
+            "Custom content for the body text slot (Figma customContent). Replaces body for every type; image layouts keep the fixed image slot.",
+        },
         { name: "hasSecondaryAction", type: "boolean", default: "true" },
         { name: "primaryActionLabel", type: "ReactNode", default: '"Button"' },
         {
@@ -1864,11 +1874,15 @@ export const cadsManifest: {
       ],
       usageRules: [
         "Unlike Dialog, Modal holds richer layouts with a header bar and footer actions.",
+        "Long content scrolls inside the body; header and footer stay fixed.",
+        "Pass children for custom body content (forms, media controls); body is the text pre-seed when children is omitted.",
         "Spelling isDismissable matches Figma.",
       ],
       example: `<>
   <Button onClick={() => setOpen(true)}>Open modal</Button>
-  <Modal open={open} onClose={() => setOpen(false)} type="default" title="Title" body="Modal body" />
+  <Modal open={open} onClose={() => setOpen(false)} type="default" title="Title">
+    <form>{/* custom content */}</form>
+  </Modal>
 </>`,
     },
     {

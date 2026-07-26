@@ -2925,7 +2925,7 @@
         {
           "name": "body",
           "category": "content",
-          "reason": "Body copy for image layouts."
+          "reason": "Default body copy (pre-seed) when children is omitted; text slot on image layouts."
         },
         {
           "name": "image",
@@ -2935,7 +2935,7 @@
         {
           "name": "children",
           "category": "content",
-          "reason": "Maps Figma customContent for type=default."
+          "reason": "Maps Figma customContent — body text slot for every type (image layouts keep fixed image)."
         },
         {
           "name": "hasSecondaryAction",

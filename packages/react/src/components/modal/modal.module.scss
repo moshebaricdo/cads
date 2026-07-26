@@ -1,6 +1,7 @@
 /**
  * Modal — blocking overlay for rich interactive content.
  * MUI Dialog backdrop/paper slot overrides stay in sx.
+ * Header + footer stay fixed; body region scrolls when content overflows.
  */
 
 .scrim {
@@ -21,6 +22,8 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 800px;
+  max-height: min(100%, calc(100dvh - 48px));
+  min-height: 0;
   overflow: hidden;
   background-color: var(--background-neutral-primary);
   border: 1px solid var(--border-neutral-primary);
@@ -34,6 +37,7 @@
   gap: 10px;
   width: 100%;
   box-sizing: border-box;
+  flex-shrink: 0;
   padding: 18px 20px 18px 24px;
   border-bottom: 1px solid var(--border-neutral-primary);
 }
@@ -49,7 +53,13 @@
   color: var(--text-neutral-primary);
 }
 
-.bodyDefault {
+.bodyDefault,
+.bodyVertical,
+.bodyHorizontal {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 24px;
   width: 100%;
   box-sizing: border-box;
@@ -66,9 +76,6 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 24px;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .bodyHorizontal {
@@ -76,15 +83,13 @@
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 18px;
-  padding: 24px;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .imageSlotVertical {
   width: 100%;
   height: 200px;
   min-height: 200px;
+  flex-shrink: 0;
   border-radius: var(--shape-sm);
   background-color: var(--background-neutral-tertiary);
   overflow: hidden;
@@ -116,6 +121,7 @@
   justify-content: flex-end;
   width: 100%;
   box-sizing: border-box;
+  flex-shrink: 0;
   padding: 18px 20px 18px 24px;
   border-top: 1px solid var(--border-neutral-primary);
 }
