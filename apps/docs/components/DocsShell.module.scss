@@ -54,6 +54,7 @@
   text-decoration: none;
   flex-shrink: 0;
   overflow: hidden;
+  transition: opacity var(--duration-short) var(--easing-out);
 
   :global([data-cads-experimental-motion]) & {
     transition:
@@ -66,16 +67,17 @@
     height: 24px;
     pointer-events: none;
   }
+}
 
-  .shell[data-sidebar="expanded"] a#{&}:hover {
-    text-decoration: none;
-    opacity: 0.8;
-  }
+/* Brand link hover/focus — keep top-level; nested `a#{&}` compiles inverted. */
+.shell[data-sidebar="expanded"] a.topbarBrand:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
 
-  .shell[data-sidebar="expanded"] a#{&}:focus-visible {
-    outline: 2px solid var(--border-focused-primary);
-    outline-offset: 2px;
-  }
+.shell[data-sidebar="expanded"] a.topbarBrand:focus-visible {
+  outline: 2px solid var(--border-focused-primary);
+  outline-offset: 2px;
 }
 
 .topbarLogo {
