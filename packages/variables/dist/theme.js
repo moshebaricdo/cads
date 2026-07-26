@@ -18,41 +18,41 @@ function hex(name, fallback) {
 }
 var cadsThemeOptions = {
   typography: {
-    fontFamily: typography.fontFamily.body,
+    fontFamily: "var(--font-family-main)",
     h1: {
-      fontFamily: typography.fontFamily.heading,
+      fontFamily: "var(--font-family-heading)",
       fontSize: pxToRem(typography.fontSize.headingXxl),
       lineHeight: pxToRem(typography.lineHeight.headingXxl),
       fontWeight: Number(typography.fontWeight.semibold),
       letterSpacing: typography.letterSpacing.headingDisplay
     },
     h2: {
-      fontFamily: typography.fontFamily.heading,
+      fontFamily: "var(--font-family-heading)",
       fontSize: pxToRem(typography.fontSize.headingXl),
       lineHeight: pxToRem(typography.lineHeight.headingXl),
       fontWeight: Number(typography.fontWeight.semibold),
       letterSpacing: typography.letterSpacing.headingDisplay
     },
     h3: {
-      fontFamily: typography.fontFamily.body,
+      fontFamily: "var(--font-family-main)",
       fontSize: pxToRem(typography.fontSize.headingLg),
       lineHeight: pxToRem(typography.lineHeight.headingLg),
       fontWeight: Number(typography.fontWeight.semibold)
     },
     h4: {
-      fontFamily: typography.fontFamily.body,
+      fontFamily: "var(--font-family-main)",
       fontSize: pxToRem(typography.fontSize.headingMd),
       lineHeight: pxToRem(typography.lineHeight.headingMd),
       fontWeight: Number(typography.fontWeight.semibold)
     },
     h5: {
-      fontFamily: typography.fontFamily.body,
+      fontFamily: "var(--font-family-main)",
       fontSize: pxToRem(typography.fontSize.headingSm),
       lineHeight: pxToRem(typography.lineHeight.headingSm),
       fontWeight: Number(typography.fontWeight.semibold)
     },
     h6: {
-      fontFamily: typography.fontFamily.body,
+      fontFamily: "var(--font-family-main)",
       fontSize: pxToRem(typography.fontSize.headingXs),
       lineHeight: pxToRem(typography.lineHeight.headingXs),
       fontWeight: Number(typography.fontWeight.semibold)
