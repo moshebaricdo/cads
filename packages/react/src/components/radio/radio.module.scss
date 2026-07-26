@@ -86,7 +86,7 @@
   }
 }
 
-.labelWrapper {
+.labelWrapper:global(.MuiFormControlLabel-root) {
   align-items: flex-start;
   margin: 0;
 

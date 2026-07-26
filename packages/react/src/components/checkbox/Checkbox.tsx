@@ -88,6 +88,8 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
         disabled={disabled}
         className={styles.labelWrapper}
         sx={{
+          // Beat MUI FormControlLabel’s default -11px margin (assumes control padding).
+          margin: 0,
           gap: dims.gap,
           "& .MuiCheckbox-root": {
             marginTop: dims.labelAlignOffset,

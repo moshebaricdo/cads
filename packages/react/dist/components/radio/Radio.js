@@ -2,9 +2,9 @@ import { jsx as i } from "react/jsx-runtime";
 import h from "@mui/material/Radio";
 import p from "@mui/material/FormControlLabel";
 import { forwardRef as f } from "react";
-import { RADIO_SIZE as u } from "../../shared/controlSize.js";
+import { RADIO_SIZE as g } from "../../shared/controlSize.js";
 import r from "./radio.module.scss.js";
-function g({ box: t }) {
+function u({ box: t }) {
   return /* @__PURE__ */ i(
     "span",
     {
@@ -34,13 +34,13 @@ const y = f(
     sx: s,
     ...l
   }, m) {
-    const o = u[c], a = /* @__PURE__ */ i(
+    const o = g[c], a = /* @__PURE__ */ i(
       h,
       {
         ref: m,
         disableRipple: !0,
         disabled: n,
-        icon: /* @__PURE__ */ i(g, { box: o.box }),
+        icon: /* @__PURE__ */ i(u, { box: o.box }),
         checkedIcon: /* @__PURE__ */ i(R, { box: o.box, dot: o.dot }),
         "data-cads-press": "",
         className: r.root,
@@ -61,6 +61,8 @@ const y = f(
         label: e,
         className: r.labelWrapper,
         sx: {
+          // Beat MUI FormControlLabel’s default -11px margin (assumes control padding).
+          margin: 0,
           gap: o.gap,
           "& .MuiFormControlLabel-label": {
             fontSize: o.fontSize,

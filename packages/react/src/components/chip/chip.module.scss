@@ -1,7 +1,9 @@
-.root {
+/* Double MuiButtonBase specificity — Emotion ButtonBase resets beat a lone class. */
+.root:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   gap: var(--chip-gap);
   height: var(--chip-height);
   padding-inline: var(--chip-px);

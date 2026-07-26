@@ -2,14 +2,14 @@ import { jsx as o } from "react/jsx-runtime";
 import d from "@mui/material/Checkbox";
 import u from "@mui/material/FormControlLabel";
 import { forwardRef as b } from "react";
-import { FaIcon as x } from "../../icons/FaIcon.js";
+import { FaIcon as g } from "../../icons/FaIcon.js";
 import { CHECKBOX_SIZE as s } from "../../shared/controlSize.js";
 import a from "./checkbox.module.scss.js";
 function n({
-  size: c,
+  size: m,
   status: t
 }) {
-  const e = s[c];
+  const e = s[m];
   return /* @__PURE__ */ o(
     "span",
     {
@@ -20,7 +20,7 @@ function n({
         height: e.box
       },
       children: t !== "off" ? /* @__PURE__ */ o(
-        x,
+        g,
         {
           name: t === "indeterminate" ? "dash" : "check",
           family: "solid",
@@ -35,7 +35,7 @@ const F = b(
     label: t,
     labelStyle: e = "thin",
     size: i = "medium",
-    disabled: m = !1,
+    disabled: c = !1,
     sx: f,
     ...h
   }, p) {
@@ -44,7 +44,7 @@ const F = b(
       {
         ref: p,
         disableRipple: !0,
-        disabled: m,
+        disabled: c,
         icon: /* @__PURE__ */ o(n, { size: i, status: "off" }),
         checkedIcon: /* @__PURE__ */ o(n, { size: i, status: "on" }),
         indeterminateIcon: /* @__PURE__ */ o(n, { size: i, status: "indeterminate" }),
@@ -64,9 +64,11 @@ const F = b(
       {
         control: l,
         label: t,
-        disabled: m,
+        disabled: c,
         className: a.labelWrapper,
         sx: {
+          // Beat MUI FormControlLabel’s default -11px margin (assumes control padding).
+          margin: 0,
           gap: r.gap,
           "& .MuiCheckbox-root": {
             marginTop: r.labelAlignOffset

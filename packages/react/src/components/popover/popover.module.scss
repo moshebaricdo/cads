@@ -96,10 +96,11 @@
 }
 
 .surfaceWrap {
+  /* Shrink-wrap the card — do not impose the default 300px card min-width here,
+     or narrower overrides leave empty space on the aligned edge. */
   display: inline-flex;
   align-items: center;
   max-width: 500px;
-  min-width: 300px;
 
   &.horizontal {
     flex-direction: column;

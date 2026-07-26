@@ -77,6 +77,8 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(
         label={label}
         className={styles.labelWrapper}
         sx={{
+          // Beat MUI FormControlLabel’s default -11px margin (assumes control padding).
+          margin: 0,
           gap: dims.gap,
           "& .MuiFormControlLabel-label": {
             fontSize: dims.fontSize,
