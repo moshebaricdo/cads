@@ -15,7 +15,7 @@ function Y(c) {
 const Gr = hr(function({
   type: y = "primary",
   size: u = "medium",
-  items: s,
+  items: d,
   value: z,
   defaultValue: Z,
   onChange: k,
@@ -25,16 +25,16 @@ const Gr = hr(function({
 }, g) {
   var j;
   const t = wr[u], A = Ir(), R = L(null), x = L([]), B = L(!1), D = z !== void 0, [Q, rr] = I(
-    Z ?? ((j = s.find((r) => !r.disabled)) == null ? void 0 : j.value)
+    Z ?? ((j = d.find((r) => !r.disabled)) == null ? void 0 : j.value)
   ), p = D ? z : Q, o = y === "secondary", er = Rr(), tr = gr(), l = er && !o, [N, S] = I(null), [ar, G] = I(!1), or = Br(
     yr.indicator.spring,
     tr || !ar
   ), nr = (r) => {
     D || rr(r), k == null || k(r);
-  }, n = s.map((r, e) => r.disabled ? -1 : e).filter((r) => r >= 0), f = n.find((r) => {
+  }, n = d.map((r, e) => r.disabled ? -1 : e).filter((r) => r >= 0), f = n.find((r) => {
     var e;
-    return ((e = s[r]) == null ? void 0 : e.value) === p;
-  }) ?? n[0] ?? -1, T = s.findIndex((r) => r.value === p), [$, v] = I(f), ir = n.includes($) ? $ : f;
+    return ((e = d[r]) == null ? void 0 : e.value) === p;
+  }) ?? n[0] ?? -1, T = d.findIndex((r) => r.value === p), [$, v] = I(f), ir = n.includes($) ? $ : f;
   W(() => {
     v(f);
   }, [f]);
@@ -56,7 +56,7 @@ const Gr = hr(function({
       return;
     }
     h();
-  }, [l, p, s, u, y, T]), W(() => {
+  }, [l, p, d, u, y, T]), W(() => {
     if (!l) return;
     const r = R.current;
     if (!r || typeof ResizeObserver > "u") return;
@@ -67,18 +67,18 @@ const Gr = hr(function({
     return window.addEventListener("resize", h), () => {
       e.disconnect(), window.removeEventListener("resize", h);
     };
-  }, [l, s.length, u, y, p]);
+  }, [l, d.length, u, y, p]);
   const F = (r) => {
     var e;
     v(r), (e = x.current[r]) == null || e.focus();
   }, H = (r, e) => {
     if (n.length === 0) return;
-    const a = n.indexOf(r), d = ((a === -1 ? 0 : a) + e + n.length) % n.length;
-    F(n[d]);
+    const a = n.indexOf(r), s = ((a === -1 ? 0 : a) + e + n.length) % n.length;
+    F(n[s]);
   }, M = (r) => {
-    const e = s[r];
+    const e = d[r];
     !e || e.disabled || (v(r), nr(e.value));
-  }, dr = (r, e) => {
+  }, sr = (r, e) => {
     switch (r.key) {
       case "ArrowRight":
         r.preventDefault(), H(e, 1);
@@ -106,7 +106,7 @@ const Gr = hr(function({
         break;
       }
     }
-  }, sr = (r) => {
+  }, dr = (r) => {
     const e = r.relatedTarget;
     e instanceof Node && r.currentTarget.contains(e) || v(f);
   }, lr = (r) => {
@@ -121,7 +121,7 @@ const Gr = hr(function({
       className: br,
       "data-cads-tabs": "",
       "data-type": y,
-      onBlur: sr,
+      onBlur: dr,
       style: {
         gap: o ? t.secondaryGroupGap : t.primaryGroupGap
       },
@@ -142,14 +142,15 @@ const Gr = hr(function({
             transition: or
           }
         ) : null,
-        s.map((r, e) => {
-          const a = r.value === p, i = !!r.disabled, d = !!r.iconOnly, q = Y(r.startIconName), C = Y(r.endIconName), X = o ? t.secondaryIconPx : t.primaryIconPx, cr = `${A}-tab-${r.value}`, K = `${A}-label-${r.value}`, V = q && (d || r.startIconName) ? /* @__PURE__ */ m(U, { name: q, family: "solid", fontSize: X }) : null, ur = !d && C ? /* @__PURE__ */ m(U, { name: C, family: "solid", fontSize: X }) : null, P = r["aria-label"] ?? (typeof r.label == "string" ? r.label : void 0), pr = o ? a ? {
+        d.map((r, e) => {
+          const a = r.value === p, i = !!r.disabled, s = !!r.iconOnly, q = Y(r.startIconName), C = Y(r.endIconName), X = o ? t.secondaryIconPx : t.primaryIconPx, cr = `${A}-tab-${r.value}`, K = `${A}-label-${r.value}`, V = q && (s || r.startIconName) ? /* @__PURE__ */ m(U, { name: q, family: "solid", fontSize: X }) : null, ur = !s && C ? /* @__PURE__ */ m(U, { name: C, family: "solid", fontSize: X }) : null, P = r["aria-label"] ?? (typeof r.label == "string" ? r.label : void 0), pr = o ? a ? {
             "--tab-bg": "var(--background-neutral-primary)",
             "--tab-fg": "var(--text-selected-primary-inverse)",
             "--tab-border-top": "1px solid var(--border-neutral-primary)",
             "--tab-border-left": "1px solid var(--border-neutral-primary)",
             "--tab-border-right": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom": "none",
+            // Transparent (not none): reserve 1px so label doesn't shift on select.
+            "--tab-border-bottom": "1px solid transparent",
             "--tab-bg-hover": "var(--background-neutral-primary)",
             "--tab-fg-hover": "var(--text-selected-primary-inverse)",
             "--tab-bg-active": "var(--background-neutral-primary)",
@@ -157,13 +158,13 @@ const Gr = hr(function({
             "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
             "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
             "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom-active": "none",
+            "--tab-border-bottom-active": "1px solid transparent",
             "--tab-disabled-bg": "var(--background-neutral-primary)",
             "--tab-disabled-fg": "var(--text-disabled-neutral)",
             "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
             "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
             "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-bottom": "none"
+            "--tab-disabled-border-bottom": "1px solid transparent"
           } : {
             "--tab-bg": "var(--background-neutral-secondary)",
             "--tab-fg": "var(--text-neutral-quaternary)",
@@ -178,7 +179,7 @@ const Gr = hr(function({
             "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
             "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
             "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom-active": "none",
+            "--tab-border-bottom-active": "1px solid transparent",
             "--tab-disabled-bg": "var(--background-neutral-primary)",
             "--tab-disabled-fg": "var(--text-disabled-neutral)",
             "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
@@ -207,13 +208,13 @@ const Gr = hr(function({
           }, fr = {
             "--tab-height": o ? t.secondaryHeight : t.primaryHeight,
             "--tab-gap": o ? t.secondaryItemGap : t.primaryItemGap,
-            "--tab-px": d ? o ? t.secondaryIconOnlyPadX : t.primaryIconOnlyPadX : o ? t.secondaryPadX : "0",
+            "--tab-px": s ? o ? t.secondaryIconOnlyPadX : t.primaryIconOnlyPadX : o ? t.secondaryPadX : "0",
             "--tab-py": o ? "0" : t.primaryPadY,
             "--tab-font-size": o ? t.secondaryFontSize : t.primaryFontSize,
             "--tab-line-height": o ? t.secondaryLineHeight : t.primaryLineHeight,
             "--tab-radius": o ? "var(--shape-sm) var(--shape-sm) 0 0" : "0",
             "--tab-overflow": o ? "hidden" : "visible",
-            ...d && o ? { minWidth: t.secondaryIconOnlyMinWidth } : {},
+            ...s && o ? { minWidth: t.secondaryIconOnlyMinWidth } : {},
             ...pr
           };
           return /* @__PURE__ */ E(
@@ -227,8 +228,8 @@ const Gr = hr(function({
               role: "tab",
               "aria-selected": a,
               "aria-disabled": i || void 0,
-              "aria-label": d ? P : void 0,
-              "aria-labelledby": d ? void 0 : K,
+              "aria-label": s ? P : void 0,
+              "aria-labelledby": s ? void 0 : K,
               tabIndex: e === ir ? 0 : -1,
               disabled: i,
               disableRipple: !0,
@@ -240,9 +241,9 @@ const Gr = hr(function({
               onFocus: () => {
                 i || v(e);
               },
-              onKeyDown: (b) => dr(b, e),
+              onKeyDown: (b) => sr(b, e),
               children: [
-                d ? V : /* @__PURE__ */ E(vr, { children: [
+                s ? V : /* @__PURE__ */ E(vr, { children: [
                   V,
                   /* @__PURE__ */ m("span", { id: K, children: r.label }),
                   ur
