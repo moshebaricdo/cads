@@ -16,7 +16,8 @@
 .indicator {
   position: absolute;
   height: 2px;
-  bottom: 0;
+  /* Match tab underline: tabs use margin-bottom: -1px to sit on the tablist hairline. */
+  bottom: -1px;
   box-sizing: border-box;
   background-color: var(--border-selected-primary);
   pointer-events: none;

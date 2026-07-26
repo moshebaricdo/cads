@@ -43,9 +43,8 @@ export default function MotionPage() {
           Primitives
         </h2>
         <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
-          Duration ladder (0 / 100 / 150 / 200), easings, and spring presets
-          (fast / moderate / slow). Recipes pick from these — springs are for
-          interruptible Indicator travel and pointer chase only.
+          These are the building blocks of CADS Motion. They are used to assemble the recipes above
+          and can be used standalone to create consistent but custom motion patterns.
         </p>
         <div className={shared.sectionContent}>
           <MotionPrimitives />
@@ -57,8 +56,7 @@ export default function MotionPage() {
           In action
         </h2>
         <p className={`${ui.sectionDesc} ${shared.sectionBody}`}>
-          Interact with the components in this mini-UI to see how Motion feels
-          in context.
+          Interact with the components in this mini-UI to see how CADS Motion feels in context.
         </p>
         <div className={shared.sectionContent}>
           <MotionExample />
