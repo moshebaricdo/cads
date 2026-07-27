@@ -180,6 +180,22 @@
   background: var(--background-brand-primary);
 }
 
+.springHint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+  color: var(--text-neutral-placeholder);
+  font-family: var(--font-family-main);
+  font-size: var(--text-body-xs);
+  line-height: var(--leading-body-xs);
+  font-weight: var(--font-weight-regular);
+}
+
 .easingSample {
   height: 134px;
   padding: 12px 14px;

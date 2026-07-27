@@ -2,6 +2,7 @@
 
 import { motion } from "@codeai/cads-variables";
 import { Tabs, Tooltip } from "@codeai/cads-react";
+import { FaIcon } from "@codeai/cads-react/icons";
 import { motion as m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
@@ -236,7 +237,10 @@ function SpringSample({
   const trackRef = useRef<HTMLButtonElement>(null);
   const [on, setOn] = useState(false);
   const [travel, setTravel] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [suppressHint, setSuppressHint] = useState(false);
   const reduceMotion = useReducedMotion();
+  const showHint = hovered && !suppressHint;
 
   useEffect(() => {
     const el = trackRef.current;
@@ -259,7 +263,18 @@ function SpringSample({
       className={local.springSample}
       aria-label={`Toggle ${label} spring demo`}
       aria-pressed={on}
-      onClick={() => setOn((v) => !v)}
+      onMouseEnter={() => {
+        setHovered(true);
+        setSuppressHint(false);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+        setSuppressHint(false);
+      }}
+      onClick={() => {
+        setSuppressHint(true);
+        setOn((v) => !v);
+      }}
     >
       <m.div
         className={local.springThumb}
@@ -267,6 +282,17 @@ function SpringSample({
         animate={{ x: on ? travel : 0 }}
         transition={reduceMotion ? { duration: 0 } : preset}
       />
+      {showHint ? (
+        <span className={local.springHint} aria-hidden>
+          <FaIcon
+            name="arrow-pointer"
+            family="solid"
+            size="extraSmall"
+            aria-hidden
+          />
+          <span>Click</span>
+        </span>
+      ) : null}
     </button>
   );
 }
