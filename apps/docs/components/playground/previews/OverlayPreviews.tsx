@@ -47,7 +47,23 @@ export function DrawerPlaygroundPreview({
   );
 
   if (inspect) {
-    return <div style={{ width: "100%", height: "100%" }}>{drawer}</div>;
+    // Bottom-sheet sits at the viewport floor. Mark the full stage as the
+    // inspect composite so the y-ruler spans 0 → stage height (not just the
+    // sheet), matching how the drawer anchors in product.
+    return (
+      <div
+        data-docs-inspect-composite=""
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {drawer}
+      </div>
+    );
   }
 
   return (
