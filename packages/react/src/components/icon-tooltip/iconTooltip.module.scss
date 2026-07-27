@@ -1,9 +1,11 @@
 /**
  * IconTooltip trigger — bare icon glyph with focus ring, no button chrome.
  * Size and color are passed as CSS custom properties from the component.
+ * Double :global(.MuiButtonBase-root) beats Emotion `color: inherit` (0,1,0)
+ * which otherwise wins over a plain module class in prod CSS order.
  */
 
-.trigger {
+.trigger:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
   display: inline-flex;
   align-items: center;
   justify-content: center;

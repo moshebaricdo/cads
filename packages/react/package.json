@@ -40,7 +40,8 @@
   ],
   "scripts": {
     "build": "vite build && node scripts/copy-assets.mjs",
-    "typecheck": "tsc --noEmit",
+    "audit:specificity": "node scripts/audit-mui-specificity.mjs",
+    "typecheck": "tsc --noEmit && pnpm run audit:specificity",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {

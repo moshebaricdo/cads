@@ -1,4 +1,5 @@
-.root {
+/* Double :global(.MuiButtonBase-root) → 0,3,0; beats Emotion color: inherit. */
+.root:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
   display: inline-flex;
   align-items: center;
   justify-content: center;

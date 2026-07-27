@@ -129,9 +129,11 @@ packages/react/src/components/notification-banner/
 
 #### CSS modules vs MUI Emotion specificity
 
-MUI injects Emotion styles at runtime with compound class selectors (e.g. `.MuiButton-root.MuiButton-contained`), reaching specificity 0,2,0 or higher. A plain CSS module class (0,1,0) **will lose**. To guarantee CADS styles win:
+MUI injects Emotion styles at runtime with compound class selectors (e.g. `.MuiButton-root.MuiButton-contained`), reaching specificity 0,2,0 or higher. A plain CSS module class (0,1,0) **will lose** — and even a simple `color: inherit` on `.MuiButtonBase-root` (0,1,0) can win over a module class when **prod stylesheet order** differs from local Turbopack (docs `next dev` aliases source; `build:docs` consumes committed `dist/`). Symptom: colors that work locally collapse to body/`--text-neutral-primary` on GitHub Pages.
 
-- **Double `:global()` specificity bump** — write the root selector as:
+To guarantee CADS styles win:
+
+- **Double `:global()` specificity bump** — write the pressable root selector as:
 
   ```scss
   .root:global(.MuiButton-root):global(.MuiButton-root) { ... }
@@ -139,8 +141,10 @@ MUI injects Emotion styles at runtime with compound class selectors (e.g. `.MuiB
 
   This yields specificity **0,3,0** and beats any MUI compound selector without resorting to `!important`. Substitute the appropriate MUI class for each component:
   - `MuiButton-root` → Button
-  - `MuiButtonBase-root` → SegmentedButton, Tabs, Toggle
-  - `MuiIconButton-root` → IconToggle, CloseIconButton
+  - `MuiButtonBase-root` → SegmentedButton, Tabs, Toggle, Chip, IconTooltip, CloseIconButton
+  - `MuiIconButton-root` → IconToggle
+
+- **Enforced** — `pnpm --filter @codeai/cads-react typecheck` runs `scripts/audit-mui-specificity.mjs`, which fails if a folder imports `@mui/material/{Button,ButtonBase,IconButton}` without the matching double-`:global` in its `*.module.scss`. Exempt sx-only folders in that script’s `EXEMPT_DIRS` (currently `pagination`).
 
 - **Never put interactive colors in React `style={{ backgroundColor }}`** — MUI's own hover/active Emotion styles override inline `backgroundColor`. Instead, set CSS custom properties on `style` and consume them in SCSS where pseudo-classes (`:hover`, `:active`) can override per state.
 

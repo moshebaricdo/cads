@@ -15,3 +15,4 @@ alwaysApply: false
 - Prefer CADS typography variables (`--font-family-heading`, `--font-family-main`, `--text-body-*`, etc.) over raw px.
 - Control heights via component `size` props (`large` / `medium` / `small` / `extraSmall`) — do not invent heights.
 - Consult `cadsManifest` before adding or inventing props.
+- When wrapping MUI `Button` / `ButtonBase` / `IconButton`, bump the CSS-module root with a double `:global(.Mui*-root)` (specificity 0,3,0). Plain module classes lose to Emotion in prod CSS order — local `next dev` often hides this. Enforced by `packages/react/scripts/audit-mui-specificity.mjs` (runs on `typecheck`). See `AGENTS.md`.
