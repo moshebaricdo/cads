@@ -1,14 +1,15 @@
-/* Beat Popover `.card` width (300) — custom is unpadded; we own density. */
+/* Beat Popover `.card` width (300). Density lives on `.panel` — card */
 .popover.popover {
   width: 260px;
   min-width: 260px;
   max-width: 280px;
-  padding: 6px;
 }
 
 .panel {
   width: 100%;
   min-width: 0;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
 .srOnly {
