@@ -18,6 +18,17 @@
   vertical-align: baseline;
   color: var(--link-color);
 
+  /* Figma iconWrapper: pb optical nudge so the external glyph sits with the text. */
+  .iconWrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: var(--link-icon-optical-offset);
+    flex-shrink: 0;
+    line-height: 0;
+  }
+
   .icon {
     color: var(--link-icon-color);
   }

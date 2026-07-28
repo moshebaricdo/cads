@@ -10,6 +10,8 @@
   padding: 0;
   overflow: visible;
   border-radius: 0.25rem;
+  /* Match glyph size so inspector / UA button defaults don't report ~13.33px. */
+  font-size: var(--cib-icon);
   color: var(--cib-color);
   background-color: transparent;
   transition: var(--transition-colors);

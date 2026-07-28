@@ -38,7 +38,7 @@ export const BUTTON_SIZE: Record<
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
-    paddingInline: "var(--spacing-p-xs)", // 16px
+    paddingInline: "0.875rem", // 14px (Figma Button / Dropdown action M)
     paddingBlock: "0.5rem", // 8px
     gap: "0.5em", // 8px @ 16px type
     fontSize: "var(--text-body-md)",
@@ -218,7 +218,7 @@ export const ICON_TOGGLE_SIZE: Record<
   large: {
     size: CONTROL_HEIGHT.large,
     padding: "0.75rem", // 12px
-    iconPx: "1.1875rem", // 19px
+    iconPx: "1.125rem", // 18px — matches --text-body-lg
     iconSlot: "1.5rem", // 24px
   },
   medium: {
@@ -280,7 +280,7 @@ export const CHIP_SIZE: Record<
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
-    paddingInline: "1rem", // 16px
+    paddingInline: "1.125rem", // 18px
     paddingBlock: "0.5rem", // 8px
     gap: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
@@ -290,7 +290,7 @@ export const CHIP_SIZE: Record<
   },
   small: {
     height: CONTROL_HEIGHT.small,
-    paddingInline: "0.75rem", // 12px
+    paddingInline: "0.875rem", // 14px
     paddingBlock: "0.3125rem", // 5px
     gap: "0.375rem", // 6px
     fontSize: "var(--text-body-sm)",
@@ -300,7 +300,7 @@ export const CHIP_SIZE: Record<
   },
   extraSmall: {
     height: CONTROL_HEIGHT.extraSmall,
-    paddingInline: "0.5rem", // 8px
+    paddingInline: "0.625rem", // 10px
     paddingBlock: "0.125rem", // 2px
     gap: "0.25rem", // 4px
     fontSize: "var(--text-body-xs)",
@@ -368,11 +368,11 @@ export const TEXT_INPUT_SIZE: Record<
   medium: {
     height: CONTROL_HEIGHT.medium,
     areaHeight: "5.5rem", // 88px
-    paddingInline: "var(--spacing-p-xs)", // 16px
+    paddingInline: "0.875rem", // 14px (match Button / Figma field M)
     paddingBlock: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
-    iconGap: "0.625rem", // 10px
+    iconGap: "0.5rem", // 8px
     iconPx: "1rem", // 16px
   },
   small: {
@@ -687,12 +687,12 @@ export const SEGMENTED_SIZE: Record<
     gap: "0.5rem", // 8px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
-    iconPx: "1.1875rem", // 19px
+    iconPx: "1.125rem", // 18px — matches --text-body-lg
     iconOnlyPadding: "0.75rem", // 12px
   },
   medium: {
     height: CONTROL_HEIGHT.medium,
-    paddingInline: "0.75rem", // 12px
+    paddingInline: "0.875rem", // 14px (Figma Segmented Button Block M)
     paddingBlock: "0.5rem", // 8px
     gap: "0.5rem", // 8px
     fontSize: "var(--text-body-md)",
@@ -794,37 +794,45 @@ export const LINK_SIZE: Record<
     lineHeight: string;
     gap: string;
     iconPx: string;
+    /** Bottom padding on the external-icon wrapper (Figma optical align). */
+    iconOpticalOffset: string;
   }
 > = {
   large: {
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
     gap: "0.5rem", // 8px
-    iconPx: "1.125rem", // 18px
+    iconPx: "1.125rem", // 18px — matches --text-body-lg
+    /** Optical nudge for external glyph vs text baseline (Figma iconWrapper pb). */
+    iconOpticalOffset: "0.125rem", // 2px
   },
   medium: {
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
     gap: "0.5rem", // 8px
-    iconPx: "0.875rem", // 14px
+    iconPx: "1rem", // 16px — matches --text-body-md
+    iconOpticalOffset: "0.125rem", // 2px
   },
   small: {
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
     gap: "0.375rem", // 6px
-    iconPx: "0.75rem", // 12px
+    iconPx: "0.875rem", // 14px — matches --text-body-sm
+    iconOpticalOffset: "0.125rem", // 2px
   },
   extraSmall: {
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
     gap: "0.25rem", // 4px
-    iconPx: "0.625rem", // 10px
+    iconPx: "0.75rem", // 12px — matches --text-body-xs
+    iconOpticalOffset: "0.125rem", // 2px
   },
   extraExtraSmall: {
     fontSize: "var(--text-body-xxs)",
     lineHeight: "var(--leading-body-xxs)",
     gap: "0.25rem", // 4px
-    iconPx: "0.625rem", // 10px
+    iconPx: "0.625rem", // 10px — matches --text-body-xxs
+    iconOpticalOffset: "0.125rem", // 2px
   },
 };
 

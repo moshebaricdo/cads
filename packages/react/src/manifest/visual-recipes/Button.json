@@ -54,18 +54,22 @@
     "sizes": {
       "large": {
         "height": "48",
+        "paddingInline": "16",
         "icon": "18"
       },
       "medium": {
         "height": "40",
+        "paddingInline": "14",
         "icon": "16"
       },
       "small": {
         "height": "32",
+        "paddingInline": "12",
         "icon": "14"
       },
       "extraSmall": {
         "height": "24",
+        "paddingInline": "8",
         "icon": "12"
       }
     },

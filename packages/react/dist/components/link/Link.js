@@ -1,71 +1,72 @@
-import { jsxs as N, Fragment as P, jsx as a } from "react/jsx-runtime";
+import { jsxs as L, Fragment as P, jsx as t } from "react/jsx-runtime";
 import { forwardRef as I } from "react";
 import { FaIcon as b } from "../../icons/FaIcon.js";
 import { LINK_SIZE as j } from "../../shared/controlSize.js";
-import e from "./link.module.scss.js";
+import a from "./link.module.scss.js";
 const w = "up-right-from-square";
 function z(...i) {
   return i.filter(Boolean).join(" ");
 }
-const H = I(
+const D = I(
   function({
-    size: d = "medium",
-    type: f = "primary",
-    isExternal: y = !0,
-    disabled: r = !1,
-    children: u,
+    size: f = "medium",
+    type: d = "primary",
+    isExternal: u = !0,
+    disabled: o = !1,
+    children: y,
     href: h,
-    onClick: t,
+    onClick: e,
     className: x,
     ...l
   }, s) {
-    const o = j[d], g = f === "primary", k = (n) => {
-      if (r) {
+    const r = j[f], k = d === "primary", g = (n) => {
+      if (o) {
         n.preventDefault(), n.stopPropagation();
         return;
       }
-      t == null || t(n);
+      e == null || e(n);
     }, v = {
       "--link-color": "var(--text-brand-primary)",
       "--link-icon-color": "var(--text-brand-primary)",
       "--link-color-hover": "var(--text-brand-secondary)",
       "--link-icon-color-hover": "var(--text-brand-secondary)"
-    }, _ = {
+    }, N = {
       "--link-color": "var(--text-neutral-primary)",
       "--link-icon-color": "var(--text-neutral-primary)",
       "--link-color-hover": "var(--text-neutral-tertiary)",
       "--link-icon-color-hover": "var(--text-neutral-secondary)"
     }, c = {
-      "--link-gap": o.gap,
-      "--link-font-size": o.fontSize,
-      "--link-line-height": o.lineHeight,
-      ...r ? {} : g ? v : _
+      "--link-gap": r.gap,
+      "--link-font-size": r.fontSize,
+      "--link-line-height": r.lineHeight,
+      "--link-icon-optical-offset": r.iconOpticalOffset,
+      ...o ? {} : k ? v : N
     }, m = z(
-      e.root,
-      r && e.disabled,
+      a.root,
+      o && a.disabled,
       x
-    ), p = /* @__PURE__ */ N(P, { children: [
-      u,
-      y ? /* @__PURE__ */ a(
+    ), p = /* @__PURE__ */ L(P, { children: [
+      y,
+      u === !0 ? /* @__PURE__ */ t("span", { className: a.iconWrapper, "aria-hidden": "true", children: /* @__PURE__ */ t(
         b,
         {
-          className: e.icon,
+          className: a.icon,
           name: w,
           family: "solid",
-          fontSize: o.iconPx
+          fontSize: r.iconPx
         }
-      ) : null
+      ) }) : null
     ] });
-    if (r) {
+    if (o) {
       const {
         target: n,
         rel: E,
-        download: R,
-        hrefLang: S,
-        referrerPolicy: C,
-        ...L
+        download: O,
+        hrefLang: R,
+        referrerPolicy: S,
+        ..._
       } = l;
-      return /* @__PURE__ */ a(
+      return /* @__PURE__ */ t(
         "span",
         {
           ref: s,
@@ -73,19 +74,19 @@ const H = I(
           style: c,
           "aria-disabled": "true",
           "data-cads-press": "",
-          ...L,
+          ..._,
           children: p
         }
       );
     }
-    return /* @__PURE__ */ a(
+    return /* @__PURE__ */ t(
       "a",
       {
         ref: s,
         className: m,
         style: c,
         href: h,
-        onClick: k,
+        onClick: g,
         "data-cads-press": "",
         ...l,
         children: p
@@ -94,6 +95,6 @@ const H = I(
   }
 );
 export {
-  H as Link
+  D as Link
 };
 //# sourceMappingURL=Link.js.map

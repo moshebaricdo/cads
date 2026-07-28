@@ -90,6 +90,7 @@ export const CloseIconButton = forwardRef<
 
   const chromeVars = {
     "--cib-box": dims.box,
+    "--cib-icon": dims.icon,
     "--cib-color": chrome.default,
     "--cib-color-hover": chrome.hover,
   } as CSSProperties;

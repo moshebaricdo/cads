@@ -7,13 +7,15 @@
     "publicNodeId": "5881:2187",
     "componentKey": "388cba2ed6150b2a9b448f1895ed2f04ca90edb2",
     "relatedNodeIds": [],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-07-28",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "figma-update",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "CADS 4.1: XS/M/S horizontal padding +2px (8→10 / 16→18 / 12→14)"
+    ]
   },
   "axes": {
     "public": {
@@ -50,17 +52,17 @@
       },
       "medium": {
         "height": "40",
-        "paddingInline": "16",
+        "paddingInline": "18",
         "gap": "8"
       },
       "small": {
         "height": "32",
-        "paddingInline": "12",
+        "paddingInline": "14",
         "gap": "6"
       },
       "extraSmall": {
         "height": "24",
-        "paddingInline": "8",
+        "paddingInline": "10",
         "gap": "4"
       }
     },

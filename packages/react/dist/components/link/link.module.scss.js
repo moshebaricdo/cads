@@ -1,12 +1,14 @@
-import './link.css';const o = "_root_x03t9_1", t = "_icon_x03t9_21", s = "_disabled_x03t9_56", _ = {
+import './link.css';const o = "_root_47igj_1", i = "_iconWrapper_47igj_22", _ = "_icon_47igj_22", c = "_disabled_47igj_66", n = {
   root: o,
-  icon: t,
-  disabled: s
+  iconWrapper: i,
+  icon: _,
+  disabled: c
 };
 export {
-  _ as default,
-  s as disabled,
-  t as icon,
+  n as default,
+  c as disabled,
+  _ as icon,
+  i as iconWrapper,
   o as root
 };
 //# sourceMappingURL=link.module.scss.js.map

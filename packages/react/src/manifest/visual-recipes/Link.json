@@ -7,13 +7,15 @@
     "publicNodeId": "3480:5546",
     "componentKey": "87b099a460c3dad155731d3983e7ccfecefc5975",
     "relatedNodeIds": [],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-07-28",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "figma-update",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "CADS 4.1: iconPx matches body textSize at every size; iconWrapper pb 2px optical align; isExternal visibility re-bound in Figma"
+    ]
   },
   "axes": {
     "public": {
@@ -40,31 +42,36 @@
         "fontSize": "18px",
         "lineHeight": "28px",
         "gap": "8px",
-        "iconPx": "18px"
+        "iconPx": "18px",
+        "iconOpticalOffset": "2px"
       },
       "medium": {
         "fontSize": "16px",
         "lineHeight": "24px",
         "gap": "8px",
-        "iconPx": "14px"
+        "iconPx": "16px",
+        "iconOpticalOffset": "2px"
       },
       "small": {
         "fontSize": "14px",
         "lineHeight": "22px",
         "gap": "6px",
-        "iconPx": "12px"
+        "iconPx": "14px",
+        "iconOpticalOffset": "2px"
       },
       "extraSmall": {
         "fontSize": "12px",
         "lineHeight": "18px",
         "gap": "4px",
-        "iconPx": "10px"
+        "iconPx": "12px",
+        "iconOpticalOffset": "2px"
       },
       "extraExtraSmall": {
         "fontSize": "10px",
         "lineHeight": "16px",
         "gap": "4px",
-        "iconPx": "10px"
+        "iconPx": "10px",
+        "iconOpticalOffset": "2px"
       }
     },
     "layout": {

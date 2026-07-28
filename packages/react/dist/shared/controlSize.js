@@ -21,8 +21,8 @@ const e = {
   },
   medium: {
     height: e.medium,
-    paddingInline: "var(--spacing-p-xs)",
-    // 16px
+    paddingInline: "0.875rem",
+    // 14px (Figma Button / Dropdown action M)
     paddingBlock: "0.5rem",
     // 8px
     gap: "0.5em",
@@ -215,8 +215,8 @@ const e = {
     size: e.large,
     padding: "0.75rem",
     // 12px
-    iconPx: "1.1875rem",
-    // 19px
+    iconPx: "1.125rem",
+    // 18px — matches --text-body-lg
     iconSlot: "1.5rem"
     // 24px
   },
@@ -247,7 +247,7 @@ const e = {
     iconSlot: "1rem"
     // 16px
   }
-}, m = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)", o = "var(--transition-colors)", t = "var(--transition-fade)", d = {
+}, m = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)", t = "var(--transition-colors)", o = "var(--transition-fade)", d = {
   large: {
     height: e.large,
     paddingInline: "1.25rem",
@@ -265,8 +265,8 @@ const e = {
   },
   medium: {
     height: e.medium,
-    paddingInline: "1rem",
-    // 16px
+    paddingInline: "1.125rem",
+    // 18px
     paddingBlock: "0.5rem",
     // 8px
     gap: "0.5rem",
@@ -280,8 +280,8 @@ const e = {
   },
   small: {
     height: e.small,
-    paddingInline: "0.75rem",
-    // 12px
+    paddingInline: "0.875rem",
+    // 14px
     paddingBlock: "0.3125rem",
     // 5px
     gap: "0.375rem",
@@ -295,8 +295,8 @@ const e = {
   },
   extraSmall: {
     height: e.extraSmall,
-    paddingInline: "0.5rem",
-    // 8px
+    paddingInline: "0.625rem",
+    // 10px
     paddingBlock: "0.125rem",
     // 2px
     gap: "0.25rem",
@@ -358,14 +358,14 @@ const e = {
     height: e.medium,
     areaHeight: "5.5rem",
     // 88px
-    paddingInline: "var(--spacing-p-xs)",
-    // 16px
+    paddingInline: "0.875rem",
+    // 14px (match Button / Figma field M)
     paddingBlock: "0.5rem",
     // 8px
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
-    iconGap: "0.625rem",
-    // 10px
+    iconGap: "0.5rem",
+    // 8px
     iconPx: "1rem"
     // 16px
   },
@@ -695,15 +695,15 @@ const e = {
     // 8px
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
-    iconPx: "1.1875rem",
-    // 19px
+    iconPx: "1.125rem",
+    // 18px — matches --text-body-lg
     iconOnlyPadding: "0.75rem"
     // 12px
   },
   medium: {
     height: e.medium,
-    paddingInline: "0.75rem",
-    // 12px
+    paddingInline: "0.875rem",
+    // 14px (Figma Segmented Button Block M)
     paddingBlock: "0.5rem",
     // 8px
     gap: "0.5rem",
@@ -804,40 +804,51 @@ const e = {
     lineHeight: "var(--leading-body-lg)",
     gap: "0.5rem",
     // 8px
-    iconPx: "1.125rem"
-    // 18px
+    iconPx: "1.125rem",
+    // 18px — matches --text-body-lg
+    /** Optical nudge for external glyph vs text baseline (Figma iconWrapper pb). */
+    iconOpticalOffset: "0.125rem"
+    // 2px
   },
   medium: {
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
     gap: "0.5rem",
     // 8px
-    iconPx: "0.875rem"
-    // 14px
+    iconPx: "1rem",
+    // 16px — matches --text-body-md
+    iconOpticalOffset: "0.125rem"
+    // 2px
   },
   small: {
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
     gap: "0.375rem",
     // 6px
-    iconPx: "0.75rem"
-    // 12px
+    iconPx: "0.875rem",
+    // 14px — matches --text-body-sm
+    iconOpticalOffset: "0.125rem"
+    // 2px
   },
   extraSmall: {
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
     gap: "0.25rem",
     // 4px
-    iconPx: "0.625rem"
-    // 10px
+    iconPx: "0.75rem",
+    // 12px — matches --text-body-xs
+    iconOpticalOffset: "0.125rem"
+    // 2px
   },
   extraExtraSmall: {
     fontSize: "var(--text-body-xxs)",
     lineHeight: "var(--leading-body-xxs)",
     gap: "0.25rem",
     // 4px
-    iconPx: "0.625rem"
-    // 10px
+    iconPx: "0.625rem",
+    // 10px — matches --text-body-xxs
+    iconOpticalOffset: "0.125rem"
+    // 2px
   }
 }, v = {
   large: {
@@ -1048,7 +1059,7 @@ export {
   g as TEXT_INPUT_SIZE,
   I as TOAST_CHROME,
   i as TOGGLE_SIZE,
-  o as TRANSITION_COLORS,
-  t as TRANSITION_FADE
+  t as TRANSITION_COLORS,
+  o as TRANSITION_FADE
 };
 //# sourceMappingURL=controlSize.js.map

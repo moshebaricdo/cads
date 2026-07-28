@@ -1,9 +1,10 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-07-25
+Last updated: 2026-07-28
 
 ## Done (scaffold complete)
 
+- [x] **CADS 4.1 Figma sync (2026-07-28)** — Mirrored release geometry (skipped FA6→FA7; already on FA7): IconToggle L icon 19→18; Chip M/S/XS padding +2px; Link icon=body textSize + 2px optical iconWrapper + playground `isExternal` coercion fix; Dropdown menu item gaps/padding/icon slots + fixed heights; Button M padding 16→14 (action trigger hug). Recipes updated; `pnpm typecheck` + `pnpm build:react` green.
 - [x] Monorepo scaffold (pnpm, changesets, CI, Git-URL / committed `dist/`)
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
 - [x] Color CSS vars use semantic names **without** `--ds-` prefix (e.g. `--background-brand-primary`)

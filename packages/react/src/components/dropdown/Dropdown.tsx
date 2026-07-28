@@ -20,6 +20,7 @@ import { FaIcon } from "../../icons/FaIcon";
 import type { FaIconName } from "../../icons/faProRegularCodepoints";
 import {
   BUTTON_SIZE,
+  CONTROL_HEIGHT,
   TEXT_INPUT_SIZE,
   type ControlSize,
 } from "../../shared/controlSize";
@@ -195,6 +196,7 @@ function asArray(value: string | string[] | undefined): string[] {
 const MENU_ITEM_SIZE: Record<
   ControlSize,
   {
+    height: string;
     paddingLeft: string;
     paddingRight: string;
     paddingBlock: string;
@@ -206,48 +208,53 @@ const MENU_ITEM_SIZE: Record<
     checkbox: number;
   }
 > = {
+  // Gaps / padding / iconPx match Figma `896:3791` (icon = body textSize).
   large: {
-    paddingLeft: "1rem",
-    paddingRight: "1.375rem",
-    paddingBlock: "0.625rem",
-    gap: "0.75rem",
+    height: CONTROL_HEIGHT.large,
+    paddingLeft: "1rem", // 16
+    paddingRight: "1.125rem", // 18
+    paddingBlock: "0.625rem", // 10
+    gap: "0.625rem", // 10
     fontSize: "var(--text-body-lg)",
     lineHeight: "var(--leading-body-lg)",
-    iconSlot: "1.75rem",
-    iconPx: "1.375rem",
+    iconSlot: "1.25rem", // 20
+    iconPx: "1.125rem", // 18
     checkbox: 22,
   },
   medium: {
-    paddingLeft: "0.75rem",
-    paddingRight: "1rem",
-    paddingBlock: "0.5rem",
-    gap: "0.75rem",
+    height: CONTROL_HEIGHT.medium,
+    paddingLeft: "0.75rem", // 12
+    paddingRight: "0.875rem", // 14
+    paddingBlock: "0.5rem", // 8
+    gap: "0.5rem", // 8
     fontSize: "var(--text-body-md)",
     lineHeight: "var(--leading-body-md)",
-    iconSlot: "1.5rem",
-    iconPx: "1.1875rem",
+    iconSlot: "1.125rem", // 18
+    iconPx: "1rem", // 16
     checkbox: 20,
   },
   small: {
-    paddingLeft: "0.625rem",
-    paddingRight: "0.875rem",
-    paddingBlock: "0.3125rem",
-    gap: "0.5rem",
+    height: CONTROL_HEIGHT.small,
+    paddingLeft: "0.625rem", // 10
+    paddingRight: "0.75rem", // 12
+    paddingBlock: "0.3125rem", // 5
+    gap: "0.375rem", // 6
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
-    iconSlot: "1.25rem",
-    iconPx: "1rem",
+    iconSlot: "1rem", // 16
+    iconPx: "0.875rem", // 14
     checkbox: 18,
   },
   extraSmall: {
-    paddingLeft: "0.5rem",
-    paddingRight: "0.625rem",
-    paddingBlock: "0.125rem",
-    gap: "0.25rem",
+    height: CONTROL_HEIGHT.extraSmall,
+    paddingLeft: "0.5rem", // 8
+    paddingRight: "0.625rem", // 10
+    paddingBlock: "0.125rem", // 2
+    gap: "0.25rem", // 4
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
-    iconSlot: "1rem",
-    iconPx: "0.8125rem",
+    iconSlot: "0.875rem", // 14
+    iconPx: "0.75rem", // 12
     checkbox: 16,
   },
 };
@@ -266,28 +273,28 @@ const MENU_GROUP_SIZE: Record<
   large: {
     height: 32,
     paddingLeft: "1rem",
-    paddingRight: "1.375rem",
+    paddingRight: "1.125rem", // 18 — match menu item
     fontSize: "var(--text-body-sm)",
     lineHeight: "var(--leading-body-sm)",
   },
   medium: {
     height: 28,
     paddingLeft: "0.75rem",
-    paddingRight: "1rem",
+    paddingRight: "0.875rem", // 14 — match menu item
     fontSize: "var(--text-body-xs)",
     lineHeight: "var(--leading-body-xs)",
   },
   small: {
     height: 24,
     paddingLeft: "0.625rem",
-    paddingRight: "0.875rem",
+    paddingRight: "0.75rem", // 12 — match menu item
     fontSize: "var(--text-body-xxs)",
     lineHeight: "var(--leading-body-xxs)",
   },
   extraSmall: {
     height: 20,
     paddingLeft: "0.5rem",
-    paddingRight: "0.625rem",
+    paddingRight: "0.625rem", // 10 — match menu item
     fontSize: "var(--text-body-xxs)",
     lineHeight: "var(--leading-body-xxs)",
   },
@@ -413,15 +420,16 @@ function DropdownButtonTrigger({
   triggerWidth: CSSProperties["width"];
 }) {
   const dims = TEXT_INPUT_SIZE[size];
-  const iconDims = BUTTON_SIZE[size];
+  const btnDims = BUTTON_SIZE[size];
   const border = triggerBorder(color, error, disabled, readOnly);
   const hug = Boolean(hugCandidates?.length);
 
   const chromeVars = {
     "--dd-height": dims.height,
-    "--dd-px": dims.paddingInline,
+    // Match Button / Figma Dropdown Button padding 16 / 14 / 12 / 8
+    "--dd-px": btnDims.paddingInline,
     "--dd-py": dims.paddingBlock,
-    "--dd-gap": iconDims.gap,
+    "--dd-gap": btnDims.gap,
     "--dd-font-size": dims.fontSize,
     "--dd-line-height": dims.lineHeight,
     "--dd-font-weight": String(labelStyle === "thin" ? 400 : 600),
@@ -457,11 +465,11 @@ function DropdownButtonTrigger({
     >
       <span className={styles.triggerContent}>
         {startIconName ? (
-          <FaIcon name={startIconName} fontSize={iconDims.iconPx} />
+          <FaIcon name={startIconName} fontSize={btnDims.iconPx} />
         ) : null}
         <TriggerLabel label={label} hugCandidates={hugCandidates} />
       </span>
-      <FaIcon name="chevron-down" fontSize={iconDims.iconPx} />
+      <FaIcon name="chevron-down" fontSize={btnDims.iconPx} />
     </button>
   );
 }
@@ -526,6 +534,7 @@ function MenuItemRow({
     "--dd-item-fg": textColor,
     "--dd-item-cursor": option.disabled ? "default" : "pointer",
     "--dd-item-opacity": String(option.disabled && isChecklist ? 0.5 : 1),
+    "--dd-item-height": dims.height,
   } as CSSProperties;
 
   return (
@@ -900,6 +909,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       "--dd-item-pl": itemDims.paddingLeft,
       "--dd-item-pr": itemDims.paddingRight,
       "--dd-item-py": itemDims.paddingBlock,
+      "--dd-item-height": itemDims.height,
       "--dd-item-gap": itemDims.gap,
       "--dd-item-font-size": itemDims.fontSize,
       "--dd-item-line-height": itemDims.lineHeight,

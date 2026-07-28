@@ -234,6 +234,8 @@ export declare const LINK_SIZE: Record<LinkControlSize, {
     lineHeight: string;
     gap: string;
     iconPx: string;
+    /** Bottom padding on the external-icon wrapper (Figma optical align). */
+    iconOpticalOffset: string;
 }>;
 /**
  * Alert size matrix from Figma Alert (`2133:4160`).

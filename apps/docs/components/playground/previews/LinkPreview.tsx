@@ -21,7 +21,7 @@ export default function LinkPreview({
           | undefined
       }
       type={v.type as "primary" | "secondary" | undefined}
-      isExternal={v.isExternal == null ? true : Boolean(v.isExternal)}
+      isExternal={v.isExternal === false ? false : true}
       disabled={Boolean(v.disabled)}
     >
       {String(v.children ?? "Link")}

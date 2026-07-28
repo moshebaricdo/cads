@@ -65,6 +65,7 @@ export const Link = forwardRef<HTMLAnchorElement | HTMLSpanElement, LinkProps>(
       "--link-gap": dims.gap,
       "--link-font-size": dims.fontSize,
       "--link-line-height": dims.lineHeight,
+      "--link-icon-optical-offset": dims.iconOpticalOffset,
       ...(disabled ? {} : isPrimary ? primaryColors : secondaryColors),
     } as CSSProperties;
 
@@ -74,16 +75,20 @@ export const Link = forwardRef<HTMLAnchorElement | HTMLSpanElement, LinkProps>(
       className,
     );
 
+    // isExternal gates the affordance glyph only (Figma boolean `isExternal#11340:0`
+    // on the icon layer). Do not coerce via Boolean() — keep strict true/false.
     const content = (
       <>
         {children}
-        {isExternal ? (
-          <FaIcon
-            className={styles.icon}
-            name={EXTERNAL_ICON}
-            family="solid"
-            fontSize={dims.iconPx}
-          />
+        {isExternal === true ? (
+          <span className={styles.iconWrapper} aria-hidden="true">
+            <FaIcon
+              className={styles.icon}
+              name={EXTERNAL_ICON}
+              family="solid"
+              fontSize={dims.iconPx}
+            />
+          </span>
         ) : null}
       </>
     );

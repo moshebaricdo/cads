@@ -14,7 +14,7 @@
       "16847:69841",
       "16847:69853"
     ],
-    "retrievedAt": "2026-07-24",
+    "retrievedAt": "2026-07-28",
     "designContextCaptured": true
   },
   "change": {
@@ -25,7 +25,9 @@
       "Added menuSeparator (16847:69841) and menuOptGroup (16847:69853)",
       "menuType icon\u2192default (item icons are per-option, not list-level)",
       "2026-07-24: default/defaultError state recipes \u2014 destructive press stays error-light + text-error-secondary; selected press returns to selected-primary (not strong); disabled uses text/background-disabled-* tokens (no opacity fade). Checklist itemType deferred.",
-      "2026-07-24: Dropdown Button state=press shares tertiary fill with hover (aligns with outlined Button press)."
+      "2026-07-24: Dropdown Button state=press shares tertiary fill with hover (aligns with outlined Button press).",
+      "CADS 4.1: menu item gaps/paddingRight/icon slots aligned to standardized pattern; icons use body textSize; default label Item; Button M padding 14px fixes action trigger hug width",
+      "CADS 4.1: input Dropdown Button trigger padding 16/14/12/8 (match Button); drop extra triggerContent padding-right"
     ]
   },
   "axes": {
@@ -69,27 +71,43 @@
     "sizes": {
       "large": {
         "triggerHeight": "48px",
+        "triggerPaddingInline": "16",
+        "triggerGap": "10",
         "itemPaddingBlock": "10px",
-        "itemGap": "12px",
-        "iconSlot": "28px"
+        "itemPaddingInline": "16 / 18",
+        "itemGap": "10px",
+        "iconSlot": "20px",
+        "iconPx": "18px"
       },
       "medium": {
         "triggerHeight": "40px",
+        "triggerPaddingInline": "14",
+        "triggerGap": "8",
         "itemPaddingBlock": "8px",
-        "itemGap": "12px",
-        "iconSlot": "24px"
+        "itemPaddingInline": "12 / 14",
+        "itemGap": "8px",
+        "iconSlot": "18px",
+        "iconPx": "16px"
       },
       "small": {
         "triggerHeight": "32px",
+        "triggerPaddingInline": "12",
+        "triggerGap": "6",
         "itemPaddingBlock": "5px",
-        "itemGap": "8px",
-        "iconSlot": "20px"
+        "itemPaddingInline": "10 / 12",
+        "itemGap": "6px",
+        "iconSlot": "16px",
+        "iconPx": "14px"
       },
       "extraSmall": {
         "triggerHeight": "24px",
+        "triggerPaddingInline": "8",
+        "triggerGap": "4",
         "itemPaddingBlock": "2px",
+        "itemPaddingInline": "8 / 10",
         "itemGap": "4px",
-        "iconSlot": "16px"
+        "iconSlot": "14px",
+        "iconPx": "12px"
       }
     },
     "layout": {

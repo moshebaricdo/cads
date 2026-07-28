@@ -68,11 +68,11 @@
       "medium": {
         "fieldHeight": "40px",
         "areaHeight": "88px",
-        "paddingInline": "16px",
+        "paddingInline": "14px",
         "paddingBlock": "8px",
         "fontSize": "var(--text-body-md)",
         "lineHeight": "var(--leading-body-md)",
-        "iconGap": "10px",
+        "iconGap": "8px",
         "iconPx": "16px"
       },
       "small": {

@@ -44,14 +44,14 @@
         "paddingInline": 16,
         "paddingBlock": 10,
         "iconOnlyPadding": 12,
-        "iconPx": 19,
+        "iconPx": 18,
         "fontSize": 18,
         "lineHeight": 28
       },
       "medium": {
         "height": 40,
         "pageMinWidth": 40,
-        "paddingInline": 12,
+        "paddingInline": 14,
         "paddingBlock": 8,
         "iconOnlyPadding": 10,
         "iconPx": 16,

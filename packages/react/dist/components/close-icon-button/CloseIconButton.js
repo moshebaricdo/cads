@@ -49,13 +49,14 @@ const f = {
   size: n = "large",
   color: c = "primary",
   sx: i,
-  className: r,
+  className: e,
   "aria-label": s = "Close",
   type: m = "button",
   ...l
 }, d) {
-  const e = f[n], a = y[c], u = {
-    "--cib-box": e.box,
+  const r = f[n], a = y[c], u = {
+    "--cib-box": r.box,
+    "--cib-icon": r.icon,
     "--cib-color": a.default,
     "--cib-color-hover": a.hover
   };
@@ -69,11 +70,11 @@ const f = {
       "aria-label": s,
       "data-cads-component": "CloseIconButton",
       "data-cads-press": "",
-      className: r ? `${o.root} ${r}` : o.root,
+      className: e ? `${o.root} ${e}` : o.root,
       style: u,
       sx: i,
       ...l,
-      children: /* @__PURE__ */ t(p, { name: "xmark", family: "solid", fontSize: e.icon, "aria-hidden": !0 })
+      children: /* @__PURE__ */ t(p, { name: "xmark", family: "solid", fontSize: r.icon, "aria-hidden": !0 })
     }
   );
 });
