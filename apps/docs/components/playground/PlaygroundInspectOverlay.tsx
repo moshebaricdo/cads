@@ -682,6 +682,106 @@ function authoredColorUpTree(
   return null;
 }
 
+function isInteractiveControl(el: HTMLElement): boolean {
+  const tag = el.tagName;
+  const role = el.getAttribute("role");
+  return (
+    tag === "BUTTON" ||
+    tag === "INPUT" ||
+    tag === "SELECT" ||
+    tag === "TEXTAREA" ||
+    tag === "A" ||
+    role === "button" ||
+    role === "switch" ||
+    role === "checkbox" ||
+    role === "radio" ||
+    role === "tab" ||
+    role === "menuitem" ||
+    role === "option" ||
+    role === "link"
+  );
+}
+
+/** MUI Pagination / list chrome — wrappers that don't own the painted styles. */
+function isStructuralWrapper(el: HTMLElement): boolean {
+  const tag = el.tagName;
+  return tag === "UL" || tag === "OL" || tag === "LI" || tag === "NAV";
+}
+
+function samePaintedBox(a: DOMRect, b: DOMRect): boolean {
+  return (
+    Math.abs(a.width - b.width) < 2 &&
+    Math.abs(a.height - b.height) < 2 &&
+    Math.abs(a.left - b.left) < 2 &&
+    Math.abs(a.top - b.top) < 2
+  );
+}
+
+const INTERACTIVE_SELECTOR = [
+  "button",
+  "a",
+  "input",
+  "select",
+  "textarea",
+  '[role="button"]',
+  '[role="radio"]',
+  '[role="tab"]',
+  '[role="switch"]',
+  '[role="checkbox"]',
+  '[role="menuitem"]',
+  '[role="option"]',
+  '[role="link"]',
+].join(", ");
+
+/**
+ * Drill past empty structural wrappers (Pagination's MUI `<li>`, etc.) to the
+ * interactive control that owns padding / radius / fill / type.
+ */
+function promoteInspectTarget(
+  candidate: HTMLElement,
+  stage: HTMLElement,
+): HTMLElement {
+  if (!isStructuralWrapper(candidate)) return candidate;
+
+  const candidateRect = candidate.getBoundingClientRect();
+  for (const child of candidate.querySelectorAll<HTMLElement>(
+    INTERACTIVE_SELECTOR,
+  )) {
+    if (!isInspectableNode(stage, child)) continue;
+    if (samePaintedBox(candidateRect, child.getBoundingClientRect())) {
+      return child;
+    }
+  }
+
+  const kids = visibleChildren(candidate);
+  if (
+    kids.length === 1 &&
+    samePaintedBox(candidateRect, kids[0]!.getBoundingClientRect())
+  ) {
+    return promoteInspectTarget(kids[0]!, stage);
+  }
+
+  // Wrapper owns no fill/padding of its own — still prefer the interactive
+  // descendant that paints the segment chrome.
+  const styles = getComputedStyle(candidate);
+  const ownPadding = readSides(styles, "padding");
+  const ownsChrome =
+    hasBoxValue(ownPadding) ||
+    (!isTransparentColor(styles.backgroundColor) &&
+      styles.backgroundColor !== "rgba(0, 0, 0, 0)");
+  if (!ownsChrome) {
+    const interactive = candidate.querySelector(INTERACTIVE_SELECTOR);
+    if (
+      interactive instanceof HTMLElement &&
+      isInspectableNode(stage, interactive)
+    ) {
+      return interactive;
+    }
+  }
+
+  return candidate;
+}
+
 function labelFor(el: HTMLElement): string {
   if (el.hasAttribute("data-cads-dropdown-item")) return "MENU ITEM";
   if (el.hasAttribute("data-cads-dropdown-trigger")) return "BUTTON";
@@ -693,7 +793,8 @@ function labelFor(el: HTMLElement): string {
   if (cadsName) {
     return cadsName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase();
   }
-  if (el.getAttribute("role") === "switch") return "BUTTON";
+  const role = el.getAttribute("role");
+  if (role === "switch" || role === "radio" || role === "tab") return "BUTTON";
   return el.tagName.toUpperCase();
 }
 
@@ -723,21 +824,9 @@ function inspectKind(
   styles: CSSStyleDeclaration,
 ): InspectKind {
   const tag = el.tagName;
-  const role = el.getAttribute("role");
 
   if (tag === "SVG" || tag === "I") return "icon";
-  if (
-    tag === "BUTTON" ||
-    tag === "INPUT" ||
-    tag === "SELECT" ||
-    tag === "TEXTAREA" ||
-    role === "button" ||
-    role === "switch" ||
-    role === "checkbox" ||
-    role === "radio"
-  ) {
-    return "control";
-  }
+  if (isInteractiveControl(el)) return "control";
   if (
     tag === "SPAN" ||
     tag === "P" ||
@@ -887,11 +976,7 @@ function readMeasure(el: HTMLElement): Measure {
     (el.tagName === "LABEL" &&
       styles.display !== "flex" &&
       styles.display !== "inline-flex");
-  const showType =
-    isTextNode ||
-    el.tagName === "BUTTON" ||
-    el.getAttribute("role") === "button" ||
-    el.getAttribute("role") === "switch";
+  const showType = isTextNode || isInteractiveControl(el);
 
   const letterSpacingText = showType
     ? (letterSpacingAuth ??
@@ -1089,7 +1174,7 @@ function pickTarget(
 ): HTMLElement | null {
   const root = previewRoot(stage);
   let best: HTMLElement | null = null;
-  let bestArea = Number.POSITIVE_INFINITY;
+  let bestScore = Number.POSITIVE_INFINITY;
 
   const nodes = root.querySelectorAll<HTMLElement>("*");
   for (const node of nodes) {
@@ -1104,12 +1189,18 @@ function pickTarget(
       continue;
     }
     const area = rect.width * rect.height;
-    if (area <= 0 || area >= bestArea) continue;
+    if (area <= 0) continue;
+    // Prefer interactive controls over equal-sized structural wrappers
+    // (Pagination wraps each segment in an MUI <li>).
+    let score = area;
+    if (isStructuralWrapper(node)) score += 0.25;
+    else if (isInteractiveControl(node)) score -= 0.25;
+    if (score >= bestScore) continue;
     best = node;
-    bestArea = area;
+    bestScore = score;
   }
 
-  return best;
+  return best ? promoteInspectTarget(best, stage) : null;
 }
 
 type RulerMark = {
@@ -1158,6 +1249,7 @@ function popoverLines(measure: Measure): Array<[string, string]> {
     if (measure.fontSizeText) {
       lines.push(["font-size", measure.fontSizeText]);
     }
+    if (measure.colorText) lines.push(["color", measure.colorText]);
     return lines;
   }
 
@@ -1167,17 +1259,26 @@ function popoverLines(measure: Measure): Array<[string, string]> {
   }
 
   if (measure.kind === "container") {
-    lines.push([
-      "layout",
-      displayLabel(measure.display, measure.flexDirection),
-    ]);
-    if (hasPadding) lines.push(["padding", measure.paddingText]);
-    if (measure.gapText) lines.push(["gap", measure.gapText]);
-    if (hasMargin) lines.push(["margin", measure.marginText]);
-    if (measure.radiusText) lines.push(["radius", measure.radiusText]);
+    const chrome: Array<[string, string]> = [];
+    if (hasPadding) chrome.push(["padding", measure.paddingText]);
+    if (measure.gapText) chrome.push(["gap", measure.gapText]);
+    if (hasMargin) chrome.push(["margin", measure.marginText]);
+    if (measure.radiusText) chrome.push(["radius", measure.radiusText]);
     if (measure.backgroundText) {
-      lines.push(["background", measure.backgroundText]);
+      chrome.push(["background", measure.backgroundText]);
     }
+    if (measure.backgroundText && measure.colorText) {
+      chrome.push(["color", measure.colorText]);
+    }
+    // Bare "flex row" on a leaf cell isn't useful — only surface layout when
+    // it explains multi-child spacing, or when there's no other chrome.
+    if (measure.gapText != null || chrome.length === 0) {
+      lines.push([
+        "layout",
+        displayLabel(measure.display, measure.flexDirection),
+      ]);
+    }
+    lines.push(...chrome);
     return lines;
   }
 
@@ -1187,7 +1288,7 @@ function popoverLines(measure: Measure): Array<[string, string]> {
   if (measure.radiusText) lines.push(["radius", measure.radiusText]);
   if (measure.backgroundText) lines.push(["background", measure.backgroundText]);
 
-  if (measure.kind === "control") {
+  if (measure.kind === "control" || measure.kind === "generic") {
     if (measure.colorText) lines.push(["color", measure.colorText]);
     if (measure.fontSizeText) {
       lines.push(["font-size", measure.fontSizeText]);
