@@ -10,6 +10,11 @@
   transition: var(--transition-colors);
 }
 
+/* Area shell grows with the resized textarea. */
+.shell[data-cads-text-input="area"] {
+  height: auto;
+}
+
 .control {
   box-sizing: border-box;
   flex: 1 1 0;
@@ -30,6 +35,12 @@
     color: var(--text-neutral-placeholder);
     opacity: 1;
   }
+}
+
+.shell[data-cads-text-input="area"] .control {
+  height: auto;
+  /* Keep radius when the textarea paints to the shell edge. */
+  border-radius: inherit;
 }
 
 .shell[data-disabled="true"] .control::placeholder {

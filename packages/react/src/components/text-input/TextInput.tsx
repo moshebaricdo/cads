@@ -90,24 +90,37 @@ function TextInputControl({
   const describedBy = field?.describedBy;
   const shellCls = [styles.shell, className].filter(Boolean).join(" ");
 
+  // Multiline: padding lives on the textarea so the native resize handle sits
+  // on the chrome corner; shell uses min-height so vertical resize grows the field.
   const shellStyle: CSSProperties = {
-    alignItems: multiline ? "flex-start" : "center",
+    alignItems: multiline ? "stretch" : "center",
     gap: showStartIcon ? dims.iconGap : undefined,
-    height: multiline ? dims.areaHeight : dims.height,
-    paddingInline: dims.paddingInline,
-    paddingBlock: dims.paddingBlock,
+    height: multiline ? undefined : dims.height,
+    minHeight: multiline ? dims.areaHeight : undefined,
+    paddingInline: multiline ? 0 : dims.paddingInline,
+    paddingBlock: multiline ? 0 : dims.paddingBlock,
     borderColor,
     backgroundColor: background,
     color: textColor,
     ...style,
   };
 
+  const canResize = multiline && !disabled && !readOnly;
   const controlStyle: CSSProperties = {
     color: textColor,
     fontSize: dims.fontSize,
     lineHeight: dims.lineHeight,
-    resize: multiline ? "vertical" : undefined,
-    alignSelf: multiline ? "stretch" : undefined,
+    ...(multiline
+      ? {
+          // Subtract 1px border on each side so min-height matches Figma area chrome.
+          minHeight: `calc(${dims.areaHeight} - 2px)`,
+          height: "auto",
+          paddingInline: dims.paddingInline,
+          paddingBlock: dims.paddingBlock,
+          resize: canResize ? "vertical" : "none",
+          alignSelf: "stretch",
+        }
+      : null),
   };
 
   const commonControlProps = {

@@ -1,10 +1,10 @@
-import './textInput.css';const l = "_shell_y46nt_2", t = "_control_y46nt_14", o = {
-  shell: l,
-  control: t
+import './textInput.css';const o = "_shell_1goyx_2", l = "_control_1goyx_19", s = {
+  shell: o,
+  control: l
 };
 export {
-  t as control,
-  o as default,
-  l as shell
+  l as control,
+  s as default,
+  o as shell
 };
 //# sourceMappingURL=textInput.module.scss.js.map
