@@ -107,7 +107,16 @@ function shortFontFamily(family: string): string {
 }
 
 function rgbToHex(color: string): string {
-  if (color.startsWith("#")) return color.toLowerCase();
+  if (color.startsWith("#")) {
+    const hex = color.toLowerCase();
+    // Expand shorthand (#fff → #ffffff) so lookup keys always agree.
+    if (/^#[0-9a-f]{3}$/.test(hex)) {
+      return `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+    }
+    return hex;
+  }
+  if (color === "white") return "#ffffff";
+  if (color === "black") return "#000000";
   const m = color.match(
     /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/,
   );
@@ -200,32 +209,45 @@ function formatBoxText(
   authored: Map<string, string>,
   kind: "padding" | "margin",
   computed: BoxSides,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
 ): string {
+  const validate = (text: string, sides: BoxSides) =>
+    boxTextMatchesComputed(text, sides, el, authoredFor);
+
   const shorthand = authoredOr(authored, [kind]);
-  if (shorthand) return shorthand;
+  if (shorthand && validate(shorthand, computed)) return shorthand;
 
   const block = authoredOr(authored, [`${kind}-block`]);
   const inline = authoredOr(authored, [`${kind}-inline`]);
   if (block != null || inline != null) {
-    if (block != null && inline != null) {
-      if (block === inline) return block;
-      return `${block} ${inline}`;
-    }
-    return block ?? inline ?? formatSidesPx(computed);
+    const candidate =
+      block != null && inline != null
+        ? block === inline
+          ? block
+          : `${block} ${inline}`
+        : (block ?? inline);
+    if (candidate != null && validate(candidate, computed)) return candidate;
   }
 
-  const top =
-    authoredOr(authored, [`${kind}-top`, `${kind}-block-start`]) ??
-    `${px(computed.top)}px`;
-  const right =
-    authoredOr(authored, [`${kind}-right`, `${kind}-inline-end`]) ??
-    `${px(computed.right)}px`;
-  const bottom =
-    authoredOr(authored, [`${kind}-bottom`, `${kind}-block-end`]) ??
-    `${px(computed.bottom)}px`;
-  const left =
-    authoredOr(authored, [`${kind}-left`, `${kind}-inline-start`]) ??
-    `${px(computed.left)}px`;
+  const side = (props: string[], expected: number): string => {
+    const value = authoredOr(authored, props);
+    if (
+      value != null &&
+      valueMatchesComputed(value, expected, el, authoredFor)
+    ) {
+      return value;
+    }
+    return `${px(expected)}px`;
+  };
+
+  const top = side([`${kind}-top`, `${kind}-block-start`], computed.top);
+  const right = side([`${kind}-right`, `${kind}-inline-end`], computed.right);
+  const bottom = side(
+    [`${kind}-bottom`, `${kind}-block-end`],
+    computed.bottom,
+  );
+  const left = side([`${kind}-left`, `${kind}-inline-start`], computed.left);
 
   if (top === right && right === bottom && bottom === left) return top;
   if (top === bottom && left === right) return `${top} ${left}`;
@@ -238,68 +260,322 @@ function extractCssVar(value: string): string | null {
   return m?.[1] ?? null;
 }
 
-/** `var(--spacing-p-xs)` → `--spacing-p-xs` (keeps rem/em/multi-value lists intact). */
-function unwrapCssVars(value: string): string {
-  return value.replace(/var\(\s*(--[\w-]+)\s*(?:,[^)]+)?\)/g, "$1");
-}
-
 type ColorRole = "text" | "background" | "border";
 
-type ColorVarCache = { dark: boolean; byHex: Map<string, string[]> };
-let colorVarCache: ColorVarCache | null = null;
+type DesignVarCache = {
+  dark: boolean;
+  /** Every custom property defined on `:root` / `.dark` (the design variables). */
+  names: Set<string>;
+  /** Resolved hex → all matching color `--tokens` from the active theme. */
+  byHex: Map<string, string[]>;
+  /** Color `--token` → resolved hex (for validating chased candidates). */
+  hexByName: Map<string, string>;
+  /** Normalized dimension (px-resolved) → all matching `--tokens`. */
+  byDimension: Map<string, string[]>;
+  /** Dimension `--token` → normalized value (for validating candidates). */
+  dimensionByName: Map<string, string>;
+};
+let designVarCache: DesignVarCache | null = null;
 
-function collectColorVarNames(rules: CSSRuleList, into: Set<string>) {
+/** Theme-scope selectors — `:root`, `.dark`, and prod's `[data-theme=…]`. */
+function isThemeScopeSelector(selectorText: string): boolean {
+  return selectorText.split(",").some((part) => {
+    const sel = part.trim();
+    return (
+      sel === ":root" ||
+      sel === ".dark" ||
+      sel === ":root.dark" ||
+      sel.startsWith("[data-theme")
+    );
+  });
+}
+
+function collectRootVarNames(rules: CSSRuleList, into: Set<string>) {
   for (const rule of rules) {
     if (rule instanceof CSSMediaRule || rule instanceof CSSSupportsRule) {
-      collectColorVarNames(rule.cssRules, into);
+      collectRootVarNames(rule.cssRules, into);
       continue;
     }
     if (!(rule instanceof CSSStyleRule)) continue;
-    const sel = rule.selectorText;
-    if (sel !== ":root" && sel !== ".dark" && sel !== ":root.dark") continue;
+    if (!isThemeScopeSelector(rule.selectorText)) continue;
     for (let i = 0; i < rule.style.length; i++) {
       const prop = rule.style.item(i);
-      if (
-        prop &&
-        (prop.startsWith("--background-") ||
-          prop.startsWith("--text-") ||
-          prop.startsWith("--border-"))
-      ) {
-        into.add(prop);
-      }
+      if (prop?.startsWith("--")) into.add(prop);
     }
   }
 }
 
-/** Map resolved hex → all matching `--tokens` from the active theme. */
-function getColorVarsByHex(): Map<string, string[]> {
+/**
+ * Normalize a single dimension so `0.375rem` and `6px` share the same lookup
+ * key. em/unitless values keep their literal form (tracking, weights).
+ */
+function normalizeDimension(value: string, rootFontSize: number): string | null {
+  const m = value.trim().match(/^(-?[\d.]+)(px|rem|em)?$/);
+  if (!m) return null;
+  const n = Number.parseFloat(m[1]!);
+  if (!Number.isFinite(n)) return null;
+  const unit = m[2];
+  if (unit === "px") return `${Math.round(n * 100) / 100}px`;
+  if (unit === "rem") return `${Math.round(n * rootFontSize * 100) / 100}px`;
+  if (unit === "em") return `${n}em`;
+  return `${n}`;
+}
+
+/** Theme-scoped reverse lookups: resolved value → design variable names. */
+function getDesignVarCache(): DesignVarCache {
   const dark = document.documentElement.classList.contains("dark");
-  if (colorVarCache?.dark === dark) return colorVarCache.byHex;
+  if (designVarCache?.dark === dark) return designVarCache;
 
   const names = new Set<string>();
   for (const sheet of document.styleSheets) {
     try {
-      collectColorVarNames(sheet.cssRules, names);
+      collectRootVarNames(sheet.cssRules, names);
     } catch {
       /* cross-origin */
     }
   }
 
   const root = getComputedStyle(document.documentElement);
+  const rootFontSize = Number.parseFloat(root.fontSize) || 16;
   const byHex = new Map<string, string[]>();
+  const hexByName = new Map<string, string>();
+  const byDimension = new Map<string, string[]>();
+  const dimensionByName = new Map<string, string>();
   for (const name of names) {
     const raw = root.getPropertyValue(name).trim();
-    if (!raw || isTransparentColor(raw)) continue;
-    const hex = rgbToHex(raw.startsWith("rgb") ? raw : raw);
-    if (!hex.startsWith("#")) continue;
-    const key = hex.toLowerCase();
-    const list = byHex.get(key);
-    if (list) list.push(name);
-    else byHex.set(key, [name]);
+    if (!raw) continue;
+
+    if (
+      name.startsWith("--background-") ||
+      name.startsWith("--text-") ||
+      name.startsWith("--border-")
+    ) {
+      if (isTransparentColor(raw)) continue;
+      const hex = rgbToHex(raw);
+      if (!hex.startsWith("#")) continue;
+      const key = hex.toLowerCase();
+      hexByName.set(name, key);
+      const list = byHex.get(key);
+      if (list) list.push(name);
+      else byHex.set(key, [name]);
+      continue;
+    }
+
+    const dim = normalizeDimension(raw, rootFontSize);
+    if (dim != null) {
+      dimensionByName.set(name, dim);
+      const list = byDimension.get(dim);
+      if (list) list.push(name);
+      else byDimension.set(dim, [name]);
+    }
   }
 
-  colorVarCache = { dark, byHex };
-  return byHex;
+  designVarCache = {
+    dark,
+    names,
+    byHex,
+    hexByName,
+    byDimension,
+    dimensionByName,
+  };
+  return designVarCache;
+}
+
+type AuthoredFor = (node: HTMLElement) => Map<string, string>;
+
+/** Authored value of a custom property, checking the element then ancestors. */
+function lookupCustomProp(
+  el: HTMLElement,
+  varName: string,
+  authoredFor: AuthoredFor,
+): string | null {
+  let node: HTMLElement | null = el;
+  while (node) {
+    const inline = node.style.getPropertyValue(varName).trim();
+    if (inline) return inline;
+    const authored = authoredFor(node).get(varName)?.trim();
+    if (authored) return authored;
+    node = node.parentElement;
+  }
+  return null;
+}
+
+type ChaseResult = { token: string } | { value: string } | null;
+
+/**
+ * Follow component-local var chains (e.g. `--btn-bg: var(--background-brand-primary)`
+ * set inline) until we land on a design variable or a concrete value.
+ */
+function chaseVar(
+  el: HTMLElement,
+  startName: string,
+  authoredFor: AuthoredFor,
+): ChaseResult {
+  const cache = getDesignVarCache();
+  let name = startName;
+  for (let depth = 0; depth < 5; depth++) {
+    if (cache.names.has(name)) return { token: name };
+    const value = lookupCustomProp(el, name, authoredFor);
+    if (!value) return null;
+    const next = extractCssVar(value);
+    if (!next) return { value: tidyAuthored(value) };
+    name = next;
+  }
+  return null;
+}
+
+/**
+ * Resolve one authored part (`var()` or concrete) to a px number for
+ * validation against computed values. null = can't resolve.
+ */
+function resolvePartPx(
+  part: string,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
+): number | null {
+  const cache = getDesignVarCache();
+  let concrete = part;
+
+  const varName = extractCssVar(part);
+  if (varName) {
+    if (cache.names.has(varName)) {
+      const key = cache.dimensionByName.get(varName);
+      if (!key) return null;
+      concrete = key;
+    } else {
+      const chased = chaseVar(el, varName, authoredFor);
+      if (chased && "token" in chased) {
+        const key = cache.dimensionByName.get(chased.token);
+        if (!key) return null;
+        concrete = key;
+      } else if (chased && "value" in chased) {
+        concrete = chased.value;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  const rootFontSize =
+    Number.parseFloat(getComputedStyle(document.documentElement).fontSize) ||
+    16;
+  const key = normalizeDimension(concrete, rootFontSize);
+  if (key == null || key.endsWith("em")) return null;
+  const n = Number.parseFloat(key);
+  return Number.isFinite(n) ? n : null;
+}
+
+function splitValueParts(text: string): string[] {
+  return text.match(/var\([^)]*\)|\S+/g) ?? [];
+}
+
+function pxClose(a: number, b: number): boolean {
+  return Math.abs(a - b) < 0.75;
+}
+
+/**
+ * Does an authored (possibly shorthand) box value resolve to the computed
+ * sides? The authored map is cascade-order only, so a rule that loses on
+ * specificity (e.g. MUI Emotion `padding: 6px 8px`) can shadow the CADS
+ * module value that actually renders. null parts = can't tell → accept.
+ */
+function boxTextMatchesComputed(
+  text: string,
+  computed: BoxSides,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
+): boolean {
+  const parts = splitValueParts(text).map((p) =>
+    resolvePartPx(p, el, authoredFor),
+  );
+  if (parts.length < 1 || parts.length > 4 || parts.some((p) => p == null)) {
+    return true;
+  }
+  const [a, b = a, c = a, d = b] = parts as number[];
+  return (
+    pxClose(a, computed.top) &&
+    pxClose(b, computed.right) &&
+    pxClose(c, computed.bottom) &&
+    pxClose(d, computed.left)
+  );
+}
+
+/** Single-value flavor for gap / radius / font-size / line-height. */
+function valueMatchesComputed(
+  text: string,
+  computedPx: number,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
+): boolean {
+  const first = splitValueParts(text)[0];
+  if (!first) return true;
+  const resolved = resolvePartPx(first, el, authoredFor);
+  if (resolved == null) return true;
+  return pxClose(resolved, computedPx);
+}
+
+function pickDimensionToken(
+  tokens: string[],
+  prefixes: string[],
+): string | null {
+  for (const prefix of prefixes) {
+    const matches = tokens.filter((t) => t.startsWith(prefix)).sort();
+    if (matches[0]) return matches[0];
+  }
+  return null;
+}
+
+/**
+ * Rewrite one value part (a `var()` or concrete dimension) as its design
+ * variable when one represents it — local var chains are chased first, then
+ * the resolved value is reverse-mapped within the role's variable families.
+ */
+function formatDimensionPart(
+  part: string,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
+  prefixes: string[],
+): string {
+  const cache = getDesignVarCache();
+  let concrete = part;
+
+  const varName = extractCssVar(part);
+  if (varName) {
+    if (cache.names.has(varName)) return varName;
+    const chased = chaseVar(el, varName, authoredFor);
+    if (chased && "token" in chased) return chased.token;
+    if (chased && "value" in chased) concrete = chased.value;
+    else return varName;
+  }
+
+  const rootFontSize =
+    Number.parseFloat(getComputedStyle(document.documentElement).fontSize) ||
+    16;
+  const key = normalizeDimension(concrete, rootFontSize);
+  // Don't claim a variable for a plain zero — defaults aren't authored choices.
+  if (key != null && key !== "0" && key !== "0px" && key !== "0em") {
+    const tokens = cache.byDimension.get(key);
+    const picked = tokens ? pickDimensionToken(tokens, prefixes) : null;
+    if (picked) return picked;
+  }
+  return concrete;
+}
+
+/**
+ * Rewrite every part of a (possibly multi-value) dimension string to design
+ * variables where they apply: `6px 12px` → `--shape-sm 12px`.
+ */
+function formatDimensionText(
+  text: string,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
+  prefixes: string[],
+): string {
+  const parts = text.match(/var\([^)]*\)|\S+/g);
+  if (!parts) return text;
+  return parts
+    .map((part) => formatDimensionPart(part, el, authoredFor, prefixes))
+    .join(" ");
 }
 
 function rolePrefix(role: ColorRole): string {
@@ -338,29 +614,57 @@ function formatColorText(
   authored: string | null,
   computed: string,
   role: ColorRole,
+  el: HTMLElement,
+  authoredFor: AuthoredFor,
 ): string | null {
+  const cache = getDesignVarCache();
+  const computedHex = isTransparentColor(computed) ? null : rgbToHex(computed);
+
+  /** Token candidates must agree with the rendered color — the authored map
+   *  is cascade-order only, so a losing rule (e.g. MUI Emotion) can shadow
+   *  the CADS module value that actually wins on specificity. */
+  const validated = (token: string): string | null => {
+    const tokenHex = cache.hexByName.get(token);
+    if (!tokenHex) return token;
+    return computedHex != null && tokenHex === computedHex ? token : null;
+  };
+
   if (authored) {
     const tidy = tidyAuthored(authored);
     if (tidy === "none" || tidy === "initial" || tidy === "transparent") {
       // fall through to computed / token lookup
     } else {
       const fromAuthored = extractCssVar(tidy);
-      if (fromAuthored) return fromAuthored;
-      if (/(?:rem|em|%)/.test(tidy)) return tidy;
+      if (fromAuthored) {
+        // Design variable used directly — show it. Component-local vars
+        // (--btn-bg, …) get chased to the design variable they carry.
+        if (cache.names.has(fromAuthored)) {
+          const ok = validated(fromAuthored);
+          if (ok) return ok;
+        } else {
+          const chased = chaseVar(el, fromAuthored, authoredFor);
+          if (chased && "token" in chased) {
+            const ok = validated(chased.token);
+            if (ok) return ok;
+          }
+        }
+        // Mismatch or unresolvable — fall through to hex → token lookup.
+      } else if (/(?:rem|em|%)/.test(tidy)) {
+        return tidy;
+      }
     }
   }
 
-  if (isTransparentColor(computed)) return null;
+  if (computedHex == null) return null;
 
-  const hex = rgbToHex(computed);
-  if (hex.startsWith("#")) {
-    const tokens = getColorVarsByHex().get(hex.toLowerCase());
+  if (computedHex.startsWith("#")) {
+    const tokens = cache.byHex.get(computedHex.toLowerCase());
     if (tokens?.length) {
       const picked = pickTokenForRole(tokens, role);
       if (picked) return picked;
     }
   }
-  return hex;
+  return computedHex;
 }
 
 /** Walk up for authored `color` so inherited icon/label color keeps its token. */
@@ -522,12 +826,22 @@ function readMeasure(el: HTMLElement): Measure {
   const margin = readSides(styles, "margin");
   const gap = parsePx(styles.gap || styles.columnGap || styles.rowGap);
 
-  const gapAuthored = authoredOr(authored, ["gap", "row-gap", "column-gap"]);
-  const radiusAuthored = authoredOr(authored, [
-    "border-radius",
-    "border-top-left-radius",
-  ]);
+  // Authored candidates are cascade-order only — a rule that loses on
+  // specificity can shadow the winner, so verify each against computed.
+  const checked = (value: string | null, computedPx: number): string | null =>
+    value != null && valueMatchesComputed(value, computedPx, el, authoredFor)
+      ? value
+      : null;
+
+  const gapAuthored = checked(
+    authoredOr(authored, ["gap", "row-gap", "column-gap"]),
+    gap,
+  );
   const radiusComputed = styles.borderRadius;
+  const radiusAuthored = checked(
+    authoredOr(authored, ["border-radius", "border-top-left-radius"]),
+    parsePx(radiusComputed),
+  );
   const radiusRaw =
     radiusAuthored ??
     (radiusComputed && radiusComputed !== "0px" ? radiusComputed : null);
@@ -536,19 +850,32 @@ function readMeasure(el: HTMLElement): Measure {
     authoredOr(authored, ["background-color", "background"]),
     styles.backgroundColor,
     "background",
+    el,
+    authoredFor,
   );
   const colorText = formatColorText(
     authoredColorUpTree(el, authoredFor),
     styles.color,
     "text",
+    el,
+    authoredFor,
   );
 
-  const fontSizeAuth = authoredOr(authored, ["font-size"]) ?? styles.fontSize;
+  const fontSizeAuth =
+    checked(authoredOr(authored, ["font-size"]), parsePx(styles.fontSize)) ??
+    styles.fontSize;
   const lineHeightAuth =
-    authoredOr(authored, ["line-height"]) ??
-    (styles.lineHeight === "normal" ? "normal" : styles.lineHeight);
+    (styles.lineHeight === "normal"
+      ? null
+      : checked(
+          authoredOr(authored, ["line-height"]),
+          parsePx(styles.lineHeight),
+        )) ?? (styles.lineHeight === "normal" ? "normal" : styles.lineHeight);
   const fontWeightAuth =
-    authoredOr(authored, ["font-weight"]) ?? styles.fontWeight;
+    checked(
+      authoredOr(authored, ["font-weight"]),
+      parsePx(styles.fontWeight),
+    ) ?? styles.fontWeight;
   const fontFamilyAuth =
     authoredOr(authored, ["font-family"]) ?? styles.fontFamily;
   const letterSpacingAuth = authoredOr(authored, ["letter-spacing"]);
@@ -571,6 +898,12 @@ function readMeasure(el: HTMLElement): Measure {
       (styles.letterSpacing === "normal" ? "0" : styles.letterSpacing))
     : null;
 
+  const spacingVars = ["--spacing-"];
+  const asSpacing = (text: string) =>
+    formatDimensionText(text, el, authoredFor, spacingVars);
+
+  const fontFamilyVar = extractCssVar(fontFamilyAuth);
+
   return {
     tag: labelFor(el),
     kind: inspectKind(el, styles),
@@ -584,24 +917,43 @@ function readMeasure(el: HTMLElement): Measure {
     margin,
     gap,
     gapBands: readGapBands(el, styles),
-    paddingText: unwrapCssVars(formatBoxText(authored, "padding", padding)),
-    marginText: unwrapCssVars(formatBoxText(authored, "margin", margin)),
+    paddingText: asSpacing(
+      formatBoxText(authored, "padding", padding, el, authoredFor),
+    ),
+    marginText: asSpacing(
+      formatBoxText(authored, "margin", margin, el, authoredFor),
+    ),
     gapText:
       gap > 0 || gapAuthored
-        ? unwrapCssVars(gapAuthored ?? `${px(gap)}px`)
+        ? asSpacing(gapAuthored ?? `${px(gap)}px`)
         : null,
     radiusText:
       radiusRaw && radiusRaw !== "0px" && radiusRaw !== "0"
-        ? unwrapCssVars(radiusRaw)
+        ? formatDimensionText(radiusRaw, el, authoredFor, ["--shape-"])
         : null,
     backgroundText,
     colorText,
-    fontSizeText: showType ? unwrapCssVars(fontSizeAuth) : null,
-    lineHeightText: showType ? unwrapCssVars(lineHeightAuth) : null,
-    fontFamilyText: showType ? shortFontFamily(fontFamilyAuth) : null,
-    fontWeightText: showType ? unwrapCssVars(fontWeightAuth) : null,
+    fontSizeText: showType
+      ? formatDimensionText(fontSizeAuth, el, authoredFor, [
+          "--font-size-",
+          "--text-",
+        ])
+      : null,
+    lineHeightText: showType
+      ? formatDimensionText(lineHeightAuth, el, authoredFor, ["--leading-"])
+      : null,
+    fontFamilyText: showType
+      ? (fontFamilyVar ?? shortFontFamily(fontFamilyAuth))
+      : null,
+    fontWeightText: showType
+      ? formatDimensionText(fontWeightAuth, el, authoredFor, [
+          "--font-weight-",
+        ])
+      : null,
     letterSpacingText: showType
-      ? unwrapCssVars(letterSpacingText ?? "0")
+      ? formatDimensionText(letterSpacingText ?? "0", el, authoredFor, [
+          "--tracking-",
+        ])
       : null,
   };
 }

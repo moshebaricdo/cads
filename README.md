@@ -11,7 +11,7 @@ Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/Code
 ### Getting started
 
 - **Overview** — What CADS is and where to get started.
-- **For Agents** — Info and download option for the portable skill that packages the CADS Docs runtime for fully standalone prototyping in any major AI tool.
+- **For Agents** _(experimental)_ — Info and download option for the portable skill that packages the CADS Docs runtime for fully standalone prototyping in any major AI tool.
 
 ### Foundations
 
@@ -70,12 +70,6 @@ Docs: [`/variables/core`](https://moshebaricdo.github.io/cads/variables/core)
 Self-contained Agent Skills ZIP with the real CADS runtime — prototype without a monorepo checkout.
 
 Docs: [`/ai`](https://moshebaricdo.github.io/cads/ai)
-
-### Local MCP
-
-Stdio MCP proof of concept: catalog search, constrained prototype schema, and validation.
-
-Docs: [`/prototype`](https://moshebaricdo.github.io/cads/prototype)
 
 ## Working in this repo
 

@@ -103,7 +103,7 @@ Props:
 - `value`: string
 - `defaultValue`: string
 - `onChange`: (value: string) => void
-- `options`: SegmentedButtonOption[] [required] — Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value.
+- `options`: SegmentedButtonOption[] [required] — Maps Block label / leftIcon / rightIcon / show*Icon / isActive via value. Optional per-option `tooltip` (code-only) wraps that segment in Tooltip — useful for iconOnly.
 - `iconOnly`: boolean — Square icon-only segments
 - `disabled`: boolean
 - `aria-label`: string
@@ -118,6 +118,7 @@ Usage rules:
 - Keyboard: radiogroup manual activation — one Tab stop; ←/→/↑/↓ + Home/End move focus only; Space/Enter commits selection (click still selects immediately).
 - Figma Block-only: position (first|middle|last), state, isActive — derived in code from options index / value / CSS / disabled.
 - Prefer the group API; Segmented Button Block (8000:4554) is an internal building block.
+- Optional option.tooltip is code-only (not in Figma) — mirrors MUI's Tooltip-around-ToggleButton composition without fighting cloneElement.
 
 Example:
 ```tsx
@@ -806,6 +807,7 @@ Usage rules:
 - Well suited to guided walkthroughs (stepper + Back/Next).
 - Pass a trigger child for anchored mode, or use surfaceOnly for static previews.
 - caretPlacement sets both caret chrome and Popper anchor (e.g. bottomLeft → above trigger, start-aligned).
+- content="custom" is an unpadded blank canvas — own padding and density in customContent.
 
 Example:
 ```tsx
@@ -887,9 +889,9 @@ Import: `import { Modal } from "@codeai/cads-react"`
 Props:
 - `type`: "default" | "verticalImage" | "horizontalImage" (default "default")
 - `title`: ReactNode
-- `body`: ReactNode
+- `body`: ReactNode — Default body copy (pre-seed). Used when children is omitted — full body on default, text slot on image layouts.
 - `image`: ReactNode
-- `children`: ReactNode
+- `children`: ReactNode — Custom content for the body text slot (Figma customContent). Replaces body for every type; image layouts keep the fixed image slot.
 - `hasSecondaryAction`: boolean (default true)
 - `primaryActionLabel`: ReactNode (default "Button")
 - `secondaryActionLabel`: ReactNode (default "Button")
@@ -900,13 +902,17 @@ Props:
 
 Usage rules:
 - Unlike Dialog, Modal holds richer layouts with a header bar and footer actions.
+- Long content scrolls inside the body; header and footer stay fixed.
+- Pass children for custom body content (forms, media controls); body is the text pre-seed when children is omitted.
 - Spelling isDismissable matches Figma.
 
 Example:
 ```tsx
 <>
   <Button onClick={() => setOpen(true)}>Open modal</Button>
-  <Modal open={open} onClose={() => setOpen(false)} type="default" title="Title" body="Modal body" />
+  <Modal open={open} onClose={() => setOpen(false)} type="default" title="Title">
+    <form>{/* custom content */}</form>
+  </Modal>
 </>
 ```
 
