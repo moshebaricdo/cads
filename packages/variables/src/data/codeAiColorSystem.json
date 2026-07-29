@@ -294,7 +294,7 @@
         {
           "id": "sentiment::error::5",
           "step": "5",
-          "hex": "#FBD5D5"
+          "hex": "#FFDADA"
         },
         {
           "id": "sentiment::error::10",
@@ -356,7 +356,7 @@
         {
           "id": "sentiment::warning::5",
           "step": "5",
-          "hex": "#FFF3D1"
+          "hex": "#FFF5DA"
         },
         {
           "id": "sentiment::warning::10",
@@ -418,12 +418,12 @@
         {
           "id": "sentiment::success::5",
           "step": "5",
-          "hex": "#CCF1D0"
+          "hex": "#D8FFDC"
         },
         {
           "id": "sentiment::success::10",
           "step": "10",
-          "hex": "#B7E6BD"
+          "hex": "#C4F1CA"
         },
         {
           "id": "sentiment::success::20",
@@ -1172,7 +1172,7 @@
         "dark": "sentiment::error::95"
       },
       "fallbackHex": {
-        "light": "#FBD5D5",
+        "light": "#FFDADA",
         "dark": "#620202"
       }
     },
@@ -1228,7 +1228,7 @@
         "dark": "sentiment::warning::95"
       },
       "fallbackHex": {
-        "light": "#FFF3D1",
+        "light": "#FFF5DA",
         "dark": "#654500"
       }
     },
@@ -1288,7 +1288,7 @@
         "dark": "sentiment::success::95"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#003F25"
       }
     },
@@ -1479,11 +1479,11 @@
       "familyKey": "teal",
       "role": "light",
       "ref": {
-        "light": "brand::teal::5",
+        "light": "brand::teal::10",
         "dark": "brand::teal::90"
       },
       "fallbackHex": {
-        "light": "#E4E2F8",
+        "light": "#CAC6F5",
         "dark": "#1D1590"
       }
     },
@@ -1612,7 +1612,7 @@
         "dark": "sentiment::success::90"
       },
       "fallbackHex": {
-        "light": "#B7E6BD",
+        "light": "#C4F1CA",
         "dark": "#17541E"
       }
     },
@@ -1854,7 +1854,7 @@
       },
       "fallbackHex": {
         "light": "#B30F0F",
-        "dark": "#FBD5D5"
+        "dark": "#FFDADA"
       }
     },
     {
@@ -1896,7 +1896,7 @@
       },
       "fallbackHex": {
         "light": "#885D02",
-        "dark": "#FFF3D1"
+        "dark": "#FFF5DA"
       }
     },
     {
@@ -1938,7 +1938,7 @@
       },
       "fallbackHex": {
         "light": "#17541E",
-        "dark": "#CCF1D0"
+        "dark": "#D8FFDC"
       }
     },
     {
@@ -2249,7 +2249,7 @@
       },
       "fallbackHex": {
         "light": "#2B1E9F",
-        "dark": "#CCF1D0"
+        "dark": "#D8FFDC"
       },
       "comments": {
         "light": "Selected state is mode-inverted and cross-family by design: brand fill + seafoam text in light, seafoam fill + navy text in dark.",
@@ -2336,7 +2336,7 @@
         "dark": "brand::teal::95"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#1F1976"
       },
       "comments": {
@@ -2406,11 +2406,11 @@
       "familyKey": "teal",
       "role": "mid",
       "ref": {
-        "light": "brand::teal::20",
+        "light": "brand::teal::30",
         "dark": "brand::teal::70"
       },
       "fallbackHex": {
-        "light": "#ACA8EA",
+        "light": "#928CEF",
         "dark": "#3228B7"
       }
     },
@@ -2509,7 +2509,7 @@
       },
       "fallbackHex": {
         "light": "#2B1E9F",
-        "dark": "#CCF1D0"
+        "dark": "#D8FFDC"
       },
       "comments": {
         "light": "Border state selected strong and primary intentionally match the background state color."
@@ -2570,7 +2570,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FBD5D5",
+        "light": "#FFDADA",
         "dark": "#4B5258"
       }
     },
@@ -2584,7 +2584,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FFF3D1",
+        "light": "#FFF5DA",
         "dark": "#4B5258"
       }
     },
@@ -2598,7 +2598,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#4B5258"
       }
     },
@@ -2699,7 +2699,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FBD5D5",
+        "light": "#FFDADA",
         "dark": "#4B5258"
       }
     },
@@ -2713,7 +2713,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FFF3D1",
+        "light": "#FFF5DA",
         "dark": "#4B5258"
       }
     },
@@ -2727,7 +2727,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#4B5258"
       }
     },
@@ -2811,7 +2811,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FBD5D5",
+        "light": "#FFDADA",
         "dark": "#4B5258"
       }
     },
@@ -2825,7 +2825,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#FFF3D1",
+        "light": "#FFF5DA",
         "dark": "#4B5258"
       }
     },
@@ -2839,7 +2839,7 @@
         "dark": "neutral::gray::80"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#4B5258"
       }
     },
@@ -2895,7 +2895,7 @@
         "dark": "brand::teal::80"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#2B1E9F"
       }
     },
@@ -2909,7 +2909,7 @@
         "dark": "brand::teal::50"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#4C42CF"
       }
     },
@@ -2937,7 +2937,7 @@
         "dark": "brand::teal::80"
       },
       "fallbackHex": {
-        "light": "#CCF1D0",
+        "light": "#D8FFDC",
         "dark": "#2B1E9F"
       }
     },
@@ -2952,7 +2952,7 @@
       },
       "fallbackHex": {
         "light": "#1F1976",
-        "dark": "#CCF1D0"
+        "dark": "#D8FFDC"
       }
     }
   ],

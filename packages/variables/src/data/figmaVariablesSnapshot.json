@@ -1,9 +1,9 @@
 {
   "$extensions": {
     "figma-console-mcp": {
-      "exportedAt": "2026-07-23T16:28:31.537Z",
-      "mcpVersion": "1.36.0",
-      "note": "Synced live via use_figma 2026-07-23; gray/10+20 hex updates; prior WIP: border fixed, brand secondary, accent secondary renames."
+      "exportedAt": "2026-07-29T23:14:59.925Z",
+      "mcpVersion": "use_figma",
+      "note": "Synced live via use_figma 2026-07-29; sentiment error/warning/success-5 + success-10 hex; border/brand light+mid Light remaps (purple/10, purple/30)."
     }
   },
   "primitive-colors": {
@@ -1280,10 +1280,10 @@
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:6759:3027",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.905Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "CodeAI": {
-                  "literal": "#FBD5D5"
+                  "literal": "#FFDADA"
                 }
               },
               "primaryMode": "CodeAI",
@@ -1291,7 +1291,7 @@
             }
           },
           "$type": "color",
-          "$value": "#FBD5D5"
+          "$value": "#FFDADA"
         },
         "10": {
           "$extensions": {
@@ -1680,10 +1680,10 @@
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:6759:3027",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.904Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "CodeAI": {
-                  "literal": "#CCF1D0"
+                  "literal": "#D8FFDC"
                 }
               },
               "primaryMode": "CodeAI",
@@ -1691,17 +1691,17 @@
             }
           },
           "$type": "color",
-          "$value": "#CCF1D0"
+          "$value": "#D8FFDC"
         },
         "10": {
           "$extensions": {
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:6759:3027",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.904Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "CodeAI": {
-                  "literal": "#B7E6BD"
+                  "literal": "#C4F1CA"
                 }
               },
               "primaryMode": "CodeAI",
@@ -1709,7 +1709,7 @@
             }
           },
           "$type": "color",
-          "$value": "#B7E6BD"
+          "$value": "#C4F1CA"
         },
         "20": {
           "$extensions": {
@@ -1880,10 +1880,10 @@
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:6759:3027",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.904Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "CodeAI": {
-                  "literal": "#FFF3D1"
+                  "literal": "#FFF5DA"
                 }
               },
               "primaryMode": "CodeAI",
@@ -1891,7 +1891,7 @@
             }
           },
           "$type": "color",
-          "$value": "#FFF3D1"
+          "$value": "#FFF5DA"
         },
         "10": {
           "$extensions": {
@@ -4152,13 +4152,13 @@
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:15721:11313",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.906Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "Dark": {
                   "reference": "{primitive-colors.brand.purple.90}"
                 },
                 "Light": {
-                  "reference": "{primitive-colors.brand.purple.5}"
+                  "reference": "{primitive-colors.brand.purple.10}"
                 }
               },
               "modes": {
@@ -4173,20 +4173,20 @@
             }
           },
           "$type": "color",
-          "$value": "{primitive-colors.brand.purple.5}"
+          "$value": "{primitive-colors.brand.purple.10}"
         },
         "mid": {
           "$extensions": {
             "figma-console-mcp": {
               "collectionId": "VariableCollectionId:15721:11313",
               "figmaResolvedType": "COLOR",
-              "lastSyncedAt": "2026-07-21T16:17:32.906Z",
+              "lastSyncedAt": "2026-07-29T23:14:59.925Z",
               "lastSyncedValue": {
                 "Dark": {
                   "reference": "{primitive-colors.brand.purple.70}"
                 },
                 "Light": {
-                  "reference": "{primitive-colors.brand.purple.20}"
+                  "reference": "{primitive-colors.brand.purple.30}"
                 }
               },
               "modes": {
@@ -4201,7 +4201,7 @@
             }
           },
           "$type": "color",
-          "$value": "{primitive-colors.brand.purple.20}"
+          "$value": "{primitive-colors.brand.purple.30}"
         },
         "primary": {
           "$extensions": {
