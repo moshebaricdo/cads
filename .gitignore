@@ -12,3 +12,5 @@ apps/docs/out
 apps/docs/public/downloads/
 *.tsbuildinfo
 .pnpm-store
+# FA Pro–derived merged fonts (internal license — never commit)
+tooling/fa-font-merge/out/
