@@ -4,6 +4,8 @@ Last updated: 2026-07-28
 
 ## Done (scaffold complete)
 
+- [x] **FontAwesome Glyphs Figma plugin (2026-08-03)** — `tooling/figma-icon-plugin`: inserts FA *shortcodes as text* (never vectors). Community name **FontAwesome Glyphs**; public build omits inlined FA Pro fonts (`pnpm plugin:icons:build`); `--with-fonts` / `build:dev` is internal-only. First-run setup adds local OTFs (no auto-detect catalog); All + version/style pickers; kits labeled Custom Kit (id in settings). Assets: `icon.png`, `publish-assets/cover.*`. See `PUBLISH.md`.
+- [x] **FA font installer (2026-08-03)** — `tooling/fa-fonts`: Mac `.command` / Windows `.bat` to replace fonts from an unzipped `otfs` folder (designer-friendly).
 - [x] **CADS 4.1 Figma sync (2026-07-28)** — Mirrored release geometry (skipped FA6→FA7; already on FA7): IconToggle L icon 19→18; Chip M/S/XS padding +2px; Link icon=body textSize + 2px optical iconWrapper + playground `isExternal` coercion fix; Dropdown menu item gaps/padding/icon slots + fixed heights; Button M padding 16→14 (action trigger hug). Recipes updated; `pnpm typecheck` + `pnpm build:react` green.
 - [x] Monorepo scaffold (pnpm, changesets, CI, Git-URL / committed `dist/`)
 - [x] `@codeai/cads-variables` — ColorSystem port, non-color variables, `variables.css`, TS exports, MUI theme generator
@@ -436,7 +438,8 @@ Accepted differences:
 
 Priority order for the next agent sessions:
 
-1. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
+1. **FontAwesome Glyphs — submit to Community** — follow `tooling/figma-icon-plugin/PUBLISH.md` (public build, listing copy, icon/cover). Smoke-test in Figma web after approval.
+2. **Adopt closed-loop parity workflow on Actions** — pull fresh `get_design_context`; create Button / SegmentedButton / IconToggle visual recipes and deterministic coverage fixtures; run light + dark state captures, fix and recapture mismatches, then a11y. SegmentedButton Group `8027:2099` / Block `8000:4554`.
 2. **Motion follow-ups** — Catalog Highlight-chase still deferred (docs sidebar is the only chase); optional SegmentedButton sliding Indicator; feel-check spring.moderate bounce on rapid Toggle/Tabs.
 3. **Harden docs honesty** — generate props tables from TS types (`react-docgen-typescript` or equivalent) instead of only the hand-maintained manifest; keep manifest as the AI substrate but wire descriptions from TSDoc.
 4. **End-to-end portable skill hosts** — download from Pages `/ai` (or local ZIP) and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Later: when prod publishes FA7 on `dsco.code.org`, switch runtime/`@font-face` to those CDN assets and stop inlining OTFs.
