@@ -1,0 +1,21 @@
+{
+  "name": "@codeai/cads-figma-icon-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "FontAwesome Glyphs — Figma plugin that inserts Font Awesome shortcodes as text (never vectors). Community-safe build omits FA Pro font binaries.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:dev": "node scripts/build.mjs --with-fonts",
+    "watch": "node scripts/build.mjs --watch",
+    "watch:dev": "node scripts/build.mjs --watch --with-fonts",
+    "typecheck": "tsc -p tsconfig.code.json --noEmit && tsc -p tsconfig.ui.json --noEmit"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.2",
+    "@types/opentype.js": "^1.3.10",
+    "esbuild": "^0.25.5",
+    "opentype.js": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}

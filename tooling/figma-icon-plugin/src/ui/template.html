@@ -1,0 +1,566 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      /*__FONTS_CSS__*/
+    </style>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 11px;
+        color: var(--figma-color-text, #1e1e1e);
+        background: var(--figma-color-bg, #fff);
+      }
+      #app,
+      .view {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .view[hidden] {
+        display: none;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+      }
+
+      .toolbar {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-bottom: 1px solid var(--figma-color-border, #e6e6e6);
+      }
+      .row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .search {
+        flex: 1;
+        min-width: 0;
+        padding: 6px 8px;
+        border-radius: 5px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        color: inherit;
+        font: inherit;
+        outline: none;
+      }
+      .search:focus {
+        border-color: var(--figma-color-border-selected, #0d99ff);
+      }
+      .icon-only-btn {
+        flex: none;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 5px;
+        background: transparent;
+        cursor: pointer;
+      }
+      .icon-only-btn:hover {
+        background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .select {
+        width: 100%;
+        padding: 5px 6px;
+        border-radius: 5px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg, #fff);
+        color: inherit;
+        font: inherit;
+      }
+
+      /* Custom dropdowns (version + style) */
+      .pickers {
+        display: flex;
+        gap: 6px;
+      }
+      .dropdown {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+      }
+      .dd-trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 6px 8px;
+        border-radius: 5px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg, #fff);
+        cursor: pointer;
+        text-align: left;
+      }
+      .dd-trigger:hover {
+        background: var(--figma-color-bg-hover, #f5f5f5);
+      }
+      .dd-trigger .dd-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .dd-trigger .chevron {
+        flex: none;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .dd-menu {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        max-height: 280px;
+        overflow-y: auto;
+        background: var(--figma-color-bg, #fff);
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        border-radius: 6px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+        z-index: 10;
+        padding: 4px;
+      }
+      .dd-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 5px 6px;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        cursor: pointer;
+        text-align: left;
+      }
+      .dd-item:hover {
+        background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .dd-item[aria-selected="true"] {
+        background: var(--figma-color-bg-selected, #e5f4ff);
+        color: var(--figma-color-text, #1e1e1e);
+      }
+      .dd-item .dd-count {
+        color: var(--figma-color-text-tertiary, #999);
+      }
+
+      .banner {
+        margin: 8px 8px 0;
+        padding: 6px 8px;
+        border-radius: 5px;
+        background: var(--figma-color-bg-warning-tertiary, #fff1c2);
+        color: var(--figma-color-text-warning, #6a4b00);
+        display: none;
+      }
+      .banner.visible {
+        display: block;
+      }
+
+      .grid-wrap {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+        gap: 4px;
+      }
+      .icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border: none;
+        border-radius: 5px;
+        background: transparent;
+        cursor: pointer;
+        padding: 2px;
+        overflow: hidden;
+      }
+      .icon-btn:hover {
+        background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .icon-btn .glyph {
+        font-size: 18px;
+        line-height: 1;
+      }
+      .count {
+        padding: 4px 0 0;
+        color: var(--figma-color-text-tertiary, #999);
+      }
+      .empty {
+        padding: 24px 8px;
+        text-align: center;
+        color: var(--figma-color-text-secondary, #666);
+      }
+
+      .footer {
+        border-top: 1px solid var(--figma-color-border, #e6e6e6);
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .target {
+        color: var(--figma-color-text-secondary, #666);
+        min-width: 0;
+      }
+      .target strong {
+        color: var(--figma-color-text, #1e1e1e);
+      }
+      .prop-select {
+        display: none;
+      }
+      .prop-select.visible {
+        display: block;
+      }
+
+      /* Settings view */
+      .settings-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px;
+        border-bottom: 1px solid var(--figma-color-border, #e6e6e6);
+        font-weight: 600;
+      }
+      .settings-body {
+        flex: 1;
+        overflow-y: auto;
+      }
+      .settings-section {
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .section-title {
+        font-weight: 600;
+      }
+      .hint {
+        margin: 0;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .hint code {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 10px;
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        padding: 0 3px;
+        border-radius: 3px;
+      }
+      .secondary-btn {
+        align-self: flex-start;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg, #fff);
+        cursor: pointer;
+      }
+      .secondary-btn:hover {
+        background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .font-list {
+        list-style: none;
+        margin-top: 4px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .font-list .empty-note {
+        color: var(--figma-color-text-secondary, #666);
+        padding: 2px 0;
+      }
+      .font-group {
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .font-group-header {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 10px 6px;
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        border-bottom: 1px solid var(--figma-color-border, #e6e6e6);
+      }
+      .font-group-title {
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .font-group-id {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 10px;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .font-style-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 6px 8px 6px 10px;
+      }
+      .font-style-row + .font-style-row {
+        border-top: 1px solid var(--figma-color-border, #eee);
+      }
+      .font-style-main {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        min-width: 0;
+        flex: 1;
+      }
+      .font-style-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .font-style-meta {
+        flex: none;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .remove-btn {
+        flex: none;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 5px;
+        background: transparent;
+        color: var(--figma-color-text-danger, #c00);
+        cursor: pointer;
+        padding: 0;
+      }
+      .remove-btn:hover {
+        background: rgba(204, 0, 0, 0.1);
+      }
+      .settings-footer {
+        border-top: 1px solid var(--figma-color-border, #e6e6e6);
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .primary-btn {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 5px;
+        background: var(--figma-color-bg-brand, #0d99ff);
+        color: var(--figma-color-text-onbrand, #fff);
+        cursor: pointer;
+      }
+      .primary-btn:hover {
+        background: var(--figma-color-bg-brand-hover, #0b87e0);
+        color: var(--figma-color-text-onbrand, #fff);
+      }
+      .primary-btn.large {
+        padding: 10px 16px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .save-note {
+        color: var(--figma-color-text-secondary, #666);
+      }
+
+      /* First-run setup */
+      .setup {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .setup-main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 24px 20px;
+        text-align: center;
+        gap: 10px;
+      }
+      .setup-mark {
+        display: block;
+        width: 56px;
+        height: 56px;
+        margin-bottom: 4px;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+      .setup-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .setup-step {
+        margin: 0 0 4px;
+        max-width: 280px;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--figma-color-text, #111);
+      }
+      .setup-step code {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 11px;
+        font-weight: 500;
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        padding: 0 3px;
+        border-radius: 3px;
+      }
+      .setup-note {
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 14px 12px;
+        border-top: 1px solid var(--figma-color-border, #e6e6e6);
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 1.4;
+        text-align: left;
+        color: var(--figma-color-text-secondary, #666);
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+      }
+      .setup-note::before {
+        content: "Note";
+        display: block;
+        margin-bottom: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: var(--figma-color-text-tertiary, #999);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="setup-view" class="view" hidden>
+        <div class="setup">
+          <div class="setup-main">
+            <img
+              class="setup-mark"
+              src="__PLUGIN_ICON_SRC__"
+              width="56"
+              height="56"
+              alt=""
+              aria-hidden="true"
+            />
+            <div class="setup-title">Set up your FontAwesome fonts</div>
+            <p class="setup-step">
+              Find and add the Font Awesome <code>.otf</code> files you actually use
+              (Pro, Brands, Kit, etc).
+            </p>
+            <button id="setup-add-btn" class="primary-btn large">Add font files</button>
+          </div>
+          <p class="setup-note">
+            Make sure you've installed the same fonts on your system (e.g. Font Book or
+            Windows Fonts) so icons actually render on the canvas. Then point this
+            plugin at those files.
+          </p>
+        </div>
+      </div>
+
+      <div id="main-view" class="view" hidden>
+        <div class="toolbar">
+          <input
+            id="search"
+            class="search"
+            type="text"
+            placeholder="Search icons…"
+            autocomplete="off"
+          />
+          <div class="pickers">
+            <div class="dropdown" id="family-dropdown">
+              <button id="family-trigger" class="dd-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Font Awesome version">
+                <span id="family-label" class="dd-value"></span>
+                <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div id="family-menu" class="dd-menu" role="listbox" hidden></div>
+            </div>
+            <div class="dropdown" id="style-dropdown">
+              <button id="style-trigger" class="dd-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Icon style">
+                <span id="style-label" class="dd-value"></span>
+                <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div id="style-menu" class="dd-menu" role="listbox" hidden></div>
+            </div>
+          </div>
+        </div>
+        <div id="banner" class="banner"></div>
+        <div class="grid-wrap">
+          <div id="grid" class="grid"></div>
+          <div id="count" class="count"></div>
+          <div id="empty" class="empty" hidden>No icons match that search.</div>
+        </div>
+        <div class="footer">
+          <select id="prop-select" class="select prop-select"></select>
+          <div class="footer-row">
+            <div id="target" class="target"></div>
+            <button id="settings-btn" class="icon-only-btn" title="Settings" aria-label="Settings">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="settings-view" class="view" hidden>
+        <div class="settings-header">
+          <button id="back-btn" class="icon-only-btn" title="Back" aria-label="Back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <span>Settings</span>
+        </div>
+        <div class="settings-body">
+          <div class="settings-section">
+            <span class="section-title">Fonts</span>
+            <p class="hint">
+              Pick the FA font files you use (several at once is fine). Only these appear in the
+              style picker. <span id="font-dir-hint"></span>
+            </p>
+            <button id="add-fonts-btn" class="secondary-btn">Add files</button>
+            <input id="font-files" type="file" accept=".otf,.ttf" multiple hidden />
+            <ul id="font-list" class="font-list"></ul>
+          </div>
+        </div>
+        <div class="settings-footer">
+          <button id="save-btn" class="primary-btn">Save</button>
+          <span id="save-note" class="save-note"></span>
+        </div>
+      </div>
+    </div>
+    <script>
+      /*__SCRIPT__*/
+    </script>
+  </body>
+</html>
