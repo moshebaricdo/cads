@@ -94,9 +94,11 @@ async function build() {
 
   const template = readFileSync(join(root, "src/ui/template.html"), "utf8");
   const html = template
-    .replace("/*__FONTS_CSS__*/", fontsCss)
-    .replace("/*__SCRIPT__*/", uiJs)
-    .replace("__PLUGIN_ICON_SRC__", pluginIconDataUri);
+    // Function replacers: string replace treats $& / $$ as special, and
+    // minified JS can contain `$&&` which would corrupt the inlined bundle.
+    .replace("/*__FONTS_CSS__*/", () => fontsCss)
+    .replace("/*__SCRIPT__*/", () => uiJs)
+    .replace("__PLUGIN_ICON_SRC__", () => pluginIconDataUri);
   writeFileSync(join(distDir, "ui.html"), html);
 
   const sizeKb = Buffer.byteLength(html) / 1024;
