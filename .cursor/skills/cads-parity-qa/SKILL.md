@@ -63,6 +63,12 @@ Every accepted divergence must record the Figma behavior, code behavior, reason,
 owner/decision source, and affected cases. “Looks close” is not an accepted
 difference.
 
+## PoC fast path
+
+For an explicitly requested, reversible PoC with no public API or Figma-style
+change: edit source only, run focused checks, and label it non-shippable. Resume
+the full workflow only when the user asks to promote or ship it.
+
 ## Phase 0 — classify the task
 
 Choose exactly one path and record it in the evidence summary:
