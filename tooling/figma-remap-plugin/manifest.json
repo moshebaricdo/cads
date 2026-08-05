@@ -1,0 +1,13 @@
+{
+  "name": "CADS Audit (Internal)",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "permissions": ["teamlibrary"],
+  "networkAccess": {
+    "allowedDomains": ["https://api.anthropic.com", "https://api.openai.com"],
+    "reasoning": "Optional: AI mapping suggestions call the user's own LLM provider directly with their own API key. The plugin makes no other network requests and never sends document data anywhere else."
+  }
+}

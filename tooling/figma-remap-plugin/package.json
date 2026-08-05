@@ -1,0 +1,17 @@
+{
+  "name": "@codeai/cads-figma-remap-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CADS Audit — internal Figma plugin: findings-only audit of a frame against CADS, with category-scoped remaps and optional BYO-key AI suggestions.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "typecheck": "tsc -p tsconfig.code.json --noEmit && tsc -p tsconfig.ui.json --noEmit"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.2",
+    "esbuild": "^0.25.5",
+    "typescript": "^5.8.3"
+  }
+}

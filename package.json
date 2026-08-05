@@ -26,6 +26,8 @@
     "plugin:icons:build": "pnpm --filter @codeai/cads-figma-icon-plugin run build",
     "plugin:icons:build:dev": "pnpm --filter @codeai/cads-figma-icon-plugin run build:dev",
     "plugin:icons:watch": "pnpm --filter @codeai/cads-figma-icon-plugin run watch",
+    "plugin:remap:build": "pnpm --filter @codeai/cads-figma-remap-plugin run build",
+    "plugin:remap:watch": "pnpm --filter @codeai/cads-figma-remap-plugin run watch",
     "fonts:merge": "python3 tooling/fa-font-merge/merge_fonts.py",
     "figma:audit-props": "pnpm build:react && pnpm --filter @codeai/cads-figma-sync run audit-props",
     "changeset": "changeset",
