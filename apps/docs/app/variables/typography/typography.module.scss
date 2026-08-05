@@ -1,17 +1,34 @@
 /* Typography page — type scale & family table styles */
 
 .tabRow {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  border-bottom: 1px solid var(--border-neutral-primary);
+
+  // Hairline behind the tabs so the 2px selected underline paints fully on top.
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--border-neutral-primary);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
+/* Parent .tabRow owns the full-width baseline. */
 .tabsFlush {
-  border-bottom: none !important;
+  --tabs-baseline-color: transparent;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 1;
 }
 
 .tabWeight {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs } from "@codeai/cads-react";
+import { SegmentedButton, Tabs } from "@codeai/cads-react";
 import {
   type FixtureCase,
 } from "./shared";
@@ -204,6 +204,70 @@ export const cases: FixtureCase[] = [
             { value: "settings", label: "Settings" },
           ]}
         />
+      ),
+    },
+    {
+      id: "tabs-intrinsic-width-with-sibling-light",
+      mode: "light",
+      state: "layout",
+      viewport: { width: 1040, height: 120 },
+      render: () => (
+        <>
+          <style>{`
+            .tabs-shared-baseline {
+              --tabs-baseline-color: transparent;
+              box-shadow: none !important;
+              position: relative;
+              z-index: 1;
+            }
+            .tabs-shared-baseline-row {
+              position: relative;
+              display: flex;
+              align-items: flex-end;
+              justify-content: space-between;
+              gap: var(--spacing-p-m);
+              width: 100%;
+            }
+            .tabs-shared-baseline-row::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              height: 1px;
+              background: var(--border-neutral-primary);
+              pointer-events: none;
+              z-index: 0;
+            }
+          `}</style>
+          <div className="tabs-shared-baseline-row">
+            <Tabs
+              type="primary"
+              size="small"
+              className="tabs-shared-baseline"
+              aria-label="Typography style groups"
+              defaultValue="heading"
+              items={[
+                { value: "heading", label: "Heading" },
+                { value: "body", label: "Body" },
+                { value: "overline", label: "Overline" },
+                { value: "label", label: "Label" },
+                { value: "link", label: "Link" },
+                { value: "mono", label: "Mono" },
+              ]}
+            />
+            <SegmentedButton
+              size="extraSmall"
+              aria-label="Heading weight"
+              defaultValue="semi-bold"
+              options={[
+                { value: "regular", label: "Regular" },
+                { value: "semi-bold", label: "Semi Bold" },
+                { value: "bold", label: "Bold" },
+              ]}
+            />
+          </div>
+        </>
       ),
     },
   ];

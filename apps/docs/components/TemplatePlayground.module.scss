@@ -17,19 +17,36 @@
 }
 
 .toolbar {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
   flex: 0 0 auto;
   padding: 0 12px 0 16px;
-  border-bottom: 1px solid var(--border-neutral-primary);
   background: var(--background-neutral-secondary);
+
+  // Hairline behind the tabs (not an inset shadow on this box) so the 2px
+  // selected underline can paint fully on top without looking clipped.
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--border-neutral-primary);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
-/* Drop the Tabs list rule — the toolbar border is the shared baseline. */
+/* Toolbar owns the full-width baseline. */
 .tabs {
-  border-bottom: none !important;
+  --tabs-baseline-color: transparent;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 1;
   gap: 16px !important;
 }
 

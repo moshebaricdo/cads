@@ -511,6 +511,40 @@
         "browserScreenshot": "captures/browser-tabs-overflow-secondary-dark.png",
         "result": "pass",
         "mismatches": []
+      },
+      {
+        "id": "tabs-intrinsic-width-with-sibling-light",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=primary, size=small; sibling composition is a code layout regression",
+        "mode": "light",
+        "props": {
+          "type": "primary",
+          "size": "small",
+          "withSiblingControl": true
+        },
+        "state": "layout",
+        "viewport": {
+          "width": 1040,
+          "height": 120,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "intrinsic tab content width",
+          "layout": "Tabs and SegmentedButton remain on the same flex row",
+          "overflow": "none",
+          "baseline": "container owns a full-width inset hairline; Tabs baseline disabled via --tabs-baseline-color so the 2px selected underline sits on that same edge"
+        },
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-intrinsic-width-with-sibling-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pass",
+        "mismatches": [
+          {
+            "category": "geometry",
+            "description": "The overflow implementation set the tablist root to width: 100%, making non-overflowing Tabs consume the full row and displace sibling controls. Restore intrinsic width with width: fit-content while retaining max-width: 100% for constrained overflow."
+          }
+        ]
       }
     ]
   },
@@ -521,6 +555,8 @@
     "build": "pnpm build — pass",
     "docsBuild": "pnpm build:docs — pass",
     "correctionPasses": [
+      "Shared-baseline regression: overflow scroll clips children, so a real border-bottom can't be overlapped by the selected underline. Tabs hairline is an inset box-shadow via --tabs-baseline-color. Shared header rows paint a ::after hairline behind Tabs (z-index 0/1) and flush with --tabs-baseline-color: transparent so the full 2px underline sits on that edge without the parent inset shadow covering it.",
+      "Sibling-layout regression: overflow support had changed the root from intrinsic sizing to width: 100%, so Tabs consumed an entire flex row even when its items fit. Restored width: fit-content while retaining max-width: 100%, min-width: 0, and horizontal overflow for constrained groups. Recaptured the 1040px Tabs + SegmentedButton sibling fixture on one row, then recaptured the 280px overflow sentinel with its trailing fade intact.",
       "Responsive overflow PoC: constrained primary/light and secondary/dark fixtures keep the tablist within its container, expose horizontal scrolling, and show only the trailing alpha-mask fade at scroll start. The mask is surface-color-independent and contributes no pointer hit target.",
       "Hover regression from the SCSS-module refactor: border-bottom-color received the --tab-border-bottom shorthand, so every hover state fell back to currentcolor. Switched hover to the border-bottom shorthand and reverified primary/secondary × light/dark × selected/inactive with real Playwright hover, plus the experimental-motion indicator path.",
       "FaIcon alias home→house (Figma shortcode; FA glyph house)",
