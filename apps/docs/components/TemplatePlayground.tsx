@@ -106,12 +106,16 @@ export function TemplatePlayground({
   /** Overlay surfaces need the stage width when Inspect forces surfaceOnly. */
   const stretchPreview =
     Boolean(values.fullWidth) ||
-    component.exportName === "Tabs" ||
     component.exportName === "Pagination" ||
     (inspect &&
       (component.exportName === "Drawer" ||
         component.exportName === "Dialog" ||
         component.exportName === "Modal"));
+  /**
+   * Tabs hug content but need a full-width containing block so max-width: 100%
+   * can activate overflow chevrons when the stage shrinks — while still centering.
+   */
+  const centerConstrainPreview = component.exportName === "Tabs";
   /** Modal/Dialog/Drawer inspect: tight stage inset so the surface fills the canvas. */
   const inspectOverlayStage =
     inspect &&
@@ -318,7 +322,9 @@ export function TemplatePlayground({
               data-docs-playground-stage=""
               onClickCapture={onStageClickCapture}
               style={{
-                ...(stretchPreview ? { justifyContent: "stretch" } : null),
+                ...(stretchPreview || centerConstrainPreview
+                  ? { justifyContent: "stretch" }
+                  : null),
                 ...(inspectOverlayStage
                   ? {
                       padding: "20px 0 0 20px",
@@ -345,7 +351,14 @@ export function TemplatePlayground({
                           ? { height: "100%", minHeight: 0 }
                           : null),
                       }
-                    : undefined
+                    : centerConstrainPreview
+                      ? {
+                          width: "100%",
+                          minWidth: 0,
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                      : undefined
                 }
                 className={[
                   styles.preview,
