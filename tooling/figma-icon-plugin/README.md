@@ -9,7 +9,7 @@ Figma plugin that gives you Font Awesome’s searchable, visual icon browser —
 1. Install your FA desktop fonts (and kit) locally — see `../fa-fonts` for a simple replace installer.
 2. Run **FontAwesome Glyphs** from Plugins.
 3. On first run, **Add font files…** and select only the `.otf` faces you use (Pro, Brands, Kit, …). The picker never auto-detects every FA font on the machine.
-4. Search → click. The footer shows whether you’ll fill a prop, replace a text layer, or create a new one. Manage the set later under Settings.
+4. Search → click. The footer shows whether you’ll fill a prop, replace a text layer, or create a new one. Manage fonts and your preferred default style (Solid, Regular, All, …) under Settings.
 
 ## Develop
 

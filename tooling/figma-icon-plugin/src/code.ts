@@ -32,6 +32,7 @@ async function postSettings(): Promise<void> {
     | undefined;
   const settings: PluginSettings = {
     fonts: stored?.fonts ?? EMPTY_SETTINGS.fonts,
+    preferredStyle: stored?.preferredStyle ?? EMPTY_SETTINGS.preferredStyle,
   };
   post({ type: "settings", settings });
 }
@@ -166,17 +167,56 @@ async function insertAsNewLayer(
   return `Created a new "${name}" text layer`;
 }
 
+/** Text layers inside an instance that are bound to a given TEXT property. */
+function findTextNodesForProp(
+  instance: InstanceNode,
+  propKey: string,
+): TextNode[] {
+  const results: TextNode[] = [];
+  const walk = (node: SceneNode) => {
+    if (node.type === "TEXT") {
+      const ref = node.componentPropertyReferences?.characters;
+      if (ref === propKey) results.push(node);
+    }
+    if ("children" in node) {
+      for (const child of node.children) walk(child);
+    }
+  };
+  for (const child of instance.children) walk(child);
+  return results;
+}
+
+async function applyFontToBoundText(
+  instance: InstanceNode,
+  propKey: string,
+  fontName: FontNameLike,
+): Promise<void> {
+  const bound = findTextNodesForProp(instance, propKey);
+  if (bound.length === 0) return;
+  const font = await loadFontOrExplain(fontName);
+  await Promise.all(
+    bound.map(async (textNode) => {
+      await loadExistingFonts(textNode);
+      textNode.fontName = font;
+    }),
+  );
+}
+
 async function insertIntoInstance(
   instance: InstanceNode,
   name: string,
   propKey: string | undefined,
+  fontName: FontNameLike,
 ): Promise<string> {
   const textProps = instanceTextProps(instance);
   if (textProps.length === 0) {
     throw new Error(`"${instance.name}" has no text properties to fill.`);
   }
   const prop = textProps.find((p) => p.key === propKey) ?? textProps[0];
+  // Set the shortcode via the component property (never detach), then swap
+  // the bound layer's font so kit / other-face glyphs actually render.
   instance.setProperties({ [prop.key]: name });
+  await applyFontToBoundText(instance, prop.key, fontName);
   return `Set "${prop.label}" to "${name}" on "${instance.name}"`;
 }
 
@@ -189,14 +229,14 @@ async function handleInsert(
     const node = figma.currentPage.selection[0];
     let detail: string;
     if (node && node.type === "INSTANCE") {
-      detail = await insertIntoInstance(node, name, propKey);
+      detail = await insertIntoInstance(node, name, propKey, fontName);
     } else if (node && node.type === "TEXT") {
       // Prop-bound text inside an instance: set the property (don't detach / edit internals).
       const propRef = node.componentPropertyReferences?.characters;
       const instance = propRef ? findAncestorInstance(node) : null;
       detail =
         propRef && instance
-          ? await insertIntoInstance(instance, name, propRef)
+          ? await insertIntoInstance(instance, name, propRef, fontName)
           : await insertIntoTextNode(node, name, fontName);
     } else {
       detail = await insertAsNewLayer(name, fontName);

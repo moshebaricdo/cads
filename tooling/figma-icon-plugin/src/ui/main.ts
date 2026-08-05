@@ -53,7 +53,6 @@ const grid = document.getElementById("grid") as HTMLDivElement;
 const countEl = document.getElementById("count") as HTMLDivElement;
 const emptyEl = document.getElementById("empty") as HTMLDivElement;
 const targetEl = document.getElementById("target") as HTMLDivElement;
-const propSelect = document.getElementById("prop-select") as HTMLSelectElement;
 const settingsBtn = document.getElementById("settings-btn") as HTMLButtonElement;
 const backBtn = document.getElementById("back-btn") as HTMLButtonElement;
 const addFontsBtn = document.getElementById("add-fonts-btn") as HTMLButtonElement;
@@ -62,6 +61,15 @@ const fontList = document.getElementById("font-list") as HTMLUListElement;
 const fontDirHint = document.getElementById("font-dir-hint") as HTMLSpanElement;
 const saveBtn = document.getElementById("save-btn") as HTMLButtonElement;
 const saveNote = document.getElementById("save-note") as HTMLSpanElement;
+const preferredStyleTrigger = document.getElementById(
+  "preferred-style-trigger",
+) as HTMLButtonElement;
+const preferredStyleLabel = document.getElementById(
+  "preferred-style-label",
+) as HTMLSpanElement;
+const preferredStyleMenu = document.getElementById(
+  "preferred-style-menu",
+) as HTMLDivElement;
 
 // --- state ----------------------------------------------------------------
 
@@ -73,6 +81,8 @@ let activeSource: Source | null = null;
 let target: InsertTarget = { kind: "create" };
 /** Settings open (overrides setup / main). */
 let settingsOpen = false;
+/** Once the user picks a family/style this session, don't re-apply preferred. */
+let userPickedSource = false;
 
 function send(message: UiToCodeMessage) {
   parent.postMessage({ pluginMessage: message }, "*");
@@ -157,17 +167,20 @@ function sortSources(list: Source[]) {
   });
 }
 
-/** Prefer Solid / heavier stock faces when the same shortcode exists in multiple fonts. */
-function sourcePriority(source: Source): number {
-  if (isKitFamily(source.family)) return 10;
-  if (/brands/i.test(source.family)) return 5;
-  return -source.weight; // Solid (900) before Regular (400)
-}
-
+/**
+ * Build the All catalog.
+ *
+ * For shortcodes that exist in multiple stock faces (Solid/Regular/…), prefer
+ * the user's default style, then fall back to other stock faces (heavier
+ * first). Families that don't offer that style — Custom Kit, Brands, a
+ * Solid-only pack, etc. — still contribute every glyph; they just don't
+ * override a stock match on the same shortcode.
+ */
 function buildAllSource(parts: Source[]): Source {
+  const preferred = (settings.preferredStyle || EMPTY_SETTINGS.preferredStyle).trim();
   const byName = new Map<string, { entry: IconEntry; priority: number }>();
-  for (const source of parts) {
-    const priority = sourcePriority(source);
+
+  const take = (source: Source, priority: number) => {
     for (const entry of source.entries) {
       const prev = byName.get(entry.name);
       if (prev && prev.priority <= priority) continue;
@@ -181,7 +194,35 @@ function buildAllSource(parts: Source[]): Source {
         },
       });
     }
+  };
+
+  const stock = parts.filter(
+    (source) => !isKitFamily(source.family) && !/brands/i.test(source.family),
+  );
+  const brands = parts.filter((source) => /brands/i.test(source.family));
+  const kits = parts.filter((source) => isKitFamily(source.family));
+
+  const preferSpecific = Boolean(preferred) && preferred.toLowerCase() !== "all";
+
+  // 1) Preferred stock face (e.g. all Regular Pro glyphs)
+  if (preferSpecific) {
+    for (const source of stock) {
+      if (styleMatchesPreferred(source.style, preferred)) take(source, 0);
+    }
   }
+
+  // 2) Other stock faces — fills icons that family doesn't offer in the
+  //    preferred style (and the whole stock set when preferred is All)
+  for (const source of stock) {
+    if (preferSpecific && styleMatchesPreferred(source.style, preferred)) continue;
+    take(source, 10 + (1000 - source.weight));
+  }
+
+  // 3) Brands + Kit last so they never hide a stock glyph, but every
+  //    kit-only / brand-only shortcode still lands in All.
+  for (const source of brands) take(source, 1000);
+  for (const source of kits) take(source, 2000);
+
   const entries = Array.from(byName.values())
     .map(({ entry }) => entry)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -224,6 +265,56 @@ function stylesForFamily(family: string): Source[] {
   return sources.filter((source) => source.family === family);
 }
 
+/** Unique face style names from added fonts (Solid, Regular, …), sorted by weight. */
+function availableStyleNames(): string[] {
+  const byName = new Map<string, number>();
+  for (const font of settings.fonts) {
+    if (!font.style) continue;
+    const weight = weightForStyle(font.style);
+    const prev = byName.get(font.style);
+    if (prev == null || weight > prev) byName.set(font.style, weight);
+  }
+  return Array.from(byName.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([name]) => name);
+}
+
+function styleMatchesPreferred(style: string, preferred: string): boolean {
+  return style.toLowerCase() === preferred.toLowerCase();
+}
+
+/**
+ * On open, land on All so Kit / Brands / other single-face packs stay in
+ * view. The preferred style shapes the All merge and which face is selected
+ * when the user later picks a specific version family.
+ */
+function pickPreferredSource(familyList: string[]): {
+  family: string;
+  source: Source | null;
+} {
+  if (familyList.includes(ALL_FAMILY)) {
+    return {
+      family: ALL_FAMILY,
+      source: stylesForFamily(ALL_FAMILY)[0] ?? null,
+    };
+  }
+  const preferred = (settings.preferredStyle || EMPTY_SETTINGS.preferredStyle).trim();
+  const fallbackFamily = familyList[0] ?? "";
+  const fallbackSource = stylesForFamily(fallbackFamily)[0] ?? null;
+  if (!preferred || preferred.toLowerCase() === "all") {
+    return { family: fallbackFamily, source: fallbackSource };
+  }
+  const match = sources.find(
+    (source) =>
+      source.family !== ALL_FAMILY &&
+      !isKitFamily(source.family) &&
+      !/brands/i.test(source.family) &&
+      styleMatchesPreferred(source.style, preferred),
+  );
+  if (match) return { family: match.family, source: match };
+  return { family: fallbackFamily, source: fallbackSource };
+}
+
 function rebuildSources() {
   const previousId = activeSource?.id;
   const previousFamily = activeFamily;
@@ -233,14 +324,27 @@ function rebuildSources() {
   sources = parts.length > 0 ? [buildAllSource(parts), ...parts] : [];
 
   const familyList = families();
-  activeFamily = familyList.includes(previousFamily)
-    ? previousFamily
-    : (familyList[0] ?? "");
 
-  const styleList = stylesForFamily(activeFamily);
-  activeSource =
-    styleList.find((source) => source.id === previousId) ?? styleList[0] ?? null;
+  if (userPickedSource && familyList.includes(previousFamily)) {
+    activeFamily = previousFamily;
+    const styleList = stylesForFamily(activeFamily);
+    activeSource =
+      styleList.find((source) => source.id === previousId) ??
+      styleList.find((source) =>
+        styleMatchesPreferred(
+          source.style,
+          settings.preferredStyle || EMPTY_SETTINGS.preferredStyle,
+        ),
+      ) ??
+      styleList[0] ??
+      null;
+  } else {
+    const picked = pickPreferredSource(familyList);
+    activeFamily = picked.family;
+    activeSource = picked.source;
+  }
 
+  renderPreferredStyleSelect();
   renderPickers();
   renderBanner();
   renderGrid();
@@ -261,6 +365,7 @@ function setMenuOpen(
 function closeAllMenus() {
   setMenuOpen(familyMenu, familyTrigger, false);
   setMenuOpen(styleMenu, styleTrigger, false);
+  setMenuOpen(preferredStyleMenu, preferredStyleTrigger, false);
 }
 
 function fillMenu(
@@ -303,11 +408,14 @@ function renderPickers() {
       label: displayFamily(family, familyList),
       selected: family === activeFamily,
       onSelect: () => {
+        userPickedSource = true;
         activeFamily = family;
         const styleList = stylesForFamily(family);
-        // Prefer keeping the same style name when switching versions.
+        const preferred = settings.preferredStyle || EMPTY_SETTINGS.preferredStyle;
+        // Keep the same style name when switching versions; else preferred; else first.
         activeSource =
           styleList.find((source) => source.itemLabel === activeSource?.itemLabel) ??
+          styleList.find((source) => styleMatchesPreferred(source.style, preferred)) ??
           styleList[0] ??
           null;
         closeAllMenus();
@@ -326,11 +434,50 @@ function renderPickers() {
       count: source.entries.length,
       selected: source === activeSource,
       onSelect: () => {
+        userPickedSource = true;
         activeSource = source;
         closeAllMenus();
         renderPickers();
         renderBanner();
         renderGrid();
+      },
+    })),
+  );
+}
+
+function preferredStyleOptions(): string[] {
+  const styles = availableStyleNames();
+  const current = settings.preferredStyle || EMPTY_SETTINGS.preferredStyle;
+  const options = ["All", ...styles];
+  // Keep a saved preference even if that face was temporarily removed.
+  if (current && !options.some((name) => styleMatchesPreferred(name, current))) {
+    options.push(current);
+  }
+  return options;
+}
+
+function applyPreferredStyle(name: string) {
+  settings.preferredStyle = name || EMPTY_SETTINGS.preferredStyle;
+  userPickedSource = false;
+  persistSettings();
+  rebuildSources();
+}
+
+function renderPreferredStyleSelect() {
+  const current = settings.preferredStyle || EMPTY_SETTINGS.preferredStyle;
+  const options = preferredStyleOptions();
+  const selected =
+    options.find((name) => styleMatchesPreferred(name, current)) ?? options[0] ?? "All";
+  preferredStyleLabel.textContent = selected;
+  fillMenu(
+    preferredStyleMenu,
+    options.map((name) => ({
+      id: name,
+      label: name,
+      selected: styleMatchesPreferred(name, selected),
+      onSelect: () => {
+        closeAllMenus();
+        applyPreferredStyle(name);
       },
     })),
   );
@@ -368,9 +515,20 @@ function renderGrid() {
 
     const glyph = document.createElement("span");
     glyph.className = "glyph";
-    const family = entry.fontFamily ?? activeSource?.family;
-    const weight = entry.fontWeight ?? activeSource?.weight;
-    if (family && family !== ALL_FAMILY) {
+    // Prefer the entry's own face (set when browsing All); never fall back to
+    // the synthetic All family name — that would drop Kit/Brands previews.
+    const family =
+      entry.fontFamily && entry.fontFamily !== ALL_FAMILY
+        ? entry.fontFamily
+        : activeSource && activeSource.family !== ALL_FAMILY
+          ? activeSource.family
+          : undefined;
+    const weight =
+      entry.fontWeight ??
+      (activeSource && activeSource.family !== ALL_FAMILY
+        ? activeSource.weight
+        : undefined);
+    if (family) {
       glyph.style.fontFamily = `"${family}"`;
     }
     if (weight != null) {
@@ -392,10 +550,6 @@ function renderGrid() {
 
 function insert(entry: IconEntry) {
   if (!activeSource) return;
-  const propKey =
-    target.kind === "instance" && propSelect.classList.contains("visible")
-      ? propSelect.value
-      : undefined;
   const family = entry.fontFamily ?? activeSource.family;
   const style = entry.fontStyle ?? activeSource.style;
   if (family === ALL_FAMILY) return;
@@ -403,30 +557,24 @@ function insert(entry: IconEntry) {
     type: "insert",
     name: entry.name,
     fontName: { family, style },
-    propKey,
   });
 }
 
 function renderTarget() {
-  propSelect.classList.remove("visible");
   if (target.kind === "instance") {
     if (target.textProps.length === 0) {
       targetEl.innerHTML = `Selected instance <strong></strong> has no text props — select a text layer inside it instead.`;
       targetEl.querySelector("strong")!.textContent = target.nodeName;
       return;
     }
-    targetEl.innerHTML = `Sets prop on <strong></strong>`;
-    targetEl.querySelector("strong")!.textContent = target.nodeName;
-    if (target.textProps.length > 1) {
-      propSelect.textContent = "";
-      for (const prop of target.textProps) {
-        const option = document.createElement("option");
-        option.value = prop.key;
-        option.textContent = `${prop.label} (currently "${prop.value}")`;
-        propSelect.appendChild(option);
-      }
-      propSelect.classList.add("visible");
-    }
+    // Instance with no layer picked: fill the first TEXT prop. Select the icon
+    // text layer itself to target a specific prop (start vs end icon, etc.).
+    const prop = target.textProps[0]!;
+    targetEl.textContent = "";
+    targetEl.append("Sets ");
+    const propLabel = document.createElement("strong");
+    propLabel.textContent = prop.label;
+    targetEl.append(propLabel, ` on ${target.nodeName}`);
     return;
   }
   if (target.kind === "text") {
@@ -476,6 +624,7 @@ function showSettings(show: boolean) {
   settingsOpen = show;
   if (show) {
     saveNote.textContent = "";
+    renderPreferredStyleSelect();
     renderFontList();
   }
   updateShell();
@@ -677,7 +826,12 @@ window.onmessage = (event: MessageEvent) => {
     installedFaFonts = message.faFonts;
     renderBanner();
   } else if (message.type === "settings") {
-    settings = message.settings;
+    settings = {
+      ...EMPTY_SETTINGS,
+      ...message.settings,
+      preferredStyle:
+        message.settings.preferredStyle || EMPTY_SETTINGS.preferredStyle,
+    };
     rebuildSources();
   }
   // "inserted" results surface via figma.notify toasts; no inline status.
@@ -696,13 +850,22 @@ styleTrigger.addEventListener("click", (event) => {
   closeAllMenus();
   setMenuOpen(styleMenu, styleTrigger, open);
 });
+preferredStyleTrigger.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const open = preferredStyleMenu.hidden;
+  closeAllMenus();
+  setMenuOpen(preferredStyleMenu, preferredStyleTrigger, open);
+});
 document.addEventListener("click", (event) => {
   const targetNode = event.target as Node;
   const inFamily =
     familyTrigger.contains(targetNode) || familyMenu.contains(targetNode);
   const inStyle =
     styleTrigger.contains(targetNode) || styleMenu.contains(targetNode);
-  if (!inFamily && !inStyle) closeAllMenus();
+  const inPreferred =
+    preferredStyleTrigger.contains(targetNode) ||
+    preferredStyleMenu.contains(targetNode);
+  if (!inFamily && !inStyle && !inPreferred) closeAllMenus();
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeAllMenus();

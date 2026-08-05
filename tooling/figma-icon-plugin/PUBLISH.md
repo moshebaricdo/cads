@@ -15,7 +15,8 @@ Import the built plugin in Figma Desktop once more and smoke-test:
 
 - [ ] First launch shows **Set up your fonts** (empty clientStorage) → Add files → picker
 - [ ] Settings → add/remove fonts; clearing all returns to setup
-- [ ] Search + insert into a text prop (no detach)
+- [ ] Settings → Default style (e.g. Solid) — reopen plugin lands on that style
+- [ ] Search + insert into a text prop (no detach); font face swaps (kit → kit font)
 - [ ] Insert into a plain text layer
 - [ ] Insert with nothing selected (creates a layer)
 - [ ] “All” + “Custom Kit” labels look right
@@ -43,7 +44,7 @@ Upload these in the Publish modal. Optional: a short playground file showing a b
 > **How to use**
 > 1. Download and install your FontAwesome desktop fonts (and custom kit, if any) on your machine.
 > 2. Open FontAwesome Glyphs — on first run, use **Add font files…** and select only the FA `.otf` faces you plan to use (nothing is auto-detected).
-> 3. Search, pick a style (or All), click an icon. Change the set anytime under Settings.
+> 3. Search, pick a style (or All), click an icon. Under Settings you can change the font set and choose a preferred default style (Solid, Regular, All, …).
 >
 > **Inserts into**
 > - Component text properties (sidebar props — no detaching)

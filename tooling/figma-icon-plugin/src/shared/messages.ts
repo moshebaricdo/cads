@@ -47,9 +47,18 @@ export interface StoredFont {
 
 export interface PluginSettings {
   fonts: StoredFont[];
+  /**
+   * Style to select when the plugin opens (and after fonts reload with no
+   * user pick yet). Match is by face style name, e.g. "Solid" / "Regular".
+   * Use "All" to open on the union view.
+   */
+  preferredStyle: string;
 }
 
-export const EMPTY_SETTINGS: PluginSettings = { fonts: [] };
+export const EMPTY_SETTINGS: PluginSettings = {
+  fonts: [],
+  preferredStyle: "Solid",
+};
 
 export type UiToCodeMessage =
   | { type: "init" }

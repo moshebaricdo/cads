@@ -1,15 +1,19 @@
 (() => {
   // src/shared/messages.ts
-  var EMPTY_SETTINGS = { fonts: [] };
+  var EMPTY_SETTINGS = {
+    fonts: [],
+    preferredStyle: "Solid"
+  };
 
   // src/code.ts
   figma.showUI(__html__, { width: 380, height: 540, themeColors: true });
   var SETTINGS_KEY = "settings";
   async function postSettings() {
-    var _a;
+    var _a, _b;
     const stored = await figma.clientStorage.getAsync(SETTINGS_KEY);
     const settings = {
-      fonts: (_a = stored == null ? void 0 : stored.fonts) != null ? _a : EMPTY_SETTINGS.fonts
+      fonts: (_a = stored == null ? void 0 : stored.fonts) != null ? _a : EMPTY_SETTINGS.fonts,
+      preferredStyle: (_b = stored == null ? void 0 : stored.preferredStyle) != null ? _b : EMPTY_SETTINGS.preferredStyle
     };
     post({ type: "settings", settings });
   }
@@ -124,7 +128,33 @@
     figma.currentPage.selection = [node];
     return `Created a new "${name}" text layer`;
   }
-  async function insertIntoInstance(instance, name, propKey) {
+  function findTextNodesForProp(instance, propKey) {
+    const results = [];
+    const walk = (node) => {
+      var _a;
+      if (node.type === "TEXT") {
+        const ref = (_a = node.componentPropertyReferences) == null ? void 0 : _a.characters;
+        if (ref === propKey) results.push(node);
+      }
+      if ("children" in node) {
+        for (const child of node.children) walk(child);
+      }
+    };
+    for (const child of instance.children) walk(child);
+    return results;
+  }
+  async function applyFontToBoundText(instance, propKey, fontName) {
+    const bound = findTextNodesForProp(instance, propKey);
+    if (bound.length === 0) return;
+    const font = await loadFontOrExplain(fontName);
+    await Promise.all(
+      bound.map(async (textNode) => {
+        await loadExistingFonts(textNode);
+        textNode.fontName = font;
+      })
+    );
+  }
+  async function insertIntoInstance(instance, name, propKey, fontName) {
     var _a;
     const textProps = instanceTextProps(instance);
     if (textProps.length === 0) {
@@ -132,6 +162,7 @@
     }
     const prop = (_a = textProps.find((p) => p.key === propKey)) != null ? _a : textProps[0];
     instance.setProperties({ [prop.key]: name });
+    await applyFontToBoundText(instance, prop.key, fontName);
     return `Set "${prop.label}" to "${name}" on "${instance.name}"`;
   }
   async function handleInsert(name, fontName, propKey) {
@@ -140,11 +171,11 @@
       const node = figma.currentPage.selection[0];
       let detail;
       if (node && node.type === "INSTANCE") {
-        detail = await insertIntoInstance(node, name, propKey);
+        detail = await insertIntoInstance(node, name, propKey, fontName);
       } else if (node && node.type === "TEXT") {
         const propRef = (_a = node.componentPropertyReferences) == null ? void 0 : _a.characters;
         const instance = propRef ? findAncestorInstance(node) : null;
-        detail = propRef && instance ? await insertIntoInstance(instance, name, propRef) : await insertIntoTextNode(node, name, fontName);
+        detail = propRef && instance ? await insertIntoInstance(instance, name, propRef, fontName) : await insertIntoTextNode(node, name, fontName);
       } else {
         detail = await insertAsNewLayer(name, fontName);
       }
