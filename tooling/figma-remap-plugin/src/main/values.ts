@@ -60,6 +60,19 @@ export async function getCollectionCached(
   return collectionCache.get(id) ?? null;
 }
 
+/**
+ * `variable.variableCollectionId` can throw when the variable was deleted /
+ * is stale after library churn. Never let that abort Apply.
+ */
+export function safeVariableCollectionId(variable: Variable): string | null {
+  try {
+    const id = variable.variableCollectionId;
+    return typeof id === "string" && id ? id : null;
+  } catch {
+    return null;
+  }
+}
+
 async function resolveRaw(
   variable: Variable,
   modeId: string,
@@ -73,7 +86,9 @@ async function resolveRaw(
 
   const target = await getVariableCached(value.id);
   if (!target) return null;
-  const targetCollection = await getCollectionCached(target.variableCollectionId);
+  const collectionId = safeVariableCollectionId(target);
+  if (!collectionId) return null;
+  const targetCollection = await getCollectionCached(collectionId);
   if (!targetCollection) return null;
   const preferred =
     targetCollection.modes.find(

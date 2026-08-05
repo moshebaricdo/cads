@@ -9,9 +9,32 @@ import type {
   AuditResult,
   UsageRef,
 } from "../shared/messages";
-import { getCollectionCached } from "./values";
+import { getCollectionCached, safeVariableCollectionId } from "./values";
 
 const nodeCache = new Map<string, SceneNode | null>();
+
+/** Per-corner fields — audit stores one usage/node, apply expands to matches. */
+const RADIUS_FIELDS = [
+  "topLeftRadius",
+  "topRightRadius",
+  "bottomLeftRadius",
+  "bottomRightRadius",
+] as const;
+
+type RadiusField = (typeof RADIUS_FIELDS)[number];
+
+function isRadiusField(field: string): field is RadiusField {
+  return (RADIUS_FIELDS as readonly string[]).includes(field);
+}
+
+function isAliasLike(value: unknown): value is VariableAlias {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    (value as VariableAlias).type === "VARIABLE_ALIAS" &&
+    typeof (value as VariableAlias).id === "string"
+  );
+}
 
 async function getNode(id: string): Promise<SceneNode | null> {
   if (!nodeCache.has(id)) {
@@ -22,6 +45,55 @@ async function getNode(id: string): Promise<SceneNode | null> {
     }
   }
   return nodeCache.get(id) ?? null;
+}
+
+type BindableNode = SceneNode & {
+  setBoundVariable: (field: string, variable: Variable) => void;
+  boundVariables?: Record<string, unknown>;
+};
+
+/**
+ * Audit records one radius usage per node. At apply time, rebind every corner
+ * on that layer that still matches the audited source (same bound variable, or
+ * same unbound px). Corners with other values (e.g. 0) stay untouched.
+ */
+function rebindRadiusCorners(
+  node: BindableNode,
+  auditedField: RadiusField,
+  variable: Variable,
+): void {
+  const record = node as unknown as Record<string, unknown>;
+  const bound = node.boundVariables ?? {};
+  const auditedAlias = bound[auditedField];
+  const fieldsToBind: RadiusField[] = [];
+
+  if (isAliasLike(auditedAlias)) {
+    for (const field of RADIUS_FIELDS) {
+      const alias = bound[field];
+      if (isAliasLike(alias) && alias.id === auditedAlias.id) {
+        fieldsToBind.push(field);
+      }
+    }
+  } else {
+    const sourceValue = record[auditedField];
+    if (typeof sourceValue !== "number") {
+      fieldsToBind.push(auditedField);
+    } else {
+      for (const field of RADIUS_FIELDS) {
+        if (record[field] !== sourceValue) continue;
+        // Leave corners already bound to a different variable alone.
+        if (isAliasLike(bound[field])) continue;
+        fieldsToBind.push(field);
+      }
+    }
+  }
+
+  if (fieldsToBind.length === 0) {
+    fieldsToBind.push(auditedField);
+  }
+  for (const field of fieldsToBind) {
+    node.setBoundVariable(field, variable);
+  }
 }
 
 async function rebindUsage(usage: UsageRef, variable: Variable): Promise<void> {
@@ -68,9 +140,12 @@ async function rebindUsage(usage: UsageRef, variable: Variable): Promise<void> {
   if (usage.prop.kind !== "field") {
     throw new Error("text style usages must be applied via a style mapping");
   }
-  (node as SceneNode & {
-    setBoundVariable: (field: string, variable: Variable) => void;
-  }).setBoundVariable(usage.prop.field, variable);
+  const bindable = node as BindableNode;
+  if (isRadiusField(usage.prop.field)) {
+    rebindRadiusCorners(bindable, usage.prop.field, variable);
+    return;
+  }
+  bindable.setBoundVariable(usage.prop.field, variable);
 }
 
 async function applyTextStyle(usage: UsageRef, style: TextStyle): Promise<void> {
@@ -181,16 +256,19 @@ export async function applyMappings(
     // Find the imported collection matching the requested collection key.
     let targetCollection: VariableCollection | null = null;
     for (const variable of importedByKey.values()) {
-      const collection = await getCollectionCached(variable.variableCollectionId);
+      const collectionId = safeVariableCollectionId(variable);
+      if (!collectionId) continue;
+      const collection = await getCollectionCached(collectionId);
       if (collection && collection.key === request.setMode.collectionKey) {
         targetCollection = collection;
         break;
       }
     }
     if (!targetCollection && anyImported) {
-      targetCollection = await getCollectionCached(
-        anyImported.variableCollectionId,
-      );
+      const fallbackId = safeVariableCollectionId(anyImported);
+      if (fallbackId) {
+        targetCollection = await getCollectionCached(fallbackId);
+      }
     }
     const modeName = request.setMode.modeName;
     const mode = targetCollection?.modes.find((m) => m.name === modeName);
@@ -252,5 +330,12 @@ export async function applyMappings(
     }
   }
 
-  return { usagesRebound, variablesRemapped, modesSet, modesCleared, failures };
+  return {
+    usagesRebound,
+    variablesRemapped,
+    componentsSwapped: 0,
+    modesSet,
+    modesCleared,
+    failures,
+  };
 }

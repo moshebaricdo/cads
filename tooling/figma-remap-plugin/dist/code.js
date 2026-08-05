@@ -18,6 +18,18 @@
     return a;
   };
   var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+  var __objRest = (source, exclude) => {
+    var target = {};
+    for (var prop in source)
+      if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+        target[prop] = source[prop];
+    if (source != null && __getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(source)) {
+        if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+          target[prop] = source[prop];
+      }
+    return target;
+  };
 
   // src/shared/messages.ts
   var EMPTY_SETTINGS = {
@@ -177,6 +189,14 @@
     }
     return (_a = collectionCache.get(id)) != null ? _a : null;
   }
+  function safeVariableCollectionId(variable) {
+    try {
+      const id = variable.variableCollectionId;
+      return typeof id === "string" && id ? id : null;
+    } catch (e) {
+      return null;
+    }
+  }
   async function resolveRaw(variable, modeId, modeName, depth) {
     var _a;
     if (depth > 8) return null;
@@ -185,7 +205,9 @@
     if (!isAlias(value)) return value;
     const target = await getVariableCached(value.id);
     if (!target) return null;
-    const targetCollection = await getCollectionCached(target.variableCollectionId);
+    const collectionId = safeVariableCollectionId(target);
+    if (!collectionId) return null;
+    const targetCollection = await getCollectionCached(collectionId);
     if (!targetCollection) return null;
     const preferred = (_a = targetCollection.modes.find(
       (m) => m.name.toLowerCase() === modeName.toLowerCase()
@@ -206,67 +228,726 @@
 
   // src/data/cadsTextStyles.ts
   var bakedTextStyles = [
-    { name: "Heading/H1/Bold", key: "936275bca7e31fcfad3aba20d6dcacb1e84a39d0" },
-    { name: "Heading/H1/Semi Bold", key: "eeb8780a5f3b4e44b1d476dab09a923f74e8b85a" },
-    { name: "Heading/H1/Regular", key: "36e0a0364f9c0864b207ab218fed4d70faa77805" },
-    { name: "Heading/H2/Bold", key: "ee4a41c8ef2f03dc6fa1fb90fdd9c6c053983e3e" },
-    { name: "Heading/H2/Semi Bold", key: "4859ddaef7ab555451a01831fc85be40e955e12f" },
-    { name: "Heading/H2/Regular", key: "a29cc53643fd93332025892ae7e5b633977a18a0" },
-    { name: "Heading/H3/Bold", key: "91de6a70a40e86cb439b8053b4ab3ef19c2d9282" },
-    { name: "Heading/H3/Semi Bold", key: "aa56723a3e2910f2d17040c823d1742dd35d312a" },
-    { name: "Heading/H3/Regular", key: "e513f6907d4000066d236547be3396042aa91e0d" },
-    { name: "Heading/H4/Bold", key: "354aff496e2178600cb77ac80680f47e03b459fc" },
-    { name: "Heading/H4/Semi Bold", key: "e3379936dabc9f7ecb3ec78a0f293cb1b9b667c0" },
-    { name: "Heading/H4/Regular", key: "9a38933ce643083080aec0de36c48805151ee56f" },
-    { name: "Heading/H5/Bold", key: "25457cea42ad27b27257a9df323afbec5e7287f7" },
-    { name: "Heading/H5/Semi Bold", key: "509bc8bc8825196715b7494d188a0ff36c7a09fe" },
-    { name: "Heading/H5/Regular", key: "9b2f63202457c8cf0e0fc54b17f6780c36815ddb" },
-    { name: "Heading/H6/Bold", key: "742f9cb42298d3ff17411016f56aea4586b6e9f6" },
-    { name: "Heading/H6/Semi Bold", key: "c750a284d17da1e7717eaf3492a2697fc6060d47" },
-    { name: "Heading/H6/Regular", key: "5bab8fa17cbbdb8c7691b35b149f7d0606072ccc" },
-    { name: "Body/Body 1/Bold", key: "d24f45b078c7b991bb846d53f5aac5e8736b0470" },
-    { name: "Body/Body 1/Semi Bold", key: "bd41dcde8355282c93c91e3cab2c02d3d92790d9" },
-    { name: "Body/Body 1/Medium", key: "2bcd6d624069a2f1f390e99528e62b8d3c49e253" },
-    { name: "Body/Body 1/Regular", key: "01088fd0d3bb6d67baf9deec532326c3d93563f1" },
-    { name: "Body/Body 2/Bold", key: "52364c4caf5b56d26b269538cf8446981a8b63aa" },
-    { name: "Body/Body 2/Semi Bold", key: "e001af2a0bdaf201dedd5dd568ba920e3d189c27" },
-    { name: "Body/Body 2/Regular", key: "710f3598e4bad0482f28fc1d16098dc7c2f21760" },
-    { name: "Body/Body 3/Bold", key: "616ebf11fc8918de70450eea30afd6a61a3ca822" },
-    { name: "Body/Body 3/Semi Bold", key: "71da1c2a8606f1e3e2e9f5961aa3eec6f1b02601" },
-    { name: "Body/Body 3/Regular", key: "e5518262333dab367830a5a016af98f330963e02" },
-    { name: "Body/Body 4/Bold", key: "bd980d39eb7c9e2e7efd776fe6399027669f65b9" },
-    { name: "Body/Body 4/Semi Bold", key: "4ba37196725defc9d706ac74682ed276b1beff33" },
-    { name: "Body/Body 4/Regular", key: "d1b1e768bb3b7c02901ec3420f2027a880107617" },
-    { name: "Body/Body 5/Bold", key: "03d228e7a51cd6be106a7ea841b14e9c1dbac101" },
-    { name: "Body/Body 5/Semi Bold", key: "7237176ce7f48a12615b2121cd64f4af4a82ea29" },
-    { name: "Body/Body 5/Regular", key: "c003c38c50e105d4b5cf9880a6d394bb38054979" },
-    { name: "Overline/Overline 1", key: "975152cd057fa073f9c6477c148c63aa24a1b30d" },
-    { name: "Overline/Overline 2", key: "2040e6bce25742ecba0d5793a3ef057175e2f87a" },
-    { name: "Overline/Overline 3", key: "5b770b696b963399ffb7eab39ec31c29845ec870" },
-    { name: "Link/Link 1", key: "6d900fefb3dcfbe6cf7f3a59f13ea0372d223eb9" },
-    { name: "Link/Link 2", key: "0fd1876852152c84a4c877ecbba3d6d2d84a3f72" },
-    { name: "Link/Link 3", key: "bf84c7488010bf79e185b4b20570cfec19c3e85f" },
-    { name: "Link/Link 4", key: "c02a248fa1df7d283036b4455c2bd927c0f2a827" },
-    { name: "Link/Link 5", key: "beb95c9d77ba0d60e4bf4460fccf29ef07df2766" },
-    { name: "Label/Label 1", key: "fe2c80bbc480ade00a6f96b78eb9bab9a6e99d0a" },
-    { name: "Label/Label 2", key: "4ab9224934eb0971c2d8f3ee6e3afa96884350cc" },
-    { name: "Label/Label 3", key: "a10cfc3a7f9fd8a5d48d542ce15f1731178a2b96" },
-    { name: "Label/Label 4", key: "abeb47e031721ba87b6f02dacb97cf134d6ec679" },
-    { name: "Mono/Mono 1/Bold", key: "ac4881d7168dda5130f0b32986b5825d67e9dede" },
-    { name: "Mono/Mono 1/Semi Bold", key: "a22bc52ca9cb217d46632f0adb45014e49aa741b" },
-    { name: "Mono/Mono 1/Regular", key: "73fb0fcdf6523657b059a6a817fd9bd9738afdac" },
-    { name: "Mono/Mono 2/Bold", key: "2a0c58da534f6729be26b1ab3aa9292953ab1a3d" },
-    { name: "Mono/Mono 2/Semi Bold", key: "33179c970fb0137403651d4337a9ce6ac145c6a9" },
-    { name: "Mono/Mono 2/Regular", key: "70f524e3583cd925a4f568867ce45b518ee6554e" },
-    { name: "Mono/Mono 3/Bold", key: "2c41ba0c03e7ff8276da8bbe0708470fd4060a19" },
-    { name: "Mono/Mono 3/Semi Bold", key: "f812668bf29f513096ba7b2aea6c18b5dc53bf7b" },
-    { name: "Mono/Mono 3/Regular", key: "f70b9597f25d6788360e55f7f8a92b3ac86d5a04" },
-    { name: "Mono/Mono 4/Bold", key: "5aecda1875c7deb6d23419745912b0544d66a12a" },
-    { name: "Mono/Mono 4/Semi Bold", key: "699bbc87b7931f42cee5a83677270242e4c45b3e" },
-    { name: "Mono/Mono 4/Regular", key: "fd118029c9d5a04d0edd96b8a5620397ea2a76c8" },
-    { name: "Mono/Mono 5/Bold", key: "dd8525c07de2f6943c82b6aa35d98e32d47de6c5" },
-    { name: "Mono/Mono 5/Semi Bold", key: "c3dc3744760afef7dc1abb6d8b82eae7f5392eca" },
-    { name: "Mono/Mono 5/Regular", key: "873b38e48e5381d9b5656e5b6e948f3d97a6f63c" }
+    {
+      "key": "936275bca7e31fcfad3aba20d6dcacb1e84a39d0",
+      "name": "Heading/H1/Bold",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "Bold",
+        "size": "48",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "52px"
+      }
+    },
+    {
+      "key": "36e0a0364f9c0864b207ab218fed4d70faa77805",
+      "name": "Heading/H1/Regular",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "Regular",
+        "size": "48",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "52px"
+      }
+    },
+    {
+      "key": "eeb8780a5f3b4e44b1d476dab09a923f74e8b85a",
+      "name": "Heading/H1/Semi Bold",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "SemiBold",
+        "size": "48",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "52px"
+      }
+    },
+    {
+      "key": "ee4a41c8ef2f03dc6fa1fb90fdd9c6c053983e3e",
+      "name": "Heading/H2/Bold",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "Bold",
+        "size": "38",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "40px"
+      }
+    },
+    {
+      "key": "a29cc53643fd93332025892ae7e5b633977a18a0",
+      "name": "Heading/H2/Regular",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "Regular",
+        "size": "38",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "40px"
+      }
+    },
+    {
+      "key": "4859ddaef7ab555451a01831fc85be40e955e12f",
+      "name": "Heading/H2/Semi Bold",
+      "values": {
+        "family": "Space Grotesk",
+        "weight": "SemiBold",
+        "size": "38",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "40px"
+      }
+    },
+    {
+      "key": "91de6a70a40e86cb439b8053b4ab3ef19c2d9282",
+      "name": "Heading/H3/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "28",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "36px"
+      }
+    },
+    {
+      "key": "e513f6907d4000066d236547be3396042aa91e0d",
+      "name": "Heading/H3/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "28",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "36px"
+      }
+    },
+    {
+      "key": "aa56723a3e2910f2d17040c823d1742dd35d312a",
+      "name": "Heading/H3/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "28",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "36px"
+      }
+    },
+    {
+      "key": "354aff496e2178600cb77ac80680f47e03b459fc",
+      "name": "Heading/H4/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "24",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "32px"
+      }
+    },
+    {
+      "key": "9a38933ce643083080aec0de36c48805151ee56f",
+      "name": "Heading/H4/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "24",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "32px"
+      }
+    },
+    {
+      "key": "e3379936dabc9f7ecb3ec78a0f293cb1b9b667c0",
+      "name": "Heading/H4/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "24",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "32px"
+      }
+    },
+    {
+      "key": "25457cea42ad27b27257a9df323afbec5e7287f7",
+      "name": "Heading/H5/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "22",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "30px"
+      }
+    },
+    {
+      "key": "9b2f63202457c8cf0e0fc54b17f6780c36815ddb",
+      "name": "Heading/H5/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "22",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "30px"
+      }
+    },
+    {
+      "key": "509bc8bc8825196715b7494d188a0ff36c7a09fe",
+      "name": "Heading/H5/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "22",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "30px"
+      }
+    },
+    {
+      "key": "742f9cb42298d3ff17411016f56aea4586b6e9f6",
+      "name": "Heading/H6/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "20",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "5bab8fa17cbbdb8c7691b35b149f7d0606072ccc",
+      "name": "Heading/H6/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "20",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "c750a284d17da1e7717eaf3492a2697fc6060d47",
+      "name": "Heading/H6/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "20",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "d24f45b078c7b991bb846d53f5aac5e8736b0470",
+      "name": "Body/Body 1/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "01088fd0d3bb6d67baf9deec532326c3d93563f1",
+      "name": "Body/Body 1/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "bd41dcde8355282c93c91e3cab2c02d3d92790d9",
+      "name": "Body/Body 1/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "52364c4caf5b56d26b269538cf8446981a8b63aa",
+      "name": "Body/Body 2/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "710f3598e4bad0482f28fc1d16098dc7c2f21760",
+      "name": "Body/Body 2/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "e001af2a0bdaf201dedd5dd568ba920e3d189c27",
+      "name": "Body/Body 2/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "616ebf11fc8918de70450eea30afd6a61a3ca822",
+      "name": "Body/Body 3/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "e5518262333dab367830a5a016af98f330963e02",
+      "name": "Body/Body 3/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "71da1c2a8606f1e3e2e9f5961aa3eec6f1b02601",
+      "name": "Body/Body 3/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "bd980d39eb7c9e2e7efd776fe6399027669f65b9",
+      "name": "Body/Body 4/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "d1b1e768bb3b7c02901ec3420f2027a880107617",
+      "name": "Body/Body 4/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "4ba37196725defc9d706ac74682ed276b1beff33",
+      "name": "Body/Body 4/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "03d228e7a51cd6be106a7ea841b14e9c1dbac101",
+      "name": "Body/Body 5/Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "Bold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "c003c38c50e105d4b5cf9880a6d394bb38054979",
+      "name": "Body/Body 5/Regular",
+      "values": {
+        "family": "Geist",
+        "weight": "Regular",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "7237176ce7f48a12615b2121cd64f4af4a82ea29",
+      "name": "Body/Body 5/Semi Bold",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "975152cd057fa073f9c6477c148c63aa24a1b30d",
+      "name": "Overline/Overline 1",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "14",
+        "textCase": "UPPER",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "2040e6bce25742ecba0d5793a3ef057175e2f87a",
+      "name": "Overline/Overline 2",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "12",
+        "textCase": "UPPER",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "5b770b696b963399ffb7eab39ec31c29845ec870",
+      "name": "Overline/Overline 3",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "10",
+        "textCase": "UPPER",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "6d900fefb3dcfbe6cf7f3a59f13ea0372d223eb9",
+      "name": "Link/Link 1",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "UNDERLINE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "0fd1876852152c84a4c877ecbba3d6d2d84a3f72",
+      "name": "Link/Link 2",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "UNDERLINE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "bf84c7488010bf79e185b4b20570cfec19c3e85f",
+      "name": "Link/Link 3",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "UNDERLINE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "c02a248fa1df7d283036b4455c2bd927c0f2a827",
+      "name": "Link/Link 4",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "UNDERLINE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "beb95c9d77ba0d60e4bf4460fccf29ef07df2766",
+      "name": "Link/Link 5",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "UNDERLINE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "fe2c80bbc480ade00a6f96b78eb9bab9a6e99d0a",
+      "name": "Label/Label 1",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "4ab9224934eb0971c2d8f3ee6e3afa96884350cc",
+      "name": "Label/Label 2",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "a10cfc3a7f9fd8a5d48d542ce15f1731178a2b96",
+      "name": "Label/Label 3",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "abeb47e031721ba87b6f02dacb97cf134d6ec679",
+      "name": "Label/Label 4",
+      "values": {
+        "family": "Geist",
+        "weight": "SemiBold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "ac4881d7168dda5130f0b32986b5825d67e9dede",
+      "name": "Mono/Mono 1/Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Bold",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "73fb0fcdf6523657b059a6a817fd9bd9738afdac",
+      "name": "Mono/Mono 1/Regular",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Regular",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "a22bc52ca9cb217d46632f0adb45014e49aa741b",
+      "name": "Mono/Mono 1/Semi Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "SemiBold",
+        "size": "18",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "28px"
+      }
+    },
+    {
+      "key": "2a0c58da534f6729be26b1ab3aa9292953ab1a3d",
+      "name": "Mono/Mono 2/Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Bold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "70f524e3583cd925a4f568867ce45b518ee6554e",
+      "name": "Mono/Mono 2/Regular",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Regular",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "33179c970fb0137403651d4337a9ce6ac145c6a9",
+      "name": "Mono/Mono 2/Semi Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "SemiBold",
+        "size": "16",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "24px"
+      }
+    },
+    {
+      "key": "2c41ba0c03e7ff8276da8bbe0708470fd4060a19",
+      "name": "Mono/Mono 3/Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Bold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "f70b9597f25d6788360e55f7f8a92b3ac86d5a04",
+      "name": "Mono/Mono 3/Regular",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Regular",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "f812668bf29f513096ba7b2aea6c18b5dc53bf7b",
+      "name": "Mono/Mono 3/Semi Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "SemiBold",
+        "size": "14",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "key": "5aecda1875c7deb6d23419745912b0544d66a12a",
+      "name": "Mono/Mono 4/Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Bold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "fd118029c9d5a04d0edd96b8a5620397ea2a76c8",
+      "name": "Mono/Mono 4/Regular",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Regular",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "699bbc87b7931f42cee5a83677270242e4c45b3e",
+      "name": "Mono/Mono 4/Semi Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "SemiBold",
+        "size": "12",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "18px"
+      }
+    },
+    {
+      "key": "dd8525c07de2f6943c82b6aa35d98e32d47de6c5",
+      "name": "Mono/Mono 5/Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Bold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "873b38e48e5381d9b5656e5b6e948f3d97a6f63c",
+      "name": "Mono/Mono 5/Regular",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "Regular",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    },
+    {
+      "key": "c3dc3744760afef7dc1abb6d8b82eae7f5392eca",
+      "name": "Mono/Mono 5/Semi Bold",
+      "values": {
+        "family": "Google Sans Code",
+        "weight": "SemiBold",
+        "size": "10",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE",
+        "lineHeight": "16px"
+      }
+    }
   ];
 
   // src/main/styles.ts
@@ -274,7 +955,9 @@
     const values = {
       family: style.fontName.family,
       weight: style.fontName.style,
-      size: String(style.fontSize)
+      size: String(style.fontSize),
+      textCase: style.textCase,
+      textDecoration: style.textDecoration
     };
     const lh = style.lineHeight;
     if (lh.unit === "PIXELS") values.lineHeight = `${lh.value}px`;
@@ -288,10 +971,28 @@
     const known = (_a = captured == null ? void 0 : captured.styles) != null ? _a : bakedTextStyles;
     const textStyles = [];
     const importedByKey = /* @__PURE__ */ new Map();
-    let done = 0;
-    onProgress(0, known.length);
+    const withValues = known.filter(
+      (entry) => Boolean(entry.values && Object.keys(entry.values).length > 0)
+    );
+    const needsImport = known.filter(
+      (entry) => !(entry.values && Object.keys(entry.values).length > 0)
+    );
+    for (const entry of withValues) {
+      textStyles.push({
+        key: entry.key,
+        name: entry.name,
+        values: entry.values
+      });
+    }
+    if (needsImport.length === 0) {
+      onProgress(known.length, known.length);
+      return { textStyles, importedByKey, source };
+    }
+    let done = withValues.length;
+    const total = known.length;
+    onProgress(done, total);
     await new Promise((resolve) => setTimeout(resolve, 0));
-    for (const entry of known) {
+    for (const entry of needsImport) {
       try {
         const style = await figma.importStyleByKeyAsync(entry.key);
         if (style.type === "TEXT") {
@@ -305,12 +1006,13 @@
       } catch (e) {
       }
       done++;
-      if (done % 5 === 0 || done === known.length) {
-        onProgress(done, known.length);
+      if (done % 5 === 0 || done === total) {
+        onProgress(done, total);
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
     }
-    onProgress(known.length, known.length);
+    onProgress(total, total);
+    textStyles.sort((a, b) => a.name.localeCompare(b.name));
     return { textStyles, importedByKey, source };
   }
 
@@ -323,6 +1025,9 @@
       component.name
     ])
   );
+  function isFigmaComponentOutlineHex(hex) {
+    return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
+  }
   function isFontAwesomeFamily(family) {
     return /^font awesome\b/i.test(family.trim());
   }
@@ -354,6 +1059,162 @@
       current = current.parent;
     }
     return false;
+  }
+  function hexChroma(hex) {
+    const raw = hex.replace(/^#/, "").toLowerCase();
+    if (!/^[0-9a-f]{6}/.test(raw)) return 0;
+    const r = parseInt(raw.slice(0, 2), 16);
+    const g = parseInt(raw.slice(2, 4), 16);
+    const b = parseInt(raw.slice(4, 6), 16);
+    return Math.max(r, g, b) - Math.min(r, g, b);
+  }
+  function parseHexRgb(hex) {
+    const raw = hex.replace(/^#/, "").toLowerCase();
+    if (!/^[0-9a-f]{6}/.test(raw)) return null;
+    return {
+      r: parseInt(raw.slice(0, 2), 16),
+      g: parseInt(raw.slice(2, 4), 16),
+      b: parseInt(raw.slice(4, 6), 16)
+    };
+  }
+  function hexLuminance(hex) {
+    const rgb = parseHexRgb(hex);
+    if (!rgb) return null;
+    const channel = (c) => {
+      const s = c / 255;
+      return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b);
+  }
+  function isNeutralDarkHex(hex) {
+    const lum = hexLuminance(hex);
+    return lum != null && lum < 0.22 && hexChroma(hex) < 45;
+  }
+  function isNeutralLightHex(hex) {
+    const lum = hexLuminance(hex);
+    return lum != null && lum > 0.75 && hexChroma(hex) < 45;
+  }
+  function isNearWhiteHex(hex) {
+    const rgb = parseHexRgb(hex);
+    return !!rgb && rgb.r >= 245 && rgb.g >= 245 && rgb.b >= 245;
+  }
+  function isNearBlackHex(hex) {
+    const rgb = parseHexRgb(hex);
+    return !!rgb && rgb.r <= 50 && rgb.g <= 50 && rgb.b <= 55;
+  }
+  function firstColorHex(values) {
+    for (const value of Object.values(values)) {
+      if (parseHexRgb(value)) return value;
+    }
+    return null;
+  }
+  function inferColorThemeAssumption(colorModeName, selection, colorEntries, paintStyles, rawPaints) {
+    var _a, _b;
+    if (colorModeName && /^dark$/i.test(colorModeName.trim())) {
+      return { colorThemeAssumption: "dark", manualDarkMode: false };
+    }
+    let darkBg = 0;
+    let lightBg = 0;
+    let whiteText = 0;
+    let blackText = 0;
+    let visiblePaintUsages = 0;
+    let darkStyleBoost = 0;
+    const countHexUsages = (hex, usages) => {
+      for (const usage of usages) {
+        if (usage.hidden) continue;
+        if (usage.prop.kind !== "paint" || usage.prop.property !== "fills") {
+          continue;
+        }
+        visiblePaintUsages++;
+        if (usage.nodeType === "TEXT") {
+          if (isNearWhiteHex(hex)) whiteText++;
+          else if (isNearBlackHex(hex)) blackText++;
+          continue;
+        }
+        if (isNeutralDarkHex(hex)) darkBg++;
+        else if (isNeutralLightHex(hex)) lightBg++;
+      }
+    };
+    for (const entry of colorEntries) {
+      if (entry.resolvedType !== "COLOR") continue;
+      const hex = firstColorHex(entry.values);
+      if (hex) countHexUsages(hex, entry.usages);
+    }
+    for (const style of paintStyles) {
+      countHexUsages(style.hex, style.usages);
+      if (/^dark\//i.test(style.name.trim())) darkStyleBoost++;
+    }
+    for (const raw of rawPaints) {
+      countHexUsages(raw.hex, raw.usages);
+    }
+    let rootDark = 0;
+    let rootLight = 0;
+    for (const root of selection) {
+      if (!("fills" in root)) continue;
+      const fills = root.fills;
+      if (!Array.isArray(fills)) continue;
+      for (let i = fills.length - 1; i >= 0; i--) {
+        const paint = fills[i];
+        if (paint.type !== "SOLID" || paint.visible === false) continue;
+        if (((_a = paint.opacity) != null ? _a : 1) < 0.08) continue;
+        const hex = rgbaToHex(__spreadProps(__spreadValues({}, paint.color), { a: (_b = paint.opacity) != null ? _b : 1 }));
+        if (isNeutralDarkHex(hex)) rootDark++;
+        else if (isNeutralLightHex(hex)) rootLight++;
+        break;
+      }
+    }
+    const rootsLookDark = rootDark > 0 && rootDark >= rootLight;
+    const bgTotal = darkBg + lightBg;
+    const textTotal = whiteText + blackText;
+    const darkBgRatio = bgTotal > 0 ? darkBg / bgTotal : 0;
+    const whiteTextDominates = textTotal > 0 && whiteText > blackText;
+    const densityHit = visiblePaintUsages >= 8 && bgTotal >= 3 && textTotal >= 2 && darkBgRatio >= 0.65 && whiteTextDominates;
+    const rootBoostHit = rootsLookDark && visiblePaintUsages >= 6 && bgTotal >= 2 && darkBgRatio >= 0.5 && whiteTextDominates;
+    const styleBoostHit = darkStyleBoost >= 4 && darkBgRatio >= 0.5 && whiteTextDominates && visiblePaintUsages >= 6;
+    if (densityHit || rootBoostHit || styleBoostHit) {
+      return { colorThemeAssumption: "dark", manualDarkMode: true };
+    }
+    return { colorThemeAssumption: "light", manualDarkMode: false };
+  }
+  function classifyColorNameBackdrop(name) {
+    const n = name.toLowerCase().replace(/\\/g, "/");
+    if (/neutral|disabled|alpha|black-fixed|white-fixed|true-base|placeholder/.test(
+      n
+    )) {
+      return "neutral";
+    }
+    if (/(^|\/)(brand|accent|error|warning|success|info|selected)(\/|$)/.test(n) || /(^|\/)(aqua|teal|purple|orange|pink|strawberry|affirmative|caution)(\/|$)/.test(
+      n
+    )) {
+      return "chromatic";
+    }
+    return null;
+  }
+  function classifyStyleNameBackdrop(styleName) {
+    const parts = styleName.split("/").map((p) => p.trim().toLowerCase()).filter(Boolean);
+    if (parts.length < 2) return null;
+    const family = parts[1];
+    if (family === "gray" || family === "black" || family === "white" || family === "neutral") {
+      return "neutral";
+    }
+    if ([
+      "aqua",
+      "teal",
+      "purple",
+      "orange",
+      "pink",
+      "strawberry",
+      "affirmative",
+      "caution",
+      "info",
+      "brand",
+      "error",
+      "warning",
+      "success"
+    ].includes(family)) {
+      return "chromatic";
+    }
+    return null;
   }
   function hasComponentAncestor(node) {
     let current = node.parent;
@@ -462,6 +1323,74 @@
       }
       return (_a2 = paintStyleCache.get(styleId)) != null ? _a2 : null;
     }
+    async function classifySolidPaint(paint, host) {
+      var _a2, _b2, _c;
+      if (paint.type !== "SOLID" || paint.visible === false) return null;
+      if (((_a2 = paint.opacity) != null ? _a2 : 1) < 0.08) return null;
+      const alias = (_b2 = paint.boundVariables) == null ? void 0 : _b2.color;
+      if (alias && isAliasLike(alias)) {
+        try {
+          const variable = await getVariableCached(alias.id);
+          if (variable) {
+            const byName = classifyColorNameBackdrop(variable.name);
+            if (byName) return byName;
+          }
+        } catch (e) {
+        }
+      }
+      const styleId = host.fillStyleId;
+      if (typeof styleId === "string" && styleId) {
+        const style = await getPaintStyle(styleId);
+        if (style) {
+          const byStyle = classifyStyleNameBackdrop(style.name);
+          if (byStyle) return byStyle;
+        }
+      }
+      const hex = rgbaToHex(__spreadProps(__spreadValues({}, paint.color), {
+        a: (_c = paint.opacity) != null ? _c : 1
+      }));
+      return hexChroma(hex) >= 28 ? "chromatic" : "neutral";
+    }
+    async function classifyBackdrop(node, property, index) {
+      if ("fills" in node) {
+        const fills = node.fills;
+        if (Array.isArray(fills)) {
+          const start = property === "fills" ? index - 1 : fills.length - 1;
+          for (let i = start; i >= 0; i--) {
+            const kind = await classifySolidPaint(fills[i], node);
+            if (kind) return kind;
+          }
+        }
+      }
+      let current = node.parent;
+      while (current && current.type !== "PAGE" && current.type !== "DOCUMENT") {
+        if ("fills" in current) {
+          const fills = current.fills;
+          if (Array.isArray(fills)) {
+            for (let i = fills.length - 1; i >= 0; i--) {
+              const kind = await classifySolidPaint(
+                fills[i],
+                current
+              );
+              if (kind) return kind;
+            }
+          }
+        }
+        current = current.parent;
+      }
+      return "unknown";
+    }
+    async function paintUsage(node, property, index, inInstance) {
+      return {
+        nodeId: node.id,
+        nodeName: node.name,
+        nodeType: node.type,
+        prop: { kind: "paint", property, index },
+        inInstance,
+        hidden: isEffectivelyHidden(node),
+        backdrop: await classifyBackdrop(node, property, index)
+      };
+    }
     async function visitText(node) {
       const usage = {
         nodeId: node.id,
@@ -553,6 +1482,10 @@
         else if (lh.unit === "PERCENT") values.lineHeight = `${Math.round(lh.value)}%`;
         else values.lineHeight = "auto";
       }
+      if (node.textCase !== figma.mixed) values.textCase = String(node.textCase);
+      if (node.textDecoration !== figma.mixed) {
+        values.textDecoration = String(node.textDecoration);
+      }
       rawTexts.set(id, {
         id,
         label: `${font.family} ${font.style} ${size}`,
@@ -560,7 +1493,7 @@
         usages: [usage]
       });
     }
-    async function recordVariableUsage(variableId, usage) {
+    async function recordVariableUsage(variableId, usage, appliedRadius) {
       var _a2, _b2;
       const id = `var:${variableId}`;
       const existing = entries.get(id);
@@ -569,6 +1502,9 @@
         if (isRadiusUsage(usage)) {
           if (existing.flag !== "shapeVariable") existing.usages = [];
           existing.flag = "shapeVariable";
+          if (existing.value === void 0 && appliedRadius !== void 0 && appliedRadius > 0) {
+            existing.value = appliedRadius;
+          }
           if (existing.usages.some(
             (existingUsage) => existingUsage.nodeId === usage.nodeId
           )) {
@@ -586,8 +1522,15 @@
         return;
       }
       const variable = await getVariableCached(variableId);
-      if (!variable) return;
-      const collection = await getCollectionCached(variable.variableCollectionId);
+      if (!variable) {
+        if (isRadiusUsage(usage) && appliedRadius !== void 0 && appliedRadius > 0) {
+          recordRawRadius(appliedRadius, usage);
+        }
+        return;
+      }
+      const collectionId = safeVariableCollectionId(variable);
+      if (!collectionId) return;
+      const collection = await getCollectionCached(collectionId);
       const libraryName = variable.remote ? (_a2 = collection && libraryByCollectionKey.get(collection.key)) != null ? _a2 : UNKNOWN_LIBRARY : LOCAL_LIBRARY;
       const collectionName = (_b2 = collection == null ? void 0 : collection.name) != null ? _b2 : "?";
       const isSourceOfTruth = sotLibraryName2 !== null && libraryName === sotLibraryName2;
@@ -619,17 +1562,21 @@
         values: collection ? await resolveDisplayValues(variable, collection) : {},
         usages: [usage]
       };
+      if (flag === "shapeVariable" && appliedRadius !== void 0 && appliedRadius > 0) {
+        entry.value = appliedRadius;
+      }
       entries.set(id, entry);
       recordVariableCompliance(entry, usage.hidden);
     }
     function recordRawPaint(hex, usage) {
+      if (isFigmaComponentOutlineHex(hex)) return;
       const id = `hex:${hex}`;
       const existing = rawPaints.get(id);
       if (existing) existing.usages.push(usage);
       else rawPaints.set(id, { id, hex, usages: [usage] });
       recordCompliance(false, usage.hidden);
     }
-    async function visitPaints(node, property) {
+    async function visitPaints(node, property, inInstance = false) {
       var _a2, _b2, _c;
       if (!(property in node)) return;
       const paints = node[property];
@@ -647,14 +1594,9 @@
         );
         if (style && solidIndex >= 0) {
           const paint = paints[solidIndex];
-          const usage = {
-            nodeId: node.id,
-            nodeName: node.name,
-            nodeType: node.type,
-            prop: { kind: "paint", property, index: solidIndex },
-            inInstance: false,
-            hidden: isEffectivelyHidden(node)
-          };
+          const hex = rgbaToHex(__spreadProps(__spreadValues({}, paint.color), { a: (_a2 = paint.opacity) != null ? _a2 : 1 }));
+          if (isFigmaComponentOutlineHex(hex)) return;
+          const usage = await paintUsage(node, property, solidIndex, inInstance);
           const id = `paintStyle:${styleId}`;
           const existing = paintStyles.get(id);
           if (existing) existing.usages.push(usage);
@@ -663,7 +1605,7 @@
               id,
               styleId,
               name: style.name,
-              hex: rgbaToHex(__spreadProps(__spreadValues({}, paint.color), { a: (_a2 = paint.opacity) != null ? _a2 : 1 })),
+              hex,
               usages: [usage]
             });
           }
@@ -674,21 +1616,25 @@
       for (let index = 0; index < paints.length; index++) {
         const paint = paints[index];
         if (paint.type !== "SOLID" || paint.visible === false) continue;
-        const usage = {
-          nodeId: node.id,
-          nodeName: node.name,
-          nodeType: node.type,
-          prop: { kind: "paint", property, index },
-          inInstance: false,
-          hidden: isEffectivelyHidden(node)
-        };
+        const usage = await paintUsage(node, property, index, inInstance);
         const alias = (_b2 = paint.boundVariables) == null ? void 0 : _b2.color;
         if (alias && isAliasLike(alias)) {
           await recordVariableUsage(alias.id, usage);
         } else {
-          recordRawPaint(rgbaToHex(__spreadProps(__spreadValues({}, paint.color), { a: (_c = paint.opacity) != null ? _c : 1 })), usage);
+          recordRawPaint(
+            rgbaToHex(__spreadProps(__spreadValues({}, paint.color), { a: (_c = paint.opacity) != null ? _c : 1 })),
+            usage
+          );
         }
       }
+    }
+    function recordRawRadius(value, usage) {
+      if (!(value > 0)) return;
+      const id = `radius:${value}`;
+      const existing = rawRadii.get(id);
+      if (existing) existing.usages.push(usage);
+      else rawRadii.set(id, { id, label: `${value}px`, value, usages: [usage] });
+      recordCompliance(false, usage.hidden);
     }
     function visitRadii(node) {
       const record = node;
@@ -703,19 +1649,14 @@
         if (!unboundByValue.has(value)) unboundByValue.set(value, field);
       }
       for (const [value, field] of unboundByValue) {
-        const id = `radius:${value}`;
-        const usage = {
+        recordRawRadius(value, {
           nodeId: node.id,
           nodeName: node.name,
           nodeType: node.type,
           prop: { kind: "field", field },
           inInstance: false,
           hidden: isEffectivelyHidden(node)
-        };
-        const existing = rawRadii.get(id);
-        if (existing) existing.usages.push(usage);
-        else rawRadii.set(id, { id, label: `${value}px`, value, usages: [usage] });
-        recordCompliance(false, usage.hidden);
+        });
       }
     }
     async function visitInstance(node) {
@@ -782,8 +1723,8 @@
     async function visitSurfaceNode(node) {
       var _a2, _b2, _c;
       visitPossibleDetachedComponent(node);
-      await visitPaints(node, "fills");
-      await visitPaints(node, "strokes");
+      await visitPaints(node, "fills", false);
+      await visitPaints(node, "strokes", false);
       visitRadii(node);
       if (node.type === "TEXT") await visitText(node);
       if ("effects" in node && Array.isArray(node.effects)) {
@@ -804,18 +1745,24 @@
       }
       const bound = node.boundVariables;
       if (bound) {
+        const record = node;
         for (const field of Object.keys(bound)) {
           if (SKIP_FIELDS.has(field)) continue;
           const value = bound[field];
           if (!isAliasLike(value)) continue;
-          await recordVariableUsage(value.id, {
-            nodeId: node.id,
-            nodeName: node.name,
-            nodeType: node.type,
-            prop: { kind: "field", field },
-            inInstance: false,
-            hidden: isEffectivelyHidden(node)
-          });
+          const appliedRadius = RADIUS_FIELDS.includes(field) && typeof record[field] === "number" ? record[field] : void 0;
+          await recordVariableUsage(
+            value.id,
+            {
+              nodeId: node.id,
+              nodeName: node.name,
+              nodeType: node.type,
+              prop: { kind: "field", field },
+              inInstance: false,
+              hidden: isEffectivelyHidden(node)
+            },
+            appliedRadius
+          );
         }
       }
       if ("explicitVariableModes" in node) {
@@ -844,9 +1791,11 @@
         }
       }
     }
-    const stack = [...selection];
+    const stack = selection.map(
+      (node) => ({ node, inInstance: false })
+    );
     while (stack.length > 0) {
-      const node = stack.pop();
+      const { node, inInstance } = stack.pop();
       nodesScanned++;
       if (!isEffectivelyHidden(node)) visibleNodesScanned++;
       if (nodesScanned % 250 === 0) {
@@ -854,12 +1803,29 @@
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
       if (node.type === "INSTANCE") {
-        await visitInstance(node);
+        if (!inInstance) await visitInstance(node);
+        await visitPaints(node, "fills", true);
+        await visitPaints(node, "strokes", true);
+        for (const child of node.children) {
+          stack.push({ node: child, inInstance: true });
+        }
+        continue;
+      }
+      if (inInstance) {
+        await visitPaints(node, "fills", true);
+        await visitPaints(node, "strokes", true);
+        if ("children" in node) {
+          for (const child of node.children) {
+            stack.push({ node: child, inInstance: true });
+          }
+        }
         continue;
       }
       await visitSurfaceNode(node);
       if ("children" in node) {
-        for (const child of node.children) stack.push(child);
+        for (const child of node.children) {
+          stack.push({ node: child, inInstance: false });
+        }
       }
     }
     const resolvedRootModes = /* @__PURE__ */ new Set();
@@ -896,12 +1862,29 @@
         `${b.libraryName}/${b.collectionName}/${b.name}`
       )
     );
-    const findingTextStyles = Array.from(textStyles.values()).filter((s) => !s.isSourceOfTruth).sort((a, b) => a.name.localeCompare(b.name));
-    const findingRawTexts = Array.from(rawTexts.values()).sort(
-      (a, b) => b.usages.length - a.usages.length
-    );
+    const fontSizeKey = (values, label) => {
+      var _a2;
+      const fromSize = Number(String((_a2 = values.size) != null ? _a2 : "").replace(/px$/i, "").trim());
+      if (Number.isFinite(fromSize) && fromSize > 0) return fromSize;
+      const match = /(\d+(?:\.\d+)?)\s*(?:px)?\s*$/i.exec(label);
+      if (match) {
+        const n = Number(match[1]);
+        if (Number.isFinite(n) && n >= 6 && n <= 200) return n;
+      }
+      return Number.POSITIVE_INFINITY;
+    };
+    const byFontSize = (a, b) => {
+      var _a2, _b2, _c, _d;
+      const aLabel = (_b2 = (_a2 = a.name) != null ? _a2 : a.label) != null ? _b2 : "";
+      const bLabel = (_d = (_c = b.name) != null ? _c : b.label) != null ? _d : "";
+      const sizeDiff = fontSizeKey(a.values, aLabel) - fontSizeKey(b.values, bLabel);
+      if (sizeDiff !== 0) return sizeDiff;
+      return aLabel.localeCompare(bLabel);
+    };
+    const findingTextStyles = Array.from(textStyles.values()).filter((s) => !s.isSourceOfTruth).sort(byFontSize);
+    const findingRawTexts = Array.from(rawTexts.values()).sort(byFontSize);
     const findingFontAwesomeTexts = Array.from(fontAwesomeTexts.values()).sort(
-      (a, b) => b.usages.length - a.usages.length
+      byFontSize
     );
     const findingRawPaints = Array.from(rawPaints.values()).sort(
       (a, b) => b.usages.length - a.usages.length
@@ -963,10 +1946,19 @@
       totalFindings
     };
     const selectionLabel = selection.length === 1 ? selection[0].name : `${selection.length} selected layers`;
+    const theme = inferColorThemeAssumption(
+      colorModeName,
+      selection,
+      findingEntries,
+      findingPaintStyles,
+      findingRawPaints
+    );
     return {
       selectionLabel,
       rootNodeIds: selection.map((n) => n.id),
       colorModeName,
+      colorThemeAssumption: theme.colorThemeAssumption,
+      manualDarkMode: theme.manualDarkMode,
       nodesScanned: visibleNodesScanned,
       summary,
       entries: findingEntries,
@@ -984,7 +1976,162 @@
     };
   }
 
+  // src/data/cadsVariables.ts
+  var bakedVariablesFetchedAt = null;
+  var bakedVariableCollections = [];
+  var bakedVariables = [];
+
   // src/main/catalog.ts
+  var CACHE_KEY = "cads-variable-catalog-v1";
+  var IMPORT_CONCURRENCY = 24;
+  async function mapPool(items, concurrency, fn) {
+    const results = new Array(items.length);
+    let next = 0;
+    async function worker() {
+      while (next < items.length) {
+        const index = next++;
+        results[index] = await fn(items[index], index);
+      }
+    }
+    const workers = Array.from(
+      { length: Math.min(concurrency, Math.max(items.length, 1)) },
+      () => worker()
+    );
+    await Promise.all(workers);
+    return results;
+  }
+  function collectionSignature(collections) {
+    return collections.map((c) => `${c.key}:${c.variableCount}`).sort().join("|");
+  }
+  function fromBaked(libraryName) {
+    if (bakedVariables.length === 0 || bakedVariableCollections.length === 0) {
+      return null;
+    }
+    return {
+      catalog: {
+        libraryName,
+        collections: bakedVariableCollections,
+        variables: bakedVariables.map((entry) => ({
+          key: entry.key,
+          variableId: "",
+          name: entry.name,
+          resolvedType: entry.resolvedType,
+          collectionKey: entry.collectionKey,
+          collectionName: entry.collectionName,
+          values: entry.values
+        })),
+        textStyles: [],
+        textStyleSource: "none"
+      },
+      importedByKey: /* @__PURE__ */ new Map()
+    };
+  }
+  async function readCache(libraryName, signature) {
+    var _a, _b;
+    try {
+      const cached = await figma.clientStorage.getAsync(
+        CACHE_KEY
+      );
+      if (!cached || cached.libraryName !== libraryName || cached.signature !== signature || !((_b = (_a = cached.catalog) == null ? void 0 : _a.variables) == null ? void 0 : _b.length)) {
+        return null;
+      }
+      if (bakedVariablesFetchedAt && cached.fetchedAt && cached.fetchedAt < bakedVariablesFetchedAt) {
+        return null;
+      }
+      return {
+        catalog: __spreadProps(__spreadValues({}, cached.catalog), {
+          textStyles: [],
+          textStyleSource: "none"
+        }),
+        importedByKey: /* @__PURE__ */ new Map()
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+  async function writeCache(libraryName, signature, catalog) {
+    try {
+      const payload = {
+        fetchedAt: bakedVariablesFetchedAt,
+        libraryName,
+        signature,
+        catalog: __spreadProps(__spreadValues({}, catalog), {
+          textStyles: [],
+          textStyleSource: "none"
+        })
+      };
+      await figma.clientStorage.setAsync(CACHE_KEY, payload);
+    } catch (e) {
+    }
+  }
+  async function importCatalog(libraryName, collections, collectionVariables, onProgress) {
+    const jobs = [];
+    for (let i = 0; i < collections.length; i++) {
+      for (const libVar of collectionVariables[i]) {
+        jobs.push({ libVar, collection: collections[i] });
+      }
+    }
+    const total = jobs.length;
+    const variables = [];
+    const importedByKey = /* @__PURE__ */ new Map();
+    const modesByCollectionKey = /* @__PURE__ */ new Map();
+    let done = 0;
+    onProgress(0, total);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await mapPool(jobs, IMPORT_CONCURRENCY, async (job) => {
+      try {
+        const imported = await figma.variables.importVariableByKeyAsync(
+          job.libVar.key
+        );
+        importedByKey.set(job.libVar.key, imported);
+        const collectionId = safeVariableCollectionId(imported);
+        const importedCollection = collectionId ? await getCollectionCached(collectionId) : null;
+        if (importedCollection && !modesByCollectionKey.has(job.collection.key)) {
+          modesByCollectionKey.set(
+            job.collection.key,
+            importedCollection.modes.map((m) => m.name)
+          );
+        }
+        variables.push({
+          key: job.libVar.key,
+          variableId: imported.id,
+          name: imported.name,
+          resolvedType: imported.resolvedType,
+          collectionKey: job.collection.key,
+          collectionName: job.collection.name,
+          values: importedCollection ? await resolveDisplayValues(imported, importedCollection) : {}
+        });
+      } catch (e) {
+      } finally {
+        done++;
+        if (done % IMPORT_CONCURRENCY === 0 || done === total) {
+          onProgress(done, total);
+        }
+      }
+    });
+    onProgress(total, total);
+    const catalogCollections = collections.map(
+      (collection, i) => {
+        var _a;
+        return {
+          key: collection.key,
+          name: collection.name,
+          modes: (_a = modesByCollectionKey.get(collection.key)) != null ? _a : [],
+          variableCount: collectionVariables[i].length
+        };
+      }
+    );
+    return {
+      catalog: {
+        libraryName,
+        collections: catalogCollections,
+        variables,
+        textStyles: [],
+        textStyleSource: "none"
+      },
+      importedByKey
+    };
+  }
   async function buildCatalog(libraryName, onProgress) {
     const allCollections = await figma.teamLibrary.getAvailableLibraryVariableCollectionsAsync();
     const collections = allCollections.filter(
@@ -1000,68 +2147,53 @@
         (c) => figma.teamLibrary.getVariablesInLibraryCollectionAsync(c.key)
       )
     );
-    const total = collectionVariables.reduce((sum, v) => sum + v.length, 0);
-    const variables = [];
-    const importedByKey = /* @__PURE__ */ new Map();
-    const catalogCollections = [];
-    let done = 0;
-    onProgress(0, total);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    for (let i = 0; i < collections.length; i++) {
-      const collection = collections[i];
-      let modes = [];
-      for (const libVar of collectionVariables[i]) {
-        try {
-          const imported = await figma.variables.importVariableByKeyAsync(
-            libVar.key
-          );
-          importedByKey.set(libVar.key, imported);
-          const importedCollection = await getCollectionCached(
-            imported.variableCollectionId
-          );
-          if (importedCollection && modes.length === 0) {
-            modes = importedCollection.modes.map((m) => m.name);
-          }
-          variables.push({
-            key: libVar.key,
-            variableId: imported.id,
-            name: imported.name,
-            resolvedType: imported.resolvedType,
-            collectionKey: collection.key,
-            collectionName: collection.name,
-            values: importedCollection ? await resolveDisplayValues(imported, importedCollection) : {}
-          });
-        } catch (e) {
-        }
-        done++;
-        if (done % 5 === 0 || done === total) {
-          onProgress(done, total);
-          await new Promise((resolve) => setTimeout(resolve, 0));
-        }
-      }
-      catalogCollections.push({
-        key: collection.key,
-        name: collection.name,
-        modes,
+    const signature = collectionSignature(
+      collections.map((c, i) => ({
+        key: c.key,
         variableCount: collectionVariables[i].length
-      });
+      }))
+    );
+    const baked = fromBaked(libraryName);
+    if (baked) {
+      const bakedCount = baked.catalog.variables.length;
+      const liveCount = collectionVariables.reduce((sum, v) => sum + v.length, 0);
+      if (bakedCount > 0 && bakedCount >= liveCount * 0.9) {
+        onProgress(bakedCount, bakedCount);
+        return baked;
+      }
     }
-    onProgress(total, total);
-    return {
-      catalog: {
-        libraryName,
-        collections: catalogCollections,
-        variables,
-        // Text styles are merged in by code.ts from the style catalog.
-        textStyles: [],
-        textStyleSource: "none"
-      },
-      importedByKey
-    };
+    const cached = await readCache(libraryName, signature);
+    if (cached) {
+      onProgress(
+        cached.catalog.variables.length,
+        cached.catalog.variables.length
+      );
+      return cached;
+    }
+    const imported = await importCatalog(
+      libraryName,
+      collections,
+      collectionVariables,
+      onProgress
+    );
+    await writeCache(libraryName, signature, imported.catalog);
+    return imported;
   }
 
   // src/main/apply.ts
   var nodeCache = /* @__PURE__ */ new Map();
+  var RADIUS_FIELDS2 = [
+    "topLeftRadius",
+    "topRightRadius",
+    "bottomLeftRadius",
+    "bottomRightRadius"
+  ];
+  function isRadiusField(field) {
+    return RADIUS_FIELDS2.includes(field);
+  }
+  function isAliasLike2(value) {
+    return typeof value === "object" && value !== null && value.type === "VARIABLE_ALIAS" && typeof value.id === "string";
+  }
   async function getNode(id) {
     var _a;
     if (!nodeCache.has(id)) {
@@ -1072,6 +2204,38 @@
       }
     }
     return (_a = nodeCache.get(id)) != null ? _a : null;
+  }
+  function rebindRadiusCorners(node, auditedField, variable) {
+    var _a;
+    const record = node;
+    const bound = (_a = node.boundVariables) != null ? _a : {};
+    const auditedAlias = bound[auditedField];
+    const fieldsToBind = [];
+    if (isAliasLike2(auditedAlias)) {
+      for (const field of RADIUS_FIELDS2) {
+        const alias = bound[field];
+        if (isAliasLike2(alias) && alias.id === auditedAlias.id) {
+          fieldsToBind.push(field);
+        }
+      }
+    } else {
+      const sourceValue = record[auditedField];
+      if (typeof sourceValue !== "number") {
+        fieldsToBind.push(auditedField);
+      } else {
+        for (const field of RADIUS_FIELDS2) {
+          if (record[field] !== sourceValue) continue;
+          if (isAliasLike2(bound[field])) continue;
+          fieldsToBind.push(field);
+        }
+      }
+    }
+    if (fieldsToBind.length === 0) {
+      fieldsToBind.push(auditedField);
+    }
+    for (const field of fieldsToBind) {
+      node.setBoundVariable(field, variable);
+    }
   }
   async function rebindUsage(usage, variable) {
     const node = await getNode(usage.nodeId);
@@ -1114,7 +2278,12 @@
     if (usage.prop.kind !== "field") {
       throw new Error("text style usages must be applied via a style mapping");
     }
-    node.setBoundVariable(usage.prop.field, variable);
+    const bindable = node;
+    if (isRadiusField(usage.prop.field)) {
+      rebindRadiusCorners(bindable, usage.prop.field, variable);
+      return;
+    }
+    bindable.setBoundVariable(usage.prop.field, variable);
   }
   async function applyTextStyle(usage, style) {
     const node = await getNode(usage.nodeId);
@@ -1194,16 +2363,19 @@
       const anyImported = Array.from(importedByKey.values())[0];
       let targetCollection = null;
       for (const variable of importedByKey.values()) {
-        const collection = await getCollectionCached(variable.variableCollectionId);
+        const collectionId = safeVariableCollectionId(variable);
+        if (!collectionId) continue;
+        const collection = await getCollectionCached(collectionId);
         if (collection && collection.key === request.setMode.collectionKey) {
           targetCollection = collection;
           break;
         }
       }
       if (!targetCollection && anyImported) {
-        targetCollection = await getCollectionCached(
-          anyImported.variableCollectionId
-        );
+        const fallbackId = safeVariableCollectionId(anyImported);
+        if (fallbackId) {
+          targetCollection = await getCollectionCached(fallbackId);
+        }
       }
       const modeName = request.setMode.modeName;
       const mode = targetCollection == null ? void 0 : targetCollection.modes.find((m) => m.name === modeName);
@@ -1254,7 +2426,999 @@
         }
       }
     }
-    return { usagesRebound, variablesRemapped, modesSet, modesCleared, failures };
+    return {
+      usagesRebound,
+      variablesRemapped,
+      componentsSwapped: 0,
+      modesSet,
+      modesCleared,
+      failures
+    };
+  }
+
+  // src/data/componentSwaps.ts
+  var SIZE_LMXS = {
+    L: "large",
+    M: "medium",
+    S: "small",
+    XS: "extraSmall",
+    large: "large",
+    medium: "medium",
+    small: "small",
+    extraSmall: "extraSmall"
+  };
+  var STATE_DEFAULT = {
+    Default: "default",
+    default: "default",
+    Hover: "hover",
+    hover: "hover",
+    Focus: "focus",
+    focus: "focus",
+    Pressed: "pressed",
+    pressed: "pressed",
+    Press: "press",
+    press: "press",
+    Disabled: "disabled",
+    disabled: "disabled",
+    Visited: "visited",
+    visited: "visited"
+  };
+  var MEANING_TO_SENTIMENT = {
+    Primary: "brand",
+    Brand: "brand",
+    Success: "success",
+    Danger: "error",
+    Error: "error",
+    Warning: "warning",
+    Info: "info",
+    Gray: "neutral",
+    Aqua: "pink"
+  };
+  var MEANING_TO_TOAST_SENTIMENT = {
+    Primary: "primary",
+    Success: "success",
+    Danger: "error",
+    Warning: "warning",
+    Info: "info",
+    Gray: "neutral"
+  };
+  var componentSwapRules = [
+    {
+      dscoKey: "cbc707599ceb83eaa1cee51d698831793e0ebde6",
+      dscoName: "Button",
+      cadsName: "Button",
+      // Current published DSCO Button ≈ CADS (same axes). Stale consumer
+      // instances may still carry older names/values (Size/S, startIcon Name).
+      propNames: {
+        "startIcon Name": "startIconName",
+        "endIcon Name": "endIconName",
+        Size: "size",
+        State: "state",
+        Color: "color",
+        Variant: "variant",
+        "Icon Only": "iconOnly",
+        IconOnly: "iconOnly"
+      },
+      variantValues: {
+        // Current: large/medium/small/extraSmall. Legacy: L/M/S/XS.
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT,
+        color: {
+          primary: "primary",
+          secondary: "secondary",
+          tertiary: "tertiary",
+          "white (deprecated)": "secondary",
+          white: "secondary",
+          error: "error",
+          Primary: "primary",
+          Secondary: "secondary",
+          Tertiary: "tertiary",
+          Error: "error"
+        },
+        Color: {
+          primary: "primary",
+          secondary: "secondary",
+          tertiary: "tertiary",
+          "white (deprecated)": "secondary",
+          white: "secondary",
+          Primary: "primary",
+          Secondary: "secondary",
+          Tertiary: "tertiary"
+        },
+        variant: {
+          contained: "contained",
+          outlined: "outlined",
+          text: "text",
+          Contained: "contained",
+          Outlined: "outlined",
+          Text: "text",
+          filled: "contained",
+          Filled: "contained"
+        },
+        Variant: {
+          contained: "contained",
+          outlined: "outlined",
+          text: "text",
+          Contained: "contained",
+          Outlined: "outlined",
+          Text: "text",
+          filled: "contained",
+          Filled: "contained"
+        },
+        iconOnly: { No: "No", Yes: "Yes", no: "No", yes: "Yes", false: "No", true: "Yes" },
+        "Icon Only": { No: "No", Yes: "Yes", no: "No", yes: "Yes" }
+      }
+    },
+    {
+      dscoKey: "0478bc835a0e7e1593fc0e6f3044f54730b66861",
+      dscoName: "Destructive Button",
+      cadsName: "Button",
+      forceVariants: { color: "error" },
+      propNames: {
+        "startIcon Name": "startIconName",
+        "endIcon Name": "endIconName",
+        Size: "size",
+        State: "state",
+        Color: "color",
+        Variant: "variant",
+        "Icon Only": "iconOnly",
+        IconOnly: "iconOnly"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT,
+        variant: {
+          contained: "contained",
+          outlined: "outlined",
+          text: "text",
+          Contained: "contained",
+          Outlined: "outlined",
+          Text: "text",
+          filled: "contained",
+          Filled: "contained"
+        },
+        Variant: {
+          contained: "contained",
+          outlined: "outlined",
+          text: "text",
+          Contained: "contained",
+          Outlined: "outlined",
+          Text: "text",
+          filled: "contained",
+          Filled: "contained"
+        },
+        iconOnly: { No: "No", Yes: "Yes", no: "No", yes: "Yes", false: "No", true: "Yes" }
+      }
+    },
+    {
+      dscoKey: "385632d619eb1dffc825a323a3f596b2011f8bb7",
+      dscoName: "Close Icon Button",
+      cadsName: "Close Icon Button",
+      propNames: {
+        Size: "size",
+        State: "state",
+        Color: "color"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        }),
+        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        }),
+        color: {
+          Default: "primary",
+          Strong: "secondary",
+          "Solid Black": "primary",
+          "Solid White": "secondary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Color: {
+          Default: "primary",
+          Strong: "secondary",
+          "Solid Black": "primary",
+          "Solid White": "secondary"
+        }
+      }
+    },
+    {
+      dscoKey: "341373d642bfd3c0e0cbb35c1130b146945a2321",
+      dscoName: "Chip",
+      cadsName: "Chip",
+      propNames: {
+        Text: "label",
+        Size: "size",
+        Selected: "selected",
+        Color: "color",
+        State: "state",
+        Type: "labelStyle"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        selected: { No: "no", Yes: "yes", no: "no", yes: "yes" },
+        Selected: { No: "no", Yes: "yes" },
+        color: {
+          Gray: "primary",
+          Black: "secondary",
+          Selected: "primary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Color: {
+          Gray: "primary",
+          Black: "secondary",
+          Selected: "primary"
+        },
+        labelStyle: { Thick: "thick", Thin: "thin", thick: "thick", thin: "thin" },
+        Type: { Thick: "thick", Thin: "thin" },
+        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        }),
+        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        })
+      }
+    },
+    {
+      dscoKey: "8314a929103d75e027acd08445eb326299d24b74",
+      dscoName: "Link",
+      cadsName: "Link",
+      captureText: true,
+      textCaptureTarget: "linkText",
+      propNames: {
+        Size: "size",
+        State: "state",
+        Type: "type"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        type: {
+          Primary: "primary",
+          Secondary: "secondary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Type: { Primary: "primary", Secondary: "secondary" },
+        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        }),
+        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+          Pressed: "press",
+          pressed: "press"
+        })
+      }
+    },
+    {
+      dscoKey: "6da8599310350b4a87b2a2f8e08d34ae3376a1d1",
+      dscoName: "Tag",
+      cadsName: "Tag",
+      propNames: {
+        Label: "labelText",
+        "Icon Name": "startIconName",
+        Size: "size",
+        Color: "color",
+        "Is Removable": "isDismissible"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        color: {
+          Teal: "brand",
+          Purple: "pink",
+          Aqua: "info",
+          Error: "error",
+          Warning: "warning",
+          Success: "success",
+          Gray: "neutral",
+          Disabled: "neutral",
+          brand: "brand",
+          neutral: "neutral",
+          pink: "pink",
+          orange: "orange",
+          success: "success",
+          error: "error",
+          warning: "warning",
+          info: "info"
+        },
+        Color: {
+          Teal: "brand",
+          Purple: "pink",
+          Aqua: "info",
+          Error: "error",
+          Warning: "warning",
+          Success: "success",
+          Gray: "neutral",
+          Disabled: "neutral"
+        }
+      }
+    },
+    {
+      dscoKey: "3133f83a3f98b68c1f3081132b2e90bb5d1dc59a",
+      dscoName: "Alert",
+      cadsName: "Alert",
+      propNames: {
+        Size: "size",
+        Meaning: "sentiment",
+        hasLink: "hasAction",
+        hasIcon: "hasIcon"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        sentiment: MEANING_TO_SENTIMENT,
+        Meaning: MEANING_TO_SENTIMENT,
+        hasIcon: { Yes: "true", No: "false", yes: "true", no: "false" }
+      }
+    },
+    {
+      dscoKey: "949e2949033f60df26231b2f73985b488f9f78fe",
+      dscoName: "Toast",
+      cadsName: "Toast",
+      propNames: {
+        alertText: "toastText",
+        alertIcon: "toastIcon",
+        Meaning: "sentiment",
+        hasLink: "hasAction",
+        hasIcon: "hasIcon"
+      },
+      variantValues: {
+        sentiment: MEANING_TO_TOAST_SENTIMENT,
+        Meaning: MEANING_TO_TOAST_SENTIMENT,
+        hasIcon: { Yes: "true", No: "false", yes: "true", no: "false" }
+      }
+    },
+    {
+      dscoKey: "64993adac217e2c6daab4eb131f94531d02e65a9",
+      dscoName: "Notification Banner",
+      cadsName: "Notification Banner",
+      propNames: {
+        Title: "titleText",
+        Description: "descriptionText",
+        Icon: "iconName",
+        "Secondary Action": "hasSecondaryAction",
+        "Primary Action": "hasPrimaryAction",
+        "Dismissible   ": "isDismissible",
+        Dismissible: "isDismissible",
+        Meaning: "sentiment",
+        Style: "fillStyle"
+      },
+      variantValues: {
+        sentiment: MEANING_TO_SENTIMENT,
+        Meaning: MEANING_TO_SENTIMENT,
+        fillStyle: { Default: "none", Color: "color", none: "none", color: "color" },
+        Style: { Default: "none", Color: "color" }
+      }
+    },
+    // FA Icon → v7: identical prop surface (icon-name TEXT + style/padding/scale).
+    {
+      dscoKey: "051a05d840dcf0a8220c056833c040fc581dff41",
+      dscoName: "Font Awesome Icon",
+      cadsName: "Font Awesome Icon v7"
+    },
+    {
+      dscoKey: "2073beaaf6394b66220e04a5588a35e08d66daf2",
+      dscoName: "Font Awesome Duotone Icon",
+      cadsName: "Font Awesome Duotone Icon v7"
+    },
+    // Pegasus FA Icon shares the same published prop surface as DSCO.
+    {
+      dscoKey: "6315f244285e23cac76df5c8e3c807276fdc0da4",
+      dscoName: "Font Awesome Icon",
+      cadsName: "Font Awesome Icon v7"
+    }
+  ];
+  var ruleByDscoKey = new Map(
+    componentSwapRules.map((rule) => [rule.dscoKey, rule])
+  );
+  var cadsKeyByName = new Map(
+    cadsComponents.map((component) => [component.name, component.key])
+  );
+  function propBaseName(key) {
+    var _a;
+    return (_a = key.split("#")[0]) != null ? _a : key;
+  }
+  function parseVariantName(name) {
+    const result = {};
+    if (!name.includes("=")) return result;
+    for (const part of name.split(",")) {
+      const eq = part.indexOf("=");
+      if (eq === -1) continue;
+      const key = part.slice(0, eq).trim();
+      const value = part.slice(eq + 1).trim();
+      if (key) result[key] = value;
+    }
+    return result;
+  }
+  function normalizeSizeValue(value) {
+    var _a, _b;
+    return (_b = (_a = SIZE_LMXS[value]) != null ? _a : SIZE_LMXS[value.trim()]) != null ? _b : value;
+  }
+  function getComponentSwapRule(dscoKey) {
+    var _a;
+    return (_a = ruleByDscoKey.get(dscoKey)) != null ? _a : null;
+  }
+  function resolveCadsComponentKey(cadsName) {
+    var _a;
+    return (_a = cadsKeyByName.get(cadsName)) != null ? _a : null;
+  }
+  function normalizePropBase(name) {
+    return name.replace(/\s+/g, "").toLocaleLowerCase();
+  }
+  function findTargetPropKey(targetProps, baseName) {
+    if (targetProps[baseName]) return baseName;
+    const lower = baseName.toLocaleLowerCase();
+    const compacted = normalizePropBase(baseName);
+    for (const key of Object.keys(targetProps)) {
+      const base = propBaseName(key);
+      if (base.toLocaleLowerCase() === lower) return key;
+      if (normalizePropBase(base) === compacted) return key;
+    }
+    return null;
+  }
+  function remapVariantValue(rule, axis, value) {
+    var _a;
+    const table = (_a = rule.variantValues) == null ? void 0 : _a[axis];
+    if (table && table[value] !== void 0) return table[value];
+    if (table) {
+      const hit = Object.entries(table).find(
+        ([from]) => from.toLocaleLowerCase() === value.toLocaleLowerCase()
+      );
+      if (hit) return hit[1];
+    }
+    if (axis.toLocaleLowerCase() === "size") {
+      return normalizeSizeValue(value);
+    }
+    return value;
+  }
+  function applyButtonRestrictedCombos(variants) {
+    const out = __spreadValues({}, variants);
+    const variant = out.variant;
+    const color = out.color;
+    const iconOnly = out.iconOnly;
+    if (color === "tertiary") {
+      const tertiaryOk = variant === "text" && iconOnly === "Yes";
+      if (!tertiaryOk) out.color = "secondary";
+    }
+    if (out.color === "orange" && variant !== "contained") {
+      out.color = "primary";
+    }
+    if (variant === "outlined" && iconOnly === "Yes") {
+      if (out.color === "tertiary" || out.color === "orange") {
+        out.color = out.color === "orange" ? "primary" : "secondary";
+      }
+    }
+    return out;
+  }
+  function remapVariants(rule, captured) {
+    var _a, _b;
+    const out = {};
+    for (const [axis, value] of Object.entries(captured.variants)) {
+      const targetAxis = (_b = (_a = rule.propNames) == null ? void 0 : _a[axis]) != null ? _b : axis;
+      const remapped = remapVariantValue(rule, axis, value);
+      const alsoByTarget = remapVariantValue(rule, targetAxis, remapped);
+      if (alsoByTarget === "true" || alsoByTarget === "false" || alsoByTarget === "Yes" || alsoByTarget === "No" || alsoByTarget === "yes" || alsoByTarget === "no") {
+        if (targetAxis.toLocaleLowerCase() === "hasicon") continue;
+      }
+      if (targetAxis.toLocaleLowerCase() === "state") {
+        out[targetAxis] = "default";
+        continue;
+      }
+      out[targetAxis] = alsoByTarget;
+    }
+    if (rule.forceVariants) {
+      for (const [axis, value] of Object.entries(rule.forceVariants)) {
+        out[axis] = value;
+      }
+    }
+    if (rule.cadsName === "Button") {
+      return applyButtonRestrictedCombos(out);
+    }
+    return out;
+  }
+  function buildContentProperties(rule, captured, targetProps) {
+    var _a, _b, _c, _d, _e;
+    const targetMeta = __spreadValues({}, targetProps);
+    const out = {};
+    for (const [sourceKey, value] of Object.entries(captured.properties)) {
+      const sourceBase = propBaseName(sourceKey);
+      const targetBase = (_b = (_a = rule.propNames) == null ? void 0 : _a[sourceBase]) != null ? _b : sourceBase;
+      const targetKey = findTargetPropKey(targetMeta, targetBase);
+      if (!targetKey) continue;
+      const targetType = targetMeta[targetKey].type;
+      if (targetType === "VARIANT") continue;
+      if (targetType === "BOOLEAN") {
+        if (typeof value === "boolean") out[targetKey] = value;
+        else if (value === "true" || value === "Yes" || value === "yes")
+          out[targetKey] = true;
+        else if (value === "false" || value === "No" || value === "no")
+          out[targetKey] = false;
+        continue;
+      }
+      if (targetType === "TEXT" && (typeof value === "string" || typeof value === "boolean")) {
+        out[targetKey] = String(value);
+      }
+    }
+    for (const [axis, value] of Object.entries(captured.variants)) {
+      const targetAxis = (_d = (_c = rule.propNames) == null ? void 0 : _c[axis]) != null ? _d : axis;
+      const targetKey = findTargetPropKey(targetMeta, targetAxis);
+      if (!targetKey || targetMeta[targetKey].type !== "BOOLEAN") continue;
+      const remapped = remapVariantValue(rule, axis, value);
+      if (remapped === "true" || remapped === "Yes" || remapped === "yes") {
+        out[targetKey] = true;
+      } else if (remapped === "false" || remapped === "No" || remapped === "no") {
+        out[targetKey] = false;
+      }
+    }
+    if (captured.tagIconPlacement) {
+      const startKey = findTargetPropKey(targetMeta, "startIcon");
+      const endKey = findTargetPropKey(targetMeta, "endIcon");
+      if (startKey && targetMeta[startKey].type === "BOOLEAN") {
+        out[startKey] = captured.tagIconPlacement === "Left";
+      }
+      if (endKey && targetMeta[endKey].type === "BOOLEAN") {
+        out[endKey] = captured.tagIconPlacement === "Right";
+      }
+    }
+    if (rule.captureText && rule.textCaptureTarget && captured.capturedText) {
+      const targetKey = findTargetPropKey(targetMeta, rule.textCaptureTarget);
+      if (targetKey) out[targetKey] = captured.capturedText;
+    }
+    const removable = (_e = captured.variants["Is Removable"]) != null ? _e : captured.variants.isDismissible;
+    if (removable !== void 0) {
+      const targetKey = findTargetPropKey(targetMeta, "isDismissible");
+      if (targetKey && targetMeta[targetKey].type === "BOOLEAN") {
+        out[targetKey] = removable === "Yes" || removable === "yes" || removable === "true";
+      }
+    }
+    return out;
+  }
+
+  // src/main/components.ts
+  var importedSets = /* @__PURE__ */ new Map();
+  async function importCadsComponentSet(key) {
+    const cached = importedSets.get(key);
+    if (cached) return cached;
+    const node = await figma.importComponentSetByKeyAsync(key);
+    importedSets.set(key, node);
+    return node;
+  }
+  async function getInstance(nodeId) {
+    try {
+      const node = await figma.getNodeByIdAsync(nodeId);
+      if (!node || node.type !== "INSTANCE") return null;
+      return node;
+    } catch (e) {
+      return null;
+    }
+  }
+  function sourceNameFor(audit, sourceId) {
+    if (!sourceId.startsWith("component:")) return null;
+    const key = sourceId.slice("component:".length);
+    const entry = audit.components.find((component) => component.key === key);
+    if (!entry) return null;
+    return { name: entry.name, usages: entry.usages, dscoKey: entry.key };
+  }
+  async function captureInstanceProps(instance) {
+    var _a;
+    const properties = {};
+    const variants = {};
+    for (const [key, prop] of Object.entries(instance.componentProperties)) {
+      if (prop.type === "VARIANT") {
+        variants[propBaseName(key)] = String(prop.value).trim();
+        properties[key] = String(prop.value);
+      } else if (prop.type === "BOOLEAN") {
+        properties[key] = Boolean(prop.value);
+      } else if (prop.type === "TEXT") {
+        properties[key] = String(prop.value);
+      }
+    }
+    if (instance.variantProperties) {
+      for (const [axis, value] of Object.entries(instance.variantProperties)) {
+        if (typeof value === "string") variants[axis] = value.trim();
+      }
+    }
+    try {
+      const main = await instance.getMainComponentAsync();
+      if (main) {
+        const fromName = parseVariantName(main.name);
+        for (const [axis, value] of Object.entries(fromName)) {
+          variants[axis] = value.trim();
+        }
+      }
+    } catch (e) {
+    }
+    const aliases = {
+      Size: "size",
+      State: "state",
+      Color: "color",
+      Variant: "variant",
+      "Icon Only": "iconOnly",
+      IconOnly: "iconOnly",
+      Type: "type",
+      Selected: "selected"
+    };
+    for (const [from, to] of Object.entries(aliases)) {
+      if (variants[from] !== void 0 && variants[to] === void 0) {
+        variants[to] = variants[from];
+      }
+    }
+    let tagIconPlacement = null;
+    const iconAxis = (_a = variants.Icon) != null ? _a : variants.icon;
+    if (iconAxis === "Left" || iconAxis === "Right" || iconAxis === "None") {
+      tagIconPlacement = iconAxis;
+    }
+    return {
+      properties,
+      variants,
+      capturedText: null,
+      tagIconPlacement
+    };
+  }
+  function captureFirstText(instance) {
+    const texts = [];
+    const walk = (node) => {
+      if (node.type === "TEXT") texts.push(node);
+      if ("children" in node) {
+        for (const child of node.children) walk(child);
+      }
+    };
+    for (const child of instance.children) walk(child);
+    const text = texts[0];
+    return text && typeof text.characters === "string" ? text.characters : null;
+  }
+  function targetPropMeta(props) {
+    const meta = {};
+    for (const [key, prop] of Object.entries(props)) {
+      meta[key] = { type: prop.type };
+    }
+    return meta;
+  }
+  function findMatchingVariant(set, want) {
+    const wantEntries = Object.entries(want);
+    if (wantEntries.length === 0) return null;
+    const matches = [];
+    for (const child of set.children) {
+      if (child.type !== "COMPONENT") continue;
+      const got = parseVariantName(child.name);
+      let ok = true;
+      for (const [axis, value] of wantEntries) {
+        if (got[axis] !== value) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) matches.push(child);
+    }
+    if (matches.length === 0) return null;
+    if (matches.length === 1) return matches[0];
+    const defaultState = matches.find((child) => {
+      var _a;
+      const got = parseVariantName(child.name);
+      return ((_a = got.state) != null ? _a : "").toLocaleLowerCase() === "default";
+    });
+    return defaultState != null ? defaultState : matches[0];
+  }
+  function readVariants(instance) {
+    const out = {};
+    if (instance.variantProperties) {
+      for (const [axis, value] of Object.entries(instance.variantProperties)) {
+        if (typeof value === "string") out[axis] = value;
+      }
+    }
+    for (const [key, prop] of Object.entries(instance.componentProperties)) {
+      if (prop.type === "VARIANT") out[propBaseName(key)] = String(prop.value);
+    }
+    return out;
+  }
+  function variantsMatch(actual, want) {
+    var _a;
+    const missing = [];
+    for (const [axis, value] of Object.entries(want)) {
+      if (actual[axis] !== value) {
+        missing.push(`${axis}=${value} (got ${(_a = actual[axis]) != null ? _a : "\u2205"})`);
+      }
+    }
+    return missing;
+  }
+  function criticalAxes(want) {
+    const out = {};
+    for (const axis of [
+      "size",
+      "variant",
+      "color",
+      "iconOnly",
+      "selected",
+      "type",
+      "labelStyle",
+      "sentiment",
+      "fillStyle",
+      // Font Awesome Icon / Duotone
+      "style",
+      "padding",
+      "scale",
+      "family"
+    ]) {
+      if (want[axis] !== void 0) out[axis] = want[axis];
+    }
+    return out;
+  }
+  function withoutState(want) {
+    const _a = want, { state: _state } = _a, rest = __objRest(_a, ["state"]);
+    return rest;
+  }
+  async function swapOne(instance, rule, cadsKey) {
+    var _a, _b, _c, _d, _e;
+    const captured = await captureInstanceProps(instance);
+    if (rule.captureText) {
+      captured.capturedText = captureFirstText(instance);
+    }
+    const set = await importCadsComponentSet(cadsKey);
+    const wantVariants = remapVariants(rule, captured);
+    const critical = criticalAxes(wantVariants);
+    if (Object.keys(critical).length === 0 && Object.keys(wantVariants).length === 0) {
+      throw new Error(
+        `could not read variant props from "${instance.name}"`
+      );
+    }
+    const wantWithDefault = __spreadValues(__spreadValues({}, critical), wantVariants.state ? { state: "default" } : {});
+    let target = (_c = (_b = (_a = findMatchingVariant(set, wantWithDefault)) != null ? _a : findMatchingVariant(set, critical)) != null ? _b : findMatchingVariant(set, withoutState(wantVariants))) != null ? _c : findMatchingVariant(set, wantVariants);
+    if (!target) {
+      throw new Error(
+        `no CADS "${rule.cadsName}" variant for ${Object.entries(
+          Object.keys(critical).length > 0 ? critical : wantVariants
+        ).map(([k, v]) => `${k}=${v}`).join(", ")}`
+      );
+    }
+    instance.swapComponent(target);
+    const content = buildContentProperties(
+      rule,
+      captured,
+      targetPropMeta(instance.componentProperties)
+    );
+    if (Object.keys(content).length > 0) {
+      try {
+        instance.setProperties(content);
+      } catch (error) {
+        throw new Error(
+          `swapped but content props failed: ${String((_d = error.message) != null ? _d : error)}`
+        );
+      }
+    }
+    if (Object.keys(critical).length > 0) {
+      let mismatches = variantsMatch(readVariants(instance), critical);
+      if (mismatches.length > 0) {
+        const retry = (_e = findMatchingVariant(set, wantWithDefault)) != null ? _e : findMatchingVariant(set, critical);
+        if (retry) {
+          instance.swapComponent(retry);
+          const content2 = buildContentProperties(
+            rule,
+            captured,
+            targetPropMeta(instance.componentProperties)
+          );
+          if (Object.keys(content2).length > 0) {
+            try {
+              instance.setProperties(content2);
+            } catch (e) {
+            }
+          }
+        }
+        mismatches = variantsMatch(readVariants(instance), critical);
+        if (mismatches.length > 0) {
+          throw new Error(
+            `swapped but variants drifted: ${mismatches.join("; ")}`
+          );
+        }
+      }
+    }
+  }
+  async function applyComponentSwaps(request, audit) {
+    var _a;
+    importedSets.clear();
+    const failures = [];
+    let swapped = 0;
+    for (const mapping of request.mappings) {
+      if (!mapping.sourceId.startsWith("component:")) continue;
+      const source = sourceNameFor(audit, mapping.sourceId);
+      if (!source) {
+        failures.push({
+          nodeName: "\u2014",
+          sourceName: mapping.sourceId,
+          reason: "component finding no longer in audit"
+        });
+        continue;
+      }
+      const rule = getComponentSwapRule(source.dscoKey);
+      if (!rule) {
+        failures.push({
+          nodeName: "\u2014",
+          sourceName: source.name,
+          reason: "no Wave A/B swap rule for this component"
+        });
+        continue;
+      }
+      const usages = mapping.usageIndexes === void 0 ? source.usages : mapping.usageIndexes.map((index) => source.usages[index]).filter((usage) => Boolean(usage));
+      for (const usage of usages) {
+        const instance = await getInstance(usage.nodeId);
+        if (!instance) {
+          failures.push({
+            nodeName: usage.nodeName,
+            sourceName: source.name,
+            reason: "instance no longer exists or is not an INSTANCE"
+          });
+          continue;
+        }
+        try {
+          await swapOne(instance, rule, mapping.targetKey);
+          swapped++;
+        } catch (error) {
+          const message = String((_a = error.message) != null ? _a : error);
+          if (message.startsWith("swapped but content props failed:") || message.startsWith("swapped but variants drifted:")) {
+            swapped++;
+          }
+          failures.push({
+            nodeName: usage.nodeName,
+            sourceName: source.name,
+            reason: message
+          });
+        }
+      }
+    }
+    return { swapped, failures };
+  }
+  function proposeComponentSwap(entry) {
+    const rule = getComponentSwapRule(entry.key);
+    if (!rule) return null;
+    const targetKey = resolveCadsComponentKey(rule.cadsName);
+    if (!targetKey) return null;
+    return {
+      sourceId: `component:${entry.key}`,
+      targetKey,
+      source: "rule",
+      confidence: 0.95,
+      rationale: `Swap ${rule.dscoName} \u2192 ${rule.cadsName} with prop remap`
+    };
+  }
+
+  // src/data/dscoColors.ts
+  var DSCO_COLOR_REWRITES = {
+    "background/accent/orange/light": "background/accent/orange/light",
+    "background/accent/orange/primary": "background/accent/orange/primary",
+    "background/accent/orange/strong": "background/accent/orange/strong",
+    "background/accent/strawberry/light": "background/accent/pink/light",
+    "background/accent/strawberry/primary": "background/accent/pink/primary",
+    "background/accent/strawberry/strong": "background/accent/pink/strong",
+    "background/brand/aqua/extra-light": "background/brand/light",
+    "background/brand/aqua/light": "background/brand/light",
+    "background/brand/aqua/primary": "background/brand/primary",
+    "background/brand/aqua/strong": "background/brand/strong",
+    "background/brand/purple/extra-light": "background/brand/light",
+    "background/brand/purple/hover": "background/brand/light",
+    "background/brand/purple/light": "background/brand/light",
+    "background/brand/purple/primary": "background/brand/primary",
+    "background/brand/purple/primary-fixed": "background/brand/primary",
+    "background/brand/purple/strong": "background/brand/strong",
+    "background/brand/teal/extra-light": "background/brand/light",
+    "background/brand/teal/light": "background/brand/light",
+    "background/brand/teal/primary": "background/brand/primary",
+    "background/brand/teal/strong": "background/brand/strong",
+    "background/error/extra-light": "background/error/light",
+    "background/error/light": "background/error/light",
+    "background/error/primary": "background/error/primary",
+    "background/error/strong": "background/error/strong",
+    "background/info/extra-light": "background/info/light",
+    "background/info/light": "background/info/light",
+    "background/info/primary": "background/info/primary",
+    "background/info/strong": "background/info/strong",
+    "background/neutral/black-fixed": "background/neutral/black-fixed",
+    "background/neutral/disabled": "background/state/disabled/neutral",
+    "background/neutral/lab": "background/neutral/primary",
+    "background/neutral/octonary": "background/neutral/octonary",
+    "background/neutral/primary": "background/neutral/primary",
+    "background/neutral/primary-inverse": "background/neutral/primary-inverse",
+    "background/neutral/quaternary": "background/neutral/quaternary",
+    "background/neutral/quinary": "background/neutral/quinary",
+    "background/neutral/secondary": "background/neutral/secondary",
+    "background/neutral/senary": "background/neutral/senary",
+    "background/neutral/septenary": "background/neutral/septenary",
+    "background/neutral/tertiary": "background/neutral/tertiary",
+    "background/neutral/true-base": "background/neutral/true-base",
+    "background/neutral/white-fixed": "background/neutral/white-fixed",
+    "background/success/extra-light": "background/success/light",
+    "background/success/light": "background/success/light",
+    "background/success/primary": "background/success/primary",
+    "background/success/strong": "background/success/strong",
+    "background/warning/extra-light": "background/warning/light",
+    "background/warning/light": "background/warning/light",
+    "background/warning/primary": "background/warning/primary",
+    "background/warning/strong": "background/warning/strong",
+    "borders/brand/aqua/light": "border/brand/light",
+    "borders/brand/aqua/primary": "border/brand/primary",
+    "borders/brand/aqua/strong": "border/brand/strong",
+    "borders/brand/purple/light": "border/brand/light",
+    "borders/brand/purple/primary": "border/brand/primary",
+    "borders/brand/purple/strong": "border/brand/strong",
+    "borders/brand/teal/light": "border/brand/light",
+    "borders/brand/teal/primary": "border/brand/primary",
+    "borders/brand/teal/strong": "border/brand/strong",
+    "borders/error/light": "border/error/light",
+    "borders/error/primary": "border/error/primary",
+    "borders/error/strong": "border/error/strong",
+    "borders/info/light": "border/info/light",
+    "borders/info/primary": "border/info/primary",
+    "borders/info/strong": "border/info/strong",
+    "borders/neutral/disabled": "border/state/disabled/neutral",
+    "borders/neutral/light": "border/neutral/primary",
+    "borders/neutral/primary": "border/neutral/primary",
+    "borders/neutral/solid": "border/neutral/solid",
+    "borders/neutral/strong": "border/neutral/secondary",
+    "borders/success/light": "border/success/light",
+    "borders/success/primary": "border/success/primary",
+    "borders/success/strong": "border/success/strong",
+    "borders/warning/light": "border/warning/light",
+    "borders/warning/primary": "border/warning/primary",
+    "borders/warning/strong": "border/warning/strong",
+    "text/brand/aqua/primary": "text/brand/primary",
+    "text/brand/aqua/primary-fixed": "text/brand/primary-fixed",
+    "text/brand/aqua/secondary": "text/brand/secondary",
+    "text/brand/purple/primary": "text/brand/primary",
+    "text/brand/purple/primary-fixed": "text/brand/primary-fixed",
+    "text/brand/purple/secondary": "text/brand/secondary",
+    "text/brand/teal/primary": "text/brand/primary",
+    "text/brand/teal/primary-fixed": "text/brand/primary-fixed",
+    "text/brand/teal/secondary": "text/brand/secondary",
+    "text/error/primary": "text/error/primary",
+    "text/error/primary-fixed": "text/error/primary-fixed",
+    "text/error/secondary": "text/error/secondary",
+    "text/info/primary": "text/info/primary",
+    "text/info/primary-fixed": "text/info/primary-fixed",
+    "text/info/secondary": "text/info/secondary",
+    "text/neutral/black-fixed": "text/neutral/black-fixed",
+    "text/neutral/disabled": "text/state/disabled/neutral",
+    "text/neutral/disabled-inverse": "text/state/disabled/neutral-inverse",
+    "text/neutral/inverse": "text/neutral/primary-inverse",
+    "text/neutral/placeholder": "text/neutral/placeholder",
+    "text/neutral/primary": "text/neutral/primary",
+    "text/neutral/quaternary": "text/neutral/quaternary",
+    "text/neutral/secondary": "text/neutral/secondary",
+    "text/neutral/tertiary": "text/neutral/tertiary",
+    "text/neutral/white-fixed": "text/neutral/white-fixed",
+    "text/success/primary": "text/success/primary",
+    "text/success/primary-fixed": "text/success/primary-fixed",
+    "text/success/secondary": "text/success/secondary",
+    "text/warning/primary": "text/warning/primary",
+    "text/warning/primary-fixed": "text/warning/primary-fixed",
+    "text/warning/secondary": "text/warning/secondary"
+  };
+  var REWRITE_BY_CSS = (() => {
+    const map = /* @__PURE__ */ new Map();
+    for (const [source, target] of Object.entries(DSCO_COLOR_REWRITES)) {
+      map.set(source.replace(/\//g, "-").toLowerCase(), target);
+    }
+    return map;
+  })();
+  function dscoToCadsColorName(sourceName) {
+    var _a;
+    const trimmed = sourceName.trim();
+    if (!trimmed) return null;
+    if (DSCO_COLOR_REWRITES[trimmed]) return DSCO_COLOR_REWRITES[trimmed];
+    const lower = trimmed.toLowerCase();
+    if (DSCO_COLOR_REWRITES[lower]) return DSCO_COLOR_REWRITES[lower];
+    const css = lower.replace(/^--+/, "").replace(/[_\s]+/g, "-").replace(/\//g, "-");
+    return (_a = REWRITE_BY_CSS.get(css)) != null ? _a : null;
   }
 
   // src/main/matcher.ts
@@ -1305,6 +3469,12 @@
     const modeBonus = modeNameMatched === sourceModes.length ? 0.05 : 0;
     return Math.min(0.97, coverage * base + modeBonus);
   }
+  function findColorTargetByName(targets, name) {
+    const key = normalizedKey(name);
+    return targets.find(
+      (t) => t.resolvedType === "COLOR" && normalizedKey(t.name) === key
+    );
+  }
   function proposeForVariable(entry, ctx) {
     const cacheKey = entry.variableKey || entry.id;
     const cached = ctx.cache[cacheKey];
@@ -1317,12 +3487,30 @@
         rationale: "Previously approved mapping"
       };
     }
-    const candidates = ctx.targets.filter(
+    if (entry.resolvedType === "COLOR") {
+      if (entry.flag !== "primitive") {
+        const ruleName = dscoToCadsColorName(entry.name);
+        if (ruleName) {
+          const match = findColorTargetByName(ctx.targets, ruleName);
+          if (match) {
+            return {
+              sourceId: entry.id,
+              targetKey: match.key,
+              source: "rule",
+              confidence: 1,
+              rationale: `DSCO \u2192 CADS naming rule: ${entry.name} \u2192 ${match.name}`
+            };
+          }
+        }
+      }
+      return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+    }
+    const typeCandidates = ctx.targets.filter(
       (t) => t.resolvedType === entry.resolvedType
     );
     let best = null;
     const sourceKey = normalizedKey(entry.name);
-    for (const target of candidates) {
+    for (const target of typeCandidates) {
       const nScore = nameScore(entry.name, target.name);
       const vScore = valueScore(entry.values, target.values);
       let score;
@@ -1361,6 +3549,162 @@
     if (source.lineHeight && source.lineHeight === target.lineHeight) score += 0.1;
     return score;
   }
+  function parseFontSize(values) {
+    const raw = values.size;
+    if (!raw) return null;
+    const n = Number(String(raw).replace(/px$/i, "").trim());
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
+  function weightRank(weight) {
+    const w = (weight != null ? weight : "").toLowerCase().replace(/[\s-_]+/g, "");
+    if (!w || /regular|book|normal|roman/.test(w)) return 0;
+    if (/medium/.test(w)) return 1;
+    if (/semibold|demibold|semi/.test(w)) return 2;
+    if (/bold|black|heavy|extrabold|extrast?rong/.test(w)) return 3;
+    if (/light|thin|hairline/.test(w)) return 0;
+    return 0;
+  }
+  function isMonoFamily(family) {
+    if (!family) return false;
+    return /mono|code|consolas|courier|menlo|monaco|jetbrains|fira\s*code|source\s*code|ibm\s*plex\s*mono|roboto\s*mono|space\s*mono|google\s*sans\s*code/i.test(
+      family
+    );
+  }
+  function styleFamily(name) {
+    var _a;
+    const head = (_a = normalizeSegments(name)[0]) != null ? _a : "";
+    if (head === "heading") return "heading";
+    if (head === "mono") return "mono";
+    if (head === "link") return "link";
+    if (head === "label") return "label";
+    if (head === "overline") return "overline";
+    return "body";
+  }
+  function detectTextRole(values, sourceName) {
+    const name = (sourceName != null ? sourceName : "").toLowerCase();
+    if (isMonoFamily(values.family) || /\bmono\b/.test(name) || /\bcode\b/.test(name)) {
+      return "mono";
+    }
+    if (values.textDecoration === "UNDERLINE" || /\blink\b/.test(name)) {
+      return "link";
+    }
+    if (values.textCase === "UPPER" || /\boverline\b/.test(name)) {
+      return "overline";
+    }
+    if (/\blabel\b|\bbutton\b|\bcaption\b/.test(name)) {
+      return "label";
+    }
+    if (/\bheading\b|\btitle\b|\bdisplay\b|\bh[1-6]\b/.test(name)) {
+      return "heading";
+    }
+    return "body";
+  }
+  var ROLE_PRIORITY = {
+    body: 0,
+    heading: 1,
+    mono: 2,
+    label: 3,
+    link: 4,
+    overline: 5
+  };
+  function closestTextStyle(values, targets, sourceName) {
+    const sourceSize = parseFontSize(values);
+    if (sourceSize === null || targets.length === 0) return null;
+    const sourceWeight = weightRank(values.weight);
+    const role = detectTextRole(values, sourceName);
+    const candidates = [];
+    for (const target of targets) {
+      const size = parseFontSize(target.values);
+      if (size === null) continue;
+      const family = styleFamily(target.name);
+      candidates.push({
+        target,
+        sizeDist: Math.abs(size - sourceSize),
+        weightDist: Math.abs(weightRank(target.values.weight) - sourceWeight),
+        // Prefer the detected role; otherwise fall back toward Body.
+        roleDist: family === role ? 0 : role === "body" && family === "heading" ? 2 : ROLE_PRIORITY[family] + 1,
+        size
+      });
+    }
+    if (candidates.length === 0) return null;
+    candidates.sort((a, b) => {
+      if (a.sizeDist !== b.sizeDist) return a.sizeDist - b.sizeDist;
+      if (a.size !== b.size) return b.size - a.size;
+      if (a.weightDist !== b.weightDist) return a.weightDist - b.weightDist;
+      if (a.roleDist !== b.roleDist) return a.roleDist - b.roleDist;
+      return a.target.name.localeCompare(b.target.name);
+    });
+    const best = candidates[0];
+    return {
+      target: best.target,
+      sizeDist: best.sizeDist,
+      weightDist: best.weightDist
+    };
+  }
+  function closestMatchProposal(sourceId, values, ctx, sourceName) {
+    var _a;
+    const match = closestTextStyle(values, ctx.targets, sourceName);
+    if (!match) return null;
+    const { target, sizeDist, weightDist } = match;
+    const confidence = sizeDist === 0 ? weightDist === 0 ? 0.95 : 0.88 : Math.max(0.6, 0.9 - sizeDist * 0.04 - weightDist * 0.03);
+    const sizeLabel = (_a = values.size) != null ? _a : "?";
+    return {
+      sourceId,
+      targetKey: target.key,
+      source: "value",
+      confidence: Math.round(confidence * 100) / 100,
+      rationale: sizeDist === 0 && weightDist === 0 ? `Exact size/weight match \u2192 ${target.name}` : `${sizeLabel}px \u2192 closest CADS style ${target.name}`
+    };
+  }
+  function dscoToCadsTextStyleName(sourceName) {
+    var _a;
+    const parts = sourceName.split("/").map((part) => part.trim()).filter(Boolean);
+    if (parts.length !== 2) return null;
+    const [groupRaw, leafRaw] = parts;
+    const group = groupRaw.toLowerCase();
+    const leaf = leafRaw.trim();
+    const heading = /^h([1-6])$/i.exec(leaf);
+    if (group === "heading" && heading) {
+      return `Heading/H${heading[1]}/Semi Bold`;
+    }
+    const body = /^body\s*(\d+)(?:\s*[-–—]?\s*(strong|extrastrong))?$/i.exec(leaf);
+    if (group === "body" && body) {
+      const n = body[1];
+      const weight = ((_a = body[2]) != null ? _a : "").toLowerCase();
+      const cadsWeight = weight === "extrastrong" ? "Bold" : weight === "strong" ? "Semi Bold" : "Regular";
+      return `Body/Body ${n}/${cadsWeight}`;
+    }
+    const link = /^link\s*body\s*(\d+)$/i.exec(leaf);
+    if (group === "link" && link) {
+      return `Link/Link ${link[1]}`;
+    }
+    const mono = /^body\s*(\d+)(?:\s*[-–—]?\s*(strong))?$/i.exec(leaf);
+    if (group === "mono" && mono) {
+      const n = mono[1];
+      const cadsWeight = mono[2] ? "Semi Bold" : "Regular";
+      return `Mono/Mono ${n}/${cadsWeight}`;
+    }
+    const label = /^label\s*(\d+)$/i.exec(leaf);
+    if (group === "label" && label) {
+      return `Label/Label ${label[1]}`;
+    }
+    const overline = /^overline\s*(\d+)$/i.exec(leaf);
+    if (group === "overline" && overline) {
+      return `Overline/Overline ${overline[1]}`;
+    }
+    const button = /^button\s*(\d+)$/i.exec(leaf);
+    if (group === "button" && button) {
+      return `Body/Body ${button[1]}/Semi Bold`;
+    }
+    if (group === "caption" && /^caption\s*1$/i.test(leaf)) {
+      return "Label/Label 2";
+    }
+    return null;
+  }
+  function findTextStyleByName(targets, name) {
+    const key = normalizeSegments(name).join("/");
+    return targets.find((target) => normalizeSegments(target.name).join("/") === key);
+  }
   function proposeForTextStyle(entry, ctx) {
     const cacheKey = entry.styleKey || entry.id;
     const cached = ctx.cache[cacheKey];
@@ -1373,17 +3717,46 @@
         rationale: "Previously approved mapping"
       };
     }
+    const ruleName = dscoToCadsTextStyleName(entry.name);
+    if (ruleName) {
+      const match = findTextStyleByName(ctx.targets, ruleName);
+      if (match) {
+        return {
+          sourceId: entry.id,
+          targetKey: match.key,
+          source: "rule",
+          confidence: 1,
+          rationale: `DSCO \u2192 CADS naming rule: ${entry.name} \u2192 ${match.name}`
+        };
+      }
+    }
     const sourceKey = normalizeSegments(entry.name).join("/");
+    const exact = ctx.targets.find(
+      (target) => normalizeSegments(target.name).join("/") === sourceKey
+    );
+    if (exact) {
+      return {
+        sourceId: entry.id,
+        targetKey: exact.key,
+        source: "exact-name",
+        confidence: 1,
+        rationale: "Style names match"
+      };
+    }
+    const closest = closestMatchProposal(
+      entry.id,
+      entry.values,
+      ctx,
+      entry.name
+    );
+    if (closest) return closest;
     let best = null;
     for (const target of ctx.targets) {
       const nScore = nameScore(entry.name, target.name);
       const vScore = fontValueScore(entry.values, target.values);
       let score;
       let kind;
-      if (normalizeSegments(target.name).join("/") === sourceKey) {
-        score = 1;
-        kind = "exact-name";
-      } else if (vScore >= nScore) {
+      if (vScore >= nScore) {
         score = Math.min(0.95, vScore + nScore * 0.15);
         kind = "value";
       } else {
@@ -1398,7 +3771,7 @@
         targetKey: best.target.key,
         source: best.kind,
         confidence: Math.round(best.score * 100) / 100,
-        rationale: best.kind === "exact-name" ? "Style names match" : best.kind === "value" ? "Font properties match" : "Similar style name"
+        rationale: best.kind === "value" ? "Font properties match" : "Similar style name"
       };
     }
     return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
@@ -1414,6 +3787,8 @@
         rationale: "Previously approved mapping"
       };
     }
+    const closest = closestMatchProposal(entry.id, entry.values, ctx, entry.label);
+    if (closest) return closest;
     let best = null;
     for (const target of ctx.targets) {
       const score = fontValueScore(entry.values, target.values);
@@ -1438,8 +3813,29 @@
     if (value >= 24) return "round";
     return null;
   }
-  function proposeForRadius(entry, shapeTargets, cache) {
+  function parseRadiusPx(raw) {
+    if (raw === void 0 || raw === null) return null;
+    if (typeof raw === "number") return Number.isFinite(raw) ? raw : null;
+    const trimmed = String(raw).trim();
+    if (!trimmed) return null;
+    const withUnit = /^(-?\d+(?:\.\d+)?)\s*px$/i.exec(trimmed);
+    if (withUnit) {
+      const n2 = Number(withUnit[1]);
+      return Number.isFinite(n2) ? n2 : null;
+    }
+    const n = Number(trimmed);
+    return Number.isFinite(n) ? n : null;
+  }
+  function radiusSourceValues(entry) {
     var _a;
+    if (entry.value !== void 0) {
+      const applied = parseRadiusPx(entry.value);
+      if (applied !== null) return [applied];
+    }
+    const fromModes = Object.values((_a = entry.values) != null ? _a : {}).map(parseRadiusPx).filter((n) => n !== null);
+    return [...new Set(fromModes)];
+  }
+  function proposeForRadius(entry, shapeTargets, cache) {
     const radiusTargets = shapeTargets.filter(
       (target) => normalizeSegments(target.name)[0] === "shape"
     );
@@ -1454,10 +3850,10 @@
         rationale: "Previously approved mapping"
       };
     }
-    const sourceValues = entry.value !== void 0 ? [entry.value] : Object.values((_a = entry.values) != null ? _a : {}).map(Number).filter(Number.isFinite);
+    const sourceValues = radiusSourceValues(entry);
     const exactMatch = radiusTargets.find((target) => {
       const targetValues = new Set(
-        Object.values(target.values).map(Number).filter(Number.isFinite)
+        Object.values(target.values).map(parseRadiusPx).filter((n) => n !== null)
       );
       return sourceValues.length > 0 && sourceValues.every((value) => targetValues.has(value));
     });
@@ -1511,24 +3907,6 @@
         source: "cache",
         confidence: 1,
         rationale: "Previously approved mapping"
-      };
-    }
-    const hex = entry.hex.toLowerCase();
-    let best = null;
-    for (const target of ctx.targets) {
-      if (target.resolvedType !== "COLOR") continue;
-      const modes = Object.values(target.values).filter(
-        (v) => v.toLowerCase() === hex
-      ).length;
-      if (modes > 0 && (!best || modes > best.modes)) best = { target, modes };
-    }
-    if (best) {
-      return {
-        sourceId: entry.id,
-        targetKey: best.target.key,
-        source: "value",
-        confidence: 0.7,
-        rationale: `Hex matches ${best.modes > 1 ? "all modes" : "one mode"} \u2014 verify the semantic role`
       };
     }
     return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
@@ -1613,12 +3991,6 @@
         label: "Loading variables"
       })
     );
-    post({
-      type: "catalog-progress",
-      done: 0,
-      total: 0,
-      label: "Loading text styles"
-    });
     styleCatalog = await buildStyleCatalog(
       null,
       (done, total) => post({
@@ -1643,7 +4015,7 @@
     post({ type: "audit", result: lastAudit });
   }
   function handleProposeMappings(category = "all") {
-    var _a;
+    var _a, _b;
     if (!catalogResult || !lastAudit) {
       throw new Error("Run the audit first.");
     }
@@ -1659,14 +4031,19 @@
         (t) => t.resolvedType === "FLOAT" && isShapeVariable(t.name)
       );
     })();
-    const ctx = { targets: semanticTargets, cache: settings.mappingCache };
+    const ctx = {
+      targets: semanticTargets,
+      cache: settings.mappingCache,
+      colorThemeAssumption: (_a = lastAudit.colorThemeAssumption) != null ? _a : "light"
+    };
     const styleCtx = {
-      targets: (_a = styleCatalog == null ? void 0 : styleCatalog.textStyles) != null ? _a : [],
+      targets: (_b = styleCatalog == null ? void 0 : styleCatalog.textStyles) != null ? _b : [],
       cache: settings.mappingCache
     };
     const wantColors = category === "all" || category === "colors";
     const wantType = category === "all" || category === "typography";
     const wantShape = category === "all" || category === "shape";
+    const wantComponents = category === "all" || category === "components";
     const proposals = [];
     if (wantColors) {
       for (const entry of lastAudit.entries) {
@@ -1700,19 +4077,40 @@
         proposals.push(proposeForRawText(raw, styleCtx));
       }
     }
+    if (wantComponents) {
+      for (const entry of lastAudit.components) {
+        const proposal = proposeComponentSwap(entry);
+        if (proposal) proposals.push(proposal);
+      }
+    }
     post({ type: "proposals", proposals, category });
   }
   async function handleApply(request) {
-    var _a, _b;
+    var _a, _b, _c, _d;
     if (!catalogResult || !lastAudit) {
       throw new Error("Run the audit first.");
     }
+    const tokenMappings = request.mappings.filter(
+      (mapping) => !mapping.sourceId.startsWith("component:")
+    );
+    const componentMappings = request.mappings.filter(
+      (mapping) => mapping.sourceId.startsWith("component:")
+    );
     const report = await applyMappings(
-      request,
+      __spreadProps(__spreadValues({}, request), { mappings: tokenMappings }),
       lastAudit,
       catalogResult.importedByKey,
       (_a = styleCatalog == null ? void 0 : styleCatalog.importedByKey) != null ? _a : /* @__PURE__ */ new Map()
     );
+    if (componentMappings.length > 0) {
+      const componentReport = await applyComponentSwaps(
+        __spreadProps(__spreadValues({}, request), { mappings: componentMappings }),
+        lastAudit
+      );
+      report.componentsSwapped = componentReport.swapped;
+      report.failures.push(...componentReport.failures);
+      report.usagesRebound += componentReport.swapped;
+    }
     const cacheKeyById = /* @__PURE__ */ new Map();
     for (const entry of lastAudit.entries) {
       cacheKeyById.set(entry.id, entry.variableKey || entry.id);
@@ -1720,15 +4118,40 @@
     for (const entry of lastAudit.textStyles) {
       cacheKeyById.set(entry.id, entry.styleKey || entry.id);
     }
-    for (const mapping of request.mappings) {
+    for (const mapping of tokenMappings) {
       const cacheKey = (_b = cacheKeyById.get(mapping.sourceId)) != null ? _b : mapping.sourceId;
       settings.mappingCache[cacheKey] = mapping.targetKey;
     }
     await saveSettings();
     post({ type: "apply-done", report });
-    figma.notify(
-      report.failures.length === 0 ? `Fixed ${report.usagesRebound} usages` : `Fixed ${report.usagesRebound} usages \u2014 ${report.failures.length} issue(s)`
-    );
+    const parts = [];
+    if (report.componentsSwapped > 0) {
+      parts.push(
+        `Swapped ${report.componentsSwapped} component${report.componentsSwapped === 1 ? "" : "s"}`
+      );
+    }
+    if (report.usagesRebound > report.componentsSwapped) {
+      parts.push(
+        `Fixed ${report.usagesRebound - report.componentsSwapped} token usage${report.usagesRebound - report.componentsSwapped === 1 ? "" : "s"}`
+      );
+    }
+    if (parts.length === 0) {
+      parts.push("Fixed 0 usages");
+    }
+    if (report.failures.length > 0) {
+      const first = report.failures[0];
+      const detail = first ? `${first.sourceName}: ${first.reason}` : `${report.failures.length} issue(s)`;
+      parts.push(
+        report.failures.length === 1 ? detail : `${report.failures.length} issues \u2014 ${detail}`
+      );
+    }
+    const includeMixedText = request.category === "all" || request.category === "colors";
+    const includeMixedStyle = request.category === "all" || request.category === "typography";
+    const mixedSkipped = (includeMixedText ? (_c = lastAudit.mixedTextSkipped) != null ? _c : 0 : 0) + (includeMixedStyle ? (_d = lastAudit.mixedStyleSkipped) != null ? _d : 0 : 0);
+    if (mixedSkipped > 0) {
+      parts.push(`${mixedSkipped} mixed text layer(s) skipped`);
+    }
+    figma.notify(parts.join(" \u2014 "));
     await handleAudit();
   }
   async function handleSaveAiSettings(ai) {

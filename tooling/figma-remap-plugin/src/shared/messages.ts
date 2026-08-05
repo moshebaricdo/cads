@@ -15,6 +15,19 @@ export type UsageProp =
   | { kind: "field"; field: string }
   | { kind: "textStyle" };
 
+/**
+ * Fill behind a paint usage — used to decide white/black → `-fixed` vs
+ * `primary` / `primary-inverse`. Chromatic = brand/accent/sentiment (or a
+ * saturated raw fill); neutral = gray/black/white/alpha.
+ */
+export type ColorBackdrop = "chromatic" | "neutral" | "unknown";
+
+/**
+ * Theme the matcher assumes when picking theme-aware primary / primary-inverse
+ * (and when preferring Light vs Dark mode hexes). Independent of `-fixed`.
+ */
+export type ColorThemeAssumption = "light" | "dark";
+
 export interface UsageRef {
   nodeId: string;
   nodeName: string;
@@ -24,6 +37,11 @@ export interface UsageRef {
   inInstance: boolean;
   /** The layer itself or one of its ancestors is hidden on the canvas. */
   hidden: boolean;
+  /**
+   * Nearest solid fill behind this paint (same-node under-fills, then parents).
+   * Only set for color paint usages.
+   */
+  backdrop?: ColorBackdrop;
 }
 
 /** One distinct variable finding (issues only — clean SoT is omitted). */
@@ -49,6 +67,12 @@ export interface AuditVariableEntry {
   flag?: "primitive" | "typographyVariable" | "shapeVariable";
   /** modeName -> display value (hex for colors, stringified otherwise). */
   values: Record<string, string>;
+  /**
+   * Applied corner-radius px read from the bound node. Used for shape-variable
+   * value matching when mode values are missing/unresolvable (e.g. deleted
+   * DSCO tokens like br-s), same path as raw radii.
+   */
+  value?: number;
   usages: UsageRef[];
 }
 
@@ -104,6 +128,27 @@ export interface RawTextEntry {
   usages: UsageRef[];
 }
 
+/** An unbound corner-radius value, grouped by px. */
+export interface RawRadiusEntry {
+  id: string; // "radius:<px>"
+  label: string; // e.g. "8px"
+  value: number;
+  usages: UsageRef[];
+}
+
+/** A component whose instances appear in the selection (report-only). */
+export interface ComponentUsageEntry {
+  key: string;
+  name: string;
+  /** Key found in the baked CADS component catalog. */
+  isCads: boolean;
+  /** Main component lives in the audited file itself (not a library). */
+  isLocal: boolean;
+  instanceCount: number;
+  /** Sample of instance layer names (up to 5). */
+  sampleNodeNames: string[];
+}
+
 /** Font Awesome text using a pre-FA7 family, grouped by font signature. */
 export interface FontAwesomeTextEntry {
   id: string; // "fontawesome:<family>/<style>/<size>"
@@ -120,7 +165,7 @@ export interface RawRadiusEntry {
   usages: UsageRef[];
 }
 
-/** A non-CADS component whose instances appear in the selection (report-only). */
+/** A non-CADS component whose instances appear in the selection. */
 export interface ComponentUsageEntry {
   key: string;
   name: string;
@@ -168,6 +213,16 @@ export interface AuditResult {
   rootNodeIds: string[];
   /** Resolved Light/Dark CADS mode shared by the audited roots, when detectable. */
   colorModeName: string | null;
+  /**
+   * Theme assumed for color remap proposals. `dark` when roots already resolve
+   * to SoT Dark, or when the selection looks like a hand-built dark UI.
+   */
+  colorThemeAssumption: ColorThemeAssumption;
+  /**
+   * True when Dark was inferred from paint density (not from an existing SoT
+   * Dark mode). UI preselects “Set frame mode → Dark”.
+   */
+  manualDarkMode: boolean;
   nodesScanned: number;
   summary: AuditSummary;
   /** Color findings only (foreign + primitive). Typography-variable rows live here with flag. */
@@ -208,7 +263,7 @@ export interface TargetVariable {
   values: Record<string, string>;
 }
 
-/** A text style in the target catalog (imported for property access). */
+/** A text style in the target catalog (baked metrics or imported). */
 export interface TargetTextStyle {
   key: string;
   name: string;
@@ -234,7 +289,12 @@ export interface TargetCatalog {
 export interface CapturedStyleCatalog {
   fileName: string;
   capturedAt: string;
-  styles: { key: string; name: string }[];
+  styles: {
+    key: string;
+    name: string;
+    /** When present, catalog load skips importStyleByKeyAsync for this style. */
+    values?: Record<string, string>;
+  }[];
 }
 
 export type MatchSource =
@@ -268,6 +328,8 @@ export interface ApplyRequest {
   setMode: { collectionKey: string; modeName: string } | null;
   /** Remove explicit modes from non-SoT collections found in the audit. */
   clearForeignModes: boolean;
+  /** Category scoped in the fix panel — used for toast messaging. */
+  category: FixCategory;
 }
 
 export interface ApplyFailure {
@@ -279,6 +341,8 @@ export interface ApplyFailure {
 export interface ApplyReport {
   usagesRebound: number;
   variablesRemapped: number;
+  /** Component instances swapped to CADS (Wave A/B). */
+  componentsSwapped: number;
   modesSet: number;
   modesCleared: number;
   failures: ApplyFailure[];
@@ -313,7 +377,13 @@ export const EMPTY_SETTINGS: PluginSettings = {
   capturedStyles: null,
 };
 
-export type FixCategory = "colors" | "typography" | "shape" | "modes" | "all";
+export type FixCategory =
+  | "colors"
+  | "typography"
+  | "shape"
+  | "modes"
+  | "components"
+  | "all";
 
 export type UiToCodeMessage =
   | { type: "init" }

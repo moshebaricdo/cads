@@ -1,9 +1,10 @@
 /**
  * Selection audit: findings-only walk of the selected frame.
  *
- * Does not descend into component instances (CADS or otherwise) — those are
- * reported as a single component finding when non-CADS. Clean CADS tokens /
- * styles / components are omitted from the result.
+ * Non-CADS instances are still one component finding each. Color paints inside
+ * instances are also audited (marked `inInstance`) so designers can remap fills
+ * before swapping components. Typography / shape / modes stay surface-only.
+ * Clean CADS tokens / styles / components are omitted from the result.
  */
 import type {
   AuditResult,
@@ -11,6 +12,8 @@ import type {
   AuditPaintStyleEntry,
   AuditTextStyleEntry,
   AuditVariableEntry,
+  ColorBackdrop,
+  ColorThemeAssumption,
   ComponentUsageEntry,
   DetachedComponentEntry,
   ExplicitModeEntry,
@@ -32,6 +35,7 @@ import {
   getVariableCached,
   resolveDisplayValues,
   rgbaToHex,
+  safeVariableCollectionId,
 } from "./values";
 import { textStyleValues } from "./styles";
 
@@ -43,6 +47,12 @@ const cadsComponentNameByNormalized = new Map(
     component.name,
   ]),
 );
+
+/** Figma's default component / instance outline — never a real design color. */
+function isFigmaComponentOutlineHex(hex: string): boolean {
+  // Match #9747ff or #9747ff + optional alpha byte.
+  return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
+}
 
 function isFontAwesomeFamily(family: string): boolean {
   return /^font awesome\b/i.test(family.trim());
@@ -86,6 +96,228 @@ function isEffectivelyHidden(node: SceneNode): boolean {
     current = current.parent;
   }
   return false;
+}
+
+function hexChroma(hex: string): number {
+  const raw = hex.replace(/^#/, "").toLowerCase();
+  if (!/^[0-9a-f]{6}/.test(raw)) return 0;
+  const r = parseInt(raw.slice(0, 2), 16);
+  const g = parseInt(raw.slice(2, 4), 16);
+  const b = parseInt(raw.slice(4, 6), 16);
+  return Math.max(r, g, b) - Math.min(r, g, b);
+}
+
+function parseHexRgb(
+  hex: string,
+): { r: number; g: number; b: number } | null {
+  const raw = hex.replace(/^#/, "").toLowerCase();
+  if (!/^[0-9a-f]{6}/.test(raw)) return null;
+  return {
+    r: parseInt(raw.slice(0, 2), 16),
+    g: parseInt(raw.slice(2, 4), 16),
+    b: parseInt(raw.slice(4, 6), 16),
+  };
+}
+
+/** Relative luminance 0–1 (sRGB). */
+function hexLuminance(hex: string): number | null {
+  const rgb = parseHexRgb(hex);
+  if (!rgb) return null;
+  const channel = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b)
+  );
+}
+
+function isNeutralDarkHex(hex: string): boolean {
+  const lum = hexLuminance(hex);
+  return lum != null && lum < 0.22 && hexChroma(hex) < 45;
+}
+
+function isNeutralLightHex(hex: string): boolean {
+  const lum = hexLuminance(hex);
+  return lum != null && lum > 0.75 && hexChroma(hex) < 45;
+}
+
+function isNearWhiteHex(hex: string): boolean {
+  const rgb = parseHexRgb(hex);
+  return !!rgb && rgb.r >= 245 && rgb.g >= 245 && rgb.b >= 245;
+}
+
+function isNearBlackHex(hex: string): boolean {
+  const rgb = parseHexRgb(hex);
+  return !!rgb && rgb.r <= 50 && rgb.g <= 50 && rgb.b <= 55;
+}
+
+function firstColorHex(values: Record<string, string>): string | null {
+  for (const value of Object.values(values)) {
+    if (parseHexRgb(value)) return value;
+  }
+  return null;
+}
+
+/**
+ * Infer whether color remaps should assume CADS Dark (theme-aware white→primary)
+ * vs Light (white→primary-inverse). Does not affect `-fixed` on chromatic chrome.
+ */
+function inferColorThemeAssumption(
+  colorModeName: string | null,
+  selection: readonly SceneNode[],
+  colorEntries: AuditVariableEntry[],
+  paintStyles: AuditPaintStyleEntry[],
+  rawPaints: RawPaintEntry[],
+): { colorThemeAssumption: ColorThemeAssumption; manualDarkMode: boolean } {
+  if (colorModeName && /^dark$/i.test(colorModeName.trim())) {
+    return { colorThemeAssumption: "dark", manualDarkMode: false };
+  }
+
+  let darkBg = 0;
+  let lightBg = 0;
+  let whiteText = 0;
+  let blackText = 0;
+  let visiblePaintUsages = 0;
+  let darkStyleBoost = 0;
+
+  const countHexUsages = (hex: string, usages: UsageRef[]) => {
+    for (const usage of usages) {
+      if (usage.hidden) continue;
+      if (usage.prop.kind !== "paint" || usage.prop.property !== "fills") {
+        continue;
+      }
+      visiblePaintUsages++;
+      if (usage.nodeType === "TEXT") {
+        if (isNearWhiteHex(hex)) whiteText++;
+        else if (isNearBlackHex(hex)) blackText++;
+        continue;
+      }
+      if (isNeutralDarkHex(hex)) darkBg++;
+      else if (isNeutralLightHex(hex)) lightBg++;
+    }
+  };
+
+  for (const entry of colorEntries) {
+    if (entry.resolvedType !== "COLOR") continue;
+    const hex = firstColorHex(entry.values);
+    if (hex) countHexUsages(hex, entry.usages);
+  }
+  for (const style of paintStyles) {
+    countHexUsages(style.hex, style.usages);
+    if (/^dark\//i.test(style.name.trim())) darkStyleBoost++;
+  }
+  for (const raw of rawPaints) {
+    countHexUsages(raw.hex, raw.usages);
+  }
+
+  let rootDark = 0;
+  let rootLight = 0;
+  for (const root of selection) {
+    if (!("fills" in root)) continue;
+    const fills = (root as GeometryMixin).fills;
+    if (!Array.isArray(fills)) continue;
+    for (let i = fills.length - 1; i >= 0; i--) {
+      const paint = fills[i] as Paint;
+      if (paint.type !== "SOLID" || paint.visible === false) continue;
+      if ((paint.opacity ?? 1) < 0.08) continue;
+      const hex = rgbaToHex({ ...paint.color, a: paint.opacity ?? 1 });
+      if (isNeutralDarkHex(hex)) rootDark++;
+      else if (isNeutralLightHex(hex)) rootLight++;
+      break;
+    }
+  }
+  const rootsLookDark = rootDark > 0 && rootDark >= rootLight;
+
+  const bgTotal = darkBg + lightBg;
+  const textTotal = whiteText + blackText;
+  const darkBgRatio = bgTotal > 0 ? darkBg / bgTotal : 0;
+  const whiteTextDominates = textTotal > 0 && whiteText > blackText;
+
+  // Conservative: need a real dark-chrome sample, not one dark card.
+  const densityHit =
+    visiblePaintUsages >= 8 &&
+    bgTotal >= 3 &&
+    textTotal >= 2 &&
+    darkBgRatio >= 0.65 &&
+    whiteTextDominates;
+
+  const rootBoostHit =
+    rootsLookDark &&
+    visiblePaintUsages >= 6 &&
+    bgTotal >= 2 &&
+    darkBgRatio >= 0.5 &&
+    whiteTextDominates;
+
+  const styleBoostHit =
+    darkStyleBoost >= 4 &&
+    darkBgRatio >= 0.5 &&
+    whiteTextDominates &&
+    visiblePaintUsages >= 6;
+
+  if (densityHit || rootBoostHit || styleBoostHit) {
+    return { colorThemeAssumption: "dark", manualDarkMode: true };
+  }
+
+  return { colorThemeAssumption: "light", manualDarkMode: false };
+}
+
+/** Brand / accent / sentiment fills — white/black on these should use `-fixed`. */
+function classifyColorNameBackdrop(name: string): ColorBackdrop | null {
+  const n = name.toLowerCase().replace(/\\/g, "/");
+  if (
+    /neutral|disabled|alpha|black-fixed|white-fixed|true-base|placeholder/.test(
+      n,
+    )
+  ) {
+    return "neutral";
+  }
+  if (
+    /(^|\/)(brand|accent|error|warning|success|info|selected)(\/|$)/.test(n) ||
+    /(^|\/)(aqua|teal|purple|orange|pink|strawberry|affirmative|caution)(\/|$)/.test(
+      n,
+    )
+  ) {
+    return "chromatic";
+  }
+  return null;
+}
+
+function classifyStyleNameBackdrop(styleName: string): ColorBackdrop | null {
+  const parts = styleName
+    .split("/")
+    .map((p) => p.trim().toLowerCase())
+    .filter(Boolean);
+  if (parts.length < 2) return null;
+  const family = parts[1];
+  if (
+    family === "gray" ||
+    family === "black" ||
+    family === "white" ||
+    family === "neutral"
+  ) {
+    return "neutral";
+  }
+  if (
+    [
+      "aqua",
+      "teal",
+      "purple",
+      "orange",
+      "pink",
+      "strawberry",
+      "affirmative",
+      "caution",
+      "info",
+      "brand",
+      "error",
+      "warning",
+      "success",
+    ].includes(family)
+  ) {
+    return "chromatic";
+  }
+  return null;
 }
 
 function hasComponentAncestor(node: SceneNode): boolean {
@@ -228,6 +460,99 @@ export async function auditSelection(
     return paintStyleCache.get(styleId) ?? null;
   }
 
+  async function classifySolidPaint(
+    paint: Paint,
+    host: SceneNode,
+  ): Promise<ColorBackdrop | null> {
+    if (paint.type !== "SOLID" || paint.visible === false) return null;
+    if ((paint.opacity ?? 1) < 0.08) return null;
+
+    const alias = (paint as SolidPaint).boundVariables?.color;
+    if (alias && isAliasLike(alias)) {
+      try {
+        const variable = await getVariableCached(alias.id);
+        if (variable) {
+          const byName = classifyColorNameBackdrop(variable.name);
+          if (byName) return byName;
+        }
+      } catch {
+        /* fall through */
+      }
+    }
+
+    const styleId = (host as SceneNode & { fillStyleId?: string | symbol })
+      .fillStyleId;
+    if (typeof styleId === "string" && styleId) {
+      const style = await getPaintStyle(styleId);
+      if (style) {
+        const byStyle = classifyStyleNameBackdrop(style.name);
+        if (byStyle) return byStyle;
+      }
+    }
+
+    const hex = rgbaToHex({
+      ...paint.color,
+      a: paint.opacity ?? 1,
+    });
+    return hexChroma(hex) >= 28 ? "chromatic" : "neutral";
+  }
+
+  /**
+   * Fill behind a paint: same-node under-fills first, then ancestor fills.
+   * Used so white/black only map to `-fixed` on chromatic primary chrome.
+   */
+  async function classifyBackdrop(
+    node: SceneNode,
+    property: "fills" | "strokes",
+    index: number,
+  ): Promise<ColorBackdrop> {
+    if ("fills" in node) {
+      const fills = (node as GeometryMixin).fills;
+      if (Array.isArray(fills)) {
+        const start = property === "fills" ? index - 1 : fills.length - 1;
+        for (let i = start; i >= 0; i--) {
+          const kind = await classifySolidPaint(fills[i] as Paint, node);
+          if (kind) return kind;
+        }
+      }
+    }
+
+    let current: BaseNode | null = node.parent;
+    while (current && current.type !== "PAGE" && current.type !== "DOCUMENT") {
+      if ("fills" in current) {
+        const fills = (current as GeometryMixin).fills;
+        if (Array.isArray(fills)) {
+          for (let i = fills.length - 1; i >= 0; i--) {
+            const kind = await classifySolidPaint(
+              fills[i] as Paint,
+              current as SceneNode,
+            );
+            if (kind) return kind;
+          }
+        }
+      }
+      current = current.parent;
+    }
+    return "unknown";
+  }
+
+  async function paintUsage(
+    node: SceneNode,
+    property: "fills" | "strokes",
+    index: number,
+    inInstance: boolean,
+  ): Promise<UsageRef> {
+    return {
+      nodeId: node.id,
+      nodeName: node.name,
+      nodeType: node.type,
+      prop: { kind: "paint", property, index },
+      inInstance,
+      hidden: isEffectivelyHidden(node),
+      backdrop: await classifyBackdrop(node, property, index),
+    };
+  }
+
   async function visitText(node: TextNode): Promise<void> {
     const usage: UsageRef = {
       nodeId: node.id,
@@ -319,6 +644,10 @@ export async function auditSelection(
       else if (lh.unit === "PERCENT") values.lineHeight = `${Math.round(lh.value)}%`;
       else values.lineHeight = "auto";
     }
+    if (node.textCase !== figma.mixed) values.textCase = String(node.textCase);
+    if (node.textDecoration !== figma.mixed) {
+      values.textDecoration = String(node.textDecoration);
+    }
     rawTexts.set(id, {
       id,
       label: `${font.family} ${font.style} ${size}`,
@@ -330,6 +659,7 @@ export async function auditSelection(
   async function recordVariableUsage(
     variableId: string,
     usage: UsageRef,
+    appliedRadius?: number,
   ): Promise<void> {
     const id = `var:${variableId}`;
     const existing = entries.get(id);
@@ -338,6 +668,13 @@ export async function auditSelection(
       if (isRadiusUsage(usage)) {
         if (existing.flag !== "shapeVariable") existing.usages = [];
         existing.flag = "shapeVariable";
+        if (
+          existing.value === undefined &&
+          appliedRadius !== undefined &&
+          appliedRadius > 0
+        ) {
+          existing.value = appliedRadius;
+        }
         if (
           existing.usages.some(
             (existingUsage) => existingUsage.nodeId === usage.nodeId,
@@ -362,8 +699,21 @@ export async function auditSelection(
       return;
     }
     const variable = await getVariableCached(variableId);
-    if (!variable) return;
-    const collection = await getCollectionCached(variable.variableCollectionId);
+    if (!variable) {
+      // Deleted / unresolvable binding (e.g. retired DSCO br-s) — treat the
+      // applied corner radius like a raw value so it can still be remapped.
+      if (
+        isRadiusUsage(usage) &&
+        appliedRadius !== undefined &&
+        appliedRadius > 0
+      ) {
+        recordRawRadius(appliedRadius, usage);
+      }
+      return;
+    }
+    const collectionId = safeVariableCollectionId(variable);
+    if (!collectionId) return;
+    const collection = await getCollectionCached(collectionId);
     const libraryName = variable.remote
       ? (collection && libraryByCollectionKey.get(collection.key)) ??
         UNKNOWN_LIBRARY
@@ -408,11 +758,19 @@ export async function auditSelection(
       values: collection ? await resolveDisplayValues(variable, collection) : {},
       usages: [usage],
     };
+    if (
+      flag === "shapeVariable" &&
+      appliedRadius !== undefined &&
+      appliedRadius > 0
+    ) {
+      entry.value = appliedRadius;
+    }
     entries.set(id, entry);
     recordVariableCompliance(entry, usage.hidden);
   }
 
   function recordRawPaint(hex: string, usage: UsageRef): void {
+    if (isFigmaComponentOutlineHex(hex)) return;
     const id = `hex:${hex}`;
     const existing = rawPaints.get(id);
     if (existing) existing.usages.push(usage);
@@ -423,6 +781,7 @@ export async function auditSelection(
   async function visitPaints(
     node: SceneNode,
     property: "fills" | "strokes",
+    inInstance = false,
   ): Promise<void> {
     if (!(property in node)) return;
     const paints = (node as unknown as Record<string, unknown>)[property];
@@ -442,14 +801,9 @@ export async function auditSelection(
       );
       if (style && solidIndex >= 0) {
         const paint = paints[solidIndex] as SolidPaint;
-        const usage: UsageRef = {
-          nodeId: node.id,
-          nodeName: node.name,
-          nodeType: node.type,
-          prop: { kind: "paint", property, index: solidIndex },
-          inInstance: false,
-          hidden: isEffectivelyHidden(node),
-        };
+        const hex = rgbaToHex({ ...paint.color, a: paint.opacity ?? 1 });
+        if (isFigmaComponentOutlineHex(hex)) return;
+        const usage = await paintUsage(node, property, solidIndex, inInstance);
         const id = `paintStyle:${styleId}`;
         const existing = paintStyles.get(id);
         if (existing) existing.usages.push(usage);
@@ -458,7 +812,7 @@ export async function auditSelection(
             id,
             styleId,
             name: style.name,
-            hex: rgbaToHex({ ...paint.color, a: paint.opacity ?? 1 }),
+            hex,
             usages: [usage],
           });
         }
@@ -469,21 +823,29 @@ export async function auditSelection(
     for (let index = 0; index < paints.length; index++) {
       const paint = paints[index] as Paint;
       if (paint.type !== "SOLID" || paint.visible === false) continue;
-      const usage: UsageRef = {
-        nodeId: node.id,
-        nodeName: node.name,
-        nodeType: node.type,
-        prop: { kind: "paint", property, index },
-        inInstance: false,
-        hidden: isEffectivelyHidden(node),
-      };
+      const usage = await paintUsage(node, property, index, inInstance);
       const alias = (paint as SolidPaint).boundVariables?.color;
       if (alias && isAliasLike(alias)) {
         await recordVariableUsage(alias.id, usage);
       } else {
-        recordRawPaint(rgbaToHex({ ...paint.color, a: paint.opacity ?? 1 }), usage);
+        recordRawPaint(
+          rgbaToHex({ ...paint.color, a: paint.opacity ?? 1 }),
+          usage,
+        );
       }
     }
+  }
+
+  function recordRawRadius(
+    value: number,
+    usage: UsageRef,
+  ): void {
+    if (!(value > 0)) return;
+    const id = `radius:${value}`;
+    const existing = rawRadii.get(id);
+    if (existing) existing.usages.push(usage);
+    else rawRadii.set(id, { id, label: `${value}px`, value, usages: [usage] });
+    recordCompliance(false, usage.hidden);
   }
 
   /** One usage per node per distinct unbound radius value (not 4× corners). */
@@ -502,19 +864,14 @@ export async function auditSelection(
       if (!unboundByValue.has(value)) unboundByValue.set(value, field);
     }
     for (const [value, field] of unboundByValue) {
-      const id = `radius:${value}`;
-      const usage: UsageRef = {
+      recordRawRadius(value, {
         nodeId: node.id,
         nodeName: node.name,
         nodeType: node.type,
         prop: { kind: "field", field },
         inInstance: false,
         hidden: isEffectivelyHidden(node),
-      };
-      const existing = rawRadii.get(id);
-      if (existing) existing.usages.push(usage);
-      else rawRadii.set(id, { id, label: `${value}px`, value, usages: [usage] });
-      recordCompliance(false, usage.hidden);
+      });
     }
   }
 
@@ -587,8 +944,8 @@ export async function auditSelection(
 
   async function visitSurfaceNode(node: SceneNode): Promise<void> {
     visitPossibleDetachedComponent(node);
-    await visitPaints(node, "fills");
-    await visitPaints(node, "strokes");
+    await visitPaints(node, "fills", false);
+    await visitPaints(node, "strokes", false);
     visitRadii(node);
     if (node.type === "TEXT") await visitText(node);
 
@@ -615,18 +972,28 @@ export async function auditSelection(
       node as SceneNode & { boundVariables?: Record<string, unknown> }
     ).boundVariables;
     if (bound) {
+      const record = node as unknown as Record<string, unknown>;
       for (const field of Object.keys(bound)) {
         if (SKIP_FIELDS.has(field)) continue;
         const value = bound[field];
         if (!isAliasLike(value)) continue;
-        await recordVariableUsage(value.id, {
-          nodeId: node.id,
-          nodeName: node.name,
-          nodeType: node.type,
-          prop: { kind: "field", field },
-          inInstance: false,
-          hidden: isEffectivelyHidden(node),
-        });
+        const appliedRadius =
+          (RADIUS_FIELDS as readonly string[]).includes(field) &&
+          typeof record[field] === "number"
+            ? (record[field] as number)
+            : undefined;
+        await recordVariableUsage(
+          value.id,
+          {
+            nodeId: node.id,
+            nodeName: node.name,
+            nodeType: node.type,
+            prop: { kind: "field", field },
+            inInstance: false,
+            hidden: isEffectivelyHidden(node),
+          },
+          appliedRadius,
+        );
       }
     }
 
@@ -662,10 +1029,13 @@ export async function auditSelection(
     }
   }
 
-  // Walk selection; never descend into INSTANCE children (component finding only).
-  const stack: SceneNode[] = [...selection];
+  // Walk selection. Instances still get one component finding, but we also
+  // descend for color paints so icon/legacy fills can be remapped pre-swap.
+  const stack: { node: SceneNode; inInstance: boolean }[] = selection.map(
+    (node) => ({ node, inInstance: false }),
+  );
   while (stack.length > 0) {
-    const node = stack.pop()!;
+    const { node, inInstance } = stack.pop()!;
     nodesScanned++;
     if (!isEffectivelyHidden(node)) visibleNodesScanned++;
     if (nodesScanned % 250 === 0) {
@@ -674,13 +1044,31 @@ export async function auditSelection(
     }
 
     if (node.type === "INSTANCE") {
-      await visitInstance(node);
+      if (!inInstance) await visitInstance(node);
+      await visitPaints(node, "fills", true);
+      await visitPaints(node, "strokes", true);
+      for (const child of node.children) {
+        stack.push({ node: child, inInstance: true });
+      }
+      continue;
+    }
+
+    if (inInstance) {
+      await visitPaints(node, "fills", true);
+      await visitPaints(node, "strokes", true);
+      if ("children" in node) {
+        for (const child of node.children) {
+          stack.push({ node: child, inInstance: true });
+        }
+      }
       continue;
     }
 
     await visitSurfaceNode(node);
     if ("children" in node) {
-      for (const child of node.children) stack.push(child);
+      for (const child of node.children) {
+        stack.push({ node: child, inInstance: false });
+      }
     }
   }
 
@@ -735,14 +1123,32 @@ export async function auditSelection(
         `${b.libraryName}/${b.collectionName}/${b.name}`,
       ),
     );
+  const fontSizeKey = (values: Record<string, string>, label: string) => {
+    const fromSize = Number(String(values.size ?? "").replace(/px$/i, "").trim());
+    if (Number.isFinite(fromSize) && fromSize > 0) return fromSize;
+    const match = /(\d+(?:\.\d+)?)\s*(?:px)?\s*$/i.exec(label);
+    if (match) {
+      const n = Number(match[1]);
+      if (Number.isFinite(n) && n >= 6 && n <= 200) return n;
+    }
+    return Number.POSITIVE_INFINITY;
+  };
+  const byFontSize = <T extends { values: Record<string, string> }>(
+    a: T & { name?: string; label?: string },
+    b: T & { name?: string; label?: string },
+  ) => {
+    const aLabel = a.name ?? a.label ?? "";
+    const bLabel = b.name ?? b.label ?? "";
+    const sizeDiff = fontSizeKey(a.values, aLabel) - fontSizeKey(b.values, bLabel);
+    if (sizeDiff !== 0) return sizeDiff;
+    return aLabel.localeCompare(bLabel);
+  };
   const findingTextStyles = Array.from(textStyles.values())
     .filter((s) => !s.isSourceOfTruth)
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const findingRawTexts = Array.from(rawTexts.values()).sort(
-    (a, b) => b.usages.length - a.usages.length,
-  );
+    .sort(byFontSize);
+  const findingRawTexts = Array.from(rawTexts.values()).sort(byFontSize);
   const findingFontAwesomeTexts = Array.from(fontAwesomeTexts.values()).sort(
-    (a, b) => b.usages.length - a.usages.length,
+    byFontSize,
   );
   const findingRawPaints = Array.from(rawPaints.values()).sort(
     (a, b) => b.usages.length - a.usages.length,
@@ -835,10 +1241,20 @@ export async function auditSelection(
       ? selection[0].name
       : `${selection.length} selected layers`;
 
+  const theme = inferColorThemeAssumption(
+    colorModeName,
+    selection,
+    findingEntries,
+    findingPaintStyles,
+    findingRawPaints,
+  );
+
   return {
     selectionLabel,
     rootNodeIds: selection.map((n) => n.id),
     colorModeName,
+    colorThemeAssumption: theme.colorThemeAssumption,
+    manualDarkMode: theme.manualDarkMode,
     nodesScanned: visibleNodesScanned,
     summary,
     entries: findingEntries,

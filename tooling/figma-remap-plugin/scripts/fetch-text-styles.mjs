@@ -4,8 +4,9 @@
  * text styles via the REST API. Requires FIGMA_ACCESS_TOKEN (File content
  * Read scope) in the environment or the repo-root .env.
  *
- * Designers don't need this: the plugin's "Capture text styles" button inside
- * the CADS library file does the same thing without a token.
+ * REST only returns key + name. Existing baked `values` (font metrics) are
+ * preserved by key so load-time imports stay skipped. Refresh metrics via
+ * Figma MCP / in-file capture when the type ramp changes.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -29,10 +30,29 @@ function readToken() {
   return null;
 }
 
+/** Pull previously baked values by key so REST refresh doesn't drop metrics. */
+function readExistingValues(outPath) {
+  try {
+    const src = readFileSync(outPath, "utf8");
+    const match = src.match(
+      /export const bakedTextStyles: BakedTextStyle\[] = (\[[\s\S]*?\]);/,
+    );
+    if (!match) return new Map();
+    const parsed = JSON.parse(match[1]);
+    return new Map(
+      parsed
+        .filter((entry) => entry?.key && entry?.values)
+        .map((entry) => [entry.key, entry.values]),
+    );
+  } catch {
+    return new Map();
+  }
+}
+
 const token = readToken();
 if (!token) {
   console.error(
-    "FIGMA_ACCESS_TOKEN not found (env or repo-root .env). Aborting — the plugin's in-file capture mode works without a token.",
+    "FIGMA_ACCESS_TOKEN not found (env or repo-root .env). Aborting — harvest values via Figma MCP instead.",
   );
   process.exit(1);
 }
@@ -45,24 +65,53 @@ if (!response.ok) {
   process.exit(1);
 }
 const data = await response.json();
+const outPath = join(root, "src/data/cadsTextStyles.ts");
+const existingValues = readExistingValues(outPath);
+
+const familyOrder = {
+  Heading: 0,
+  Body: 1,
+  Overline: 2,
+  Link: 3,
+  Label: 4,
+  Mono: 5,
+};
+
 const styles = (data.meta?.styles ?? [])
   .filter((style) => style.style_type === "TEXT")
-  .map((style) => ({ key: style.key, name: style.name }))
-  .sort((a, b) => a.name.localeCompare(b.name));
+  .map((style) => {
+    const values = existingValues.get(style.key);
+    return values
+      ? { key: style.key, name: style.name, values }
+      : { key: style.key, name: style.name };
+  })
+  .sort((a, b) => {
+    const fa = a.name.split("/")[0];
+    const fb = b.name.split("/")[0];
+    const oa = familyOrder[fa] ?? 99;
+    const ob = familyOrder[fb] ?? 99;
+    if (oa !== ob) return oa - ob;
+    return a.name.localeCompare(b.name);
+  });
 
-const outPath = join(root, "src/data/cadsTextStyles.ts");
+const missingValues = styles.filter((s) => !s.values).length;
+
 const contents = `/**
- * Baked CADS text-style catalog (published style keys from the CADS Figma
- * library). Regenerate with \`node scripts/fetch-text-styles.mjs\` (requires
- * FIGMA_ACCESS_TOKEN), or capture live from inside the CADS library file via
- * the plugin's "Capture text styles" button — a capture always takes
- * precedence over this baked list.
+ * Baked CADS text-style catalog (published style keys + font metrics from the
+ * CADS Figma library). Metrics let the plugin skip importStyleByKeyAsync at
+ * load time — apply still imports styles lazily when remapping.
+ *
+ * Regenerate keys via \`node scripts/fetch-text-styles.mjs\` (REST; preserves
+ * existing values by key). Refresh values from the open CADS file via Figma
+ * MCP / plugin capture.
  *
  * GENERATED FILE — do not hand-edit style entries.
  */
 export interface BakedTextStyle {
   key: string;
   name: string;
+  /** Font metrics for matching/display. When present, load skips style import. */
+  values?: Record<string, string>;
 }
 
 export const CADS_FILE_KEY = ${JSON.stringify(FILE_KEY)};
@@ -72,4 +121,9 @@ export const bakedFetchedAt: string | null = ${JSON.stringify(new Date().toISOSt
 export const bakedTextStyles: BakedTextStyle[] = ${JSON.stringify(styles, null, 2)};
 `;
 writeFileSync(outPath, contents);
-console.log(`Wrote ${styles.length} text styles to src/data/cadsTextStyles.ts`);
+console.log(
+  `Wrote ${styles.length} text styles to src/data/cadsTextStyles.ts` +
+    (missingValues
+      ? ` (${missingValues} missing values — will import at load until refreshed)`
+      : " (all have baked values)"),
+);

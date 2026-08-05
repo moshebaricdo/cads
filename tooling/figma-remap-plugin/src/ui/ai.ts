@@ -12,6 +12,13 @@ export interface AiSourceInput {
   values: Record<string, string>;
   /** e.g. "used 12× on fills of Button, Card / inside instances: 3" */
   usageSummary: string;
+  /** COLOR context — omitted for non-color sources. */
+  surface?: "background" | "text" | "border";
+  /** Majority fill behind usages: chromatic (brand/accent) vs neutral. */
+  backdrop?: "chromatic" | "neutral" | "unknown";
+  /** Assumed CADS Light/Dark for theme-aware tokens. */
+  themeAssumption?: "light" | "dark";
+  groupLabel?: string;
 }
 
 export interface AiTargetInput {
@@ -28,12 +35,29 @@ export interface AiSuggestion {
 }
 
 function buildPrompt(sources: AiSourceInput[], targets: AiTargetInput[]): string {
-  return [
+  const hasColor = sources.some((source) => source.type === "COLOR");
+  const lines = [
     "You map design tokens from legacy design systems onto a new source-of-truth Figma variable library.",
     "For each SOURCE, pick the best TARGET variable name, or null if nothing fits.",
     "Prefer semantic intent over raw value equality: a primitive gray used as body text should map to the semantic text token, not another primitive.",
     "Use the usage context (which properties and layers consume the token) to infer the semantic role.",
     "",
+  ];
+
+  if (hasColor) {
+    lines.push(
+      "COLOR RULES:",
+      "- TARGETS are semantic CADS color variables only (never primitives).",
+      "- Use surface (text/background/border), backdrop, and themeAssumption.",
+      "- White/black on chromatic primary chrome (brand/accent/sentiment) → *-fixed (e.g. text/neutral/white-fixed).",
+      "- Otherwise theme-aware: under Light, white text → text/neutral/primary-inverse; under Dark, white text → text/neutral/primary.",
+      "- Under Dark, dark neutral surfaces → background/neutral/primary (not primary-inverse).",
+      "- Prefer role over hex closeness. Return only exact names from TARGETS, or null.",
+      "",
+    );
+  }
+
+  lines.push(
     "Respond with ONLY a JSON array, no prose, no code fences. Each element:",
     '{"sourceId": string, "targetName": string | null, "confidence": number between 0 and 1, "rationale": short string}',
     "",
@@ -42,7 +66,9 @@ function buildPrompt(sources: AiSourceInput[], targets: AiTargetInput[]): string
     "",
     "TARGETS:",
     JSON.stringify(targets, null, 1),
-  ].join("\n");
+  );
+
+  return lines.join("\n");
 }
 
 function parseSuggestions(text: string): AiSuggestion[] {

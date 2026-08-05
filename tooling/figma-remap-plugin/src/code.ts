@@ -22,6 +22,10 @@ import {
 } from "./main/styles";
 import { applyMappings } from "./main/apply";
 import {
+  applyComponentSwaps,
+  proposeComponentSwap,
+} from "./main/components";
+import {
   proposeForRadius,
   proposeForRawPaint,
   proposeForRawText,
@@ -132,14 +136,8 @@ async function loadCadsCatalog(libraryName: string): Promise<void> {
     }),
   );
 
-  post({
-    type: "catalog-progress",
-    done: 0,
-    total: 0,
-    label: "Loading text styles",
-  });
-
-  // Baked CADS text styles only — no capture / setup flow.
+  // Baked metrics → near-instant (no importStyleByKeyAsync). Fallback imports
+  // only when a style is missing values.
   styleCatalog = await buildStyleCatalog(null, (done, total) =>
     post({
       type: "catalog-progress",
@@ -189,7 +187,11 @@ function handleProposeMappings(category: FixCategory = "all"): void {
           (t) => t.resolvedType === "FLOAT" && isShapeVariable(t.name),
         );
   })();
-  const ctx = { targets: semanticTargets, cache: settings.mappingCache };
+  const ctx = {
+    targets: semanticTargets,
+    cache: settings.mappingCache,
+    colorThemeAssumption: lastAudit.colorThemeAssumption ?? "light",
+  };
   const styleCtx = {
     targets: styleCatalog?.textStyles ?? [],
     cache: settings.mappingCache,
@@ -198,6 +200,7 @@ function handleProposeMappings(category: FixCategory = "all"): void {
   const wantColors = category === "all" || category === "colors";
   const wantType = category === "all" || category === "typography";
   const wantShape = category === "all" || category === "shape";
+  const wantComponents = category === "all" || category === "components";
 
   const proposals: MappingProposal[] = [];
   if (wantColors) {
@@ -232,6 +235,12 @@ function handleProposeMappings(category: FixCategory = "all"): void {
       proposals.push(proposeForRawText(raw, styleCtx));
     }
   }
+  if (wantComponents) {
+    for (const entry of lastAudit.components) {
+      const proposal = proposeComponentSwap(entry);
+      if (proposal) proposals.push(proposal);
+    }
+  }
   post({ type: "proposals", proposals, category });
 }
 
@@ -239,12 +248,30 @@ async function handleApply(request: ApplyRequest): Promise<void> {
   if (!catalogResult || !lastAudit) {
     throw new Error("Run the audit first.");
   }
+
+  const tokenMappings = request.mappings.filter(
+    (mapping) => !mapping.sourceId.startsWith("component:"),
+  );
+  const componentMappings = request.mappings.filter((mapping) =>
+    mapping.sourceId.startsWith("component:"),
+  );
+
   const report = await applyMappings(
-    request,
+    { ...request, mappings: tokenMappings },
     lastAudit,
     catalogResult.importedByKey,
     styleCatalog?.importedByKey ?? new Map(),
   );
+
+  if (componentMappings.length > 0) {
+    const componentReport = await applyComponentSwaps(
+      { ...request, mappings: componentMappings },
+      lastAudit,
+    );
+    report.componentsSwapped = componentReport.swapped;
+    report.failures.push(...componentReport.failures);
+    report.usagesRebound += componentReport.swapped;
+  }
 
   const cacheKeyById = new Map<string, string>();
   for (const entry of lastAudit.entries) {
@@ -253,18 +280,50 @@ async function handleApply(request: ApplyRequest): Promise<void> {
   for (const entry of lastAudit.textStyles) {
     cacheKeyById.set(entry.id, entry.styleKey || entry.id);
   }
-  for (const mapping of request.mappings) {
+  for (const mapping of tokenMappings) {
     const cacheKey = cacheKeyById.get(mapping.sourceId) ?? mapping.sourceId;
     settings.mappingCache[cacheKey] = mapping.targetKey;
   }
   await saveSettings();
 
   post({ type: "apply-done", report });
-  figma.notify(
-    report.failures.length === 0
-      ? `Fixed ${report.usagesRebound} usages`
-      : `Fixed ${report.usagesRebound} usages — ${report.failures.length} issue(s)`,
-  );
+  const parts: string[] = [];
+  if (report.componentsSwapped > 0) {
+    parts.push(
+      `Swapped ${report.componentsSwapped} component${report.componentsSwapped === 1 ? "" : "s"}`,
+    );
+  }
+  if (report.usagesRebound > report.componentsSwapped) {
+    parts.push(
+      `Fixed ${report.usagesRebound - report.componentsSwapped} token usage${report.usagesRebound - report.componentsSwapped === 1 ? "" : "s"}`,
+    );
+  }
+  if (parts.length === 0) {
+    parts.push("Fixed 0 usages");
+  }
+  if (report.failures.length > 0) {
+    const first = report.failures[0];
+    const detail = first
+      ? `${first.sourceName}: ${first.reason}`
+      : `${report.failures.length} issue(s)`;
+    parts.push(
+      report.failures.length === 1
+        ? detail
+        : `${report.failures.length} issues — ${detail}`,
+    );
+  }
+  // Mixed skips are category-specific: fills → colors, styles/fonts → typography.
+  const includeMixedText =
+    request.category === "all" || request.category === "colors";
+  const includeMixedStyle =
+    request.category === "all" || request.category === "typography";
+  const mixedSkipped =
+    (includeMixedText ? (lastAudit.mixedTextSkipped ?? 0) : 0) +
+    (includeMixedStyle ? (lastAudit.mixedStyleSkipped ?? 0) : 0);
+  if (mixedSkipped > 0) {
+    parts.push(`${mixedSkipped} mixed text layer(s) skipped`);
+  }
+  figma.notify(parts.join(" — "));
 
   await handleAudit();
 }

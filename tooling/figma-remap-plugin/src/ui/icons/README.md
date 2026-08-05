@@ -22,3 +22,5 @@ Drop Font Awesome **SVG** files here. Baked into the UI via `../faIcons.ts`.
 | `arrow-left-solid-full.svg` | Back |
 | `gear-solid-full.svg` | Footer AI settings |
 | `table-layout-solid-full.svg` | Frame / auto-layout layer |
+| `circle-half-stroke-solid-full.svg` | Modes |
+| `circle-exclamation-solid-full.svg` | Warning status indicator |

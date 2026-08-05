@@ -11,6 +11,8 @@ import borderTopLeftSvg from "./icons/border-top-left-duotone-solid-full.svg";
 import bullseyePointerSvg from "./icons/bullseye-pointer-solid-full.svg";
 import caretDownSvg from "./icons/caret-down-solid-full.svg";
 import caretUpSvg from "./icons/caret-up-solid-full.svg";
+import circleExclamationSvg from "./icons/circle-exclamation-solid-full.svg";
+import circleHalfStrokeSvg from "./icons/circle-half-stroke-solid-full.svg";
 import crosshairsSvg from "./icons/crosshairs-solid-full.svg";
 import diamonds4Svg from "./icons/diamonds-4-solid-full.svg";
 import drawSquareSvg from "./icons/draw-square-solid-full.svg";
@@ -18,6 +20,7 @@ import fontSvg from "./icons/font-solid-full.svg";
 import gearSvg from "./icons/gear-solid-full.svg";
 import paletteSvg from "./icons/palette-solid-full.svg";
 import rotateLeftSvg from "./icons/rotate-left-solid-full.svg";
+import sparkleSvg from "./icons/sparkle-solid-full.svg";
 import spinnerSvg from "./icons/spinner-solid-full.svg";
 import squareSvg from "./icons/square-solid-full.svg";
 import tableLayoutSvg from "./icons/table-layout-solid-full.svg";
@@ -32,6 +35,8 @@ export type IconName =
   | "bullseye-pointer"
   | "caret-down"
   | "caret-up"
+  | "circle-exclamation"
+  | "circle-half-stroke"
   | "crosshairs"
   | "diamonds-4"
   | "draw-square"
@@ -39,6 +44,7 @@ export type IconName =
   | "gear"
   | "palette"
   | "rotate-left"
+  | "sparkle"
   | "spinner"
   | "square"
   | "table-layout";
@@ -53,6 +59,8 @@ const RAW: Record<IconName, string> = {
   "bullseye-pointer": bullseyePointerSvg,
   "caret-down": caretDownSvg,
   "caret-up": caretUpSvg,
+  "circle-exclamation": circleExclamationSvg,
+  "circle-half-stroke": circleHalfStrokeSvg,
   crosshairs: crosshairsSvg,
   "diamonds-4": diamonds4Svg,
   "draw-square": drawSquareSvg,
@@ -60,6 +68,7 @@ const RAW: Record<IconName, string> = {
   gear: gearSvg,
   palette: paletteSvg,
   "rotate-left": rotateLeftSvg,
+  sparkle: sparkleSvg,
   spinner: spinnerSvg,
   square: squareSvg,
   "table-layout": tableLayoutSvg,
