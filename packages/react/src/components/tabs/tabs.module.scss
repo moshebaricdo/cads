@@ -3,8 +3,6 @@
   // real border can't be overlapped by the selected underline. Overridable for
   // shared header rows via --tabs-baseline-color: transparent.
   --tabs-baseline-color: var(--border-neutral-primary);
-  --tabs-scroll-btn-size: 32px;
-  --tabs-scroll-icon-size: 14px;
 
   position: relative;
   display: inline-flex;
@@ -23,26 +21,6 @@
 
   &[data-overflow] {
     gap: 6px;
-  }
-
-  &[data-size="large"] {
-    --tabs-scroll-btn-size: 40px;
-    --tabs-scroll-icon-size: 16px;
-  }
-
-  &[data-size="medium"] {
-    --tabs-scroll-btn-size: 36px;
-    --tabs-scroll-icon-size: 14px;
-  }
-
-  &[data-size="small"] {
-    --tabs-scroll-btn-size: 32px;
-    --tabs-scroll-icon-size: 12px;
-  }
-
-  &[data-size="extraSmall"] {
-    --tabs-scroll-btn-size: 28px;
-    --tabs-scroll-icon-size: 10px;
   }
 }
 
@@ -128,33 +106,41 @@
   }
 }
 
-.scrollButton:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
+// Primary: layout only — chrome from CADS Button (text / tertiary / iconOnly).
+// Secondary: CloseIconButton-scale compact chevrons (Button is too tall / filled).
+// Center on the cross axis so compact icons line up with tab labels (not the baseline).
+.scrollButton {
   position: relative;
   z-index: 2;
   flex: 0 0 auto;
+  align-self: center;
+}
+
+.scrollButtonCompact:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: var(--tabs-scroll-btn-size);
-  height: var(--tabs-scroll-btn-size);
-  align-self: center;
+  width: var(--tabs-scroll-box);
+  height: var(--tabs-scroll-box);
+  min-width: 0;
   margin: 0;
   padding: 0;
   border: none;
-  border-radius: var(--shape-sm);
-  background: transparent;
+  border-radius: 0.25rem;
+  font-size: var(--tabs-scroll-icon);
   color: var(--text-neutral-quaternary);
+  background-color: transparent;
   cursor: pointer;
+  transition: var(--transition-colors);
 
   &:hover:not(:global(.Mui-disabled)) {
     color: var(--text-neutral-primary);
-    background: var(--background-neutral-secondary);
+    background-color: transparent;
   }
 
   &:active:not(:global(.Mui-disabled)) {
-    color: var(--text-neutral-primary);
-    background: var(--background-neutral-tertiary);
+    color: var(--text-neutral-quaternary);
   }
 
   &:focus {
@@ -170,7 +156,7 @@
     opacity: 1;
     cursor: default;
     color: var(--text-disabled-neutral);
-    background: transparent;
+    background-color: transparent;
   }
 }
 

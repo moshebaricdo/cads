@@ -22,11 +22,20 @@ import {
   springTransition,
   useExperimentalMotion,
 } from "../../theme/experimentalMotion";
+import { Button } from "../button";
 import { CloseIconButton } from "../close-icon-button";
 import styles from "./tabs.module.scss";
 import type { TabsProps } from "./types";
 
 export type { TabsProps, TabsItem, TabsSize, TabsType } from "./types";
+
+/** Same box/icon scale as CloseIconButton — used for secondary overflow chevrons. */
+const COMPACT_SCROLL_SIZE = {
+  large: { box: "1.5rem", icon: "1rem" },
+  medium: { box: "1.125rem", icon: "0.875rem" },
+  small: { box: "1.125rem", icon: "0.75rem" },
+  extraSmall: { box: "0.8125rem", icon: "0.625rem" },
+} as const;
 
 function resolveIconName(
   name: FaIconName | string | undefined,
@@ -312,14 +321,60 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   };
 
   const rootClass = [styles.root, className].filter(Boolean).join(" ");
-  const scrollIconPx =
-    size === "large"
-      ? "1rem"
-      : size === "small"
-        ? "0.75rem"
-        : size === "extraSmall"
-          ? "0.625rem"
-          : "0.875rem";
+  // Match dismissible-tab CloseIconButton size mapping on secondary.
+  const compactScrollSize = size === "large" ? "medium" : size;
+  const compactScrollDims = COMPACT_SCROLL_SIZE[compactScrollSize];
+
+  const renderScrollButton = (direction: -1 | 1) => {
+    const label =
+      direction < 0 ? "Scroll tabs left" : "Scroll tabs right";
+    const iconName = direction < 0 ? "chevron-left" : "chevron-right";
+    const disabled = direction < 0 ? !overflow.before : !overflow.after;
+    const onClick = () => scrollByPage(direction);
+
+    // Secondary tabs are short (~20–32px); full Button chrome reads as oversized
+    // with a heavy hover fill. Use CloseIconButton-scale mute icons instead
+    // (same recipe as dismiss on secondary tabs — not CloseIconButton itself,
+    // which is xmark-only).
+    if (isSecondary) {
+      return (
+        <ButtonBase
+          type="button"
+          aria-label={label}
+          disabled={disabled}
+          disableRipple
+          className={`${styles.scrollButton} ${styles.scrollButtonCompact}`}
+          style={
+            {
+              "--tabs-scroll-box": compactScrollDims.box,
+              "--tabs-scroll-icon": compactScrollDims.icon,
+            } as CSSProperties
+          }
+          onClick={onClick}
+        >
+          <FaIcon
+            name={iconName}
+            family="solid"
+            fontSize={compactScrollDims.icon}
+          />
+        </ButtonBase>
+      );
+    }
+
+    return (
+      <Button
+        variant="text"
+        color="tertiary"
+        size={size}
+        iconOnly
+        startIconName={iconName}
+        aria-label={label}
+        disabled={disabled}
+        className={styles.scrollButton}
+        onClick={onClick}
+      />
+    );
+  };
 
   return (
     <div
@@ -330,18 +385,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       data-size={size}
       data-overflow={overflow.scrollable ? "" : undefined}
     >
-      {overflow.scrollable ? (
-        <ButtonBase
-          type="button"
-          aria-label="Scroll tabs left"
-          disabled={!overflow.before}
-          disableRipple
-          className={styles.scrollButton}
-          onClick={() => scrollByPage(-1)}
-        >
-          <FaIcon name="chevron-left" family="solid" fontSize={scrollIconPx} />
-        </ButtonBase>
-      ) : null}
+      {overflow.scrollable ? renderScrollButton(-1) : null}
       <div
         ref={listRef}
         role="tablist"
@@ -554,18 +598,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
           );
         })}
       </div>
-      {overflow.scrollable ? (
-        <ButtonBase
-          type="button"
-          aria-label="Scroll tabs right"
-          disabled={!overflow.after}
-          disableRipple
-          className={styles.scrollButton}
-          onClick={() => scrollByPage(1)}
-        >
-          <FaIcon name="chevron-right" family="solid" fontSize={scrollIconPx} />
-        </ButtonBase>
-      ) : null}
+      {overflow.scrollable ? renderScrollButton(1) : null}
     </div>
   );
 });

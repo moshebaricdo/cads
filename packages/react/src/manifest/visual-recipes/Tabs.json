@@ -475,7 +475,7 @@
         "expectedGeometry": {
           "containerWidth": 248,
           "overflow": "horizontal tablist scroll; document does not widen",
-          "scrollButtons": "left/right chevrons when overflowing; left disabled at start; 6px gap from tablist",
+          "scrollButtons": "primary: Button text/tertiary/iconOnly; left disabled at start; 6px gap",
           "fade": "end-edge alpha mask at scroll start (surface-independent)",
           "scrollbar": "hidden (native scrollbar would steal tab clicks on desktop)"
         },
@@ -505,7 +505,7 @@
         "expectedGeometry": {
           "containerWidth": 248,
           "overflow": "horizontal tablist scroll; document does not widen",
-          "scrollButtons": "left/right chevrons when overflowing; left disabled at start; 6px gap from tablist",
+          "scrollButtons": "secondary: CloseIconButton-scale mute chevrons; left disabled at start; 6px gap",
           "fade": "end-edge alpha mask at scroll start (surface-independent)",
           "scrollbar": "hidden (native scrollbar would steal tab clicks on desktop)"
         },
@@ -559,7 +559,7 @@
     "build": "pnpm build — pass",
     "docsBuild": "pnpm build:docs — pass",
     "correctionPasses": [
-      "Desktop overflow UX: native scrollbars steal tab clicks. Hide the scrollbar and show MUI-style left/right chevron scroll buttons when the tablist overflows (6px gap). Alpha-mask edge fades signal clipped content without a surface-color dependency. Trackpad/touch/keyboard scroll still work on the scrollport.",
+      "Desktop overflow UX: native scrollbars steal tab clicks. Hide the scrollbar and show chevrons when overflowing (6px gap): primary uses CADS Button text/tertiary/iconOnly; secondary uses CloseIconButton-scale mute chevrons (Button is too tall/filled beside short contained tabs). Alpha-mask edge fades signal clipped content. Trackpad/touch/keyboard scroll still work on the scrollport.",
       "Shared-baseline regression: overflow scroll clips children, so a real border-bottom can't be overlapped by the selected underline. Tabs hairline is an inset box-shadow via --tabs-baseline-color. Shared header rows paint a ::after hairline behind Tabs (z-index 0/1) and flush with --tabs-baseline-color: transparent so the full 2px underline sits on that edge without the parent inset shadow covering it.",
       "Sibling-layout regression: overflow support had changed the root from intrinsic sizing to width: 100%, so Tabs consumed an entire flex row even when its items fit. Restored width: fit-content while retaining max-width: 100%, min-width: 0, and horizontal overflow for constrained groups.",
       "Responsive overflow: constrained primary/light and secondary/dark fixtures keep the tablist within its container; chevrons appear when overflowing (left disabled at scroll start).",
