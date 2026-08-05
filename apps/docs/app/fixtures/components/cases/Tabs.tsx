@@ -164,4 +164,46 @@ export const cases: FixtureCase[] = [
         />
       ),
     },
+    {
+      id: "tabs-overflow-primary-light",
+      mode: "light",
+      state: "overflow-start",
+      viewport: { width: 280, height: 96 },
+      render: () => (
+        <Tabs
+          type="primary"
+          size="medium"
+          aria-label="Overflowing primary tabs"
+          defaultValue="overview"
+          items={[
+            { value: "overview", label: "Overview" },
+            { value: "curriculum", label: "Curriculum" },
+            { value: "standards", label: "Standards alignment" },
+            { value: "resources", label: "Teacher resources" },
+            { value: "settings", label: "Settings" },
+          ]}
+        />
+      ),
+    },
+    {
+      id: "tabs-overflow-secondary-dark",
+      mode: "dark",
+      state: "overflow-start",
+      viewport: { width: 280, height: 80 },
+      render: () => (
+        <Tabs
+          type="secondary"
+          size="medium"
+          aria-label="Overflowing secondary tabs"
+          defaultValue="overview"
+          items={[
+            { value: "overview", label: "Overview" },
+            { value: "curriculum", label: "Curriculum" },
+            { value: "standards", label: "Standards alignment" },
+            { value: "resources", label: "Teacher resources" },
+            { value: "settings", label: "Settings" },
+          ]}
+        />
+      ),
+    },
   ];

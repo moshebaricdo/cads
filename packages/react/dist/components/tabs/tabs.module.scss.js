@@ -1,11 +1,11 @@
-import './tabs.css';const t = "_tablist_goi9f_1", i = "_indicator_goi9f_14", a = "_tab_goi9f_1", o = {
+import './tabs.css';const t = "_tablist_13zcs_1", s = "_indicator_13zcs_36", a = "_tab_13zcs_1", c = {
   tablist: t,
-  indicator: i,
+  indicator: s,
   tab: a
 };
 export {
-  o as default,
-  i as indicator,
+  c as default,
+  s as indicator,
   a as tab,
   t as tablist
 };

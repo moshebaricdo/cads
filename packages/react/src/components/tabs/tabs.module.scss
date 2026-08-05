@@ -1,8 +1,67 @@
 .tablist {
+  --tabs-overflow-fade-width: 24px;
+
   position: relative;
   display: flex;
-  border-bottom: 1px solid var(--border-neutral-primary);
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   box-sizing: border-box;
+  box-shadow: inset 0 -1px 0 var(--border-neutral-primary);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: var(--tabs-overflow-fade-width);
+  -webkit-overflow-scrolling: touch;
+  mask-mode: alpha;
+
+  // Mask colors contribute alpha only: they never paint over the host surface.
+  &[data-overflow-after]:not([data-overflow-before]) {
+    mask-image: linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - var(--tabs-overflow-fade-width)),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - var(--tabs-overflow-fade-width)),
+      transparent 100%
+    );
+  }
+
+  &[data-overflow-before]:not([data-overflow-after]) {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black var(--tabs-overflow-fade-width),
+      black 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black var(--tabs-overflow-fade-width),
+      black 100%
+    );
+  }
+
+  &[data-overflow-before][data-overflow-after] {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black var(--tabs-overflow-fade-width),
+      black calc(100% - var(--tabs-overflow-fade-width)),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black var(--tabs-overflow-fade-width),
+      black calc(100% - var(--tabs-overflow-fade-width)),
+      transparent 100%
+    );
+  }
 
   &[data-type="secondary"] {
     align-items: flex-end;
@@ -16,8 +75,7 @@
 .indicator {
   position: absolute;
   height: 2px;
-  /* Match tab underline: tabs use margin-bottom: -1px to sit on the tablist hairline. */
-  bottom: -1px;
+  bottom: 0;
   box-sizing: border-box;
   background-color: var(--border-selected-primary);
   pointer-events: none;
@@ -35,7 +93,6 @@
   gap: var(--tab-gap);
   padding-inline: var(--tab-px);
   padding-block: var(--tab-py);
-  margin-bottom: -1px;
   font-family: var(--font-family-main);
   font-weight: var(--font-weight-semi-bold);
   font-size: var(--tab-font-size);

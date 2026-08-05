@@ -106,6 +106,7 @@ export function TemplatePlayground({
   /** Overlay surfaces need the stage width when Inspect forces surfaceOnly. */
   const stretchPreview =
     Boolean(values.fullWidth) ||
+    component.exportName === "Tabs" ||
     component.exportName === "Pagination" ||
     (inspect &&
       (component.exportName === "Drawer" ||

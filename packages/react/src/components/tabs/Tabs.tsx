@@ -3,6 +3,7 @@ import { motion as motionVars } from "@codeai/cads-variables";
 import { motion, useReducedMotion } from "motion/react";
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useId,
   useLayoutEffect,
@@ -62,6 +63,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const listRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Array<HTMLElement | null>>([]);
   const indicatorReadyRef = useRef(false);
+  const selectedRevealReadyRef = useRef(false);
   const controlled = valueProp !== undefined;
   const [uncontrolled, setUncontrolled] = useState(
     defaultValue ?? items.find((item) => !item.disabled)?.value,
@@ -76,6 +78,10 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     width: number;
   } | null>(null);
   const [indicatorAnimated, setIndicatorAnimated] = useState(false);
+  const [overflowEdges, setOverflowEdges] = useState({
+    before: false,
+    after: false,
+  });
   const indicatorSpring = springTransition(
     motionVars.indicator.spring,
     reduceMotion || !indicatorAnimated,
@@ -97,6 +103,47 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
 
   const selectedIndex = items.findIndex((item) => item.value === value);
 
+  const updateOverflowEdges = useCallback(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const maxScrollLeft = Math.max(0, list.scrollWidth - list.clientWidth);
+    const next = {
+      before: maxScrollLeft > 1 && list.scrollLeft > 1,
+      after: maxScrollLeft > 1 && list.scrollLeft < maxScrollLeft - 1,
+    };
+    setOverflowEdges((current) =>
+      current.before === next.before && current.after === next.after
+        ? current
+        : next,
+    );
+  }, []);
+
+  const scrollTabIntoView = useCallback((index: number) => {
+    const list = listRef.current;
+    const tab = tabRefs.current[index];
+    if (!list || !tab) return;
+
+    const fadeInset = 24;
+    const maxScrollLeft = Math.max(0, list.scrollWidth - list.clientWidth);
+    const tabStart = tab.offsetLeft;
+    const tabEnd = tabStart + tab.offsetWidth;
+    const visibleStart = list.scrollLeft;
+    const visibleEnd = visibleStart + list.clientWidth;
+    let nextScrollLeft = visibleStart;
+
+    if (tabStart < visibleStart + fadeInset) {
+      nextScrollLeft = tabStart - fadeInset;
+    } else if (tabEnd > visibleEnd - fadeInset) {
+      nextScrollLeft = tabEnd - list.clientWidth + fadeInset;
+    }
+
+    const clamped = Math.max(0, Math.min(maxScrollLeft, nextScrollLeft));
+    if (Math.abs(clamped - visibleStart) > 1) {
+      list.scrollTo({ left: clamped, behavior: "auto" });
+    }
+  }, []);
+
   const [focusedIndex, setFocusedIndex] = useState(selectedFocusableIndex);
   const tabStopIndex = focusableIndexes.includes(focusedIndex)
     ? focusedIndex
@@ -105,6 +152,36 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   useEffect(() => {
     setFocusedIndex(selectedFocusableIndex);
   }, [selectedFocusableIndex]);
+
+  useLayoutEffect(() => {
+    updateOverflowEdges();
+  }, [items, size, type, updateOverflowEdges]);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const update = () => updateOverflowEdges();
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", update);
+      return () => window.removeEventListener("resize", update);
+    }
+
+    const ro = new ResizeObserver(update);
+    ro.observe(list);
+    for (const tab of tabRefs.current) {
+      if (tab) ro.observe(tab);
+    }
+    return () => ro.disconnect();
+  }, [items.length, size, type, updateOverflowEdges]);
+
+  useEffect(() => {
+    if (!selectedRevealReadyRef.current) {
+      selectedRevealReadyRef.current = true;
+      return;
+    }
+    if (selectedIndex >= 0) scrollTabIntoView(selectedIndex);
+  }, [selectedIndex, scrollTabIntoView]);
 
   const measureIndicator = () => {
     const list = listRef.current;
@@ -155,6 +232,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const focusTab = (index: number) => {
     setFocusedIndex(index);
     tabRefs.current[index]?.focus();
+    scrollTabIntoView(index);
   };
 
   const moveFocus = (fromIndex: number, delta: number) => {
@@ -171,6 +249,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     if (!item || item.disabled) return;
     setFocusedIndex(index);
     selectValue(item.value);
+    scrollTabIntoView(index);
   };
 
   const onTabKeyDown = (
@@ -233,7 +312,10 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       className={tablistClass}
       data-cads-tabs=""
       data-type={type}
+      data-overflow-before={overflowEdges.before ? "" : undefined}
+      data-overflow-after={overflowEdges.after ? "" : undefined}
       onBlur={onTablistBlur}
+      onScroll={updateOverflowEdges}
       style={{
         gap: isSecondary ? dims.secondaryGroupGap : dims.primaryGroupGap,
       }}

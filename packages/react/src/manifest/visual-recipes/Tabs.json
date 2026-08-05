@@ -12,7 +12,7 @@
     "relatedComponentKeys": [
       "6bdc7c7da3d1d1193ec90ba2bf1d52c03cf01e39"
     ],
-    "retrievedAt": "2026-07-25",
+    "retrievedAt": "2026-08-04",
     "designContextCaptured": true
   },
   "change": {
@@ -225,7 +225,8 @@
       "selected",
       "state",
       "mode",
-      "icon"
+      "icon",
+      "overflow"
     ],
     "cases": [
       {
@@ -454,16 +455,73 @@
             "description": "Hovering an inactive secondary tab painted its bottom border currentColor (#121212) instead of --border-neutral-primary (#D3D6DA), from the same invalid border-bottom-color declaration. Fixed with the border-bottom shorthand."
           }
         ]
+      },
+      {
+        "id": "tabs-overflow-primary-light",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=primary, size=medium; responsive overflow is code-only behavior",
+        "mode": "light",
+        "props": {
+          "type": "primary",
+          "size": "medium",
+          "overflowing": true
+        },
+        "state": "overflow-start",
+        "viewport": {
+          "width": 280,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "containerWidth": 248,
+          "overflow": "horizontal tablist scroll; document does not widen",
+          "mask": "end edge only at initial scroll position"
+        },
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-overflow-primary-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-overflow-primary-light.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "tabs-overflow-secondary-dark",
+        "figmaNodeId": "16496:3371",
+        "figmaVariant": "type=secondary, size=medium; responsive overflow is code-only behavior",
+        "mode": "dark",
+        "props": {
+          "type": "secondary",
+          "size": "medium",
+          "overflowing": true
+        },
+        "state": "overflow-start",
+        "viewport": {
+          "width": 280,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "containerWidth": 248,
+          "overflow": "horizontal tablist scroll; document does not widen",
+          "mask": "end edge only at initial scroll position"
+        },
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=Tabs&case=tabs-overflow-secondary-dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "captures/browser-tabs-overflow-secondary-dark.png",
+        "result": "pass",
+        "mismatches": []
       }
     ]
   },
   "acceptedDifferences": [],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict → 0 error / 0 warn / 0 escalate",
+    "apiAudit": "pnpm figma:audit-props -- --strict → Tabs: 0 error / 0 warn / 0 escalate; workspace gate remains blocked by two pre-existing errors in Toast and Tooltip",
     "typecheck": "pnpm typecheck — pass",
     "build": "pnpm build — pass",
     "docsBuild": "pnpm build:docs — pass",
     "correctionPasses": [
+      "Responsive overflow PoC: constrained primary/light and secondary/dark fixtures keep the tablist within its container, expose horizontal scrolling, and show only the trailing alpha-mask fade at scroll start. The mask is surface-color-independent and contributes no pointer hit target.",
       "Hover regression from the SCSS-module refactor: border-bottom-color received the --tab-border-bottom shorthand, so every hover state fell back to currentcolor. Switched hover to the border-bottom shorthand and reverified primary/secondary × light/dark × selected/inactive with real Playwright hover, plus the experimental-motion indicator path.",
       "FaIcon alias home→house (Figma shortcode; FA glyph house)",
       "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
