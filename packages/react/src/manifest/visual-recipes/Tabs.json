@@ -475,7 +475,9 @@
         "expectedGeometry": {
           "containerWidth": 248,
           "overflow": "horizontal tablist scroll; document does not widen",
-          "mask": "end edge only at initial scroll position"
+          "scrollButtons": "left/right chevrons when overflowing; left disabled at start; 6px gap from tablist",
+          "fade": "end-edge alpha mask at scroll start (surface-independent)",
+          "scrollbar": "hidden (native scrollbar would steal tab clicks on desktop)"
         },
         "expectedVariables": [],
         "fixturePath": "/fixtures/components?component=Tabs&case=tabs-overflow-primary-light",
@@ -503,7 +505,9 @@
         "expectedGeometry": {
           "containerWidth": 248,
           "overflow": "horizontal tablist scroll; document does not widen",
-          "mask": "end edge only at initial scroll position"
+          "scrollButtons": "left/right chevrons when overflowing; left disabled at start; 6px gap from tablist",
+          "fade": "end-edge alpha mask at scroll start (surface-independent)",
+          "scrollbar": "hidden (native scrollbar would steal tab clicks on desktop)"
         },
         "expectedVariables": [],
         "fixturePath": "/fixtures/components?component=Tabs&case=tabs-overflow-secondary-dark",
@@ -555,9 +559,10 @@
     "build": "pnpm build — pass",
     "docsBuild": "pnpm build:docs — pass",
     "correctionPasses": [
+      "Desktop overflow UX: native scrollbars steal tab clicks. Hide the scrollbar and show MUI-style left/right chevron scroll buttons when the tablist overflows (6px gap). Alpha-mask edge fades signal clipped content without a surface-color dependency. Trackpad/touch/keyboard scroll still work on the scrollport.",
       "Shared-baseline regression: overflow scroll clips children, so a real border-bottom can't be overlapped by the selected underline. Tabs hairline is an inset box-shadow via --tabs-baseline-color. Shared header rows paint a ::after hairline behind Tabs (z-index 0/1) and flush with --tabs-baseline-color: transparent so the full 2px underline sits on that edge without the parent inset shadow covering it.",
-      "Sibling-layout regression: overflow support had changed the root from intrinsic sizing to width: 100%, so Tabs consumed an entire flex row even when its items fit. Restored width: fit-content while retaining max-width: 100%, min-width: 0, and horizontal overflow for constrained groups. Recaptured the 1040px Tabs + SegmentedButton sibling fixture on one row, then recaptured the 280px overflow sentinel with its trailing fade intact.",
-      "Responsive overflow PoC: constrained primary/light and secondary/dark fixtures keep the tablist within its container, expose horizontal scrolling, and show only the trailing alpha-mask fade at scroll start. The mask is surface-color-independent and contributes no pointer hit target.",
+      "Sibling-layout regression: overflow support had changed the root from intrinsic sizing to width: 100%, so Tabs consumed an entire flex row even when its items fit. Restored width: fit-content while retaining max-width: 100%, min-width: 0, and horizontal overflow for constrained groups.",
+      "Responsive overflow: constrained primary/light and secondary/dark fixtures keep the tablist within its container; chevrons appear when overflowing (left disabled at scroll start).",
       "Hover regression from the SCSS-module refactor: border-bottom-color received the --tab-border-bottom shorthand, so every hover state fell back to currentcolor. Switched hover to the border-bottom shorthand and reverified primary/secondary × light/dark × selected/inactive with real Playwright hover, plus the experimental-motion indicator path.",
       "FaIcon alias home→house (Figma shortcode; FA glyph house)",
       "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",

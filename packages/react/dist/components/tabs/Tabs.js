@@ -1,318 +1,362 @@
-import { jsxs as H, jsx as S, Fragment as wr } from "react/jsx-runtime";
-import Rr from "@mui/material/ButtonBase";
-import { motion as kr } from "@codeai/cads-variables";
-import { useReducedMotion as Lr, motion as Sr } from "motion/react";
-import { forwardRef as Er, useId as Br, useRef as N, useState as E, useCallback as Q, useEffect as M, useLayoutEffect as rr } from "react";
-import { FaIcon as er } from "../../icons/FaIcon.js";
-import { TABS_SIZE as Or } from "../../shared/controlSize.js";
-import { useExperimentalMotion as Tr, springTransition as Nr } from "../../theme/experimentalMotion.js";
-import { CloseIconButton as Mr } from "../close-icon-button/CloseIconButton.js";
-import C from "./tabs.module.scss.js";
-function tr(x) {
-  if (x)
-    return x === "smile" ? "face-smile" : x === "close" ? "xmark" : x;
+import { jsxs as T, jsx as b, Fragment as Rr } from "react/jsx-runtime";
+import V from "@mui/material/ButtonBase";
+import { motion as Sr } from "@codeai/cads-variables";
+import { useReducedMotion as Br, motion as Lr } from "motion/react";
+import { forwardRef as Nr, useId as Er, useRef as P, useState as E, useCallback as X, useEffect as W, useLayoutEffect as or } from "react";
+import { FaIcon as F } from "../../icons/FaIcon.js";
+import { TABS_SIZE as Mr } from "../../shared/controlSize.js";
+import { useExperimentalMotion as Or, springTransition as Tr } from "../../theme/experimentalMotion.js";
+import { CloseIconButton as Pr } from "../close-icon-button/CloseIconButton.js";
+import I from "./tabs.module.scss.js";
+function lr(w) {
+  if (w)
+    return w === "smile" ? "face-smile" : w === "close" ? "xmark" : w;
 }
-const jr = Er(function({
+const qr = Nr(function({
   type: u = "primary",
-  size: d = "medium",
-  items: l,
-  value: j,
-  defaultValue: ar,
-  onChange: F,
-  onItemDismiss: P,
-  "aria-label": or,
-  className: nr
-}, B) {
-  var J;
-  const o = Or[d], q = Br(), f = N(null), p = N([]), W = N(!1), V = N(!1), X = j !== void 0, [sr, ir] = E(
-    ar ?? ((J = l.find((r) => !r.disabled)) == null ? void 0 : J.value)
-  ), h = X ? j : sr, n = u === "secondary", lr = Tr(), dr = Lr(), c = lr && !n, [z, A] = E(null), [cr, K] = E(!1), [U, br] = E({
+  size: s = "medium",
+  items: d,
+  value: K,
+  defaultValue: nr,
+  onChange: z,
+  onItemDismiss: A,
+  "aria-label": sr,
+  className: ir
+}, dr) {
+  var ar;
+  const o = Mr[s], U = Er(), f = P(null), m = P([]), C = P(!1), Y = P(!1), Z = K !== void 0, [cr, br] = E(
+    nr ?? ((ar = d.find((r) => !r.disabled)) == null ? void 0 : ar.value)
+  ), k = Z ? K : cr, n = u === "secondary", ur = Or(), D = Br(), p = ur && !n, [G, $] = E(null), [fr, _] = E(!1), [c, pr] = E({
+    scrollable: !1,
     before: !1,
     after: !1
-  }), ur = Nr(
-    kr.indicator.spring,
-    dr || !cr
-  ), fr = (r) => {
-    X || ir(r), F == null || F(r);
-  }, s = l.map((r, e) => r.disabled ? -1 : e).filter((r) => r >= 0), I = s.find((r) => {
+  }), vr = Tr(
+    Sr.indicator.spring,
+    D || !fr
+  ), mr = (r) => {
+    Z || br(r), z == null || z(r);
+  }, i = d.map((r, e) => r.disabled ? -1 : e).filter((r) => r >= 0), R = i.find((r) => {
     var e;
-    return ((e = l[r]) == null ? void 0 : e.value) === h;
-  }) ?? s[0] ?? -1, v = l.findIndex((r) => r.value === h), w = Q(() => {
+    return ((e = d[r]) == null ? void 0 : e.value) === k;
+  }) ?? i[0] ?? -1, y = d.findIndex((r) => r.value === k), S = X(() => {
     const r = f.current;
     if (!r) return;
-    const e = Math.max(0, r.scrollWidth - r.clientWidth), t = {
-      before: e > 1 && r.scrollLeft > 1,
-      after: e > 1 && r.scrollLeft < e - 1
+    const e = Math.max(0, r.scrollWidth - r.clientWidth), t = e > 1, a = {
+      scrollable: t,
+      before: t && r.scrollLeft > 1,
+      after: t && r.scrollLeft < e - 1
     };
-    br(
-      (a) => a.before === t.before && a.after === t.after ? a : t
+    pr(
+      (l) => l.scrollable === a.scrollable && l.before === a.before && l.after === a.after ? l : a
     );
-  }, []), O = Q((r) => {
-    const e = f.current, t = p.current[r];
+  }, []), J = X((r) => {
+    const e = f.current;
+    if (!e) return;
+    const t = Math.max(80, Math.round(e.clientWidth * 0.75)) * r;
+    e.scrollBy({
+      left: t,
+      behavior: D ? "auto" : "smooth"
+    });
+  }, [D]), M = X((r) => {
+    const e = f.current, t = m.current[r];
     if (!e || !t) return;
-    const a = 24, i = Math.max(0, e.scrollWidth - e.clientWidth), m = t.offsetLeft, k = m + t.offsetWidth, b = e.scrollLeft, G = b + e.clientWidth;
-    let y = b;
-    m < b + a ? y = m - a : k > G - a && (y = k - e.clientWidth + a);
-    const L = Math.max(0, Math.min(i, y));
-    Math.abs(L - b) > 1 && e.scrollTo({ left: L, behavior: "auto" });
-  }, []), [Y, R] = E(I), pr = s.includes(Y) ? Y : I;
-  M(() => {
-    R(I);
-  }, [I]), rr(() => {
-    w();
-  }, [l, d, u, w]), M(() => {
+    const a = 24, l = Math.max(0, e.scrollWidth - e.clientWidth), g = t.offsetLeft, L = g + t.offsetWidth, v = e.scrollLeft, j = v + e.clientWidth;
+    let x = v;
+    g < v + a ? x = g - a : L > j - a && (x = L - e.clientWidth + a);
+    const N = Math.max(0, Math.min(l, x));
+    Math.abs(N - v) > 1 && e.scrollTo({ left: N, behavior: "auto" });
+  }, []), [Q, B] = E(R), yr = i.includes(Q) ? Q : R;
+  W(() => {
+    B(R);
+  }, [R]), or(() => {
+    S();
+  }, [d, s, u, c.scrollable, S]), W(() => {
     const r = f.current;
     if (!r) return;
-    const e = () => w();
+    const e = () => S();
     if (typeof ResizeObserver > "u")
       return window.addEventListener("resize", e), () => window.removeEventListener("resize", e);
     const t = new ResizeObserver(e);
     t.observe(r);
-    for (const a of p.current)
+    for (const a of m.current)
       a && t.observe(a);
     return () => t.disconnect();
-  }, [l.length, d, u, w]), M(() => {
-    if (!V.current) {
-      V.current = !0;
+  }, [d.length, s, u, c.scrollable, S]), W(() => {
+    if (!Y.current) {
+      Y.current = !0;
       return;
     }
-    v >= 0 && O(v);
-  }, [v, O]);
-  const T = () => {
-    const r = f.current, e = v >= 0 ? p.current[v] : null;
+    y >= 0 && M(y);
+  }, [y, M]);
+  const O = () => {
+    const r = f.current, e = y >= 0 ? m.current[y] : null;
     if (!r || !e) {
-      A(null);
+      $(null);
       return;
     }
     const t = r.getBoundingClientRect(), a = e.getBoundingClientRect();
-    A({
+    $({
       left: a.left - t.left + r.scrollLeft,
       width: a.width
-    }), W.current || (W.current = !0, requestAnimationFrame(() => K(!0)));
+    }), C.current || (C.current = !0, requestAnimationFrame(() => _(!0)));
   };
-  rr(() => {
-    if (!c) {
-      W.current = !1, K(!1), A(null);
+  or(() => {
+    if (!p) {
+      C.current = !1, _(!1), $(null);
       return;
     }
-    T();
-  }, [c, h, l, d, u, v]), M(() => {
-    if (!c) return;
+    O();
+  }, [p, k, d, s, u, y]), W(() => {
+    if (!p) return;
     const r = f.current;
     if (!r || typeof ResizeObserver > "u") return;
-    const e = new ResizeObserver(() => T());
+    const e = new ResizeObserver(() => O());
     e.observe(r);
-    for (const t of p.current)
+    for (const t of m.current)
       t && e.observe(t);
-    return window.addEventListener("resize", T), () => {
-      e.disconnect(), window.removeEventListener("resize", T);
+    return window.addEventListener("resize", O), () => {
+      e.disconnect(), window.removeEventListener("resize", O);
     };
-  }, [c, l.length, d, u, h]);
-  const D = (r) => {
+  }, [p, d.length, s, u, k]);
+  const H = (r) => {
     var e;
-    R(r), (e = p.current[r]) == null || e.focus(), O(r);
-  }, Z = (r, e) => {
-    if (s.length === 0) return;
-    const t = s.indexOf(r), i = ((t === -1 ? 0 : t) + e + s.length) % s.length;
-    D(s[i]);
-  }, _ = (r) => {
-    const e = l[r];
-    !e || e.disabled || (R(r), fr(e.value), O(r));
-  }, vr = (r, e) => {
+    B(r), (e = m.current[r]) == null || e.focus(), M(r);
+  }, rr = (r, e) => {
+    if (i.length === 0) return;
+    const t = i.indexOf(r), l = ((t === -1 ? 0 : t) + e + i.length) % i.length;
+    H(i[l]);
+  }, er = (r) => {
+    const e = d[r];
+    !e || e.disabled || (B(r), mr(e.value), M(r));
+  }, gr = (r, e) => {
     switch (r.key) {
       case "ArrowRight":
-        r.preventDefault(), Z(e, 1);
+        r.preventDefault(), rr(e, 1);
         break;
       case "ArrowLeft":
-        r.preventDefault(), Z(e, -1);
+        r.preventDefault(), rr(e, -1);
         break;
       case "Home": {
         r.preventDefault();
-        const t = s[0];
+        const t = i[0];
         if (t === void 0) break;
-        D(t);
+        H(t);
         break;
       }
       case "End": {
         r.preventDefault();
-        const t = s[s.length - 1];
+        const t = i[i.length - 1];
         if (t === void 0) break;
-        D(t);
+        H(t);
         break;
       }
       case " ":
       case "Enter": {
-        r.preventDefault(), _(e);
+        r.preventDefault(), er(e);
         break;
       }
     }
-  }, mr = (r) => {
+  }, xr = (r) => {
     const e = r.relatedTarget;
-    e instanceof Node && r.currentTarget.contains(e) || R(I);
-  }, yr = (r) => {
-    f.current = r, typeof B == "function" ? B(r) : B && (B.current = r);
-  }, gr = [C.tablist, nr].filter(Boolean).join(" ");
-  return /* @__PURE__ */ H(
+    e instanceof Node && r.currentTarget.contains(e) || B(R);
+  }, hr = [I.root, ir].filter(Boolean).join(" "), tr = s === "large" ? "1rem" : s === "small" ? "0.75rem" : s === "extraSmall" ? "0.625rem" : "0.875rem";
+  return /* @__PURE__ */ T(
     "div",
     {
-      ref: yr,
-      role: "tablist",
-      "aria-label": or,
-      className: gr,
+      ref: dr,
+      className: hr,
       "data-cads-tabs": "",
       "data-type": u,
-      "data-overflow-before": U.before ? "" : void 0,
-      "data-overflow-after": U.after ? "" : void 0,
-      onBlur: mr,
-      onScroll: w,
-      style: {
-        gap: n ? o.secondaryGroupGap : o.primaryGroupGap
-      },
+      "data-size": s,
+      "data-overflow": c.scrollable ? "" : void 0,
       children: [
-        c && z ? /* @__PURE__ */ S(
-          Sr.span,
+        c.scrollable ? /* @__PURE__ */ b(
+          V,
           {
-            "aria-hidden": !0,
-            "data-cads-indicator": "",
-            "data-cads-indicator-spring": "",
-            "data-cads-tabs-indicator": "primary",
-            className: C.indicator,
-            initial: !1,
-            animate: {
-              left: z.left,
-              width: z.width
-            },
-            transition: ur
+            type: "button",
+            "aria-label": "Scroll tabs left",
+            disabled: !c.before,
+            disableRipple: !0,
+            className: I.scrollButton,
+            onClick: () => J(-1),
+            children: /* @__PURE__ */ b(F, { name: "chevron-left", family: "solid", fontSize: tr })
           }
         ) : null,
-        l.map((r, e) => {
-          const t = r.value === h, a = !!r.disabled, i = !!r.iconOnly, m = tr(r.startIconName), k = tr(r.endIconName), b = n ? o.secondaryIconPx : o.primaryIconPx, G = `${q}-tab-${r.value}`, y = `${q}-label-${r.value}`, L = m && (i || r.startIconName) ? /* @__PURE__ */ S(er, { name: m, family: "solid", fontSize: b }) : null, xr = !i && k ? /* @__PURE__ */ S(er, { name: k, family: "solid", fontSize: b }) : null, $ = r["aria-label"] ?? (typeof r.label == "string" ? r.label : void 0), hr = n ? t ? {
-            "--tab-bg": "var(--background-neutral-primary)",
-            "--tab-fg": "var(--text-selected-primary-inverse)",
-            "--tab-border-top": "1px solid var(--border-neutral-primary)",
-            "--tab-border-left": "1px solid var(--border-neutral-primary)",
-            "--tab-border-right": "1px solid var(--border-neutral-primary)",
-            // Transparent (not none): reserve 1px so label doesn't shift on select.
-            "--tab-border-bottom": "1px solid transparent",
-            "--tab-bg-hover": "var(--background-neutral-primary)",
-            "--tab-fg-hover": "var(--text-selected-primary-inverse)",
-            "--tab-bg-active": "var(--background-neutral-primary)",
-            "--tab-fg-active": "var(--text-selected-primary-inverse)",
-            "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom-active": "1px solid transparent",
-            "--tab-disabled-bg": "var(--background-neutral-primary)",
-            "--tab-disabled-fg": "var(--text-disabled-neutral)",
-            "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-bottom": "1px solid transparent"
-          } : {
-            "--tab-bg": "var(--background-neutral-secondary)",
-            "--tab-fg": "var(--text-neutral-quaternary)",
-            "--tab-border-top": "1px solid var(--border-neutral-primary)",
-            "--tab-border-left": "1px solid var(--border-neutral-primary)",
-            "--tab-border-right": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom": "1px solid var(--border-neutral-primary)",
-            "--tab-bg-hover": "var(--background-neutral-tertiary)",
-            "--tab-fg-hover": "var(--text-neutral-primary)",
-            "--tab-bg-active": "var(--background-neutral-primary)",
-            "--tab-fg-active": "var(--text-selected-primary-inverse)",
-            "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-            "--tab-border-bottom-active": "1px solid transparent",
-            "--tab-disabled-bg": "var(--background-neutral-primary)",
-            "--tab-disabled-fg": "var(--text-disabled-neutral)",
-            "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
-            "--tab-disabled-border-bottom": "1px solid var(--border-disabled-neutral)"
-          } : t ? {
-            "--tab-bg": "transparent",
-            "--tab-fg": "var(--text-selected-primary-inverse)",
-            "--tab-border-bottom": c ? "2px solid transparent" : "2px solid var(--border-selected-primary)",
-            "--tab-fg-hover": "var(--text-selected-primary-inverse)",
-            ...c ? {} : {
-              "--tab-border-bottom-hover": "2px solid var(--border-selected-strong)"
+        /* @__PURE__ */ T(
+          "div",
+          {
+            ref: f,
+            role: "tablist",
+            "aria-label": sr,
+            className: I.tablist,
+            "data-type": u,
+            "data-overflow-before": c.before ? "" : void 0,
+            "data-overflow-after": c.after ? "" : void 0,
+            onBlur: xr,
+            onScroll: S,
+            style: {
+              gap: n ? o.secondaryGroupGap : o.primaryGroupGap
             },
-            "--tab-fg-active": "var(--text-selected-primary-inverse)",
-            "--tab-disabled-fg": "var(--text-disabled-neutral)",
-            "--tab-disabled-border-bottom": "2px solid transparent"
-          } : {
-            "--tab-bg": "transparent",
-            "--tab-fg": "var(--text-neutral-quaternary)",
-            "--tab-border-bottom": "2px solid transparent",
-            "--tab-fg-hover": "var(--text-neutral-primary)",
-            "--tab-fg-active": "var(--text-selected-primary-inverse)",
-            "--tab-disabled-fg": "var(--text-disabled-neutral)",
-            "--tab-disabled-border-bottom": "2px solid transparent"
-          }, Ir = {
-            "--tab-height": n ? o.secondaryHeight : o.primaryHeight,
-            "--tab-gap": n ? o.secondaryItemGap : o.primaryItemGap,
-            "--tab-px": i ? n ? o.secondaryIconOnlyPadX : o.primaryIconOnlyPadX : n ? o.secondaryPadX : "0",
-            "--tab-py": n ? "0" : o.primaryPadY,
-            "--tab-font-size": n ? o.secondaryFontSize : o.primaryFontSize,
-            "--tab-line-height": n ? o.secondaryLineHeight : o.primaryLineHeight,
-            "--tab-radius": n ? "var(--shape-sm) var(--shape-sm) 0 0" : "0",
-            "--tab-overflow": n ? "hidden" : "visible",
-            ...i && n ? { minWidth: o.secondaryIconOnlyMinWidth } : {},
-            ...hr
-          };
-          return /* @__PURE__ */ H(
-            Rr,
-            {
-              ref: (g) => {
-                p.current[e] = g;
-              },
-              component: "div",
-              id: G,
-              role: "tab",
-              "aria-selected": t,
-              "aria-disabled": a || void 0,
-              "aria-label": i ? $ : void 0,
-              "aria-labelledby": i ? void 0 : y,
-              tabIndex: e === pr ? 0 : -1,
-              disabled: a,
-              disableRipple: !0,
-              className: C.tab,
-              style: Ir,
-              onClick: () => {
-                a || _(e);
-              },
-              onFocus: () => {
-                a || R(e);
-              },
-              onKeyDown: (g) => vr(g, e),
-              children: [
-                i ? L : /* @__PURE__ */ H(wr, { children: [
-                  L,
-                  /* @__PURE__ */ S("span", { id: y, children: r.label }),
-                  xr
-                ] }),
-                r.dismissible ? /* @__PURE__ */ S(
-                  Mr,
+            children: [
+              p && G ? /* @__PURE__ */ b(
+                Lr.span,
+                {
+                  "aria-hidden": !0,
+                  "data-cads-indicator": "",
+                  "data-cads-indicator-spring": "",
+                  "data-cads-tabs-indicator": "primary",
+                  className: I.indicator,
+                  initial: !1,
+                  animate: {
+                    left: G.left,
+                    width: G.width
+                  },
+                  transition: vr
+                }
+              ) : null,
+              d.map((r, e) => {
+                const t = r.value === k, a = !!r.disabled, l = !!r.iconOnly, g = lr(r.startIconName), L = lr(r.endIconName), v = n ? o.secondaryIconPx : o.primaryIconPx, j = `${U}-tab-${r.value}`, x = `${U}-label-${r.value}`, N = g && (l || r.startIconName) ? /* @__PURE__ */ b(F, { name: g, family: "solid", fontSize: v }) : null, Ir = !l && L ? /* @__PURE__ */ b(F, { name: L, family: "solid", fontSize: v }) : null, q = r["aria-label"] ?? (typeof r.label == "string" ? r.label : void 0), wr = n ? t ? {
+                  "--tab-bg": "var(--background-neutral-primary)",
+                  "--tab-fg": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right": "1px solid var(--border-neutral-primary)",
+                  // Transparent (not none): reserve 1px so label doesn't shift on select.
+                  "--tab-border-bottom": "1px solid transparent",
+                  "--tab-bg-hover": "var(--background-neutral-primary)",
+                  "--tab-fg-hover": "var(--text-selected-primary-inverse)",
+                  "--tab-bg-active": "var(--background-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom-active": "1px solid transparent",
+                  "--tab-disabled-bg": "var(--background-neutral-primary)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "1px solid transparent"
+                } : {
+                  "--tab-bg": "var(--background-neutral-secondary)",
+                  "--tab-fg": "var(--text-neutral-quaternary)",
+                  "--tab-border-top": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom": "1px solid var(--border-neutral-primary)",
+                  "--tab-bg-hover": "var(--background-neutral-tertiary)",
+                  "--tab-fg-hover": "var(--text-neutral-primary)",
+                  "--tab-bg-active": "var(--background-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom-active": "1px solid transparent",
+                  "--tab-disabled-bg": "var(--background-neutral-primary)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "1px solid var(--border-disabled-neutral)"
+                } : t ? {
+                  "--tab-bg": "transparent",
+                  "--tab-fg": "var(--text-selected-primary-inverse)",
+                  "--tab-border-bottom": p ? "2px solid transparent" : "2px solid var(--border-selected-primary)",
+                  "--tab-fg-hover": "var(--text-selected-primary-inverse)",
+                  ...p ? {} : {
+                    "--tab-border-bottom-hover": "2px solid var(--border-selected-strong)"
+                  },
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "2px solid transparent"
+                } : {
+                  "--tab-bg": "transparent",
+                  "--tab-fg": "var(--text-neutral-quaternary)",
+                  "--tab-border-bottom": "2px solid transparent",
+                  "--tab-fg-hover": "var(--text-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "2px solid transparent"
+                }, kr = {
+                  "--tab-height": n ? o.secondaryHeight : o.primaryHeight,
+                  "--tab-gap": n ? o.secondaryItemGap : o.primaryItemGap,
+                  "--tab-px": l ? n ? o.secondaryIconOnlyPadX : o.primaryIconOnlyPadX : n ? o.secondaryPadX : "0",
+                  "--tab-py": n ? "0" : o.primaryPadY,
+                  "--tab-font-size": n ? o.secondaryFontSize : o.primaryFontSize,
+                  "--tab-line-height": n ? o.secondaryLineHeight : o.primaryLineHeight,
+                  "--tab-radius": n ? "var(--shape-sm) var(--shape-sm) 0 0" : "0",
+                  "--tab-overflow": n ? "hidden" : "visible",
+                  ...l && n ? { minWidth: o.secondaryIconOnlyMinWidth } : {},
+                  ...wr
+                };
+                return /* @__PURE__ */ T(
+                  V,
                   {
-                    "aria-label": $ ? `Dismiss ${$}` : "Dismiss tab",
-                    size: d === "large" ? "medium" : d,
-                    color: "secondary",
+                    ref: (h) => {
+                      m.current[e] = h;
+                    },
+                    component: "div",
+                    id: j,
+                    role: "tab",
+                    "aria-selected": t,
+                    "aria-disabled": a || void 0,
+                    "aria-label": l ? q : void 0,
+                    "aria-labelledby": l ? void 0 : x,
+                    tabIndex: e === yr ? 0 : -1,
                     disabled: a,
-                    onClick: (g) => {
-                      g.stopPropagation(), g.preventDefault(), !a && (P == null || P(r.value));
-                    }
-                  }
-                ) : null
-              ]
-            },
-            r.value
-          );
-        })
+                    disableRipple: !0,
+                    className: I.tab,
+                    style: kr,
+                    onClick: () => {
+                      a || er(e);
+                    },
+                    onFocus: () => {
+                      a || B(e);
+                    },
+                    onKeyDown: (h) => gr(h, e),
+                    children: [
+                      l ? N : /* @__PURE__ */ T(Rr, { children: [
+                        N,
+                        /* @__PURE__ */ b("span", { id: x, children: r.label }),
+                        Ir
+                      ] }),
+                      r.dismissible ? /* @__PURE__ */ b(
+                        Pr,
+                        {
+                          "aria-label": q ? `Dismiss ${q}` : "Dismiss tab",
+                          size: s === "large" ? "medium" : s,
+                          color: "secondary",
+                          disabled: a,
+                          onClick: (h) => {
+                            h.stopPropagation(), h.preventDefault(), !a && (A == null || A(r.value));
+                          }
+                        }
+                      ) : null
+                    ]
+                  },
+                  r.value
+                );
+              })
+            ]
+          }
+        ),
+        c.scrollable ? /* @__PURE__ */ b(
+          V,
+          {
+            type: "button",
+            "aria-label": "Scroll tabs right",
+            disabled: !c.after,
+            disableRipple: !0,
+            className: I.scrollButton,
+            onClick: () => J(1),
+            children: /* @__PURE__ */ b(F, { name: "chevron-right", family: "solid", fontSize: tr })
+          }
+        ) : null
       ]
     }
   );
 });
 export {
-  jr as Tabs
+  qr as Tabs
 };
 //# sourceMappingURL=Tabs.js.map

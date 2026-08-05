@@ -47,7 +47,10 @@
   box-shadow: none !important;
   position: relative;
   z-index: 1;
-  gap: 16px !important;
+
+  [role="tablist"] {
+    gap: 16px !important;
+  }
 }
 
 .toolbarActions {

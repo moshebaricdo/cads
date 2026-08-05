@@ -1754,7 +1754,7 @@
       "escalate": [],
       "notes": [
         "Accepted: isCurrent-vs-value: Accepted \u2014 do not expose isCurrent on public Tabs API. (figma: Tab Item exposes isCurrent per instance.; code: Tab Group owns selection via value/defaultValue like SegmentedButton.)",
-        "Responsive overflow is code-owned intrinsic behavior: the tablist scrolls horizontally and uses an alpha mask to signal clipped content without adding a public prop or depending on its surface color."
+        "Responsive overflow is code-owned intrinsic behavior: when the tablist is constrained, left/right chevron scroll buttons appear (scrollbar hidden) and alpha-mask edge fades signal clipped content. No public prop."
       ]
     },
     {

@@ -78,7 +78,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     width: number;
   } | null>(null);
   const [indicatorAnimated, setIndicatorAnimated] = useState(false);
-  const [overflowEdges, setOverflowEdges] = useState({
+  const [overflow, setOverflow] = useState({
+    scrollable: false,
     before: false,
     after: false,
   });
@@ -103,21 +104,35 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
 
   const selectedIndex = items.findIndex((item) => item.value === value);
 
-  const updateOverflowEdges = useCallback(() => {
+  const updateOverflow = useCallback(() => {
     const list = listRef.current;
     if (!list) return;
 
     const maxScrollLeft = Math.max(0, list.scrollWidth - list.clientWidth);
+    const scrollable = maxScrollLeft > 1;
     const next = {
-      before: maxScrollLeft > 1 && list.scrollLeft > 1,
-      after: maxScrollLeft > 1 && list.scrollLeft < maxScrollLeft - 1,
+      scrollable,
+      before: scrollable && list.scrollLeft > 1,
+      after: scrollable && list.scrollLeft < maxScrollLeft - 1,
     };
-    setOverflowEdges((current) =>
-      current.before === next.before && current.after === next.after
+    setOverflow((current) =>
+      current.scrollable === next.scrollable &&
+      current.before === next.before &&
+      current.after === next.after
         ? current
         : next,
     );
   }, []);
+
+  const scrollByPage = useCallback((direction: -1 | 1) => {
+    const list = listRef.current;
+    if (!list) return;
+    const delta = Math.max(80, Math.round(list.clientWidth * 0.75)) * direction;
+    list.scrollBy({
+      left: delta,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [reduceMotion]);
 
   const scrollTabIntoView = useCallback((index: number) => {
     const list = listRef.current;
@@ -154,14 +169,14 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   }, [selectedFocusableIndex]);
 
   useLayoutEffect(() => {
-    updateOverflowEdges();
-  }, [items, size, type, updateOverflowEdges]);
+    updateOverflow();
+  }, [items, size, type, overflow.scrollable, updateOverflow]);
 
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
 
-    const update = () => updateOverflowEdges();
+    const update = () => updateOverflow();
     if (typeof ResizeObserver === "undefined") {
       window.addEventListener("resize", update);
       return () => window.removeEventListener("resize", update);
@@ -173,7 +188,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       if (tab) ro.observe(tab);
     }
     return () => ro.disconnect();
-  }, [items.length, size, type, updateOverflowEdges]);
+  }, [items.length, size, type, overflow.scrollable, updateOverflow]);
 
   useEffect(() => {
     if (!selectedRevealReadyRef.current) {
@@ -296,227 +311,261 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     setFocusedIndex(selectedFocusableIndex);
   };
 
-  const setListRef = (node: HTMLDivElement | null) => {
-    listRef.current = node;
-    if (typeof ref === "function") ref(node);
-    else if (ref) ref.current = node;
-  };
-
-  const tablistClass = [styles.tablist, className].filter(Boolean).join(" ");
+  const rootClass = [styles.root, className].filter(Boolean).join(" ");
+  const scrollIconPx =
+    size === "large"
+      ? "1rem"
+      : size === "small"
+        ? "0.75rem"
+        : size === "extraSmall"
+          ? "0.625rem"
+          : "0.875rem";
 
   return (
     <div
-      ref={setListRef}
-      role="tablist"
-      aria-label={ariaLabel}
-      className={tablistClass}
+      ref={ref}
+      className={rootClass}
       data-cads-tabs=""
       data-type={type}
-      data-overflow-before={overflowEdges.before ? "" : undefined}
-      data-overflow-after={overflowEdges.after ? "" : undefined}
-      onBlur={onTablistBlur}
-      onScroll={updateOverflowEdges}
-      style={{
-        gap: isSecondary ? dims.secondaryGroupGap : dims.primaryGroupGap,
-      }}
+      data-size={size}
+      data-overflow={overflow.scrollable ? "" : undefined}
     >
-      {useIndicator && indicatorBox ? (
-        <motion.span
-          aria-hidden
-          data-cads-indicator=""
-          data-cads-indicator-spring=""
-          data-cads-tabs-indicator="primary"
-          className={styles.indicator}
-          initial={false}
-          animate={{
-            left: indicatorBox.left,
-            width: indicatorBox.width,
-          }}
-          transition={indicatorSpring}
-        />
+      {overflow.scrollable ? (
+        <ButtonBase
+          type="button"
+          aria-label="Scroll tabs left"
+          disabled={!overflow.before}
+          disableRipple
+          className={styles.scrollButton}
+          onClick={() => scrollByPage(-1)}
+        >
+          <FaIcon name="chevron-left" family="solid" fontSize={scrollIconPx} />
+        </ButtonBase>
       ) : null}
-      {items.map((item, index) => {
-        const selected = item.value === value;
-        const disabled = Boolean(item.disabled);
-        const iconOnly = Boolean(item.iconOnly);
-        const startName = resolveIconName(item.startIconName);
-        const endName = resolveIconName(item.endIconName);
-        const iconPx = isSecondary ? dims.secondaryIconPx : dims.primaryIconPx;
-        const tabId = `${groupId}-tab-${item.value}`;
-        const labelId = `${groupId}-label-${item.value}`;
-
-        const startIcon =
-          startName && (iconOnly || item.startIconName) ? (
-            <FaIcon name={startName} family="solid" fontSize={iconPx} />
-          ) : null;
-        const endIcon =
-          !iconOnly && endName ? (
-            <FaIcon name={endName} family="solid" fontSize={iconPx} />
-          ) : null;
-
-        const accessibleName =
-          item["aria-label"] ??
-          (typeof item.label === "string" ? item.label : undefined);
-
-        const selectedChrome = isSecondary
-          ? selected
-            ? {
-                "--tab-bg": "var(--background-neutral-primary)",
-                "--tab-fg": "var(--text-selected-primary-inverse)",
-                "--tab-border-top": "1px solid var(--border-neutral-primary)",
-                "--tab-border-left": "1px solid var(--border-neutral-primary)",
-                "--tab-border-right": "1px solid var(--border-neutral-primary)",
-                // Transparent (not none): reserve 1px so label doesn't shift on select.
-                "--tab-border-bottom": "1px solid transparent",
-                "--tab-bg-hover": "var(--background-neutral-primary)",
-                "--tab-fg-hover": "var(--text-selected-primary-inverse)",
-                "--tab-bg-active": "var(--background-neutral-primary)",
-                "--tab-fg-active": "var(--text-selected-primary-inverse)",
-                "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-bottom-active": "1px solid transparent",
-                "--tab-disabled-bg": "var(--background-neutral-primary)",
-                "--tab-disabled-fg": "var(--text-disabled-neutral)",
-                "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-bottom": "1px solid transparent",
-              }
-            : {
-                "--tab-bg": "var(--background-neutral-secondary)",
-                "--tab-fg": "var(--text-neutral-quaternary)",
-                "--tab-border-top": "1px solid var(--border-neutral-primary)",
-                "--tab-border-left": "1px solid var(--border-neutral-primary)",
-                "--tab-border-right": "1px solid var(--border-neutral-primary)",
-                "--tab-border-bottom": "1px solid var(--border-neutral-primary)",
-                "--tab-bg-hover": "var(--background-neutral-tertiary)",
-                "--tab-fg-hover": "var(--text-neutral-primary)",
-                "--tab-bg-active": "var(--background-neutral-primary)",
-                "--tab-fg-active": "var(--text-selected-primary-inverse)",
-                "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
-                "--tab-border-bottom-active": "1px solid transparent",
-                "--tab-disabled-bg": "var(--background-neutral-primary)",
-                "--tab-disabled-fg": "var(--text-disabled-neutral)",
-                "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
-                "--tab-disabled-border-bottom": "1px solid var(--border-disabled-neutral)",
-              }
-          : selected
-            ? {
-                "--tab-bg": "transparent",
-                "--tab-fg": "var(--text-selected-primary-inverse)",
-                "--tab-border-bottom": useIndicator
-                  ? "2px solid transparent"
-                  : "2px solid var(--border-selected-primary)",
-                "--tab-fg-hover": "var(--text-selected-primary-inverse)",
-                ...(useIndicator
-                  ? {}
-                  : {
-                      "--tab-border-bottom-hover":
-                        "2px solid var(--border-selected-strong)",
-                    }),
-                "--tab-fg-active": "var(--text-selected-primary-inverse)",
-                "--tab-disabled-fg": "var(--text-disabled-neutral)",
-                "--tab-disabled-border-bottom": "2px solid transparent",
-              }
-            : {
-                "--tab-bg": "transparent",
-                "--tab-fg": "var(--text-neutral-quaternary)",
-                "--tab-border-bottom": "2px solid transparent",
-                "--tab-fg-hover": "var(--text-neutral-primary)",
-                "--tab-fg-active": "var(--text-selected-primary-inverse)",
-                "--tab-disabled-fg": "var(--text-disabled-neutral)",
-                "--tab-disabled-border-bottom": "2px solid transparent",
-              };
-
-        const chromeVars = {
-          "--tab-height": isSecondary ? dims.secondaryHeight : dims.primaryHeight,
-          "--tab-gap": isSecondary ? dims.secondaryItemGap : dims.primaryItemGap,
-          "--tab-px": iconOnly
-            ? isSecondary
-              ? dims.secondaryIconOnlyPadX
-              : dims.primaryIconOnlyPadX
-            : isSecondary
-              ? dims.secondaryPadX
-              : "0",
-          "--tab-py": isSecondary ? "0" : dims.primaryPadY,
-          "--tab-font-size": isSecondary
-            ? dims.secondaryFontSize
-            : dims.primaryFontSize,
-          "--tab-line-height": isSecondary
-            ? dims.secondaryLineHeight
-            : dims.primaryLineHeight,
-          "--tab-radius": isSecondary
-            ? "var(--shape-sm) var(--shape-sm) 0 0"
-            : "0",
-          "--tab-overflow": isSecondary ? "hidden" : "visible",
-          ...(iconOnly && isSecondary
-            ? { minWidth: dims.secondaryIconOnlyMinWidth }
-            : {}),
-          ...selectedChrome,
-        } as unknown as CSSProperties;
-
-        return (
-          <ButtonBase
-            key={item.value}
-            ref={(node) => {
-              tabRefs.current[index] = node;
+      <div
+        ref={listRef}
+        role="tablist"
+        aria-label={ariaLabel}
+        className={styles.tablist}
+        data-type={type}
+        data-overflow-before={overflow.before ? "" : undefined}
+        data-overflow-after={overflow.after ? "" : undefined}
+        onBlur={onTablistBlur}
+        onScroll={updateOverflow}
+        style={{
+          gap: isSecondary ? dims.secondaryGroupGap : dims.primaryGroupGap,
+        }}
+      >
+        {useIndicator && indicatorBox ? (
+          <motion.span
+            aria-hidden
+            data-cads-indicator=""
+            data-cads-indicator-spring=""
+            data-cads-tabs-indicator="primary"
+            className={styles.indicator}
+            initial={false}
+            animate={{
+              left: indicatorBox.left,
+              width: indicatorBox.width,
             }}
-            component="div"
-            id={tabId}
-            role="tab"
-            aria-selected={selected}
-            aria-disabled={disabled || undefined}
-            aria-label={iconOnly ? accessibleName : undefined}
-            aria-labelledby={!iconOnly ? labelId : undefined}
-            tabIndex={index === tabStopIndex ? 0 : -1}
-            disabled={disabled}
-            disableRipple
-            className={styles.tab}
-            style={chromeVars}
-            onClick={() => {
-              if (disabled) return;
-              activateTab(index);
-            }}
-            onFocus={() => {
-              if (!disabled) setFocusedIndex(index);
-            }}
-            onKeyDown={(event) => onTabKeyDown(event, index)}
-          >
-            {iconOnly ? (
-              startIcon
-            ) : (
-              <>
-                {startIcon}
-                <span id={labelId}>{item.label}</span>
-                {endIcon}
-              </>
-            )}
-            {item.dismissible ? (
-              <CloseIconButton
-                aria-label={
-                  accessibleName
-                    ? `Dismiss ${accessibleName}`
-                    : "Dismiss tab"
+            transition={indicatorSpring}
+          />
+        ) : null}
+        {items.map((item, index) => {
+          const selected = item.value === value;
+          const disabled = Boolean(item.disabled);
+          const iconOnly = Boolean(item.iconOnly);
+          const startName = resolveIconName(item.startIconName);
+          const endName = resolveIconName(item.endIconName);
+          const iconPx = isSecondary ? dims.secondaryIconPx : dims.primaryIconPx;
+          const tabId = `${groupId}-tab-${item.value}`;
+          const labelId = `${groupId}-label-${item.value}`;
+
+          const startIcon =
+            startName && (iconOnly || item.startIconName) ? (
+              <FaIcon name={startName} family="solid" fontSize={iconPx} />
+            ) : null;
+          const endIcon =
+            !iconOnly && endName ? (
+              <FaIcon name={endName} family="solid" fontSize={iconPx} />
+            ) : null;
+
+          const accessibleName =
+            item["aria-label"] ??
+            (typeof item.label === "string" ? item.label : undefined);
+
+          const selectedChrome = isSecondary
+            ? selected
+              ? {
+                  "--tab-bg": "var(--background-neutral-primary)",
+                  "--tab-fg": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right": "1px solid var(--border-neutral-primary)",
+                  // Transparent (not none): reserve 1px so label doesn't shift on select.
+                  "--tab-border-bottom": "1px solid transparent",
+                  "--tab-bg-hover": "var(--background-neutral-primary)",
+                  "--tab-fg-hover": "var(--text-selected-primary-inverse)",
+                  "--tab-bg-active": "var(--background-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom-active": "1px solid transparent",
+                  "--tab-disabled-bg": "var(--background-neutral-primary)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "1px solid transparent",
                 }
-                size={size === "large" ? "medium" : size}
-                color="secondary"
-                disabled={disabled}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  if (disabled) return;
-                  onItemDismiss?.(item.value);
-                }}
-              />
-            ) : null}
-          </ButtonBase>
-        );
-      })}
+              : {
+                  "--tab-bg": "var(--background-neutral-secondary)",
+                  "--tab-fg": "var(--text-neutral-quaternary)",
+                  "--tab-border-top": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom": "1px solid var(--border-neutral-primary)",
+                  "--tab-bg-hover": "var(--background-neutral-tertiary)",
+                  "--tab-fg-hover": "var(--text-neutral-primary)",
+                  "--tab-bg-active": "var(--background-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-border-top-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-left-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-right-active": "1px solid var(--border-neutral-primary)",
+                  "--tab-border-bottom-active": "1px solid transparent",
+                  "--tab-disabled-bg": "var(--background-neutral-primary)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-top": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-left": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-right": "1px solid var(--border-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "1px solid var(--border-disabled-neutral)",
+                }
+            : selected
+              ? {
+                  "--tab-bg": "transparent",
+                  "--tab-fg": "var(--text-selected-primary-inverse)",
+                  "--tab-border-bottom": useIndicator
+                    ? "2px solid transparent"
+                    : "2px solid var(--border-selected-primary)",
+                  "--tab-fg-hover": "var(--text-selected-primary-inverse)",
+                  ...(useIndicator
+                    ? {}
+                    : {
+                        "--tab-border-bottom-hover":
+                          "2px solid var(--border-selected-strong)",
+                      }),
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "2px solid transparent",
+                }
+              : {
+                  "--tab-bg": "transparent",
+                  "--tab-fg": "var(--text-neutral-quaternary)",
+                  "--tab-border-bottom": "2px solid transparent",
+                  "--tab-fg-hover": "var(--text-neutral-primary)",
+                  "--tab-fg-active": "var(--text-selected-primary-inverse)",
+                  "--tab-disabled-fg": "var(--text-disabled-neutral)",
+                  "--tab-disabled-border-bottom": "2px solid transparent",
+                };
+
+          const chromeVars = {
+            "--tab-height": isSecondary ? dims.secondaryHeight : dims.primaryHeight,
+            "--tab-gap": isSecondary ? dims.secondaryItemGap : dims.primaryItemGap,
+            "--tab-px": iconOnly
+              ? isSecondary
+                ? dims.secondaryIconOnlyPadX
+                : dims.primaryIconOnlyPadX
+              : isSecondary
+                ? dims.secondaryPadX
+                : "0",
+            "--tab-py": isSecondary ? "0" : dims.primaryPadY,
+            "--tab-font-size": isSecondary
+              ? dims.secondaryFontSize
+              : dims.primaryFontSize,
+            "--tab-line-height": isSecondary
+              ? dims.secondaryLineHeight
+              : dims.primaryLineHeight,
+            "--tab-radius": isSecondary
+              ? "var(--shape-sm) var(--shape-sm) 0 0"
+              : "0",
+            "--tab-overflow": isSecondary ? "hidden" : "visible",
+            ...(iconOnly && isSecondary
+              ? { minWidth: dims.secondaryIconOnlyMinWidth }
+              : {}),
+            ...selectedChrome,
+          } as unknown as CSSProperties;
+
+          return (
+            <ButtonBase
+              key={item.value}
+              ref={(node) => {
+                tabRefs.current[index] = node;
+              }}
+              component="div"
+              id={tabId}
+              role="tab"
+              aria-selected={selected}
+              aria-disabled={disabled || undefined}
+              aria-label={iconOnly ? accessibleName : undefined}
+              aria-labelledby={!iconOnly ? labelId : undefined}
+              tabIndex={index === tabStopIndex ? 0 : -1}
+              disabled={disabled}
+              disableRipple
+              className={styles.tab}
+              style={chromeVars}
+              onClick={() => {
+                if (disabled) return;
+                activateTab(index);
+              }}
+              onFocus={() => {
+                if (!disabled) setFocusedIndex(index);
+              }}
+              onKeyDown={(event) => onTabKeyDown(event, index)}
+            >
+              {iconOnly ? (
+                startIcon
+              ) : (
+                <>
+                  {startIcon}
+                  <span id={labelId}>{item.label}</span>
+                  {endIcon}
+                </>
+              )}
+              {item.dismissible ? (
+                <CloseIconButton
+                  aria-label={
+                    accessibleName
+                      ? `Dismiss ${accessibleName}`
+                      : "Dismiss tab"
+                  }
+                  size={size === "large" ? "medium" : size}
+                  color="secondary"
+                  disabled={disabled}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    if (disabled) return;
+                    onItemDismiss?.(item.value);
+                  }}
+                />
+              ) : null}
+            </ButtonBase>
+          );
+        })}
+      </div>
+      {overflow.scrollable ? (
+        <ButtonBase
+          type="button"
+          aria-label="Scroll tabs right"
+          disabled={!overflow.after}
+          disableRipple
+          className={styles.scrollButton}
+          onClick={() => scrollByPage(1)}
+        >
+          <FaIcon name="chevron-right" family="solid" fontSize={scrollIconPx} />
+        </ButtonBase>
+      ) : null}
     </div>
   );
 });

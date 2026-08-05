@@ -1,12 +1,16 @@
-import './tabs.css';const t = "_tablist_1pu16_1", a = "_indicator_1pu16_37", s = "_tab_1pu16_1", i = {
-  tablist: t,
-  indicator: a,
-  tab: s
+import './tabs.css';const t = "_root_1wim2_1", o = "_tablist_1wim2_37", s = "_scrollButton_1wim2_76", _ = "_indicator_1wim2_116", i = "_tab_1wim2_37", c = {
+  root: t,
+  tablist: o,
+  scrollButton: s,
+  indicator: _,
+  tab: i
 };
 export {
-  i as default,
-  a as indicator,
-  s as tab,
-  t as tablist
+  c as default,
+  _ as indicator,
+  t as root,
+  s as scrollButton,
+  i as tab,
+  o as tablist
 };
 //# sourceMappingURL=tabs.module.scss.js.map

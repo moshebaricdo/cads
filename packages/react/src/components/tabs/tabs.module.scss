@@ -1,28 +1,77 @@
-.tablist {
-  --tabs-overflow-fade-width: 24px;
-  // Inset baseline (not border-bottom): horizontal overflow creates a scroll
-  // container that clips children, so a real border can't be overlapped by the
-  // selected underline. Keep this overridable for shared header rows.
+.root {
+  // Inset baseline (not border-bottom): overflow scroll clips children, so a
+  // real border can't be overlapped by the selected underline. Overridable for
+  // shared header rows via --tabs-baseline-color: transparent.
   --tabs-baseline-color: var(--border-neutral-primary);
+  --tabs-scroll-btn-size: 32px;
+  --tabs-scroll-icon-size: 14px;
 
   position: relative;
-  display: flex;
-  // Keep the original intrinsic group width so Tabs can share a row with
-  // sibling controls. max-width still constrains long groups and activates
-  // horizontal scrolling when the available space is smaller than the tabs.
+  display: inline-flex;
+  align-items: stretch;
+  // Keep hug width so Tabs can share a row with sibling controls. max-width
+  // still constrains long groups and activates overflow chevrons.
   width: fit-content;
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
   box-shadow: inset 0 -1px 0 var(--tabs-baseline-color);
+
+  &[data-type="secondary"] {
+    align-items: flex-end;
+  }
+
+  &[data-overflow] {
+    gap: 6px;
+  }
+
+  &[data-size="large"] {
+    --tabs-scroll-btn-size: 40px;
+    --tabs-scroll-icon-size: 16px;
+  }
+
+  &[data-size="medium"] {
+    --tabs-scroll-btn-size: 36px;
+    --tabs-scroll-icon-size: 14px;
+  }
+
+  &[data-size="small"] {
+    --tabs-scroll-btn-size: 32px;
+    --tabs-scroll-icon-size: 12px;
+  }
+
+  &[data-size="extraSmall"] {
+    --tabs-scroll-btn-size: 28px;
+    --tabs-scroll-icon-size: 10px;
+  }
+}
+
+.tablist {
+  --tabs-overflow-fade-width: 24px;
+
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: var(--tabs-overflow-fade-width);
   -webkit-overflow-scrolling: touch;
+  // Native scrollbars steal clicks from tabs on desktop — hide them. Overflow
+  // navigation is chevron buttons (plus trackpad/touch/keyboard scroll).
+  scrollbar-width: none;
   mask-mode: alpha;
 
-  // Mask colors contribute alpha only: they never paint over the host surface.
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  // Mask fades clipped edges without painting a surface color (safe now that
+  // the scrollbar is hidden and no longer masked away with the content).
   &[data-overflow-after]:not([data-overflow-before]) {
     mask-image: linear-gradient(
       to right,
@@ -76,6 +125,52 @@
 
   &[data-type="primary"] {
     align-items: stretch;
+  }
+}
+
+.scrollButton:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--tabs-scroll-btn-size);
+  height: var(--tabs-scroll-btn-size);
+  align-self: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--shape-sm);
+  background: transparent;
+  color: var(--text-neutral-quaternary);
+  cursor: pointer;
+
+  &:hover:not(:global(.Mui-disabled)) {
+    color: var(--text-neutral-primary);
+    background: var(--background-neutral-secondary);
+  }
+
+  &:active:not(:global(.Mui-disabled)) {
+    color: var(--text-neutral-primary);
+    background: var(--background-neutral-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:global(.Mui-focusVisible) {
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &:global(.Mui-disabled) {
+    opacity: 1;
+    cursor: default;
+    color: var(--text-disabled-neutral);
+    background: transparent;
   }
 }
 
