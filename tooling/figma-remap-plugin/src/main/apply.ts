@@ -2,6 +2,7 @@
  * Apply approved mappings: rebind every recorded usage to the imported target
  * variable, then handle explicit-mode normalization on the audited roots.
  */
+import { parseFaFamilyTargetKey } from "../shared/fontAwesome";
 import type {
   ApplyFailure,
   ApplyReport,
@@ -9,6 +10,7 @@ import type {
   AuditResult,
   UsageRef,
 } from "../shared/messages";
+import { parseSurfaceSourceId } from "../shared/surfaces";
 import { getCollectionCached, safeVariableCollectionId } from "./values";
 
 const nodeCache = new Map<string, SceneNode | null>();
@@ -155,8 +157,28 @@ async function applyTextStyle(usage: UsageRef, style: TextStyle): Promise<void> 
   await (node as TextNode).setTextStyleIdAsync(style.id);
 }
 
-function isStyleSource(sourceId: string): boolean {
-  return sourceId.startsWith("style:") || sourceId.startsWith("font:");
+async function applyFontFamily(
+  usage: UsageRef,
+  family: string,
+): Promise<void> {
+  const node = await getNode(usage.nodeId);
+  if (!node) throw new Error("node no longer exists");
+  if (node.type !== "TEXT") throw new Error("no longer a text node");
+  const text = node as TextNode;
+  if (text.fontName === figma.mixed) {
+    throw new Error("mixed font on layer — apply per-character in Figma");
+  }
+  const style = text.fontName.style;
+  await figma.loadFontAsync({ family, style });
+  text.fontName = { family, style };
+}
+
+function isStyleSource(baseSourceId: string): boolean {
+  return baseSourceId.startsWith("style:") || baseSourceId.startsWith("font:");
+}
+
+function isFontAwesomeSource(baseSourceId: string): boolean {
+  return baseSourceId.startsWith("fontawesome:");
 }
 
 export async function applyMappings(
@@ -186,17 +208,25 @@ export async function applyMappings(
   for (const raw of audit.rawTexts) {
     sourceById.set(raw.id, { name: raw.label, usages: raw.usages });
   }
+  for (const fa of audit.fontAwesomeTexts) {
+    sourceById.set(fa.id, { name: fa.label, usages: fa.usages });
+  }
   for (const raw of audit.rawRadii) {
     sourceById.set(raw.id, { name: `radius ${raw.label}`, usages: raw.usages });
   }
 
   for (const mapping of request.mappings) {
-    const source = sourceById.get(mapping.sourceId);
-    const styleTarget = isStyleSource(mapping.sourceId);
+    const { baseId } = parseSurfaceSourceId(mapping.sourceId);
+    const source = sourceById.get(baseId);
+    const faFamily = parseFaFamilyTargetKey(mapping.targetKey);
+    const styleTarget = isStyleSource(baseId);
+    const faTarget = isFontAwesomeSource(baseId) || Boolean(faFamily);
 
     let variable: Variable | null = null;
     let style: TextStyle | null = null;
-    if (styleTarget) {
+    if (faTarget) {
+      // Font family upgrade — no variable/style import.
+    } else if (styleTarget) {
       style =
         importedStylesByKey.get(mapping.targetKey) ??
         ((await figma
@@ -209,13 +239,15 @@ export async function applyMappings(
           .importVariableByKeyAsync(mapping.targetKey)
           .catch(() => null));
     }
-    if (!source || (!variable && !style)) {
+    if (!source || (faTarget ? !faFamily : !variable && !style)) {
       failures.push({
         nodeName: "—",
         sourceName: source?.name ?? mapping.sourceId,
-        reason: styleTarget
-          ? "target text style could not be imported"
-          : "target variable could not be imported",
+        reason: faTarget
+          ? "target Font Awesome 7 family missing"
+          : styleTarget
+            ? "target text style could not be imported"
+            : "target variable could not be imported",
       });
       continue;
     }
@@ -228,7 +260,8 @@ export async function applyMappings(
             .filter((usage): usage is UsageRef => Boolean(usage));
     for (const usage of usages) {
       try {
-        if (style) await applyTextStyle(usage, style);
+        if (faFamily) await applyFontFamily(usage, faFamily);
+        else if (style) await applyTextStyle(usage, style);
         else await rebindUsage(usage, variable!);
         reboundForSource++;
       } catch (error) {

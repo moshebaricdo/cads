@@ -4,6 +4,7 @@
  */
 import type {
   AiProvider,
+  AiSettings,
   AuditResult,
   CodeToUiMessage,
   FixCategory,
@@ -14,6 +15,15 @@ import type {
   UsageRef,
 } from "../shared/messages";
 import { DEFAULT_AI_MODELS, EMPTY_SETTINGS } from "../shared/messages";
+import { parseFaFamilyTargetKey } from "../shared/fontAwesome";
+import {
+  composeSurfaceSourceId,
+  inferColorSurface,
+  splitUsageIndexesBySurface,
+  surfaceLabel,
+  type ColorSurface,
+} from "../shared/surfaces";
+import { getTeamAiSettings, hasTeamAiKey } from "../shared/teamAi";
 import {
   cadsComponents,
   isPrimitiveColorCollection,
@@ -27,6 +37,16 @@ import {
 } from "../data/dscoComponents";
 import { requestAiSuggestions, type AiSourceInput } from "./ai";
 import { icon as faIcon } from "./faIcons";
+
+/** Categories that can use AI analysis (sparkle + auto-run after propose). */
+function categoryUsesAi(category: FixCategory): boolean {
+  return category === "colors" || category === "components";
+}
+
+function effectiveAiSettings(): AiSettings | null {
+  if (settings.ai?.apiKey) return settings.ai;
+  return getTeamAiSettings();
+}
 
 const cadsComponentNameByKey = new Map(
   cadsComponents.map((component) => [component.key, component.name]),
@@ -75,6 +95,8 @@ let shownHiddenFixGroups = new Set<string>();
 let preparingFixes: FixCategory | null = null;
 let modeChoiceIndex = -1;
 let clearForeignModes = false;
+/** When true, fix apply + AI include hidden layers by default. */
+let includeHiddenInFixes = false;
 let aiBusy = false;
 let auditing = false;
 /** Draft provider while the settings modal is open. */
@@ -1737,6 +1759,8 @@ function renderMain(): void {
 
 interface SourceInfo {
   id: string;
+  /** Audit entry id (without ::surface suffix). */
+  baseSourceId: string;
   name: string;
   type: string;
   groupLabel: string;
@@ -1744,7 +1768,60 @@ interface SourceInfo {
   values: Record<string, string>;
   usageCount: number;
   usageSummary: string;
+  /** Usages for this card (may be a surface slice). */
   usages: UsageRef[];
+  /**
+   * Maps local usage index → index in the original audit entry.usages.
+   * Identity when the card owns the full entry.
+   */
+  originalIndexes: number[];
+  /** Color surface when this card is a split color remap. */
+  surface?: ColorSurface;
+}
+
+function pushColorSourceInfos(
+  infos: SourceInfo[],
+  base: {
+    id: string;
+    name: string;
+    groupLabel: string;
+    libraryName: string;
+    values: Record<string, string>;
+    usages: UsageRef[];
+  },
+): void {
+  const bySurface = splitUsageIndexesBySurface(base.usages);
+  const surfaces = Array.from(bySurface.keys()) as ColorSurface[];
+  const multi = surfaces.length > 1;
+
+  for (const surface of surfaces) {
+    const indexes = bySurface.get(surface) ?? [];
+    if (indexes.length === 0) continue;
+    const usages = indexes.map((index) => base.usages[index]);
+    const layers = Array.from(new Set(usages.map((u) => u.nodeName))).slice(
+      0,
+      5,
+    );
+    const hidden = usages.filter((u) => u.hidden).length;
+    const id = multi ? composeSurfaceSourceId(base.id, surface) : base.id;
+    const role = surfaceLabel(surface);
+    infos.push({
+      id,
+      baseSourceId: base.id,
+      name: multi ? `${base.name} · ${role}` : base.name,
+      type: "COLOR",
+      groupLabel: base.groupLabel,
+      libraryName: base.libraryName,
+      values: base.values,
+      usageCount: usages.length,
+      usageSummary: `${usages.length}× ${role}${
+        hidden > 0 ? ` (${hidden} hidden)` : ""
+      } on ${layers.join(", ")}`,
+      usages,
+      originalIndexes: indexes,
+      surface,
+    });
+  }
 }
 
 function sourceInfos(category: FixCategory): SourceInfo[] {
@@ -1759,14 +1836,9 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
     for (const entry of audit.entries) {
       if (entry.flag === "typographyVariable") continue;
       if (entry.resolvedType !== "COLOR") continue;
-      const layers = Array.from(new Set(entry.usages.map((u) => u.nodeName))).slice(
-        0,
-        5,
-      );
-      infos.push({
+      pushColorSourceInfos(infos, {
         id: entry.id,
         name: entry.name,
-        type: "COLOR",
         groupLabel:
           entry.flag === "primitive"
             ? "CADS primitives"
@@ -1774,41 +1846,26 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
         libraryName:
           entry.flag === "primitive" ? "CADS primitive" : entry.libraryName,
         values: entry.values,
-        usageCount: entry.usages.length,
-        usageSummary: `${entry.usages.length}× on ${layers.join(", ")}`,
         usages: entry.usages,
       });
     }
     for (const style of audit.paintStyles) {
-      const layers = Array.from(
-        new Set(style.usages.map((usage) => usage.nodeName)),
-      ).slice(0, 5);
-      infos.push({
+      pushColorSourceInfos(infos, {
         id: style.id,
         name: style.name,
-        type: "COLOR",
         groupLabel: "Color styles",
         libraryName: "Figma color style",
         values: { value: style.hex },
-        usageCount: style.usages.length,
-        usageSummary: `${style.usages.length}× on ${layers.join(", ")}`,
         usages: style.usages,
       });
     }
     for (const raw of audit.rawPaints) {
-      const layers = Array.from(new Set(raw.usages.map((u) => u.nodeName))).slice(
-        0,
-        5,
-      );
-      infos.push({
+      pushColorSourceInfos(infos, {
         id: raw.id,
         name: raw.hex,
-        type: "COLOR",
         groupLabel: "Raw hex values",
         libraryName: "Unbound",
         values: { value: raw.hex },
-        usageCount: raw.usages.length,
-        usageSummary: `${raw.usages.length}× unbound on ${layers.join(", ")}`,
         usages: raw.usages,
       });
     }
@@ -1826,6 +1883,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
       );
       infos.push({
         id: style.id,
+        baseSourceId: style.id,
         name: style.name,
         type: "TEXT_STYLE",
         groupLabel: "Non-CADS styles",
@@ -1834,6 +1892,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
         usageCount: style.usages.length,
         usageSummary: `${style.usages.length}× on ${layers.join(", ")}`,
         usages: style.usages,
+        originalIndexes: style.usages.map((_, index) => index),
       });
     }
     for (const raw of sortByTypographySize(
@@ -1847,6 +1906,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
       );
       infos.push({
         id: raw.id,
+        baseSourceId: raw.id,
         name: raw.label,
         type: "TEXT_STYLE",
         groupLabel: "Raw typography",
@@ -1855,6 +1915,30 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
         usageCount: raw.usages.length,
         usageSummary: `${raw.usages.length}× on ${layers.join(", ")}`,
         usages: raw.usages,
+        originalIndexes: raw.usages.map((_, index) => index),
+      });
+    }
+    for (const fa of sortByTypographySize(
+      audit.fontAwesomeTexts,
+      (entry) => typographySizeKey(entry.values, entry.label),
+      (entry) => entry.label,
+    )) {
+      const layers = Array.from(new Set(fa.usages.map((u) => u.nodeName))).slice(
+        0,
+        5,
+      );
+      infos.push({
+        id: fa.id,
+        baseSourceId: fa.id,
+        name: fa.label,
+        type: "FONT_AWESOME",
+        groupLabel: "Outdated Font Awesome",
+        libraryName: "Font Awesome",
+        values: fa.values,
+        usageCount: fa.usages.length,
+        usageSummary: `${fa.usages.length}× → FA7 on ${layers.join(", ")}`,
+        usages: fa.usages,
+        originalIndexes: fa.usages.map((_, index) => index),
       });
     }
   }
@@ -1867,6 +1951,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
       ).slice(0, 5);
       infos.push({
         id: entry.id,
+        baseSourceId: entry.id,
         name: entry.name,
         type: "RADIUS",
         groupLabel: "Non-CADS shape tokens",
@@ -1875,6 +1960,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
         usageCount: entry.usages.length,
         usageSummary: `${entry.usages.length}× on ${layers.join(", ")}`,
         usages: entry.usages,
+        originalIndexes: entry.usages.map((_, index) => index),
       });
     }
     for (const raw of audit.rawRadii) {
@@ -1884,6 +1970,7 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
       );
       infos.push({
         id: raw.id,
+        baseSourceId: raw.id,
         name: `radius ${raw.label}`,
         type: "RADIUS",
         groupLabel: "Raw border radii",
@@ -1892,29 +1979,36 @@ function sourceInfos(category: FixCategory): SourceInfo[] {
         usageCount: raw.usages.length,
         usageSummary: `${raw.usages.length}× on ${layers.join(", ")}`,
         usages: raw.usages,
+        originalIndexes: raw.usages.map((_, index) => index),
       });
     }
   }
 
   if (wantComponents) {
     for (const entry of audit.components) {
-      if (!isSwappableComponentKey(entry.key)) continue;
-      const cadsName = suggestCadsComponent(entry) ?? "CADS";
+      const cadsName = suggestCadsComponent(entry);
       const layers = Array.from(
         new Set(entry.usages.map((usage) => usage.nodeName)),
       ).slice(0, 5);
+      const swappable = isSwappableComponentKey(entry.key);
       infos.push({
         id: `component:${entry.key}`,
+        baseSourceId: `component:${entry.key}`,
         name: entry.name,
         type: "COMPONENT",
         groupLabel: "Component swaps",
         libraryName: isDscoComponentKey(entry.key)
           ? "DSCO → CADS"
           : "External → CADS",
-        values: { target: cadsName },
+        values: { target: cadsName ?? "" },
         usageCount: entry.usages.length,
-        usageSummary: `${entry.usages.length}× → ${cadsName} · ${layers.join(", ")}`,
+        usageSummary: cadsName
+          ? `${entry.usages.length}× → ${cadsName}${
+              swappable ? "" : " (simple swap)"
+            } · ${layers.join(", ")}`
+          : `${entry.usages.length}× unresolved · ${layers.join(", ")}`,
         usages: entry.usages,
+        originalIndexes: entry.usages.map((_, index) => index),
       });
     }
   }
@@ -1989,7 +2083,10 @@ function compareCadsTextStyleNames(a: string, b: string): number {
   return a.localeCompare(b);
 }
 
-function pickTargets(sourceType: string): PickTarget[] {
+function pickTargets(
+  sourceType: string,
+  options?: { surface?: ColorSurface },
+): PickTarget[] {
   if (!catalog) return [];
   if (sourceType === "TEXT_STYLE") {
     return [...catalog.textStyles]
@@ -2000,6 +2097,17 @@ function pickTargets(sourceType: string): PickTarget[] {
         values: style.values,
         groupLabel: textStyleSubgroup(style.name),
       }));
+  }
+  if (sourceType === "FONT_AWESOME") {
+    return [];
+  }
+  if (sourceType === "COMPONENT") {
+    return cadsComponents.map((component) => ({
+      key: component.key,
+      name: component.name,
+      values: {},
+      groupLabel: "CADS",
+    }));
   }
   let candidates: typeof catalog.variables;
   if (sourceType === "RADIUS") {
@@ -2030,6 +2138,13 @@ function pickTargets(sourceType: string): PickTarget[] {
         v.resolvedType === "COLOR" &&
         !isPrimitiveColorCollection(v.collectionName),
     );
+    if (options?.surface) {
+      const prefix = `${options.surface}/`;
+      const filtered = candidates.filter((v) =>
+        v.name.toLowerCase().startsWith(prefix),
+      );
+      if (filtered.length > 0) candidates = filtered;
+    }
   } else {
     candidates = catalog.variables.filter((v) => v.resolvedType === sourceType);
   }
@@ -2043,6 +2158,15 @@ function pickTargets(sourceType: string): PickTarget[] {
 
 function targetByKey(key: string | null): PickTarget | null {
   if (!key) return null;
+  const faFamily = parseFaFamilyTargetKey(key);
+  if (faFamily) {
+    return {
+      key,
+      name: faFamily,
+      values: {},
+      groupLabel: "Font Awesome 7",
+    };
+  }
   if (catalog) {
     const variable = catalog.variables.find((v) => v.key === key);
     if (variable) {
@@ -2152,6 +2276,7 @@ function openTargetPicker(
   selection: {
     selectedTargetKey?: string | null;
     recommendedTargetKey?: string | null;
+    surface?: ColorSurface;
   },
   onPick: (target: PickTarget | null) => void,
 ): void {
@@ -2167,9 +2292,13 @@ function openTargetPicker(
   const menu = el("div", "combo-menu");
   const input = el("input") as HTMLInputElement;
   input.placeholder =
-    sourceType === "TEXT_STYLE" ? "Search text styles…" : "Search variables…";
+    sourceType === "TEXT_STYLE"
+      ? "Search text styles…"
+      : sourceType === "COMPONENT"
+        ? "Search CADS components…"
+        : "Search variables…";
   const options = el("div", "options");
-  const candidates = pickTargets(sourceType);
+  const candidates = pickTargets(sourceType, { surface: selection.surface });
 
   const renderOptions = (query: string) => {
     options.textContent = "";
@@ -2436,26 +2565,6 @@ function visibleUsageIndexes(usages: UsageRef[]): number[] {
     .filter((index) => index >= 0);
 }
 
-function inferFixColorSurface(
-  usages: UsageRef[],
-): "background" | "text" | "border" {
-  let background = 0;
-  let text = 0;
-  let border = 0;
-  for (const usage of usages) {
-    if (usage.prop.kind !== "paint") continue;
-    if (usage.prop.property === "strokes") {
-      border++;
-      continue;
-    }
-    if (usage.nodeType === "TEXT") text++;
-    else background++;
-  }
-  if (text >= background && text >= border && text > 0) return "text";
-  if (border >= background && border >= text && border > 0) return "border";
-  return "background";
-}
-
 function majorityBackdrop(
   usages: UsageRef[],
 ): "chromatic" | "neutral" | "unknown" {
@@ -2487,9 +2596,9 @@ function createPrepareFixesButton(
     "btn brand detail-suggest",
   ) as HTMLButtonElement;
   suggest.type = "button";
-  // Component swaps are deterministic — never send them to AI.
+  // Sparkle only when this category actually runs AI (colors / components).
   const useAi =
-    Boolean(settings.ai?.apiKey) && category !== "components";
+    Boolean(effectiveAiSettings()?.apiKey) && categoryUsesAi(category);
   const busy = preparingFixes === category;
   if (busy) {
     suggest.disabled = true;
@@ -2551,10 +2660,18 @@ async function handleProposalsMessage(
   shownHiddenFixGroups.clear();
   for (const info of sourceInfos(fixCategory)) {
     const proposal = proposals.get(info.id);
-    includedUsageIndexes.set(
-      info.id,
-      new Set(proposal?.targetKey ? visibleUsageIndexes(info.usages) : []),
-    );
+    const defaults = proposal?.targetKey
+      ? includeHiddenInFixes
+        ? info.usages.map((_, index) => index)
+        : visibleUsageIndexes(info.usages)
+      : [];
+    includedUsageIndexes.set(info.id, new Set(defaults));
+    if (
+      includeHiddenInFixes &&
+      info.usages.some((usage) => usage.hidden)
+    ) {
+      shownHiddenFixSources.add(info.id);
+    }
   }
   expandedFixSources.clear();
   clearForeignModes =
@@ -2570,11 +2687,10 @@ async function handleProposalsMessage(
     if (darkIndex >= 0) modeChoiceIndex = darkIndex;
   }
 
-  // Component swaps are deterministic Wave A/B rules — don't send them to AI.
   const shouldRunAi =
     preparingFixes != null &&
-    preparingFixes !== "components" &&
-    Boolean(settings.ai?.apiKey);
+    categoryUsesAi(preparingFixes) &&
+    Boolean(effectiveAiSettings()?.apiKey);
   try {
     if (shouldRunAi) {
       // Keep category page + spinner visible while AI runs.
@@ -2691,7 +2807,24 @@ function renderFixCard(
   swapArrow.innerHTML = faIcon("arrow-turn-down-right", 12);
   targetRow.appendChild(swapArrow);
 
-  if (info.type === "COMPONENT") {
+  if (info.type === "FONT_AWESOME") {
+    const target = targetByKey(proposals.get(info.id)?.targetKey ?? null);
+    const locked = el("div", "combo");
+    const label = el(
+      "span",
+      "combo-trigger locked",
+      target?.name ?? "Font Awesome 7",
+    );
+    label.title =
+      proposals.get(info.id)?.rationale ?? "Upgrade font family to FA7";
+    locked.appendChild(label);
+    targetRow.appendChild(locked);
+  } else if (
+    info.type === "COMPONENT" &&
+    isSwappableComponentKey(info.baseSourceId.replace(/^component:/, "")) &&
+    proposals.get(info.id)?.source === "rule"
+  ) {
+    // Wave A/B prop-remap swaps stay locked to the rule target.
     const target = targetByKey(proposals.get(info.id)!.targetKey);
     const locked = el("div", "combo");
     const label = el(
@@ -2709,7 +2842,9 @@ function renderFixCard(
       trigger.textContent = "";
       const target = targetByKey(proposals.get(info.id)!.targetKey);
       if (target) {
-        trigger.appendChild(entrySwatches(target.values));
+        if (Object.keys(target.values).length > 0) {
+          trigger.appendChild(entrySwatches(target.values));
+        }
         const value = el("span", "value", target.name);
         value.title = Object.entries(target.values)
           .map(([mode, v]) => `${mode}: ${v}`)
@@ -2729,6 +2864,7 @@ function renderFixCard(
         {
           selectedTargetKey: proposals.get(info.id)?.targetKey ?? null,
           recommendedTargetKey: recommendedTargetKeys.get(info.id) ?? null,
+          surface: info.surface,
         },
         (target) => {
           const current = proposals.get(info.id)!;
@@ -2742,7 +2878,10 @@ function renderFixCard(
           if (!target) {
             selected.clear();
           } else if (selected.size === 0) {
-            for (const index of visibleIndexes) selected.add(index);
+            const indexes = includeHiddenInFixes
+              ? info.usages.map((_, index) => index)
+              : visibleIndexes;
+            for (const index of indexes) selected.add(index);
           }
           renderTrigger();
           syncSelectionState();
@@ -2878,6 +3017,51 @@ function renderFixPanel(): void {
   body.textContent = "";
   if (!audit || !catalog) return;
 
+  const hiddenUsageTotal = sourceInfos(fixCategory).reduce(
+    (total, info) =>
+      total + info.usages.filter((usage) => usage.hidden).length,
+    0,
+  );
+  if (hiddenUsageTotal > 0) {
+    const hiddenRow = el("label", "mode-panel-row include-hidden-row");
+    const hiddenInput = el("input") as HTMLInputElement;
+    hiddenInput.type = "checkbox";
+    hiddenInput.checked = includeHiddenInFixes;
+    hiddenInput.addEventListener("change", () => {
+      includeHiddenInFixes = hiddenInput.checked;
+      for (const info of sourceInfos(fixCategory)) {
+        if (!proposals.get(info.id)?.targetKey) continue;
+        const selected =
+          includedUsageIndexes.get(info.id) ?? new Set<number>();
+        if (includeHiddenInFixes) {
+          for (let index = 0; index < info.usages.length; index++) {
+            selected.add(index);
+          }
+          if (info.usages.some((usage) => usage.hidden)) {
+            shownHiddenFixSources.add(info.id);
+          }
+        } else {
+          for (let index = 0; index < info.usages.length; index++) {
+            if (info.usages[index].hidden) selected.delete(index);
+          }
+        }
+        includedUsageIndexes.set(info.id, selected);
+        if (selected.size > 0) included.add(info.id);
+        else included.delete(info.id);
+      }
+      renderFixPanel();
+    });
+    hiddenRow.appendChild(hiddenInput);
+    hiddenRow.appendChild(
+      el(
+        "span",
+        "",
+        `Include hidden layers in fixes (${hiddenUsageTotal})`,
+      ),
+    );
+    body.appendChild(hiddenRow);
+  }
+
   const showModes =
     fixCategory === "all" ||
     fixCategory === "colors" ||
@@ -2973,6 +3157,7 @@ function renderFixPanel(): void {
     "Raw hex values",
     "Non-CADS styles",
     "Raw typography",
+    "Outdated Font Awesome",
     "Non-CADS shape tokens",
     "Raw border radii",
     "Component swaps",
@@ -3079,24 +3264,49 @@ function closeSettingsModal(): void {
 }
 
 function openAiModal(): void {
-  const ai = settings.ai;
+  const team = getTeamAiSettings();
+  const ai = settings.ai ?? team;
   aiProviderDraft = ai?.provider ?? "anthropic";
   renderAiProviderTrigger();
   ($("ai-model") as HTMLInputElement).value =
     ai?.model ?? DEFAULT_AI_MODELS[aiProviderDraft];
-  ($("ai-key") as HTMLInputElement).value = ai?.apiKey ?? "";
+  const keyInput = $("ai-key") as HTMLInputElement;
+  const usingTeamKey =
+    Boolean(team?.apiKey) && settings.ai?.apiKey === team?.apiKey;
+  keyInput.value = usingTeamKey ? "" : (settings.ai?.apiKey ?? "");
+  keyInput.placeholder = hasTeamAiKey()
+    ? "Team key configured — leave blank to use it"
+    : "";
+  const hint = document.getElementById("ai-settings-hint");
+  if (hint) {
+    hint.textContent = hasTeamAiKey()
+      ? "Team API key is built into this internal plugin. Optional override below is saved in Figma client storage."
+      : "Optional. Your key stays in Figma client storage; calls go straight to the provider.";
+  }
   $("ai-modal").classList.add("show");
 }
 
 async function runAiSuggest(options?: {
   fromPrepareFixes?: boolean;
 }): Promise<void> {
-  if (!settings.ai?.apiKey) {
+  const ai = effectiveAiSettings();
+  if (!ai?.apiKey) {
     if (!options?.fromPrepareFixes) openAiModal();
     return;
   }
   if (!catalog || aiBusy) return;
-  const infos = sourceInfos(fixCategory);
+  if (!categoryUsesAi(fixCategory)) {
+    if (!options?.fromPrepareFixes) {
+      send({
+        type: "notify",
+        message: "AI analysis is only used for Colors and Components.",
+      });
+    }
+    return;
+  }
+  const infos = sourceInfos(fixCategory).filter(
+    (info) => info.type === "COLOR" || info.type === "COMPONENT",
+  );
   const unresolved = infos.filter(
     (info) => !proposals.get(info.id)?.targetKey,
   );
@@ -3112,16 +3322,20 @@ async function runAiSuggest(options?: {
   aiBusy = true;
   try {
     const sources: AiSourceInput[] = unresolved.slice(0, 80).map((info) => {
+      const hidden = info.usages.filter((u) => u.hidden).length;
       const base: AiSourceInput = {
         sourceId: info.id,
         name: info.name,
         type: info.type,
         values: info.values,
-        usageSummary: info.usageSummary,
+        usageSummary:
+          hidden > 0
+            ? `${info.usageSummary} · includes ${hidden} hidden`
+            : info.usageSummary,
         groupLabel: info.groupLabel,
       };
       if (info.type === "COLOR") {
-        base.surface = inferFixColorSurface(info.usages);
+        base.surface = info.surface ?? inferColorSurface(info.usages);
         base.backdrop = majorityBackdrop(info.usages);
         base.themeAssumption = audit?.colorThemeAssumption ?? "light";
       }
@@ -3145,14 +3359,10 @@ async function runAiSuggest(options?: {
         });
       }
     }
-    const typeById = new Map(infos.map((info) => [info.id, info.type]));
     const infoById = new Map(infos.map((info) => [info.id, info]));
-    const suggestions = await requestAiSuggestions(
-      settings.ai,
-      sources,
-      targets,
-    );
+    const suggestions = await requestAiSuggestions(ai, sources, targets);
     let applied = 0;
+    let rejected = 0;
     for (const suggestion of suggestions) {
       const current = proposals.get(suggestion.sourceId);
       if (
@@ -3163,12 +3373,28 @@ async function runAiSuggest(options?: {
       ) {
         continue;
       }
-      const sourceType = typeById.get(suggestion.sourceId);
-      const target =
-        suggestion.targetName && sourceType
-          ? pickTargets(sourceType).find((t) => t.name === suggestion.targetName)
-          : null;
-      if (!target) continue;
+      const info = infoById.get(suggestion.sourceId);
+      if (!info || !suggestion.targetName) {
+        if (suggestion.targetName) rejected++;
+        continue;
+      }
+      // Strict catalog check — never apply invented token/component names.
+      const target = pickTargets(info.type, { surface: info.surface }).find(
+        (t) => t.name === suggestion.targetName,
+      );
+      if (!target) {
+        rejected++;
+        continue;
+      }
+      // Extra surface guard for colors.
+      if (
+        info.type === "COLOR" &&
+        info.surface &&
+        !target.name.toLowerCase().startsWith(`${info.surface}/`)
+      ) {
+        rejected++;
+        continue;
+      }
       proposals.set(suggestion.sourceId, {
         ...current,
         targetKey: target.key,
@@ -3177,20 +3403,18 @@ async function runAiSuggest(options?: {
         rationale: suggestion.rationale || "AI suggestion",
       });
       recommendedTargetKeys.set(suggestion.sourceId, target.key);
-      const info = infoById.get(suggestion.sourceId);
-      if (info) {
-        included.add(info.id);
-        includedUsageIndexes.set(
-          info.id,
-          new Set(visibleUsageIndexes(info.usages)),
-        );
-      }
+      included.add(info.id);
+      const indexes = includeHiddenInFixes
+        ? info.usages.map((_, index) => index)
+        : visibleUsageIndexes(info.usages);
+      includedUsageIndexes.set(info.id, new Set(indexes));
       applied++;
     }
-    send({
-      type: "notify",
-      message: `AI suggested ${applied} mapping(s) — review before applying.`,
-    });
+    const parts = [`AI suggested ${applied} mapping(s) — review before applying.`];
+    if (rejected > 0) {
+      parts.push(`${rejected} invalid name(s) ignored (not in CADS catalog)`);
+    }
+    send({ type: "notify", message: parts.join(" ") });
   } catch (error) {
     showBanner(`AI request failed: ${String((error as Error).message ?? error)}`);
   } finally {
@@ -3225,16 +3449,30 @@ $("fix-expand-all").addEventListener("click", () => {
 });
 
 $("apply-btn").addEventListener("click", () => {
+  const infoById = new Map(
+    sourceInfos(fixCategory).map((info) => [info.id, info]),
+  );
   const mappings = Array.from(included)
     .map((id) => proposals.get(id))
     .filter((p): p is MappingProposal => Boolean(p?.targetKey))
-    .map((p) => ({
-      sourceId: p.sourceId,
-      targetKey: p.targetKey!,
-      usageIndexes: Array.from(
+    .map((p) => {
+      const info = infoById.get(p.sourceId);
+      const localIndexes = Array.from(
         includedUsageIndexes.get(p.sourceId) ?? [],
-      ).sort((a, b) => a - b),
-    }))
+      ).sort((a, b) => a - b);
+      const usageIndexes = info
+        ? localIndexes
+            .map((index) => info.originalIndexes[index])
+            .filter((index): index is number => typeof index === "number")
+        : localIndexes;
+      return {
+        // Keep ::surface suffix so apply can resolve the base entry; indexes
+        // are into the original audit entry.usages array.
+        sourceId: p.sourceId,
+        targetKey: p.targetKey!,
+        usageIndexes,
+      };
+    })
     .filter((mapping) => mapping.usageIndexes.length > 0);
   const options = modeOptions();
   const mode = modeChoiceIndex >= 0 ? options[modeChoiceIndex] : null;

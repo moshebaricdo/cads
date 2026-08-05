@@ -7,13 +7,22 @@ import type {
   AiSettings,
   ApplyRequest,
   AuditResult,
+  AuditVariableEntry,
   CodeToUiMessage,
   FixCategory,
   MappingProposal,
   PluginSettings,
   UiToCodeMessage,
+  UsageRef,
 } from "./shared/messages";
 import { EMPTY_SETTINGS } from "./shared/messages";
+import {
+  composeSurfaceSourceId,
+  parseSurfaceSourceId,
+  splitUsageIndexesBySurface,
+  type ColorSurface,
+} from "./shared/surfaces";
+import { getTeamAiSettings } from "./shared/teamAi";
 import { auditSelection } from "./main/audit";
 import { buildCatalog, type CatalogBuildResult } from "./main/catalog";
 import {
@@ -26,6 +35,7 @@ import {
   proposeComponentSwap,
 } from "./main/components";
 import {
+  proposeForFontAwesome,
   proposeForRadius,
   proposeForRawPaint,
   proposeForRawText,
@@ -76,6 +86,13 @@ figma.on("selectionchange", () => {
   postSelection();
 });
 
+function applyTeamAiDefaults(): void {
+  const team = getTeamAiSettings();
+  if (!team) return;
+  if (settings.ai?.apiKey) return;
+  settings = { ...settings, ai: team };
+}
+
 async function loadSettings(): Promise<void> {
   try {
     const stored = await figma.clientStorage.getAsync(SETTINGS_KEY);
@@ -83,6 +100,7 @@ async function loadSettings(): Promise<void> {
   } catch {
     settings = EMPTY_SETTINGS;
   }
+  applyTeamAiDefaults();
 }
 
 async function saveSettings(): Promise<void> {
@@ -162,6 +180,71 @@ async function handleAudit(): Promise<void> {
   post({ type: "audit", result: lastAudit });
 }
 
+function usagesAt(
+  all: UsageRef[],
+  indexes: number[],
+): UsageRef[] {
+  return indexes
+    .map((index) => all[index])
+    .filter((usage): usage is UsageRef => Boolean(usage));
+}
+
+function proposeColorEntry(
+  entry: {
+    id: string;
+    usages: UsageRef[];
+  } & (
+    | { kind: "variable"; variable: AuditVariableEntry }
+    | { kind: "paint"; paint: { id: string; hex: string; usages: UsageRef[]; name?: string } }
+  ),
+  ctx: {
+    targets: import("./shared/messages").TargetVariable[];
+    cache: Record<string, string>;
+    colorThemeAssumption: import("./shared/messages").ColorThemeAssumption;
+  },
+): MappingProposal[] {
+  const bySurface = splitUsageIndexesBySurface(entry.usages);
+  const surfaces = Array.from(bySurface.keys()) as ColorSurface[];
+  // Single surface → keep plain id (no ::suffix) for cleaner cache/UI when unmixed.
+  if (surfaces.length <= 1) {
+    const surface = surfaces[0] ?? "background";
+    const indexes = bySurface.get(surface) ?? entry.usages.map((_, i) => i);
+    const usages = usagesAt(entry.usages, indexes);
+    if (entry.kind === "variable") {
+      return [
+        proposeForVariable(entry.variable, ctx, {
+          sourceId: entry.id,
+          usages,
+        }),
+      ];
+    }
+    return [
+      proposeForRawPaint(entry.paint, ctx, {
+        sourceId: entry.id,
+        usages,
+      }),
+    ];
+  }
+
+  const proposals: MappingProposal[] = [];
+  for (const surface of surfaces) {
+    const indexes = bySurface.get(surface) ?? [];
+    if (indexes.length === 0) continue;
+    const sourceId = composeSurfaceSourceId(entry.id, surface);
+    const usages = usagesAt(entry.usages, indexes);
+    if (entry.kind === "variable") {
+      proposals.push(
+        proposeForVariable(entry.variable, ctx, { sourceId, usages }),
+      );
+    } else {
+      proposals.push(
+        proposeForRawPaint(entry.paint, ctx, { sourceId, usages }),
+      );
+    }
+  }
+  return proposals;
+}
+
 function handleProposeMappings(category: FixCategory = "all"): void {
   if (!catalogResult || !lastAudit) {
     throw new Error("Run the audit first.");
@@ -207,13 +290,33 @@ function handleProposeMappings(category: FixCategory = "all"): void {
     for (const entry of lastAudit.entries) {
       if (entry.flag === "typographyVariable") continue;
       if (entry.resolvedType !== "COLOR") continue;
-      proposals.push(proposeForVariable(entry, ctx));
+      proposals.push(
+        ...proposeColorEntry(
+          { id: entry.id, usages: entry.usages, kind: "variable", variable: entry },
+          ctx,
+        ),
+      );
     }
     for (const style of lastAudit.paintStyles) {
-      proposals.push(proposeForRawPaint(style, ctx));
+      proposals.push(
+        ...proposeColorEntry(
+          {
+            id: style.id,
+            usages: style.usages,
+            kind: "paint",
+            paint: style,
+          },
+          ctx,
+        ),
+      );
     }
     for (const raw of lastAudit.rawPaints) {
-      proposals.push(proposeForRawPaint(raw, ctx));
+      proposals.push(
+        ...proposeColorEntry(
+          { id: raw.id, usages: raw.usages, kind: "paint", paint: raw },
+          ctx,
+        ),
+      );
     }
   }
   if (wantShape) {
@@ -233,6 +336,9 @@ function handleProposeMappings(category: FixCategory = "all"): void {
     }
     for (const raw of lastAudit.rawTexts) {
       proposals.push(proposeForRawText(raw, styleCtx));
+    }
+    for (const fa of lastAudit.fontAwesomeTexts) {
+      proposals.push(proposeForFontAwesome(fa));
     }
   }
   if (wantComponents) {
@@ -281,7 +387,9 @@ async function handleApply(request: ApplyRequest): Promise<void> {
     cacheKeyById.set(entry.id, entry.styleKey || entry.id);
   }
   for (const mapping of tokenMappings) {
-    const cacheKey = cacheKeyById.get(mapping.sourceId) ?? mapping.sourceId;
+    const { baseId, surface } = parseSurfaceSourceId(mapping.sourceId);
+    const baseKey = cacheKeyById.get(baseId) ?? baseId;
+    const cacheKey = surface ? `${baseKey}::${surface}` : baseKey;
     settings.mappingCache[cacheKey] = mapping.targetKey;
   }
   await saveSettings();
@@ -329,8 +437,12 @@ async function handleApply(request: ApplyRequest): Promise<void> {
 }
 
 async function handleSaveAiSettings(ai: AiSettings | null): Promise<void> {
+  // Persist user choice; empty/null falls back to team key on next open.
   settings.ai = ai;
   await saveSettings();
+  if (!settings.ai?.apiKey) {
+    applyTeamAiDefaults();
+  }
   post({ type: "settings", settings });
 }
 

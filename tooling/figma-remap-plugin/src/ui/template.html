@@ -676,6 +676,23 @@
       .warning-card + .warning-card {
         border-top: 1px solid var(--cads-border-neutral-primary);
       }
+      .include-hidden-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 10px;
+        padding: 8px 10px;
+        border: 1px solid var(--cads-border-neutral-primary);
+        border-radius: 8px;
+        background: var(--cads-background-neutral-secondary);
+        color: var(--cads-text-neutral-secondary);
+        font-size: 10px;
+        font-weight: 550;
+        cursor: pointer;
+      }
+      .include-hidden-row input {
+        margin: 0;
+      }
       .hidden-layers-toggle {
         display: flex;
         align-items: center;
@@ -1422,7 +1439,7 @@
         <h3 id="settings-title">Plugin settings</h3>
         <section class="settings-section" aria-labelledby="ai-settings-heading">
           <h4 id="ai-settings-heading">AI settings</h4>
-          <p class="muted small">
+          <p class="muted small" id="ai-settings-hint">
             Optional. Your key stays in Figma client storage; calls go straight to
             the provider.
           </p>

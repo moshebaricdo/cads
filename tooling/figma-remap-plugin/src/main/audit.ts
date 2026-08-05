@@ -31,6 +31,10 @@ import {
   isTypographyCollection,
 } from "../data/cadsCatalog";
 import {
+  isFontAwesome7Family,
+  isFontAwesomeFamily,
+} from "../shared/fontAwesome";
+import {
   getCollectionCached,
   getVariableCached,
   resolveDisplayValues,
@@ -52,14 +56,6 @@ const cadsComponentNameByNormalized = new Map(
 function isFigmaComponentOutlineHex(hex: string): boolean {
   // Match #9747ff or #9747ff + optional alpha byte.
   return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
-}
-
-function isFontAwesomeFamily(family: string): boolean {
-  return /^font awesome\b/i.test(family.trim());
-}
-
-function isFontAwesome7Family(family: string): boolean {
-  return /^font awesome\s+7\b/i.test(family.trim());
 }
 
 /** Node-level boundVariables entries we intentionally do not treat as fields. */
@@ -898,7 +894,8 @@ export async function auditSelection(
     if (existing) {
       existing.instanceCount++;
       existing.usages.push(usage);
-      recordCompliance(existing.isCads, usage.hidden);
+      // Local file components are ignored (not CADS library issues).
+      recordCompliance(existing.isCads || existing.isLocal, usage.hidden);
       if (
         existing.sampleNodeNames.length < 5 &&
         !existing.sampleNodeNames.includes(node.name)
@@ -917,7 +914,7 @@ export async function auditSelection(
       usages: [usage],
     };
     components.set(key, entry);
-    recordCompliance(entry.isCads, usage.hidden);
+    recordCompliance(entry.isCads || entry.isLocal, usage.hidden);
   }
 
   function visitPossibleDetachedComponent(node: SceneNode): void {
@@ -1159,8 +1156,10 @@ export async function auditSelection(
   const findingRadii = Array.from(rawRadii.values()).sort(
     (a, b) => a.value - b.value,
   );
+  // Findings: detached suspects + remote library components that aren't CADS.
+  // Ignore components authored in this file (local) — they flood the card.
   const findingComponents = Array.from(components.values())
-    .filter((c) => !c.isCads)
+    .filter((c) => !c.isCads && !c.isLocal)
     .sort((a, b) => b.instanceCount - a.instanceCount);
   const findingDetachedComponents = Array.from(detachedComponents.values()).sort(
     (a, b) => b.usages.length - a.usages.length,

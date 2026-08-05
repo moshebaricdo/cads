@@ -20,6 +20,7 @@ import {
   type CapturedComponentProps,
   type ComponentSwapRule,
 } from "../data/componentSwaps";
+import { suggestCadsComponent } from "../data/dscoComponents";
 import type {
   ApplyFailure,
   ApplyRequest,
@@ -244,6 +245,23 @@ function withoutState(
   return rest;
 }
 
+/** Best-effort swap when no Wave A/B prop-remap rule exists (AI / name match). */
+async function swapSimple(
+  instance: InstanceNode,
+  cadsKey: string,
+): Promise<void> {
+  const set = await importCadsComponentSet(cadsKey);
+  const target =
+    set.defaultVariant ??
+    (set.children.find((child) => child.type === "COMPONENT") as
+      | ComponentNode
+      | undefined);
+  if (!target || target.type !== "COMPONENT") {
+    throw new Error("CADS component set has no default variant to swap to");
+  }
+  instance.swapComponent(target);
+}
+
 async function swapOne(
   instance: InstanceNode,
   rule: ComponentSwapRule,
@@ -353,14 +371,6 @@ export async function applyComponentSwaps(
     }
 
     const rule = getComponentSwapRule(source.dscoKey);
-    if (!rule) {
-      failures.push({
-        nodeName: "—",
-        sourceName: source.name,
-        reason: "no Wave A/B swap rule for this component",
-      });
-      continue;
-    }
 
     const usages =
       mapping.usageIndexes === undefined
@@ -380,7 +390,11 @@ export async function applyComponentSwaps(
         continue;
       }
       try {
-        await swapOne(instance, rule, mapping.targetKey);
+        if (rule) {
+          await swapOne(instance, rule, mapping.targetKey);
+        } else {
+          await swapSimple(instance, mapping.targetKey);
+        }
         swapped++;
       } catch (error) {
         const message = String((error as Error).message ?? error);
@@ -402,20 +416,52 @@ export async function applyComponentSwaps(
   return { swapped, failures };
 }
 
-/** Propose a component swap mapping when a Wave A/B rule exists. */
+/**
+ * Propose a component swap: Wave A/B rule first, then deterministic name match
+ * to a published CADS component (simple default-variant swap on apply).
+ */
 export function proposeComponentSwap(entry: {
   key: string;
   name: string;
 }): MappingProposal | null {
   const rule = getComponentSwapRule(entry.key);
-  if (!rule) return null;
-  const targetKey = resolveCadsComponentKey(rule.cadsName);
-  if (!targetKey) return null;
+  if (rule) {
+    const targetKey = resolveCadsComponentKey(rule.cadsName);
+    if (!targetKey) return null;
+    return {
+      sourceId: `component:${entry.key}`,
+      targetKey,
+      source: "rule",
+      confidence: 0.95,
+      rationale: `Swap ${rule.dscoName} → ${rule.cadsName} with prop remap`,
+    };
+  }
+
+  const suggested = suggestCadsComponent({ key: entry.key, name: entry.name });
+  if (!suggested) {
+    // Unresolved — leave for AI / manual pick (still emit an empty proposal
+    // so the fix panel can show the row).
+    return {
+      sourceId: `component:${entry.key}`,
+      targetKey: null,
+      source: "none",
+      confidence: 0,
+    };
+  }
+  const targetKey = resolveCadsComponentKey(suggested);
+  if (!targetKey) {
+    return {
+      sourceId: `component:${entry.key}`,
+      targetKey: null,
+      source: "none",
+      confidence: 0,
+    };
+  }
   return {
     sourceId: `component:${entry.key}`,
     targetKey,
-    source: "rule",
-    confidence: 0.95,
-    rationale: `Swap ${rule.dscoName} → ${rule.cadsName} with prop remap`,
+    source: "exact-name",
+    confidence: 0.8,
+    rationale: `Name match → ${suggested} (default variant; verify props)`,
   };
 }

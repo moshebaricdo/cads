@@ -32,12 +32,86 @@
   };
 
   // src/shared/messages.ts
+  var DEFAULT_AI_MODELS = {
+    anthropic: "claude-sonnet-4-5",
+    openai: "gpt-5-mini"
+  };
   var EMPTY_SETTINGS = {
     libraryName: null,
     ai: null,
     mappingCache: {},
     capturedStyles: null
   };
+
+  // src/shared/surfaces.ts
+  var SURFACE_SUFFIX = /^(.*)::(text|background|border)$/;
+  function colorSurfaceOfUsage(usage) {
+    if (usage.prop.kind === "paint") {
+      if (usage.prop.property === "strokes") return "border";
+      if (usage.nodeType === "TEXT") return "text";
+      return "background";
+    }
+    return "background";
+  }
+  function inferColorSurface(usages) {
+    let background = 0;
+    let text = 0;
+    let border = 0;
+    for (const usage of usages) {
+      const surface = colorSurfaceOfUsage(usage);
+      if (surface === "border") border++;
+      else if (surface === "text") text++;
+      else background++;
+    }
+    if (text >= background && text >= border && text > 0) return "text";
+    if (border >= background && border >= text && border > 0) return "border";
+    return "background";
+  }
+  function splitUsageIndexesBySurface(usages) {
+    var _a;
+    const map = /* @__PURE__ */ new Map();
+    for (let index = 0; index < usages.length; index++) {
+      const surface = colorSurfaceOfUsage(usages[index]);
+      const list = (_a = map.get(surface)) != null ? _a : [];
+      list.push(index);
+      map.set(surface, list);
+    }
+    return map;
+  }
+  function composeSurfaceSourceId(baseId, surface) {
+    return `${baseId}::${surface}`;
+  }
+  function parseSurfaceSourceId(sourceId) {
+    const match = sourceId.match(SURFACE_SUFFIX);
+    if (!match) return { baseId: sourceId, surface: null };
+    return { baseId: match[1], surface: match[2] };
+  }
+  function surfaceFromTokenName(name) {
+    const n = name.trim().toLowerCase();
+    if (n.startsWith("text/")) return "text";
+    if (n.startsWith("border/")) return "border";
+    if (n.startsWith("background/")) return "background";
+    return null;
+  }
+
+  // src/shared/teamAi.ts
+  function readDefine(value) {
+    return typeof value === "string" ? value.trim() : "";
+  }
+  function getTeamAiSettings() {
+    const apiKey = readDefine(
+      true ? "" : ""
+    );
+    if (!apiKey) return null;
+    const providerRaw = readDefine(
+      true ? "anthropic" : "anthropic"
+    ).toLowerCase();
+    const provider = providerRaw === "openai" ? "openai" : "anthropic";
+    const model = readDefine(
+      true ? "" : ""
+    ) || DEFAULT_AI_MODELS[provider];
+    return { provider, model, apiKey };
+  }
 
   // src/data/cadsCatalog.ts
   var PRIMITIVE_COLOR_COLLECTIONS = ["Primitive Colors"];
@@ -148,6 +222,42 @@
     { name: "Header", key: "67c596ff289a71901524fd7186a6f0ddafc34b80" }
   ];
   var cadsComponentKeys = new Set(cadsComponents.map((c) => c.key));
+
+  // src/shared/fontAwesome.ts
+  var FA_FAMILY_TARGET_PREFIX = "fontfamily:";
+  function isFontAwesomeFamily(family) {
+    return /^font awesome\b/i.test(family.trim());
+  }
+  function isFontAwesome7Family(family) {
+    return /^font awesome\s+7\b/i.test(family.trim());
+  }
+  function toFontAwesome7Family(family) {
+    const trimmed = family.trim();
+    if (!isFontAwesomeFamily(trimmed) || isFontAwesome7Family(trimmed)) {
+      return null;
+    }
+    const withVersion = trimmed.match(/^font awesome\s+\d+\s+(.+)$/i);
+    if (withVersion) {
+      return `Font Awesome 7 ${withVersion[1].trim()}`;
+    }
+    const withoutVersion = trimmed.match(/^font awesome\s+(.+)$/i);
+    if (withoutVersion) {
+      const rest = withoutVersion[1].trim();
+      if (/^\d+\b/.test(rest)) {
+        return `Font Awesome 7 ${rest.replace(/^\d+\s+/, "")}`;
+      }
+      return `Font Awesome 7 ${rest}`;
+    }
+    return null;
+  }
+  function faFamilyTargetKey(family) {
+    return `${FA_FAMILY_TARGET_PREFIX}${family}`;
+  }
+  function parseFaFamilyTargetKey(targetKey) {
+    if (!targetKey.startsWith(FA_FAMILY_TARGET_PREFIX)) return null;
+    const family = targetKey.slice(FA_FAMILY_TARGET_PREFIX.length).trim();
+    return family || null;
+  }
 
   // src/main/values.ts
   function rgbaToHex(value) {
@@ -1028,12 +1138,6 @@
   function isFigmaComponentOutlineHex(hex) {
     return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
   }
-  function isFontAwesomeFamily(family) {
-    return /^font awesome\b/i.test(family.trim());
-  }
-  function isFontAwesome7Family(family) {
-    return /^font awesome\s+7\b/i.test(family.trim());
-  }
   var SKIP_FIELDS = /* @__PURE__ */ new Set([
     "fills",
     "strokes",
@@ -1681,7 +1785,7 @@
       if (existing) {
         existing.instanceCount++;
         existing.usages.push(usage);
-        recordCompliance(existing.isCads, usage.hidden);
+        recordCompliance(existing.isCads || existing.isLocal, usage.hidden);
         if (existing.sampleNodeNames.length < 5 && !existing.sampleNodeNames.includes(node.name)) {
           existing.sampleNodeNames.push(node.name);
         }
@@ -1697,7 +1801,7 @@
         usages: [usage]
       };
       components.set(key, entry);
-      recordCompliance(entry.isCads, usage.hidden);
+      recordCompliance(entry.isCads || entry.isLocal, usage.hidden);
     }
     function visitPossibleDetachedComponent(node) {
       if (node.type !== "FRAME" && node.type !== "GROUP") return;
@@ -1895,7 +1999,7 @@
     const findingRadii = Array.from(rawRadii.values()).sort(
       (a, b) => a.value - b.value
     );
-    const findingComponents = Array.from(components.values()).filter((c) => !c.isCads).sort((a, b) => b.instanceCount - a.instanceCount);
+    const findingComponents = Array.from(components.values()).filter((c) => !c.isCads && !c.isLocal).sort((a, b) => b.instanceCount - a.instanceCount);
     const findingDetachedComponents = Array.from(detachedComponents.values()).sort(
       (a, b) => b.usages.length - a.usages.length
     );
@@ -2291,8 +2395,23 @@
     if (node.type !== "TEXT") throw new Error("no longer a text node");
     await node.setTextStyleIdAsync(style.id);
   }
-  function isStyleSource(sourceId) {
-    return sourceId.startsWith("style:") || sourceId.startsWith("font:");
+  async function applyFontFamily(usage, family) {
+    const node = await getNode(usage.nodeId);
+    if (!node) throw new Error("node no longer exists");
+    if (node.type !== "TEXT") throw new Error("no longer a text node");
+    const text = node;
+    if (text.fontName === figma.mixed) {
+      throw new Error("mixed font on layer \u2014 apply per-character in Figma");
+    }
+    const style = text.fontName.style;
+    await figma.loadFontAsync({ family, style });
+    text.fontName = { family, style };
+  }
+  function isStyleSource(baseSourceId) {
+    return baseSourceId.startsWith("style:") || baseSourceId.startsWith("font:");
+  }
+  function isFontAwesomeSource(baseSourceId) {
+    return baseSourceId.startsWith("fontawesome:");
   }
   async function applyMappings(request, audit, importedByKey, importedStylesByKey) {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -2316,24 +2435,31 @@
     for (const raw of audit.rawTexts) {
       sourceById.set(raw.id, { name: raw.label, usages: raw.usages });
     }
+    for (const fa of audit.fontAwesomeTexts) {
+      sourceById.set(fa.id, { name: fa.label, usages: fa.usages });
+    }
     for (const raw of audit.rawRadii) {
       sourceById.set(raw.id, { name: `radius ${raw.label}`, usages: raw.usages });
     }
     for (const mapping of request.mappings) {
-      const source = sourceById.get(mapping.sourceId);
-      const styleTarget = isStyleSource(mapping.sourceId);
+      const { baseId } = parseSurfaceSourceId(mapping.sourceId);
+      const source = sourceById.get(baseId);
+      const faFamily = parseFaFamilyTargetKey(mapping.targetKey);
+      const styleTarget = isStyleSource(baseId);
+      const faTarget = isFontAwesomeSource(baseId) || Boolean(faFamily);
       let variable = null;
       let style = null;
-      if (styleTarget) {
+      if (faTarget) {
+      } else if (styleTarget) {
         style = (_a = importedStylesByKey.get(mapping.targetKey)) != null ? _a : await figma.importStyleByKeyAsync(mapping.targetKey).catch(() => null);
       } else {
         variable = (_b = importedByKey.get(mapping.targetKey)) != null ? _b : await figma.variables.importVariableByKeyAsync(mapping.targetKey).catch(() => null);
       }
-      if (!source || !variable && !style) {
+      if (!source || (faTarget ? !faFamily : !variable && !style)) {
         failures.push({
           nodeName: "\u2014",
           sourceName: (_c = source == null ? void 0 : source.name) != null ? _c : mapping.sourceId,
-          reason: styleTarget ? "target text style could not be imported" : "target variable could not be imported"
+          reason: faTarget ? "target Font Awesome 7 family missing" : styleTarget ? "target text style could not be imported" : "target variable could not be imported"
         });
         continue;
       }
@@ -2341,7 +2467,8 @@
       const usages = mapping.usageIndexes === void 0 ? source.usages : mapping.usageIndexes.map((index) => source.usages[index]).filter((usage) => Boolean(usage));
       for (const usage of usages) {
         try {
-          if (style) await applyTextStyle(usage, style);
+          if (faFamily) await applyFontFamily(usage, faFamily);
+          else if (style) await applyTextStyle(usage, style);
           else await rebindUsage(usage, variable);
           reboundForSource++;
         } catch (error) {
@@ -2987,6 +3114,411 @@
     return out;
   }
 
+  // src/data/dscoComponents.ts
+  var dscoComponents = [
+    // Actions
+    { key: "cbc707599ceb83eaa1cee51d698831793e0ebde6", name: "Button", cadsName: "Button" },
+    {
+      key: "0478bc835a0e7e1593fc0e6f3044f54730b66861",
+      name: "Destructive Button",
+      cadsName: "Button"
+    },
+    {
+      key: "385632d619eb1dffc825a323a3f596b2011f8bb7",
+      name: "Close Icon Button",
+      cadsName: "Close Icon Button"
+    },
+    {
+      key: "148a82188be79992d7015f52492071c21a21f705",
+      name: "Segmented Button Group",
+      cadsName: "Segmented Button Group"
+    },
+    {
+      key: "25783a815c161998fb765a4242de17ddfcef2e81",
+      name: "Segmented Button Block",
+      cadsName: "Segmented Button Block"
+    },
+    {
+      key: "1ba27ea5b212558f4281b0278785db09d2b65262",
+      name: "Icon Toggle Button",
+      cadsName: "Icon Toggle"
+    },
+    {
+      key: "c134c8ce1f97a8067852366746163bf5a49cfa07",
+      name: "Icon Toggle Group",
+      cadsName: "Icon Toggle + Label"
+    },
+    // Forms
+    {
+      key: "57fb424c2504d5c1f7c18f185a1c36e8bf872508",
+      name: "Text Field",
+      cadsName: "Text Input"
+    },
+    {
+      key: "84db09de35208651719ba49035c8eb3e2383fc68",
+      name: "Text Area",
+      cadsName: "Text Input"
+    },
+    {
+      key: "80f93b64131f10c8f805fd5ce3bd3833436bd24a",
+      name: "Dropdown Field",
+      cadsName: "Dropdown"
+    },
+    {
+      key: "12a72e8b7d28b78b26d6d85e0884146524eb3001",
+      name: "Input Dropdown",
+      cadsName: "Dropdown"
+    },
+    {
+      key: "ab47ef51db67847667cab7b99707f8e777d64551",
+      name: "Action Dropdown",
+      cadsName: "Dropdown"
+    },
+    {
+      key: "b976343862b4c66015dec46d68395f42739ea9a5",
+      name: "Dropdown Menu Button",
+      cadsName: "Dropdown Button"
+    },
+    {
+      key: "e2274d238ee69542f85d9e9476e11e88c0bde612",
+      name: "Dropdown Menu List",
+      cadsName: "Dropdown Menu List"
+    },
+    {
+      key: "0cdd5bf757831059deb7ae24d9b7cf39f86f21d2",
+      name: "Dropdown Menu Items",
+      cadsName: "Dropdown Menu Item"
+    },
+    {
+      key: "d1962e3d41cdec427b9b37396990ce826fe5a377",
+      name: "Checkbox",
+      cadsName: "Checkbox + Label"
+    },
+    {
+      key: "bc82043dae67f96dfbbe8f1e20d02ea7ebe1d458",
+      name: "Checkbox Blocks",
+      cadsName: "Checkbox"
+    },
+    {
+      key: "2d0d2e869049a5a77b70dcf6813aa48737c1a911",
+      name: "Radio Button",
+      cadsName: "Radio Button + Label"
+    },
+    {
+      key: "dc3161c47faf5241fa98a42e7c5ada717119f365",
+      name: "Radio Buttons Blocks",
+      cadsName: "Radio Buttons Block"
+    },
+    { key: "cb3807d24d76a019695d82bf799811edf15ff5f6", name: "Toggle", cadsName: "Toggle" },
+    {
+      key: "125d017876c50813f0359990eaaf45d1982ef739",
+      name: "Toggle Building Block",
+      cadsName: "Toggle"
+    },
+    {
+      key: "2c50539a1e47e54eb7ab1474e6eeb085cca393c0",
+      name: "Slider",
+      cadsName: "Slider"
+    },
+    {
+      key: "e425e8b498f0675603eaca40dcf39343fedcb62e",
+      name: "Slider Bar",
+      cadsName: "Slider Bar"
+    },
+    {
+      key: "64b2b6fca4e117da33d3d88304783c529687df7e",
+      name: "Slider Stepper",
+      cadsName: "Slider Stepper"
+    },
+    // Selection / chips
+    { key: "341373d642bfd3c0e0cbb35c1130b146945a2321", name: "Chip", cadsName: "Chip" },
+    {
+      key: "7aa7d44bba4b5dc76d69cc1d81c167cc03608832",
+      name: "Chip Group",
+      cadsName: "Chip Group"
+    },
+    { key: "8314a929103d75e027acd08445eb326299d24b74", name: "Link", cadsName: "Link" },
+    { key: "6da8599310350b4a87b2a2f8e08d34ae3376a1d1", name: "Tag", cadsName: "Tag" },
+    // Navigation
+    {
+      key: "1d12e71986a41db4dcc4e567b6923d7ed043abdd",
+      name: "Breadcrumbs",
+      cadsName: "Breadcrumbs"
+    },
+    {
+      key: "1f49b8bd60a1d0351739d42dff1644522002ea00",
+      name: "Breadcrumb Link",
+      cadsName: "Breadcrumb Links"
+    },
+    {
+      key: "d8b09d58c31343f8ad588e1edda6e650de6c423f",
+      name: "Breadcrumbs Blocks",
+      cadsName: "Breadcrumb Separators"
+    },
+    { key: "3046d24d897ea7a8fef82b9df239e2d2b7b45f7c", name: "Tab", cadsName: "Tab Item" },
+    {
+      key: "046a167c72e8ce57d1fb39e003531928d0309feb",
+      name: "Tab Group",
+      cadsName: "Tab Group"
+    },
+    {
+      key: "a66d7f369b0b0440f0b73ba48f1dd56548d5aec1",
+      name: "Pagination Dots",
+      cadsName: "Pagination Dots"
+    },
+    {
+      key: "b610aa8d09ccc8931662c7fba5cb0f734a3807f0",
+      name: "Pagination Group",
+      cadsName: "Pagination Group"
+    },
+    // Feedback / overlays
+    { key: "3133f83a3f98b68c1f3081132b2e90bb5d1dc59a", name: "Alert", cadsName: "Alert" },
+    { key: "949e2949033f60df26231b2f73985b488f9f78fe", name: "Toast", cadsName: "Toast" },
+    {
+      key: "64993adac217e2c6daab4eb131f94531d02e65a9",
+      name: "Notification Banner",
+      cadsName: "Notification Banner"
+    },
+    {
+      key: "d9e848e2167cade785a34c19aff53552645fa03d",
+      name: "Tooltip",
+      cadsName: "Tooltip"
+    },
+    {
+      key: "a1831764f91754253ef7a8e9581f7c3fbdc5227a",
+      name: "Tooltip Icon",
+      cadsName: "Icon Tooltip"
+    },
+    {
+      key: "b26928dc5394b83a3f950653339218583b9cfccc",
+      name: "Tooltip Tails",
+      cadsName: null
+    },
+    {
+      key: "354d944bb976f7104bbcd34cf8a733aff3124964",
+      name: "Popover",
+      cadsName: "Popover"
+    },
+    {
+      key: "a635748a7e91721d93fde00682cac982b8cc1742",
+      name: "Popover Building Blocks",
+      cadsName: "Popover Core"
+    },
+    {
+      key: "402577f53a413426e8fbdb59d73a7750b64ddd79",
+      name: "Drawer",
+      cadsName: "Drawer"
+    },
+    {
+      key: "6fd36a39efde8f927febe94b2d20a77cca842844",
+      name: "Dialog",
+      cadsName: "Dialog"
+    },
+    { key: "5978e70b44d30d937b300a136fd1e5c46a8a70c1", name: "Modal", cadsName: "Modal" },
+    {
+      key: "e6e3c0cfea5a588c0e936ab7dca00b3919c28a07",
+      name: "Content Divider",
+      cadsName: "Content Divider"
+    },
+    // Media
+    { key: "8c94db45d91aaa619d204ea00fc8c72986182cfc", name: "Video", cadsName: "Video" },
+    {
+      key: "fa1a30885e3ac8a208c390bb1d0c79b2fef659d0",
+      name: "Play Button",
+      cadsName: "Play Button"
+    },
+    {
+      key: "645a7bf0fba836e19dcdc0afbfd1f74bc0d85cf5",
+      name: "Carousel",
+      cadsName: "Carousel"
+    },
+    {
+      key: "9e43cc3f8b484812e1265cf6bcaa3e4176965cdf",
+      name: "Carousal Nav Buttons",
+      cadsName: "Carousal Nav Buttons"
+    },
+    {
+      key: "2606e5170df63663236d53010e2260932e3b9445",
+      name: "Action Block",
+      cadsName: "Action Block"
+    },
+    {
+      key: "868d8d3e54e28e95ae284876db38d7271651be4f",
+      name: "Action Block Group",
+      cadsName: "Action Block Group"
+    },
+    {
+      key: "f8f95d95f31825a834ca1a08ee78a10bbdfabee4",
+      name: "Action Block Carousel",
+      cadsName: "Action Block Carousel"
+    },
+    // Shell / layout
+    {
+      key: "284b25f1184ef019c06cc629e4fdaa38e75249f1",
+      name: "Lab Nav",
+      cadsName: "Lab Nav"
+    },
+    {
+      key: "21391676db29a79461cdf45ec70bba6641772d5b",
+      name: "Sidebar V2",
+      cadsName: "Sidebar V2"
+    },
+    {
+      key: "14b1e0b45ce2bf6a0dd67668e9960490605e62b9",
+      name: "Sidebar Tab Item V2",
+      cadsName: "Sidebar Tab Item V2"
+    },
+    {
+      key: "36742e65b461a7717434e4d0589ecfb3158bd56c",
+      name: "Sidebar Tab Group V2",
+      cadsName: "Sidebar Tab Group V2"
+    },
+    {
+      key: "f668e066487a10529ee420c65d14ea5ad4bd5eee",
+      name: "Sidebar Control",
+      cadsName: "Sidebar Control"
+    },
+    {
+      key: "b15d0603786020456041d9dfc6ce5fbc1ea8a795",
+      name: "File Manager V2",
+      cadsName: "File Manager V2"
+    },
+    {
+      key: "f228313a492b61b8a0809cee51776cdffe280dbe",
+      name: "File Item",
+      cadsName: "File Item"
+    },
+    {
+      key: "bb9040fe00af46f8f26380c8bd789587209f92f5",
+      name: "File Item Icons",
+      cadsName: "File Item Icons"
+    },
+    {
+      key: "6080fcf2f90e8cac1b083dc62ea7cb7a1cb747db",
+      name: "File Tab Row Item",
+      cadsName: "File Tab Row Item"
+    },
+    {
+      key: "965f87360ad7d05dc3f3589361e40bb7cd11b5de",
+      name: "Panel Header V2",
+      cadsName: "Panel Header V2"
+    },
+    {
+      key: "182556a60cdf5211857d30c94e575e35aa13aef7",
+      name: "Panel Header Building Block",
+      cadsName: "Panel Header Building Block"
+    },
+    {
+      key: "cab3283affeb303907a9a172225e382b759f68dd",
+      name: "Resize Handle",
+      cadsName: "Resize Handle"
+    },
+    { key: "908f98448d94d05c5a172f575d47cf2398a2299f", name: "Logo", cadsName: null },
+    // AI
+    {
+      key: "7dd35ac4dfa58413fcd9520dc8bf091b1cd617bf",
+      name: "AI Tutor Chat Input",
+      cadsName: "AI Tutor Chat Input"
+    },
+    {
+      key: "1968b2a676cdb5194012c76a0290bd1e72410cb1",
+      name: "AI Chat Messages",
+      cadsName: "AI Chat Messages"
+    },
+    {
+      key: "657aa0a29f7ad03f01ae4a21119471ca28714a8a",
+      name: "AI Chat File Chip",
+      cadsName: "AI Chat File Chip"
+    },
+    {
+      key: "642b5ebddbdd848f3f0174950db780003a344040",
+      name: "AI Chat File Chip",
+      cadsName: "AI Chat File Chip"
+    },
+    {
+      key: "fc8d56dba42d05aee6a8c1baf7f7ceab48caaaf9",
+      name: "AI Shortcut Chip",
+      cadsName: "AI Shortcut Chip"
+    },
+    {
+      key: "4bd2e86e9492638295155f36675a8549e23f2547",
+      name: "AI Support Indicator",
+      cadsName: "AI Support Indicator"
+    },
+    {
+      key: "fa8a60054807a87521a0207d968f29b4acb6db89",
+      name: "AI File Chip Close Button",
+      cadsName: "AI File Chip Close Button"
+    },
+    {
+      key: "5cc57671aeafa2f61aec50f6a630297347b3a26f",
+      name: "AI Chat File Item",
+      cadsName: "AI Chat File Item"
+    },
+    { key: "b8baba99082dcb77c42cb4f599869b9471a5aab7", name: "AI Bot", cadsName: null },
+    // Icons
+    {
+      key: "051a05d840dcf0a8220c056833c040fc581dff41",
+      name: "Font Awesome Icon",
+      cadsName: "Font Awesome Icon v7"
+    },
+    {
+      key: "2073beaaf6394b66220e04a5588a35e08d66daf2",
+      name: "Font Awesome Duotone Icon",
+      cadsName: "Font Awesome Duotone Icon v7"
+    }
+  ];
+  var dscoComponentKeys = new Set(dscoComponents.map((c) => c.key));
+  var cadsNameByNormalized = new Map(
+    cadsComponents.map((component) => [
+      component.name.trim().toLocaleLowerCase(),
+      component.name
+    ])
+  );
+  var cadsByDscoKey = new Map(
+    dscoComponents.filter((entry) => entry.cadsName).map((entry) => [entry.key, entry.cadsName])
+  );
+  var DSCO_NAME_REWRITES = {
+    "destructive button": "Button",
+    "icon toggle button": "Icon Toggle",
+    "icon toggle group": "Icon Toggle + Label",
+    "text field": "Text Input",
+    "text area": "Text Input",
+    "dropdown field": "Dropdown",
+    "input dropdown": "Dropdown",
+    "action dropdown": "Dropdown",
+    "dropdown menu button": "Dropdown Button",
+    "dropdown menu items": "Dropdown Menu Item",
+    checkbox: "Checkbox + Label",
+    "checkbox blocks": "Checkbox",
+    "checkbox blocks ": "Checkbox",
+    "radio button": "Radio Button + Label",
+    "radio buttons blocks": "Radio Buttons Block",
+    "toggle building block": "Toggle",
+    tab: "Tab Item",
+    "breadcrumb link": "Breadcrumb Links",
+    "breadcrumbs blocks": "Breadcrumb Separators",
+    "tooltip icon": "Icon Tooltip",
+    "popover building blocks": "Popover Core",
+    "font awesome icon": "Font Awesome Icon v7",
+    "font awesome duotone icon": "Font Awesome Duotone Icon v7"
+  };
+  function normalizeName(name) {
+    return name.trim().toLocaleLowerCase();
+  }
+  function suggestCadsComponent(source) {
+    var _a;
+    if (source.key) {
+      const byKey = cadsByDscoKey.get(source.key);
+      if (byKey) return byKey;
+      if (dscoComponentKeys.has(source.key)) return null;
+    }
+    const normalized = normalizeName(source.name);
+    const rewrite = DSCO_NAME_REWRITES[normalized];
+    if (rewrite) return rewrite;
+    return (_a = cadsNameByNormalized.get(normalized)) != null ? _a : null;
+  }
+
   // src/main/components.ts
   var importedSets = /* @__PURE__ */ new Map();
   async function importCadsComponentSet(key) {
@@ -3160,6 +3692,15 @@
     const _a = want, { state: _state } = _a, rest = __objRest(_a, ["state"]);
     return rest;
   }
+  async function swapSimple(instance, cadsKey) {
+    var _a;
+    const set = await importCadsComponentSet(cadsKey);
+    const target = (_a = set.defaultVariant) != null ? _a : set.children.find((child) => child.type === "COMPONENT");
+    if (!target || target.type !== "COMPONENT") {
+      throw new Error("CADS component set has no default variant to swap to");
+    }
+    instance.swapComponent(target);
+  }
   async function swapOne(instance, rule, cadsKey) {
     var _a, _b, _c, _d, _e;
     const captured = await captureInstanceProps(instance);
@@ -3242,14 +3783,6 @@
         continue;
       }
       const rule = getComponentSwapRule(source.dscoKey);
-      if (!rule) {
-        failures.push({
-          nodeName: "\u2014",
-          sourceName: source.name,
-          reason: "no Wave A/B swap rule for this component"
-        });
-        continue;
-      }
       const usages = mapping.usageIndexes === void 0 ? source.usages : mapping.usageIndexes.map((index) => source.usages[index]).filter((usage) => Boolean(usage));
       for (const usage of usages) {
         const instance = await getInstance(usage.nodeId);
@@ -3262,7 +3795,11 @@
           continue;
         }
         try {
-          await swapOne(instance, rule, mapping.targetKey);
+          if (rule) {
+            await swapOne(instance, rule, mapping.targetKey);
+          } else {
+            await swapSimple(instance, mapping.targetKey);
+          }
           swapped++;
         } catch (error) {
           const message = String((_a = error.message) != null ? _a : error);
@@ -3281,15 +3818,41 @@
   }
   function proposeComponentSwap(entry) {
     const rule = getComponentSwapRule(entry.key);
-    if (!rule) return null;
-    const targetKey = resolveCadsComponentKey(rule.cadsName);
-    if (!targetKey) return null;
+    if (rule) {
+      const targetKey2 = resolveCadsComponentKey(rule.cadsName);
+      if (!targetKey2) return null;
+      return {
+        sourceId: `component:${entry.key}`,
+        targetKey: targetKey2,
+        source: "rule",
+        confidence: 0.95,
+        rationale: `Swap ${rule.dscoName} \u2192 ${rule.cadsName} with prop remap`
+      };
+    }
+    const suggested = suggestCadsComponent({ key: entry.key, name: entry.name });
+    if (!suggested) {
+      return {
+        sourceId: `component:${entry.key}`,
+        targetKey: null,
+        source: "none",
+        confidence: 0
+      };
+    }
+    const targetKey = resolveCadsComponentKey(suggested);
+    if (!targetKey) {
+      return {
+        sourceId: `component:${entry.key}`,
+        targetKey: null,
+        source: "none",
+        confidence: 0
+      };
+    }
     return {
       sourceId: `component:${entry.key}`,
       targetKey,
-      source: "rule",
-      confidence: 0.95,
-      rationale: `Swap ${rule.dscoName} \u2192 ${rule.cadsName} with prop remap`
+      source: "exact-name",
+      confidence: 0.8,
+      rationale: `Name match \u2192 ${suggested} (default variant; verify props)`
     };
   }
 
@@ -3475,26 +4038,42 @@
       (t) => t.resolvedType === "COLOR" && normalizedKey(t.name) === key
     );
   }
-  function proposeForVariable(entry, ctx) {
-    const cacheKey = entry.variableKey || entry.id;
-    const cached = ctx.cache[cacheKey];
+  function proposeForVariable(entry, ctx, options) {
+    var _a, _b, _c;
+    const sourceId = (_a = options == null ? void 0 : options.sourceId) != null ? _a : entry.id;
+    const usages = (_b = options == null ? void 0 : options.usages) != null ? _b : entry.usages;
+    const surface = inferColorSurface(usages);
+    const cacheKeyBase = entry.variableKey || entry.id;
+    const cacheKey = `${cacheKeyBase}::${surface}`;
+    const cached = (_c = ctx.cache[cacheKey]) != null ? _c : (
+      // Legacy unscoped cache entries only apply when the rule surface matches.
+      ctx.cache[cacheKeyBase]
+    );
     if (cached && ctx.targets.some((t) => t.key === cached)) {
-      return {
-        sourceId: entry.id,
-        targetKey: cached,
-        source: "cache",
-        confidence: 1,
-        rationale: "Previously approved mapping"
-      };
+      const cachedTarget = ctx.targets.find((t) => t.key === cached);
+      const cachedSurface = cachedTarget ? surfaceFromTokenName(cachedTarget.name) : null;
+      if (!cachedSurface || cachedSurface === surface) {
+        return {
+          sourceId,
+          targetKey: cached,
+          source: "cache",
+          confidence: 1,
+          rationale: "Previously approved mapping"
+        };
+      }
     }
     if (entry.resolvedType === "COLOR") {
       if (entry.flag !== "primitive") {
         const ruleName = dscoToCadsColorName(entry.name);
         if (ruleName) {
+          const ruleSurface = surfaceFromTokenName(ruleName);
+          if (ruleSurface && ruleSurface !== surface) {
+            return { sourceId, targetKey: null, source: "none", confidence: 0 };
+          }
           const match = findColorTargetByName(ctx.targets, ruleName);
           if (match) {
             return {
-              sourceId: entry.id,
+              sourceId,
               targetKey: match.key,
               source: "rule",
               confidence: 1,
@@ -3503,7 +4082,7 @@
           }
         }
       }
-      return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+      return { sourceId, targetKey: null, source: "none", confidence: 0 };
     }
     const typeCandidates = ctx.targets.filter(
       (t) => t.resolvedType === entry.resolvedType
@@ -3529,14 +4108,34 @@
     }
     if (best && best.score >= 0.55) {
       return {
-        sourceId: entry.id,
+        sourceId,
         targetKey: best.target.key,
         source: best.kind,
         confidence: Math.round(best.score * 100) / 100,
         rationale: best.kind === "exact-name" ? "Names match" : best.kind === "value" ? "Resolved values match" : "Similar name"
       };
     }
-    return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+    return { sourceId, targetKey: null, source: "none", confidence: 0 };
+  }
+  function proposeForFontAwesome(entry) {
+    var _a;
+    const family = (_a = entry.values.family) != null ? _a : "";
+    const targetFamily = toFontAwesome7Family(family);
+    if (!targetFamily) {
+      return {
+        sourceId: entry.id,
+        targetKey: null,
+        source: "none",
+        confidence: 0
+      };
+    }
+    return {
+      sourceId: entry.id,
+      targetKey: faFamilyTargetKey(targetFamily),
+      source: "rule",
+      confidence: 1,
+      rationale: `Upgrade ${family} \u2192 ${targetFamily}`
+    };
   }
   function fontValueScore(source, target) {
     var _a;
@@ -3898,18 +4497,27 @@
       rationale: `${sourceValues.join("/")}px maps to shape/${ruleName} by the DSCO \u2192 CADS migration rule`
     };
   }
-  function proposeForRawPaint(entry, ctx) {
-    const cached = ctx.cache[entry.id];
+  function proposeForRawPaint(entry, ctx, options) {
+    var _a, _b, _c;
+    const sourceId = (_a = options == null ? void 0 : options.sourceId) != null ? _a : entry.id;
+    const usages = (_b = options == null ? void 0 : options.usages) != null ? _b : entry.usages;
+    const surface = inferColorSurface(usages);
+    const cacheKey = `${entry.id}::${surface}`;
+    const cached = (_c = ctx.cache[cacheKey]) != null ? _c : ctx.cache[entry.id];
     if (cached && ctx.targets.some((t) => t.key === cached)) {
-      return {
-        sourceId: entry.id,
-        targetKey: cached,
-        source: "cache",
-        confidence: 1,
-        rationale: "Previously approved mapping"
-      };
+      const cachedTarget = ctx.targets.find((t) => t.key === cached);
+      const cachedSurface = cachedTarget ? surfaceFromTokenName(cachedTarget.name) : null;
+      if (!cachedSurface || cachedSurface === surface) {
+        return {
+          sourceId,
+          targetKey: cached,
+          source: "cache",
+          confidence: 1,
+          rationale: "Previously approved mapping"
+        };
+      }
     }
-    return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+    return { sourceId, targetKey: null, source: "none", confidence: 0 };
   }
 
   // src/code.ts
@@ -3939,6 +4547,13 @@
   figma.on("selectionchange", () => {
     postSelection();
   });
+  function applyTeamAiDefaults() {
+    var _a;
+    const team = getTeamAiSettings();
+    if (!team) return;
+    if ((_a = settings.ai) == null ? void 0 : _a.apiKey) return;
+    settings = __spreadProps(__spreadValues({}, settings), { ai: team });
+  }
   async function loadSettings() {
     try {
       const stored = await figma.clientStorage.getAsync(SETTINGS_KEY);
@@ -3946,6 +4561,7 @@
     } catch (e) {
       settings = EMPTY_SETTINGS;
     }
+    applyTeamAiDefaults();
   }
   async function saveSettings() {
     try {
@@ -4014,6 +4630,50 @@
     );
     post({ type: "audit", result: lastAudit });
   }
+  function usagesAt(all, indexes) {
+    return indexes.map((index) => all[index]).filter((usage) => Boolean(usage));
+  }
+  function proposeColorEntry(entry, ctx) {
+    var _a, _b, _c;
+    const bySurface = splitUsageIndexesBySurface(entry.usages);
+    const surfaces = Array.from(bySurface.keys());
+    if (surfaces.length <= 1) {
+      const surface = (_a = surfaces[0]) != null ? _a : "background";
+      const indexes = (_b = bySurface.get(surface)) != null ? _b : entry.usages.map((_, i) => i);
+      const usages = usagesAt(entry.usages, indexes);
+      if (entry.kind === "variable") {
+        return [
+          proposeForVariable(entry.variable, ctx, {
+            sourceId: entry.id,
+            usages
+          })
+        ];
+      }
+      return [
+        proposeForRawPaint(entry.paint, ctx, {
+          sourceId: entry.id,
+          usages
+        })
+      ];
+    }
+    const proposals = [];
+    for (const surface of surfaces) {
+      const indexes = (_c = bySurface.get(surface)) != null ? _c : [];
+      if (indexes.length === 0) continue;
+      const sourceId = composeSurfaceSourceId(entry.id, surface);
+      const usages = usagesAt(entry.usages, indexes);
+      if (entry.kind === "variable") {
+        proposals.push(
+          proposeForVariable(entry.variable, ctx, { sourceId, usages })
+        );
+      } else {
+        proposals.push(
+          proposeForRawPaint(entry.paint, ctx, { sourceId, usages })
+        );
+      }
+    }
+    return proposals;
+  }
   function handleProposeMappings(category = "all") {
     var _a, _b;
     if (!catalogResult || !lastAudit) {
@@ -4049,13 +4709,33 @@
       for (const entry of lastAudit.entries) {
         if (entry.flag === "typographyVariable") continue;
         if (entry.resolvedType !== "COLOR") continue;
-        proposals.push(proposeForVariable(entry, ctx));
+        proposals.push(
+          ...proposeColorEntry(
+            { id: entry.id, usages: entry.usages, kind: "variable", variable: entry },
+            ctx
+          )
+        );
       }
       for (const style of lastAudit.paintStyles) {
-        proposals.push(proposeForRawPaint(style, ctx));
+        proposals.push(
+          ...proposeColorEntry(
+            {
+              id: style.id,
+              usages: style.usages,
+              kind: "paint",
+              paint: style
+            },
+            ctx
+          )
+        );
       }
       for (const raw of lastAudit.rawPaints) {
-        proposals.push(proposeForRawPaint(raw, ctx));
+        proposals.push(
+          ...proposeColorEntry(
+            { id: raw.id, usages: raw.usages, kind: "paint", paint: raw },
+            ctx
+          )
+        );
       }
     }
     if (wantShape) {
@@ -4075,6 +4755,9 @@
       }
       for (const raw of lastAudit.rawTexts) {
         proposals.push(proposeForRawText(raw, styleCtx));
+      }
+      for (const fa of lastAudit.fontAwesomeTexts) {
+        proposals.push(proposeForFontAwesome(fa));
       }
     }
     if (wantComponents) {
@@ -4119,7 +4802,9 @@
       cacheKeyById.set(entry.id, entry.styleKey || entry.id);
     }
     for (const mapping of tokenMappings) {
-      const cacheKey = (_b = cacheKeyById.get(mapping.sourceId)) != null ? _b : mapping.sourceId;
+      const { baseId, surface } = parseSurfaceSourceId(mapping.sourceId);
+      const baseKey = (_b = cacheKeyById.get(baseId)) != null ? _b : baseId;
+      const cacheKey = surface ? `${baseKey}::${surface}` : baseKey;
       settings.mappingCache[cacheKey] = mapping.targetKey;
     }
     await saveSettings();
@@ -4155,8 +4840,12 @@
     await handleAudit();
   }
   async function handleSaveAiSettings(ai) {
+    var _a;
     settings.ai = ai;
     await saveSettings();
+    if (!((_a = settings.ai) == null ? void 0 : _a.apiKey)) {
+      applyTeamAiDefaults();
+    }
     post({ type: "settings", settings });
   }
   async function bootstrap() {

@@ -1,8 +1,9 @@
 /**
- * Optional AI mapping suggestions. Runs in the UI iframe with the user's own
- * API key; requests go directly to the provider (see manifest networkAccess).
+ * Optional AI mapping suggestions. Runs in the UI iframe with the team or
+ * user API key; requests go directly to the provider (see manifest networkAccess).
  */
 import type { AiSettings } from "../shared/messages";
+import type { ColorSurface } from "../shared/surfaces";
 
 export interface AiSourceInput {
   sourceId: string;
@@ -13,7 +14,7 @@ export interface AiSourceInput {
   /** e.g. "used 12× on fills of Button, Card / inside instances: 3" */
   usageSummary: string;
   /** COLOR context — omitted for non-color sources. */
-  surface?: "background" | "text" | "border";
+  surface?: ColorSurface;
   /** Majority fill behind usages: chromatic (brand/accent) vs neutral. */
   backdrop?: "chromatic" | "neutral" | "unknown";
   /** Assumed CADS Light/Dark for theme-aware tokens. */
@@ -24,6 +25,7 @@ export interface AiSourceInput {
 export interface AiTargetInput {
   name: string;
   type: string;
+  /** Slim values — prefer light/dark hex only for colors. */
   values: Record<string, string>;
 }
 
@@ -34,13 +36,16 @@ export interface AiSuggestion {
   rationale: string;
 }
 
+const BATCH_SIZE = 16;
+
 function buildPrompt(sources: AiSourceInput[], targets: AiTargetInput[]): string {
   const hasColor = sources.some((source) => source.type === "COLOR");
+  const hasComponent = sources.some((source) => source.type === "COMPONENT");
   const lines = [
-    "You map design tokens from legacy design systems onto a new source-of-truth Figma variable library.",
-    "For each SOURCE, pick the best TARGET variable name, or null if nothing fits.",
-    "Prefer semantic intent over raw value equality: a primitive gray used as body text should map to the semantic text token, not another primitive.",
-    "Use the usage context (which properties and layers consume the token) to infer the semantic role.",
+    "You map design tokens / components from legacy design systems onto CADS.",
+    "For each SOURCE, pick the best TARGET name, or null if nothing fits.",
+    "Return ONLY exact names from TARGETS (copy spelling exactly), or null.",
+    "Never invent names that are not in TARGETS.",
     "",
   ];
 
@@ -48,11 +53,22 @@ function buildPrompt(sources: AiSourceInput[], targets: AiTargetInput[]): string
     lines.push(
       "COLOR RULES:",
       "- TARGETS are semantic CADS color variables only (never primitives).",
-      "- Use surface (text/background/border), backdrop, and themeAssumption.",
+      "- Each SOURCE already has a surface (text/background/border). ONLY pick a TARGET whose name starts with that surface prefix (text/, background/, or border/).",
+      "- Use backdrop and themeAssumption for white/black and neutrals.",
       "- White/black on chromatic primary chrome (brand/accent/sentiment) → *-fixed (e.g. text/neutral/white-fixed).",
       "- Otherwise theme-aware: under Light, white text → text/neutral/primary-inverse; under Dark, white text → text/neutral/primary.",
       "- Under Dark, dark neutral surfaces → background/neutral/primary (not primary-inverse).",
-      "- Prefer role over hex closeness. Return only exact names from TARGETS, or null.",
+      "- Prefer role over hex closeness.",
+      "",
+    );
+  }
+
+  if (hasComponent) {
+    lines.push(
+      "COMPONENT RULES:",
+      "- Pick the closest published CADS component name from TARGETS.",
+      "- Prefer exact / near-exact product role (Button→Button, Alert→Alert).",
+      "- If nothing is a reasonable successor, return null.",
       "",
     );
   }
@@ -62,10 +78,10 @@ function buildPrompt(sources: AiSourceInput[], targets: AiTargetInput[]): string
     '{"sourceId": string, "targetName": string | null, "confidence": number between 0 and 1, "rationale": short string}',
     "",
     "SOURCES:",
-    JSON.stringify(sources, null, 1),
+    JSON.stringify(sources),
     "",
     "TARGETS:",
-    JSON.stringify(targets, null, 1),
+    JSON.stringify(targets),
   );
 
   return lines.join("\n");
@@ -112,7 +128,7 @@ async function callAnthropic(settings: AiSettings, prompt: string): Promise<stri
     },
     body: JSON.stringify({
       model: settings.model,
-      max_tokens: 8192,
+      max_tokens: 4096,
       messages: [{ role: "user", content: prompt }],
     }),
   });
@@ -146,7 +162,7 @@ async function callOpenAi(settings: AiSettings, prompt: string): Promise<string>
   return data.choices[0]?.message?.content ?? "";
 }
 
-export async function requestAiSuggestions(
+async function requestOneBatch(
   settings: AiSettings,
   sources: AiSourceInput[],
   targets: AiTargetInput[],
@@ -157,4 +173,60 @@ export async function requestAiSuggestions(
       ? await callAnthropic(settings, prompt)
       : await callOpenAi(settings, prompt);
   return parseSuggestions(text);
+}
+
+/**
+ * Filter targets to the source's surface (colors) to shrink the prompt and
+ * prevent cross-surface hallucinations.
+ */
+export function targetsForSource(
+  source: AiSourceInput,
+  allTargets: AiTargetInput[],
+): AiTargetInput[] {
+  if (source.type === "COLOR" && source.surface) {
+    const prefix = `${source.surface}/`;
+    const filtered = allTargets.filter(
+      (t) => t.type === "COLOR" && t.name.toLowerCase().startsWith(prefix),
+    );
+    return filtered.length > 0 ? filtered : allTargets.filter((t) => t.type === "COLOR");
+  }
+  if (source.type === "COMPONENT") {
+    return allTargets.filter((t) => t.type === "COMPONENT");
+  }
+  return allTargets.filter((t) => t.type === source.type);
+}
+
+/**
+ * Request AI suggestions. Batches sources and runs batches in parallel.
+ * Callers must validate returned targetName against the real CADS catalog.
+ */
+export async function requestAiSuggestions(
+  settings: AiSettings,
+  sources: AiSourceInput[],
+  targets: AiTargetInput[],
+): Promise<AiSuggestion[]> {
+  if (sources.length === 0) return [];
+
+  // Group by type+surface so each batch gets a tight target list.
+  const groups = new Map<string, AiSourceInput[]>();
+  for (const source of sources) {
+    const key = `${source.type}:${source.surface ?? "*"}`;
+    const list = groups.get(key) ?? [];
+    list.push(source);
+    groups.set(key, list);
+  }
+
+  const jobs: Promise<AiSuggestion[]>[] = [];
+  for (const group of groups.values()) {
+    const groupTargets = targetsForSource(group[0], targets);
+    for (let i = 0; i < group.length; i += BATCH_SIZE) {
+      const batch = group.slice(i, i + BATCH_SIZE);
+      jobs.push(requestOneBatch(settings, batch, groupTargets));
+    }
+  }
+
+  const results = await Promise.all(jobs);
+  const merged: AiSuggestion[] = [];
+  for (const batch of results) merged.push(...batch);
+  return merged;
 }

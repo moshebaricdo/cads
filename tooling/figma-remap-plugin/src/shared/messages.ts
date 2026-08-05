@@ -128,27 +128,6 @@ export interface RawTextEntry {
   usages: UsageRef[];
 }
 
-/** An unbound corner-radius value, grouped by px. */
-export interface RawRadiusEntry {
-  id: string; // "radius:<px>"
-  label: string; // e.g. "8px"
-  value: number;
-  usages: UsageRef[];
-}
-
-/** A component whose instances appear in the selection (report-only). */
-export interface ComponentUsageEntry {
-  key: string;
-  name: string;
-  /** Key found in the baked CADS component catalog. */
-  isCads: boolean;
-  /** Main component lives in the audited file itself (not a library). */
-  isLocal: boolean;
-  instanceCount: number;
-  /** Sample of instance layer names (up to 5). */
-  sampleNodeNames: string[];
-}
-
 /** Font Awesome text using a pre-FA7 family, grouped by font signature. */
 export interface FontAwesomeTextEntry {
   id: string; // "fontawesome:<family>/<style>/<size>"
@@ -165,7 +144,10 @@ export interface RawRadiusEntry {
   usages: UsageRef[];
 }
 
-/** A non-CADS component whose instances appear in the selection. */
+/**
+ * A non-CADS component whose instances appear in the selection.
+ * Local (this-file) components are omitted from audit findings.
+ */
 export interface ComponentUsageEntry {
   key: string;
   name: string;

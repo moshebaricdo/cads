@@ -37,27 +37,35 @@ Baked from the CADS file (`src/data/cadsCatalog.ts` + `cadsTextStyles.ts`):
 - **Colors → semantic only.** Primitives and foreign/unbound colors are
   findings (including paints nested in component instances); primitives are
   never offered as remap targets. `#9747ff` (Figma component outline) is
-  always excluded. Deterministic remaps are limited to the curated DSCO
-  Variables → CADS alias map (`src/data/dscoColors.ts`) plus the user mapping
-  cache. Paint styles, primitives, raw hex, and white/black theme choices stay
-  unresolved for contextual AI (or manual pick). Audit still records surface /
-  backdrop / manual-dark theme hints for the AI prompt, and may preselect
-  “Set frame mode → Dark” when the selection looks hand-built dark. Apply may
-  fail on some instance overrides — those usages are labeled “in instance”.
+  always excluded. Remaps are **split by layer role** (text fill / non-text
+  fill / stroke) so one primitive cannot receive a single `background/*` or
+  `text/*` target for mixed usages. Deterministic remaps are limited to the
+  curated DSCO Variables → CADS alias map (`src/data/dscoColors.ts`) plus the
+  user mapping cache (scoped per surface). Paint styles, primitives, raw hex,
+  and white/black theme choices stay unresolved for contextual AI (or manual
+  pick). Audit still records surface / backdrop / manual-dark theme hints for
+  the AI prompt, and may preselect “Set frame mode → Dark” when the selection
+  looks hand-built dark. Apply may fail on some instance overrides — those
+  usages are labeled “in instance”.
 - **Typography → text styles.** Non-CADS styles, unstyled text, and Typography
   collection variables are findings (variables are report-only; remap via
   styles). DSCO style names rewrite deterministically; other styles/raw text
   pick the closest CADS ramp step by size + weight (13px Regular → Body 3
-  Regular, 46px → H1, mono/link/overline roles when detectable).
+  Regular, 46px → H1, mono/link/overline roles when detectable). Pre-FA7 Font
+  Awesome text families are findings and upgrade to FA7 on Apply.
 - **Shape → unbound radii** on surface nodes (one usage per node, not per
   corner). DSCO/raw px bands map to `shape/sm|md|lg|xl|round`.
 - **Modes → foreign explicit modes** on frames.
-- **Components → non-CADS instances.** CADS instances are silent. Suggestions
-  prefer published DSCO component keys → CADS names (`src/data/dscoComponents.ts`),
-  then DSCO name rewrites, then exact CADS name match. Wave A/B swaps
-  (`src/data/componentSwaps.ts`) import the CADS set, `swapComponent`, and
-  remap variants/text/booleans (e.g. Destructive Button → Button `color=error`,
-  Meaning→sentiment, Size L/M/S/XS → large/medium/small/extraSmall).
+- **Components → detached suspects + remote non-CADS libraries.** CADS
+  instances and **local (this-file) components are silent**. Suggestions prefer
+  published DSCO component keys → CADS names (`src/data/dscoComponents.ts`),
+  then DSCO name rewrites, then exact CADS name match, then optional AI.
+  Wave A/B swaps (`src/data/componentSwaps.ts`) import the CADS set,
+  `swapComponent`, and remap variants/text/booleans; name/AI matches do a
+  simple default-variant swap (verify props).
+- **Hidden layers** are bucketed separately in findings; the fix panel has
+  **Include hidden layers in fixes** so boolean-hidden component internals can
+  be remapped (and are included in AI analysis when that option is on).
 - **Spacing/padding** intentionally not surfaced.
 
 ## Text-style catalog
@@ -74,11 +82,26 @@ ramp changes.
 
 ## Optional AI
 
-Footer gear configures Anthropic/OpenAI (BYO key, local storage). With a key
-saved, **Prepare fixes** shows a sparkle and runs AI after deterministic
-propose — filling unresolved color rows using surface, backdrop, and theme
-context. Without a key, Prepare fixes is deterministic only (DSCO Variables
-map + cache); other color rows stay “Choose target…”.
+**Prepare fixes** shows a sparkle and runs AI only for **Colors** and
+**Components** (typography / shape stay deterministic). AI fills unresolved
+rows using surface-split color context (text vs fill vs stroke), backdrop, and
+theme — suggestions are validated against the baked CADS catalog (invented
+names are dropped).
+
+**Team key (preferred for internal use):** set in repo-root `.env` before build:
+
+```bash
+CADS_AUDIT_AI_API_KEY=sk-…
+CADS_AUDIT_AI_PROVIDER=anthropic   # or openai
+CADS_AUDIT_AI_MODEL=               # optional override
+pnpm plugin:remap:build
+```
+
+The key is embedded in the plugin bundle so the three of us don’t re-paste it.
+Footer gear can still override/clear; overrides persist in Figma `clientStorage`.
+
+Without a team or saved key, Prepare fixes is deterministic only (DSCO map +
+cache); unresolved color rows stay “Choose target…”.
 
 ## Develop
 
