@@ -203,6 +203,27 @@ export type { DialogProps, DialogType } from "./components/dialog/index";
 export { Modal } from "./components/modal/index";
 export type { ModalProps, ModalType } from "./components/modal/index";
 
+export { ChatFileRemoveButton } from "./components/chat-file-remove-button";
+export type { ChatFileRemoveButtonProps } from "./components/chat-file-remove-button";
+
+export { AiChatFileChip } from "./components/ai-chat-file-chip";
+export type {
+  AiChatFileChipProps,
+  AiChatFileChipType,
+  AiChatFileChipUseCase,
+} from "./components/ai-chat-file-chip";
+
+export { AiChatMessage } from "./components/ai-chat-message";
+export type {
+  AiChatMessageProps,
+  AiChatMessageAuthor,
+  AiChatMessageContext,
+  AiChatMessageHelpfulValue,
+} from "./components/ai-chat-message";
+
+export { AiChatInput } from "./components/ai-chat-input";
+export type { AiChatInputProps } from "./components/ai-chat-input";
+
 export { Breadcrumbs } from "./components/breadcrumbs/index";
 export type {
   BreadcrumbsProps,

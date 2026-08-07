@@ -916,6 +916,114 @@ Example:
 </>
 ```
 
+### ChatFileRemoveButton
+
+Compact circular remove control for AI chat file chips in the composer.
+
+Import: `import { ChatFileRemoveButton } from "@codeai/cads-react"`
+
+Props:
+- `disabled`: boolean
+- `onClick`: (event) => void
+- `aria-label`: string (default "Remove") — Accessible name for the icon-only action.
+
+Usage rules:
+- Prefer composing via AiChatFileChip useCase=inputField rather than placing alone.
+- Hover/press use error fills to signal destructive remove.
+
+Example:
+```tsx
+<ChatFileRemoveButton onClick={onRemove} aria-label="Remove attachment" />
+```
+
+### AiChatFileChip
+
+Attachment chip for AI chat streams and the composer. File, image, and code-snippet types; inputField use case composes ChatFileRemoveButton.
+
+Import: `import { AiChatFileChip } from "@codeai/cads-react"`
+
+Props:
+- `type`: "file" | "image" | "codeSnippet" (default "file")
+- `useCase`: "chatStream" | "inputField" (default "chatStream") — inputField shows the remove control.
+- `fileName`: ReactNode (default "filename.ext")
+- `metadata`: ReactNode (default "12:56PM") — Shown for type=codeSnippet.
+- `imageSrc`: string
+- `imageAlt`: string (default "Attachment")
+- `iconName`: FaIconName (default "file-code") — Brand tile icon for file/codeSnippet.
+- `onRemove`: () => void
+
+Usage rules:
+- Use chatStream in the message transcript; inputField in AiChatInput attachments.
+- Pass imageSrc for type=image thumbnails.
+
+Example:
+```tsx
+<AiChatFileChip type="file" useCase="inputField" fileName="lesson.pdf" onRemove={onRemove} />
+```
+
+### AiChatMessage
+
+Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include file uploads and a feedback action row.
+
+Import: `import { AiChatMessage } from "@codeai/cads-react"`
+
+Props:
+- `context`: "TA" | "Tutor" (default "TA") — Teacher Assistant vs student Tutor product context.
+- `author`: "Human" | "AI" (default "Human")
+- `children`: ReactNode — Message body.
+- `fileUploads`: ReactNode — Optional AiChatFileChip row above an AI bubble.
+- `hasActionRow`: boolean (default true)
+- `hasLeftActions`: boolean (default true)
+- `hasRightActions`: boolean (default true)
+- `hasFlagging`: boolean (default true)
+- `feedbackLabel`: ReactNode (default "Was this helpful?")
+- `onCopy`: () => void
+- `onDownload`: () => void
+- `helpfulValue`: "up" | "down" | null — Controlled thumbs feedback.
+- `defaultHelpfulValue`: "up" | "down" | null
+- `onHelpfulChange`: (value: "up" | "down" | null) => void
+- `flagged`: boolean
+- `defaultFlagged`: boolean
+- `onFlagChange`: (flagged: boolean) => void
+
+Usage rules:
+- Human TA bubbles use brand-strong; Tutor human bubbles use info-mid.
+- Action row (copy/download/feedback/flag) only renders for author=AI.
+- Compose file chips via fileUploads rather than inventing a second message type.
+
+Example:
+```tsx
+<AiChatMessage context="TA" author="AI">Sure — try a 10× name loop warm-up.</AiChatMessage>
+```
+
+### AiChatInput
+
+AI chat composer combining a text area, optional attachments, Add file action, and send. Send enables when the field has content.
+
+Import: `import { AiChatInput } from "@codeai/cads-react"`
+
+Props:
+- `value`: string
+- `defaultValue`: string
+- `onChange`: (event: ChangeEvent<HTMLTextAreaElement>) => void
+- `placeholder`: string (default "Type something")
+- `leftActions`: ReactNode — Overrides the default Add file Button.
+- `addFileLabel`: ReactNode (default "Add file")
+- `onAddFile`: () => void
+- `onSubmit`: (event: FormEvent) => void
+- `disabled`: boolean
+- `attachments`: ReactNode — AiChatFileChip row above the textarea.
+
+Usage rules:
+- Filled chrome (enabled send) is derived from non-empty value — do not pass a separate isFilled prop.
+- Enter submits; Shift+Enter inserts a newline.
+- Pass attachments as AiChatFileChip with useCase=inputField.
+
+Example:
+```tsx
+<AiChatInput placeholder="Ask anything" onSubmit={onSend} onAddFile={onAttach} />
+```
+
 ### FaIcon
 
 Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.

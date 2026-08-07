@@ -44,6 +44,9 @@ export const SKIP_PROPS = new Set([
   // Legacy boolean icon gates — no longer in the public API; skip if present.
   "startIcon",
   "endIcon",
+  // AiChatMessage flag state — interact via the flag control in the preview.
+  "flagged",
+  "defaultFlagged",
 ]);
 
 /** Components where `children` is editable label/message text in the playground. */
@@ -52,6 +55,7 @@ const CHILDREN_TEXT_COMPONENTS = new Set([
   "Link",
   "Alert",
   "Toast",
+  "AiChatMessage",
 ]);
 
 /** Dropdown props that only apply to role=input. */
@@ -1232,6 +1236,15 @@ export function propsToCode(
     ${message}
   </Toast>
 </>`;
+  }
+  if (exportName === "AiChatMessage") {
+    const message =
+      String(values.children ?? "").trim() ||
+      "Can you suggest a warm-up activity for my Unit 3 loops lesson?";
+    if (!attrs.length) return `<AiChatMessage>${message}</AiChatMessage>`;
+    return `<AiChatMessage${indentedAttrs}>
+  ${message}
+</AiChatMessage>`;
   }
   if (exportName === "Radio") {
     const edits =

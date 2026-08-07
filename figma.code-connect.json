@@ -198,6 +198,34 @@
       "componentKey": "0fe4d86d9d16ed81da4f995fc1e8fae90f7cf0e5",
       "source": "@codeai/cads-react",
       "snippet": "import { Modal } from \"@codeai/cads-react\";\n\n<Modal type=\"default\" title=\"{title}\" open>{body}</Modal>"
+    },
+    {
+      "componentName": "ChatFileRemoveButton",
+      "figmaNodeId": "17228:10910",
+      "componentKey": "964982bddf995c79023e3baad45b8a15e3f83716",
+      "source": "@codeai/cads-react",
+      "snippet": "import { ChatFileRemoveButton } from \"@codeai/cads-react\";\n\n<ChatFileRemoveButton onClick={onRemove} />"
+    },
+    {
+      "componentName": "AiChatFileChip",
+      "figmaNodeId": "17228:10810",
+      "componentKey": "5bfa5b80e991b7413e03faa32def297190dd2efc",
+      "source": "@codeai/cads-react",
+      "snippet": "import { AiChatFileChip } from \"@codeai/cads-react\";\n\n<AiChatFileChip type=\"file\" useCase=\"chatStream\" fileName=\"{fileName}\" />"
+    },
+    {
+      "componentName": "AiChatMessage",
+      "figmaNodeId": "17228:10789",
+      "componentKey": "2e5573fb8a81ad428869ea8b04621747b1787a64",
+      "source": "@codeai/cads-react",
+      "snippet": "import { AiChatMessage } from \"@codeai/cads-react\";\n\n<AiChatMessage context=\"TA\" author=\"AI\">{message}</AiChatMessage>"
+    },
+    {
+      "componentName": "AiChatInput",
+      "figmaNodeId": "17228:10734",
+      "componentKey": "21631db16f6743b826a673366f733746b019284f",
+      "source": "@codeai/cads-react",
+      "snippet": "import { AiChatInput } from \"@codeai/cads-react\";\n\n<AiChatInput placeholder=\"Type something\" onSubmit={onSend} />"
     }
   ]
 }

@@ -1,0 +1,193 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "AiChatInput",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17228:10734",
+    "componentKey": "21631db16f6743b826a673366f733746b019284f",
+    "relatedNodeIds": ["15724:18791"],
+    "retrievedAt": "2026-08-06",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {},
+    "designOnly": ["state", "isFilled"],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": { "minHeight": "72", "width": "~300" }
+    },
+    "layout": {
+      "padding": "8 10 10",
+      "gap": "8",
+      "borderWidth": "1",
+      "radius": "var(--shape-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "var(--text-body-sm)",
+      "weight": "400",
+      "lineHeight": "var(--leading-body-sm)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "12 send / Add file Button xs"
+    }
+  },
+  "recipes": [
+    {
+      "when": { "state": "default", "isFilled": "no", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-placeholder)",
+        "icon": "var(--text-disabled-neutral-inverse)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=default, isFilled=no",
+      "notes": ["Send uses --background-disabled-brand"]
+    },
+    {
+      "when": { "state": "default", "isFilled": "yes", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-white-fixed)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=default, isFilled=yes",
+      "notes": ["Send uses --background-brand-primary"]
+    },
+    {
+      "when": { "state": "focus", "isFilled": "no", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "text": "var(--text-neutral-placeholder)",
+        "icon": "var(--text-disabled-neutral-inverse)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus, isFilled=no",
+      "notes": []
+    },
+    {
+      "when": { "state": "disabled", "isFilled": "no", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral-inverse)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled, isFilled=no",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["isFilled", "state", "mode"],
+    "cases": [
+      {
+        "id": "aci-empty-default-light",
+        "figmaNodeId": "17228:10735",
+        "figmaVariant": "state=default, isFilled=no",
+        "mode": "light",
+        "props": { "defaultValue": "" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "minHeight": 72 },
+        "expectedVariables": ["--background-disabled-brand"],
+        "fixturePath": "/fixtures/components?component=AiChatInput&case=aci-empty-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "aci-filled-default-light",
+        "figmaNodeId": "17246:23880",
+        "figmaVariant": "state=default, isFilled=yes",
+        "mode": "light",
+        "props": { "defaultValue": "This is filled text" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "minHeight": 72 },
+        "expectedVariables": ["--background-brand-primary"],
+        "fixturePath": "/fixtures/components?component=AiChatInput&case=aci-filled-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "aci-empty-focus-light",
+        "figmaNodeId": "17228:10753",
+        "figmaVariant": "state=focus, isFilled=no",
+        "mode": "light",
+        "props": { "defaultValue": "" },
+        "state": "focus",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--border-focused-primary"],
+        "fixturePath": "/fixtures/components?component=AiChatInput&case=aci-empty-focus-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "aci-empty-disabled-light",
+        "figmaNodeId": "17228:10780",
+        "figmaVariant": "state=disabled, isFilled=no",
+        "mode": "light",
+        "props": { "disabled": true },
+        "state": "disabled",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--border-disabled-neutral"],
+        "fixturePath": "/fixtures/components?component=AiChatInput&case=aci-empty-disabled-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "aci-filled-default-dark",
+        "figmaNodeId": "17246:23880",
+        "figmaVariant": "state=default, isFilled=yes",
+        "mode": "dark",
+        "props": { "defaultValue": "This is filled text" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-brand-primary"],
+        "fixturePath": "/fixtures/components?component=AiChatInput&case=aci-filled-default-dark&mode=dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

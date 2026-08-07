@@ -19,12 +19,19 @@ import {
 } from "@/lib/componentExternalLinks";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 
+const SOLO_ROUTE_EXCLUDES = new Set([
+  "FaIcon",
+  "TablePagination",
+  // AI Chat atoms live on the custom /components/ai-chat page.
+  "AiChatInput",
+  "AiChatMessage",
+  "AiChatFileChip",
+  "ChatFileRemoveButton",
+]);
+
 export function generateStaticParams() {
   return cadsManifest.components
-    .filter(
-      (c) =>
-        c.exportName !== "FaIcon" && c.exportName !== "TablePagination",
-    )
+    .filter((c) => !SOLO_ROUTE_EXCLUDES.has(c.exportName))
     .map((c) => ({ name: c.name.toLowerCase() }));
 }
 

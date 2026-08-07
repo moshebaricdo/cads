@@ -1,0 +1,99 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-p-xxs);
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem 0.625rem 0.625rem;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral-secondary);
+  border-radius: var(--shape-sm);
+  background-color: var(--background-neutral-primary);
+  transition: var(--transition-colors);
+
+  &:hover:not([data-disabled="true"]) {
+    border-color: var(--border-neutral-secondary);
+  }
+
+  &:focus-within:not([data-disabled="true"]) {
+    box-shadow:
+      0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &[data-disabled="true"] {
+    border-color: var(--border-disabled-neutral);
+  }
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.field {
+  display: block;
+  width: 100%;
+  min-height: 1.375rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font-family: var(--font-family-main);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body-sm);
+  color: var(--text-neutral-primary);
+
+  &::placeholder {
+    color: var(--text-neutral-placeholder);
+  }
+
+  &:disabled {
+    color: var(--text-disabled-neutral);
+    -webkit-text-fill-color: var(--text-disabled-neutral);
+
+    &::placeholder {
+      color: var(--text-disabled-neutral);
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leftActions {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.rightActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.send:global(.MuiButton-root):global(.MuiButton-root) {
+  /* Keep send at Figma 24×24 even if Button padding drifts. */
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+}
+
+.sendDisabled:global(.MuiButton-root):global(.MuiButton-root) {
+  background-color: var(--background-disabled-brand);
+  color: var(--text-disabled-neutral-inverse);
+
+  &:hover {
+    background-color: var(--background-disabled-brand);
+  }
+}

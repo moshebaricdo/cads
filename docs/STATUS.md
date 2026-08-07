@@ -1,10 +1,48 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-08-05
+Last updated: 2026-08-06
 
 ## Done (scaffold complete)
 
-- [x] **CADS Audit fix-flow hardening (2026-08-05)** — surface-split color remaps (text/fill/stroke); FA6→FA7 font upgrades in typography fixes; include-hidden-layers toggle on fix panel + AI; sparkle/AI only for Colors + Components; AI batched + catalog-validated; component findings ignore local this-file components (keep detached + remote non-CADS); name/AI component swaps (simple default-variant); optional team AI key via `CADS_AUDIT_AI_*` at build. `pnpm plugin:remap:build`.
+- [x] **AI Chat components + docs page (2026-08-06)** — New `@codeai/cads-react` atoms from Figma AI Chat page `17246:23801`: `AiChatMessage` (`17228:10789`), `AiChatFileChip` (`17228:10810`), `ChatFileRemoveButton` (`17228:10910`), `AiChatInput` (`17228:10734`). Docs: **AI Components → AI Chat** (`/components/ai-chat`) with assembled mini-chat + per-atom tabs (playground + prop sheets). Snapshot + visual recipes committed; Suggested Prompt Chip out of scope. See evidence summary below.
+- [x] **DSCO→CADS Pass 1 swap rules wired (2026-08-06)** — Audit now remaps Pass 1 DSCO keys (#1–46 + FA #77–78) via `componentSwaps.ts` (Waves A–E): value fixes (Chip/Toast/Alert/Banner/Close), flat High remaps, retarget-by-boolean (Checkbox/Radio/Toggle), nested-apply (FW/`labelText` + BB, Dropdown Button, Popover Core, Slider Bar), slot-TEXT (Modal). Doc: `tooling/figma-remap-plugin/docs/DSCO_TO_CADS_COMPONENT_MAP.md`. Pass 2 (#47–76) deferred. `pnpm plugin:remap:build`. Validate on a fixture frame next.
+
+## AI Chat components — evidence summary
+
+```text
+Task path: new component
+Components: ChatFileRemoveButton, AiChatFileChip, AiChatMessage, AiChatInput
+Figma evidence (2026-08-06, file DGekOeToRVifvFAhfqpeC1):
+  - page ↪ ✈️ AI Chat 17246:23801
+  - AI Chat Message 17228:10789 key 2e5573fb… (context × author)
+  - AI Chat File Chip 17228:10810 key 5bfa5b80… (type × useCase)
+  - Chat File Remove Button 17228:10910 key 964982bd… (state)
+  - AI Chat Input 17228:10734 key 21631db1… (state × isFilled)
+  - get_design_context on all four public sets
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (4 entries)
+  - packages/react/src/manifest/visual-recipes/{ChatFileRemoveButton,AiChatFileChip,AiChatMessage,AiChatInput}.json
+  - figma.code-connect.json + cadsManifest + fixtures + previews + propSheets/ai.ts
+Coverage: recipe cases defined (remove 6 / file chip 6 / message 5 / input 5); browser
+  capture correction loop still pending (fixtures registered under /fixtures/components)
+API audit: 0 error / 0 warn / 0 escalate (pnpm figma:audit-props -- --strict)
+Verification: pnpm typecheck; pnpm build; pnpm build:docs (route /components/ai-chat);
+  pnpm generate:readme; pnpm plugin:remap:build (catalog names refreshed)
+Accepted differences:
+  - Figma isFilled design-only → derived from value content
+  - Show 2nd Paragraph design-matrix → multi-paragraph via children
+  - showFileUploads → optional fileUploads ReactNode slot
+  - Suggested Prompt Chip intentionally out of scope (archived in Figma)
+```
+
+- [x] **CADS Audit cut/paste component keys (2026-08-05)** — ⌘X from DSCO → CADS mints new publish keys; catalog refreshed (Sidebar / Panel Header / File / AI) + historical aliases + name-match fallback (excludes known DSCO keys) so Figma’s “CodeAI Design System (CADS)” instances aren’t flagged Non-CADS. `pnpm plugin:remap:build`.
+- [x] **FontAwesome Glyphs multi-edit insert (2026-08-05)** — selecting multiple text layers (Figma multi-edit) inserts the shortcode into every selected layer, not only `selection[0]`. Footer shows “Replaces text in N layers”. `pnpm plugin:icons:build`.
+- [x] **FontAwesome Glyphs missing-kit font swap (2026-08-05)** — insert swaps to the picked face before writing characters (no longer loads the layer’s current font first), so outdated/uninstalled kit fonts still get upgraded on plain text and instance-bound icon props. `pnpm plugin:icons:build`.
+- [x] **CADS Audit kit fonts not “outdated FA” (2026-08-05)** — `Font Awesome Kit {id}` / Kit Duotone are unversioned by design; audit no longer flags them or invents `Font Awesome 7 Kit …` rewrites (apply was failing to load). Stock FA6→FA7 upgrades unchanged. `pnpm plugin:remap:build`.
+- [x] **CADS Audit in-source-file load (2026-08-05)** — running the plugin inside the CADS Figma file (`DGekOeToRVifvFAhfqpeC1`) builds the catalog from local variables/styles (library can’t self-import); apply/component swaps fall back to local keys. `pnpm plugin:remap:build`.
+- [x] **CADS Audit `focus-alpha` silence (2026-08-05)** — `Z: Special Alpha` (`focus-alpha` focus-ring fill) is treated as compliant CADS color, not “Non-CADS variables” (teamLibrary often can’t attribute that collection). `pnpm plugin:remap:build`.
+- [x] **CADS Audit selection UX (2026-08-05)** — top-bar rerun always re-audits the active roots (ignores canvas selection); selecting a frame outside those roots prompts “Run audit” vs “Keep current”; locate-into-audit stays silent. `pnpm plugin:remap:build`.
+- [x] **CADS Audit fix-flow hardening (2026-08-05)** — surface-split color remaps (text/fill/stroke); FA6→FA7 font upgrades in typography fixes; include-hidden-layers toggle on fix panel + AI; sparkle/AI only for Colors + Components; AI batched + catalog-validated; component findings ignore local this-file components except inside `(OLD) DSCO Components` (`ahYTsb3I7rsJNW0n2vnXm6`); name/AI component swaps (simple default-variant); optional team AI key via `CADS_AUDIT_AI_*` at build. `pnpm plugin:remap:build`.
 - [x] **CADS Audit Figma plugin (2026-08-04)** — `tooling/figma-remap-plugin` (“CADS Audit (Internal)”): findings-only audit workspace (no step wizard). Surface layers only — does not descend into component instances (CADS or legacy); non-CADS components are one finding each. Clean SoT is silent → green pass. Summary cards for Colors / Typography / Shape / Modes / Components; category-scoped Review fixes panel + apply + auto re-audit. Policy: semantic colors only (primitives never targets), typography via text styles, unbound radii (one usage per node) → Spacing & Shape, foreign modes, non-CADS components report-only. Baked catalogs from live CADS harvest (`cadsCatalog.ts`, 61 `cadsTextStyles`). Optional BYO-key AI. `pnpm plugin:remap:build`.
 - [x] **FontAwesome Glyphs Figma plugin (2026-08-03)** — `tooling/figma-icon-plugin`: inserts FA *shortcodes as text* (never vectors). Community name **FontAwesome Glyphs**; public build omits inlined FA Pro fonts (`pnpm plugin:icons:build`); `--with-fonts` / `build:dev` is internal-only. First-run setup adds local OTFs (no auto-detect catalog); All + version/style pickers; kits labeled Custom Kit (id in settings). Assets: `icon.png`, `publish-assets/cover.*`. See `PUBLISH.md`.
 - [x] **FA font installer (2026-08-03)** — `tooling/fa-fonts`: Mac `.command` / Windows `.bat` to replace fonts from an unzipped `otfs` folder (designer-friendly).

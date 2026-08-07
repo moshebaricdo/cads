@@ -21,7 +21,7 @@ import {
   COMPONENT_SECTIONS,
   FOUNDATIONS_NAV,
   RESOURCES_NAV,
-  componentHref,
+  navItemHref,
   type ComponentSectionId,
 } from "@/lib/nav";
 import {
@@ -38,6 +38,7 @@ const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
   navigation: false,
   messaging: false,
   overlays: false,
+  ai: false,
 };
 
 const SIDEBAR_STORAGE_KEY = "cads-docs-sidebar-collapsed";
@@ -93,7 +94,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
       for (const item of section.items) {
         const component = componentsByExport.get(item.exportName);
         if (!component) continue;
-        if (pathname === componentHref(component.name)) return section.id;
+        if (pathname === navItemHref(item, component.name)) return section.id;
       }
     }
     return null;
@@ -505,7 +506,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                             item.exportName,
                           );
                           if (!component) return null;
-                          const href = componentHref(component.name);
+                          const href = navItemHref(item, component.name);
                           return (
                             <DocsNavItem
                               key={item.exportName}

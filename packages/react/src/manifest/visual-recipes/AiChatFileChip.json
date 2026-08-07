@@ -1,0 +1,201 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "AiChatFileChip",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17228:10810",
+    "componentKey": "5bfa5b80e991b7413e03faa32def297190dd2efc",
+    "relatedNodeIds": ["17228:10910"],
+    "retrievedAt": "2026-08-06",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "type": ["file", "image", "codeSnippet"],
+      "useCase": ["chatStream", "inputField"]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "file": { "height": "32", "maxWidth": "150", "iconTile": "32" },
+      "codeSnippet": { "height": "32", "iconTile": "32" },
+      "image": { "width": "32", "height": "32" }
+    },
+    "layout": {
+      "padding": "content 8/2",
+      "gap": "codeSnippet metadata 4",
+      "borderWidth": "1",
+      "radius": "var(--shape-sm)",
+      "overlap": "remove button ~6px outside top-right"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "var(--text-body-xs)",
+      "weight": "fileName 600 / metadata 400",
+      "lineHeight": "var(--leading-body-xs)"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "14 in 32 tile"
+    }
+  },
+  "recipes": [
+    {
+      "when": { "type": "file", "useCase": "chatStream", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-white-fixed)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=file, useCase=chatStream",
+      "notes": ["Icon tile --background-brand-primary"]
+    },
+    {
+      "when": { "type": "codeSnippet", "useCase": "chatStream", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-white-fixed)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=codeSnippet, useCase=chatStream",
+      "notes": ["metadata uses --text-neutral-tertiary"]
+    },
+    {
+      "when": { "type": "image", "useCase": "chatStream", "mode": "light" },
+      "variables": {
+        "background": "transparent",
+        "border": "transparent",
+        "text": "",
+        "icon": "",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "type=image, useCase=chatStream",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["type", "useCase", "mode"],
+    "cases": [
+      {
+        "id": "acfc-file-stream-light",
+        "figmaNodeId": "17228:10811",
+        "figmaVariant": "type=file, useCase=chatStream",
+        "mode": "light",
+        "props": { "type": "file", "useCase": "chatStream", "fileName": "filename.ext" },
+        "state": "default",
+        "viewport": { "width": 180, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "height": 32 },
+        "expectedVariables": ["--background-brand-primary", "--border-neutral-primary"],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-file-stream-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acfc-file-input-light",
+        "figmaNodeId": "17228:10816",
+        "figmaVariant": "type=file, useCase=inputField",
+        "mode": "light",
+        "props": { "type": "file", "useCase": "inputField", "fileName": "filename.ext" },
+        "state": "default",
+        "viewport": { "width": 180, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "height": 32 },
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-file-input-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acfc-code-stream-light",
+        "figmaNodeId": "17228:10822",
+        "figmaVariant": "type=codeSnippet, useCase=chatStream",
+        "mode": "light",
+        "props": { "type": "codeSnippet", "useCase": "chatStream" },
+        "state": "default",
+        "viewport": { "width": 220, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "height": 32 },
+        "expectedVariables": ["--text-neutral-tertiary"],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-code-stream-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acfc-image-stream-light",
+        "figmaNodeId": "17228:10835",
+        "figmaVariant": "type=image, useCase=chatStream",
+        "mode": "light",
+        "props": { "type": "image", "useCase": "chatStream", "imageSrc": "/fixtures/ai-chat-thumb.svg" },
+        "state": "default",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 32, "height": 32 },
+        "expectedVariables": [],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-image-stream-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acfc-image-input-light",
+        "figmaNodeId": "17228:10836",
+        "figmaVariant": "type=image, useCase=inputField",
+        "mode": "light",
+        "props": { "type": "image", "useCase": "inputField", "imageSrc": "/fixtures/ai-chat-thumb.svg" },
+        "state": "default",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 32, "height": 32 },
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-image-input-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acfc-file-stream-dark",
+        "figmaNodeId": "17228:10811",
+        "figmaVariant": "type=file, useCase=chatStream",
+        "mode": "dark",
+        "props": { "type": "file", "useCase": "chatStream" },
+        "state": "default",
+        "viewport": { "width": 180, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "height": 32 },
+        "expectedVariables": ["--background-brand-primary"],
+        "fixturePath": "/fixtures/components?component=AiChatFileChip&case=acfc-file-stream-dark&mode=dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}
