@@ -30,6 +30,10 @@ const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
   Drawer: () => import("./cases/Drawer"),
   Dialog: () => import("./cases/Dialog"),
   Modal: () => import("./cases/Modal"),
+  ChatFileRemoveButton: () => import("./cases/ChatFileRemoveButton"),
+  AiChatFileChip: () => import("./cases/AiChatFileChip"),
+  AiChatMessage: () => import("./cases/AiChatMessage"),
+  AiChatInput: () => import("./cases/AiChatInput"),
 };
 
 function FixtureBody() {

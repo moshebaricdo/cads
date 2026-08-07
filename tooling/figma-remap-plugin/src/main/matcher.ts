@@ -3,11 +3,16 @@
  * Pure functions (no Figma API) so the pipeline is unit-testable.
  */
 import { dscoToCadsColorName } from "../data/dscoColors";
+import {
+  faFamilyTargetKey,
+  toFontAwesome7Family,
+} from "../shared/fontAwesome";
 import type {
   AuditPaintStyleEntry,
   AuditTextStyleEntry,
   AuditVariableEntry,
   ColorThemeAssumption,
+  FontAwesomeTextEntry,
   MappingProposal,
   RawPaintEntry,
   RawTextEntry,
@@ -15,9 +20,16 @@ import type {
   TargetVariable,
   UsageRef,
 } from "../shared/messages";
+import {
+  inferColorSurface,
+  surfaceFromTokenName,
+  type ColorSurface,
+} from "../shared/surfaces";
 
 export type MonoTone = "white" | "black";
 export type { ColorThemeAssumption };
+export type { ColorSurface };
+export { inferColorSurface };
 
 export function normalizeSegments(name: string): string[] {
   return name
@@ -89,27 +101,6 @@ export interface MatchContext {
    * Defaults to light when omitted.
    */
   colorThemeAssumption?: ColorThemeAssumption;
-}
-
-export type ColorSurface = "background" | "text" | "border";
-
-/** Infer preferred CADS color surface from where the finding is used. */
-export function inferColorSurface(usages: UsageRef[]): ColorSurface {
-  let background = 0;
-  let text = 0;
-  let border = 0;
-  for (const usage of usages) {
-    if (usage.prop.kind !== "paint") continue;
-    if (usage.prop.property === "strokes") {
-      border++;
-      continue;
-    }
-    if (usage.nodeType === "TEXT") text++;
-    else background++;
-  }
-  if (text >= background && text >= border && text > 0) return "text";
-  if (border >= background && border >= text && border > 0) return "border";
-  return "background";
 }
 
 function surfacePrefix(surface: ColorSurface): string {
@@ -431,17 +422,31 @@ function proposeColorByHex(
 export function proposeForVariable(
   entry: AuditVariableEntry,
   ctx: MatchContext,
+  options?: { sourceId?: string; usages?: UsageRef[] },
 ): MappingProposal {
-  const cacheKey = entry.variableKey || entry.id;
-  const cached = ctx.cache[cacheKey];
+  const sourceId = options?.sourceId ?? entry.id;
+  const usages = options?.usages ?? entry.usages;
+  const surface = inferColorSurface(usages);
+  const cacheKeyBase = entry.variableKey || entry.id;
+  const cacheKey = `${cacheKeyBase}::${surface}`;
+  const cached =
+    ctx.cache[cacheKey] ??
+    // Legacy unscoped cache entries only apply when the rule surface matches.
+    ctx.cache[cacheKeyBase];
   if (cached && ctx.targets.some((t) => t.key === cached)) {
-    return {
-      sourceId: entry.id,
-      targetKey: cached,
-      source: "cache",
-      confidence: 1,
-      rationale: "Previously approved mapping",
-    };
+    const cachedTarget = ctx.targets.find((t) => t.key === cached);
+    const cachedSurface = cachedTarget
+      ? surfaceFromTokenName(cachedTarget.name)
+      : null;
+    if (!cachedSurface || cachedSurface === surface) {
+      return {
+        sourceId,
+        targetKey: cached,
+        source: "cache",
+        confidence: 1,
+        rationale: "Previously approved mapping",
+      };
+    }
   }
 
   // Colors: only the curated DSCO Variables → CADS alias map (plus cache).
@@ -450,10 +455,15 @@ export function proposeForVariable(
     if (entry.flag !== "primitive") {
       const ruleName = dscoToCadsColorName(entry.name);
       if (ruleName) {
+        const ruleSurface = surfaceFromTokenName(ruleName);
+        // Do not apply a text/* rule to fill usages (or vice versa).
+        if (ruleSurface && ruleSurface !== surface) {
+          return { sourceId, targetKey: null, source: "none", confidence: 0 };
+        }
         const match = findColorTargetByName(ctx.targets, ruleName);
         if (match) {
           return {
-            sourceId: entry.id,
+            sourceId,
             targetKey: match.key,
             source: "rule",
             confidence: 1,
@@ -462,7 +472,7 @@ export function proposeForVariable(
         }
       }
     }
-    return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+    return { sourceId, targetKey: null, source: "none", confidence: 0 };
   }
 
   const typeCandidates = ctx.targets.filter(
@@ -497,7 +507,7 @@ export function proposeForVariable(
 
   if (best && best.score >= 0.55) {
     return {
-      sourceId: entry.id,
+      sourceId,
       targetKey: best.target.key,
       source: best.kind,
       confidence: Math.round(best.score * 100) / 100,
@@ -509,7 +519,30 @@ export function proposeForVariable(
             : "Similar name",
     };
   }
-  return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+  return { sourceId, targetKey: null, source: "none", confidence: 0 };
+}
+
+/** Deterministic FA6 (or older) → FA7 family upgrade. */
+export function proposeForFontAwesome(
+  entry: FontAwesomeTextEntry,
+): MappingProposal {
+  const family = entry.values.family ?? "";
+  const targetFamily = toFontAwesome7Family(family);
+  if (!targetFamily) {
+    return {
+      sourceId: entry.id,
+      targetKey: null,
+      source: "none",
+      confidence: 0,
+    };
+  }
+  return {
+    sourceId: entry.id,
+    targetKey: faFamilyTargetKey(targetFamily),
+    source: "rule",
+    confidence: 1,
+    rationale: `Upgrade ${family} → ${targetFamily}`,
+  };
 }
 
 /** Font-property agreement: family is required, then weight/size/lineHeight. */
@@ -1045,18 +1078,29 @@ type PaintLikeEntry = Pick<RawPaintEntry, "id" | "hex" | "usages"> & {
 export function proposeForRawPaint(
   entry: PaintLikeEntry | AuditPaintStyleEntry,
   ctx: MatchContext,
+  options?: { sourceId?: string; usages?: UsageRef[] },
 ): MappingProposal {
-  const cached = ctx.cache[entry.id];
+  const sourceId = options?.sourceId ?? entry.id;
+  const usages = options?.usages ?? entry.usages;
+  const surface = inferColorSurface(usages);
+  const cacheKey = `${entry.id}::${surface}`;
+  const cached = ctx.cache[cacheKey] ?? ctx.cache[entry.id];
   if (cached && ctx.targets.some((t) => t.key === cached)) {
-    return {
-      sourceId: entry.id,
-      targetKey: cached,
-      source: "cache",
-      confidence: 1,
-      rationale: "Previously approved mapping",
-    };
+    const cachedTarget = ctx.targets.find((t) => t.key === cached);
+    const cachedSurface = cachedTarget
+      ? surfaceFromTokenName(cachedTarget.name)
+      : null;
+    if (!cachedSurface || cachedSurface === surface) {
+      return {
+        sourceId,
+        targetKey: cached,
+        source: "cache",
+        confidence: 1,
+        rationale: "Previously approved mapping",
+      };
+    }
   }
 
   // Paint styles / raw hex need contextual AI (or manual pick) — not heuristics.
-  return { sourceId: entry.id, targetKey: null, source: "none", confidence: 0 };
+  return { sourceId, targetKey: null, source: "none", confidence: 0 };
 }

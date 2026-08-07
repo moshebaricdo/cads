@@ -18,6 +18,8 @@ Import the built plugin in Figma Desktop once more and smoke-test:
 - [ ] Settings → Default style (e.g. Solid) — reopen plugin lands on that style
 - [ ] Search + insert into a text prop (no detach); font face swaps (kit → kit font)
 - [ ] Insert into a plain text layer
+- [ ] Multi-select / multi-edit several text layers → icon lands in all of them
+- [ ] Layers on an outdated/missing kit face → insert upgrades shortcode *and* font to the picked kit
 - [ ] Insert with nothing selected (creates a layer)
 - [ ] “All” + “Custom Kit” labels look right
 - [ ] Works in **Figma web** after you publish (dev plugins are desktop-only)

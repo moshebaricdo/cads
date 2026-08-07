@@ -1,0 +1,196 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "AiChatMessage",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17228:10789",
+    "componentKey": "2e5573fb8a81ad428869ea8b04621747b1787a64",
+    "relatedNodeIds": ["17228:10810", "15724:18791", "3710:461"],
+    "retrievedAt": "2026-08-06",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {
+      "context": ["TA", "Tutor"],
+      "author": ["Human", "AI"]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": { "width": "300" }
+    },
+    "layout": {
+      "padding": "bubble 12/10",
+      "gap": "AI column 4; action icons 2",
+      "borderWidth": "0",
+      "radius": "tl/tr/bl --shape-md; human missing br cut",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Geist",
+      "size": "var(--text-body-sm)",
+      "weight": "400",
+      "lineHeight": "var(--leading-body-sm)"
+    },
+    "icon": {
+      "family": "solid/regular via Button + IconToggle",
+      "size": "extraSmall 24 actions"
+    }
+  },
+  "recipes": [
+    {
+      "when": { "context": "TA", "author": "Human", "mode": "light" },
+      "variables": {
+        "background": "var(--background-brand-strong)",
+        "border": "transparent",
+        "text": "var(--text-neutral-white-fixed)",
+        "icon": "",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "context=TA, author=Human",
+      "notes": []
+    },
+    {
+      "when": { "context": "Tutor", "author": "Human", "mode": "light" },
+      "variables": {
+        "background": "var(--background-info-mid)",
+        "border": "transparent",
+        "text": "var(--text-neutral-primary)",
+        "icon": "",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "context=Tutor, author=Human",
+      "notes": []
+    },
+    {
+      "when": { "context": "TA", "author": "AI", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "transparent",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-quaternary)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "context=TA, author=AI",
+      "notes": ["Action row composed under bubble"]
+    },
+    {
+      "when": { "context": "Tutor", "author": "AI", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "transparent",
+        "text": "var(--text-neutral-primary)",
+        "icon": "var(--text-neutral-quaternary)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "context=Tutor, author=AI",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["context", "author", "mode"],
+    "cases": [
+      {
+        "id": "acm-ta-human-light",
+        "figmaNodeId": "17269:3773",
+        "figmaVariant": "context=TA, author=Human",
+        "mode": "light",
+        "props": { "context": "TA", "author": "Human" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-brand-strong", "--text-neutral-white-fixed"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-ta-human-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acm-tutor-human-light",
+        "figmaNodeId": "17228:10790",
+        "figmaVariant": "context=Tutor, author=Human",
+        "mode": "light",
+        "props": { "context": "Tutor", "author": "Human" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 120, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-info-mid"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-tutor-human-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acm-ta-ai-light",
+        "figmaNodeId": "17269:3785",
+        "figmaVariant": "context=TA, author=AI",
+        "mode": "light",
+        "props": { "context": "TA", "author": "AI", "hasActionRow": true },
+        "state": "default",
+        "viewport": { "width": 340, "height": 200, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-secondary"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-ta-ai-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acm-tutor-ai-light",
+        "figmaNodeId": "17228:10802",
+        "figmaVariant": "context=Tutor, author=AI",
+        "mode": "light",
+        "props": { "context": "Tutor", "author": "AI" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 200, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-secondary"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-tutor-ai-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "acm-ta-ai-dark",
+        "figmaNodeId": "17269:3785",
+        "figmaVariant": "context=TA, author=AI",
+        "mode": "dark",
+        "props": { "context": "TA", "author": "AI" },
+        "state": "default",
+        "viewport": { "width": 340, "height": 200, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-secondary"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-ta-ai-dark&mode=dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

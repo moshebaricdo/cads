@@ -1,0 +1,51 @@
+/* Double :global(.MuiButtonBase-root) → 0,3,0; beats Emotion. */
+.root:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  min-width: 0;
+  padding: 0;
+  overflow: visible;
+  border-radius: var(--shape-round);
+  font-size: 0.5rem;
+  color: var(--text-neutral-primary-inverse);
+  background-color: var(--background-neutral-primary-inverse);
+  transition: var(--transition-colors);
+
+  &:hover {
+    color: var(--text-neutral-white-fixed);
+    background-color: var(--background-error-primary);
+  }
+
+  &:active {
+    color: var(--text-neutral-white-fixed);
+    background-color: var(--background-error-strong);
+  }
+
+  &:global(.Mui-focusVisible) {
+    color: var(--text-neutral-primary-inverse);
+    background-color: var(--background-neutral-primary-inverse);
+    box-shadow:
+      0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  &:global(.Mui-disabled) {
+    color: var(--text-neutral-primary-inverse);
+    background-color: var(--background-disabled-neutral);
+    opacity: 1;
+  }
+}
+
+:global([data-cads-force-pseudo="hover"]) .root {
+  color: var(--text-neutral-white-fixed);
+  background-color: var(--background-error-primary);
+}
+
+:global([data-cads-force-pseudo="press"]) .root {
+  color: var(--text-neutral-white-fixed);
+  background-color: var(--background-error-strong);
+}

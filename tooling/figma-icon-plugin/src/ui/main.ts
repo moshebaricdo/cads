@@ -578,6 +578,11 @@ function renderTarget() {
     return;
   }
   if (target.kind === "text") {
+    if (target.count && target.count > 1) {
+      targetEl.innerHTML = `Replaces text in <strong></strong> layers`;
+      targetEl.querySelector("strong")!.textContent = String(target.count);
+      return;
+    }
     targetEl.innerHTML = `Replaces text in <strong></strong>`;
     targetEl.querySelector("strong")!.textContent =
       target.propName ?? target.nodeName;

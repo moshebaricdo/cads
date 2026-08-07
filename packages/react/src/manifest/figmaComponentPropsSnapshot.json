@@ -2159,7 +2159,7 @@
         },
         {
           "name": "open",
-          "category": "state",
+          "category": "controlled-state",
           "reason": "Controlled snackbar visibility. Code-only host API (Figma Toast is chrome-only)."
         },
         {
@@ -2432,6 +2432,11 @@
           "name": "placement",
           "category": "composition",
           "reason": "Code-idiomatic MUI placement for Figma caretPlacement (inverted top/bottom) plus *-start/*-end caret edge pins not in the Figma axis."
+        },
+        {
+          "name": "surfaceOnly",
+          "category": "composition",
+          "reason": "Fixture/docs: render bubble chrome without portal/trigger wrapping."
         }
       ],
       "stateRecipes": [
@@ -2990,6 +2995,311 @@
       "escalate": [],
       "notes": [
         "Richer than Dialog: header bar + body + footer actions; image layouts for media-heavy flows."
+      ]
+    },
+    {
+      "cadsName": "ChatFileRemoveButton",
+      "figmaName": "Chat File Remove Button",
+      "nodeId": "17228:10910",
+      "componentKey": "964982bddf995c79023e3baad45b8a15e3f83716",
+      "pageId": "17246:23801",
+      "symbolCount": 5,
+      "variantProperties": {
+        "state": ["default", "hover", "press", "focus", "disabled"]
+      },
+      "designOnlyAxes": ["state"],
+      "axisToCodeProp": {
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Native disabled maps Figma state=disabled; not a separate public axis besides design state."
+        },
+        {
+          "name": "onClick",
+          "category": "event",
+          "reason": "Remove/dismiss handler for the host file chip."
+        },
+        {
+          "name": "aria-label",
+          "category": "accessibility",
+          "reason": "Icon-only control requires an accessible name; defaults to Remove."
+        }
+      ],
+      "stateRecipes": ["default", "hover", "press", "focus", "disabled"],
+      "escalate": [],
+      "notes": [
+        "12×12 circular control. Default/focus use --background-neutral-primary-inverse; hover --background-error-primary; press --background-error-strong; disabled --background-disabled-neutral. Glyph is FA solid xmark/close at 8px."
+      ]
+    },
+    {
+      "cadsName": "AiChatFileChip",
+      "figmaName": "AI Chat File Chip",
+      "nodeId": "17228:10810",
+      "componentKey": "5bfa5b80e991b7413e03faa32def297190dd2efc",
+      "pageId": "17246:23801",
+      "symbolCount": 6,
+      "variantProperties": {
+        "type": ["file", "image", "codeSnippet"],
+        "useCase": ["chatStream", "inputField"]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "type": "type",
+        "useCase": "useCase"
+      },
+      "booleanProps": {},
+      "textProps": {
+        "fileName": { "figma": "fileName#12687:0", "default": "filename.ext" },
+        "metadata": { "figma": "metadata#12768:7", "default": "12:56PM" }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "fileName",
+          "category": "content",
+          "reason": "Maps Figma text property fileName."
+        },
+        {
+          "name": "metadata",
+          "category": "content",
+          "reason": "Maps Figma text property metadata (shown for type=codeSnippet)."
+        },
+        {
+          "name": "imageSrc",
+          "category": "content",
+          "reason": "Image thumbnail source for type=image; Figma embeds a fill image."
+        },
+        {
+          "name": "imageAlt",
+          "category": "accessibility",
+          "reason": "Accessible name for the image thumbnail."
+        },
+        {
+          "name": "onRemove",
+          "category": "event",
+          "reason": "Remove handler; Chat File Remove Button is composed when useCase=inputField."
+        },
+        {
+          "name": "iconName",
+          "category": "content",
+          "reason": "Optional FA override for the brand file/code icon tile (default file-code)."
+        }
+      ],
+      "stateRecipes": ["default"],
+      "escalate": [],
+      "notes": [
+        "Composes Chat File Remove Button for useCase=inputField (absolute top-right). Height 32; file max-width 150; codeSnippet hugs with metadata; image is 32×32."
+      ]
+    },
+    {
+      "cadsName": "AiChatMessage",
+      "figmaName": "AI Chat Message",
+      "nodeId": "17228:10789",
+      "componentKey": "2e5573fb8a81ad428869ea8b04621747b1787a64",
+      "pageId": "17246:23801",
+      "symbolCount": 4,
+      "variantProperties": {
+        "context": ["TA", "Tutor"],
+        "author": ["Human", "AI"]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "context": "context",
+        "author": "author"
+      },
+      "booleanProps": {
+        "hasActionRow": { "figma": "hasActionRow#4750:0", "default": true },
+        "hasRightActions": { "figma": "hasRightActions#4750:6", "default": true },
+        "hasLeftActions": { "figma": "hasLeftActions#4750:9", "default": true },
+        "hasFlagging": { "figma": "hasFlagging#12119:0", "default": true },
+        "show2ndParagraph": {
+          "figma": "Show 2nd Paragraph#4750:3",
+          "default": false
+        },
+        "showFileUploads": {
+          "figma": "showFileUploads#12573:0",
+          "default": false
+        }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "hasActionRow",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasActionRow (AI action footer visibility)."
+        },
+        {
+          "name": "hasLeftActions",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasLeftActions (copy/download group)."
+        },
+        {
+          "name": "hasDownload",
+          "category": "composition",
+          "reason": "Code-only gate for download within left actions; Tutor student surfaces often keep copy only."
+        },
+        {
+          "name": "hasRightActions",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasRightActions (feedback group)."
+        },
+        {
+          "name": "hasFlagging",
+          "category": "composition",
+          "reason": "Maps Figma boolean hasFlagging (flag IconToggle)."
+        },
+        {
+          "name": "children",
+          "category": "content",
+          "reason": "Message body; Figma variants use sample copy, not a text property."
+        },
+        {
+          "name": "fileUploads",
+          "category": "composition",
+          "reason": "Slot for AI Chat File Chip row; presence replaces Figma showFileUploads boolean."
+        },
+        {
+          "name": "onCopy",
+          "category": "event",
+          "reason": "Left action copy Button handler."
+        },
+        {
+          "name": "onDownload",
+          "category": "event",
+          "reason": "Left action download Button handler."
+        },
+        {
+          "name": "helpfulValue",
+          "category": "controlled-state",
+          "reason": "Controlled thumbs feedback value for the Icon Toggle group."
+        },
+        {
+          "name": "defaultHelpfulValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled default for thumbs feedback."
+        },
+        {
+          "name": "onHelpfulChange",
+          "category": "event",
+          "reason": "Thumbs up/down change handler."
+        },
+        {
+          "name": "flagged",
+          "category": "controlled-state",
+          "reason": "Controlled flag IconToggle pressed state."
+        },
+        {
+          "name": "defaultFlagged",
+          "category": "controlled-state",
+          "reason": "Uncontrolled default for flag toggle."
+        },
+        {
+          "name": "onFlagChange",
+          "category": "event",
+          "reason": "Flag toggle change handler."
+        },
+        {
+          "name": "feedbackLabel",
+          "category": "content",
+          "reason": "Label for the helpfulness Icon Toggle group; Figma default Was this helpful?"
+        }
+      ],
+      "stateRecipes": ["default"],
+      "escalate": [],
+      "notes": [
+        "Human TA bubble: --background-brand-strong + --text-neutral-white-fixed. Human Tutor: --background-info-mid + --text-neutral-primary. AI bubble: --background-neutral-secondary. Action row only for author=AI when hasActionRow.",
+        "Figma Show 2nd Paragraph is design-matrix only; code expresses multi-paragraph content via children.",
+        "Figma showFileUploads boolean collapsed into optional fileUploads ReactNode slot (same presence pattern as icons)."
+      ]
+    },
+    {
+      "cadsName": "AiChatInput",
+      "figmaName": "AI Chat Input",
+      "nodeId": "17228:10734",
+      "componentKey": "21631db16f6743b826a673366f733746b019284f",
+      "pageId": "17246:23801",
+      "symbolCount": 10,
+      "variantProperties": {
+        "state": ["default", "hover", "focus", "disabled", "press"],
+        "isFilled": ["no", "yes"]
+      },
+      "designOnlyAxes": ["state", "isFilled"],
+      "axisToCodeProp": {
+        "state": null,
+        "isFilled": null
+      },
+      "booleanProps": {},
+      "textProps": {
+        "placeholderText": {
+          "figma": "placeholderText#17265:22",
+          "default": "Type something"
+        },
+        "fillText": {
+          "figma": "fillText#17265:33",
+          "default": "This is filled text"
+        }
+      },
+      "slotProps": {
+        "leftActions": { "figma": "leftActions#17246:0" }
+      },
+      "codeOnlyProps": [
+        {
+          "name": "value",
+          "category": "controlled-state",
+          "reason": "Controlled composer text; non-empty value maps Figma isFilled=yes."
+        },
+        {
+          "name": "defaultValue",
+          "category": "controlled-state",
+          "reason": "Uncontrolled default text."
+        },
+        {
+          "name": "onChange",
+          "category": "event",
+          "reason": "Text change handler."
+        },
+        {
+          "name": "placeholder",
+          "category": "content",
+          "reason": "Maps Figma placeholderText."
+        },
+        {
+          "name": "leftActions",
+          "category": "composition",
+          "reason": "Maps Figma leftActions slot; default renders Add file Button."
+        },
+        {
+          "name": "addFileLabel",
+          "category": "content",
+          "reason": "Default left action Button label when leftActions omitted."
+        },
+        {
+          "name": "onAddFile",
+          "category": "event",
+          "reason": "Default Add file Button handler."
+        },
+        {
+          "name": "onSubmit",
+          "category": "event",
+          "reason": "Send Button handler; button enabled only when filled."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Maps Figma state=disabled."
+        },
+        {
+          "name": "attachments",
+          "category": "composition",
+          "reason": "Optional row of AiChatFileChip nodes above the text field (inputField use case)."
+        }
+      ],
+      "stateRecipes": ["default", "hover", "focus", "press", "disabled"],
+      "escalate": [],
+      "notes": [
+        "Composer surface: padding 8/10/10, gap 8, radius --shape-sm, border --border-neutral-secondary. Send is Button contained primary icon-only arrow-up; disabled brand fill when empty. Focus uses shared double-ring.",
+        "Figma isFilled axis is design-only; code derives filled chrome from value/defaultValue content length."
       ]
     }
   ]

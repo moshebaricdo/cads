@@ -22,7 +22,7 @@ Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/Code
 
 ### Components
 
-Reusable UI building blocks, grouped by type (Actions, Inputs, Navigation, Messaging, Overlays), with a playground/inspector, props sheets, and usage notes.
+Reusable UI building blocks, grouped by type (Actions, Inputs, Navigation, Messaging, Overlays, AI Components), with a playground/inspector, props sheets, and usage notes.
 
 ## Components
 
@@ -56,6 +56,7 @@ Status reflects whether a matching component has shipped in the [production Stor
 | Drawer | Overlays | Not in production |
 | Dialog | Overlays | In production |
 | Modal | Overlays | In production |
+| AI Chat | AI Components | Not in production |
 
 ## Experiments
 

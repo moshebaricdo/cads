@@ -108,7 +108,18 @@ type ToggleButtonProps = {
   "aria-label"?: string;
   sx?: IconButtonProps["sx"];
   onClick?: IconButtonProps["onClick"];
-};
+  style?: CSSProperties;
+} & Omit<
+  IconButtonProps,
+  | "color"
+  | "size"
+  | "children"
+  | "sx"
+  | "onClick"
+  | "style"
+  | "disabled"
+  | "aria-label"
+>;
 
 const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function ToggleButton(
@@ -122,7 +133,9 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
       disabled,
       sx,
       onClick,
+      style,
       "aria-label": ariaLabel,
+      ...rest
     },
     ref,
   ) {
@@ -147,6 +160,7 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
       "--it-hover-icon": recipe.hoverIcon,
       "--it-press-icon": recipe.pressIcon,
       "--it-surface": recipe.surface,
+      ...style,
     } as CSSProperties;
 
     return (
@@ -160,6 +174,7 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
         className={styles.button}
         style={vars}
         sx={sx}
+        {...rest}
         onClick={(e) => {
           onClick?.(e);
           if (!e.defaultPrevented) {

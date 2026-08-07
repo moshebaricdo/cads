@@ -2,8 +2,12 @@
  * Target catalog: prefers the baked CADS variable catalog (instant). Falls
  * back to teamLibrary enumeration + parallel importVariableByKeyAsync, then
  * caches the result in clientStorage for subsequent opens.
+ *
+ * Inside the CADS source file itself (library does not “import” itself),
+ * build from local variables instead — see `buildLocalCatalog`.
  */
 import type { TargetCatalog, TargetVariable } from "../shared/messages";
+import { CADS_FILE_KEY } from "../data/cadsTextStyles";
 import {
   bakedVariableCollections,
   bakedVariables,
@@ -21,8 +25,16 @@ export interface CatalogBuildResult {
   importedByKey: Map<string, Variable>;
 }
 
+/** Matches audit.ts LOCAL_LIBRARY — SoT attribution for in-file variables. */
+export const LOCAL_SOT_LIBRARY_NAME = "This file";
+
 const CACHE_KEY = "cads-variable-catalog-v1";
 const IMPORT_CONCURRENCY = 24;
+
+/** True when the plugin is running in the CADS library source file. */
+export function isCadsSourceFile(): boolean {
+  return figma.fileKey === CADS_FILE_KEY;
+}
 
 type CachedCatalog = {
   fetchedAt: string | null;
@@ -222,6 +234,82 @@ async function importCatalog(
     catalog: {
       libraryName,
       collections: catalogCollections,
+      variables,
+      textStyles: [],
+      textStyleSource: "none",
+    },
+    importedByKey,
+  };
+}
+
+/**
+ * Build the CADS catalog from local variables (CADS source file only).
+ * A library file cannot enable itself via Assets → Libraries.
+ */
+export async function buildLocalCatalog(
+  onProgress: (done: number, total: number) => void,
+): Promise<CatalogBuildResult> {
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const locals = await figma.variables.getLocalVariablesAsync();
+  if (collections.length === 0) {
+    throw new Error(
+      "This CADS file has no local variable collections to audit against.",
+    );
+  }
+
+  const collectionById = new Map(
+    collections.map((collection) => [collection.id, collection]),
+  );
+  const countByCollectionId = new Map<string, number>();
+  const variables: TargetVariable[] = [];
+  const importedByKey = new Map<string, Variable>();
+  const total = locals.length;
+  let done = 0;
+
+  onProgress(0, Math.max(total, 1));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
+  for (const variable of locals) {
+    const collectionId = safeVariableCollectionId(variable);
+    const collection = collectionId
+      ? collectionById.get(collectionId) ?? null
+      : null;
+    if (!collection) {
+      done++;
+      continue;
+    }
+    countByCollectionId.set(
+      collection.id,
+      (countByCollectionId.get(collection.id) ?? 0) + 1,
+    );
+    importedByKey.set(variable.key, variable);
+    variables.push({
+      key: variable.key,
+      variableId: variable.id,
+      name: variable.name,
+      resolvedType: variable.resolvedType,
+      collectionKey: collection.key,
+      collectionName: collection.name,
+      values: await resolveDisplayValues(variable, collection),
+    });
+    done++;
+    if (done % IMPORT_CONCURRENCY === 0 || done === total) {
+      onProgress(done, total);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+  }
+
+  onProgress(total, total);
+
+  return {
+    catalog: {
+      libraryName: LOCAL_SOT_LIBRARY_NAME,
+      collections: collections.map((collection) => ({
+        key: collection.key,
+        name: collection.name,
+        modes: collection.modes.map((mode) => mode.name),
+        variableCount: countByCollectionId.get(collection.id) ?? 0,
+      })),
       variables,
       textStyles: [],
       textStyleSource: "none",

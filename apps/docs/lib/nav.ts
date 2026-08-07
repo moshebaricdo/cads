@@ -89,6 +89,14 @@ export const COMPONENT_SECTIONS = [
       { exportName: "Modal", label: "Modal" },
     ],
   },
+  {
+    id: "ai",
+    label: "AI Components",
+    iconName: "robot",
+    items: [
+      { exportName: "AiChatInput", label: "AI Chat", href: "/components/ai-chat" },
+    ],
+  },
 ] as const;
 
 export type ComponentSectionId = (typeof COMPONENT_SECTIONS)[number]["id"];
@@ -97,7 +105,16 @@ export function componentHref(name: string) {
   return `/components/${name.toLowerCase()}`;
 }
 
-/** Category label + display label for a component export name, if grouped. */
+/** Resolved docs href for a nav item (custom href or manifest name path). */
+export function navItemHref(
+  item: { exportName: string; href?: string },
+  componentName?: string,
+) {
+  if (item.href) return item.href;
+  return componentHref(componentName ?? item.exportName);
+}
+
+/** Category label + item label for a component export name, if grouped. */
 export function componentCategory(exportName: string): {
   sectionLabel: string;
   itemLabel: string;
@@ -108,6 +125,14 @@ export function componentCategory(exportName: string): {
         return { sectionLabel: section.label, itemLabel: item.label };
       }
     }
+  }
+  // Sibling AI atoms share the AI Chat page category.
+  if (
+    exportName === "AiChatMessage" ||
+    exportName === "AiChatFileChip" ||
+    exportName === "ChatFileRemoveButton"
+  ) {
+    return { sectionLabel: "AI Components", itemLabel: "AI Chat" };
   }
   return null;
 }
@@ -129,7 +154,7 @@ export function listNavComponents(): NavComponent[] {
     section.items.map((item) => ({
       exportName: item.exportName,
       label: item.label,
-      href: componentHref(item.exportName),
+      href: navItemHref(item),
     })),
   );
 }

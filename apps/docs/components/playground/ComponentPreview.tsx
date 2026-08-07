@@ -40,6 +40,12 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
   Drawer: lazy(() => import("./previews/DrawerPreview")),
   Dialog: lazy(() => import("./previews/DialogPreview")),
   Modal: lazy(() => import("./previews/ModalPreview")),
+  ChatFileRemoveButton: lazy(
+    () => import("./previews/ChatFileRemoveButtonPreview"),
+  ),
+  AiChatFileChip: lazy(() => import("./previews/AiChatFileChipPreview")),
+  AiChatMessage: lazy(() => import("./previews/AiChatMessagePreview")),
+  AiChatInput: lazy(() => import("./previews/AiChatInputPreview")),
 };
 
 export function ComponentPreview({

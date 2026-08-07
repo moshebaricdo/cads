@@ -26,10 +26,20 @@ import type {
 import {
   cadsComponents,
   cadsComponentKeys,
+  isKnownCadsComponentName,
   isPrimitiveColorCollection,
   isShapeCollection,
+  isSpecialAlphaCollection,
   isTypographyCollection,
 } from "../data/cadsCatalog";
+import {
+  DSCO_COMPONENTS_FILE_KEY,
+  dscoComponentKeys,
+} from "../data/dscoComponents";
+import {
+  isFontAwesomeCurrentFamily,
+  isFontAwesomeFamily,
+} from "../shared/fontAwesome";
 import {
   getCollectionCached,
   getVariableCached,
@@ -48,18 +58,25 @@ const cadsComponentNameByNormalized = new Map(
   ]),
 );
 
+/**
+ * CADS instance detection.
+ *
+ * 1. Published key in the baked catalog (current or historical alias)
+ * 2. Exact name match against baked CADS names — covers cut/paste (⌘X) into
+ *    CADS, which mints a new key on republish while Figma still shows the
+ *    CADS library attribution. Known DSCO keys are never silenced by name
+ *    (Button / Sidebar V2 / etc. collide across libraries).
+ */
+function isCadsComponent(key: string, name: string): boolean {
+  if (cadsComponentKeys.has(key)) return true;
+  if (dscoComponentKeys.has(key)) return false;
+  return isKnownCadsComponentName(name);
+}
+
 /** Figma's default component / instance outline — never a real design color. */
 function isFigmaComponentOutlineHex(hex: string): boolean {
   // Match #9747ff or #9747ff + optional alpha byte.
   return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
-}
-
-function isFontAwesomeFamily(family: string): boolean {
-  return /^font awesome\b/i.test(family.trim());
-}
-
-function isFontAwesome7Family(family: string): boolean {
-  return /^font awesome\s+7\b/i.test(family.trim());
 }
 
 /** Node-level boundVariables entries we intentionally do not treat as fields. */
@@ -344,6 +361,9 @@ export interface AuditOptions {
 function isColorFinding(entry: AuditVariableEntry): boolean {
   if (entry.resolvedType !== "COLOR") return false;
   if (entry.flag === "primitive") return true;
+  // focus-alpha (Z: Special Alpha) is intentional CADS focus-ring chrome.
+  // Often not attributable via teamLibrary — still never a foreign finding.
+  if (isSpecialAlphaCollection(entry.collectionName)) return false;
   return !entry.isSourceOfTruth;
 }
 
@@ -373,6 +393,11 @@ export async function auditSelection(
   if (selection.length === 0) {
     throw new Error("Select at least one frame to audit.");
   }
+
+  // Consumer files: local components flood the card → treat as compliant/silent.
+  // Inside (OLD) DSCO Components itself, locals are the migration surface.
+  // Requires enablePrivatePluginApi — otherwise figma.fileKey is undefined.
+  const silenceLocalComponents = figma.fileKey !== DSCO_COMPONENTS_FILE_KEY;
 
   const libraryByCollectionKey = new Map<string, string>();
   try {
@@ -572,7 +597,8 @@ export async function auditSelection(
       const size = node.fontSize as number;
       if (isFontAwesomeFamily(font.family)) {
         fontAwesomeNodeIds.add(node.id);
-        if (isFontAwesome7Family(font.family)) {
+        // FA7 stock/subsets, or any Kit face (kits are unversioned by design).
+        if (isFontAwesomeCurrentFamily(font.family)) {
           recordCompliance(true, usage.hidden);
           return;
         }
@@ -898,7 +924,11 @@ export async function auditSelection(
     if (existing) {
       existing.instanceCount++;
       existing.usages.push(usage);
-      recordCompliance(existing.isCads, usage.hidden);
+      // Local file components are ignored outside the DSCO Components source file.
+      recordCompliance(
+        existing.isCads || (existing.isLocal && silenceLocalComponents),
+        usage.hidden,
+      );
       if (
         existing.sampleNodeNames.length < 5 &&
         !existing.sampleNodeNames.includes(node.name)
@@ -910,14 +940,17 @@ export async function auditSelection(
     const entry: ComponentUsageEntry = {
       key,
       name: owner.name,
-      isCads: cadsComponentKeys.has(key),
+      isCads: isCadsComponent(key, owner.name),
       isLocal: !main.remote,
       instanceCount: 1,
       sampleNodeNames: [node.name],
       usages: [usage],
     };
     components.set(key, entry);
-    recordCompliance(entry.isCads, usage.hidden);
+    recordCompliance(
+      entry.isCads || (entry.isLocal && silenceLocalComponents),
+      usage.hidden,
+    );
   }
 
   function visitPossibleDetachedComponent(node: SceneNode): void {
@@ -1031,6 +1064,8 @@ export async function auditSelection(
 
   // Walk selection. Instances still get one component finding, but we also
   // descend for color paints so icon/legacy fills can be remapped pre-swap.
+  // In the DSCO Components source file, nested instances are findings too
+  // (composite components nest other DSCO sets from the same file).
   const stack: { node: SceneNode; inInstance: boolean }[] = selection.map(
     (node) => ({ node, inInstance: false }),
   );
@@ -1044,7 +1079,7 @@ export async function auditSelection(
     }
 
     if (node.type === "INSTANCE") {
-      if (!inInstance) await visitInstance(node);
+      if (!inInstance || !silenceLocalComponents) await visitInstance(node);
       await visitPaints(node, "fills", true);
       await visitPaints(node, "strokes", true);
       for (const child of node.children) {
@@ -1159,8 +1194,11 @@ export async function auditSelection(
   const findingRadii = Array.from(rawRadii.values()).sort(
     (a, b) => a.value - b.value,
   );
+  // Findings: detached suspects + remote library components that aren't CADS.
+  // Ignore components authored in this file (local) — they flood the card —
+  // except inside (OLD) DSCO Components, where locals are the audit target.
   const findingComponents = Array.from(components.values())
-    .filter((c) => !c.isCads)
+    .filter((c) => !c.isCads && !(c.isLocal && silenceLocalComponents))
     .sort((a, b) => b.instanceCount - a.instanceCount);
   const findingDetachedComponents = Array.from(detachedComponents.values()).sort(
     (a, b) => b.usages.length - a.usages.length,

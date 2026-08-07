@@ -77,7 +77,7 @@ function parseComponentSections(source) {
   while ((sectionMatch = sectionRe.exec(body))) {
     const items = [];
     const itemRe =
-      /\{\s*exportName:\s*"(\w+)",\s*label:\s*"([^"]+)"\s*\}/g;
+      /\{\s*exportName:\s*"(\w+)",\s*label:\s*"([^"]+)"(?:,\s*href:\s*"[^"]+")?\s*\}/g;
     let itemMatch;
     while ((itemMatch = itemRe.exec(sectionMatch[2]))) {
       items.push({ exportName: itemMatch[1], label: itemMatch[2] });

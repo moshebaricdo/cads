@@ -1,11 +1,11 @@
-import { jsx as p, jsxs as R } from "react/jsx-runtime";
-import k from "@mui/material/IconButton";
-import { forwardRef as E, useState as O } from "react";
-import { FaIcon as F } from "../../icons/FaIcon.js";
-import { ICON_TOGGLE_SIZE as _ } from "../../shared/controlSize.js";
-import b from "./iconToggle.module.scss.js";
-function L(c) {
-  switch (c) {
+import { jsx as v, jsxs as E } from "react/jsx-runtime";
+import F from "@mui/material/IconButton";
+import { forwardRef as j, useState as k } from "react";
+import { FaIcon as _ } from "../../icons/FaIcon.js";
+import { ICON_TOGGLE_SIZE as L } from "../../shared/controlSize.js";
+import p from "./iconToggle.module.scss.js";
+function P(l) {
+  switch (l) {
     case "primary":
       return {
         on: "var(--text-neutral-primary)",
@@ -44,8 +44,8 @@ function L(c) {
       };
   }
 }
-function P(c) {
-  switch (c) {
+function U(l) {
+  switch (l) {
     case "large":
       return {
         "--it-label-font-size": "var(--text-body-lg)",
@@ -69,119 +69,123 @@ function P(c) {
       };
   }
 }
-const z = E(
+const O = j(
   function({
     size: e,
-    color: f,
-    iconName: u,
+    color: c,
+    iconName: f,
     pressed: r,
-    defaultPressed: o,
-    onPressedChange: m,
-    disabled: y,
-    sx: x,
+    defaultPressed: u,
+    onPressedChange: o,
+    disabled: b,
+    sx: y,
     onClick: a,
-    "aria-label": N
-  }, S) {
-    const h = r !== void 0, [B, i] = O(o ?? !1), n = h ? !!r : B, s = _[e], l = L(f), q = f === "primary" ? "var(--text-neutral-primary)" : "var(--text-neutral-quaternary)", w = {
+    style: S,
+    "aria-label": B,
+    ...q
+  }, w) {
+    const t = r !== void 0, [x, h] = k(u ?? !1), m = t ? !!r : x, s = L[e], n = P(c), G = c === "primary" ? "var(--text-neutral-primary)" : "var(--text-neutral-quaternary)", I = {
       "--it-size": s.size,
       "--it-padding": s.padding,
       "--it-icon-slot": s.iconSlot,
-      "--it-icon-off": q,
-      "--it-icon-on": l.on,
-      "--it-hover-icon": l.hoverIcon,
-      "--it-press-icon": l.pressIcon,
-      "--it-surface": l.surface
+      "--it-icon-off": G,
+      "--it-icon-on": n.on,
+      "--it-hover-icon": n.hoverIcon,
+      "--it-press-icon": n.pressIcon,
+      "--it-surface": n.surface,
+      ...S
     };
-    return /* @__PURE__ */ p(
-      k,
+    return /* @__PURE__ */ v(
+      F,
       {
-        ref: S,
+        ref: w,
         disableRipple: !0,
-        disabled: y,
-        "aria-pressed": n,
-        "aria-label": N,
+        disabled: b,
+        "aria-pressed": m,
+        "aria-label": B,
         "data-cads-press": "",
-        className: b.button,
-        style: w,
-        sx: x,
-        onClick: (I) => {
-          if (a == null || a(I), !I.defaultPrevented) {
-            const d = !n;
-            h || i(d), m == null || m(d);
+        className: p.button,
+        style: I,
+        sx: y,
+        ...q,
+        onClick: (R) => {
+          if (a == null || a(R), !R.defaultPrevented) {
+            const N = !m;
+            t || h(N), o == null || o(N);
           }
         },
-        children: /* @__PURE__ */ p(
-          F,
+        children: /* @__PURE__ */ v(
+          _,
           {
-            name: u,
-            family: n ? "solid" : "regular",
+            name: f,
+            family: m ? "solid" : "regular",
             fontSize: s.iconPx,
-            className: b.icon
+            className: p.icon
           }
         )
       }
     );
   }
-), K = E(
+), K = j(
   function({
     size: e = "medium",
-    color: f = "brand",
-    label: u,
+    color: c = "brand",
+    label: f,
     secondToggle: r,
-    exclusive: o = !1,
-    iconName: m,
-    pressed: y,
-    defaultPressed: x,
+    exclusive: u = !1,
+    iconName: o,
+    pressed: b,
+    defaultPressed: y,
     onPressedChange: a,
-    ...N
-  }, S) {
-    const h = y !== void 0, B = (r == null ? void 0 : r.pressed) !== void 0, i = !!(o && r) && !h && !B, [n, s] = O({
-      first: x ?? !1,
+    ...S
+  }, B) {
+    const q = b !== void 0, w = (r == null ? void 0 : r.pressed) !== void 0, t = !!(u && r) && !q && !w, [x, h] = k({
+      first: y ?? !1,
       second: (r == null ? void 0 : r.defaultPressed) ?? !1
-    }), l = (t) => {
-      var v;
-      i ? s((G) => ({
-        first: t,
-        second: t ? !1 : G.second
-      })) : o && r && t && ((v = r.onPressedChange) == null || v.call(r, !1)), a == null || a(t);
-    }, q = (t) => {
-      var v;
-      i ? s((G) => ({
-        first: t ? !1 : G.first,
-        second: t
-      })) : o && t && (a == null || a(!1)), (v = r == null ? void 0 : r.onPressedChange) == null || v.call(r, t);
-    }, w = i ? n.first : y, I = i ? n.second : r == null ? void 0 : r.pressed, d = /* @__PURE__ */ p(
-      z,
+    }), m = (i) => {
+      var d;
+      t ? h((z) => ({
+        first: i,
+        second: i ? !1 : z.second
+      })) : u && r && i && ((d = r.onPressedChange) == null || d.call(r, !1)), a == null || a(i);
+    }, s = (i) => {
+      var d;
+      t ? h((z) => ({
+        first: i ? !1 : z.first,
+        second: i
+      })) : u && i && (a == null || a(!1)), (d = r == null ? void 0 : r.onPressedChange) == null || d.call(r, i);
+    }, n = t ? x.first : b, G = t ? x.second : r == null ? void 0 : r.pressed, I = /* @__PURE__ */ v(
+      O,
       {
-        ref: S,
+        ref: B,
         size: e,
-        color: f,
-        iconName: m,
-        pressed: w,
-        defaultPressed: i ? void 0 : x,
-        onPressedChange: l,
-        ...N
+        color: c,
+        iconName: o,
+        pressed: n,
+        defaultPressed: t ? void 0 : y,
+        onPressedChange: m,
+        ...S
       }
     );
-    if (u == null && !r)
-      return d;
-    const j = {
+    if (f == null && !r)
+      return I;
+    const N = {
       "--it-label-gap": e === "small" || e === "extraSmall" ? "0.5rem" : "0.625rem",
-      ...P(e)
+      ...U(e)
     };
-    return /* @__PURE__ */ R("div", { className: b.labelRow, style: j, children: [
-      u != null && /* @__PURE__ */ p("span", { className: b.label, children: u }),
-      /* @__PURE__ */ R("div", { className: b.togglePair, children: [
-        d,
-        r ? /* @__PURE__ */ p(
-          z,
+    return /* @__PURE__ */ E("div", { className: p.labelRow, style: N, children: [
+      f != null && /* @__PURE__ */ v("span", { className: p.label, children: f }),
+      /* @__PURE__ */ E("div", { className: p.togglePair, children: [
+        I,
+        r ? /* @__PURE__ */ v(
+          O,
           {
             size: e,
-            color: r.color ?? f,
+            color: r.color ?? c,
             iconName: r.iconName,
-            pressed: I,
-            defaultPressed: i ? void 0 : r.defaultPressed,
-            onPressedChange: q,
+            pressed: G,
+            defaultPressed: t ? void 0 : r.defaultPressed,
+            onPressedChange: s,
             disabled: r.disabled,
             "aria-label": r["aria-label"]
           }

@@ -1,0 +1,222 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "ChatFileRemoveButton",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17228:10910",
+    "componentKey": "964982bddf995c79023e3baad45b8a15e3f83716",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-08-06",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": []
+  },
+  "axes": {
+    "public": {},
+    "designOnly": ["state"],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "default": { "width": "12", "height": "12", "icon": "8" }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "0",
+      "borderWidth": "0",
+      "radius": "999px",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "Font Awesome Pro Solid",
+      "size": "8",
+      "weight": "900",
+      "lineHeight": "1.25"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "8"
+    }
+  },
+  "recipes": [
+    {
+      "when": { "state": "default", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary-inverse)",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-primary-inverse)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=default",
+      "notes": []
+    },
+    {
+      "when": { "state": "hover", "mode": "light" },
+      "variables": {
+        "background": "var(--background-error-primary)",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-white-fixed)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=hover",
+      "notes": []
+    },
+    {
+      "when": { "state": "press", "mode": "light" },
+      "variables": {
+        "background": "var(--background-error-strong)",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-white-fixed)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=press",
+      "notes": []
+    },
+    {
+      "when": { "state": "focus", "mode": "light" },
+      "variables": {
+        "background": "var(--background-neutral-primary-inverse)",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-primary-inverse)",
+        "focus": "var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=focus",
+      "notes": []
+    },
+    {
+      "when": { "state": "disabled", "mode": "light" },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "border": "transparent",
+        "text": "",
+        "icon": "var(--text-neutral-primary-inverse)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=disabled",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": ["state", "mode"],
+    "cases": [
+      {
+        "id": "cfrb-default-light",
+        "figmaNodeId": "17228:10911",
+        "figmaVariant": "state=default",
+        "mode": "light",
+        "props": {},
+        "state": "default",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-default-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "cfrb-hover-light",
+        "figmaNodeId": "17228:10913",
+        "figmaVariant": "state=hover",
+        "mode": "light",
+        "props": {},
+        "state": "hover",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--background-error-primary"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-hover-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "cfrb-press-light",
+        "figmaNodeId": "17228:10915",
+        "figmaVariant": "state=press",
+        "mode": "light",
+        "props": {},
+        "state": "press",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--background-error-strong"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-press-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "cfrb-focus-light",
+        "figmaNodeId": "17228:10919",
+        "figmaVariant": "state=focus",
+        "mode": "light",
+        "props": {},
+        "state": "focus",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--border-focused-primary"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-focus-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "cfrb-disabled-light",
+        "figmaNodeId": "17228:10917",
+        "figmaVariant": "state=disabled",
+        "mode": "light",
+        "props": { "disabled": true },
+        "state": "disabled",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--background-disabled-neutral"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-disabled-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "cfrb-default-dark",
+        "figmaNodeId": "17228:10911",
+        "figmaVariant": "state=default",
+        "mode": "dark",
+        "props": {},
+        "state": "default",
+        "viewport": { "width": 64, "height": 64, "deviceScaleFactor": 1 },
+        "expectedGeometry": { "width": 12, "height": 12 },
+        "expectedVariables": ["--background-neutral-primary-inverse"],
+        "fixturePath": "/fixtures/components?component=ChatFileRemoveButton&case=cfrb-default-dark&mode=dark",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [],
+  "evidence": {
+    "apiAudit": null,
+    "typecheck": null,
+    "build": null,
+    "docsBuild": null,
+    "correctionPasses": []
+  }
+}

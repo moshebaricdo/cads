@@ -1,0 +1,82 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rootAi {
+  gap: 0.25rem;
+  align-items: stretch;
+}
+
+.bubble {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-p-xs);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.625rem 0.75rem;
+  overflow: hidden;
+  border-radius: var(--shape-md) var(--shape-md) 0 var(--shape-md);
+  font-family: var(--font-family-main);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body-sm);
+}
+
+.bubbleHumanTa {
+  background-color: var(--background-brand-strong);
+  color: var(--text-neutral-white-fixed);
+}
+
+.bubbleHumanTutor {
+  background-color: var(--background-info-mid);
+  color: var(--text-neutral-primary);
+}
+
+.bubbleAi {
+  background-color: var(--background-neutral-secondary);
+  color: var(--text-neutral-primary);
+}
+
+.body {
+  margin: 0;
+  width: 100%;
+}
+
+.fileRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.leftActions {
+  display: inline-flex;
+  gap: 0.125rem;
+  align-items: flex-start;
+}
+
+.rightActions {
+  display: inline-flex;
+  flex: 1 1 auto;
+  gap: 0.25rem;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+/* DOM host for MUI Tooltip listeners/ref (Button/IconToggle keep their own API). */
+.tooltipHost {
+  display: inline-flex;
+  line-height: 0;
+}
