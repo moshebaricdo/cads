@@ -182,21 +182,14 @@ function openReauditDialog(): void {
   if (!audit) return;
   $("reaudit-message").textContent =
     `You selected “${selectionLabel ?? "a new layer"}”. ` +
-    `Running again will replace the results for “${audit.selectionLabel}”.`;
+    `Run a new audit on it, or cancel to keep results for “${audit.selectionLabel}”.`;
   $("reaudit-modal").classList.add("show");
   ($("reaudit-confirm") as HTMLButtonElement).focus();
 }
 
-function runAudit(forceNewSelection = false): void {
+/** Audit whatever is currently selected on the canvas. */
+function runAudit(): void {
   if (!catalog || selectionCount === 0 || auditing) return;
-  if (
-    audit &&
-    !forceNewSelection &&
-    !isSameSelection(selectionNodeIds, audit.rootNodeIds)
-  ) {
-    openReauditDialog();
-    return;
-  }
   closeReauditDialog();
   showBanner(null);
   auditing = true;
@@ -204,6 +197,19 @@ function runAudit(forceNewSelection = false): void {
   audit = null;
   renderMain();
   send({ type: "audit" });
+}
+
+/** Rerun against the active audit roots, ignoring the current canvas selection. */
+function rerunActiveAudit(): void {
+  if (!catalog || !audit || auditing) return;
+  closeReauditDialog();
+  showBanner(null);
+  auditing = true;
+  auditNodesScanned = 0;
+  const rootNodeIds = audit.rootNodeIds;
+  audit = null;
+  renderMain();
+  send({ type: "audit", nodeIds: rootNodeIds });
 }
 
 function clearAuditSelection(): void {
@@ -1577,9 +1583,8 @@ function renderAuditOverview(): void {
   rerun.type = "button";
   rerun.title = "Rerun audit";
   rerun.setAttribute("aria-label", "Rerun audit");
-  rerun.disabled = selectionCount === 0;
   rerun.innerHTML = OVERVIEW_ICONS.rerun;
-  rerun.addEventListener("click", () => runAudit());
+  rerun.addEventListener("click", () => rerunActiveAudit());
   actions.appendChild(rerun);
   topbar.appendChild(actions);
   page.appendChild(topbar);
@@ -2824,7 +2829,7 @@ function renderFixCard(
     isSwappableComponentKey(info.baseSourceId.replace(/^component:/, "")) &&
     proposals.get(info.id)?.source === "rule"
   ) {
-    // Wave A/B prop-remap swaps stay locked to the rule target.
+    // Pass 1 prop-remap swaps stay locked to the rule target.
     const target = targetByKey(proposals.get(info.id)!.targetKey);
     const locked = el("div", "combo");
     const label = el(
@@ -3497,7 +3502,7 @@ $("apply-btn").addEventListener("click", () => {
 });
 
 $("reaudit-cancel").addEventListener("click", closeReauditDialog);
-$("reaudit-confirm").addEventListener("click", () => runAudit(true));
+$("reaudit-confirm").addEventListener("click", () => runAudit());
 $("reaudit-modal").addEventListener("click", (event) => {
   if (event.target === $("reaudit-modal")) closeReauditDialog();
 });
@@ -3616,10 +3621,16 @@ window.onmessage = (event: MessageEvent) => {
       selectionCount = message.count;
       selectionLabel = message.label;
       selectionNodeIds = message.nodeIds;
-      if (
-        audit &&
-        (selectionCount === 0 ||
-          isSameSelection(selectionNodeIds, audit.rootNodeIds))
+      if (audit && !auditing) {
+        if (message.auditRelation === "outside") {
+          openReauditDialog();
+        } else {
+          closeReauditDialog();
+        }
+      } else if (
+        !audit ||
+        selectionCount === 0 ||
+        isSameSelection(selectionNodeIds, audit.rootNodeIds)
       ) {
         closeReauditDialog();
       }

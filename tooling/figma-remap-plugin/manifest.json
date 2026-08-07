@@ -5,6 +5,7 @@
   "ui": "dist/ui.html",
   "editorType": ["figma"],
   "documentAccess": "dynamic-page",
+  "enablePrivatePluginApi": true,
   "permissions": ["teamlibrary"],
   "networkAccess": {
     "allowedDomains": ["https://api.anthropic.com", "https://api.openai.com"],

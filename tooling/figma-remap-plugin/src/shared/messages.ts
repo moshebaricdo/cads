@@ -128,7 +128,10 @@ export interface RawTextEntry {
   usages: UsageRef[];
 }
 
-/** Font Awesome text using a pre-FA7 family, grouped by font signature. */
+/**
+ * Font Awesome text using a pre-FA7 *stock* family (not kit faces — kits are
+ * unversioned and treated as current). Grouped by font signature.
+ */
 export interface FontAwesomeTextEntry {
   id: string; // "fontawesome:<family>/<style>/<size>"
   label: string;
@@ -146,12 +149,16 @@ export interface RawRadiusEntry {
 
 /**
  * A non-CADS component whose instances appear in the selection.
- * Local (this-file) components are omitted from audit findings.
+ * Local (this-file) components are omitted from audit findings in consumer
+ * files; they remain findings inside the (OLD) DSCO Components source file.
  */
 export interface ComponentUsageEntry {
   key: string;
   name: string;
-  /** Key found in the baked CADS component catalog. */
+  /**
+   * Treated as CADS: baked key / historical alias, or exact name match when
+   * the key isn't a known DSCO publish key (cut/paste key churn).
+   */
   isCads: boolean;
   /** Main component lives in the audited file itself (not a library). */
   isLocal: boolean;
@@ -213,7 +220,7 @@ export interface AuditResult {
   rawPaints: RawPaintEntry[];
   textStyles: AuditTextStyleEntry[];
   rawTexts: RawTextEntry[];
-  /** Font Awesome text that is not using a Font Awesome 7 family. */
+  /** Pre-FA7 stock Font Awesome text (kit faces are not listed). */
   fontAwesomeTexts: FontAwesomeTextEntry[];
   rawRadii: RawRadiusEntry[];
   /** Non-CADS components only. */
@@ -369,7 +376,8 @@ export type FixCategory =
 
 export type UiToCodeMessage =
   | { type: "init" }
-  | { type: "audit" }
+  /** When `nodeIds` is set, select those nodes first (rerun of an active audit). */
+  | { type: "audit"; nodeIds?: string[] }
   | { type: "clear-selection" }
   | { type: "locate-layer"; nodeId: string }
   | { type: "propose-mappings"; category?: FixCategory }
@@ -377,12 +385,22 @@ export type UiToCodeMessage =
   | { type: "save-ai-settings"; ai: AiSettings | null }
   | { type: "notify"; message: string; error?: boolean };
 
+/** How the canvas selection relates to the active audit roots (when any). */
+export type AuditSelectionRelation = "same" | "inside" | "outside";
+
 export type CodeToUiMessage =
   | { type: "settings"; settings: PluginSettings }
   | { type: "no-library"; message: string }
   | { type: "catalog-progress"; done: number; total: number; label?: string }
   | { type: "catalog"; catalog: TargetCatalog }
-  | { type: "selection"; count: number; label: string | null; nodeIds: string[] }
+  | {
+      type: "selection";
+      count: number;
+      label: string | null;
+      nodeIds: string[];
+      /** Present when an audit is active; omitted when idle or selection is empty. */
+      auditRelation?: AuditSelectionRelation;
+    }
   | { type: "audit-progress"; nodesScanned: number }
   | { type: "audit"; result: AuditResult }
   | { type: "proposals"; proposals: MappingProposal[]; category: FixCategory }

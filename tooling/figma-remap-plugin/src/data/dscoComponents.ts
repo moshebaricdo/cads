@@ -13,6 +13,13 @@
 
 import { cadsComponents } from "./cadsCatalog";
 
+/**
+ * Figma file key for `(OLD) DSCO Components` — the library source file.
+ * In consumer files we silence local (this-file) components; inside this file
+ * those locals *are* the migration surface and must remain findings.
+ */
+export const DSCO_COMPONENTS_FILE_KEY = "ahYTsb3I7rsJNW0n2vnXm6";
+
 export interface DscoComponentMapping {
   key: string;
   name: string;
@@ -78,7 +85,8 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "12a72e8b7d28b78b26d6d85e0884146524eb3001",
     name: "Input Dropdown",
-    cadsName: "Dropdown",
+    // Nested trigger in DSCO Dropdown Field → CADS Dropdown Button.
+    cadsName: "Dropdown Button",
   },
   {
     key: "ab47ef51db67847667cab7b99707f8e777d64551",
@@ -120,7 +128,11 @@ export const dscoComponents: DscoComponentMapping[] = [
     name: "Radio Buttons Blocks",
     cadsName: "Radio Buttons Block",
   },
-  { key: "cb3807d24d76a019695d82bf799811edf15ff5f6", name: "Toggle", cadsName: "Toggle" },
+  {
+    key: "cb3807d24d76a019695d82bf799811edf15ff5f6",
+    name: "Toggle",
+    cadsName: "Toggle + Label",
+  },
   {
     key: "125d017876c50813f0359990eaaf45d1982ef739",
     name: "Toggle Building Block",
@@ -177,12 +189,13 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "a66d7f369b0b0440f0b73ba48f1dd56548d5aec1",
     name: "Pagination Dots",
-    cadsName: "Pagination Dots",
+    // No DSCO→CADS Pagination migration (CADS Pagination is net-new).
+    cadsName: null,
   },
   {
     key: "b610aa8d09ccc8931662c7fba5cb0f734a3807f0",
     name: "Pagination Group",
-    cadsName: "Pagination Group",
+    cadsName: null,
   },
 
   // Feedback / overlays
@@ -201,7 +214,8 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "a1831764f91754253ef7a8e9581f7c3fbdc5227a",
     name: "Tooltip Icon",
-    cadsName: "Icon Tooltip",
+    // DSCO building block nested in Tooltip only — not CADS Icon Tooltip.
+    cadsName: null,
   },
   {
     key: "b26928dc5394b83a3f950653339218583b9cfccc",
@@ -216,7 +230,8 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "a635748a7e91721d93fde00682cac982b8cc1742",
     name: "Popover Building Blocks",
-    cadsName: "Popover Core",
+    // Nested caret helper only — never standalone; Core remapped via parent Popover.
+    cadsName: null,
   },
   {
     key: "402577f53a413426e8fbdb59d73a7750b64ddd79",
@@ -272,7 +287,7 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "284b25f1184ef019c06cc629e4fdaa38e75249f1",
     name: "Lab Nav",
-    cadsName: "Lab Nav",
+    cadsName: "Studio Global Nav",
   },
   {
     key: "21391676db29a79461cdf45ec70bba6641772d5b",
@@ -327,7 +342,7 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "cab3283affeb303907a9a172225e382b759f68dd",
     name: "Resize Handle",
-    cadsName: "Resize Handle",
+    cadsName: null,
   },
   { key: "908f98448d94d05c5a172f575d47cf2398a2299f", name: "Logo", cadsName: null },
 
@@ -360,7 +375,7 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "4bd2e86e9492638295155f36675a8549e23f2547",
     name: "AI Support Indicator",
-    cadsName: "AI Support Indicator",
+    cadsName: null,
   },
   {
     key: "fa8a60054807a87521a0207d968f29b4acb6db89",
@@ -370,7 +385,7 @@ export const dscoComponents: DscoComponentMapping[] = [
   {
     key: "5cc57671aeafa2f61aec50f6a630297347b3a26f",
     name: "AI Chat File Item",
-    cadsName: "AI Chat File Item",
+    cadsName: null,
   },
   { key: "b8baba99082dcb77c42cb4f599869b9471a5aab7", name: "AI Bot", cadsName: null },
 
@@ -410,7 +425,7 @@ const DSCO_NAME_REWRITES: Record<string, string> = {
   "text field": "Text Input",
   "text area": "Text Input",
   "dropdown field": "Dropdown",
-  "input dropdown": "Dropdown",
+  "input dropdown": "Dropdown Button",
   "action dropdown": "Dropdown",
   "dropdown menu button": "Dropdown Button",
   "dropdown menu items": "Dropdown Menu Item",
@@ -419,12 +434,13 @@ const DSCO_NAME_REWRITES: Record<string, string> = {
   "checkbox blocks ": "Checkbox",
   "radio button": "Radio Button + Label",
   "radio buttons blocks": "Radio Buttons Block",
+  toggle: "Toggle + Label",
   "toggle building block": "Toggle",
   tab: "Tab Item",
   "breadcrumb link": "Breadcrumb Links",
   "breadcrumbs blocks": "Breadcrumb Separators",
-  "tooltip icon": "Icon Tooltip",
-  "popover building blocks": "Popover Core",
+  "lab nav": "Studio Global Nav",
+  "studio global nav": "Studio Global Nav",
   "font awesome icon": "Font Awesome Icon v7",
   "font awesome duotone icon": "Font Awesome Duotone Icon v7",
 };

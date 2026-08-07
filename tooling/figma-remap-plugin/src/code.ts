@@ -24,7 +24,13 @@ import {
 } from "./shared/surfaces";
 import { getTeamAiSettings } from "./shared/teamAi";
 import { auditSelection } from "./main/audit";
-import { buildCatalog, type CatalogBuildResult } from "./main/catalog";
+import {
+  buildCatalog,
+  buildLocalCatalog,
+  isCadsSourceFile,
+  LOCAL_SOT_LIBRARY_NAME,
+  type CatalogBuildResult,
+} from "./main/catalog";
 import {
   buildStyleCatalog,
   type StyleCatalogResult,
@@ -66,6 +72,34 @@ function isCadsLibrary(name: string): boolean {
   return /cads/i.test(name);
 }
 
+function isSameNodeIds(left: string[], right: string[]): boolean {
+  if (left.length !== right.length) return false;
+  const rightIds = new Set(right);
+  return left.every((id) => rightIds.has(id));
+}
+
+function isNodeInsideRoots(node: BaseNode, rootIds: Set<string>): boolean {
+  let current: BaseNode | null = node;
+  while (current && current.type !== "PAGE" && current.type !== "DOCUMENT") {
+    if (rootIds.has(current.id)) return true;
+    current = current.parent;
+  }
+  return false;
+}
+
+function auditSelectionRelation(
+  selection: readonly SceneNode[],
+  rootNodeIds: string[],
+): "same" | "inside" | "outside" {
+  const selectionIds = selection.map((node) => node.id);
+  if (isSameNodeIds(selectionIds, rootNodeIds)) return "same";
+  const rootIds = new Set(rootNodeIds);
+  if (selection.every((node) => isNodeInsideRoots(node, rootIds))) {
+    return "inside";
+  }
+  return "outside";
+}
+
 function postSelection(): void {
   const selection = figma.currentPage.selection;
   const count = selection.length;
@@ -79,6 +113,10 @@ function postSelection(): void {
         : count === 1
           ? selection[0].name
           : `${count} layers`,
+    auditRelation:
+      lastAudit && count > 0
+        ? auditSelectionRelation(selection, lastAudit.rootNodeIds)
+        : undefined,
   });
 }
 
@@ -133,6 +171,31 @@ function postCombinedCatalog(): void {
   });
 }
 
+async function loadStyleCatalog(preferLocalStyles: boolean): Promise<void> {
+  // Baked metrics → near-instant (no importStyleByKeyAsync). Fallback imports
+  // only when a style is missing values.
+  styleCatalog = await buildStyleCatalog(null, (done, total) =>
+    post({
+      type: "catalog-progress",
+      done,
+      total,
+      label: "Loading text styles",
+    }),
+  );
+
+  // In the CADS source file, resolve styles locally for apply (no self-import).
+  if (preferLocalStyles && styleCatalog) {
+    try {
+      const locals = await figma.getLocalTextStylesAsync();
+      for (const style of locals) {
+        styleCatalog.importedByKey.set(style.key, style);
+      }
+    } catch {
+      // non-fatal — apply can still try importStyleByKeyAsync
+    }
+  }
+}
+
 async function loadCadsCatalog(libraryName: string): Promise<void> {
   sotLibraryName = libraryName;
   settings.libraryName = libraryName;
@@ -154,22 +217,55 @@ async function loadCadsCatalog(libraryName: string): Promise<void> {
     }),
   );
 
-  // Baked metrics → near-instant (no importStyleByKeyAsync). Fallback imports
-  // only when a style is missing values.
-  styleCatalog = await buildStyleCatalog(null, (done, total) =>
-    post({
-      type: "catalog-progress",
-      done,
-      total,
-      label: "Loading text styles",
-    }),
-  );
-
+  await loadStyleCatalog(false);
   postCombinedCatalog();
   postSelection();
 }
 
-async function handleAudit(): Promise<void> {
+/** CADS library source file — use local variables (file can't enable itself). */
+async function loadCadsCatalogFromLocal(): Promise<void> {
+  sotLibraryName = LOCAL_SOT_LIBRARY_NAME;
+  settings.libraryName = LOCAL_SOT_LIBRARY_NAME;
+  await saveSettings();
+
+  post({
+    type: "catalog-progress",
+    done: 0,
+    total: 0,
+    label: "Loading local CADS variables",
+  });
+
+  catalogResult = await buildLocalCatalog((done, total) =>
+    post({
+      type: "catalog-progress",
+      done,
+      total,
+      label: "Loading local CADS variables",
+    }),
+  );
+
+  await loadStyleCatalog(true);
+  postCombinedCatalog();
+  postSelection();
+}
+
+async function selectNodesById(nodeIds: string[]): Promise<void> {
+  const nodes: SceneNode[] = [];
+  for (const id of nodeIds) {
+    const node = await figma.getNodeByIdAsync(id);
+    if (node && "visible" in node) nodes.push(node as SceneNode);
+  }
+  if (nodes.length === 0) {
+    throw new Error("The audited frame is no longer available.");
+  }
+  figma.currentPage.selection = nodes;
+  postSelection();
+}
+
+async function handleAudit(nodeIds?: string[]): Promise<void> {
+  if (nodeIds && nodeIds.length > 0) {
+    await selectNodesById(nodeIds);
+  }
   const sotStyleKeys = new Set(
     (styleCatalog?.textStyles ?? []).map((s) => s.key),
   );
@@ -433,7 +529,8 @@ async function handleApply(request: ApplyRequest): Promise<void> {
   }
   figma.notify(parts.join(" — "));
 
-  await handleAudit();
+  // Always re-audit the original roots (selection may be a located child).
+  await handleAudit(lastAudit.rootNodeIds);
 }
 
 async function handleSaveAiSettings(ai: AiSettings | null): Promise<void> {
@@ -449,6 +546,12 @@ async function handleSaveAiSettings(ai: AiSettings | null): Promise<void> {
 async function bootstrap(): Promise<void> {
   await loadSettings();
   post({ type: "settings", settings });
+
+  // Library source file can't enable itself via Assets → Libraries.
+  if (isCadsSourceFile()) {
+    await loadCadsCatalogFromLocal();
+    return;
+  }
 
   const libraryName = await findCadsLibraryName();
   if (!libraryName) {
@@ -471,7 +574,7 @@ figma.ui.onmessage = async (message: UiToCodeMessage) => {
         await bootstrap();
         break;
       case "audit":
-        await handleAudit();
+        await handleAudit(message.nodeIds);
         break;
       case "clear-selection":
         figma.currentPage.selection = [];

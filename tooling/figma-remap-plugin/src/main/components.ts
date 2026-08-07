@@ -1,24 +1,30 @@
 /**
- * Apply DSCO → CADS component instance swaps with prop remapping (Wave A+B).
+ * Apply DSCO → CADS component instance swaps with prop remapping (Pass 1 Waves A–E).
  *
  * Strategy:
  * 1. Capture variants from componentProperties + variantProperties +
  *    mainComponent.name (name wins — it's the selected variant child)
- * 2. Remap axes/values via componentSwaps rules
- * 3. Strict-match a CADS variant child (every wanted axis must match)
- * 4. swapComponent(exact match) — variants come from the child itself
- * 5. setProperties only for TEXT/BOOLEAN content (label, icons, …)
- * 6. Verify size/iconOnly/etc. stuck; retry exact swap once if not
+ * 2. Optional retarget (Show Text=false → bare control)
+ * 3. Remap axes/values via componentSwaps rules
+ * 4. Strict-match a CADS variant child (every wanted axis must match)
+ * 5. swapComponent(exact match) — variants come from the child itself
+ * 6. setProperties only for TEXT/BOOLEAN content (label, icons, …)
+ * 7. Nested-apply + slot-TEXT for composed sets
+ * 8. Verify size/iconOnly/etc. stuck; retry exact swap once if not
  */
 import {
   buildContentProperties,
+  buildNestedSwapProperties,
   getComponentSwapRule,
+  isSourcePropFalsy,
   parseVariantName,
   propBaseName,
   remapVariants,
   resolveCadsComponentKey,
   type CapturedComponentProps,
   type ComponentSwapRule,
+  type NestedApplyRule,
+  type SlotTextRule,
 } from "../data/componentSwaps";
 import { suggestCadsComponent } from "../data/dscoComponents";
 import type {
@@ -36,12 +42,39 @@ export interface ComponentSwapReport {
 
 const importedSets = new Map<string, ComponentSetNode>();
 
+async function findLocalComponentSetByKey(
+  key: string,
+): Promise<ComponentSetNode | null> {
+  for (const page of figma.root.children) {
+    try {
+      if ("loadAsync" in page) await page.loadAsync();
+      const matches = page.findAllWithCriteria({ types: ["COMPONENT_SET"] });
+      for (const set of matches) {
+        if (set.key === key) return set;
+      }
+    } catch {
+      // Page unavailable / not loaded — try the next one.
+    }
+  }
+  return null;
+}
+
 async function importCadsComponentSet(key: string): Promise<ComponentSetNode> {
   const cached = importedSets.get(key);
   if (cached) return cached;
-  const node = await figma.importComponentSetByKeyAsync(key);
-  importedSets.set(key, node);
-  return node;
+  try {
+    const node = await figma.importComponentSetByKeyAsync(key);
+    importedSets.set(key, node);
+    return node;
+  } catch {
+    // In the CADS source file, resolve the local set (can't import self).
+    const local = await findLocalComponentSetByKey(key);
+    if (local) {
+      importedSets.set(key, local);
+      return local;
+    }
+    throw new Error(`CADS component set not found for key ${key.slice(0, 8)}…`);
+  }
 }
 
 async function getInstance(nodeId: string): Promise<InstanceNode | null> {
@@ -63,6 +96,16 @@ function sourceNameFor(
   const entry = audit.components.find((component) => component.key === key);
   if (!entry) return null;
   return { name: entry.name, usages: entry.usages, dscoKey: entry.key };
+}
+
+function targetPropMeta(
+  props: ComponentProperties,
+): Record<string, { type: string }> {
+  const meta: Record<string, { type: string }> = {};
+  for (const [key, prop] of Object.entries(props)) {
+    meta[key] = { type: prop.type };
+  }
+  return meta;
 }
 
 async function captureInstanceProps(
@@ -123,11 +166,29 @@ async function captureInstanceProps(
     tagIconPlacement = iconAxis;
   }
 
+  let nestedIconName: string | null = null;
+  const nestedIcon = findNestedInstances(instance, ["Tooltip Icon"])[0];
+  if (nestedIcon) {
+    for (const [key, prop] of Object.entries(nestedIcon.componentProperties)) {
+      const base = propBaseName(key).toLocaleLowerCase();
+      if (
+        (base.includes("icon") || base === "name") &&
+        prop.type === "TEXT" &&
+        typeof prop.value === "string" &&
+        prop.value.trim()
+      ) {
+        nestedIconName = prop.value.trim();
+        break;
+      }
+    }
+  }
+
   return {
     properties,
     variants,
     capturedText: null,
     tagIconPlacement,
+    nestedIconName,
   };
 }
 
@@ -144,14 +205,146 @@ function captureFirstText(instance: InstanceNode): string | null {
   return text && typeof text.characters === "string" ? text.characters : null;
 }
 
-function targetPropMeta(
-  props: ComponentProperties,
-): Record<string, { type: string }> {
-  const meta: Record<string, { type: string }> = {};
-  for (const [key, prop] of Object.entries(props)) {
-    meta[key] = { type: prop.type };
+function findNestedInstances(
+  root: InstanceNode,
+  matchNames: string[],
+): InstanceNode[] {
+  const needles = matchNames.map((n) => n.toLocaleLowerCase());
+  const hits: InstanceNode[] = [];
+  const walk = (node: SceneNode) => {
+    if (node.type === "INSTANCE") {
+      const name = node.name.toLocaleLowerCase();
+      let setName = "";
+      try {
+        const main = node.mainComponent;
+        if (main?.parent?.type === "COMPONENT_SET") {
+          setName = main.parent.name.toLocaleLowerCase();
+        }
+      } catch {
+        // ignore
+      }
+      if (
+        needles.some(
+          (n) => name.includes(n) || setName.includes(n) || n.includes(name),
+        )
+      ) {
+        hits.push(node);
+      }
+    }
+    if ("children" in node) {
+      for (const child of node.children) walk(child);
+    }
+  };
+  walk(root);
+  return hits;
+}
+
+async function applyNestedRules(
+  instance: InstanceNode,
+  nestedRules: NestedApplyRule[],
+  captured: CapturedComponentProps,
+): Promise<string[]> {
+  const warnings: string[] = [];
+  for (const nested of nestedRules) {
+    const targets = findNestedInstances(instance, nested.matchNames);
+    if (targets.length === 0) {
+      warnings.push(`nested "${nested.matchNames.join("|")}" not found`);
+      continue;
+    }
+    for (const target of targets) {
+      try {
+        const props = buildNestedSwapProperties(
+          nested,
+          captured,
+          targetPropMeta(target.componentProperties),
+        );
+        if (Object.keys(props).length > 0) {
+          target.setProperties(props);
+        }
+      } catch (error) {
+        warnings.push(
+          `nested "${nested.matchNames[0]}" apply failed: ${String((error as Error).message ?? error)}`,
+        );
+      }
+    }
   }
-  return meta;
+  return warnings;
+}
+
+function findTextInSubtree(
+  root: SceneNode,
+  matchName: string,
+): TextNode | null {
+  const needle = matchName.toLocaleLowerCase();
+  let found: TextNode | null = null;
+  const walk = (node: SceneNode) => {
+    if (found) return;
+    if (node.type === "TEXT" && node.name.toLocaleLowerCase().includes(needle)) {
+      found = node;
+      return;
+    }
+    // Also match parent frame/slot name, then first TEXT child.
+    if (
+      node.name.toLocaleLowerCase().includes(needle) &&
+      "children" in node
+    ) {
+      for (const child of node.children) {
+        if (child.type === "TEXT") {
+          found = child;
+          return;
+        }
+      }
+    }
+    if ("children" in node) {
+      for (const child of node.children) walk(child);
+    }
+  };
+  walk(root);
+  return found;
+}
+
+async function applySlotTextRules(
+  instance: InstanceNode,
+  slotRules: SlotTextRule[],
+  captured: CapturedComponentProps,
+): Promise<string[]> {
+  const warnings: string[] = [];
+  for (const slot of slotRules) {
+    let textValue: string | null = null;
+    if (slot.useCapturedText) {
+      textValue = captured.capturedText;
+    } else if (slot.fromProp) {
+      for (const [key, value] of Object.entries(captured.properties)) {
+        if (
+          propBaseName(key) === slot.fromProp &&
+          (typeof value === "string" || typeof value === "boolean")
+        ) {
+          textValue = String(value);
+          break;
+        }
+      }
+      if (textValue === null) {
+        const v = captured.variants[slot.fromProp];
+        if (v !== undefined) textValue = v;
+      }
+    }
+    if (textValue === null || textValue === "") continue;
+
+    const textNode = findTextInSubtree(instance, slot.matchName);
+    if (!textNode) {
+      warnings.push(`slot TEXT "${slot.matchName}" not found`);
+      continue;
+    }
+    try {
+      await figma.loadFontAsync(textNode.fontName as FontName);
+      textNode.characters = textValue;
+    } catch (error) {
+      warnings.push(
+        `slot TEXT "${slot.matchName}" write failed: ${String((error as Error).message ?? error)}`,
+      );
+    }
+  }
+  return warnings;
 }
 
 /**
@@ -214,7 +407,7 @@ function variantsMatch(
   return missing;
 }
 
-/** Core axes we must preserve across swaps (Button-like + FA Icon). */
+/** Core axes we must preserve across swaps. */
 function criticalAxes(want: Record<string, string>): Record<string, string> {
   const out: Record<string, string> = {};
   for (const axis of [
@@ -227,6 +420,19 @@ function criticalAxes(want: Record<string, string>): Record<string, string> {
     "labelStyle",
     "sentiment",
     "fillStyle",
+    "role",
+    "menuType",
+    "menuPlacement",
+    "isOn",
+    "isActive",
+    "isCurrent",
+    "status",
+    "position",
+    "itemType",
+    "percentFilled",
+    "startsFrom",
+    "stepCount",
+    "caretPlacement",
     // Font Awesome Icon / Duotone
     "style",
     "padding",
@@ -245,7 +451,25 @@ function withoutState(
   return rest;
 }
 
-/** Best-effort swap when no Wave A/B prop-remap rule exists (AI / name match). */
+function resolveEffectiveRule(
+  rule: ComponentSwapRule,
+  captured: CapturedComponentProps,
+  cadsKey: string,
+): { rule: ComponentSwapRule; cadsKey: string } {
+  if (!rule.retargetWhenFalse) return { rule, cadsKey };
+  if (!isSourcePropFalsy(captured, rule.retargetWhenFalse.sourceProp)) {
+    return { rule, cadsKey };
+  }
+  const altName = rule.retargetWhenFalse.cadsName;
+  const altKey = resolveCadsComponentKey(altName);
+  if (!altKey) return { rule, cadsKey };
+  return {
+    rule: { ...rule, cadsName: altName },
+    cadsKey: altKey,
+  };
+}
+
+/** Best-effort swap when no Pass 1 prop-remap rule exists (AI / name match). */
 async function swapSimple(
   instance: InstanceNode,
   cadsKey: string,
@@ -272,18 +496,52 @@ async function swapOne(
     captured.capturedText = captureFirstText(instance);
   }
 
-  const set = await importCadsComponentSet(cadsKey);
-  const wantVariants = remapVariants(rule, captured);
+  const effective = resolveEffectiveRule(rule, captured, cadsKey);
+  const activeRule = effective.rule;
+  const activeKey = effective.cadsKey;
+
+  const set = await importCadsComponentSet(activeKey);
+  const wantVariants = remapVariants(activeRule, captured);
   const critical = criticalAxes(wantVariants);
 
-  if (Object.keys(critical).length === 0 && Object.keys(wantVariants).length === 0) {
-    throw new Error(
-      `could not read variant props from "${instance.name}"`,
+  // FA Icon / identity sets may only carry style axes; allow empty critical
+  // when the set has a default variant and we have no remapped axes.
+  const hasAnyWant = Object.keys(wantVariants).length > 0;
+  if (Object.keys(critical).length === 0 && !hasAnyWant) {
+    // Identity swap (e.g. FA with matching surface) — use default variant.
+    const fallback =
+      set.defaultVariant ??
+      (set.children.find((child) => child.type === "COMPONENT") as
+        | ComponentNode
+        | undefined);
+    if (!fallback || fallback.type !== "COMPONENT") {
+      throw new Error(
+        `could not read variant props from "${instance.name}"`,
+      );
+    }
+    instance.swapComponent(fallback);
+    const content = buildContentProperties(
+      activeRule,
+      captured,
+      targetPropMeta(instance.componentProperties),
     );
+    if (Object.keys(content).length > 0) {
+      instance.setProperties(content);
+    }
+    if (activeRule.nestedApply?.length) {
+      await applyNestedRules(instance, activeRule.nestedApply, captured);
+    }
+    if (activeRule.slotText?.length) {
+      await applySlotTextRules(instance, activeRule.slotText, captured);
+    }
+    return;
   }
 
   // Match on critical axes + state=default when present; fall back without state.
-  const wantWithDefault = { ...critical, ...(wantVariants.state ? { state: "default" } : {}) };
+  const wantWithDefault = {
+    ...critical,
+    ...(wantVariants.state ? { state: "default" } : {}),
+  };
   let target =
     findMatchingVariant(set, wantWithDefault) ??
     findMatchingVariant(set, critical) ??
@@ -291,62 +549,109 @@ async function swapOne(
     findMatchingVariant(set, wantVariants);
 
   if (!target) {
-    throw new Error(
-      `no CADS "${rule.cadsName}" variant for ${Object.entries(
-        Object.keys(critical).length > 0 ? critical : wantVariants,
-      )
-        .map(([k, v]) => `${k}=${v}`)
-        .join(", ")}`,
-    );
-  }
-
-  instance.swapComponent(target);
-
-  // Content only — variants are owned by the matched component child.
-  // (Re-setting variants via setProperties was throwing and aborting apply.)
-  const content = buildContentProperties(
-    rule,
-    captured,
-    targetPropMeta(instance.componentProperties),
-  );
-  if (Object.keys(content).length > 0) {
-    try {
-      instance.setProperties(content);
-    } catch (error) {
+    // Last resort: default variant + setProperties for everything.
+    target =
+      set.defaultVariant ??
+      (set.children.find((child) => child.type === "COMPONENT") as
+        | ComponentNode
+        | undefined) ??
+      null;
+    if (!target || target.type !== "COMPONENT") {
       throw new Error(
-        `swapped but content props failed: ${String((error as Error).message ?? error)}`,
+        `no CADS "${activeRule.cadsName}" variant for ${Object.entries(
+          Object.keys(critical).length > 0 ? critical : wantVariants,
+        )
+          .map(([k, v]) => `${k}=${v}`)
+          .join(", ")}`,
       );
     }
-  }
-
-  if (Object.keys(critical).length > 0) {
-    let mismatches = variantsMatch(readVariants(instance), critical);
-    if (mismatches.length > 0) {
-      const retry =
-        findMatchingVariant(set, wantWithDefault) ??
-        findMatchingVariant(set, critical);
-      if (retry) {
-        instance.swapComponent(retry);
-        const content2 = buildContentProperties(
-          rule,
-          captured,
-          targetPropMeta(instance.componentProperties),
-        );
-        if (Object.keys(content2).length > 0) {
-          try {
-            instance.setProperties(content2);
-          } catch {
-            // variants matter more than content on retry
-          }
+    instance.swapComponent(target);
+    const all = {
+      ...buildContentProperties(
+        activeRule,
+        captured,
+        targetPropMeta(instance.componentProperties),
+      ),
+    };
+    // Try setting variants via setProperties when exact child missing.
+    for (const [axis, value] of Object.entries(wantVariants)) {
+      const meta = targetPropMeta(instance.componentProperties);
+      for (const [key, prop] of Object.entries(instance.componentProperties)) {
+        if (prop.type === "VARIANT" && propBaseName(key) === axis) {
+          all[key] = value;
+          void meta;
         }
       }
-      mismatches = variantsMatch(readVariants(instance), critical);
-      if (mismatches.length > 0) {
+    }
+    if (Object.keys(all).length > 0) {
+      try {
+        instance.setProperties(all);
+      } catch (error) {
         throw new Error(
-          `swapped but variants drifted: ${mismatches.join("; ")}`,
+          `swapped (default) but props failed: ${String((error as Error).message ?? error)}`,
         );
       }
     }
+  } else {
+    instance.swapComponent(target);
+
+    // Content only — variants are owned by the matched component child.
+    const content = buildContentProperties(
+      activeRule,
+      captured,
+      targetPropMeta(instance.componentProperties),
+    );
+    if (Object.keys(content).length > 0) {
+      try {
+        instance.setProperties(content);
+      } catch (error) {
+        throw new Error(
+          `swapped but content props failed: ${String((error as Error).message ?? error)}`,
+        );
+      }
+    }
+
+    if (Object.keys(critical).length > 0) {
+      let mismatches = variantsMatch(readVariants(instance), critical);
+      if (mismatches.length > 0) {
+        const retry =
+          findMatchingVariant(set, wantWithDefault) ??
+          findMatchingVariant(set, critical);
+        if (retry) {
+          instance.swapComponent(retry);
+          const content2 = buildContentProperties(
+            activeRule,
+            captured,
+            targetPropMeta(instance.componentProperties),
+          );
+          if (Object.keys(content2).length > 0) {
+            try {
+              instance.setProperties(content2);
+            } catch {
+              // variants matter more than content on retry
+            }
+          }
+        }
+        mismatches = variantsMatch(readVariants(instance), critical);
+        if (mismatches.length > 0) {
+          throw new Error(
+            `swapped but variants drifted: ${mismatches.join("; ")}`,
+          );
+        }
+      }
+    }
+  }
+
+  const nestedWarnings = activeRule.nestedApply?.length
+    ? await applyNestedRules(instance, activeRule.nestedApply, captured)
+    : [];
+  const slotWarnings = activeRule.slotText?.length
+    ? await applySlotTextRules(instance, activeRule.slotText, captured)
+    : [];
+  const warnings = [...nestedWarnings, ...slotWarnings];
+  if (warnings.length > 0) {
+    // Soft failure — swap succeeded; surface nested/slot issues.
+    throw new Error(`swapped with warnings: ${warnings.join("; ")}`);
   }
 }
 
@@ -400,7 +705,9 @@ export async function applyComponentSwaps(
         const message = String((error as Error).message ?? error);
         if (
           message.startsWith("swapped but content props failed:") ||
-          message.startsWith("swapped but variants drifted:")
+          message.startsWith("swapped but variants drifted:") ||
+          message.startsWith("swapped with warnings:") ||
+          message.startsWith("swapped (default) but props failed:")
         ) {
           swapped++;
         }
@@ -417,7 +724,7 @@ export async function applyComponentSwaps(
 }
 
 /**
- * Propose a component swap: Wave A/B rule first, then deterministic name match
+ * Propose a component swap: Pass 1 rule first, then deterministic name match
  * to a published CADS component (simple default-variant swap on apply).
  */
 export function proposeComponentSwap(entry: {
@@ -439,8 +746,6 @@ export function proposeComponentSwap(entry: {
 
   const suggested = suggestCadsComponent({ key: entry.key, name: entry.name });
   if (!suggested) {
-    // Unresolved — leave for AI / manual pick (still emit an empty proposal
-    // so the fix panel can show the row).
     return {
       sourceId: `component:${entry.key}`,
       targetKey: null,

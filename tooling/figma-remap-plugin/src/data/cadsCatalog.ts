@@ -8,10 +8,15 @@
  * - Component keys identify CADS instances so everything else can be flagged
  *   as non-CADS in the component audit.
  *
- * Harvested 2026-08-04 via Figma MCP from the live CADS file
- * (DGekOeToRVifvFAhfqpeC1): collections Primitive Colors (113) / Semantic
+ * Harvested 2026-08-05 via Figma MCP from the live CADS file
+ * (DGekOeToRVifvFAhfqpeC1); key audit 2026-08-06 (Studio Global Nav +
+ * import-by-key verify). Collections Primitive Colors (113) / Semantic
  * Colors (148) / Typography (32) / Spacing & Shape (13) / Z: Special Alpha,
- * plus 87 top-level components & component sets.
+ * plus top-level components & component sets.
+ *
+ * Cut/paste (⌘X) from another library file into CADS mints **new** published
+ * keys. Detection therefore uses current keys + historical aliases + exact
+ * name match (excluding known DSCO keys — see `isCadsComponent` in audit).
  *
  * The name-pattern fallbacks keep the plugin functional against a renamed or
  * different SoT library.
@@ -20,6 +25,14 @@
 /** Collections whose color variables are primitives — never a remap target. */
 export const PRIMITIVE_COLOR_COLLECTIONS = ["Primitive Colors"];
 export const PRIMITIVE_COLLECTION_PATTERN = /primitive/i;
+
+/**
+ * CADS special-alpha colors (e.g. `focus-alpha`) used for focus-ring chrome on
+ * fill-less frames. Treated as compliant SoT even when the collection is not
+ * published / attributable via teamLibrary (common for Z: Special Alpha).
+ */
+export const SPECIAL_ALPHA_COLLECTIONS = ["Z: Special Alpha"];
+export const SPECIAL_ALPHA_COLLECTION_PATTERN = /special\s*alpha/i;
 
 /** Collections whose variables are typography primitives — use a text style instead. */
 export const TYPOGRAPHY_COLLECTIONS = ["Typography"];
@@ -33,6 +46,13 @@ export function isPrimitiveColorCollection(name: string): boolean {
   return (
     PRIMITIVE_COLOR_COLLECTIONS.includes(name) ||
     PRIMITIVE_COLLECTION_PATTERN.test(name)
+  );
+}
+
+export function isSpecialAlphaCollection(name: string): boolean {
+  return (
+    SPECIAL_ALPHA_COLLECTIONS.includes(name) ||
+    SPECIAL_ALPHA_COLLECTION_PATTERN.test(name)
   );
 }
 
@@ -117,29 +137,26 @@ export const cadsComponents: BakedComponent[] = [
   { name: "Action Block", key: "95ccfd1d74eddccc93c855ab5bdb6f0e106cc174" },
   { name: "Action Block Group", key: "12f091dc2dfbdbc52e2af65515b9e446e299dcb8" },
   { name: "Action Block Carousel", key: "a6e6ff2f0292f164287408f13af685c34523d2c4" },
-  { name: "Lab Nav", key: "d55c0edf1cdf9da3fbf0ed7874cd8b0412dc5dc0" },
+  // Published chrome nav (replaces stale Lab Nav catalog target)
+  { name: "Studio Global Nav", key: "87b0de9d9552690c5a2e3ffa7254cf48584f8537" },
   { name: "lesson metadata", key: "7d8941155e574f6974d13ca665a3287b0e82d57f" },
   { name: "Footer", key: "b3c9f21d2b5b988b32fd9494695ce40e48b21b1e" },
   { name: "Footer", key: "e02ff15b18fec8ac1ddbb7517bb04235675d0879" },
-  { name: "Sidebar V2", key: "a2f4af3436221940c13404ae7201bf3151cb40e7" },
-  { name: "Sidebar Tab Item V2", key: "f0272599a858b7b4f5c0e3f5155fe696324e4416" },
-  { name: "Sidebar Control", key: "a7251af1ab08bcc859eec25ce5ccaad43efa83db" },
-  { name: "Sidebar Tab Group V2", key: "2522edcc270a34403f65cccfe596464f5086b13f" },
-  { name: "File Manager V2", key: "abb54f5f763ce07b0013c77610be9284aa76c7cb" },
-  { name: "File Item", key: "fab16010bc26130ca9812bd19e67c33ff02306cc" },
-  { name: "File Item Icons", key: "031b78440362d1725ee2541876e770b3fe74ef3a" },
-  { name: "File Tab Row Item", key: "9ef24ef709b07a90e4519db55ecfb53c2e04a7ba" },
-  { name: "Panel Header V2", key: "fed5f8b995c5b598a033c5068316f3a1857793ad" },
-  { name: "Panel Header Building Block", key: "3deb83c08dbb6ec9731beacb41afc7bb02e541b0" },
-  { name: "Resize Handle", key: "ad8f55903b9e05ebb90bf62be928a8a3c8b79b5d" },
-  { name: "AI Tutor Chat Input", key: "6b24728a35b36a560fa1a078f47416e7bb0481e9" },
-  { name: "AI Chat Messages", key: "5df8b5202273c79891767beb6ba7bd6c55e1b4b0" },
-  { name: "AI Chat File Chip", key: "6115fa90ad8516c35630a89a3dfb31c724d5c2d9" },
-  { name: "AI Shortcut Chip", key: "c3750d3440beb1d5a90a7ac8d38070f43b446a61" },
-  { name: "AI Support Indicator", key: "dc266a0e284b4ce45df247eb561d49a8dc34011d" },
-  { name: "AI File Chip Close Button", key: "2acbc590b735b611c8ba6e6c8a86adb8d3ac9275" },
-  { name: "AI Chat File Item", key: "fe3226e7d739fa31c14ef3ae414ac909c049a77b" },
-  { name: "AI Chat File Chip", key: "2d79bdb562eb8dfd06541936a1e172fc45744a51" },
+  // Shell / layout — keys refreshed 2026-08-05 after DSCO → CADS cut/paste
+  { name: "Sidebar V2", key: "7f574489e4ac7b9b7ad75668c69acbdf46e32b67" },
+  { name: "Sidebar Tab Item V2", key: "47b4f1b285cd77d5dcdc3395f2fd926959947356" },
+  { name: "Sidebar Control", key: "e0b7ec1aa4a942e8dcd6476a7d246090e9862796" },
+  { name: "Sidebar Tab Group V2", key: "ffa62449ad79ffa1f333d7da9969587df378cf6d" },
+  { name: "File Manager V2", key: "bbd20817dad550e09561f89f01952b51d49b551f" },
+  { name: "File Item", key: "10117e91041fa1bd328c5f23ca3b15336c1b9e06" },
+  { name: "File Item Icons", key: "b82914c73a737d8e36b94886cfe99a962c5e4b43" },
+  { name: "File Tab Row Item", key: "1b39cf6c28c499b483267d06c86896924b08123d" },
+  { name: "Panel Header V2", key: "67e620bd29f2c6a44ddc694cf12dbb73b27aad38" },
+  { name: "Panel Header Building Block", key: "d61d75975c911e76662127b0cd0f331047445f17" },
+  { name: "AI Chat Input", key: "21631db16f6743b826a673366f733746b019284f" },
+  { name: "AI Chat Message", key: "2e5573fb8a81ad428869ea8b04621747b1787a64" },
+  { name: "AI Chat File Chip", key: "5bfa5b80e991b7413e03faa32def297190dd2efc" },
+  { name: "Chat File Remove Button", key: "964982bddf995c79023e3baad45b8a15e3f83716" },
   { name: "Font Awesome Icon v7", key: "a12ee7f3f8351e10c18d87a72faa3029fbe11622" },
   { name: "Font Awesome Duotone Icon v7", key: "602c2b566f07ec87710b9ba8a9609dab2e87d53e" },
   { name: "resourceItem", key: "49ac972ae6bd99f2b8cee0fbf7227b7619b123a5" },
@@ -148,4 +165,46 @@ export const cadsComponents: BakedComponent[] = [
   { name: "Header", key: "67c596ff289a71901524fd7186a6f0ddafc34b80" },
 ];
 
-export const cadsComponentKeys = new Set(cadsComponents.map((c) => c.key));
+/**
+ * Pre-cut/paste published keys (and removed components that may still appear
+ * as remote instances). Detection-only — swap targets use `cadsComponents`.
+ */
+export const cadsComponentKeyAliases: readonly string[] = [
+  // Sidebar / panel / file (2026-08-04 keys, superseded by cut/paste)
+  "a2f4af3436221940c13404ae7201bf3151cb40e7", // Sidebar V2
+  "f0272599a858b7b4f5c0e3f5155fe696324e4416", // Sidebar Tab Item V2
+  "a7251af1ab08bcc859eec25ce5ccaad43efa83db", // Sidebar Control
+  "2522edcc270a34403f65cccfe596464f5086b13f", // Sidebar Tab Group V2
+  "abb54f5f763ce07b0013c77610be9284aa76c7cb", // File Manager V2
+  "fab16010bc26130ca9812bd19e67c33ff02306cc", // File Item
+  "031b78440362d1725ee2541876e770b3fe74ef3a", // File Item Icons
+  "9ef24ef709b07a90e4519db55ecfb53c2e04a7ba", // File Tab Row Item
+  "fed5f8b995c5b598a033c5068316f3a1857793ad", // Panel Header V2
+  "3deb83c08dbb6ec9731beacb41afc7bb02e541b0", // Panel Header Building Block
+  "ad8f55903b9e05ebb90bf62be928a8a3c8b79b5d", // Resize Handle (removed from file)
+  // Lab Nav local set (🔴 Lab Global Nav) — successor is Studio Global Nav
+  "d55c0edf1cdf9da3fbf0ed7874cd8b0412dc5dc0", // Lab Nav
+  // AI (2026-08-04 keys)
+  "6b24728a35b36a560fa1a078f47416e7bb0481e9", // AI Tutor Chat Input
+  "5df8b5202273c79891767beb6ba7bd6c55e1b4b0", // AI Chat Messages
+  "6115fa90ad8516c35630a89a3dfb31c724d5c2d9", // AI Chat File Chip
+  "2d79bdb562eb8dfd06541936a1e172fc45744a51", // AI Chat File Chip (dup)
+  "c3750d3440beb1d5a90a7ac8d38070f43b446a61", // AI Shortcut Chip
+  "dc266a0e284b4ce45df247eb561d49a8dc34011d", // AI Support Indicator (removed)
+  "2acbc590b735b611c8ba6e6c8a86adb8d3ac9275", // AI File Chip Close Button
+  "fe3226e7d739fa31c14ef3ae414ac909c049a77b", // AI Chat File Item (removed)
+];
+
+export const cadsComponentKeys = new Set([
+  ...cadsComponents.map((c) => c.key),
+  ...cadsComponentKeyAliases,
+]);
+
+/** Normalized display names for cut/paste key-churn fallback. */
+export const cadsComponentNames = new Set(
+  cadsComponents.map((c) => c.name.trim().toLocaleLowerCase()),
+);
+
+export function isKnownCadsComponentName(name: string): boolean {
+  return cadsComponentNames.has(name.trim().toLocaleLowerCase());
+}

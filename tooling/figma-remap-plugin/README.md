@@ -9,12 +9,21 @@ optional category-scoped remaps.
 locally in Figma Desktop: `Plugins → Development → Import plugin from
 manifest…` → `tooling/figma-remap-plugin/manifest.json`.
 
+## DSCO → CADS migration map
+
+Deterministic component + prop mapping (Pass 1 finalized):
+[`docs/DSCO_TO_CADS_COMPONENT_MAP.md`](docs/DSCO_TO_CADS_COMPONENT_MAP.md).
+Pass 1 Waves A–E are wired in `src/data/componentSwaps.ts` (flat remaps +
+nested/slot apply for composed sets). Pass 2 (#47–76) is deferred.
+
 ## How it works
 
-1. **Auto-load CADS** on open (requires the CADS library enabled in the file via
-   Assets → Libraries). Uses the baked text-style catalog. Variables prefer a
-   baked catalog when present; otherwise they import in parallel (not one-by-one)
-   and cache in `clientStorage` for the next open.
+1. **Auto-load CADS** on open. In consumer files this requires the CADS library
+   enabled via Assets → Libraries. Inside the CADS source file itself
+   (`DGekOeToRVifvFAhfqpeC1`) the plugin loads **local** variables/styles
+   instead (a library can’t enable itself). Uses the baked text-style catalog.
+   Variables prefer a baked catalog when present; otherwise they import in
+   parallel (not one-by-one) and cache in `clientStorage` for the next open.
 2. **Audit selection** — walks surface layers for typography / shape / modes.
    Non-CADS instances are still one component finding each, but **color paints
    inside instances are audited** (marked “in instance”) so fills can be
@@ -23,9 +32,8 @@ manifest…` → `tooling/figma-remap-plugin/manifest.json`.
 3. **Summary cards** — Colors / Typography / Shape / Modes / Components with
    issue counts. Category pages for colors / typography / shape / components
    use **Prepare fixes** to open a scoped remap panel. Components shows
-   DSCO→CADS swap suggestions inline; Wave A/B components (Button, Link, Tag,
-   Chip, Close Icon Button, Alert, Toast, Notification Banner, Font Awesome
-   Icon / Duotone) can be swapped with prop remapping.
+   DSCO→CADS swap suggestions inline; Pass 1 components (#1–46 + FA icons)
+   can be swapped with prop remapping (including nested/slot apply).
 4. **Apply** — remaps selected mappings (or swaps component instances),
    optionally sets/clears modes, then re-audits so the summary updates. Fully
    clean → green pass state.
@@ -36,8 +44,9 @@ Baked from the CADS file (`src/data/cadsCatalog.ts` + `cadsTextStyles.ts`):
 
 - **Colors → semantic only.** Primitives and foreign/unbound colors are
   findings (including paints nested in component instances); primitives are
-  never offered as remap targets. `#9747ff` (Figma component outline) is
-  always excluded. Remaps are **split by layer role** (text fill / non-text
+  never offered as remap targets. CADS `Z: Special Alpha` (`focus-alpha`
+  focus-ring fill) is always compliant / silent. `#9747ff` (Figma component
+  outline) is always excluded. Remaps are **split by layer role** (text fill / non-text
   fill / stroke) so one primitive cannot receive a single `background/*` or
   `text/*` target for mixed usages. Deterministic remaps are limited to the
   curated DSCO Variables → CADS alias map (`src/data/dscoColors.ts`) plus the
@@ -57,12 +66,22 @@ Baked from the CADS file (`src/data/cadsCatalog.ts` + `cadsTextStyles.ts`):
   corner). DSCO/raw px bands map to `shape/sm|md|lg|xl|round`.
 - **Modes → foreign explicit modes** on frames.
 - **Components → detached suspects + remote non-CADS libraries.** CADS
-  instances and **local (this-file) components are silent**. Suggestions prefer
-  published DSCO component keys → CADS names (`src/data/dscoComponents.ts`),
-  then DSCO name rewrites, then exact CADS name match, then optional AI.
-  Wave A/B swaps (`src/data/componentSwaps.ts`) import the CADS set,
-  `swapComponent`, and remap variants/text/booleans; name/AI matches do a
-  simple default-variant swap (verify props).
+  instances and **local (this-file) components are silent** in consumer files
+  (exception: the `(OLD) DSCO Components` source file itself — key
+  `ahYTsb3I7rsJNW0n2vnXm6` — where locals remain findings, including nested
+  instances inside composites). Detection uses `figma.fileKey`, so the
+  manifest sets `enablePrivatePluginApi`. CADS detection: baked publish keys
+  (+ historical aliases) **or** exact name match against the catalog when the
+  key is not a known DSCO key — so cut/paste (⌘X) into CADS (new key on
+  republish) stays silent without waiting for a catalog rebuild. Suggestions
+  prefer published DSCO component keys → CADS names
+  (`src/data/dscoComponents.ts`), then DSCO name rewrites, then exact CADS
+  name match, then optional AI. Pass 1 swaps (`src/data/componentSwaps.ts`)
+  import the CADS set, `swapComponent`, remap variants/text/booleans, then
+  nested-apply / slot-TEXT for composed sets; name/AI matches do a simple
+  default-variant swap (verify props).
+  Refresh component keys after library moves via Figma MCP harvest into
+  `src/data/cadsCatalog.ts`.
 - **Hidden layers** are bucketed separately in findings; the fix panel has
   **Include hidden layers in fixes** so boolean-hidden component internals can
   be remapped (and are included in AI analysis when that option is on).
@@ -127,7 +146,7 @@ src/ui/template.html    shell styles
 src/data/cadsTextStyles.ts  baked style keys
 src/data/cadsCatalog.ts     component keys + collection policy
 src/data/dscoComponents.ts  DSCO → CADS component suggestions
-src/data/componentSwaps.ts  Wave A/B swap + prop rewrite rules
+src/data/componentSwaps.ts  Pass 1 (A–E) swap + prop / nested rewrite rules
 src/data/dscoColors.ts      DSCO Variables → CADS semantic color rewrites
 src/data/dscoStyles.ts      DSCO Styles fills → CADS semantic rewrites
 ```

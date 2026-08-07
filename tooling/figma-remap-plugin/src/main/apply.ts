@@ -169,7 +169,14 @@ async function applyFontFamily(
     throw new Error("mixed font on layer — apply per-character in Figma");
   }
   const style = text.fontName.style;
-  await figma.loadFontAsync({ family, style });
+  // Only the destination face must load — same missing-font rule as Glyphs.
+  try {
+    await figma.loadFontAsync({ family, style });
+  } catch {
+    throw new Error(
+      `The font "${family} ${style}" could not be loaded — install the FA7 desktop font (or use your Kit face; kits are already current)`,
+    );
+  }
   text.fontName = { family, style };
 }
 
@@ -179,6 +186,62 @@ function isStyleSource(baseSourceId: string): boolean {
 
 function isFontAwesomeSource(baseSourceId: string): boolean {
   return baseSourceId.startsWith("fontawesome:");
+}
+
+async function resolveTargetVariable(
+  key: string,
+  importedByKey: Map<string, Variable>,
+): Promise<Variable | null> {
+  const cached = importedByKey.get(key);
+  if (cached) return cached;
+  try {
+    const imported = await figma.variables.importVariableByKeyAsync(key);
+    importedByKey.set(key, imported);
+    return imported;
+  } catch {
+    // In the CADS source file, targets are local (library can't self-import).
+  }
+  try {
+    const locals = await figma.variables.getLocalVariablesAsync();
+    for (const variable of locals) {
+      if (variable.key === key) {
+        importedByKey.set(key, variable);
+        return variable;
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+async function resolveTargetTextStyle(
+  key: string,
+  importedStylesByKey: Map<string, TextStyle>,
+): Promise<TextStyle | null> {
+  const cached = importedStylesByKey.get(key);
+  if (cached) return cached;
+  try {
+    const imported = (await figma.importStyleByKeyAsync(key)) as TextStyle;
+    if (imported.type === "TEXT") {
+      importedStylesByKey.set(key, imported);
+      return imported;
+    }
+  } catch {
+    // Local fallback below.
+  }
+  try {
+    const locals = await figma.getLocalTextStylesAsync();
+    for (const style of locals) {
+      if (style.key === key) {
+        importedStylesByKey.set(key, style);
+        return style;
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return null;
 }
 
 export async function applyMappings(
@@ -227,17 +290,12 @@ export async function applyMappings(
     if (faTarget) {
       // Font family upgrade — no variable/style import.
     } else if (styleTarget) {
-      style =
-        importedStylesByKey.get(mapping.targetKey) ??
-        ((await figma
-          .importStyleByKeyAsync(mapping.targetKey)
-          .catch(() => null)) as TextStyle | null);
+      style = await resolveTargetTextStyle(
+        mapping.targetKey,
+        importedStylesByKey,
+      );
     } else {
-      variable =
-        importedByKey.get(mapping.targetKey) ??
-        (await figma.variables
-          .importVariableByKeyAsync(mapping.targetKey)
-          .catch(() => null));
+      variable = await resolveTargetVariable(mapping.targetKey, importedByKey);
     }
     if (!source || (faTarget ? !faFamily : !variable && !style)) {
       failures.push({

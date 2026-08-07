@@ -104,7 +104,7 @@
     );
     if (!apiKey) return null;
     const providerRaw = readDefine(
-      true ? "anthropic" : "anthropic"
+      true ? "openai" : "anthropic"
     ).toLowerCase();
     const provider = providerRaw === "openai" ? "openai" : "anthropic";
     const model = readDefine(
@@ -116,12 +116,17 @@
   // src/data/cadsCatalog.ts
   var PRIMITIVE_COLOR_COLLECTIONS = ["Primitive Colors"];
   var PRIMITIVE_COLLECTION_PATTERN = /primitive/i;
+  var SPECIAL_ALPHA_COLLECTIONS = ["Z: Special Alpha"];
+  var SPECIAL_ALPHA_COLLECTION_PATTERN = /special\s*alpha/i;
   var TYPOGRAPHY_COLLECTIONS = ["Typography"];
   var TYPOGRAPHY_COLLECTION_PATTERN = /typograph|font/i;
   var SHAPE_COLLECTIONS = ["Spacing & Shape"];
   var SHAPE_COLLECTION_PATTERN = /shape|radius/i;
   function isPrimitiveColorCollection(name) {
     return PRIMITIVE_COLOR_COLLECTIONS.includes(name) || PRIMITIVE_COLLECTION_PATTERN.test(name);
+  }
+  function isSpecialAlphaCollection(name) {
+    return SPECIAL_ALPHA_COLLECTIONS.includes(name) || SPECIAL_ALPHA_COLLECTION_PATTERN.test(name);
   }
   function isTypographyCollection(name) {
     return TYPOGRAPHY_COLLECTIONS.includes(name) || TYPOGRAPHY_COLLECTION_PATTERN.test(name);
@@ -191,29 +196,26 @@
     { name: "Action Block", key: "95ccfd1d74eddccc93c855ab5bdb6f0e106cc174" },
     { name: "Action Block Group", key: "12f091dc2dfbdbc52e2af65515b9e446e299dcb8" },
     { name: "Action Block Carousel", key: "a6e6ff2f0292f164287408f13af685c34523d2c4" },
-    { name: "Lab Nav", key: "d55c0edf1cdf9da3fbf0ed7874cd8b0412dc5dc0" },
+    // Published chrome nav (replaces stale Lab Nav catalog target)
+    { name: "Studio Global Nav", key: "87b0de9d9552690c5a2e3ffa7254cf48584f8537" },
     { name: "lesson metadata", key: "7d8941155e574f6974d13ca665a3287b0e82d57f" },
     { name: "Footer", key: "b3c9f21d2b5b988b32fd9494695ce40e48b21b1e" },
     { name: "Footer", key: "e02ff15b18fec8ac1ddbb7517bb04235675d0879" },
-    { name: "Sidebar V2", key: "a2f4af3436221940c13404ae7201bf3151cb40e7" },
-    { name: "Sidebar Tab Item V2", key: "f0272599a858b7b4f5c0e3f5155fe696324e4416" },
-    { name: "Sidebar Control", key: "a7251af1ab08bcc859eec25ce5ccaad43efa83db" },
-    { name: "Sidebar Tab Group V2", key: "2522edcc270a34403f65cccfe596464f5086b13f" },
-    { name: "File Manager V2", key: "abb54f5f763ce07b0013c77610be9284aa76c7cb" },
-    { name: "File Item", key: "fab16010bc26130ca9812bd19e67c33ff02306cc" },
-    { name: "File Item Icons", key: "031b78440362d1725ee2541876e770b3fe74ef3a" },
-    { name: "File Tab Row Item", key: "9ef24ef709b07a90e4519db55ecfb53c2e04a7ba" },
-    { name: "Panel Header V2", key: "fed5f8b995c5b598a033c5068316f3a1857793ad" },
-    { name: "Panel Header Building Block", key: "3deb83c08dbb6ec9731beacb41afc7bb02e541b0" },
-    { name: "Resize Handle", key: "ad8f55903b9e05ebb90bf62be928a8a3c8b79b5d" },
-    { name: "AI Tutor Chat Input", key: "6b24728a35b36a560fa1a078f47416e7bb0481e9" },
-    { name: "AI Chat Messages", key: "5df8b5202273c79891767beb6ba7bd6c55e1b4b0" },
-    { name: "AI Chat File Chip", key: "6115fa90ad8516c35630a89a3dfb31c724d5c2d9" },
-    { name: "AI Shortcut Chip", key: "c3750d3440beb1d5a90a7ac8d38070f43b446a61" },
-    { name: "AI Support Indicator", key: "dc266a0e284b4ce45df247eb561d49a8dc34011d" },
-    { name: "AI File Chip Close Button", key: "2acbc590b735b611c8ba6e6c8a86adb8d3ac9275" },
-    { name: "AI Chat File Item", key: "fe3226e7d739fa31c14ef3ae414ac909c049a77b" },
-    { name: "AI Chat File Chip", key: "2d79bdb562eb8dfd06541936a1e172fc45744a51" },
+    // Shell / layout — keys refreshed 2026-08-05 after DSCO → CADS cut/paste
+    { name: "Sidebar V2", key: "7f574489e4ac7b9b7ad75668c69acbdf46e32b67" },
+    { name: "Sidebar Tab Item V2", key: "47b4f1b285cd77d5dcdc3395f2fd926959947356" },
+    { name: "Sidebar Control", key: "e0b7ec1aa4a942e8dcd6476a7d246090e9862796" },
+    { name: "Sidebar Tab Group V2", key: "ffa62449ad79ffa1f333d7da9969587df378cf6d" },
+    { name: "File Manager V2", key: "bbd20817dad550e09561f89f01952b51d49b551f" },
+    { name: "File Item", key: "10117e91041fa1bd328c5f23ca3b15336c1b9e06" },
+    { name: "File Item Icons", key: "b82914c73a737d8e36b94886cfe99a962c5e4b43" },
+    { name: "File Tab Row Item", key: "1b39cf6c28c499b483267d06c86896924b08123d" },
+    { name: "Panel Header V2", key: "67e620bd29f2c6a44ddc694cf12dbb73b27aad38" },
+    { name: "Panel Header Building Block", key: "d61d75975c911e76662127b0cd0f331047445f17" },
+    { name: "AI Chat Input", key: "21631db16f6743b826a673366f733746b019284f" },
+    { name: "AI Chat Message", key: "2e5573fb8a81ad428869ea8b04621747b1787a64" },
+    { name: "AI Chat File Chip", key: "5bfa5b80e991b7413e03faa32def297190dd2efc" },
+    { name: "Chat File Remove Button", key: "964982bddf995c79023e3baad45b8a15e3f83716" },
     { name: "Font Awesome Icon v7", key: "a12ee7f3f8351e10c18d87a72faa3029fbe11622" },
     { name: "Font Awesome Duotone Icon v7", key: "602c2b566f07ec87710b9ba8a9609dab2e87d53e" },
     { name: "resourceItem", key: "49ac972ae6bd99f2b8cee0fbf7227b7619b123a5" },
@@ -221,19 +223,494 @@
     { name: "Bracket Guide", key: "e7f6bc9973fb3094855d4b6f4aba50526c8d0265" },
     { name: "Header", key: "67c596ff289a71901524fd7186a6f0ddafc34b80" }
   ];
-  var cadsComponentKeys = new Set(cadsComponents.map((c) => c.key));
+  var cadsComponentKeyAliases = [
+    // Sidebar / panel / file (2026-08-04 keys, superseded by cut/paste)
+    "a2f4af3436221940c13404ae7201bf3151cb40e7",
+    // Sidebar V2
+    "f0272599a858b7b4f5c0e3f5155fe696324e4416",
+    // Sidebar Tab Item V2
+    "a7251af1ab08bcc859eec25ce5ccaad43efa83db",
+    // Sidebar Control
+    "2522edcc270a34403f65cccfe596464f5086b13f",
+    // Sidebar Tab Group V2
+    "abb54f5f763ce07b0013c77610be9284aa76c7cb",
+    // File Manager V2
+    "fab16010bc26130ca9812bd19e67c33ff02306cc",
+    // File Item
+    "031b78440362d1725ee2541876e770b3fe74ef3a",
+    // File Item Icons
+    "9ef24ef709b07a90e4519db55ecfb53c2e04a7ba",
+    // File Tab Row Item
+    "fed5f8b995c5b598a033c5068316f3a1857793ad",
+    // Panel Header V2
+    "3deb83c08dbb6ec9731beacb41afc7bb02e541b0",
+    // Panel Header Building Block
+    "ad8f55903b9e05ebb90bf62be928a8a3c8b79b5d",
+    // Resize Handle (removed from file)
+    // Lab Nav local set (🔴 Lab Global Nav) — successor is Studio Global Nav
+    "d55c0edf1cdf9da3fbf0ed7874cd8b0412dc5dc0",
+    // Lab Nav
+    // AI (2026-08-04 keys)
+    "6b24728a35b36a560fa1a078f47416e7bb0481e9",
+    // AI Tutor Chat Input
+    "5df8b5202273c79891767beb6ba7bd6c55e1b4b0",
+    // AI Chat Messages
+    "6115fa90ad8516c35630a89a3dfb31c724d5c2d9",
+    // AI Chat File Chip
+    "2d79bdb562eb8dfd06541936a1e172fc45744a51",
+    // AI Chat File Chip (dup)
+    "c3750d3440beb1d5a90a7ac8d38070f43b446a61",
+    // AI Shortcut Chip
+    "dc266a0e284b4ce45df247eb561d49a8dc34011d",
+    // AI Support Indicator (removed)
+    "2acbc590b735b611c8ba6e6c8a86adb8d3ac9275",
+    // AI File Chip Close Button
+    "fe3226e7d739fa31c14ef3ae414ac909c049a77b"
+    // AI Chat File Item (removed)
+  ];
+  var cadsComponentKeys = /* @__PURE__ */ new Set([
+    ...cadsComponents.map((c) => c.key),
+    ...cadsComponentKeyAliases
+  ]);
+  var cadsComponentNames = new Set(
+    cadsComponents.map((c) => c.name.trim().toLocaleLowerCase())
+  );
+  function isKnownCadsComponentName(name) {
+    return cadsComponentNames.has(name.trim().toLocaleLowerCase());
+  }
+
+  // src/data/dscoComponents.ts
+  var DSCO_COMPONENTS_FILE_KEY = "ahYTsb3I7rsJNW0n2vnXm6";
+  var dscoComponents = [
+    // Actions
+    { key: "cbc707599ceb83eaa1cee51d698831793e0ebde6", name: "Button", cadsName: "Button" },
+    {
+      key: "0478bc835a0e7e1593fc0e6f3044f54730b66861",
+      name: "Destructive Button",
+      cadsName: "Button"
+    },
+    {
+      key: "385632d619eb1dffc825a323a3f596b2011f8bb7",
+      name: "Close Icon Button",
+      cadsName: "Close Icon Button"
+    },
+    {
+      key: "148a82188be79992d7015f52492071c21a21f705",
+      name: "Segmented Button Group",
+      cadsName: "Segmented Button Group"
+    },
+    {
+      key: "25783a815c161998fb765a4242de17ddfcef2e81",
+      name: "Segmented Button Block",
+      cadsName: "Segmented Button Block"
+    },
+    {
+      key: "1ba27ea5b212558f4281b0278785db09d2b65262",
+      name: "Icon Toggle Button",
+      cadsName: "Icon Toggle"
+    },
+    {
+      key: "c134c8ce1f97a8067852366746163bf5a49cfa07",
+      name: "Icon Toggle Group",
+      cadsName: "Icon Toggle + Label"
+    },
+    // Forms
+    {
+      key: "57fb424c2504d5c1f7c18f185a1c36e8bf872508",
+      name: "Text Field",
+      cadsName: "Text Input"
+    },
+    {
+      key: "84db09de35208651719ba49035c8eb3e2383fc68",
+      name: "Text Area",
+      cadsName: "Text Input"
+    },
+    {
+      key: "80f93b64131f10c8f805fd5ce3bd3833436bd24a",
+      name: "Dropdown Field",
+      cadsName: "Dropdown"
+    },
+    {
+      key: "12a72e8b7d28b78b26d6d85e0884146524eb3001",
+      name: "Input Dropdown",
+      // Nested trigger in DSCO Dropdown Field → CADS Dropdown Button.
+      cadsName: "Dropdown Button"
+    },
+    {
+      key: "ab47ef51db67847667cab7b99707f8e777d64551",
+      name: "Action Dropdown",
+      cadsName: "Dropdown"
+    },
+    {
+      key: "b976343862b4c66015dec46d68395f42739ea9a5",
+      name: "Dropdown Menu Button",
+      cadsName: "Dropdown Button"
+    },
+    {
+      key: "e2274d238ee69542f85d9e9476e11e88c0bde612",
+      name: "Dropdown Menu List",
+      cadsName: "Dropdown Menu List"
+    },
+    {
+      key: "0cdd5bf757831059deb7ae24d9b7cf39f86f21d2",
+      name: "Dropdown Menu Items",
+      cadsName: "Dropdown Menu Item"
+    },
+    {
+      key: "d1962e3d41cdec427b9b37396990ce826fe5a377",
+      name: "Checkbox",
+      cadsName: "Checkbox + Label"
+    },
+    {
+      key: "bc82043dae67f96dfbbe8f1e20d02ea7ebe1d458",
+      name: "Checkbox Blocks",
+      cadsName: "Checkbox"
+    },
+    {
+      key: "2d0d2e869049a5a77b70dcf6813aa48737c1a911",
+      name: "Radio Button",
+      cadsName: "Radio Button + Label"
+    },
+    {
+      key: "dc3161c47faf5241fa98a42e7c5ada717119f365",
+      name: "Radio Buttons Blocks",
+      cadsName: "Radio Buttons Block"
+    },
+    {
+      key: "cb3807d24d76a019695d82bf799811edf15ff5f6",
+      name: "Toggle",
+      cadsName: "Toggle + Label"
+    },
+    {
+      key: "125d017876c50813f0359990eaaf45d1982ef739",
+      name: "Toggle Building Block",
+      cadsName: "Toggle"
+    },
+    {
+      key: "2c50539a1e47e54eb7ab1474e6eeb085cca393c0",
+      name: "Slider",
+      cadsName: "Slider"
+    },
+    {
+      key: "e425e8b498f0675603eaca40dcf39343fedcb62e",
+      name: "Slider Bar",
+      cadsName: "Slider Bar"
+    },
+    {
+      key: "64b2b6fca4e117da33d3d88304783c529687df7e",
+      name: "Slider Stepper",
+      cadsName: "Slider Stepper"
+    },
+    // Selection / chips
+    { key: "341373d642bfd3c0e0cbb35c1130b146945a2321", name: "Chip", cadsName: "Chip" },
+    {
+      key: "7aa7d44bba4b5dc76d69cc1d81c167cc03608832",
+      name: "Chip Group",
+      cadsName: "Chip Group"
+    },
+    { key: "8314a929103d75e027acd08445eb326299d24b74", name: "Link", cadsName: "Link" },
+    { key: "6da8599310350b4a87b2a2f8e08d34ae3376a1d1", name: "Tag", cadsName: "Tag" },
+    // Navigation
+    {
+      key: "1d12e71986a41db4dcc4e567b6923d7ed043abdd",
+      name: "Breadcrumbs",
+      cadsName: "Breadcrumbs"
+    },
+    {
+      key: "1f49b8bd60a1d0351739d42dff1644522002ea00",
+      name: "Breadcrumb Link",
+      cadsName: "Breadcrumb Links"
+    },
+    {
+      key: "d8b09d58c31343f8ad588e1edda6e650de6c423f",
+      name: "Breadcrumbs Blocks",
+      cadsName: "Breadcrumb Separators"
+    },
+    { key: "3046d24d897ea7a8fef82b9df239e2d2b7b45f7c", name: "Tab", cadsName: "Tab Item" },
+    {
+      key: "046a167c72e8ce57d1fb39e003531928d0309feb",
+      name: "Tab Group",
+      cadsName: "Tab Group"
+    },
+    {
+      key: "a66d7f369b0b0440f0b73ba48f1dd56548d5aec1",
+      name: "Pagination Dots",
+      // No DSCO→CADS Pagination migration (CADS Pagination is net-new).
+      cadsName: null
+    },
+    {
+      key: "b610aa8d09ccc8931662c7fba5cb0f734a3807f0",
+      name: "Pagination Group",
+      cadsName: null
+    },
+    // Feedback / overlays
+    { key: "3133f83a3f98b68c1f3081132b2e90bb5d1dc59a", name: "Alert", cadsName: "Alert" },
+    { key: "949e2949033f60df26231b2f73985b488f9f78fe", name: "Toast", cadsName: "Toast" },
+    {
+      key: "64993adac217e2c6daab4eb131f94531d02e65a9",
+      name: "Notification Banner",
+      cadsName: "Notification Banner"
+    },
+    {
+      key: "d9e848e2167cade785a34c19aff53552645fa03d",
+      name: "Tooltip",
+      cadsName: "Tooltip"
+    },
+    {
+      key: "a1831764f91754253ef7a8e9581f7c3fbdc5227a",
+      name: "Tooltip Icon",
+      // DSCO building block nested in Tooltip only — not CADS Icon Tooltip.
+      cadsName: null
+    },
+    {
+      key: "b26928dc5394b83a3f950653339218583b9cfccc",
+      name: "Tooltip Tails",
+      cadsName: null
+    },
+    {
+      key: "354d944bb976f7104bbcd34cf8a733aff3124964",
+      name: "Popover",
+      cadsName: "Popover"
+    },
+    {
+      key: "a635748a7e91721d93fde00682cac982b8cc1742",
+      name: "Popover Building Blocks",
+      // Nested caret helper only — never standalone; Core remapped via parent Popover.
+      cadsName: null
+    },
+    {
+      key: "402577f53a413426e8fbdb59d73a7750b64ddd79",
+      name: "Drawer",
+      cadsName: "Drawer"
+    },
+    {
+      key: "6fd36a39efde8f927febe94b2d20a77cca842844",
+      name: "Dialog",
+      cadsName: "Dialog"
+    },
+    { key: "5978e70b44d30d937b300a136fd1e5c46a8a70c1", name: "Modal", cadsName: "Modal" },
+    {
+      key: "e6e3c0cfea5a588c0e936ab7dca00b3919c28a07",
+      name: "Content Divider",
+      cadsName: "Content Divider"
+    },
+    // Media
+    { key: "8c94db45d91aaa619d204ea00fc8c72986182cfc", name: "Video", cadsName: "Video" },
+    {
+      key: "fa1a30885e3ac8a208c390bb1d0c79b2fef659d0",
+      name: "Play Button",
+      cadsName: "Play Button"
+    },
+    {
+      key: "645a7bf0fba836e19dcdc0afbfd1f74bc0d85cf5",
+      name: "Carousel",
+      cadsName: "Carousel"
+    },
+    {
+      key: "9e43cc3f8b484812e1265cf6bcaa3e4176965cdf",
+      name: "Carousal Nav Buttons",
+      cadsName: "Carousal Nav Buttons"
+    },
+    {
+      key: "2606e5170df63663236d53010e2260932e3b9445",
+      name: "Action Block",
+      cadsName: "Action Block"
+    },
+    {
+      key: "868d8d3e54e28e95ae284876db38d7271651be4f",
+      name: "Action Block Group",
+      cadsName: "Action Block Group"
+    },
+    {
+      key: "f8f95d95f31825a834ca1a08ee78a10bbdfabee4",
+      name: "Action Block Carousel",
+      cadsName: "Action Block Carousel"
+    },
+    // Shell / layout
+    {
+      key: "284b25f1184ef019c06cc629e4fdaa38e75249f1",
+      name: "Lab Nav",
+      cadsName: "Studio Global Nav"
+    },
+    {
+      key: "21391676db29a79461cdf45ec70bba6641772d5b",
+      name: "Sidebar V2",
+      cadsName: "Sidebar V2"
+    },
+    {
+      key: "14b1e0b45ce2bf6a0dd67668e9960490605e62b9",
+      name: "Sidebar Tab Item V2",
+      cadsName: "Sidebar Tab Item V2"
+    },
+    {
+      key: "36742e65b461a7717434e4d0589ecfb3158bd56c",
+      name: "Sidebar Tab Group V2",
+      cadsName: "Sidebar Tab Group V2"
+    },
+    {
+      key: "f668e066487a10529ee420c65d14ea5ad4bd5eee",
+      name: "Sidebar Control",
+      cadsName: "Sidebar Control"
+    },
+    {
+      key: "b15d0603786020456041d9dfc6ce5fbc1ea8a795",
+      name: "File Manager V2",
+      cadsName: "File Manager V2"
+    },
+    {
+      key: "f228313a492b61b8a0809cee51776cdffe280dbe",
+      name: "File Item",
+      cadsName: "File Item"
+    },
+    {
+      key: "bb9040fe00af46f8f26380c8bd789587209f92f5",
+      name: "File Item Icons",
+      cadsName: "File Item Icons"
+    },
+    {
+      key: "6080fcf2f90e8cac1b083dc62ea7cb7a1cb747db",
+      name: "File Tab Row Item",
+      cadsName: "File Tab Row Item"
+    },
+    {
+      key: "965f87360ad7d05dc3f3589361e40bb7cd11b5de",
+      name: "Panel Header V2",
+      cadsName: "Panel Header V2"
+    },
+    {
+      key: "182556a60cdf5211857d30c94e575e35aa13aef7",
+      name: "Panel Header Building Block",
+      cadsName: "Panel Header Building Block"
+    },
+    {
+      key: "cab3283affeb303907a9a172225e382b759f68dd",
+      name: "Resize Handle",
+      cadsName: null
+    },
+    { key: "908f98448d94d05c5a172f575d47cf2398a2299f", name: "Logo", cadsName: null },
+    // AI
+    {
+      key: "7dd35ac4dfa58413fcd9520dc8bf091b1cd617bf",
+      name: "AI Tutor Chat Input",
+      cadsName: "AI Tutor Chat Input"
+    },
+    {
+      key: "1968b2a676cdb5194012c76a0290bd1e72410cb1",
+      name: "AI Chat Messages",
+      cadsName: "AI Chat Messages"
+    },
+    {
+      key: "657aa0a29f7ad03f01ae4a21119471ca28714a8a",
+      name: "AI Chat File Chip",
+      cadsName: "AI Chat File Chip"
+    },
+    {
+      key: "642b5ebddbdd848f3f0174950db780003a344040",
+      name: "AI Chat File Chip",
+      cadsName: "AI Chat File Chip"
+    },
+    {
+      key: "fc8d56dba42d05aee6a8c1baf7f7ceab48caaaf9",
+      name: "AI Shortcut Chip",
+      cadsName: "AI Shortcut Chip"
+    },
+    {
+      key: "4bd2e86e9492638295155f36675a8549e23f2547",
+      name: "AI Support Indicator",
+      cadsName: null
+    },
+    {
+      key: "fa8a60054807a87521a0207d968f29b4acb6db89",
+      name: "AI File Chip Close Button",
+      cadsName: "AI File Chip Close Button"
+    },
+    {
+      key: "5cc57671aeafa2f61aec50f6a630297347b3a26f",
+      name: "AI Chat File Item",
+      cadsName: null
+    },
+    { key: "b8baba99082dcb77c42cb4f599869b9471a5aab7", name: "AI Bot", cadsName: null },
+    // Icons
+    {
+      key: "051a05d840dcf0a8220c056833c040fc581dff41",
+      name: "Font Awesome Icon",
+      cadsName: "Font Awesome Icon v7"
+    },
+    {
+      key: "2073beaaf6394b66220e04a5588a35e08d66daf2",
+      name: "Font Awesome Duotone Icon",
+      cadsName: "Font Awesome Duotone Icon v7"
+    }
+  ];
+  var dscoComponentKeys = new Set(dscoComponents.map((c) => c.key));
+  var cadsNameByNormalized = new Map(
+    cadsComponents.map((component) => [
+      component.name.trim().toLocaleLowerCase(),
+      component.name
+    ])
+  );
+  var cadsByDscoKey = new Map(
+    dscoComponents.filter((entry) => entry.cadsName).map((entry) => [entry.key, entry.cadsName])
+  );
+  var DSCO_NAME_REWRITES = {
+    "destructive button": "Button",
+    "icon toggle button": "Icon Toggle",
+    "icon toggle group": "Icon Toggle + Label",
+    "text field": "Text Input",
+    "text area": "Text Input",
+    "dropdown field": "Dropdown",
+    "input dropdown": "Dropdown Button",
+    "action dropdown": "Dropdown",
+    "dropdown menu button": "Dropdown Button",
+    "dropdown menu items": "Dropdown Menu Item",
+    checkbox: "Checkbox + Label",
+    "checkbox blocks": "Checkbox",
+    "checkbox blocks ": "Checkbox",
+    "radio button": "Radio Button + Label",
+    "radio buttons blocks": "Radio Buttons Block",
+    toggle: "Toggle + Label",
+    "toggle building block": "Toggle",
+    tab: "Tab Item",
+    "breadcrumb link": "Breadcrumb Links",
+    "breadcrumbs blocks": "Breadcrumb Separators",
+    "lab nav": "Studio Global Nav",
+    "studio global nav": "Studio Global Nav",
+    "font awesome icon": "Font Awesome Icon v7",
+    "font awesome duotone icon": "Font Awesome Duotone Icon v7"
+  };
+  function normalizeName(name) {
+    return name.trim().toLocaleLowerCase();
+  }
+  function suggestCadsComponent(source) {
+    var _a;
+    if (source.key) {
+      const byKey = cadsByDscoKey.get(source.key);
+      if (byKey) return byKey;
+      if (dscoComponentKeys.has(source.key)) return null;
+    }
+    const normalized = normalizeName(source.name);
+    const rewrite = DSCO_NAME_REWRITES[normalized];
+    if (rewrite) return rewrite;
+    return (_a = cadsNameByNormalized.get(normalized)) != null ? _a : null;
+  }
 
   // src/shared/fontAwesome.ts
   var FA_FAMILY_TARGET_PREFIX = "fontfamily:";
   function isFontAwesomeFamily(family) {
     return /^font awesome\b/i.test(family.trim());
   }
+  function isFontAwesomeKitFamily(family) {
+    return isFontAwesomeFamily(family) && /\bkit\b/i.test(family);
+  }
   function isFontAwesome7Family(family) {
     return /^font awesome\s+7\b/i.test(family.trim());
   }
+  function isFontAwesomeCurrentFamily(family) {
+    return isFontAwesome7Family(family) || isFontAwesomeKitFamily(family);
+  }
   function toFontAwesome7Family(family) {
     const trimmed = family.trim();
-    if (!isFontAwesomeFamily(trimmed) || isFontAwesome7Family(trimmed)) {
+    if (!isFontAwesomeFamily(trimmed) || isFontAwesomeCurrentFamily(trimmed)) {
       return null;
     }
     const withVersion = trimmed.match(/^font awesome\s+\d+\s+(.+)$/i);
@@ -337,6 +814,7 @@
   }
 
   // src/data/cadsTextStyles.ts
+  var CADS_FILE_KEY = "DGekOeToRVifvFAhfqpeC1";
   var bakedTextStyles = [
     {
       "key": "936275bca7e31fcfad3aba20d6dcacb1e84a39d0",
@@ -1135,6 +1613,11 @@
       component.name
     ])
   );
+  function isCadsComponent(key, name) {
+    if (cadsComponentKeys.has(key)) return true;
+    if (dscoComponentKeys.has(key)) return false;
+    return isKnownCadsComponentName(name);
+  }
   function isFigmaComponentOutlineHex(hex) {
     return /^#9747ff([0-9a-f]{2})?$/i.test(hex.trim());
   }
@@ -1333,6 +1816,7 @@
   function isColorFinding(entry) {
     if (entry.resolvedType !== "COLOR") return false;
     if (entry.flag === "primitive") return true;
+    if (isSpecialAlphaCollection(entry.collectionName)) return false;
     return !entry.isSourceOfTruth;
   }
   function isTypographyVariableFinding(entry) {
@@ -1350,6 +1834,7 @@
     if (selection.length === 0) {
       throw new Error("Select at least one frame to audit.");
     }
+    const silenceLocalComponents = figma.fileKey !== DSCO_COMPONENTS_FILE_KEY;
     const libraryByCollectionKey = /* @__PURE__ */ new Map();
     try {
       const libraryCollections = await figma.teamLibrary.getAvailableLibraryVariableCollectionsAsync();
@@ -1514,7 +1999,7 @@
         const size2 = node.fontSize;
         if (isFontAwesomeFamily(font2.family)) {
           fontAwesomeNodeIds.add(node.id);
-          if (isFontAwesome7Family(font2.family)) {
+          if (isFontAwesomeCurrentFamily(font2.family)) {
             recordCompliance(true, usage.hidden);
             return;
           }
@@ -1785,7 +2270,10 @@
       if (existing) {
         existing.instanceCount++;
         existing.usages.push(usage);
-        recordCompliance(existing.isCads || existing.isLocal, usage.hidden);
+        recordCompliance(
+          existing.isCads || existing.isLocal && silenceLocalComponents,
+          usage.hidden
+        );
         if (existing.sampleNodeNames.length < 5 && !existing.sampleNodeNames.includes(node.name)) {
           existing.sampleNodeNames.push(node.name);
         }
@@ -1794,14 +2282,17 @@
       const entry = {
         key,
         name: owner.name,
-        isCads: cadsComponentKeys.has(key),
+        isCads: isCadsComponent(key, owner.name),
         isLocal: !main.remote,
         instanceCount: 1,
         sampleNodeNames: [node.name],
         usages: [usage]
       };
       components.set(key, entry);
-      recordCompliance(entry.isCads || entry.isLocal, usage.hidden);
+      recordCompliance(
+        entry.isCads || entry.isLocal && silenceLocalComponents,
+        usage.hidden
+      );
     }
     function visitPossibleDetachedComponent(node) {
       if (node.type !== "FRAME" && node.type !== "GROUP") return;
@@ -1907,7 +2398,7 @@
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
       if (node.type === "INSTANCE") {
-        if (!inInstance) await visitInstance(node);
+        if (!inInstance || !silenceLocalComponents) await visitInstance(node);
         await visitPaints(node, "fills", true);
         await visitPaints(node, "strokes", true);
         for (const child of node.children) {
@@ -1999,7 +2490,7 @@
     const findingRadii = Array.from(rawRadii.values()).sort(
       (a, b) => a.value - b.value
     );
-    const findingComponents = Array.from(components.values()).filter((c) => !c.isCads && !c.isLocal).sort((a, b) => b.instanceCount - a.instanceCount);
+    const findingComponents = Array.from(components.values()).filter((c) => !c.isCads && !(c.isLocal && silenceLocalComponents)).sort((a, b) => b.instanceCount - a.instanceCount);
     const findingDetachedComponents = Array.from(detachedComponents.values()).sort(
       (a, b) => b.usages.length - a.usages.length
     );
@@ -2086,8 +2577,12 @@
   var bakedVariables = [];
 
   // src/main/catalog.ts
+  var LOCAL_SOT_LIBRARY_NAME = "This file";
   var CACHE_KEY = "cads-variable-catalog-v1";
   var IMPORT_CONCURRENCY = 24;
+  function isCadsSourceFile() {
+    return figma.fileKey === CADS_FILE_KEY;
+  }
   async function mapPool(items, concurrency, fn) {
     const results = new Array(items.length);
     let next = 0;
@@ -2229,6 +2724,72 @@
       catalog: {
         libraryName,
         collections: catalogCollections,
+        variables,
+        textStyles: [],
+        textStyleSource: "none"
+      },
+      importedByKey
+    };
+  }
+  async function buildLocalCatalog(onProgress) {
+    var _a, _b;
+    const collections = await figma.variables.getLocalVariableCollectionsAsync();
+    const locals = await figma.variables.getLocalVariablesAsync();
+    if (collections.length === 0) {
+      throw new Error(
+        "This CADS file has no local variable collections to audit against."
+      );
+    }
+    const collectionById = new Map(
+      collections.map((collection) => [collection.id, collection])
+    );
+    const countByCollectionId = /* @__PURE__ */ new Map();
+    const variables = [];
+    const importedByKey = /* @__PURE__ */ new Map();
+    const total = locals.length;
+    let done = 0;
+    onProgress(0, Math.max(total, 1));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    for (const variable of locals) {
+      const collectionId = safeVariableCollectionId(variable);
+      const collection = collectionId ? (_a = collectionById.get(collectionId)) != null ? _a : null : null;
+      if (!collection) {
+        done++;
+        continue;
+      }
+      countByCollectionId.set(
+        collection.id,
+        ((_b = countByCollectionId.get(collection.id)) != null ? _b : 0) + 1
+      );
+      importedByKey.set(variable.key, variable);
+      variables.push({
+        key: variable.key,
+        variableId: variable.id,
+        name: variable.name,
+        resolvedType: variable.resolvedType,
+        collectionKey: collection.key,
+        collectionName: collection.name,
+        values: await resolveDisplayValues(variable, collection)
+      });
+      done++;
+      if (done % IMPORT_CONCURRENCY === 0 || done === total) {
+        onProgress(done, total);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
+    }
+    onProgress(total, total);
+    return {
+      catalog: {
+        libraryName: LOCAL_SOT_LIBRARY_NAME,
+        collections: collections.map((collection) => {
+          var _a2;
+          return {
+            key: collection.key,
+            name: collection.name,
+            modes: collection.modes.map((mode) => mode.name),
+            variableCount: (_a2 = countByCollectionId.get(collection.id)) != null ? _a2 : 0
+          };
+        }),
         variables,
         textStyles: [],
         textStyleSource: "none"
@@ -2404,7 +2965,13 @@
       throw new Error("mixed font on layer \u2014 apply per-character in Figma");
     }
     const style = text.fontName.style;
-    await figma.loadFontAsync({ family, style });
+    try {
+      await figma.loadFontAsync({ family, style });
+    } catch (e) {
+      throw new Error(
+        `The font "${family} ${style}" could not be loaded \u2014 install the FA7 desktop font (or use your Kit face; kits are already current)`
+      );
+    }
     text.fontName = { family, style };
   }
   function isStyleSource(baseSourceId) {
@@ -2413,8 +2980,52 @@
   function isFontAwesomeSource(baseSourceId) {
     return baseSourceId.startsWith("fontawesome:");
   }
+  async function resolveTargetVariable(key, importedByKey) {
+    const cached = importedByKey.get(key);
+    if (cached) return cached;
+    try {
+      const imported = await figma.variables.importVariableByKeyAsync(key);
+      importedByKey.set(key, imported);
+      return imported;
+    } catch (e) {
+    }
+    try {
+      const locals = await figma.variables.getLocalVariablesAsync();
+      for (const variable of locals) {
+        if (variable.key === key) {
+          importedByKey.set(key, variable);
+          return variable;
+        }
+      }
+    } catch (e) {
+    }
+    return null;
+  }
+  async function resolveTargetTextStyle(key, importedStylesByKey) {
+    const cached = importedStylesByKey.get(key);
+    if (cached) return cached;
+    try {
+      const imported = await figma.importStyleByKeyAsync(key);
+      if (imported.type === "TEXT") {
+        importedStylesByKey.set(key, imported);
+        return imported;
+      }
+    } catch (e) {
+    }
+    try {
+      const locals = await figma.getLocalTextStylesAsync();
+      for (const style of locals) {
+        if (style.key === key) {
+          importedStylesByKey.set(key, style);
+          return style;
+        }
+      }
+    } catch (e) {
+    }
+    return null;
+  }
   async function applyMappings(request, audit, importedByKey, importedStylesByKey) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e;
     nodeCache.clear();
     const failures = [];
     let usagesRebound = 0;
@@ -2451,14 +3062,17 @@
       let style = null;
       if (faTarget) {
       } else if (styleTarget) {
-        style = (_a = importedStylesByKey.get(mapping.targetKey)) != null ? _a : await figma.importStyleByKeyAsync(mapping.targetKey).catch(() => null);
+        style = await resolveTargetTextStyle(
+          mapping.targetKey,
+          importedStylesByKey
+        );
       } else {
-        variable = (_b = importedByKey.get(mapping.targetKey)) != null ? _b : await figma.variables.importVariableByKeyAsync(mapping.targetKey).catch(() => null);
+        variable = await resolveTargetVariable(mapping.targetKey, importedByKey);
       }
       if (!source || (faTarget ? !faFamily : !variable && !style)) {
         failures.push({
           nodeName: "\u2014",
-          sourceName: (_c = source == null ? void 0 : source.name) != null ? _c : mapping.sourceId,
+          sourceName: (_a = source == null ? void 0 : source.name) != null ? _a : mapping.sourceId,
           reason: faTarget ? "target Font Awesome 7 family missing" : styleTarget ? "target text style could not be imported" : "target variable could not be imported"
         });
         continue;
@@ -2476,8 +3090,8 @@
             nodeName: usage.nodeName,
             sourceName: source.name,
             reason: usage.inInstance ? `inside a component instance \u2014 fix at the source component (${String(
-              (_d = error.message) != null ? _d : error
-            )})` : String((_e = error.message) != null ? _e : error)
+              (_b = error.message) != null ? _b : error
+            )})` : String((_c = error.message) != null ? _c : error)
           });
         }
       }
@@ -2517,7 +3131,7 @@
               failures.push({
                 nodeName: node.name,
                 sourceName: `mode \u2192 ${modeName}`,
-                reason: String((_f = error.message) != null ? _f : error)
+                reason: String((_d = error.message) != null ? _d : error)
               });
             }
           }
@@ -2548,7 +3162,7 @@
           failures.push({
             nodeName: entry.nodeName,
             sourceName: `clear ${entry.collectionName} mode`,
-            reason: String((_g = error.message) != null ? _g : error)
+            reason: String((_e = error.message) != null ? _e : error)
           });
         }
       }
@@ -2581,14 +3195,52 @@
     hover: "hover",
     Focus: "focus",
     focus: "focus",
-    Pressed: "pressed",
-    pressed: "pressed",
+    Focused: "focus",
+    focused: "focus",
+    Pressed: "press",
+    pressed: "press",
     Press: "press",
     press: "press",
     Disabled: "disabled",
     disabled: "disabled",
     Visited: "visited",
-    visited: "visited"
+    visited: "visited",
+    Error: "error",
+    error: "error",
+    "Read Only": "readOnly",
+    "Read-only": "readOnly",
+    ReadOnly: "readOnly",
+    readOnly: "readOnly",
+    Activated: "press",
+    activated: "press"
+  };
+  var STATE_CHECKBOX_BLOCK = __spreadProps(__spreadValues({}, STATE_DEFAULT), {
+    Focused: "focused",
+    focused: "focused",
+    Pressed: "pressed",
+    pressed: "pressed"
+  });
+  var YES_NO = {
+    Yes: "yes",
+    No: "no",
+    yes: "yes",
+    no: "no",
+    true: "yes",
+    false: "no"
+  };
+  var YES_NO_CAP = {
+    Yes: "Yes",
+    No: "No",
+    yes: "Yes",
+    no: "No",
+    true: "Yes",
+    false: "No"
+  };
+  var THICK_THIN = {
+    Thick: "thick",
+    Thin: "thin",
+    thick: "thick",
+    thin: "thin"
   };
   var MEANING_TO_SENTIMENT = {
     Primary: "brand",
@@ -2599,23 +3251,56 @@
     Warning: "warning",
     Info: "info",
     Gray: "neutral",
-    Aqua: "pink"
+    Aqua: "brand"
   };
-  var MEANING_TO_TOAST_SENTIMENT = {
-    Primary: "primary",
-    Success: "success",
-    Danger: "error",
-    Warning: "warning",
-    Info: "info",
-    Gray: "neutral"
+  var FIELD_COLOR = {
+    Black: "primary",
+    White: "primary",
+    Gray: "secondary",
+    Grey: "secondary",
+    primary: "primary",
+    secondary: "secondary"
   };
+  var DROPDOWN_BTN_COLOR = {
+    Black: "primary",
+    White: "secondary",
+    Grey: "secondary",
+    Gray: "secondary",
+    primary: "primary",
+    secondary: "secondary"
+  };
+  var ICON_TOGGLE_COLOR = {
+    Gray: "primary",
+    Black: "secondary",
+    White: "secondary",
+    Teal: "brand",
+    Negative: "error",
+    Affirmative: "success",
+    primary: "primary",
+    secondary: "secondary",
+    brand: "brand",
+    error: "error",
+    success: "success"
+  };
+  var POSITION = {
+    First: "first",
+    Middle: "middle",
+    Last: "last",
+    first: "first",
+    middle: "middle",
+    last: "last"
+  };
+  var SIZE_TABLE = { size: SIZE_LMXS, Size: SIZE_LMXS };
+  var STATE_TABLE = { state: STATE_DEFAULT, State: STATE_DEFAULT };
+  function sizeStateTables(extra) {
+    return __spreadValues(__spreadValues(__spreadValues({}, SIZE_TABLE), STATE_TABLE), extra);
+  }
   var componentSwapRules = [
+    // ═══ Wave A/B (shipped + fix) ═══
     {
       dscoKey: "cbc707599ceb83eaa1cee51d698831793e0ebde6",
       dscoName: "Button",
       cadsName: "Button",
-      // Current published DSCO Button ≈ CADS (same axes). Stale consumer
-      // instances may still carry older names/values (Size/S, startIcon Name).
       propNames: {
         "startIcon Name": "startIconName",
         "endIcon Name": "endIconName",
@@ -2627,7 +3312,6 @@
         IconOnly: "iconOnly"
       },
       variantValues: {
-        // Current: large/medium/small/extraSmall. Legacy: L/M/S/XS.
         size: SIZE_LMXS,
         Size: SIZE_LMXS,
         state: STATE_DEFAULT,
@@ -2674,8 +3358,8 @@
           filled: "contained",
           Filled: "contained"
         },
-        iconOnly: { No: "No", Yes: "Yes", no: "No", yes: "Yes", false: "No", true: "Yes" },
-        "Icon Only": { No: "No", Yes: "Yes", no: "No", yes: "Yes" }
+        iconOnly: YES_NO_CAP,
+        "Icon Only": YES_NO_CAP
       }
     },
     {
@@ -2718,7 +3402,7 @@
           filled: "contained",
           Filled: "contained"
         },
-        iconOnly: { No: "No", Yes: "Yes", no: "No", yes: "Yes", false: "No", true: "Yes" }
+        iconOnly: YES_NO_CAP
       }
     },
     {
@@ -2733,19 +3417,13 @@
       variantValues: {
         size: SIZE_LMXS,
         Size: SIZE_LMXS,
-        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        }),
-        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        }),
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT,
         color: {
           Default: "primary",
           Strong: "secondary",
           "Solid Black": "primary",
-          "Solid White": "secondary",
+          "Solid White": "primary",
           primary: "primary",
           secondary: "secondary"
         },
@@ -2753,7 +3431,7 @@
           Default: "primary",
           Strong: "secondary",
           "Solid Black": "primary",
-          "Solid White": "secondary"
+          "Solid White": "primary"
         }
       }
     },
@@ -2761,6 +3439,7 @@
       dscoKey: "341373d642bfd3c0e0cbb35c1130b146945a2321",
       dscoName: "Chip",
       cadsName: "Chip",
+      special: "chipColorSelected",
       propNames: {
         Text: "label",
         Size: "size",
@@ -2772,30 +3451,25 @@
       variantValues: {
         size: SIZE_LMXS,
         Size: SIZE_LMXS,
-        selected: { No: "no", Yes: "yes", no: "no", yes: "yes" },
-        Selected: { No: "no", Yes: "yes" },
+        selected: YES_NO,
+        Selected: YES_NO,
         color: {
-          Gray: "primary",
-          Black: "secondary",
-          Selected: "primary",
+          Black: "primary",
+          Gray: "secondary",
+          Selected: "selected (n/a)",
           primary: "primary",
-          secondary: "secondary"
+          secondary: "secondary",
+          "selected (n/a)": "selected (n/a)"
         },
         Color: {
-          Gray: "primary",
-          Black: "secondary",
-          Selected: "primary"
+          Black: "primary",
+          Gray: "secondary",
+          Selected: "selected (n/a)"
         },
-        labelStyle: { Thick: "thick", Thin: "thin", thick: "thick", thin: "thin" },
-        Type: { Thick: "thick", Thin: "thin" },
-        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        }),
-        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        })
+        labelStyle: THICK_THIN,
+        Type: THICK_THIN,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
       }
     },
     {
@@ -2819,14 +3493,8 @@
           secondary: "secondary"
         },
         Type: { Primary: "primary", Secondary: "secondary" },
-        state: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        }),
-        State: __spreadProps(__spreadValues({}, STATE_DEFAULT), {
-          Pressed: "press",
-          pressed: "press"
-        })
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
       }
     },
     {
@@ -2903,8 +3571,8 @@
         hasIcon: "hasIcon"
       },
       variantValues: {
-        sentiment: MEANING_TO_TOAST_SENTIMENT,
-        Meaning: MEANING_TO_TOAST_SENTIMENT,
+        sentiment: MEANING_TO_SENTIMENT,
+        Meaning: MEANING_TO_SENTIMENT,
         hasIcon: { Yes: "true", No: "false", yes: "true", no: "false" }
       }
     },
@@ -2930,7 +3598,6 @@
         Style: { Default: "none", Color: "color" }
       }
     },
-    // FA Icon → v7: identical prop surface (icon-name TEXT + style/padding/scale).
     {
       dscoKey: "051a05d840dcf0a8220c056833c040fc581dff41",
       dscoName: "Font Awesome Icon",
@@ -2941,11 +3608,959 @@
       dscoName: "Font Awesome Duotone Icon",
       cadsName: "Font Awesome Duotone Icon v7"
     },
-    // Pegasus FA Icon shares the same published prop surface as DSCO.
     {
       dscoKey: "6315f244285e23cac76df5c8e3c807276fdc0da4",
       dscoName: "Font Awesome Icon",
       cadsName: "Font Awesome Icon v7"
+    },
+    // ═══ Wave C — flat High remaps ═══
+    {
+      dscoKey: "148a82188be79992d7015f52492071c21a21f705",
+      dscoName: "Segmented Button Group",
+      cadsName: "Segmented Button Group",
+      propNames: {
+        Size: "size",
+        "Icon Only": "iconOnly",
+        IconOnly: "iconOnly"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        iconOnly: YES_NO,
+        "Icon Only": YES_NO
+      }
+    },
+    {
+      dscoKey: "25783a815c161998fb765a4242de17ddfcef2e81",
+      dscoName: "Segmented Button Block",
+      cadsName: "Segmented Button Block",
+      special: "segmentedBlockActive",
+      propNames: {
+        Label: "label",
+        "Left Icon": "startIconName",
+        "Right Icon": "endIconName",
+        "Show Left Icon": "startIcon",
+        "Show Right Icon": "endIcon",
+        Size: "size",
+        Position: "position",
+        "Icon Only": "iconOnly",
+        IconOnly: "iconOnly",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        position: POSITION,
+        Position: POSITION,
+        iconOnly: YES_NO,
+        "Icon Only": YES_NO,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "1ba27ea5b212558f4281b0278785db09d2b65262",
+      dscoName: "Icon Toggle Button",
+      cadsName: "Icon Toggle",
+      special: "iconToggleIsOn",
+      propNames: {
+        Icon: "iconName",
+        Size: "size",
+        Color: "color",
+        Type: "isOn",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        color: ICON_TOGGLE_COLOR,
+        Color: ICON_TOGGLE_COLOR,
+        isOn: {
+          "Off to On": "off",
+          "On to Off": "on",
+          Off: "off",
+          On: "on",
+          off: "off",
+          on: "on"
+        },
+        Type: {
+          "Off to On": "off",
+          "On to Off": "on",
+          Off: "off",
+          On: "on"
+        },
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "c134c8ce1f97a8067852366746163bf5a49cfa07",
+      dscoName: "Icon Toggle Group",
+      cadsName: "Icon Toggle + Label",
+      propNames: {
+        Label: "labelText",
+        "Show Label": "hasLabel",
+        "2nd Button": "hasTwoToggles",
+        Size: "size"
+      },
+      variantValues: sizeStateTables()
+    },
+    {
+      dscoKey: "12a72e8b7d28b78b26d6d85e0884146524eb3001",
+      dscoName: "Input Dropdown",
+      cadsName: "Dropdown Button",
+      propNames: {
+        Size: "size",
+        Color: "color",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        color: DROPDOWN_BTN_COLOR,
+        Color: DROPDOWN_BTN_COLOR,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "ab47ef51db67847667cab7b99707f8e777d64551",
+      dscoName: "Action Dropdown",
+      cadsName: "Dropdown",
+      special: "actionDropdown",
+      forceVariants: { role: "action", menuType: "default" },
+      propNames: {
+        Size: "size",
+        Alignment: "menuPlacement",
+        Open: "open"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        menuPlacement: {
+          Left: "bottomLeft",
+          Right: "bottomRight",
+          bottomLeft: "bottomLeft",
+          bottomRight: "bottomRight"
+        },
+        Alignment: { Left: "bottomLeft", Right: "bottomRight" }
+      }
+    },
+    {
+      dscoKey: "b976343862b4c66015dec46d68395f42739ea9a5",
+      dscoName: "Dropdown Menu Button",
+      cadsName: "Dropdown Button",
+      propNames: {
+        Label: "label",
+        "Icon Name": "iconName",
+        "Show Icon": "startIcon",
+        Size: "size",
+        Thickness: "labelStyle",
+        Color: "color",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        labelStyle: THICK_THIN,
+        Thickness: THICK_THIN,
+        color: DROPDOWN_BTN_COLOR,
+        Color: DROPDOWN_BTN_COLOR,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "e2274d238ee69542f85d9e9476e11e88c0bde612",
+      dscoName: "Dropdown Menu List",
+      cadsName: "Dropdown Menu List",
+      special: "menuListType",
+      propNames: {
+        "Show Action Items": "showActionRow",
+        Size: "size",
+        Type: "menuType"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        menuType: {
+          "Icon List": "default",
+          "Checkbox List": "checklist",
+          default: "default",
+          checklist: "checklist"
+        },
+        Type: {
+          "Icon List": "default",
+          "Checkbox List": "checklist"
+        }
+      }
+    },
+    {
+      dscoKey: "0cdd5bf757831059deb7ae24d9b7cf39f86f21d2",
+      dscoName: "Dropdown Menu Items",
+      cadsName: "Dropdown Menu Item",
+      special: "menuItemType",
+      forceContent: { hasStartIcon: true },
+      propNames: {
+        Icon: "iconName",
+        "List Item Text": "label",
+        Size: "size",
+        Type: "itemType",
+        State: "selected"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        selected: {
+          Selected: "yes",
+          Unselected: "no",
+          Default: "no",
+          yes: "yes",
+          no: "no"
+        },
+        State: {
+          Selected: "yes",
+          Unselected: "no",
+          Default: "no"
+        }
+      }
+    },
+    {
+      dscoKey: "d1962e3d41cdec427b9b37396990ce826fe5a377",
+      dscoName: "Checkbox",
+      cadsName: "Checkbox + Label",
+      retargetWhenFalse: { sourceProp: "Show Text", cadsName: "Checkbox" },
+      propNames: {
+        Text: "Text",
+        Size: "size",
+        "Label Weight": "labelStyle"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        labelStyle: THICK_THIN,
+        "Label Weight": THICK_THIN
+      },
+      nestedApply: [
+        {
+          matchNames: ["Checkbox"],
+          special: "checkboxStatus",
+          propNames: { Size: "size", State: "state" },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            state: STATE_CHECKBOX_BLOCK,
+            State: STATE_CHECKBOX_BLOCK
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "bc82043dae67f96dfbbe8f1e20d02ea7ebe1d458",
+      dscoName: "Checkbox Blocks",
+      cadsName: "Checkbox",
+      special: "checkboxStatus",
+      propNames: {
+        Size: "size",
+        State: "state",
+        Selected: "status",
+        Indeterminate: "status"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        state: STATE_CHECKBOX_BLOCK,
+        State: STATE_CHECKBOX_BLOCK
+      }
+    },
+    {
+      dscoKey: "2d0d2e869049a5a77b70dcf6813aa48737c1a911",
+      dscoName: "Radio Button",
+      cadsName: "Radio Button + Label",
+      retargetWhenFalse: {
+        sourceProp: "Show Text",
+        cadsName: "Radio Buttons Block"
+      },
+      propNames: {
+        Text: "Text",
+        Size: "size",
+        "Label Weight": "labelStyle"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        labelStyle: THICK_THIN,
+        "Label Weight": THICK_THIN
+      },
+      nestedApply: [
+        {
+          matchNames: ["Radio Buttons Block", "Radio Button"],
+          special: "radioSelected",
+          propNames: { Size: "size", State: "state", Type: "selected" },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            state: STATE_DEFAULT,
+            State: STATE_DEFAULT,
+            selected: {
+              Selected: "yes",
+              Unselected: "no",
+              Yes: "yes",
+              No: "no",
+              yes: "yes",
+              no: "no"
+            },
+            Type: {
+              Selected: "yes",
+              Unselected: "no"
+            }
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "dc3161c47faf5241fa98a42e7c5ada717119f365",
+      dscoName: "Radio Buttons Blocks",
+      cadsName: "Radio Buttons Block",
+      propNames: {
+        Size: "size",
+        Selected: "selected",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        selected: YES_NO,
+        Selected: YES_NO,
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "cb3807d24d76a019695d82bf799811edf15ff5f6",
+      dscoName: "Toggle",
+      cadsName: "Toggle + Label",
+      retargetWhenFalse: { sourceProp: "Show Label", cadsName: "Toggle" },
+      propNames: {
+        Text: "labelText",
+        Size: "size",
+        "Label Position": "labelPlacement"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        labelPlacement: {
+          Left: "left",
+          Right: "right",
+          left: "left",
+          right: "right"
+        },
+        "Label Position": { Left: "left", Right: "right" }
+      },
+      nestedApply: [
+        {
+          matchNames: ["Toggle"],
+          special: "toggleOn",
+          forceContent: {
+            hasIcons: true,
+            onIcon: "check",
+            offIcon: "xmark"
+          },
+          propNames: { Size: "size", "On/Off": "isOn", Status: "isOn" },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            isOn: { On: "on", Off: "off", on: "on", off: "off" },
+            "On/Off": { On: "on", Off: "off" },
+            Status: { On: "on", Off: "off", on: "on", off: "off" }
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "125d017876c50813f0359990eaaf45d1982ef739",
+      dscoName: "Toggle Building Block",
+      cadsName: "Toggle",
+      forceContent: { hasIcons: true, onIcon: "check", offIcon: "xmark" },
+      propNames: {
+        Size: "size",
+        Status: "isOn",
+        State: "state"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        isOn: { On: "on", Off: "off", on: "on", off: "off" },
+        Status: { On: "on", Off: "off", on: "on", off: "off" },
+        state: STATE_DEFAULT,
+        State: STATE_DEFAULT
+      }
+    },
+    {
+      dscoKey: "e425e8b498f0675603eaca40dcf39343fedcb62e",
+      dscoName: "Slider Bar",
+      cadsName: "Slider Bar",
+      propNames: {
+        "% Filled": "percentFilled",
+        "Starts From": "startsFrom",
+        State: "state"
+      },
+      variantValues: {
+        percentFilled: {
+          "100": "100% (side)",
+          "75": "75% (side)",
+          "50": "50% (side)",
+          "25": "25% (side)",
+          "0": "0% (both)",
+          "100%": "100% (side)",
+          "75%": "75% (side)",
+          "50%": "50% (side)",
+          "25%": "25% (side)",
+          "0%": "0% (both)",
+          "100% (side)": "100% (side)",
+          "75% (side)": "75% (side)",
+          "50% (side)": "50% (side)",
+          "25% (side)": "25% (side)",
+          "0% (both)": "0% (both)",
+          "-50% (center)": "-50% (center)",
+          "-100% (center)": "-100% (center)",
+          "+50% (center)": "+50% (center)",
+          "+100% (center)": "+100% (center)"
+        },
+        "% Filled": {
+          "100": "100% (side)",
+          "75": "75% (side)",
+          "50": "50% (side)",
+          "25": "25% (side)",
+          "0": "0% (both)",
+          "100%": "100% (side)",
+          "75%": "75% (side)",
+          "50%": "50% (side)",
+          "25%": "25% (side)",
+          "0%": "0% (both)"
+        },
+        startsFrom: {
+          Side: "side",
+          Middle: "center",
+          Center: "center",
+          side: "side",
+          center: "center"
+        },
+        "Starts From": { Side: "side", Middle: "center", Center: "center" },
+        state: {
+          Default: "default",
+          Error: "error",
+          Disabled: "disabled",
+          default: "default",
+          error: "error",
+          disabled: "disabled"
+        },
+        State: {
+          Default: "default",
+          Error: "error",
+          Disabled: "disabled"
+        }
+      }
+    },
+    {
+      dscoKey: "64b2b6fca4e117da33d3d88304783c529687df7e",
+      dscoName: "Slider Stepper",
+      cadsName: "Slider Stepper",
+      propNames: { Count: "stepCount" },
+      variantValues: {
+        stepCount: { "3": "3", "4": "4", "5": "5", "6": "6" },
+        Count: { "3": "3", "4": "4", "5": "5", "6": "6" }
+      }
+    },
+    {
+      dscoKey: "1f49b8bd60a1d0351739d42dff1644522002ea00",
+      dscoName: "Breadcrumb Link",
+      cadsName: "Breadcrumb Links",
+      special: "breadcrumbLink",
+      captureText: true,
+      textCaptureTarget: "pageName",
+      propNames: {
+        Size: "size",
+        Type: "iconOnly",
+        State: "isCurrent",
+        "Icon Name": "iconName",
+        Icon: "iconName"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        iconOnly: {
+          Icon: "yes",
+          Text: "no",
+          yes: "yes",
+          no: "no"
+        },
+        Type: { Icon: "yes", Text: "no" },
+        isCurrent: {
+          Active: "Yes",
+          Default: "No",
+          Visited: "No",
+          Yes: "Yes",
+          No: "No",
+          yes: "Yes",
+          no: "No"
+        },
+        State: {
+          Active: "Yes",
+          Default: "No",
+          Visited: "No"
+        }
+      }
+    },
+    {
+      dscoKey: "d8b09d58c31343f8ad588e1edda6e650de6c423f",
+      dscoName: "Breadcrumbs Blocks",
+      cadsName: "Breadcrumb Separators",
+      propNames: { Size: "size" },
+      variantValues: SIZE_TABLE
+    },
+    {
+      dscoKey: "3046d24d897ea7a8fef82b9df239e2d2b7b45f7c",
+      dscoName: "Tab",
+      cadsName: "Tab Item",
+      special: "tabCurrent",
+      propNames: {
+        Label: "labelText",
+        "Left Icon": "startIconName",
+        "Right Icon": "endIconName",
+        "Show Left Icon": "startIcon",
+        "Show Right Icon": "endIcon",
+        Closeable: "isDismissible",
+        Size: "size",
+        Type: "type",
+        "ONLY Icon": "iconOnly",
+        "Icon Only": "iconOnly",
+        State: "isCurrent"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        type: {
+          Primary: "primary",
+          Secondary: "secondary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Type: { Primary: "primary", Secondary: "secondary" },
+        iconOnly: YES_NO_CAP,
+        "ONLY Icon": YES_NO_CAP,
+        "Icon Only": YES_NO_CAP,
+        isCurrent: {
+          Active: "yes",
+          Default: "no",
+          yes: "yes",
+          no: "no"
+        },
+        State: { Active: "yes", Default: "no" }
+      }
+    },
+    {
+      dscoKey: "046a167c72e8ce57d1fb39e003531928d0309feb",
+      dscoName: "Tab Group",
+      cadsName: "Tab Group",
+      propNames: { Size: "size", Type: "type" },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        type: {
+          Primary: "primary",
+          Secondary: "secondary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Type: { Primary: "primary", Secondary: "secondary" }
+      }
+    },
+    {
+      dscoKey: "d9e848e2167cade785a34c19aff53552645fa03d",
+      dscoName: "Tooltip",
+      cadsName: "Tooltip",
+      special: "tooltipType",
+      propNames: {
+        "Tooltip Text": "text",
+        "Has Tail": "hasCaret",
+        Type: "startIcon",
+        Direction: "caretPlacement"
+      },
+      variantValues: {
+        // DSCO Direction = tooltip relative to anchor (OnBottom = below target →
+        // caret on top of bubble). CADS caretPlacement = caret side on bubble.
+        caretPlacement: {
+          OnBottom: "top",
+          OnTop: "bottom",
+          OnLeft: "right",
+          OnRight: "left",
+          bottom: "bottom",
+          top: "top",
+          left: "left",
+          right: "right"
+        },
+        Direction: {
+          OnBottom: "top",
+          OnTop: "bottom",
+          OnLeft: "right",
+          OnRight: "left"
+        }
+      }
+    },
+    {
+      dscoKey: "402577f53a413426e8fbdb59d73a7750b64ddd79",
+      dscoName: "Drawer",
+      cadsName: "Drawer",
+      special: "drawerType",
+      propNames: {
+        Title: "titleText",
+        Description: "descriptionText",
+        "Show Description": "hasDescription",
+        "Show Action Row": "hasActionRow",
+        "Has Custom Content": "type"
+      },
+      variantValues: {
+        type: {
+          Yes: "customContent",
+          No: "textOnly",
+          yes: "customContent",
+          no: "textOnly",
+          customContent: "customContent",
+          textOnly: "textOnly"
+        },
+        "Has Custom Content": {
+          Yes: "customContent",
+          No: "textOnly"
+        }
+      }
+    },
+    {
+      dscoKey: "6fd36a39efde8f927febe94b2d20a77cca842844",
+      dscoName: "Dialog",
+      cadsName: "Dialog",
+      special: "dialogType",
+      propNames: {
+        Title: "titleText",
+        Text: "descriptionText",
+        "Show Secondary": "hasSecondaryAction",
+        "Top Icon": "topIconName",
+        "Show Image": "hasImage",
+        Closeable: "isDismissable",
+        Type: "type"
+      },
+      variantValues: {
+        type: {
+          Default: "default",
+          "Icon Top": "iconTop",
+          default: "default",
+          iconTop: "iconTop"
+        },
+        Type: { Default: "default", "Icon Top": "iconTop" }
+      }
+    },
+    // ═══ Wave E — composed / nested ═══
+    {
+      dscoKey: "57fb424c2504d5c1f7c18f185a1c36e8bf872508",
+      dscoName: "Text Field",
+      cadsName: "Text Input",
+      forceVariants: { type: "field" },
+      propNames: { Size: "size" },
+      variantValues: SIZE_TABLE,
+      nestedApply: [
+        {
+          matchNames: ["Field Wrapper"],
+          propNames: {
+            "Label Text": "labelText",
+            "Help Message": "helperText",
+            "Show Help Text": "showHelper",
+            "Show Icon": "showHelper",
+            "Icon Name": "helperIcon",
+            Size: "size"
+          },
+          variantValues: SIZE_TABLE
+        },
+        {
+          matchNames: ["Text Input Building Block"],
+          propNames: {
+            FieldText: "placeholderText",
+            "Field Text": "placeholderText",
+            "Show field text": "hasPlaceholder",
+            Color: "color",
+            State: "state",
+            Size: "size"
+          },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            color: FIELD_COLOR,
+            Color: FIELD_COLOR,
+            state: STATE_DEFAULT,
+            State: STATE_DEFAULT
+          },
+          forceVariants: { type: "field" }
+        }
+      ]
+    },
+    {
+      dscoKey: "84db09de35208651719ba49035c8eb3e2383fc68",
+      dscoName: "Text Area",
+      cadsName: "Text Input",
+      forceVariants: { type: "area" },
+      propNames: { Size: "size" },
+      variantValues: SIZE_TABLE,
+      nestedApply: [
+        {
+          matchNames: ["Field Wrapper"],
+          propNames: {
+            "Label Text": "labelText",
+            "Help Message": "helperText",
+            "Show Help Text": "showHelper",
+            "Show Icon": "showHelper",
+            "Icon Name": "helperIcon",
+            Size: "size"
+          },
+          variantValues: SIZE_TABLE
+        },
+        {
+          matchNames: ["Text Input Building Block"],
+          propNames: {
+            FieldText: "placeholderText",
+            "Field Text": "placeholderText",
+            "Show field text": "hasPlaceholder",
+            Color: "color",
+            State: "state",
+            Size: "size"
+          },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            color: FIELD_COLOR,
+            Color: FIELD_COLOR,
+            state: STATE_DEFAULT,
+            State: STATE_DEFAULT
+          },
+          forceVariants: { type: "area" }
+        }
+      ]
+    },
+    {
+      dscoKey: "80f93b64131f10c8f805fd5ce3bd3833436bd24a",
+      dscoName: "Dropdown Field",
+      cadsName: "Dropdown",
+      forceVariants: { role: "input" },
+      propNames: { Size: "size" },
+      variantValues: SIZE_TABLE,
+      nestedApply: [
+        {
+          matchNames: ["Field Wrapper"],
+          propNames: {
+            "Label Text": "labelText",
+            Label: "labelText",
+            "Help Message": "helperText",
+            "Show Help Text": "showHelper",
+            "Icon Name": "helperIcon",
+            Size: "size"
+          },
+          variantValues: SIZE_TABLE
+        },
+        {
+          matchNames: ["Dropdown Button"],
+          propNames: {
+            Color: "color",
+            State: "state",
+            Size: "size"
+          },
+          variantValues: {
+            size: SIZE_LMXS,
+            Size: SIZE_LMXS,
+            color: FIELD_COLOR,
+            Color: FIELD_COLOR,
+            state: STATE_DEFAULT,
+            State: STATE_DEFAULT
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "7aa7d44bba4b5dc76d69cc1d81c167cc03608832",
+      dscoName: "Chip Group",
+      cadsName: "Chip Group",
+      propNames: {
+        Size: "size",
+        Type: "labelStyle",
+        Color: "color"
+      },
+      variantValues: {
+        size: SIZE_LMXS,
+        Size: SIZE_LMXS,
+        labelStyle: THICK_THIN,
+        Type: THICK_THIN,
+        color: {
+          Black: "primary",
+          Gray: "secondary",
+          primary: "primary",
+          secondary: "secondary"
+        },
+        Color: { Black: "primary", Gray: "secondary" }
+      },
+      nestedApply: [
+        {
+          matchNames: ["Field Wrapper"],
+          propNames: {
+            "Group Label": "labelText",
+            Label: "labelText",
+            Size: "size"
+          },
+          variantValues: SIZE_TABLE
+        }
+      ]
+    },
+    {
+      dscoKey: "1d12e71986a41db4dcc4e567b6923d7ed043abdd",
+      dscoName: "Breadcrumbs",
+      cadsName: "Breadcrumbs",
+      propNames: { Size: "size" },
+      variantValues: SIZE_TABLE,
+      // Nested Breadcrumb Link/Blocks remapped best-effort via nestedApply
+      nestedApply: [
+        {
+          matchNames: ["Breadcrumb Link", "Breadcrumb Links"],
+          propNames: { Size: "size" },
+          variantValues: SIZE_TABLE
+        },
+        {
+          matchNames: ["Breadcrumb Separator", "Breadcrumb Separators"],
+          propNames: { Size: "size" },
+          variantValues: SIZE_TABLE
+        }
+      ]
+    },
+    {
+      dscoKey: "2c50539a1e47e54eb7ab1474e6eeb085cca393c0",
+      dscoName: "Slider",
+      cadsName: "Slider",
+      special: "sliderControls",
+      propNames: {
+        "Slider Label": "labelText",
+        "Show Label": "showLabelRow",
+        "Show Stepper": "showStepper",
+        "Input Value": "displayValue",
+        "Show Tooltip Icon": "showHelper"
+      },
+      nestedApply: [
+        {
+          matchNames: ["Slider Bar"],
+          special: "sliderStartsFrom",
+          propNames: {
+            "% Filled": "percentFilled",
+            "Starts From": "startsFrom",
+            Type: "startsFrom",
+            State: "state"
+          },
+          variantValues: {
+            startsFrom: {
+              Range: "side",
+              Centered: "center",
+              Side: "side",
+              Middle: "center",
+              side: "side",
+              center: "center"
+            },
+            Type: { Range: "side", Centered: "center" },
+            "Starts From": { Side: "side", Middle: "center" },
+            state: {
+              Default: "default",
+              Error: "error",
+              Disabled: "disabled",
+              default: "default",
+              error: "error",
+              disabled: "disabled"
+            },
+            State: {
+              Default: "default",
+              Error: "error",
+              Disabled: "disabled"
+            }
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "354d944bb976f7104bbcd34cf8a733aff3124964",
+      dscoName: "Popover",
+      cadsName: "Popover",
+      special: "popoverCaret",
+      propNames: {
+        Direction: "caretPlacement"
+      },
+      variantValues: {
+        // Same invert as Tooltip: DSCO Direction = vs anchor; CADS = caret side.
+        caretPlacement: {
+          None: "bottomLeft",
+          OnBottom: "topCenter",
+          OnTop: "bottomCenter",
+          OnLeft: "rightCenter",
+          OnRight: "leftCenter",
+          Bottom: "topCenter",
+          Top: "bottomCenter",
+          Left: "rightCenter",
+          Right: "leftCenter"
+        },
+        Direction: {
+          None: "bottomLeft",
+          OnBottom: "topCenter",
+          OnTop: "bottomCenter",
+          OnLeft: "rightCenter",
+          OnRight: "leftCenter"
+        }
+      },
+      nestedApply: [
+        {
+          matchNames: ["Popover Core"],
+          propNames: {
+            Text: "bodyText",
+            Title: "titleText",
+            "Show Actions": "hasActionRow",
+            "Show Action Row": "hasActionRow",
+            "Show Primary": "hasPrimaryAction",
+            "Show Secondary": "hasSecondaryAction",
+            Closeable: "isDismissible",
+            "Show Stepper": "hasStepper"
+          }
+        }
+      ]
+    },
+    {
+      dscoKey: "5978e70b44d30d937b300a136fd1e5c46a8a70c1",
+      dscoName: "Modal",
+      cadsName: "Modal",
+      special: "modalType",
+      propNames: {
+        Title: "titleText",
+        Closeable: "isDismissable",
+        "Show Secondary": "hasSecondaryAction",
+        "Show 2ary": "hasSecondaryAction",
+        Type: "type"
+      },
+      variantValues: {
+        type: {
+          Default: "default",
+          "Image Top": "verticalImage",
+          "Image Inline": "horizontalImage",
+          default: "default",
+          verticalImage: "verticalImage",
+          horizontalImage: "horizontalImage"
+        },
+        Type: {
+          Default: "default",
+          "Image Top": "verticalImage",
+          "Image Inline": "horizontalImage"
+        }
+      },
+      slotText: [
+        { matchName: "customContent", fromProp: "Content" }
+      ]
     }
   ];
   var ruleByDscoKey = new Map(
@@ -3030,6 +4645,157 @@
     }
     return out;
   }
+  function mergeCheckboxStatus(captured) {
+    var _a, _b;
+    const indeterminate = (_a = captured.variants.Indeterminate) != null ? _a : captured.variants.indeterminate;
+    const selected = (_b = captured.variants.Selected) != null ? _b : captured.variants.selected;
+    if (indeterminate === "Yes" || indeterminate === "yes" || indeterminate === "true") {
+      return "indeterminate";
+    }
+    if (selected === "Yes" || selected === "yes" || selected === "true") {
+      return "selected";
+    }
+    return "unselected";
+  }
+  function applySpecialVariants(rule, captured, out) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q;
+    const result = __spreadValues({}, out);
+    switch (rule.special) {
+      case "chipColorSelected": {
+        const selectedRaw = (_a = captured.variants.Selected) != null ? _a : captured.variants.selected;
+        const colorRaw = (_b = captured.variants.Color) != null ? _b : captured.variants.color;
+        const isSelected = selectedRaw === "Yes" || selectedRaw === "yes" || colorRaw === "Selected";
+        if (isSelected) {
+          result.selected = "yes";
+          result.color = "selected (n/a)";
+        } else {
+          result.selected = "no";
+          if (colorRaw === "Black") result.color = "primary";
+          else if (colorRaw === "Gray" || colorRaw === "Grey")
+            result.color = "secondary";
+        }
+        break;
+      }
+      case "segmentedBlockActive": {
+        const state = (_c = captured.variants.State) != null ? _c : captured.variants.state;
+        result.isActive = state === "Pressed" || state === "pressed" ? "yes" : "no";
+        result.state = "default";
+        break;
+      }
+      case "iconToggleIsOn": {
+        const type = (_d = captured.variants.Type) != null ? _d : captured.variants.type;
+        if (type === "Off to On" || type === "Off") result.isOn = "off";
+        else if (type === "On to Off" || type === "On") result.isOn = "on";
+        delete result.Type;
+        delete result.type;
+        break;
+      }
+      case "menuItemType": {
+        const type = (_f = (_e = captured.variants.Type) != null ? _e : captured.variants.type) != null ? _f : "";
+        if (type.includes("Checkbox")) {
+          result.role = "input";
+          result.itemType = "checkbox";
+        } else if (type.includes("Destructive")) {
+          result.role = "action";
+          result.itemType = "defaultError";
+        } else if (type.includes("Action")) {
+          result.role = "action";
+          result.itemType = "default";
+        } else {
+          result.role = "input";
+          result.itemType = "default";
+        }
+        const state = (_g = captured.variants.State) != null ? _g : captured.variants.state;
+        if (state === "Selected") result.selected = "yes";
+        else if (state && state !== "Selected") result.selected = "no";
+        delete result.Type;
+        delete result.type;
+        break;
+      }
+      case "menuListType": {
+        const type = (_i = (_h = captured.variants.Type) != null ? _h : captured.variants.type) != null ? _i : "";
+        if (type.includes("Checkbox")) {
+          result.menuType = "checklist";
+          result.role = "input";
+        } else {
+          result.menuType = "default";
+          result.role = "action";
+        }
+        delete result.Type;
+        delete result.type;
+        break;
+      }
+      case "actionDropdown": {
+        result.role = "action";
+        if (!result.menuType) result.menuType = "default";
+        break;
+      }
+      case "tooltipType": {
+        const type = (_k = (_j = captured.variants.Type) != null ? _j : captured.variants.type) != null ? _k : "";
+        if (type === "Label" || type.toLowerCase() === "label") {
+        }
+        break;
+      }
+      case "popoverCaret": {
+        const dir = (_l = captured.variants.Direction) != null ? _l : captured.variants.direction;
+        if (dir === "None" || dir === "none") {
+          delete result.caretPlacement;
+        }
+        break;
+      }
+      case "breadcrumbLink": {
+        const state = (_m = captured.variants.State) != null ? _m : captured.variants.state;
+        if (state === "Active") result.isCurrent = "Yes";
+        else result.isCurrent = "No";
+        delete result.state;
+        delete result.State;
+        break;
+      }
+      case "tabCurrent": {
+        const state = (_n = captured.variants.State) != null ? _n : captured.variants.state;
+        if (state === "Active") result.isCurrent = "yes";
+        else result.isCurrent = "no";
+        delete result.state;
+        delete result.State;
+        break;
+      }
+      case "drawerType": {
+        const custom = (_o = captured.variants["Has Custom Content"]) != null ? _o : captured.variants.hasCustomContent;
+        if (custom === "Yes" || custom === "yes" || custom === "true") {
+          result.type = "customContent";
+        } else if (custom === "No" || custom === "no" || custom === "false") {
+          result.type = "textOnly";
+        }
+        break;
+      }
+      case "dialogType": {
+        const type = (_p = captured.variants.Type) != null ? _p : captured.variants.type;
+        if (type === "Icon Top") result.type = "iconTop";
+        else if (type === "Default") result.type = "default";
+        break;
+      }
+      case "modalType": {
+        const type = (_q = captured.variants.Type) != null ? _q : captured.variants.type;
+        if (type === "Image Top") result.type = "verticalImage";
+        else if (type === "Image Inline") result.type = "horizontalImage";
+        else if (type === "Default") result.type = "default";
+        break;
+      }
+      case "sliderControls": {
+        break;
+      }
+      default:
+        break;
+    }
+    if (rule.special === "checkboxStatus" || rule.dscoName === "Checkbox Blocks") {
+      result.status = mergeCheckboxStatus(captured);
+      delete result.Selected;
+      delete result.selected;
+      delete result.Indeterminate;
+      delete result.indeterminate;
+    }
+    return result;
+  }
   function remapVariants(rule, captured) {
     var _a, _b;
     const out = {};
@@ -3038,10 +4804,19 @@
       const remapped = remapVariantValue(rule, axis, value);
       const alsoByTarget = remapVariantValue(rule, targetAxis, remapped);
       if (alsoByTarget === "true" || alsoByTarget === "false" || alsoByTarget === "Yes" || alsoByTarget === "No" || alsoByTarget === "yes" || alsoByTarget === "no") {
-        if (targetAxis.toLocaleLowerCase() === "hasicon") continue;
+        const lower = targetAxis.toLocaleLowerCase();
+        if (lower === "hasicon" || lower === "hasaction" || lower === "haslabel" || lower === "hastwotoggles" || lower === "showhelper" || lower === "showlabelrow" || lower === "showstepper" || lower === "showcontrols" || lower === "hasplaceholder" || lower === "starticon" || lower === "endicon" || lower === "open" || lower === "showactionrow" || lower === "hascaret" || lower === "isdismissible" || lower === "isdismissable" || lower === "hasdescription" || lower === "hasactionrow" || lower === "hassecondaryaction" || lower === "hasprimaryaction" || lower === "hasimage" || lower === "hasstarticon") {
+          continue;
+        }
+      }
+      if (targetAxis.toLocaleLowerCase() === "state" && (rule.special === "segmentedBlockActive" || rule.special === "breadcrumbLink" || rule.special === "tabCurrent" || rule.special === "menuItemType")) {
+        continue;
       }
       if (targetAxis.toLocaleLowerCase() === "state") {
         out[targetAxis] = "default";
+        continue;
+      }
+      if ((axis === "Color" || axis === "color") && (rule.dscoName === "Segmented Button Group" || rule.dscoName === "Segmented Button Block" || rule.dscoName === "Icon Toggle Group" || rule.dscoName === "Slider")) {
         continue;
       }
       out[targetAxis] = alsoByTarget;
@@ -3051,13 +4826,53 @@
         out[axis] = value;
       }
     }
+    const specialized = applySpecialVariants(rule, captured, out);
     if (rule.cadsName === "Button") {
-      return applyButtonRestrictedCombos(out);
+      return applyButtonRestrictedCombos(specialized);
+    }
+    return specialized;
+  }
+  function remapNestedVariants(nested, captured) {
+    var _a, _b, _c, _d;
+    const mini = {
+      dscoKey: "",
+      dscoName: "",
+      cadsName: "",
+      propNames: nested.propNames,
+      variantValues: nested.variantValues,
+      forceVariants: nested.forceVariants
+    };
+    const out = remapVariants(mini, captured);
+    if (nested.special === "checkboxStatus") {
+      out.status = mergeCheckboxStatus(captured);
+    }
+    if (nested.special === "radioSelected") {
+      const type = (_a = captured.variants.Type) != null ? _a : captured.variants.selected;
+      if (type === "Selected" || type === "Yes" || type === "yes") {
+        out.selected = "yes";
+      } else if (type === "Unselected" || type === "No" || type === "no") {
+        out.selected = "no";
+      }
+    }
+    if (nested.special === "toggleOn") {
+      const onOff = (_c = (_b = captured.variants["On/Off"]) != null ? _b : captured.variants.Status) != null ? _c : captured.variants.isOn;
+      if (onOff === "On" || onOff === "on") out.isOn = "on";
+      else if (onOff === "Off" || onOff === "off") out.isOn = "off";
+    }
+    if (nested.special === "sliderStartsFrom") {
+      const type = (_d = captured.variants.Type) != null ? _d : captured.variants.type;
+      if (type === "Range") out.startsFrom = "side";
+      else if (type === "Centered") out.startsFrom = "center";
+    }
+    if (nested.forceVariants) {
+      for (const [axis, value] of Object.entries(nested.forceVariants)) {
+        out[axis] = value;
+      }
     }
     return out;
   }
   function buildContentProperties(rule, captured, targetProps) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
     const targetMeta = __spreadValues({}, targetProps);
     const out = {};
     for (const [sourceKey, value] of Object.entries(captured.properties)) {
@@ -3111,422 +4926,126 @@
         out[targetKey] = removable === "Yes" || removable === "yes" || removable === "true";
       }
     }
+    if (rule.special === "tooltipType") {
+      const type = (_g = (_f = captured.variants.Type) != null ? _f : captured.variants.type) != null ? _g : "";
+      const startKey = findTargetPropKey(targetMeta, "startIcon");
+      if (startKey && targetMeta[startKey].type === "BOOLEAN") {
+        out[startKey] = type === "IconLeft" || type === "IconRight" || type.toLowerCase().includes("icon");
+      }
+      if (captured.nestedIconName) {
+        const iconKey = findTargetPropKey(targetMeta, "iconName");
+        if (iconKey) out[iconKey] = captured.nestedIconName;
+      }
+      let hasTail = (_h = captured.variants["Has Tail"]) != null ? _h : captured.variants.hasCaret;
+      if (hasTail === void 0) {
+        for (const [key, value] of Object.entries(captured.properties)) {
+          if (propBaseName(key) === "Has Tail") {
+            hasTail = value;
+            break;
+          }
+        }
+      }
+      const caretKey = findTargetPropKey(targetMeta, "hasCaret");
+      if (caretKey && hasTail !== void 0 && targetMeta[caretKey].type === "BOOLEAN") {
+        out[caretKey] = hasTail === true || hasTail === "Yes" || hasTail === "yes" || hasTail === "true";
+      }
+    }
+    if (rule.special === "popoverCaret") {
+      const dir = (_i = captured.variants.Direction) != null ? _i : captured.variants.direction;
+      const caretKey = findTargetPropKey(targetMeta, "hasCaret");
+      if (caretKey && targetMeta[caretKey].type === "BOOLEAN") {
+        out[caretKey] = !(dir === "None" || dir === "none");
+      }
+    }
+    if (rule.special === "sliderControls") {
+      const truthy = (v) => v === true || v === "Yes" || v === "yes" || v === "true";
+      const left = (_j = captured.variants["Show Left Button"]) != null ? _j : captured.properties["Show Left Button"];
+      const right = (_k = captured.variants["Show Right Button"]) != null ? _k : captured.properties["Show Right Button"];
+      const key = findTargetPropKey(targetMeta, "showControls");
+      if (key && targetMeta[key].type === "BOOLEAN") {
+        out[key] = truthy(left) || truthy(right);
+      }
+    }
+    if (rule.forceContent) {
+      for (const [base, value] of Object.entries(rule.forceContent)) {
+        const key = findTargetPropKey(targetMeta, base);
+        if (!key) continue;
+        if (targetMeta[key].type === "BOOLEAN") {
+          out[key] = Boolean(value);
+        } else if (targetMeta[key].type === "TEXT") {
+          out[key] = String(value);
+        }
+      }
+    }
     return out;
   }
-
-  // src/data/dscoComponents.ts
-  var dscoComponents = [
-    // Actions
-    { key: "cbc707599ceb83eaa1cee51d698831793e0ebde6", name: "Button", cadsName: "Button" },
-    {
-      key: "0478bc835a0e7e1593fc0e6f3044f54730b66861",
-      name: "Destructive Button",
-      cadsName: "Button"
-    },
-    {
-      key: "385632d619eb1dffc825a323a3f596b2011f8bb7",
-      name: "Close Icon Button",
-      cadsName: "Close Icon Button"
-    },
-    {
-      key: "148a82188be79992d7015f52492071c21a21f705",
-      name: "Segmented Button Group",
-      cadsName: "Segmented Button Group"
-    },
-    {
-      key: "25783a815c161998fb765a4242de17ddfcef2e81",
-      name: "Segmented Button Block",
-      cadsName: "Segmented Button Block"
-    },
-    {
-      key: "1ba27ea5b212558f4281b0278785db09d2b65262",
-      name: "Icon Toggle Button",
-      cadsName: "Icon Toggle"
-    },
-    {
-      key: "c134c8ce1f97a8067852366746163bf5a49cfa07",
-      name: "Icon Toggle Group",
-      cadsName: "Icon Toggle + Label"
-    },
-    // Forms
-    {
-      key: "57fb424c2504d5c1f7c18f185a1c36e8bf872508",
-      name: "Text Field",
-      cadsName: "Text Input"
-    },
-    {
-      key: "84db09de35208651719ba49035c8eb3e2383fc68",
-      name: "Text Area",
-      cadsName: "Text Input"
-    },
-    {
-      key: "80f93b64131f10c8f805fd5ce3bd3833436bd24a",
-      name: "Dropdown Field",
-      cadsName: "Dropdown"
-    },
-    {
-      key: "12a72e8b7d28b78b26d6d85e0884146524eb3001",
-      name: "Input Dropdown",
-      cadsName: "Dropdown"
-    },
-    {
-      key: "ab47ef51db67847667cab7b99707f8e777d64551",
-      name: "Action Dropdown",
-      cadsName: "Dropdown"
-    },
-    {
-      key: "b976343862b4c66015dec46d68395f42739ea9a5",
-      name: "Dropdown Menu Button",
-      cadsName: "Dropdown Button"
-    },
-    {
-      key: "e2274d238ee69542f85d9e9476e11e88c0bde612",
-      name: "Dropdown Menu List",
-      cadsName: "Dropdown Menu List"
-    },
-    {
-      key: "0cdd5bf757831059deb7ae24d9b7cf39f86f21d2",
-      name: "Dropdown Menu Items",
-      cadsName: "Dropdown Menu Item"
-    },
-    {
-      key: "d1962e3d41cdec427b9b37396990ce826fe5a377",
-      name: "Checkbox",
-      cadsName: "Checkbox + Label"
-    },
-    {
-      key: "bc82043dae67f96dfbbe8f1e20d02ea7ebe1d458",
-      name: "Checkbox Blocks",
-      cadsName: "Checkbox"
-    },
-    {
-      key: "2d0d2e869049a5a77b70dcf6813aa48737c1a911",
-      name: "Radio Button",
-      cadsName: "Radio Button + Label"
-    },
-    {
-      key: "dc3161c47faf5241fa98a42e7c5ada717119f365",
-      name: "Radio Buttons Blocks",
-      cadsName: "Radio Buttons Block"
-    },
-    { key: "cb3807d24d76a019695d82bf799811edf15ff5f6", name: "Toggle", cadsName: "Toggle" },
-    {
-      key: "125d017876c50813f0359990eaaf45d1982ef739",
-      name: "Toggle Building Block",
-      cadsName: "Toggle"
-    },
-    {
-      key: "2c50539a1e47e54eb7ab1474e6eeb085cca393c0",
-      name: "Slider",
-      cadsName: "Slider"
-    },
-    {
-      key: "e425e8b498f0675603eaca40dcf39343fedcb62e",
-      name: "Slider Bar",
-      cadsName: "Slider Bar"
-    },
-    {
-      key: "64b2b6fca4e117da33d3d88304783c529687df7e",
-      name: "Slider Stepper",
-      cadsName: "Slider Stepper"
-    },
-    // Selection / chips
-    { key: "341373d642bfd3c0e0cbb35c1130b146945a2321", name: "Chip", cadsName: "Chip" },
-    {
-      key: "7aa7d44bba4b5dc76d69cc1d81c167cc03608832",
-      name: "Chip Group",
-      cadsName: "Chip Group"
-    },
-    { key: "8314a929103d75e027acd08445eb326299d24b74", name: "Link", cadsName: "Link" },
-    { key: "6da8599310350b4a87b2a2f8e08d34ae3376a1d1", name: "Tag", cadsName: "Tag" },
-    // Navigation
-    {
-      key: "1d12e71986a41db4dcc4e567b6923d7ed043abdd",
-      name: "Breadcrumbs",
-      cadsName: "Breadcrumbs"
-    },
-    {
-      key: "1f49b8bd60a1d0351739d42dff1644522002ea00",
-      name: "Breadcrumb Link",
-      cadsName: "Breadcrumb Links"
-    },
-    {
-      key: "d8b09d58c31343f8ad588e1edda6e650de6c423f",
-      name: "Breadcrumbs Blocks",
-      cadsName: "Breadcrumb Separators"
-    },
-    { key: "3046d24d897ea7a8fef82b9df239e2d2b7b45f7c", name: "Tab", cadsName: "Tab Item" },
-    {
-      key: "046a167c72e8ce57d1fb39e003531928d0309feb",
-      name: "Tab Group",
-      cadsName: "Tab Group"
-    },
-    {
-      key: "a66d7f369b0b0440f0b73ba48f1dd56548d5aec1",
-      name: "Pagination Dots",
-      cadsName: "Pagination Dots"
-    },
-    {
-      key: "b610aa8d09ccc8931662c7fba5cb0f734a3807f0",
-      name: "Pagination Group",
-      cadsName: "Pagination Group"
-    },
-    // Feedback / overlays
-    { key: "3133f83a3f98b68c1f3081132b2e90bb5d1dc59a", name: "Alert", cadsName: "Alert" },
-    { key: "949e2949033f60df26231b2f73985b488f9f78fe", name: "Toast", cadsName: "Toast" },
-    {
-      key: "64993adac217e2c6daab4eb131f94531d02e65a9",
-      name: "Notification Banner",
-      cadsName: "Notification Banner"
-    },
-    {
-      key: "d9e848e2167cade785a34c19aff53552645fa03d",
-      name: "Tooltip",
-      cadsName: "Tooltip"
-    },
-    {
-      key: "a1831764f91754253ef7a8e9581f7c3fbdc5227a",
-      name: "Tooltip Icon",
-      cadsName: "Icon Tooltip"
-    },
-    {
-      key: "b26928dc5394b83a3f950653339218583b9cfccc",
-      name: "Tooltip Tails",
-      cadsName: null
-    },
-    {
-      key: "354d944bb976f7104bbcd34cf8a733aff3124964",
-      name: "Popover",
-      cadsName: "Popover"
-    },
-    {
-      key: "a635748a7e91721d93fde00682cac982b8cc1742",
-      name: "Popover Building Blocks",
-      cadsName: "Popover Core"
-    },
-    {
-      key: "402577f53a413426e8fbdb59d73a7750b64ddd79",
-      name: "Drawer",
-      cadsName: "Drawer"
-    },
-    {
-      key: "6fd36a39efde8f927febe94b2d20a77cca842844",
-      name: "Dialog",
-      cadsName: "Dialog"
-    },
-    { key: "5978e70b44d30d937b300a136fd1e5c46a8a70c1", name: "Modal", cadsName: "Modal" },
-    {
-      key: "e6e3c0cfea5a588c0e936ab7dca00b3919c28a07",
-      name: "Content Divider",
-      cadsName: "Content Divider"
-    },
-    // Media
-    { key: "8c94db45d91aaa619d204ea00fc8c72986182cfc", name: "Video", cadsName: "Video" },
-    {
-      key: "fa1a30885e3ac8a208c390bb1d0c79b2fef659d0",
-      name: "Play Button",
-      cadsName: "Play Button"
-    },
-    {
-      key: "645a7bf0fba836e19dcdc0afbfd1f74bc0d85cf5",
-      name: "Carousel",
-      cadsName: "Carousel"
-    },
-    {
-      key: "9e43cc3f8b484812e1265cf6bcaa3e4176965cdf",
-      name: "Carousal Nav Buttons",
-      cadsName: "Carousal Nav Buttons"
-    },
-    {
-      key: "2606e5170df63663236d53010e2260932e3b9445",
-      name: "Action Block",
-      cadsName: "Action Block"
-    },
-    {
-      key: "868d8d3e54e28e95ae284876db38d7271651be4f",
-      name: "Action Block Group",
-      cadsName: "Action Block Group"
-    },
-    {
-      key: "f8f95d95f31825a834ca1a08ee78a10bbdfabee4",
-      name: "Action Block Carousel",
-      cadsName: "Action Block Carousel"
-    },
-    // Shell / layout
-    {
-      key: "284b25f1184ef019c06cc629e4fdaa38e75249f1",
-      name: "Lab Nav",
-      cadsName: "Lab Nav"
-    },
-    {
-      key: "21391676db29a79461cdf45ec70bba6641772d5b",
-      name: "Sidebar V2",
-      cadsName: "Sidebar V2"
-    },
-    {
-      key: "14b1e0b45ce2bf6a0dd67668e9960490605e62b9",
-      name: "Sidebar Tab Item V2",
-      cadsName: "Sidebar Tab Item V2"
-    },
-    {
-      key: "36742e65b461a7717434e4d0589ecfb3158bd56c",
-      name: "Sidebar Tab Group V2",
-      cadsName: "Sidebar Tab Group V2"
-    },
-    {
-      key: "f668e066487a10529ee420c65d14ea5ad4bd5eee",
-      name: "Sidebar Control",
-      cadsName: "Sidebar Control"
-    },
-    {
-      key: "b15d0603786020456041d9dfc6ce5fbc1ea8a795",
-      name: "File Manager V2",
-      cadsName: "File Manager V2"
-    },
-    {
-      key: "f228313a492b61b8a0809cee51776cdffe280dbe",
-      name: "File Item",
-      cadsName: "File Item"
-    },
-    {
-      key: "bb9040fe00af46f8f26380c8bd789587209f92f5",
-      name: "File Item Icons",
-      cadsName: "File Item Icons"
-    },
-    {
-      key: "6080fcf2f90e8cac1b083dc62ea7cb7a1cb747db",
-      name: "File Tab Row Item",
-      cadsName: "File Tab Row Item"
-    },
-    {
-      key: "965f87360ad7d05dc3f3589361e40bb7cd11b5de",
-      name: "Panel Header V2",
-      cadsName: "Panel Header V2"
-    },
-    {
-      key: "182556a60cdf5211857d30c94e575e35aa13aef7",
-      name: "Panel Header Building Block",
-      cadsName: "Panel Header Building Block"
-    },
-    {
-      key: "cab3283affeb303907a9a172225e382b759f68dd",
-      name: "Resize Handle",
-      cadsName: "Resize Handle"
-    },
-    { key: "908f98448d94d05c5a172f575d47cf2398a2299f", name: "Logo", cadsName: null },
-    // AI
-    {
-      key: "7dd35ac4dfa58413fcd9520dc8bf091b1cd617bf",
-      name: "AI Tutor Chat Input",
-      cadsName: "AI Tutor Chat Input"
-    },
-    {
-      key: "1968b2a676cdb5194012c76a0290bd1e72410cb1",
-      name: "AI Chat Messages",
-      cadsName: "AI Chat Messages"
-    },
-    {
-      key: "657aa0a29f7ad03f01ae4a21119471ca28714a8a",
-      name: "AI Chat File Chip",
-      cadsName: "AI Chat File Chip"
-    },
-    {
-      key: "642b5ebddbdd848f3f0174950db780003a344040",
-      name: "AI Chat File Chip",
-      cadsName: "AI Chat File Chip"
-    },
-    {
-      key: "fc8d56dba42d05aee6a8c1baf7f7ceab48caaaf9",
-      name: "AI Shortcut Chip",
-      cadsName: "AI Shortcut Chip"
-    },
-    {
-      key: "4bd2e86e9492638295155f36675a8549e23f2547",
-      name: "AI Support Indicator",
-      cadsName: "AI Support Indicator"
-    },
-    {
-      key: "fa8a60054807a87521a0207d968f29b4acb6db89",
-      name: "AI File Chip Close Button",
-      cadsName: "AI File Chip Close Button"
-    },
-    {
-      key: "5cc57671aeafa2f61aec50f6a630297347b3a26f",
-      name: "AI Chat File Item",
-      cadsName: "AI Chat File Item"
-    },
-    { key: "b8baba99082dcb77c42cb4f599869b9471a5aab7", name: "AI Bot", cadsName: null },
-    // Icons
-    {
-      key: "051a05d840dcf0a8220c056833c040fc581dff41",
-      name: "Font Awesome Icon",
-      cadsName: "Font Awesome Icon v7"
-    },
-    {
-      key: "2073beaaf6394b66220e04a5588a35e08d66daf2",
-      name: "Font Awesome Duotone Icon",
-      cadsName: "Font Awesome Duotone Icon v7"
-    }
-  ];
-  var dscoComponentKeys = new Set(dscoComponents.map((c) => c.key));
-  var cadsNameByNormalized = new Map(
-    cadsComponents.map((component) => [
-      component.name.trim().toLocaleLowerCase(),
-      component.name
-    ])
-  );
-  var cadsByDscoKey = new Map(
-    dscoComponents.filter((entry) => entry.cadsName).map((entry) => [entry.key, entry.cadsName])
-  );
-  var DSCO_NAME_REWRITES = {
-    "destructive button": "Button",
-    "icon toggle button": "Icon Toggle",
-    "icon toggle group": "Icon Toggle + Label",
-    "text field": "Text Input",
-    "text area": "Text Input",
-    "dropdown field": "Dropdown",
-    "input dropdown": "Dropdown",
-    "action dropdown": "Dropdown",
-    "dropdown menu button": "Dropdown Button",
-    "dropdown menu items": "Dropdown Menu Item",
-    checkbox: "Checkbox + Label",
-    "checkbox blocks": "Checkbox",
-    "checkbox blocks ": "Checkbox",
-    "radio button": "Radio Button + Label",
-    "radio buttons blocks": "Radio Buttons Block",
-    "toggle building block": "Toggle",
-    tab: "Tab Item",
-    "breadcrumb link": "Breadcrumb Links",
-    "breadcrumbs blocks": "Breadcrumb Separators",
-    "tooltip icon": "Icon Tooltip",
-    "popover building blocks": "Popover Core",
-    "font awesome icon": "Font Awesome Icon v7",
-    "font awesome duotone icon": "Font Awesome Duotone Icon v7"
-  };
-  function normalizeName(name) {
-    return name.trim().toLocaleLowerCase();
+  function buildNestedContentProperties(nested, captured, targetProps) {
+    const mini = {
+      dscoKey: "",
+      dscoName: "",
+      cadsName: "",
+      propNames: nested.propNames,
+      variantValues: nested.variantValues,
+      forceContent: nested.forceContent
+    };
+    return buildContentProperties(mini, captured, targetProps);
   }
-  function suggestCadsComponent(source) {
-    var _a;
-    if (source.key) {
-      const byKey = cadsByDscoKey.get(source.key);
-      if (byKey) return byKey;
-      if (dscoComponentKeys.has(source.key)) return null;
+  function buildNestedSwapProperties(nested, captured, targetProps) {
+    const targetMeta = __spreadValues({}, targetProps);
+    const out = buildNestedContentProperties(nested, captured, targetMeta);
+    const variants = remapNestedVariants(nested, captured);
+    for (const [axis, value] of Object.entries(variants)) {
+      const targetKey = findTargetPropKey(targetMeta, axis);
+      if (!targetKey || targetMeta[targetKey].type !== "VARIANT") continue;
+      out[targetKey] = value;
     }
-    const normalized = normalizeName(source.name);
-    const rewrite = DSCO_NAME_REWRITES[normalized];
-    if (rewrite) return rewrite;
-    return (_a = cadsNameByNormalized.get(normalized)) != null ? _a : null;
+    return out;
+  }
+  function isSourcePropFalsy(captured, sourceProp) {
+    for (const [key, value] of Object.entries(captured.properties)) {
+      if (propBaseName(key) === sourceProp || key === sourceProp) {
+        if (value === false || value === "false" || value === "No" || value === "no")
+          return true;
+        if (value === true || value === "true" || value === "Yes" || value === "yes")
+          return false;
+      }
+    }
+    const v = captured.variants[sourceProp];
+    if (v === "No" || v === "no" || v === "false") return true;
+    if (v === "Yes" || v === "yes" || v === "true") return false;
+    return false;
   }
 
   // src/main/components.ts
   var importedSets = /* @__PURE__ */ new Map();
+  async function findLocalComponentSetByKey(key) {
+    for (const page of figma.root.children) {
+      try {
+        if ("loadAsync" in page) await page.loadAsync();
+        const matches = page.findAllWithCriteria({ types: ["COMPONENT_SET"] });
+        for (const set of matches) {
+          if (set.key === key) return set;
+        }
+      } catch (e) {
+      }
+    }
+    return null;
+  }
   async function importCadsComponentSet(key) {
     const cached = importedSets.get(key);
     if (cached) return cached;
-    const node = await figma.importComponentSetByKeyAsync(key);
-    importedSets.set(key, node);
-    return node;
+    try {
+      const node = await figma.importComponentSetByKeyAsync(key);
+      importedSets.set(key, node);
+      return node;
+    } catch (e) {
+      const local = await findLocalComponentSetByKey(key);
+      if (local) {
+        importedSets.set(key, local);
+        return local;
+      }
+      throw new Error(`CADS component set not found for key ${key.slice(0, 8)}\u2026`);
+    }
   }
   async function getInstance(nodeId) {
     try {
@@ -3543,6 +5062,13 @@
     const entry = audit.components.find((component) => component.key === key);
     if (!entry) return null;
     return { name: entry.name, usages: entry.usages, dscoKey: entry.key };
+  }
+  function targetPropMeta(props) {
+    const meta = {};
+    for (const [key, prop] of Object.entries(props)) {
+      meta[key] = { type: prop.type };
+    }
+    return meta;
   }
   async function captureInstanceProps(instance) {
     var _a;
@@ -3593,11 +5119,23 @@
     if (iconAxis === "Left" || iconAxis === "Right" || iconAxis === "None") {
       tagIconPlacement = iconAxis;
     }
+    let nestedIconName = null;
+    const nestedIcon = findNestedInstances(instance, ["Tooltip Icon"])[0];
+    if (nestedIcon) {
+      for (const [key, prop] of Object.entries(nestedIcon.componentProperties)) {
+        const base = propBaseName(key).toLocaleLowerCase();
+        if ((base.includes("icon") || base === "name") && prop.type === "TEXT" && typeof prop.value === "string" && prop.value.trim()) {
+          nestedIconName = prop.value.trim();
+          break;
+        }
+      }
+    }
     return {
       properties,
       variants,
       capturedText: null,
-      tagIconPlacement
+      tagIconPlacement,
+      nestedIconName
     };
   }
   function captureFirstText(instance) {
@@ -3612,12 +5150,121 @@
     const text = texts[0];
     return text && typeof text.characters === "string" ? text.characters : null;
   }
-  function targetPropMeta(props) {
-    const meta = {};
-    for (const [key, prop] of Object.entries(props)) {
-      meta[key] = { type: prop.type };
+  function findNestedInstances(root, matchNames) {
+    const needles = matchNames.map((n) => n.toLocaleLowerCase());
+    const hits = [];
+    const walk = (node) => {
+      var _a;
+      if (node.type === "INSTANCE") {
+        const name = node.name.toLocaleLowerCase();
+        let setName = "";
+        try {
+          const main = node.mainComponent;
+          if (((_a = main == null ? void 0 : main.parent) == null ? void 0 : _a.type) === "COMPONENT_SET") {
+            setName = main.parent.name.toLocaleLowerCase();
+          }
+        } catch (e) {
+        }
+        if (needles.some(
+          (n) => name.includes(n) || setName.includes(n) || n.includes(name)
+        )) {
+          hits.push(node);
+        }
+      }
+      if ("children" in node) {
+        for (const child of node.children) walk(child);
+      }
+    };
+    walk(root);
+    return hits;
+  }
+  async function applyNestedRules(instance, nestedRules, captured) {
+    var _a;
+    const warnings = [];
+    for (const nested of nestedRules) {
+      const targets = findNestedInstances(instance, nested.matchNames);
+      if (targets.length === 0) {
+        warnings.push(`nested "${nested.matchNames.join("|")}" not found`);
+        continue;
+      }
+      for (const target of targets) {
+        try {
+          const props = buildNestedSwapProperties(
+            nested,
+            captured,
+            targetPropMeta(target.componentProperties)
+          );
+          if (Object.keys(props).length > 0) {
+            target.setProperties(props);
+          }
+        } catch (error) {
+          warnings.push(
+            `nested "${nested.matchNames[0]}" apply failed: ${String((_a = error.message) != null ? _a : error)}`
+          );
+        }
+      }
     }
-    return meta;
+    return warnings;
+  }
+  function findTextInSubtree(root, matchName) {
+    const needle = matchName.toLocaleLowerCase();
+    let found = null;
+    const walk = (node) => {
+      if (found) return;
+      if (node.type === "TEXT" && node.name.toLocaleLowerCase().includes(needle)) {
+        found = node;
+        return;
+      }
+      if (node.name.toLocaleLowerCase().includes(needle) && "children" in node) {
+        for (const child of node.children) {
+          if (child.type === "TEXT") {
+            found = child;
+            return;
+          }
+        }
+      }
+      if ("children" in node) {
+        for (const child of node.children) walk(child);
+      }
+    };
+    walk(root);
+    return found;
+  }
+  async function applySlotTextRules(instance, slotRules, captured) {
+    var _a;
+    const warnings = [];
+    for (const slot of slotRules) {
+      let textValue = null;
+      if (slot.useCapturedText) {
+        textValue = captured.capturedText;
+      } else if (slot.fromProp) {
+        for (const [key, value] of Object.entries(captured.properties)) {
+          if (propBaseName(key) === slot.fromProp && (typeof value === "string" || typeof value === "boolean")) {
+            textValue = String(value);
+            break;
+          }
+        }
+        if (textValue === null) {
+          const v = captured.variants[slot.fromProp];
+          if (v !== void 0) textValue = v;
+        }
+      }
+      if (textValue === null || textValue === "") continue;
+      const textNode = findTextInSubtree(instance, slot.matchName);
+      if (!textNode) {
+        warnings.push(`slot TEXT "${slot.matchName}" not found`);
+        continue;
+      }
+      try {
+        await figma.loadFontAsync(textNode.fontName);
+        textNode.characters = textValue;
+      } catch (error) {
+        warnings.push(
+          `slot TEXT "${slot.matchName}" write failed: ${String((_a = error.message) != null ? _a : error)}`
+        );
+      }
+    }
+    return warnings;
   }
   function findMatchingVariant(set, want) {
     const wantEntries = Object.entries(want);
@@ -3678,6 +5325,19 @@
       "labelStyle",
       "sentiment",
       "fillStyle",
+      "role",
+      "menuType",
+      "menuPlacement",
+      "isOn",
+      "isActive",
+      "isCurrent",
+      "status",
+      "position",
+      "itemType",
+      "percentFilled",
+      "startsFrom",
+      "stepCount",
+      "caretPlacement",
       // Font Awesome Icon / Duotone
       "style",
       "padding",
@@ -3692,6 +5352,19 @@
     const _a = want, { state: _state } = _a, rest = __objRest(_a, ["state"]);
     return rest;
   }
+  function resolveEffectiveRule(rule, captured, cadsKey) {
+    if (!rule.retargetWhenFalse) return { rule, cadsKey };
+    if (!isSourcePropFalsy(captured, rule.retargetWhenFalse.sourceProp)) {
+      return { rule, cadsKey };
+    }
+    const altName = rule.retargetWhenFalse.cadsName;
+    const altKey = resolveCadsComponentKey(altName);
+    if (!altKey) return { rule, cadsKey };
+    return {
+      rule: __spreadProps(__spreadValues({}, rule), { cadsName: altName }),
+      cadsKey: altKey
+    };
+  }
   async function swapSimple(instance, cadsKey) {
     var _a;
     const set = await importCadsComponentSet(cadsKey);
@@ -3702,68 +5375,125 @@
     instance.swapComponent(target);
   }
   async function swapOne(instance, rule, cadsKey) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
     const captured = await captureInstanceProps(instance);
     if (rule.captureText) {
       captured.capturedText = captureFirstText(instance);
     }
-    const set = await importCadsComponentSet(cadsKey);
-    const wantVariants = remapVariants(rule, captured);
+    const effective = resolveEffectiveRule(rule, captured, cadsKey);
+    const activeRule = effective.rule;
+    const activeKey = effective.cadsKey;
+    const set = await importCadsComponentSet(activeKey);
+    const wantVariants = remapVariants(activeRule, captured);
     const critical = criticalAxes(wantVariants);
-    if (Object.keys(critical).length === 0 && Object.keys(wantVariants).length === 0) {
-      throw new Error(
-        `could not read variant props from "${instance.name}"`
-      );
-    }
-    const wantWithDefault = __spreadValues(__spreadValues({}, critical), wantVariants.state ? { state: "default" } : {});
-    let target = (_c = (_b = (_a = findMatchingVariant(set, wantWithDefault)) != null ? _a : findMatchingVariant(set, critical)) != null ? _b : findMatchingVariant(set, withoutState(wantVariants))) != null ? _c : findMatchingVariant(set, wantVariants);
-    if (!target) {
-      throw new Error(
-        `no CADS "${rule.cadsName}" variant for ${Object.entries(
-          Object.keys(critical).length > 0 ? critical : wantVariants
-        ).map(([k, v]) => `${k}=${v}`).join(", ")}`
-      );
-    }
-    instance.swapComponent(target);
-    const content = buildContentProperties(
-      rule,
-      captured,
-      targetPropMeta(instance.componentProperties)
-    );
-    if (Object.keys(content).length > 0) {
-      try {
-        instance.setProperties(content);
-      } catch (error) {
+    const hasAnyWant = Object.keys(wantVariants).length > 0;
+    if (Object.keys(critical).length === 0 && !hasAnyWant) {
+      const fallback = (_a = set.defaultVariant) != null ? _a : set.children.find((child) => child.type === "COMPONENT");
+      if (!fallback || fallback.type !== "COMPONENT") {
         throw new Error(
-          `swapped but content props failed: ${String((_d = error.message) != null ? _d : error)}`
+          `could not read variant props from "${instance.name}"`
         );
       }
+      instance.swapComponent(fallback);
+      const content = buildContentProperties(
+        activeRule,
+        captured,
+        targetPropMeta(instance.componentProperties)
+      );
+      if (Object.keys(content).length > 0) {
+        instance.setProperties(content);
+      }
+      if ((_b = activeRule.nestedApply) == null ? void 0 : _b.length) {
+        await applyNestedRules(instance, activeRule.nestedApply, captured);
+      }
+      if ((_c = activeRule.slotText) == null ? void 0 : _c.length) {
+        await applySlotTextRules(instance, activeRule.slotText, captured);
+      }
+      return;
     }
-    if (Object.keys(critical).length > 0) {
-      let mismatches = variantsMatch(readVariants(instance), critical);
-      if (mismatches.length > 0) {
-        const retry = (_e = findMatchingVariant(set, wantWithDefault)) != null ? _e : findMatchingVariant(set, critical);
-        if (retry) {
-          instance.swapComponent(retry);
-          const content2 = buildContentProperties(
-            rule,
-            captured,
-            targetPropMeta(instance.componentProperties)
-          );
-          if (Object.keys(content2).length > 0) {
-            try {
-              instance.setProperties(content2);
-            } catch (e) {
-            }
+    const wantWithDefault = __spreadValues(__spreadValues({}, critical), wantVariants.state ? { state: "default" } : {});
+    let target = (_f = (_e = (_d = findMatchingVariant(set, wantWithDefault)) != null ? _d : findMatchingVariant(set, critical)) != null ? _e : findMatchingVariant(set, withoutState(wantVariants))) != null ? _f : findMatchingVariant(set, wantVariants);
+    if (!target) {
+      target = (_h = (_g = set.defaultVariant) != null ? _g : set.children.find((child) => child.type === "COMPONENT")) != null ? _h : null;
+      if (!target || target.type !== "COMPONENT") {
+        throw new Error(
+          `no CADS "${activeRule.cadsName}" variant for ${Object.entries(
+            Object.keys(critical).length > 0 ? critical : wantVariants
+          ).map(([k, v]) => `${k}=${v}`).join(", ")}`
+        );
+      }
+      instance.swapComponent(target);
+      const all = __spreadValues({}, buildContentProperties(
+        activeRule,
+        captured,
+        targetPropMeta(instance.componentProperties)
+      ));
+      for (const [axis, value] of Object.entries(wantVariants)) {
+        const meta = targetPropMeta(instance.componentProperties);
+        for (const [key, prop] of Object.entries(instance.componentProperties)) {
+          if (prop.type === "VARIANT" && propBaseName(key) === axis) {
+            all[key] = value;
+            void meta;
           }
         }
-        mismatches = variantsMatch(readVariants(instance), critical);
-        if (mismatches.length > 0) {
+      }
+      if (Object.keys(all).length > 0) {
+        try {
+          instance.setProperties(all);
+        } catch (error) {
           throw new Error(
-            `swapped but variants drifted: ${mismatches.join("; ")}`
+            `swapped (default) but props failed: ${String((_i = error.message) != null ? _i : error)}`
           );
         }
       }
+    } else {
+      instance.swapComponent(target);
+      const content = buildContentProperties(
+        activeRule,
+        captured,
+        targetPropMeta(instance.componentProperties)
+      );
+      if (Object.keys(content).length > 0) {
+        try {
+          instance.setProperties(content);
+        } catch (error) {
+          throw new Error(
+            `swapped but content props failed: ${String((_j = error.message) != null ? _j : error)}`
+          );
+        }
+      }
+      if (Object.keys(critical).length > 0) {
+        let mismatches = variantsMatch(readVariants(instance), critical);
+        if (mismatches.length > 0) {
+          const retry = (_k = findMatchingVariant(set, wantWithDefault)) != null ? _k : findMatchingVariant(set, critical);
+          if (retry) {
+            instance.swapComponent(retry);
+            const content2 = buildContentProperties(
+              activeRule,
+              captured,
+              targetPropMeta(instance.componentProperties)
+            );
+            if (Object.keys(content2).length > 0) {
+              try {
+                instance.setProperties(content2);
+              } catch (e) {
+              }
+            }
+          }
+          mismatches = variantsMatch(readVariants(instance), critical);
+          if (mismatches.length > 0) {
+            throw new Error(
+              `swapped but variants drifted: ${mismatches.join("; ")}`
+            );
+          }
+        }
+      }
+    }
+    const nestedWarnings = ((_l = activeRule.nestedApply) == null ? void 0 : _l.length) ? await applyNestedRules(instance, activeRule.nestedApply, captured) : [];
+    const slotWarnings = ((_m = activeRule.slotText) == null ? void 0 : _m.length) ? await applySlotTextRules(instance, activeRule.slotText, captured) : [];
+    const warnings = [...nestedWarnings, ...slotWarnings];
+    if (warnings.length > 0) {
+      throw new Error(`swapped with warnings: ${warnings.join("; ")}`);
     }
   }
   async function applyComponentSwaps(request, audit) {
@@ -3803,7 +5533,7 @@
           swapped++;
         } catch (error) {
           const message = String((_a = error.message) != null ? _a : error);
-          if (message.startsWith("swapped but content props failed:") || message.startsWith("swapped but variants drifted:")) {
+          if (message.startsWith("swapped but content props failed:") || message.startsWith("swapped but variants drifted:") || message.startsWith("swapped with warnings:") || message.startsWith("swapped (default) but props failed:")) {
             swapped++;
           }
           failures.push({
@@ -4534,6 +6264,28 @@
   function isCadsLibrary(name) {
     return /cads/i.test(name);
   }
+  function isSameNodeIds(left, right) {
+    if (left.length !== right.length) return false;
+    const rightIds = new Set(right);
+    return left.every((id) => rightIds.has(id));
+  }
+  function isNodeInsideRoots(node, rootIds) {
+    let current = node;
+    while (current && current.type !== "PAGE" && current.type !== "DOCUMENT") {
+      if (rootIds.has(current.id)) return true;
+      current = current.parent;
+    }
+    return false;
+  }
+  function auditSelectionRelation(selection, rootNodeIds) {
+    const selectionIds = selection.map((node) => node.id);
+    if (isSameNodeIds(selectionIds, rootNodeIds)) return "same";
+    const rootIds = new Set(rootNodeIds);
+    if (selection.every((node) => isNodeInsideRoots(node, rootIds))) {
+      return "inside";
+    }
+    return "outside";
+  }
   function postSelection() {
     const selection = figma.currentPage.selection;
     const count = selection.length;
@@ -4541,7 +6293,8 @@
       type: "selection",
       count,
       nodeIds: selection.map((node) => node.id),
-      label: count === 0 ? null : count === 1 ? selection[0].name : `${count} layers`
+      label: count === 0 ? null : count === 1 ? selection[0].name : `${count} layers`,
+      auditRelation: lastAudit && count > 0 ? auditSelectionRelation(selection, lastAudit.rootNodeIds) : void 0
     });
   }
   figma.on("selectionchange", () => {
@@ -4588,6 +6341,26 @@
       })
     });
   }
+  async function loadStyleCatalog(preferLocalStyles) {
+    styleCatalog = await buildStyleCatalog(
+      null,
+      (done, total) => post({
+        type: "catalog-progress",
+        done,
+        total,
+        label: "Loading text styles"
+      })
+    );
+    if (preferLocalStyles && styleCatalog) {
+      try {
+        const locals = await figma.getLocalTextStylesAsync();
+        for (const style of locals) {
+          styleCatalog.importedByKey.set(style.key, style);
+        }
+      } catch (e) {
+      }
+    }
+  }
   async function loadCadsCatalog(libraryName) {
     sotLibraryName = libraryName;
     settings.libraryName = libraryName;
@@ -4607,20 +6380,49 @@
         label: "Loading variables"
       })
     );
-    styleCatalog = await buildStyleCatalog(
-      null,
+    await loadStyleCatalog(false);
+    postCombinedCatalog();
+    postSelection();
+  }
+  async function loadCadsCatalogFromLocal() {
+    sotLibraryName = LOCAL_SOT_LIBRARY_NAME;
+    settings.libraryName = LOCAL_SOT_LIBRARY_NAME;
+    await saveSettings();
+    post({
+      type: "catalog-progress",
+      done: 0,
+      total: 0,
+      label: "Loading local CADS variables"
+    });
+    catalogResult = await buildLocalCatalog(
       (done, total) => post({
         type: "catalog-progress",
         done,
         total,
-        label: "Loading text styles"
+        label: "Loading local CADS variables"
       })
     );
+    await loadStyleCatalog(true);
     postCombinedCatalog();
     postSelection();
   }
-  async function handleAudit() {
+  async function selectNodesById(nodeIds) {
+    const nodes = [];
+    for (const id of nodeIds) {
+      const node = await figma.getNodeByIdAsync(id);
+      if (node && "visible" in node) nodes.push(node);
+    }
+    if (nodes.length === 0) {
+      throw new Error("The audited frame is no longer available.");
+    }
+    figma.currentPage.selection = nodes;
+    postSelection();
+  }
+  async function handleAudit(nodeIds) {
     var _a;
+    if (nodeIds && nodeIds.length > 0) {
+      await selectNodesById(nodeIds);
+    }
     const sotStyleKeys = new Set(
       ((_a = styleCatalog == null ? void 0 : styleCatalog.textStyles) != null ? _a : []).map((s) => s.key)
     );
@@ -4837,7 +6639,7 @@
       parts.push(`${mixedSkipped} mixed text layer(s) skipped`);
     }
     figma.notify(parts.join(" \u2014 "));
-    await handleAudit();
+    await handleAudit(lastAudit.rootNodeIds);
   }
   async function handleSaveAiSettings(ai) {
     var _a;
@@ -4851,6 +6653,10 @@
   async function bootstrap() {
     await loadSettings();
     post({ type: "settings", settings });
+    if (isCadsSourceFile()) {
+      await loadCadsCatalogFromLocal();
+      return;
+    }
     const libraryName = await findCadsLibraryName();
     if (!libraryName) {
       post({
@@ -4870,7 +6676,7 @@
           await bootstrap();
           break;
         case "audit":
-          await handleAudit();
+          await handleAudit(message.nodeIds);
           break;
         case "clear-selection":
           figma.currentPage.selection = [];
