@@ -3,9 +3,9 @@
  *
  * Inserts FA shortcodes as *text* (never vectors), so component instances are
  * never detached and text-scoped semantic color variables keep working:
- *  1. Instance selected  → set a TEXT component property (sidebar prop).
- *  2. Text layer selected → replace its characters with the shortcode.
- *  3. Nothing selected    → create a new FA text layer at the viewport center.
+ *  1. Instance selected       → set a TEXT component property (sidebar prop).
+ *  2. Text layer(s) selected  → replace characters (all layers in multi-edit).
+ *  3. Nothing selected        → create a new FA text layer at the viewport center.
  *
  * The UI derives its style tabs from the FA fonts actually installed on this
  * machine (reported here via listAvailableFontsAsync), so any FA flavor works
@@ -82,9 +82,27 @@ function instanceTextProps(instance: InstanceNode): InstanceTextProp[] {
   return props;
 }
 
+function selectedTextNodes(): TextNode[] {
+  return figma.currentPage.selection.filter(
+    (node): node is TextNode => node.type === "TEXT",
+  );
+}
+
 function currentTarget(): InsertTarget {
-  const node = figma.currentPage.selection[0];
-  if (!node) return { kind: "create" };
+  const selection = figma.currentPage.selection;
+  if (selection.length === 0) return { kind: "create" };
+
+  // Multi-edit / multi-select: every selected node is a text layer.
+  const textNodes = selectedTextNodes();
+  if (textNodes.length >= 2 && textNodes.length === selection.length) {
+    return {
+      kind: "text",
+      nodeName: `${textNodes.length} layers`,
+      count: textNodes.length,
+    };
+  }
+
+  const node = selection[0];
   if (node.type === "INSTANCE") {
     return {
       kind: "instance",
@@ -128,12 +146,23 @@ async function loadFontOrExplain(fontName: FontNameLike): Promise<FontName> {
   }
 }
 
-async function loadExistingFonts(node: TextNode): Promise<void> {
-  const fonts =
-    node.characters.length > 0
-      ? node.getRangeAllFontNames(0, node.characters.length)
-      : [node.fontName as FontName];
-  await Promise.all(fonts.map((font) => figma.loadFontAsync(font)));
+/**
+ * Swap the layer to `fontName`, then set characters.
+ *
+ * Important: setting `.fontName` only requires the *new* font to be loaded.
+ * We deliberately do not load the layer's current face first — outdated /
+ * uninstalled kit fonts set `hasMissingFont`, and loading them throws, which
+ * used to block the swap even though the shortcode could still update via a
+ * component property.
+ */
+async function applyFontAndCharacters(
+  node: TextNode,
+  name: string,
+  fontName: FontNameLike,
+): Promise<void> {
+  const font = await loadFontOrExplain(fontName);
+  node.fontName = font;
+  node.characters = name;
 }
 
 async function insertIntoTextNode(
@@ -141,12 +170,7 @@ async function insertIntoTextNode(
   name: string,
   fontName: FontNameLike,
 ): Promise<string> {
-  const [font] = await Promise.all([
-    loadFontOrExplain(fontName),
-    loadExistingFonts(node),
-  ]);
-  node.fontName = font;
-  node.characters = name;
+  await applyFontAndCharacters(node, name, fontName);
   return `Replaced text in "${node.name}" with "${name}"`;
 }
 
@@ -193,13 +217,12 @@ async function applyFontToBoundText(
 ): Promise<void> {
   const bound = findTextNodesForProp(instance, propKey);
   if (bound.length === 0) return;
+  // Only the destination face is required — same missing-kit case as
+  // applyFontAndCharacters (old kit uninstalled after a kit refresh).
   const font = await loadFontOrExplain(fontName);
-  await Promise.all(
-    bound.map(async (textNode) => {
-      await loadExistingFonts(textNode);
-      textNode.fontName = font;
-    }),
-  );
+  for (const textNode of bound) {
+    textNode.fontName = font;
+  }
 }
 
 async function insertIntoInstance(
@@ -220,26 +243,45 @@ async function insertIntoInstance(
   return `Set "${prop.label}" to "${name}" on "${instance.name}"`;
 }
 
+/** Insert into one text layer — via component prop when bound, else replace characters. */
+async function insertIntoSelectedText(
+  node: TextNode,
+  name: string,
+  fontName: FontNameLike,
+): Promise<string> {
+  const propRef = node.componentPropertyReferences?.characters;
+  const instance = propRef ? findAncestorInstance(node) : null;
+  if (propRef && instance) {
+    return insertIntoInstance(instance, name, propRef, fontName);
+  }
+  return insertIntoTextNode(node, name, fontName);
+}
+
 async function handleInsert(
   name: string,
   fontName: FontNameLike,
   propKey: string | undefined,
 ): Promise<void> {
   try {
-    const node = figma.currentPage.selection[0];
+    const selection = figma.currentPage.selection;
+    const textNodes = selectedTextNodes();
     let detail: string;
-    if (node && node.type === "INSTANCE") {
-      detail = await insertIntoInstance(node, name, propKey, fontName);
-    } else if (node && node.type === "TEXT") {
-      // Prop-bound text inside an instance: set the property (don't detach / edit internals).
-      const propRef = node.componentPropertyReferences?.characters;
-      const instance = propRef ? findAncestorInstance(node) : null;
-      detail =
-        propRef && instance
-          ? await insertIntoInstance(instance, name, propRef, fontName)
-          : await insertIntoTextNode(node, name, fontName);
+
+    // Figma multi-edit / multi-select text: write into every selected text layer.
+    if (textNodes.length >= 2 && textNodes.length === selection.length) {
+      await Promise.all(
+        textNodes.map((node) => insertIntoSelectedText(node, name, fontName)),
+      );
+      detail = `Replaced text in ${textNodes.length} layers with "${name}"`;
     } else {
-      detail = await insertAsNewLayer(name, fontName);
+      const node = selection[0];
+      if (node && node.type === "INSTANCE") {
+        detail = await insertIntoInstance(node, name, propKey, fontName);
+      } else if (node && node.type === "TEXT") {
+        detail = await insertIntoSelectedText(node, name, fontName);
+      } else {
+        detail = await insertAsNewLayer(name, fontName);
+      }
     }
     post({ type: "inserted", ok: true, detail });
     figma.notify(detail);

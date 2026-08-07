@@ -22,6 +22,8 @@ export type InsertTarget =
       nodeName: string;
       /** Bound TEXT component property label, when this layer maps to one */
       propName?: string;
+      /** >1 when multiple text layers are selected (incl. Figma multi-edit) */
+      count?: number;
     }
   | { kind: "create" };
 

@@ -59,10 +59,24 @@
     }
     return props;
   }
+  function selectedTextNodes() {
+    return figma.currentPage.selection.filter(
+      (node) => node.type === "TEXT"
+    );
+  }
   function currentTarget() {
     var _a;
-    const node = figma.currentPage.selection[0];
-    if (!node) return { kind: "create" };
+    const selection = figma.currentPage.selection;
+    if (selection.length === 0) return { kind: "create" };
+    const textNodes = selectedTextNodes();
+    if (textNodes.length >= 2 && textNodes.length === selection.length) {
+      return {
+        kind: "text",
+        nodeName: `${textNodes.length} layers`,
+        count: textNodes.length
+      };
+    }
+    const node = selection[0];
     if (node.type === "INSTANCE") {
       return {
         kind: "instance",
@@ -102,17 +116,13 @@
       );
     }
   }
-  async function loadExistingFonts(node) {
-    const fonts = node.characters.length > 0 ? node.getRangeAllFontNames(0, node.characters.length) : [node.fontName];
-    await Promise.all(fonts.map((font) => figma.loadFontAsync(font)));
-  }
-  async function insertIntoTextNode(node, name, fontName) {
-    const [font] = await Promise.all([
-      loadFontOrExplain(fontName),
-      loadExistingFonts(node)
-    ]);
+  async function applyFontAndCharacters(node, name, fontName) {
+    const font = await loadFontOrExplain(fontName);
     node.fontName = font;
     node.characters = name;
+  }
+  async function insertIntoTextNode(node, name, fontName) {
+    await applyFontAndCharacters(node, name, fontName);
     return `Replaced text in "${node.name}" with "${name}"`;
   }
   async function insertAsNewLayer(name, fontName) {
@@ -147,12 +157,9 @@
     const bound = findTextNodesForProp(instance, propKey);
     if (bound.length === 0) return;
     const font = await loadFontOrExplain(fontName);
-    await Promise.all(
-      bound.map(async (textNode) => {
-        await loadExistingFonts(textNode);
-        textNode.fontName = font;
-      })
-    );
+    for (const textNode of bound) {
+      textNode.fontName = font;
+    }
   }
   async function insertIntoInstance(instance, name, propKey, fontName) {
     var _a;
@@ -165,19 +172,34 @@
     await applyFontToBoundText(instance, prop.key, fontName);
     return `Set "${prop.label}" to "${name}" on "${instance.name}"`;
   }
-  async function handleInsert(name, fontName, propKey) {
+  async function insertIntoSelectedText(node, name, fontName) {
     var _a;
+    const propRef = (_a = node.componentPropertyReferences) == null ? void 0 : _a.characters;
+    const instance = propRef ? findAncestorInstance(node) : null;
+    if (propRef && instance) {
+      return insertIntoInstance(instance, name, propRef, fontName);
+    }
+    return insertIntoTextNode(node, name, fontName);
+  }
+  async function handleInsert(name, fontName, propKey) {
     try {
-      const node = figma.currentPage.selection[0];
+      const selection = figma.currentPage.selection;
+      const textNodes = selectedTextNodes();
       let detail;
-      if (node && node.type === "INSTANCE") {
-        detail = await insertIntoInstance(node, name, propKey, fontName);
-      } else if (node && node.type === "TEXT") {
-        const propRef = (_a = node.componentPropertyReferences) == null ? void 0 : _a.characters;
-        const instance = propRef ? findAncestorInstance(node) : null;
-        detail = propRef && instance ? await insertIntoInstance(instance, name, propRef, fontName) : await insertIntoTextNode(node, name, fontName);
+      if (textNodes.length >= 2 && textNodes.length === selection.length) {
+        await Promise.all(
+          textNodes.map((node) => insertIntoSelectedText(node, name, fontName))
+        );
+        detail = `Replaced text in ${textNodes.length} layers with "${name}"`;
       } else {
-        detail = await insertAsNewLayer(name, fontName);
+        const node = selection[0];
+        if (node && node.type === "INSTANCE") {
+          detail = await insertIntoInstance(node, name, propKey, fontName);
+        } else if (node && node.type === "TEXT") {
+          detail = await insertIntoSelectedText(node, name, fontName);
+        } else {
+          detail = await insertAsNewLayer(name, fontName);
+        }
       }
       post({ type: "inserted", ok: true, detail });
       figma.notify(detail);
