@@ -356,10 +356,12 @@
         overflow-y: auto;
       }
       .settings-section {
+        --settings-block-gap: 8px;
+        --settings-heading-helper-gap: 2px;
         padding: 12px 8px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: var(--settings-block-gap);
       }
       .settings-section + .settings-section {
         border-top: 1px solid var(--figma-color-border, #e6e6e6);
@@ -370,6 +372,12 @@
       .hint {
         margin: 0;
         color: var(--figma-color-text-secondary, #666);
+      }
+      /* All Settings headings → helpers sit 2px apart (section gap is 8px). */
+      .settings-section > .section-title + .hint {
+        margin-top: calc(
+          var(--settings-heading-helper-gap) - var(--settings-block-gap)
+        );
       }
       .hint code {
         font-family: ui-monospace, Menlo, monospace;
@@ -468,6 +476,38 @@
         opacity: 0.65;
         cursor: default;
         pointer-events: none;
+      }
+      .settings-section .kit-token-row > .primary-btn {
+        flex: none;
+        align-self: stretch;
+        white-space: nowrap;
+        padding: 6px 10px;
+        font-size: inherit;
+        font-weight: 500;
+      }
+      .settings-kit-select-hint {
+        margin: 0;
+        color: var(--figma-color-text-secondary, #666);
+        font-size: 11px;
+        line-height: 1.35;
+      }
+      .settings-kit-select-hint[hidden] {
+        display: none !important;
+      }
+      /* Kits picker: 12px under the token row; heading → helper 2px. */
+      .settings-section > .settings-kit-picker {
+        margin-top: calc(10px - var(--settings-block-gap));
+        gap: 0;
+      }
+      .settings-kit-picker > .setup-kit-picker-header {
+        margin-bottom: 0;
+      }
+      .settings-kit-picker > .setup-kit-picker-header + .settings-kit-select-hint:not([hidden]) {
+        margin-top: var(--settings-heading-helper-gap);
+      }
+      .settings-kit-picker > .setup-kit-tree:not(:empty),
+      .settings-kit-picker > .settings-kit-empty:not([hidden]) {
+        margin-top: var(--settings-block-gap);
       }
       .kit-input,
       .kit-select {
@@ -723,6 +763,7 @@
       .setup-title {
         font-size: 14px;
         font-weight: 600;
+        margin-bottom: 8px;
       }
       .setup-step {
         margin: 0 0 4px;
@@ -1042,9 +1083,6 @@
               aria-hidden="true"
             />
             <div class="setup-title">Set up FontAwesome Glyphs</div>
-            <p class="setup-step">
-              Populate the icon picker by adding local font files, or sync with your Font Awesome account.
-            </p>
             <div class="setup-paths">
               <button id="setup-api-btn" class="setup-path-btn primary" type="button">
                 <span class="setup-path-title">Sync via API</span>
@@ -1298,22 +1336,22 @@
               </div>
               <button
                 id="kit-section-sync-btn"
-                class="kit-section-sync"
+                class="primary-btn"
                 type="button"
-                title="Sync selected kits"
-                aria-label="Sync selected kits"
+                title="Load kits"
+                aria-label="Load kits"
+                disabled
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 4v6h-6" />
-                  <path d="M1 20v-6h6" />
-                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-                </svg>
+                Load kits
               </button>
             </div>
             <div id="settings-kit-picker" class="settings-kit-picker">
               <div class="setup-kit-picker-header">
                 <span class="kit-field-label is-primary">Kits &amp; styles</span>
               </div>
+              <p id="settings-kit-select-hint" class="settings-kit-select-hint" hidden>
+                Please select kit(s) to load
+              </p>
               <div id="settings-kit-tree" class="setup-kit-tree"></div>
               <p id="settings-kit-empty" class="settings-kit-empty">
                 Add an API token to load kits…

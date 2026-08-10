@@ -52,6 +52,8 @@ interface Source {
   weight: number;
   entries: IconEntry[];
   isCustom: boolean;
+  /** True when this face came from Kit API sync (local files are fallback). */
+  fromApi: boolean;
 }
 
 // --- elements -------------------------------------------------------------
@@ -138,6 +140,9 @@ const settingsKitTree = document.getElementById(
 const settingsKitEmpty = document.getElementById(
   "settings-kit-empty",
 ) as HTMLParagraphElement;
+const settingsKitSelectHint = document.getElementById(
+  "settings-kit-select-hint",
+) as HTMLParagraphElement;
 const kitClearTokenBtn = document.getElementById(
   "kit-clear-token-btn",
 ) as HTMLButtonElement;
@@ -204,18 +209,62 @@ let syncButtonsBusy = false;
 /** True while setup “Load selected kits/styles” is importing. */
 let setupSyncBusy = false;
 const SETUP_SYNC_LABEL = "Load selected kits/styles";
+const LOAD_KITS_LABEL = "Load kits";
 const SYNC_SPINNER_SVG =
   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 4v6h-6" /><path d="M1 20v-6h6" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>';
 /** Catalog/glyph blobs may arrive before settings on init — apply once token is known. */
 let pendingKitCatalog: FaKitCatalogCache | null | undefined;
 let pendingGlyphCache: FaGlyphCacheBlob | null | undefined;
 
+function hasImportedApiFaces(): boolean {
+  return importedApiFaceIds().size > 0;
+}
+
+/**
+ * Settings API row: “Load kits” until the account catalog is in memory, then
+ * the sync icon (even when nothing is selected yet). Busy/loading always uses
+ * the 26px sync chrome so the control doesn’t stay Load-kits-wide.
+ */
+function updateKitSectionSyncButton() {
+  const hasToken = Boolean(faApiTokenInput.value.trim());
+  const loadMode = accountFaces.length === 0;
+
+  if (loadMode && !syncButtonsBusy) {
+    kitSectionSyncBtn.classList.remove("kit-section-sync", "syncing");
+    kitSectionSyncBtn.classList.add("primary-btn");
+    kitSectionSyncBtn.removeAttribute("aria-busy");
+    kitSectionSyncBtn.textContent = LOAD_KITS_LABEL;
+    kitSectionSyncBtn.title = LOAD_KITS_LABEL;
+    kitSectionSyncBtn.setAttribute("aria-label", LOAD_KITS_LABEL);
+    kitSectionSyncBtn.disabled = !hasToken;
+    return;
+  }
+
+  kitSectionSyncBtn.classList.remove("primary-btn");
+  kitSectionSyncBtn.classList.add("kit-section-sync");
+  kitSectionSyncBtn.innerHTML = SYNC_SPINNER_SVG;
+  kitSectionSyncBtn.classList.toggle("syncing", syncButtonsBusy);
+  kitSectionSyncBtn.disabled = syncButtonsBusy || (loadMode && !hasToken);
+  if (loadMode && syncButtonsBusy) {
+    kitSectionSyncBtn.title = "Loading kits";
+    kitSectionSyncBtn.setAttribute("aria-label", "Loading kits");
+    kitSectionSyncBtn.setAttribute("aria-busy", "true");
+    return;
+  }
+  kitSectionSyncBtn.title = "Sync selected kits";
+  kitSectionSyncBtn.setAttribute("aria-label", "Sync selected kits");
+  if (syncButtonsBusy) {
+    kitSectionSyncBtn.setAttribute("aria-busy", "true");
+  } else {
+    kitSectionSyncBtn.removeAttribute("aria-busy");
+  }
+}
+
 function setSyncButtonsBusy(busy: boolean) {
   syncButtonsBusy = busy;
-  for (const button of [footerSyncBtn, kitSectionSyncBtn]) {
-    button.classList.toggle("syncing", busy);
-    button.disabled = busy;
-  }
+  footerSyncBtn.classList.toggle("syncing", busy);
+  footerSyncBtn.disabled = busy;
+  updateKitSectionSyncButton();
 }
 
 async function mapPool<T>(
@@ -283,20 +332,81 @@ function entriesFromGlyphs(glyphs: Record<string, string>): IconEntry[] {
   return entries;
 }
 
+function faceIdentityKey(family: string, style: string): string {
+  return `${family.toLowerCase()}|${style.toLowerCase()}`;
+}
+
+/**
+ * Build picker sources. When API-synced faces and local files overlap, API
+ * wins for the face (and for each shortcode); local only fills gaps.
+ */
 function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
-  const built: Source[] = [];
+  type FaceMerge = {
+    family: string;
+    style: string;
+    glyphs: Record<string, string>;
+    fromApi: boolean;
+  };
+  const byFace = new Map<string, FaceMerge>();
+
+  const upsert = (font: StoredFont, fromApi: boolean) => {
+    const key = faceIdentityKey(font.family, font.style);
+    const existing = byFace.get(key);
+    if (!existing) {
+      byFace.set(key, {
+        family: font.family,
+        style: font.style,
+        glyphs: { ...font.glyphs },
+        fromApi,
+      });
+      return;
+    }
+    if (fromApi && !existing.fromApi) {
+      // API face replaces a local-only face; keep local-only shortcodes.
+      const glyphs = { ...font.glyphs };
+      for (const [name, code] of Object.entries(existing.glyphs)) {
+        if (!(name in glyphs)) glyphs[name] = code;
+      }
+      byFace.set(key, {
+        family: font.family,
+        style: font.style,
+        glyphs,
+        fromApi: true,
+      });
+      return;
+    }
+    if (!fromApi && existing.fromApi) {
+      // Local fallback — only add shortcodes the API face doesn't have.
+      for (const [name, code] of Object.entries(font.glyphs)) {
+        if (!(name in existing.glyphs)) existing.glyphs[name] = code;
+      }
+      return;
+    }
+    // Same provenance: last write wins per shortcode (refresh / re-add).
+    Object.assign(existing.glyphs, font.glyphs);
+  };
+
+  // API first so insertion order favors synced faces, then local fallbacks.
   for (const font of fonts) {
-    const entries = entriesFromGlyphs(font.glyphs);
+    if (!isLocalFileFont(font)) upsert(font, true);
+  }
+  for (const font of fonts) {
+    if (isLocalFileFont(font)) upsert(font, false);
+  }
+
+  const built: Source[] = [];
+  for (const face of byFace.values()) {
+    const entries = entriesFromGlyphs(face.glyphs);
     if (entries.length === 0) continue;
-    const custom = isKitFamily(font.family);
     built.push({
-      family: font.family,
-      style: font.style,
-      weight: weightForStyle(font.style),
-      id: `${font.family}/${font.style}`,
-      itemLabel: font.style,
+      family: face.family,
+      style: face.style,
+      weight: weightForStyle(face.style),
+      id: `${face.family}/${face.style}`,
+      itemLabel: face.style,
       entries,
-      isCustom: custom,
+      isCustom: isKitFamily(face.family),
+      fromApi: face.fromApi,
     });
   }
   sortSources(built);
@@ -313,10 +423,17 @@ function sortSources(list: Source[]) {
     const aBrands = /brands/i.test(a.family) ? 1 : 0;
     const bBrands = /brands/i.test(b.family) ? 1 : 0;
     if (aBrands !== bBrands) return aBrands - bBrands;
+    // Synced faces before local-file fallbacks within the same tier.
+    if (a.fromApi !== b.fromApi) return a.fromApi ? -1 : 1;
     if (a.family !== b.family) return a.family.localeCompare(b.family);
     if (a.isCustom !== b.isCustom) return a.isCustom ? 1 : -1;
     return b.weight - a.weight;
   });
+}
+
+/** Stable API-before-local ordering for All-view merges (first shortcode wins). */
+function preferApiSources(list: Source[]): Source[] {
+  return [...list].sort((a, b) => Number(b.fromApi) - Number(a.fromApi));
 }
 
 /**
@@ -356,11 +473,18 @@ function buildAllSource(parts: Source[]): Source {
     }
   };
 
-  const stock = parts.filter(
-    (source) => !isKitFamily(source.family) && !/brands/i.test(source.family),
+  // Within each tier, synced faces beat local-file fallbacks (first wins).
+  const stock = preferApiSources(
+    parts.filter(
+      (source) => !isKitFamily(source.family) && !/brands/i.test(source.family),
+    ),
   );
-  const brands = parts.filter((source) => /brands/i.test(source.family));
-  const kits = parts.filter((source) => isKitFamily(source.family));
+  const brands = preferApiSources(
+    parts.filter((source) => /brands/i.test(source.family)),
+  );
+  const kits = preferApiSources(
+    parts.filter((source) => isKitFamily(source.family)),
+  );
 
   const preferSpecific = Boolean(preferred) && preferred.toLowerCase() !== "all";
 
@@ -394,6 +518,7 @@ function buildAllSource(parts: Source[]): Source {
     weight: 900,
     entries,
     isCustom: false,
+    fromApi: parts.some((source) => source.fromApi),
   };
 }
 
@@ -405,7 +530,7 @@ function buildAllStyleSource(parts: Source[], styleName: string): Source {
   const matching = parts.filter((source) =>
     styleMatchesPreferred(source.style, styleName),
   );
-  // Stock first, then brands, then kits — first shortcode wins.
+  // Stock first, then brands, then kits; API before local — first shortcode wins.
   const ordered = [...matching].sort((a, b) => {
     const aKit = isKitFamily(a.family) ? 1 : 0;
     const bKit = isKitFamily(b.family) ? 1 : 0;
@@ -413,6 +538,7 @@ function buildAllStyleSource(parts: Source[], styleName: string): Source {
     const aBrands = /brands/i.test(a.family) ? 1 : 0;
     const bBrands = /brands/i.test(b.family) ? 1 : 0;
     if (aBrands !== bBrands) return aBrands - bBrands;
+    if (a.fromApi !== b.fromApi) return a.fromApi ? -1 : 1;
     return a.family.localeCompare(b.family);
   });
 
@@ -435,6 +561,7 @@ function buildAllStyleSource(parts: Source[], styleName: string): Source {
     weight: weightForStyle(styleName),
     entries,
     isCustom: false,
+    fromApi: matching.some((source) => source.fromApi),
   };
 }
 
@@ -627,11 +754,16 @@ function fillMenu(
   menu.appendChild(list);
 }
 
+/** Footer sync only when API styles are imported (not local-files-only). */
+function updateFooterSyncVisibility() {
+  footerSyncBtn.hidden = !hasImportedApiFaces();
+}
+
 function setPickerControlsEnabled(enabled: boolean) {
   searchInput.disabled = !enabled;
   familyTrigger.disabled = !enabled;
   styleTrigger.disabled = !enabled;
-  footerSyncBtn.hidden = !enabled;
+  updateFooterSyncVisibility();
   if (!enabled) closeAllMenus();
 }
 
@@ -830,12 +962,12 @@ function renderTarget() {
   // Empty catalog: footer carries the empty-state copy; sync stays hidden.
   if (settings.fonts.length === 0) {
     targetEl.hidden = false;
-    footerSyncBtn.hidden = true;
+    updateFooterSyncVisibility();
     targetEl.textContent = "No kits imported, add in settings.";
     return;
   }
   targetEl.hidden = false;
-  footerSyncBtn.hidden = false;
+  updateFooterSyncVisibility();
   if (target.kind === "instance") {
     if (target.textProps.length === 0) {
       targetEl.innerHTML = `Selected instance <strong></strong> has no text props — select a text layer inside it instead.`;
@@ -951,7 +1083,10 @@ function abortAllApiImports() {
   inflightFaceKeys.clear();
   cancelledFaceKeys.clear();
   kitSelectOrder.length = 0;
-  settingsKitDisplayOrder = null;
+  // While Settings stays open, keep a freeze marker (`[]` = re-freeze when the
+  // catalog returns). Nulling here made every post-token-paste render use live
+  // selected-first sorting and jump kits as soon as one was checked.
+  settingsKitDisplayOrder = settingsOpen ? [] : null;
   prefetchGeneration += 1;
   prefetchRunning = false;
   invalidateKitGlyphCache();
@@ -1644,8 +1779,16 @@ function computeSettingsKitOrder(): FaKitSummary[] {
   });
 }
 
+/** On Settings enter only — selected kits can lead. */
 function captureSettingsKitDisplayOrder() {
   settingsKitDisplayOrder = computeSettingsKitOrder().map((kit) => kit.token);
+}
+
+/** Mid-visit catalog arrival — name order only (never reshuffle by selection). */
+function freezeSettingsKitDisplayOrderByName() {
+  settingsKitDisplayOrder = [...loadedKits]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((kit) => kit.token);
 }
 
 /**
@@ -1653,13 +1796,16 @@ function captureSettingsKitDisplayOrder() {
  * New kits that appear mid-visit append at the bottom (no reshuffle).
  */
 function orderedSettingsKits(): FaKitSummary[] {
-  if (!settingsOpen || settingsKitDisplayOrder == null) {
+  if (!settingsOpen) {
     return computeSettingsKitOrder();
   }
+  if (settingsKitDisplayOrder == null) {
+    settingsKitDisplayOrder = [];
+  }
 
-  // Catalog arrived after open with an empty freeze — capture once now.
+  // Catalog arrived after open / after token replace — freeze once, by name.
   if (settingsKitDisplayOrder.length === 0 && loadedKits.length > 0) {
-    captureSettingsKitDisplayOrder();
+    freezeSettingsKitDisplayOrderByName();
   }
 
   const byToken = new Map(loadedKits.map((kit) => [kit.token, kit]));
@@ -1728,16 +1874,29 @@ function toggleSettingsKitFaces(kitToken: string, enabled: boolean) {
   renderSettingsKitList();
 }
 
+function updateSettingsKitSelectHint() {
+  if (accountFaces.length === 0) {
+    settingsKitSelectHint.hidden = true;
+    return;
+  }
+  const anySelected = accountFaces.some((face) =>
+    isFaceSelected(faceKey(face.kitToken, face.family, face.style)),
+  );
+  settingsKitSelectHint.hidden = anySelected;
+}
+
 function renderSettingsKitList() {
   const hasToken = Boolean(
     faApiTokenInput.value.trim() || settings.faApiToken,
   );
   const imported = importedApiFaceIds();
   settingsKitTree.textContent = "";
+  settingsKitSelectHint.hidden = true;
 
   if (!hasToken) {
     settingsKitEmpty.hidden = false;
     settingsKitEmpty.textContent = "Add an API token to load kits…";
+    updateKitSectionSyncButton();
     return;
   }
 
@@ -1747,10 +1906,12 @@ function renderSettingsKitList() {
       imported.size > 0
         ? `Loading kits… (${imported.size} style${imported.size === 1 ? "" : "s"} already imported)`
         : "Loading kits…";
+    updateKitSectionSyncButton();
     return;
   }
 
   settingsKitEmpty.hidden = true;
+  updateSettingsKitSelectHint();
 
   for (const kit of orderedSettingsKits()) {
     const faces = facesForKit(kit.token);
@@ -1833,6 +1994,8 @@ function renderSettingsKitList() {
             selected > 0
               ? `${selected}/${faces.length} selected`
               : `${faces.length} styles`;
+          updateSettingsKitSelectHint();
+          updateKitSectionSyncButton();
         });
         const styleName = document.createElement("span");
         styleName.className = "setup-kit-name";
@@ -1845,11 +2008,14 @@ function renderSettingsKitList() {
 
     settingsKitTree.appendChild(card);
   }
+
+  updateKitSectionSyncButton();
 }
 
 async function loadAccountFacesIntoSettings(options: { force?: boolean } = {}) {
   const token = faApiTokenInput.value.trim() || settings.faApiToken;
   if (!token) return;
+  if (syncButtonsBusy) return;
   settings.faApiToken = token;
   updateTokenClearVisibility();
 
@@ -1861,6 +2027,7 @@ async function loadAccountFacesIntoSettings(options: { force?: boolean } = {}) {
   }
 
   renderSettingsKitList();
+  setSyncButtonsBusy(true);
   try {
     await ensureAccountFaces(token, { force: options.force });
     persistSettings();
@@ -1871,9 +2038,12 @@ async function loadAccountFacesIntoSettings(options: { force?: boolean } = {}) {
     if (accountFaces.length === 0) {
       settingsKitTree.textContent = "";
       settingsKitEmpty.hidden = false;
+      settingsKitSelectHint.hidden = true;
       settingsKitEmpty.textContent =
         "Couldn't load kits. Check the token and try again.";
     }
+  } finally {
+    setSyncButtonsBusy(false);
   }
 }
 
@@ -1917,10 +2087,9 @@ async function refreshImportedApiFaces(
   }
 
   if (faces.length === 0) {
-    notify(
-      "No API styles imported yet — expand a kit and select styles to import.",
-      true,
-    );
+    // Kits catalog may be loaded with nothing selected yet — guide via the
+    // settings helper instead of an error toast.
+    if (settingsOpen) renderSettingsKitList();
     setSyncButtonsBusy(false);
     return;
   }
@@ -1997,6 +2166,7 @@ function renderKitSettings() {
   faApiTokenInput.value = settings.faApiToken ?? "";
   updateTokenClearVisibility();
   renderSettingsKitList();
+  updateKitSectionSyncButton();
 
   if (settings.faApiToken && accountFaces.length === 0) {
     void loadAccountFacesIntoSettings();
@@ -2615,9 +2785,15 @@ backBtn.addEventListener("click", () => showSettings(false));
 footerSyncBtn.addEventListener("click", () =>
   void refreshImportedApiFaces({ refreshCatalog: false }),
 );
-kitSectionSyncBtn.addEventListener("click", () =>
-  void refreshImportedApiFaces({ refreshCatalog: true }),
-);
+kitSectionSyncBtn.addEventListener("click", () => {
+  // No catalog yet → Load kits. Catalog loaded but nothing imported → refresh
+  // the kit list. Imported styles → full glyph sync.
+  if (accountFaces.length === 0 || !hasImportedApiFaces()) {
+    void loadAccountFacesIntoSettings({ force: true });
+    return;
+  }
+  void refreshImportedApiFaces({ refreshCatalog: true });
+});
 setupAddBtn.addEventListener("click", () => fontFilesInput.click());
 setupApiBtn.addEventListener("click", () => {
   setSetupPanel("api");
@@ -2657,10 +2833,14 @@ fontFilesInput.addEventListener("change", () => {
 kitClearTokenBtn.addEventListener("click", () => {
   clearApiAuthAndSyncedFonts();
 });
-faApiTokenInput.addEventListener("input", () => updateTokenClearVisibility());
+faApiTokenInput.addEventListener("input", () => {
+  updateTokenClearVisibility();
+  updateKitSectionSyncButton();
+});
 faApiTokenInput.addEventListener("change", () => {
   const token = faApiTokenInput.value.trim();
   updateTokenClearVisibility();
+  updateKitSectionSyncButton();
   // Cleared by hand (not just the ×) — same cleanup as the clear button.
   if (!token) {
     if (settings.faApiToken || settings.fonts.some((f) => !isLocalFileFont(f))) {
