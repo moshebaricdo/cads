@@ -717,6 +717,19 @@ function samePaintedBox(a: DOMRect, b: DOMRect): boolean {
   );
 }
 
+/** True when the node owns fill, padding, or radius (not just flex layout). */
+function ownsPaintedChrome(el: HTMLElement): boolean {
+  const styles = getComputedStyle(el);
+  if (hasBoxValue(readSides(styles, "padding"))) return true;
+  if (
+    !isTransparentColor(styles.backgroundColor) &&
+    styles.backgroundColor !== "rgba(0, 0, 0, 0)"
+  ) {
+    return true;
+  }
+  return parsePx(styles.borderRadius) > 0.5;
+}
+
 const INTERACTIVE_SELECTOR = [
   "button",
   "a",
@@ -734,52 +747,75 @@ const INTERACTIVE_SELECTOR = [
 ].join(", ");
 
 /**
- * Drill past empty structural wrappers (Pagination's MUI `<li>`, etc.) to the
- * interactive control that owns padding / radius / fill / type.
+ * Drill past empty structural wrappers (Pagination's MUI `<li>`, etc.) and
+ * chrome-less layout shells (AiChatMessage root → bubble) to the node that
+ * owns padding / radius / fill.
  */
 function promoteInspectTarget(
   candidate: HTMLElement,
   stage: HTMLElement,
 ): HTMLElement {
-  if (!isStructuralWrapper(candidate)) return candidate;
+  let current = candidate;
 
-  const candidateRect = candidate.getBoundingClientRect();
-  for (const child of candidate.querySelectorAll<HTMLElement>(
-    INTERACTIVE_SELECTOR,
-  )) {
-    if (!isInspectableNode(stage, child)) continue;
-    if (samePaintedBox(candidateRect, child.getBoundingClientRect())) {
-      return child;
+  if (isStructuralWrapper(current)) {
+    const candidateRect = current.getBoundingClientRect();
+    for (const child of current.querySelectorAll<HTMLElement>(
+      INTERACTIVE_SELECTOR,
+    )) {
+      if (!isInspectableNode(stage, child)) continue;
+      if (samePaintedBox(candidateRect, child.getBoundingClientRect())) {
+        current = child;
+        break;
+      }
+    }
+
+    if (isStructuralWrapper(current)) {
+      const kids = visibleChildren(current);
+      if (
+        kids.length === 1 &&
+        samePaintedBox(candidateRect, kids[0]!.getBoundingClientRect())
+      ) {
+        return promoteInspectTarget(kids[0]!, stage);
+      }
+
+      // Wrapper owns no fill/padding of its own — still prefer the interactive
+      // descendant that paints the segment chrome.
+      if (!ownsPaintedChrome(current)) {
+        const interactive = current.querySelector(INTERACTIVE_SELECTOR);
+        if (
+          interactive instanceof HTMLElement &&
+          isInspectableNode(stage, interactive)
+        ) {
+          current = interactive;
+        }
+      }
     }
   }
 
-  const kids = visibleChildren(candidate);
-  if (
-    kids.length === 1 &&
-    samePaintedBox(candidateRect, kids[0]!.getBoundingClientRect())
-  ) {
-    return promoteInspectTarget(kids[0]!, stage);
-  }
-
-  // Wrapper owns no fill/padding of its own — still prefer the interactive
-  // descendant that paints the segment chrome.
-  const styles = getComputedStyle(candidate);
-  const ownPadding = readSides(styles, "padding");
-  const ownsChrome =
-    hasBoxValue(ownPadding) ||
-    (!isTransparentColor(styles.backgroundColor) &&
-      styles.backgroundColor !== "rgba(0, 0, 0, 0)");
-  if (!ownsChrome) {
-    const interactive = candidate.querySelector(INTERACTIVE_SELECTOR);
+  // Layout shell: no painted chrome, single same-box child that owns it
+  // (e.g. Human AiChatMessage root → bubble). Keep composites with a taller
+  // root + action row on the root so gap between regions stays inspectable.
+  while (!ownsPaintedChrome(current)) {
+    const kids = visibleChildren(current);
+    const only = kids.length === 1 ? kids[0]! : null;
     if (
-      interactive instanceof HTMLElement &&
-      isInspectableNode(stage, interactive)
+      !only ||
+      !samePaintedBox(
+        current.getBoundingClientRect(),
+        only.getBoundingClientRect(),
+      ) ||
+      !ownsPaintedChrome(only)
     ) {
-      return interactive;
+      break;
     }
+    current = only;
   }
 
-  return candidate;
+  return current;
+}
+
+function formatCadsComponentLabel(name: string): string {
+  return name.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase();
 }
 
 function labelFor(el: HTMLElement): string {
@@ -791,7 +827,18 @@ function labelFor(el: HTMLElement): string {
   }
   const cadsName = el.getAttribute("data-cads-component");
   if (cadsName) {
-    return cadsName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase();
+    return formatCadsComponentLabel(cadsName);
+  }
+  // Promoted paint child under a same-box component shell keeps the component
+  // name (bubble under AiChatMessage) instead of a bare DIV.
+  const parent = el.parentElement;
+  const parentName = parent?.getAttribute("data-cads-component");
+  if (
+    parent &&
+    parentName &&
+    samePaintedBox(parent.getBoundingClientRect(), el.getBoundingClientRect())
+  ) {
+    return formatCadsComponentLabel(parentName);
   }
   const role = el.getAttribute("role");
   if (role === "switch" || role === "radio" || role === "tab") return "BUTTON";
@@ -1144,10 +1191,13 @@ function pickDefaultTarget(stage: HTMLElement): HTMLElement | null {
     }
     // Padded inspect composite (Dropdown open menu) — rulers span this box.
     if (child.hasAttribute("data-docs-inspect-composite")) return child;
-    // Other wrappers — prefer the outermost control root inside.
+    // Other wrappers — prefer the outermost control root inside, then drill
+    // into a same-box painted chrome child when the root is only a layout shell.
     const nested = pickPrimaryControl(child);
-    if (nested && isInspectableNode(stage, nested)) return nested;
-    return child;
+    if (nested && isInspectableNode(stage, nested)) {
+      return promoteInspectTarget(nested, stage);
+    }
+    return promoteInspectTarget(child, stage);
   }
 
   let best: HTMLElement | null = null;
@@ -1160,7 +1210,7 @@ function pickDefaultTarget(stage: HTMLElement): HTMLElement | null {
     best = node;
     bestArea = area;
   }
-  return best;
+  return best ? promoteInspectTarget(best, stage) : null;
 }
 
 /**
@@ -1190,11 +1240,12 @@ function pickTarget(
     }
     const area = rect.width * rect.height;
     if (area <= 0) continue;
-    // Prefer interactive controls over equal-sized structural wrappers
-    // (Pagination wraps each segment in an MUI <li>).
+    // Prefer interactive controls / painted chrome over equal-sized shells
+    // (Pagination <li>; AiChatMessage root vs bubble).
     let score = area;
     if (isStructuralWrapper(node)) score += 0.25;
     else if (isInteractiveControl(node)) score -= 0.25;
+    else if (ownsPaintedChrome(node)) score -= 0.1;
     if (score >= bestScore) continue;
     best = node;
     bestScore = score;
