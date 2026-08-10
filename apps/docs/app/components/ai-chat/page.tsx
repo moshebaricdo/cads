@@ -24,7 +24,7 @@ export default function AiChatPage() {
     <div className={pageStyles.page}>
       <ComponentOverview
         title={category?.itemLabel ?? "AI Chat"}
-        description="This set of components assembles to form our AI chat experiences. Note thatd differences
+        description="This set of components assembles to form our AI chat experiences. Note that differences
         between chat message styles differentiate the TA (Teacher) experience from the Tutor (student) experience."
         figmaUrl={figmaUrl}
         status={status}
