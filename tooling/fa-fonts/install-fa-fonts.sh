@@ -140,6 +140,8 @@ done < <(find "$FONT_DIR" -maxdepth 3 -type f \( -iname '*.otf' -o -iname '*.ttf
 echo ""
 echo "Done. Added: $added  ·  Replaced: $replaced  ·  Removed old kits: $removed"
 echo ""
-echo "Next: fully quit Figma (Cmd+Q) and reopen it."
+echo "Next:"
+echo "  1. In FontAwesome Glyphs → Settings, Refresh kit icons (or re-add the kit .otf)."
+echo "  2. Fully quit Figma (Cmd+Q) and reopen it."
 echo ""
 read -r -p "Press Return to close…" _
