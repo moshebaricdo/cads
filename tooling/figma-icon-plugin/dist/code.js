@@ -8,18 +8,30 @@
   // src/code.ts
   figma.showUI(__html__, { width: 380, height: 540, themeColors: true });
   var SETTINGS_KEY = "settings";
+  var KIT_CATALOG_KEY = "fa-kit-catalog";
+  var GLYPH_CACHE_KEY = "fa-glyph-cache";
   async function postSettings() {
     var _a, _b;
     const stored = await figma.clientStorage.getAsync(SETTINGS_KEY);
     const settings = {
       fonts: (_a = stored == null ? void 0 : stored.fonts) != null ? _a : EMPTY_SETTINGS.fonts,
-      preferredStyle: (_b = stored == null ? void 0 : stored.preferredStyle) != null ? _b : EMPTY_SETTINGS.preferredStyle
+      preferredStyle: (_b = stored == null ? void 0 : stored.preferredStyle) != null ? _b : EMPTY_SETTINGS.preferredStyle,
+      faApiToken: stored == null ? void 0 : stored.faApiToken,
+      kitToken: stored == null ? void 0 : stored.kitToken,
+      kitSyncedAt: stored == null ? void 0 : stored.kitSyncedAt
     };
     post({ type: "settings", settings });
   }
+  async function postKitCatalog() {
+    const catalog = await figma.clientStorage.getAsync(KIT_CATALOG_KEY);
+    post({ type: "kit-catalog", catalog: catalog != null ? catalog : null });
+  }
+  async function postGlyphCache() {
+    const cache = await figma.clientStorage.getAsync(GLYPH_CACHE_KEY);
+    post({ type: "glyph-cache", cache: cache != null ? cache : null });
+  }
   async function saveSettings(settings) {
     await figma.clientStorage.setAsync(SETTINGS_KEY, settings);
-    figma.notify("Settings saved");
   }
   function post(message) {
     figma.ui.postMessage(message);
@@ -214,10 +226,36 @@
       postSelection();
       void postInstalledFaFonts();
       void postSettings();
+      void postKitCatalog();
+      void postGlyphCache();
       return;
     }
     if (message.type === "save-settings") {
       void saveSettings(message.settings);
+      return;
+    }
+    if (message.type === "notify") {
+      figma.notify(message.message, message.error ? { error: true } : void 0);
+      return;
+    }
+    if (message.type === "save-kit-catalog") {
+      void (async () => {
+        if (message.catalog) {
+          await figma.clientStorage.setAsync(KIT_CATALOG_KEY, message.catalog);
+        } else {
+          await figma.clientStorage.deleteAsync(KIT_CATALOG_KEY);
+        }
+      })();
+      return;
+    }
+    if (message.type === "save-glyph-cache") {
+      void (async () => {
+        if (message.cache) {
+          await figma.clientStorage.setAsync(GLYPH_CACHE_KEY, message.cache);
+        } else {
+          await figma.clientStorage.deleteAsync(GLYPH_CACHE_KEY);
+        }
+      })();
       return;
     }
     if (message.type === "insert") {

@@ -50,13 +50,19 @@
         padding: 6px 8px;
         border-radius: 5px;
         border: 1px solid var(--figma-color-border, #e6e6e6);
-        background: var(--figma-color-bg-secondary, #f5f5f5);
+        background: var(--figma-color-bg, #fff);
         color: inherit;
         font: inherit;
         outline: none;
       }
       .search:focus {
         border-color: var(--figma-color-border-selected, #0d99ff);
+      }
+      .search:disabled {
+        opacity: 0.5;
+        cursor: default;
+        color: var(--figma-color-text-tertiary, #999);
+        background: var(--figma-color-bg-primary, #fff);
       }
       .icon-only-btn {
         flex: none;
@@ -72,6 +78,12 @@
       }
       .icon-only-btn:hover {
         background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .icon-only-btn[hidden] {
+        display: none !important;
+      }
+      .target[hidden] {
+        display: none !important;
       }
       /* Custom dropdowns (version + style + settings) */
       .pickers {
@@ -94,7 +106,7 @@
         justify-content: space-between;
         gap: 6px;
         padding: 6px 8px;
-        border-radius: 5px;
+        border-radius: 6px;
         border: 1px solid var(--figma-color-border, #e6e6e6);
         background: var(--figma-color-bg, #fff);
         cursor: pointer;
@@ -102,6 +114,29 @@
       }
       .dd-trigger:hover {
         background: var(--figma-color-bg-hover, #f5f5f5);
+      }
+      .dd-trigger:disabled {
+        opacity: 0.5;
+        cursor: default;
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+      }
+      .dd-trigger:disabled:hover {
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+      }
+      .dd-trigger.dd-trigger--inline:disabled {
+        background: var(--figma-color-bg, #fff);
+      }
+      .dd-trigger.dd-trigger--inline:disabled:hover {
+        background: var(--figma-color-bg, #fff);
+      }
+      .dd-trigger.dd-trigger--inline:disabled .dd-slot {
+        color: var(--figma-color-text-tertiary, #999);
+      }
+      .dd-trigger.dd-trigger--inline:disabled .dd-value,
+      .dd-trigger.dd-trigger--inline:disabled .chevron,
+      .dd-trigger.dd-trigger--inline:disabled:hover .dd-value,
+      .dd-trigger.dd-trigger--inline:disabled:hover .chevron {
+        color: var(--figma-color-text-tertiary, #999);
       }
       .dd-trigger .dd-value {
         overflow: hidden;
@@ -111,6 +146,44 @@
       .dd-trigger .chevron {
         flex: none;
         color: var(--figma-color-text-secondary, #666);
+      }
+      /* Inline label slot (Kits | All ▾) — picker toolbar */
+      .dd-trigger.dd-trigger--inline {
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
+        background: var(--figma-color-bg, #fff);
+      }
+      .dd-trigger.dd-trigger--inline:hover {
+        background: var(--figma-color-bg, #fff);
+      }
+      .dd-trigger.dd-trigger--inline .dd-slot {
+        flex: none;
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        font-weight: 600;
+        color: var(--figma-color-text, #1e1e1e);
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        border-right: 1px solid var(--figma-color-border, #e6e6e6);
+      }
+      .dd-trigger.dd-trigger--inline .dd-value-wrap {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 6px 8px;
+      }
+      .dd-trigger.dd-trigger--inline .dd-value {
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .dd-trigger.dd-trigger--inline:hover .dd-value,
+      .dd-trigger.dd-trigger--inline:hover .chevron,
+      .dd-trigger.dd-trigger--inline[aria-expanded="true"] .dd-value,
+      .dd-trigger.dd-trigger--inline[aria-expanded="true"] .chevron {
+        color: var(--figma-color-text, #1e1e1e);
       }
       .dd-menu {
         position: absolute;
@@ -124,7 +197,16 @@
         border-radius: 6px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
         z-index: 10;
-        padding: 4px;
+        padding: 4px 3px;
+      }
+      /* Keep [hidden] working — author `display` on .dd-menu would override it */
+      .dd-menu[hidden] {
+        display: none;
+      }
+      .dd-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
       .dd-item {
         width: 100%;
@@ -166,11 +248,17 @@
         flex: 1;
         overflow-y: auto;
         padding: 8px;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
       }
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
         gap: 4px;
+      }
+      .grid:empty {
+        display: none;
       }
       .icon-btn {
         display: flex;
@@ -196,8 +284,40 @@
         color: var(--figma-color-text-tertiary, #999);
       }
       .empty {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 24px 8px;
         text-align: center;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .empty[hidden] {
+        display: none !important;
+      }
+      .empty-visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .empty-visual[hidden],
+      .empty-search-msg[hidden] {
+        display: none !important;
+      }
+      .empty-icon {
+        width: 36px;
+        height: 36px;
+        color: var(--figma-color-text-tertiary, #999);
+      }
+      .empty-heading {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .empty-search-msg {
         color: var(--figma-color-text-secondary, #666);
       }
 
@@ -266,8 +386,160 @@
         background: var(--figma-color-bg, #fff);
         cursor: pointer;
       }
-      .secondary-btn:hover {
+      .secondary-btn:hover:not(:disabled) {
         background: var(--figma-color-bg-hover, #f0f0f0);
+      }
+      .secondary-btn:disabled,
+      .primary-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+        pointer-events: none;
+      }
+      .kit-field-label {
+        font-weight: 500;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .kit-field-label.is-primary {
+        color: var(--figma-color-text, #111);
+      }
+      .kit-token-row {
+        display: flex;
+        gap: 6px;
+        align-items: stretch;
+      }
+      .kit-token-field {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: stretch;
+      }
+      .kit-token-field .kit-input {
+        flex: 1;
+        min-width: 0;
+        padding-right: 34px;
+      }
+      .kit-token-clear {
+        position: absolute;
+        top: 50%;
+        right: 4px;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: var(--figma-color-text-tertiary, #999);
+        cursor: pointer;
+        padding: 0;
+      }
+      .kit-token-clear:hover {
+        background: var(--figma-color-bg-hover, #ececec);
+        color: var(--figma-color-text, #111);
+      }
+      .kit-token-clear[hidden] {
+        display: none !important;
+      }
+      .kit-token-field.has-clear .kit-input {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+      .kit-section-sync {
+        flex: none;
+        width: 26px;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        border-radius: 6px;
+        background: var(--figma-color-bg-brand, #0d99ff);
+        color: var(--figma-color-text-onbrand, #fff);
+        cursor: pointer;
+      }
+      .kit-section-sync:hover:not(:disabled) {
+        background: var(--figma-color-bg-brand-hover, #0b87e0);
+      }
+      .kit-section-sync:disabled {
+        opacity: 0.65;
+        cursor: default;
+        pointer-events: none;
+      }
+      .kit-input,
+      .kit-select {
+        width: 100%;
+        padding: 6px 8px;
+        border-radius: 5px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+        color: inherit;
+        font: inherit;
+        outline: none;
+      }
+      .kit-input:focus,
+      .kit-select:focus {
+        border-color: var(--figma-color-border-selected, #0d99ff);
+      }
+      .kit-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .settings-kit-picker {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
+      .settings-kit-empty {
+        margin: 0;
+        padding: 10px 12px;
+        border: 1px dashed var(--figma-color-border, #e6e6e6);
+        border-radius: 6px;
+        color: var(--figma-color-text-secondary, #666);
+        line-height: 1.35;
+      }
+      .settings-kit-empty[hidden] {
+        display: none !important;
+      }
+      .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        flex: none;
+        margin-left: auto;
+      }
+      @keyframes sync-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .icon-only-btn.syncing,
+      .kit-section-sync.syncing,
+      .primary-btn.syncing {
+        opacity: 0.65;
+        pointer-events: none;
+        cursor: default;
+      }
+      .primary-btn.syncing {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .primary-btn.syncing:hover {
+        background: var(--figma-color-bg-brand, #0d99ff);
+        color: var(--figma-color-text-onbrand, #fff);
+      }
+      .icon-only-btn.syncing svg,
+      .kit-section-sync.syncing svg,
+      .primary-btn.syncing svg {
+        animation: sync-spin 0.75s linear infinite;
+        transform-origin: center;
       }
       .font-list {
         list-style: none;
@@ -276,6 +548,9 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
+      }
+      .font-list:empty {
+        display: none;
       }
       .font-list .empty-note {
         color: var(--figma-color-text-secondary, #666);
@@ -351,13 +626,6 @@
       .remove-btn:hover {
         background: rgba(204, 0, 0, 0.1);
       }
-      .settings-footer {
-        border-top: 1px solid var(--figma-color-border, #e6e6e6);
-        padding: 8px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
       .primary-btn {
         padding: 6px 14px;
         border: none;
@@ -366,7 +634,7 @@
         color: var(--figma-color-text-onbrand, #fff);
         cursor: pointer;
       }
-      .primary-btn:hover {
+      .primary-btn:hover:not(:disabled) {
         background: var(--figma-color-bg-brand-hover, #0b87e0);
         color: var(--figma-color-text-onbrand, #fff);
       }
@@ -375,12 +643,9 @@
         font-size: 12px;
         font-weight: 600;
       }
-      .save-note {
-        color: var(--figma-color-text-secondary, #666);
-      }
-
       /* First-run setup */
       .setup {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -391,9 +656,61 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 28px 24px 20px;
+        /* Bottom padding clears the overlaid collapsed note so centered
+           content doesn't sit underneath it (expanding the note overlays
+           upward and must not reflow this panel). */
+        padding: 28px 24px 96px;
         text-align: center;
         gap: 10px;
+      }
+      .setup-panel[hidden] {
+        display: none !important;
+      }
+      .setup-api-view {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+        text-align: left;
+      }
+      .setup-api-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        text-align: left;
+      }
+      .setup-api-footer {
+        flex: none;
+        padding: 8px;
+        border-top: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg, #fff);
+      }
+      .setup-api-footer[hidden] {
+        display: none !important;
+      }
+      .setup-api-footer .primary-btn {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .text-btn {
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--figma-color-text-brand, #0d99ff);
+        cursor: pointer;
+      }
+      .text-btn:hover {
+        text-decoration: underline;
       }
       .setup-mark {
         display: block;
@@ -409,7 +726,7 @@
       }
       .setup-step {
         margin: 0 0 4px;
-        max-width: 280px;
+        max-width: 300px;
         font-size: 12px;
         font-weight: 400;
         line-height: 1.45;
@@ -423,7 +740,248 @@
         padding: 0 3px;
         border-radius: 3px;
       }
+      .setup-paths {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .setup-path-btn {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg, #fff);
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .setup-path-btn:hover {
+        background: var(--figma-color-bg-hover, #f0f0f0);
+        /* Don't use --figma-color-border-selected — that's brand blue in Figma. */
+        border-color: var(--figma-color-border-strong, #111);
+      }
+      .setup-path-btn.primary {
+        background: var(--figma-color-bg-brand, #0d99ff);
+        border-color: transparent;
+        color: var(--figma-color-text-onbrand, #fff);
+      }
+      .setup-path-btn.primary:hover {
+        background: var(--figma-color-bg-brand-hover, #0b87e0);
+      }
+      .setup-path-title {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .setup-path-desc {
+        font-size: 11px;
+        font-weight: 400;
+        opacity: 0.85;
+        line-height: 1.35;
+      }
+      .setup-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        margin: 2px 0;
+        font-size: 11px;
+        color: var(--figma-color-text-tertiary, #999);
+      }
+      .setup-divider::before,
+      .setup-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--figma-color-border, #e6e6e6);
+      }
+      .setup-api-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        text-align: left;
+      }
+      .setup-api-form .kit-token-row > .primary-btn {
+        flex: none;
+        align-self: stretch;
+        white-space: nowrap;
+        padding: 6px 10px;
+        font-size: inherit;
+        font-weight: 500;
+      }
+      .setup-api-intro {
+        margin: -4px 0 0;
+        width: 100%;
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 1.4;
+        text-align: left;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .setup-api-intro a {
+        color: var(--figma-color-text-brand, #0d99ff);
+      }
+      #setup-kit-picker {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+        margin-top: 4px;
+      }
+      #setup-kit-picker[hidden] {
+        display: none !important;
+      }
+      .setup-kit-picker-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+        margin-bottom: 2px;
+      }
+      .setup-kit-tree {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
+      .setup-kit-tree:empty {
+        display: none;
+      }
+      .setup-kit-card {
+        overflow: hidden;
+        border: 1px solid var(--figma-color-border, #e6e6e6);
+        border-radius: 6px;
+        background: var(--figma-color-bg, #fff);
+      }
+      .setup-kit-card-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .setup-kit-card-top:hover {
+        background: var(--figma-color-bg-hover, #f8f8f8);
+      }
+      .setup-kit-card-top > input {
+        flex: none;
+        margin: 0;
+        cursor: pointer;
+      }
+      .setup-kit-card-source {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .setup-kit-name {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.25;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .setup-kit-meta-line {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        min-width: 0;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 1.3;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .setup-kit-id {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        font-weight: 400;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .setup-kit-count {
+        flex: none;
+      }
+      .setup-kit-expand {
+        display: flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--figma-color-text-tertiary, #999);
+        pointer-events: none;
+      }
+      .setup-kit-card.is-expanded .setup-kit-expand .chevron {
+        transform: rotate(180deg);
+      }
+      .setup-kit-expand .chevron {
+        display: block;
+        transition: transform 0.12s ease;
+      }
+      .setup-kit-styles {
+        border-top: 1px solid var(--figma-color-border, #e6e6e6);
+        background: var(--figma-color-bg-secondary, #f5f5f5);
+      }
+      .setup-kit-style {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        cursor: pointer;
+      }
+      .setup-kit-style + .setup-kit-style {
+        border-top: 1px solid var(--figma-color-border, #eee);
+      }
+      .setup-kit-style:hover {
+        background: var(--figma-color-bg-hover, #ececec);
+      }
+      .setup-kit-style input {
+        flex: none;
+        margin: 0;
+        cursor: pointer;
+      }
+      .setup-kit-style .setup-kit-name {
+        min-width: 0;
+        font-size: 10px;
+        font-weight: 500;
+      }
+      .setup-note[hidden] {
+        display: none !important;
+      }
+      .setup-status {
+        margin: 0;
+        min-height: 1.35em;
+        font-size: 11px;
+        line-height: 1.35;
+        color: var(--figma-color-text-secondary, #666);
+      }
+      .setup-status.is-error {
+        color: var(--figma-color-text-danger, #c00);
+      }
+      /*
+       * Pin the help note to the bottom of the fixed plugin frame. Expanding
+       * “Why?” grows upward over the setup content instead of shrinking the
+       * flex:1 panel and shifting the centered CTAs.
+       */
       .setup-note {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
         margin: 0;
         width: 100%;
         box-sizing: border-box;
@@ -446,13 +1004,35 @@
         text-transform: uppercase;
         color: var(--figma-color-text-tertiary, #999);
       }
+      .setup-note-why {
+        display: inline;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
+        font-weight: 500;
+        color: var(--figma-color-text-brand, #0d99ff);
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .setup-note-why:hover {
+        color: var(--figma-color-text-brand, #0b87e0);
+      }
+      .setup-note-more {
+        display: inline;
+      }
+      .setup-note-more[hidden] {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
     <div id="app">
       <div id="setup-view" class="view" hidden>
         <div class="setup">
-          <div class="setup-main">
+          <div id="setup-choice" class="setup-main setup-panel">
             <img
               class="setup-mark"
               src="__PLUGIN_ICON_SRC__"
@@ -461,17 +1041,106 @@
               alt=""
               aria-hidden="true"
             />
-            <div class="setup-title">Set up your FontAwesome fonts</div>
+            <div class="setup-title">Set up FontAwesome Glyphs</div>
             <p class="setup-step">
-              Find and add the Font Awesome <code>.otf</code> files you actually use
-              (Pro, Brands, Kit, etc).
+              Populate the icon picker by adding local font files, or sync with your Font Awesome account.
             </p>
-            <button id="setup-add-btn" class="primary-btn large">Add font files</button>
+            <div class="setup-paths">
+              <button id="setup-api-btn" class="setup-path-btn primary" type="button">
+                <span class="setup-path-title">Sync via API</span>
+                <span class="setup-path-desc">
+                  Add your FA API token, pick a kit, then choose which styles to load.
+                </span>
+              </button>
+              <div class="setup-divider">OR</div>
+              <button id="setup-add-btn" class="setup-path-btn" type="button">
+                <span class="setup-path-title">Add local font files</span>
+                <span class="setup-path-desc">
+                  Add the <code>.otf</code> FA font files you plan to use.
+                </span>
+              </button>
+            </div>
           </div>
-          <p class="setup-note">
-            Make sure you've installed the same fonts on your system (e.g. Font Book or
-            Windows Fonts) so icons actually render on the canvas. Then point this
-            plugin at those files.
+
+          <div id="setup-api" class="setup-api-view setup-panel" hidden>
+            <div class="settings-header">
+              <button id="setup-api-back" class="icon-only-btn" title="Back" aria-label="Back" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <span>Sync via API</span>
+            </div>
+            <div class="setup-api-body">
+              <div class="setup-api-form">
+                <label class="kit-field-label is-primary" for="setup-api-token">API Token</label>
+                <p class="setup-api-intro">
+                  You can find your Font Awesome account API token
+                  <a href="https://fontawesome.com/account/tokens" target="_blank" rel="noopener noreferrer">here</a>.
+                  Add it here, then expand kits and choose which fonts/styles to import.
+                </p>
+                <div class="kit-token-row">
+                  <div class="kit-token-field has-clear">
+                    <input
+                      id="setup-api-token"
+                      class="kit-input"
+                      type="password"
+                      autocomplete="off"
+                      spellcheck="false"
+                      placeholder="Font Awesome API Token"
+                    />
+                    <button
+                      id="setup-clear-token-btn"
+                      class="kit-token-clear"
+                      type="button"
+                      title="Clear token"
+                      aria-label="Clear token"
+                      hidden
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <button id="setup-load-kits-btn" class="primary-btn" type="button" disabled>
+                    Load kits
+                  </button>
+                </div>
+                <div id="setup-kit-picker" hidden>
+                  <div class="setup-kit-picker-header">
+                    <span class="kit-field-label is-primary">Kits &amp; styles</span>
+                    <button id="setup-select-all-btn" class="text-btn" type="button">
+                      Select all
+                    </button>
+                  </div>
+                  <div id="setup-kit-tree" class="setup-kit-tree"></div>
+                </div>
+                <p id="setup-api-status" class="setup-status"></p>
+              </div>
+            </div>
+            <div id="setup-api-footer" class="setup-api-footer" hidden>
+              <button id="setup-sync-kits-btn" class="primary-btn" type="button" disabled>
+                Load selected kits/styles
+              </button>
+            </div>
+          </div>
+
+          <p id="setup-note" class="setup-note">
+            For any FA Font files you add here (or sync via an API token), you'll need to install the same font files on your
+            computer.
+            <span id="setup-note-more" class="setup-note-more" hidden>
+              Otherwise, they will show up in the icon picker, but won't render on the canvas when you try to insert them.
+              Similarly, if you sync or add new font files to the plugin, make sure you update the font files on your computer as well.
+            </span>
+            <button
+              type="button"
+              id="setup-note-why"
+              class="setup-note-why"
+              aria-expanded="false"
+              aria-controls="setup-note-more"
+            >
+              Why?
+            </button>
           </p>
         </div>
       </div>
@@ -487,20 +1156,38 @@
           />
           <div class="pickers">
             <div class="dropdown" id="family-dropdown">
-              <button id="family-trigger" class="dd-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Font Awesome version">
-                <span id="family-label" class="dd-value"></span>
-                <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
+              <button
+                id="family-trigger"
+                class="dd-trigger dd-trigger--inline"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-label="Kits"
+              >
+                <span class="dd-slot" aria-hidden="true">Kits</span>
+                <span class="dd-value-wrap">
+                  <span id="family-label" class="dd-value"></span>
+                  <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </span>
               </button>
               <div id="family-menu" class="dd-menu" role="listbox" hidden></div>
             </div>
             <div class="dropdown" id="style-dropdown">
-              <button id="style-trigger" class="dd-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Icon style">
-                <span id="style-label" class="dd-value"></span>
-                <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
+              <button
+                id="style-trigger"
+                class="dd-trigger dd-trigger--inline"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-label="Styles"
+              >
+                <span class="dd-slot" aria-hidden="true">Styles</span>
+                <span class="dd-value-wrap">
+                  <span id="style-label" class="dd-value"></span>
+                  <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </span>
               </button>
               <div id="style-menu" class="dd-menu" role="listbox" hidden></div>
             </div>
@@ -510,17 +1197,40 @@
         <div class="grid-wrap">
           <div id="grid" class="grid"></div>
           <div id="count" class="count"></div>
-          <div id="empty" class="empty" hidden>No icons match that search.</div>
+          <div id="empty" class="empty" hidden>
+            <div id="empty-visual" class="empty-visual" hidden>
+              <!--__ICON:empty-face-meh.svg__-->
+              <p class="empty-heading">No icons to show</p>
+            </div>
+            <div id="empty-search-msg" class="empty-search-msg" hidden>
+              No icons match that search.
+            </div>
+          </div>
         </div>
         <div class="footer">
           <div class="footer-row">
             <div id="target" class="target"></div>
-            <button id="settings-btn" class="icon-only-btn" title="Settings" aria-label="Settings">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
-            </button>
+            <div class="footer-actions">
+              <button
+                id="footer-sync-btn"
+                class="icon-only-btn"
+                title="Sync kits"
+                aria-label="Sync kits"
+                type="button"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 4v6h-6" />
+                  <path d="M1 20v-6h6" />
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                </svg>
+              </button>
+              <button id="settings-btn" class="icon-only-btn" title="Settings" aria-label="Settings">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -538,8 +1248,7 @@
           <div class="settings-section">
             <span class="section-title">Default style</span>
             <p class="hint">
-              Prefer this face in the All view (and when you pick a version). Kit, Brands, and
-              other single-face packs stay included. Useful if you mostly use Solid.
+              If your kit contains multiple styles, you can choose which style to show by default in the icon picker.
             </p>
             <div class="dropdown dropdown-block" id="preferred-style-dropdown">
               <button
@@ -558,19 +1267,69 @@
             </div>
           </div>
           <div class="settings-section">
-            <span class="section-title">Fonts</span>
+            <span class="section-title">API Sync</span>
             <p class="hint">
-              Pick the FA font files you use (several at once is fine). Only these appear in the
-              style picker. <span id="font-dir-hint"></span>
+              Sync with your Font Awesome account to load kit styles into the picker and refresh them
+              without re-adding font files each time.
+            </p>
+            <label class="kit-field-label is-primary" for="fa-api-token">API token</label>
+            <div class="kit-token-row">
+              <div class="kit-token-field has-clear">
+                <input
+                  id="fa-api-token"
+                  class="kit-input"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="Font Awesome API Token"
+                />
+                <button
+                  id="kit-clear-token-btn"
+                  class="kit-token-clear"
+                  type="button"
+                  title="Clear token"
+                  aria-label="Clear token"
+                  hidden
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <button
+                id="kit-section-sync-btn"
+                class="kit-section-sync"
+                type="button"
+                title="Sync selected kits"
+                aria-label="Sync selected kits"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 4v6h-6" />
+                  <path d="M1 20v-6h6" />
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                </svg>
+              </button>
+            </div>
+            <div id="settings-kit-picker" class="settings-kit-picker">
+              <div class="setup-kit-picker-header">
+                <span class="kit-field-label is-primary">Kits &amp; styles</span>
+              </div>
+              <div id="settings-kit-tree" class="setup-kit-tree"></div>
+              <p id="settings-kit-empty" class="settings-kit-empty">
+                Add an API token to load kits…
+              </p>
+            </div>
+          </div>
+          <div class="settings-section">
+            <span class="section-title">Local Font Files</span>
+            <p class="hint">
+              If you don't want to sync with your Font Awesome account, you can load font files from your computer
+              directly. However, if your kit changes, you'll need to load the new font files here again (and on your computer).
             </p>
             <button id="add-fonts-btn" class="secondary-btn">Add files</button>
             <input id="font-files" type="file" accept=".otf,.ttf" multiple hidden />
             <ul id="font-list" class="font-list"></ul>
           </div>
-        </div>
-        <div class="settings-footer">
-          <button id="save-btn" class="primary-btn">Save</button>
-          <span id="save-note" class="save-note"></span>
         </div>
       </div>
     </div>

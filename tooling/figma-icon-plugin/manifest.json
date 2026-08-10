@@ -7,6 +7,7 @@
   "editorType": ["figma"],
   "documentAccess": "dynamic-page",
   "networkAccess": {
-    "allowedDomains": ["none"]
+    "allowedDomains": ["https://api.fontawesome.com"],
+    "reasoning": "Optional Custom Kit sync: exchange a Font Awesome account API token and read kit iconUploads so the picker catalog can refresh without re-importing the kit .otf."
   }
 }

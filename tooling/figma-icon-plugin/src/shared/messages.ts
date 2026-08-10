@@ -45,6 +45,16 @@ export interface StoredFont {
   /** shortcode → hex codepoint, read from the font's glyph table */
   glyphs: Record<string, string>;
   fileName: string;
+  /** Set when this face was populated via FA Kit API sync (not a local OTF). */
+  source?: "file" | "api";
+  /** Kit token when `source === "api"`. */
+  apiKitToken?: string;
+  /** FA GraphQL family when `source === "api"` (classic, kit, …). */
+  apiFamily?: string;
+  /** FA GraphQL style when `source === "api"` (solid, custom, …). */
+  apiStyle?: string;
+  /** Kit display name when `source === "api"`. */
+  apiKitName?: string;
 }
 
 export interface PluginSettings {
@@ -55,6 +65,15 @@ export interface PluginSettings {
    * Use "All" to open on the union view.
    */
   preferredStyle: string;
+  /**
+   * Font Awesome account API token (`kits_read`). Used only for optional
+   * Custom Kit catalog sync — never required for local OTF import.
+   */
+  faApiToken?: string;
+  /** Selected kit id (hex token), e.g. from `Font Awesome Kit {id}`. */
+  kitToken?: string;
+  /** ISO timestamp of the last successful kit API sync. */
+  kitSyncedAt?: string;
 }
 
 export const EMPTY_SETTINGS: PluginSettings = {
@@ -62,9 +81,39 @@ export const EMPTY_SETTINGS: PluginSettings = {
   preferredStyle: "Solid",
 };
 
+/** Persisted FA kit catalog so Settings can open without a network round-trip. */
+export interface FaKitCatalogCache {
+  /** Account API token this catalog was fetched with. */
+  apiToken: string;
+  fetchedAt: string;
+  kits: Array<{ token: string; name: string }>;
+  faces: Array<{
+    kitToken: string;
+    kitName: string;
+    family: string;
+    style: string;
+    label: string;
+    version: string;
+    kind: "official" | "custom";
+  }>;
+}
+
+/**
+ * Persisted per-kit official glyph maps (family|style → name→hex).
+ * Only kits the user has imported styles from are stored.
+ */
+export interface FaGlyphCacheBlob {
+  apiToken: string;
+  /** kitToken → "family|style" → name → hex */
+  kits: Record<string, Record<string, Record<string, string>>>;
+}
+
 export type UiToCodeMessage =
   | { type: "init" }
   | { type: "save-settings"; settings: PluginSettings }
+  | { type: "save-kit-catalog"; catalog: FaKitCatalogCache | null }
+  | { type: "save-glyph-cache"; cache: FaGlyphCacheBlob | null }
+  | { type: "notify"; message: string; error?: boolean }
   | {
       type: "insert";
       name: string;
@@ -78,4 +127,6 @@ export type CodeToUiMessage =
   | { type: "selection"; target: InsertTarget }
   | { type: "fonts"; faFonts: FaFont[] }
   | { type: "settings"; settings: PluginSettings }
+  | { type: "kit-catalog"; catalog: FaKitCatalogCache | null }
+  | { type: "glyph-cache"; cache: FaGlyphCacheBlob | null }
   | { type: "inserted"; ok: boolean; detail: string };

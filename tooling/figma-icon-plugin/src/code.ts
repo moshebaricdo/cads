@@ -15,6 +15,8 @@ import {
   EMPTY_SETTINGS,
   type CodeToUiMessage,
   type FaFont,
+  type FaGlyphCacheBlob,
+  type FaKitCatalogCache,
   type FontNameLike,
   type InsertTarget,
   type InstanceTextProp,
@@ -25,21 +27,39 @@ import {
 figma.showUI(__html__, { width: 380, height: 540, themeColors: true });
 
 const SETTINGS_KEY = "settings";
+const KIT_CATALOG_KEY = "fa-kit-catalog";
+const GLYPH_CACHE_KEY = "fa-glyph-cache";
 
 async function postSettings(): Promise<void> {
   const stored = (await figma.clientStorage.getAsync(SETTINGS_KEY)) as
-    | (Partial<PluginSettings> & { faApiToken?: string })
+    | Partial<PluginSettings>
     | undefined;
   const settings: PluginSettings = {
     fonts: stored?.fonts ?? EMPTY_SETTINGS.fonts,
     preferredStyle: stored?.preferredStyle ?? EMPTY_SETTINGS.preferredStyle,
+    faApiToken: stored?.faApiToken,
+    kitToken: stored?.kitToken,
+    kitSyncedAt: stored?.kitSyncedAt,
   };
   post({ type: "settings", settings });
 }
 
+async function postKitCatalog(): Promise<void> {
+  const catalog = (await figma.clientStorage.getAsync(KIT_CATALOG_KEY)) as
+    | FaKitCatalogCache
+    | undefined;
+  post({ type: "kit-catalog", catalog: catalog ?? null });
+}
+
+async function postGlyphCache(): Promise<void> {
+  const cache = (await figma.clientStorage.getAsync(GLYPH_CACHE_KEY)) as
+    | FaGlyphCacheBlob
+    | undefined;
+  post({ type: "glyph-cache", cache: cache ?? null });
+}
+
 async function saveSettings(settings: PluginSettings): Promise<void> {
   await figma.clientStorage.setAsync(SETTINGS_KEY, settings);
-  figma.notify("Settings saved");
 }
 
 function post(message: CodeToUiMessage) {
@@ -297,10 +317,36 @@ figma.ui.onmessage = (message: UiToCodeMessage) => {
     postSelection();
     void postInstalledFaFonts();
     void postSettings();
+    void postKitCatalog();
+    void postGlyphCache();
     return;
   }
   if (message.type === "save-settings") {
     void saveSettings(message.settings);
+    return;
+  }
+  if (message.type === "notify") {
+    figma.notify(message.message, message.error ? { error: true } : undefined);
+    return;
+  }
+  if (message.type === "save-kit-catalog") {
+    void (async () => {
+      if (message.catalog) {
+        await figma.clientStorage.setAsync(KIT_CATALOG_KEY, message.catalog);
+      } else {
+        await figma.clientStorage.deleteAsync(KIT_CATALOG_KEY);
+      }
+    })();
+    return;
+  }
+  if (message.type === "save-glyph-cache") {
+    void (async () => {
+      if (message.cache) {
+        await figma.clientStorage.setAsync(GLYPH_CACHE_KEY, message.cache);
+      } else {
+        await figma.clientStorage.deleteAsync(GLYPH_CACHE_KEY);
+      }
+    })();
     return;
   }
   if (message.type === "insert") {

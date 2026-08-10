@@ -15,7 +15,7 @@ import {
   watch,
   writeFileSync,
 } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -92,8 +92,23 @@ async function build() {
     // icon optional until generated
   }
 
+  const iconsDir = join(root, "src/ui/icons");
   const template = readFileSync(join(root, "src/ui/template.html"), "utf8");
-  const html = template
+  // Inline <!--__ICON:file.svg__--> from src/ui/icons (Figma UI is a single HTML file).
+  const withIcons = template.replace(
+    /<!--__ICON:([A-Za-z0-9._-]+\.svg)__-->/g,
+    (_match, fileName) => {
+      const safeName = basename(fileName);
+      if (safeName !== fileName) {
+        throw new Error(`Invalid icon reference: ${fileName}`);
+      }
+      const iconPath = join(iconsDir, safeName);
+      let svg = readFileSync(iconPath, "utf8").trim();
+      svg = svg.replace(/<\?xml[\s\S]*?\?>/i, "").trim();
+      return svg;
+    },
+  );
+  const html = withIcons
     // Function replacers: string replace treats $& / $$ as special, and
     // minified JS can contain `$&&` which would corrupt the inlined bundle.
     .replace("/*__FONTS_CSS__*/", () => fontsCss)
@@ -114,12 +129,13 @@ async function build() {
 await build();
 
 if (isWatch) {
-  console.log("Watching src/ …");
+  console.log("Watching src/ (including ui/icons) …");
   let pending = null;
-  watch(join(root, "src"), { recursive: true }, () => {
+  const rebuild = () => {
     clearTimeout(pending);
     pending = setTimeout(() => {
       build().catch((error) => console.error(error.message));
     }, 100);
-  });
+  };
+  watch(join(root, "src"), { recursive: true }, rebuild);
 }
