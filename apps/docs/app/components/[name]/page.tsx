@@ -1,4 +1,5 @@
 import { cadsManifest } from "@codeai/cads-react/manifest";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TemplatePlayground } from "@/components/TemplatePlayground";
 import { ComponentOverview } from "@/components/ComponentOverview";
@@ -17,6 +18,7 @@ import {
   getComponentStatus,
   getComponentStorybookUrl,
 } from "@/lib/componentExternalLinks";
+import { docsMetadata } from "@/lib/docsMetadata";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 
 const SOLO_ROUTE_EXCLUDES = new Set([
@@ -29,10 +31,31 @@ const SOLO_ROUTE_EXCLUDES = new Set([
   "ChatFileRemoveButton",
 ]);
 
+function findComponent(name: string) {
+  return cadsManifest.components.find(
+    (c) => c.name.toLowerCase() === name.toLowerCase(),
+  );
+}
+
 export function generateStaticParams() {
   return cadsManifest.components
     .filter((c) => !SOLO_ROUTE_EXCLUDES.has(c.exportName))
     .map((c) => ({ name: c.name.toLowerCase() }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ name: string }>;
+}): Promise<Metadata> {
+  const { name } = await params;
+  const component = findComponent(name);
+  if (!component) return {};
+  const category = componentCategory(component.exportName);
+  return docsMetadata(
+    category?.itemLabel ?? component.name,
+    component.description,
+  );
 }
 
 export default async function ComponentPage({
@@ -41,9 +64,7 @@ export default async function ComponentPage({
   params: Promise<{ name: string }>;
 }) {
   const { name } = await params;
-  const component = cadsManifest.components.find(
-    (c) => c.name.toLowerCase() === name.toLowerCase(),
-  );
+  const component = findComponent(name);
   if (!component) notFound();
 
   const figmaUrl = component.figma?.nodeId

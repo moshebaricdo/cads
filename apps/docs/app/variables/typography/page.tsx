@@ -2,6 +2,7 @@ import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { FoundationHeader } from "@/components/FoundationHeader";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import { STORYBOOK_BASE } from "@/lib/componentExternalLinks";
+import { docsMetadata } from "@/lib/docsMetadata";
 import { adjacentFoundations } from "@/lib/nav";
 import { TypographyPageContent } from "./TypographyPageContent";
 
@@ -10,6 +11,11 @@ const FIGMA_TYPOGRAPHY_URL =
 
 const STORYBOOK_TYPOGRAPHY_URL = `${STORYBOOK_BASE}/?path=/docs/designsystem-typography--docs`;
 
+const TYPOGRAPHY_LEAD =
+  "The CADS type system is broken into three font families and a shared size scale. Space Grotesk handles display headings (H1–H2), Geist covers body copy and smaller headings, and Google Sans Code is reserved for mono.";
+
+export const metadata = docsMetadata("Typography", TYPOGRAPHY_LEAD);
+
 export default function TypographyPage() {
   const { previous, next } = adjacentFoundations("/variables/typography");
 
@@ -17,7 +23,7 @@ export default function TypographyPage() {
     <div className={pageStyles.page}>
       <FoundationHeader
         title="Typography"
-        lead="The CADS type system is broken into three font families and a shared size scale. Space Grotesk handles display headings (H1–H2), Geist covers body copy and smaller headings, and Google Sans Code is reserved for mono."
+        lead={TYPOGRAPHY_LEAD}
         links={[
           {
             href: FIGMA_TYPOGRAPHY_URL,

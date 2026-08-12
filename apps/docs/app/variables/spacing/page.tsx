@@ -9,6 +9,7 @@ import { FoundationHeader } from "@/components/FoundationHeader";
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import ui from "@/components/docs-ui.module.scss";
+import { docsMetadata } from "@/lib/docsMetadata";
 import { adjacentFoundations } from "@/lib/nav";
 import shared from "../FoundationPage.module.scss";
 import local from "./spacing.module.scss";
@@ -21,6 +22,11 @@ const FIGMA_SHADOWS_URL =
 
 const PROD_SHAPE_SPACING_URL =
   "https://github.com/code-dot-org/code-dot-org/blob/staging/frontend/packages/component-library-styles/shapeAndSpacingVariables.css";
+
+const SHAPE_LEAD =
+  "The CADS shape system is broken into four categories: border radius, elevation, spacing, and stacking. Radius handles corners, elevation handles depth, spacing is the shared ramp for layout gaps, and stacking is the overlay z-index ladder.";
+
+export const metadata = docsMetadata("Shape", SHAPE_LEAD);
 
 const RADII = Object.entries(shape).map(([name, value]) => {
   const token = `shape-${name.replace("radius", "").toLowerCase()}`;
@@ -49,7 +55,7 @@ export default function ShapePage() {
     <div className={pageStyles.page}>
       <FoundationHeader
         title="Shape"
-        lead="The CADS shape system is broken into four categories: border radius, elevation, spacing, and stacking. Radius handles corners, elevation handles depth, spacing is the shared ramp for layout gaps, and stacking is the overlay z-index ladder."
+        lead={SHAPE_LEAD}
         links={[
           { href: FIGMA_SHADOWS_URL, label: "Open in Figma", external: true },
           {

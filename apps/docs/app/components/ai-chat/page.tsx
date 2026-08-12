@@ -3,8 +3,14 @@ import { ComponentOverview } from "@/components/ComponentOverview";
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { adjacentComponents, componentCategory } from "@/lib/nav";
 import { getComponentStatus } from "@/lib/componentExternalLinks";
+import { docsMetadata } from "@/lib/docsMetadata";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import { AiChatPageContent } from "./AiChatPageContent";
+
+const AI_CHAT_DESCRIPTION =
+  "This set of components assembles to form our AI chat experiences. Note that differences between chat message styles differentiate the TA (Teacher) experience from the Tutor (student) experience.";
+
+export const metadata = docsMetadata("AI Chat", AI_CHAT_DESCRIPTION);
 
 export default function AiChatPage() {
   const component = cadsManifest.components.find(
@@ -24,8 +30,7 @@ export default function AiChatPage() {
     <div className={pageStyles.page}>
       <ComponentOverview
         title={category?.itemLabel ?? "AI Chat"}
-        description="This set of components assembles to form our AI chat experiences. Note that differences
-        between chat message styles differentiate the TA (Teacher) experience from the Tutor (student) experience."
+        description={AI_CHAT_DESCRIPTION}
         figmaUrl={figmaUrl}
         status={status}
       />

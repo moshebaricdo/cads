@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/docs-ui";
+import { docsMetadata } from "@/lib/docsMetadata";
+
+const PROTOTYPES_LEAD =
+  "Designer-created prototypes built with @codeai/cads-react land here so engineers can inspect real component and prop usage — not screenshots alone.";
+
+export const metadata = docsMetadata("Prototype gallery", PROTOTYPES_LEAD);
 
 export default function PrototypesPage() {
   return (

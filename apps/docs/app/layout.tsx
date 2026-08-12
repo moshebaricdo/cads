@@ -6,6 +6,7 @@ import "./globals.css";
 import { DocsShell } from "@/components/DocsShell";
 import { Providers } from "@/components/Providers";
 import { withBasePath } from "@/lib/basePath";
+import { toMetaDescription } from "@/lib/docsMetadata";
 import { getThemeBootScript } from "@/lib/docsTheme";
 
 const spaceGrotesk = Space_Grotesk({
@@ -19,9 +20,13 @@ const googleSansCode = Google_Sans_Code({
 });
 
 export const metadata: Metadata = {
-  title: "CADS — CodeAI Design System",
-  description:
-    "Designer-grade documentation for the CodeAI Design System: variables, components, and AI/Figma parity.",
+  title: {
+    default: "CADS Docs",
+    template: "%s | CADS Docs",
+  },
+  description: toMetaDescription(
+    "The CodeAI Design System (CADS) is a collection of design primitives and components that power our signed-in product experience.",
+  ),
   icons: {
     icon: [{ url: withBasePath("/favicon.png"), type: "image/png" }],
   },

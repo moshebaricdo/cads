@@ -4,7 +4,13 @@ import { CodeBlock } from "@/components/docs-ui";
 import { FoundationHeader } from "@/components/FoundationHeader";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import ui from "@/components/docs-ui.module.scss";
+import { docsMetadata } from "@/lib/docsMetadata";
 import styles from "./FoundationPage.module.scss";
+
+const VARIABLES_LEAD =
+  "CADS design variables are generated from the Figma file into @codeai/cads-variables and exposed as CSS custom properties with semantic names — no --ds- prefix, no raw hex in consuming code.";
+
+export const metadata = docsMetadata("Variables", VARIABLES_LEAD);
 
 const FOUNDATION_CARDS = [
   {

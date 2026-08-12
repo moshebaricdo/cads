@@ -2,6 +2,7 @@ import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { FoundationHeader } from "@/components/FoundationHeader";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import ui from "@/components/docs-ui.module.scss";
+import { docsMetadata } from "@/lib/docsMetadata";
 import { adjacentFoundations } from "@/lib/nav";
 import shared from "../FoundationPage.module.scss";
 import { MotionExample } from "./MotionExample";
@@ -9,6 +10,11 @@ import { MotionExperimentToggle } from "./MotionExperimentToggle";
 import { MotionExportButton } from "./MotionExportButton";
 import { MotionPrimitives } from "./MotionPrimitives";
 import { RecipeDemos } from "./RecipeDemos";
+
+const MOTION_LEAD =
+  "CADS Motion is an experiment exploring how subtle micro-interactions can enhance the tactile experience of the product. It carefully applies motion to each component with careful consideration of its context and usage while defining standard motion patterns.";
+
+export const metadata = docsMetadata("Motion", MOTION_LEAD);
 
 export default function MotionPage() {
   const { previous, next } = adjacentFoundations("/variables/core");
@@ -18,9 +24,7 @@ export default function MotionPage() {
       <FoundationHeader
         title="Motion"
         status="experimental"
-        lead="CADS Motion is an experiment exploring how subtle micro-interactions can enhance the 
-        tactile experience of the product. It carefully applies motion to each component
-        with careful consideration of its context and usage while defining standard motion patterns."
+        lead={MOTION_LEAD}
         action={<MotionExportButton />}
       />
 

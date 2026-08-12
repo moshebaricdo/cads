@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { ForAgents } from "@/components/ForAgents";
+import { docsMetadata } from "@/lib/docsMetadata";
 
-export const metadata = {
-  title: "Using CADS with AI — CADS",
-  description:
-    "Install the portable CADS prototyping skill in Claude, ChatGPT, Gemini, or Cursor — self-contained HTML prototypes, no npm packages.",
-};
+export const metadata = docsMetadata(
+  "Using CADS with AI",
+  "The CADS portable skill packages the CADS Docs runtime (components and styles) along with general guidance for LLMs on how to best use it. It also provides context on our UI/UX practices, different surfaces of our platform, and more. It works in any AI tool that supports agent skills.",
+);
 
 function skillZipAvailable(): boolean {
   try {
