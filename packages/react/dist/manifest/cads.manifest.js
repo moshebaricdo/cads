@@ -1903,7 +1903,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       name: "AiChatMessage",
       exportName: "AiChatMessage",
       importFrom: "@moshebaricdo/cads-react",
-      description: "Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include file uploads and a feedback action row.",
+      description: "Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include inline rich body content, an optional customContent slot, file uploads, and a feedback action row.",
       figma: {
         fileKey: e,
         nodeId: "17228:10789",
@@ -1921,7 +1921,16 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
           type: '"Human" | "AI"',
           default: '"Human"'
         },
-        { name: "children", type: "ReactNode", description: "Message body." },
+        {
+          name: "children",
+          type: "ReactNode",
+          description: "Message body. Accepts inline rich content (text, CADS Link, code, emphasis, multiple paragraphs)."
+        },
+        {
+          name: "customContent",
+          type: "ReactNode",
+          description: "Optional in-bubble slot below the body (AI). Presence replaces Figma hasCustomContent."
+        },
         {
           name: "fileUploads",
           type: "ReactNode",
@@ -1964,11 +1973,14 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "--background-neutral-secondary",
         "--text-neutral-white-fixed",
         "--text-neutral-primary",
-        "--shape-md"
+        "--shape-md",
+        "--font-family-mono"
       ],
       usageRules: [
         "Human TA bubbles use brand-strong; Tutor human bubbles use info-mid.",
         "Bubbles hug short content and grow up to 100% of the chat column; Human aligns end, AI aligns start.",
+        "children is the message body and may include inline rich content (CADS Link size=small, code, emphasis, multiple paragraphs).",
+        "Pass extra in-bubble content via customContent (AI only). Presence replaces Figma hasCustomContent. Shared in-chat cards (file-change lists, snippets) will compose in this slot later.",
         "Action row (copy/download/feedback/flag) only renders for author=AI.",
         "Compose file chips via fileUploads rather than inventing a second message type."
       ],

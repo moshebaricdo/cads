@@ -15,8 +15,17 @@ export interface AiChatMessageProps
    * @default "Human"
    */
   author?: AiChatMessageAuthor;
-  /** Message body. */
+  /**
+   * Message body. Accepts inline rich content (text, CADS `Link`, `code`,
+   * emphasis, multiple paragraphs) — not only a string.
+   */
   children?: ReactNode;
+  /**
+   * Optional in-bubble slot below the body (AI messages). Presence replaces
+   * Figma `hasCustomContent`. Use for extra in-chat content; shared cards
+   * (file-change lists, snippets) will compose here later.
+   */
+  customContent?: ReactNode;
   /**
    * Optional file chip row (AI messages). Presence replaces Figma `showFileUploads`.
    */

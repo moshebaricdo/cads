@@ -1,89 +1,93 @@
-import { jsxs as r, jsx as t } from "react/jsx-runtime";
-import { forwardRef as L, useRef as A, useState as C, useEffect as Q } from "react";
-import { Button as y } from "../button/Button.js";
-import { IconToggle as w } from "../icon-toggle/IconToggle.js";
-import { Tooltip as c } from "../tooltip/Tooltip.js";
+import { jsxs as s, jsx as l } from "react/jsx-runtime";
+import { forwardRef as Q, useRef as C, useState as w, useEffect as U } from "react";
+import { Button as H } from "../button/Button.js";
+import { IconToggle as S } from "../icon-toggle/IconToggle.js";
+import { Tooltip as d } from "../tooltip/Tooltip.js";
 import e from "./aiChatMessage.module.scss.js";
-const U = 1200, ae = L(
+const X = 1200, se = Q(
   function({
-    context: u = "TA",
-    author: d = "Human",
-    children: H,
-    fileUploads: m,
-    hasActionRow: S = !0,
-    hasLeftActions: P = !0,
-    hasDownload: k = !0,
-    hasRightActions: z = !0,
-    hasFlagging: I = !0,
-    feedbackLabel: M = "Was this helpful?",
-    onCopy: s,
-    onDownload: R,
-    helpfulValue: p,
-    defaultHelpfulValue: j = null,
-    onHelpfulChange: n,
-    flagged: B,
-    defaultFlagged: D = !1,
-    onFlagChange: E,
-    className: F,
-    style: O,
-    ..._
-  }, $) {
-    const a = d === "AI", K = u === "TA", b = A(null), o = A(null), [i, f] = C(!1);
-    Q(
+    context: m = "TA",
+    author: p = "Human",
+    children: r,
+    customContent: n,
+    fileUploads: b,
+    hasActionRow: P = !0,
+    hasLeftActions: k = !0,
+    hasDownload: z = !0,
+    hasRightActions: I = !0,
+    hasFlagging: M = !0,
+    feedbackLabel: R = "Was this helpful?",
+    onCopy: i,
+    onDownload: j,
+    helpfulValue: f,
+    defaultHelpfulValue: B = null,
+    onHelpfulChange: c,
+    flagged: D,
+    defaultFlagged: E = !1,
+    onFlagChange: F,
+    className: O,
+    style: _,
+    ...$
+  }, K) {
+    const o = p === "AI", W = m === "TA", h = C(null), a = C(null), [u, N] = w(!1);
+    U(
       () => () => {
-        o.current && clearTimeout(o.current);
+        a.current && clearTimeout(a.current);
       },
       []
     );
-    const h = p !== void 0, [W, Y] = C(j), N = h ? p : W, T = (l) => {
-      h || Y(l), n == null || n(l);
-    }, q = () => {
-      var v, g, x;
-      const l = ((g = (v = b.current) == null ? void 0 : v.innerText) == null ? void 0 : g.trim()) ?? "";
-      l && ((x = navigator.clipboard) == null || x.writeText(l)), s == null || s(), f(!0), o.current && clearTimeout(o.current), o.current = setTimeout(() => f(!1), U);
-    }, G = a ? e.bubbleAi : K ? e.bubbleHumanTa : e.bubbleHumanTutor, J = [
+    const v = f !== void 0, [Y, q] = w(B), T = v ? f : Y, g = (t) => {
+      v || q(t), c == null || c(t);
+    }, G = () => {
+      var x, A, y;
+      const t = ((A = (x = h.current) == null ? void 0 : x.innerText) == null ? void 0 : A.trim()) ?? "";
+      t && ((y = navigator.clipboard) == null || y.writeText(t)), i == null || i(), N(!0), a.current && clearTimeout(a.current), a.current = setTimeout(() => N(!1), X);
+    }, J = o ? e.bubbleAi : W ? e.bubbleHumanTa : e.bubbleHumanTutor, L = [
       e.root,
-      a ? e.rootAi : e.rootHuman,
-      F ?? ""
+      o ? e.rootAi : e.rootHuman,
+      O ?? ""
     ].filter(Boolean).join(" ");
-    return /* @__PURE__ */ r(
+    return /* @__PURE__ */ s(
       "div",
       {
-        ref: $,
+        ref: K,
         "data-cads-component": "AiChatMessage",
-        "data-context": u,
-        "data-author": d,
-        className: J,
-        style: O,
-        ..._,
+        "data-context": m,
+        "data-author": p,
+        className: L,
+        style: _,
+        ...$,
         children: [
-          a && m != null ? /* @__PURE__ */ t("div", { className: e.fileRow, children: m }) : null,
-          /* @__PURE__ */ t("div", { className: `${e.bubble} ${G}`, children: /* @__PURE__ */ t("div", { className: e.body, ref: b, children: H }) }),
-          a && S ? /* @__PURE__ */ r("div", { className: e.actions, children: [
-            P ? /* @__PURE__ */ r("div", { className: e.leftActions, children: [
-              /* @__PURE__ */ t(
-                c,
+          o && b != null ? /* @__PURE__ */ l("div", { className: e.fileRow, children: b }) : null,
+          /* @__PURE__ */ s("div", { className: `${e.bubble} ${J}`, children: [
+            r != null && r !== "" ? /* @__PURE__ */ l("div", { className: e.body, ref: h, children: r }) : null,
+            o && n != null && n !== "" ? /* @__PURE__ */ l("div", { className: e.customContent, children: n }) : null
+          ] }),
+          o && P ? /* @__PURE__ */ s("div", { className: e.actions, children: [
+            k ? /* @__PURE__ */ s("div", { className: e.leftActions, children: [
+              /* @__PURE__ */ l(
+                d,
                 {
-                  title: i ? "Copied" : "Copy",
-                  iconName: i ? "check" : "copy",
+                  title: u ? "Copied" : "Copy",
+                  iconName: u ? "check" : "copy",
                   hasCaret: !1,
                   placement: "bottom",
-                  children: /* @__PURE__ */ t("span", { className: e.tooltipHost, children: /* @__PURE__ */ t(
-                    y,
+                  children: /* @__PURE__ */ l("span", { className: e.tooltipHost, children: /* @__PURE__ */ l(
+                    H,
                     {
                       variant: "text",
                       color: "tertiary",
                       size: "extraSmall",
                       iconOnly: !0,
-                      startIconName: i ? "check" : "copy",
+                      startIconName: u ? "check" : "copy",
                       "aria-label": "Copy",
-                      onClick: q
+                      onClick: G
                     }
                   ) })
                 }
               ),
-              k ? /* @__PURE__ */ t(c, { title: "Download", placement: "bottom", children: /* @__PURE__ */ t("span", { className: e.tooltipHost, children: /* @__PURE__ */ t(
-                y,
+              z ? /* @__PURE__ */ l(d, { title: "Download", placement: "bottom", children: /* @__PURE__ */ l("span", { className: e.tooltipHost, children: /* @__PURE__ */ l(
+                H,
                 {
                   variant: "text",
                   color: "tertiary",
@@ -91,45 +95,45 @@ const U = 1200, ae = L(
                   iconOnly: !0,
                   startIconName: "download",
                   "aria-label": "Download",
-                  onClick: R
+                  onClick: j
                 }
               ) }) }) : null
             ] }) : null,
-            z ? /* @__PURE__ */ r("div", { className: e.rightActions, children: [
-              /* @__PURE__ */ t(
-                w,
+            I ? /* @__PURE__ */ s("div", { className: e.rightActions, children: [
+              /* @__PURE__ */ l(
+                S,
                 {
                   size: "extraSmall",
                   color: "brand",
-                  label: M,
+                  label: R,
                   exclusive: !0,
                   iconName: "thumbs-up",
                   "aria-label": "Helpful",
-                  pressed: N === "up",
-                  onPressedChange: (l) => {
-                    T(l ? "up" : null);
+                  pressed: T === "up",
+                  onPressedChange: (t) => {
+                    g(t ? "up" : null);
                   },
                   secondToggle: {
                     iconName: "thumbs-down",
                     color: "secondary",
                     "aria-label": "Not helpful",
-                    pressed: N === "down",
-                    onPressedChange: (l) => {
-                      T(l ? "down" : null);
+                    pressed: T === "down",
+                    onPressedChange: (t) => {
+                      g(t ? "down" : null);
                     }
                   }
                 }
               ),
-              I ? /* @__PURE__ */ t(c, { title: "Flag this message?", placement: "bottom", children: /* @__PURE__ */ t("span", { className: e.tooltipHost, children: /* @__PURE__ */ t(
-                w,
+              M ? /* @__PURE__ */ l(d, { title: "Flag this message?", placement: "bottom", children: /* @__PURE__ */ l("span", { className: e.tooltipHost, children: /* @__PURE__ */ l(
+                S,
                 {
                   size: "extraSmall",
                   color: "error",
                   iconName: "flag-pennant",
                   "aria-label": "Flag",
-                  pressed: B,
-                  defaultPressed: D,
-                  onPressedChange: E
+                  pressed: D,
+                  defaultPressed: E,
+                  onPressedChange: F
                 }
               ) }) }) : null
             ] }) : null
@@ -140,6 +144,6 @@ const U = 1200, ae = L(
   }
 );
 export {
-  ae as AiChatMessage
+  se as AiChatMessage
 };
 //# sourceMappingURL=AiChatMessage.js.map

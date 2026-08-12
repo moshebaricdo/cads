@@ -7,13 +7,15 @@
     "publicNodeId": "17228:10789",
     "componentKey": "2e5573fb8a81ad428869ea8b04621747b1787a64",
     "relatedNodeIds": ["17228:10810", "15724:18791", "3710:461"],
-    "retrievedAt": "2026-08-06",
+    "retrievedAt": "2026-08-12",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
-    "figmaChanges": []
+    "taskPath": "figma-update",
+    "previousRecipe": "2026-08-06 new component",
+    "figmaChanges": [
+      "hasCustomContent boolean + customContent instance slot (nodes 17273:422 / 17273:425) below the AI body; 12px column gap; 100px Figma placeholder hugs in code"
+    ]
   },
   "axes": {
     "public": {
@@ -29,7 +31,7 @@
     },
     "layout": {
       "padding": "bubble 12/10",
-      "gap": "AI column 4; action icons 2",
+      "gap": "AI column 4; bubble body→customContent 12px; 2nd paragraph --spacing-p-xs; action icons 2",
       "borderWidth": "0",
       "radius": "tl/tr/bl --shape-md; human missing br cut",
       "overlap": "0",
@@ -84,7 +86,7 @@
       },
       "geometryOverrides": {},
       "figmaVariant": "context=TA, author=AI",
-      "notes": ["Action row composed under bubble"]
+      "notes": ["Action row composed under bubble; customContent optional below body"]
     },
     {
       "when": { "context": "Tutor", "author": "AI", "mode": "light" },
@@ -183,15 +185,43 @@
         "browserScreenshot": "",
         "result": "pending",
         "mismatches": []
+      },
+      {
+        "id": "acm-ta-ai-inline-content-light",
+        "figmaNodeId": "17269:3785",
+        "figmaVariant": "context=TA, author=AI",
+        "mode": "light",
+        "props": {
+          "context": "TA",
+          "author": "AI",
+          "hasActionRow": true
+        },
+        "state": "default",
+        "viewport": { "width": 340, "height": 260, "deviceScaleFactor": 1 },
+        "expectedGeometry": {},
+        "expectedVariables": ["--background-neutral-secondary"],
+        "fixturePath": "/fixtures/components?component=AiChatMessage&case=acm-ta-ai-inline-content-light",
+        "referenceScreenshot": "",
+        "browserScreenshot": "",
+        "result": "pending",
+        "mismatches": []
       }
     ]
   },
-  "acceptedDifferences": [],
+  "acceptedDifferences": [
+    {
+      "caseIds": ["acm-ta-ai-inline-content-light"],
+      "figmaBehavior": "customContent is a 100px placeholder frame gated by hasCustomContent.",
+      "codeBehavior": "customContent ReactNode hugs its children; presence replaces the boolean.",
+      "reason": "Placeholder is design-tool scaffolding. Shared in-chat cards are not specced yet; the slot is an open ReactNode for inline/arbitrary content until those land.",
+      "decisionSource": "agent 2026-08-12 (presence pattern, same as fileUploads)"
+    }
+  ],
   "evidence": {
-    "apiAudit": null,
-    "typecheck": null,
-    "build": null,
-    "docsBuild": null,
+    "apiAudit": "pnpm figma:audit-props -- --strict → AiChatMessage ok (info: state-recipes). Repo-wide 1 error is pre-existing Dropdown.iconOnly, unrelated.",
+    "typecheck": "pnpm typecheck → pass",
+    "build": "pnpm build → pass",
+    "docsBuild": "pnpm build:docs → pass",
     "correctionPasses": []
   }
 }

@@ -968,14 +968,15 @@ Example:
 
 ### AiChatMessage
 
-Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include file uploads and a feedback action row.
+Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include inline rich body content, an optional customContent slot, file uploads, and a feedback action row.
 
 Import: `import { AiChatMessage } from "@moshebaricdo/cads-react"`
 
 Props:
 - `context`: "TA" | "Tutor" (default "TA") — Teacher Assistant vs student Tutor product context.
 - `author`: "Human" | "AI" (default "Human")
-- `children`: ReactNode — Message body.
+- `children`: ReactNode — Message body. Accepts inline rich content (text, CADS Link, code, emphasis, multiple paragraphs).
+- `customContent`: ReactNode — Optional in-bubble slot below the body (AI). Presence replaces Figma hasCustomContent.
 - `fileUploads`: ReactNode — Optional AiChatFileChip row above an AI bubble.
 - `hasActionRow`: boolean (default true)
 - `hasLeftActions`: boolean (default true)
@@ -995,6 +996,8 @@ Props:
 Usage rules:
 - Human TA bubbles use brand-strong; Tutor human bubbles use info-mid.
 - Bubbles hug short content and grow up to 100% of the chat column; Human aligns end, AI aligns start.
+- children is the message body and may include inline rich content (CADS Link size=small, code, emphasis, multiple paragraphs).
+- Pass extra in-bubble content via customContent (AI only). Presence replaces Figma hasCustomContent. Shared in-chat cards (file-change lists, snippets) will compose in this slot later.
 - Action row (copy/download/feedback/flag) only renders for author=AI.
 - Compose file chips via fileUploads rather than inventing a second message type.
 

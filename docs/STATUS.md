@@ -6,6 +6,8 @@ Last updated: 2026-08-12
 
 - [x] **GitHub Packages `@moshebaricdo/cads-*` (2026-08-12)** — Publishable packages renamed off `@codeai` scaffold names. `@moshebaricdo/cads-react` + `@moshebaricdo/cads-variables` publish to GitHub Packages via changesets/action (`pnpm release`). Lab2 / other prototypes install with `@moshebaricdo:registry=https://npm.pkg.github.com` + `NODE_AUTH_TOKEN`. Sibling `file:` still works for local CADS iteration. First registry version is **0.1.0**.
 
+- [x] **AiChatMessage inline + customContent (2026-08-12)** — AI bubbles accept inline rich `children` (Link, `code`, emphasis, paragraphs) and an optional `customContent` slot below the body (Figma `hasCustomContent`, presence-gated, hugs content). Shared in-chat cards (file-change lists, snippets) still to come. Snapshot + recipe + docs assembled chat / fixture updated.
+
 - [x] **Dropdown action `iconOnly` trigger (2026-08-12)** — `role=action` supports full Button-style square icon triggers (`iconOnly` + `startIconName` + `aria-label`; chevron/label hidden). Manifest + docs playground/prop sheet/fixture cover overflow menus; `buttonVariant` / `buttonColor` unchanged.
 - [x] **Symbol fill DialKit sandbox (2026-08-11)** — `apps/sandbox` parametric preview assembles the CodeAI mark as a **modular grid** of live CADS components (cells only where they fall inside symbol bounds — no mask-over-scatter). Swatches ~20% accent pops. DialKit: columns / gap / inset / mix / motion. `pnpm dev:sandbox` → http://localhost:3200.
 - [x] **FontAwesome Glyphs SVG custom-kit previews (2026-08-10)** — API-synced Custom Kit / Kit Duotone picker tiles render from FA `iconUploads` `pathData` (+ width/height) instead of unicode × OS OTF. Avoids Windows font-cache tofu when insert still works via ligatures. Existing synced faces auto-backfill pathData on plugin open; stock styles still use font preview. `pnpm plugin:icons:build`.
@@ -28,7 +30,7 @@ Spec artifacts:
   - packages/react/src/manifest/figmaComponentPropsSnapshot.json (4 entries)
   - packages/react/src/manifest/visual-recipes/{ChatFileRemoveButton,AiChatFileChip,AiChatMessage,AiChatInput}.json
   - figma.code-connect.json + cadsManifest + fixtures + previews + propSheets/ai.ts
-Coverage: recipe cases defined (remove 6 / file chip 6 / message 5 / input 5); browser
+Coverage: recipe cases defined (remove 6 / file chip 6 / message 6 / input 5); browser
   capture correction loop still pending (fixtures registered under /fixtures/components)
 API audit: 0 error / 0 warn / 0 escalate (pnpm figma:audit-props -- --strict)
 Verification: pnpm typecheck; pnpm build; pnpm build:docs (route /components/ai-chat);
@@ -37,6 +39,7 @@ Accepted differences:
   - Figma isFilled design-only → derived from value content
   - Show 2nd Paragraph design-matrix → multi-paragraph via children
   - showFileUploads → optional fileUploads ReactNode slot
+  - hasCustomContent → optional customContent ReactNode slot (AI; hugs vs 100px Figma placeholder)
   - Suggested Prompt Chip intentionally out of scope (archived in Figma)
 ```
 

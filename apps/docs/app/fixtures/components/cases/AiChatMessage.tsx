@@ -62,4 +62,20 @@ export const cases: FixtureCase[] = [
       </AiChatMessage>
     ),
   },
+  {
+    id: "acm-ta-ai-inline-content-light",
+    mode: "light",
+    state: "default",
+    viewport: { width: 340, height: 260 },
+    render: () => (
+      <AiChatMessage
+        context="TA"
+        author="AI"
+        customContent="Warm-up: 10× name loop"
+      >
+        Sure! Have students write a loop that prints their name 10 times, then
+        challenge them to add a <code>counter</code>.
+      </AiChatMessage>
+    ),
+  },
 ];

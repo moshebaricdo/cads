@@ -3127,6 +3127,10 @@
         "showFileUploads": {
           "figma": "showFileUploads#12573:0",
           "default": false
+        },
+        "hasCustomContent": {
+          "figma": "hasCustomContent",
+          "default": false
         }
       },
       "codeOnlyProps": [
@@ -3158,12 +3162,17 @@
         {
           "name": "children",
           "category": "content",
-          "reason": "Message body; Figma variants use sample copy, not a text property."
+          "reason": "Message body; Figma variants use sample copy, not a text property. Accepts inline rich content, not only a string."
         },
         {
           "name": "fileUploads",
           "category": "composition",
           "reason": "Slot for AI Chat File Chip row; presence replaces Figma showFileUploads boolean."
+        },
+        {
+          "name": "customContent",
+          "category": "composition",
+          "reason": "In-bubble slot below the AI body; presence replaces Figma hasCustomContent boolean. Figma placeholder is 100px; code hugs content."
         },
         {
           "name": "onCopy",
@@ -3216,7 +3225,8 @@
       "notes": [
         "Human TA bubble: --background-brand-strong + --text-neutral-white-fixed. Human Tutor: --background-info-mid + --text-neutral-primary. AI bubble: --background-neutral-secondary. Action row only for author=AI when hasActionRow.",
         "Figma Show 2nd Paragraph is design-matrix only; code expresses multi-paragraph content via children.",
-        "Figma showFileUploads boolean collapsed into optional fileUploads ReactNode slot (same presence pattern as icons)."
+        "Figma showFileUploads boolean collapsed into optional fileUploads ReactNode slot (same presence pattern as icons).",
+        "Figma hasCustomContent boolean collapsed into optional customContent ReactNode slot (AI). 100px Figma placeholder hugs in code; 12px gap from the body."
       ]
     },
     {

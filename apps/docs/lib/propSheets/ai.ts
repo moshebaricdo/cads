@@ -90,7 +90,14 @@ export const AI_PROP_SHEETS: Record<string, PropSheet[]> = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Message body.",
+          description:
+            "Message body. Accepts inline rich content (text, CADS Link, code, emphasis, multiple paragraphs).",
+        },
+        {
+          name: "customContent",
+          type: "ReactNode",
+          description:
+            "Optional in-bubble slot below the body (AI). Presence replaces Figma hasCustomContent.",
         },
         {
           name: "fileUploads",

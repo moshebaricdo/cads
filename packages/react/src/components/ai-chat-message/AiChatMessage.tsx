@@ -33,6 +33,7 @@ export const AiChatMessage = forwardRef<HTMLDivElement, AiChatMessageProps>(
       context = "TA",
       author = "Human",
       children,
+      customContent,
       fileUploads,
       hasActionRow = true,
       hasLeftActions = true,
@@ -115,9 +116,14 @@ export const AiChatMessage = forwardRef<HTMLDivElement, AiChatMessageProps>(
         ) : null}
 
         <div className={`${styles.bubble} ${bubbleClass}`}>
-          <div className={styles.body} ref={bodyRef}>
-            {children}
-          </div>
+          {children != null && children !== "" ? (
+            <div className={styles.body} ref={bodyRef}>
+              {children}
+            </div>
+          ) : null}
+          {isAi && customContent != null && customContent !== "" ? (
+            <div className={styles.customContent}>{customContent}</div>
+          ) : null}
         </div>
 
         {isAi && hasActionRow ? (

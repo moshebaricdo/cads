@@ -1,32 +1,34 @@
-import './aiChatMessage.css';const t = "_root_dt2d9_1", o = "_rootHuman_dt2d9_11", b = "_rootAi_dt2d9_16", _ = "_bubble_dt2d9_21", n = "_bubbleHumanTa_dt2d9_36", d = "_bubbleHumanTutor_dt2d9_41", s = "_bubbleAi_dt2d9_46", u = "_body_dt2d9_51", i = "_fileRow_dt2d9_56", c = "_actions_dt2d9_64", l = "_leftActions_dt2d9_70", e = "_rightActions_dt2d9_76", a = "_tooltipHost_dt2d9_86", r = {
-  root: t,
-  rootHuman: o,
-  rootAi: b,
+import './aiChatMessage.css';const o = "_root_1lvrl_1", t = "_rootHuman_1lvrl_11", l = "_rootAi_1lvrl_16", _ = "_bubble_1lvrl_21", b = "_bubbleHumanTa_1lvrl_33", n = "_bubbleHumanTutor_1lvrl_38", s = "_bubbleAi_1lvrl_43", r = "_body_1lvrl_48", u = "_customContent_1lvrl_49", c = "_fileRow_1lvrl_85", e = "_actions_1lvrl_93", i = "_leftActions_1lvrl_99", a = "_rightActions_1lvrl_105", v = "_tooltipHost_1lvrl_115", m = {
+  root: o,
+  rootHuman: t,
+  rootAi: l,
   bubble: _,
-  bubbleHumanTa: n,
-  bubbleHumanTutor: d,
+  bubbleHumanTa: b,
+  bubbleHumanTutor: n,
   bubbleAi: s,
-  body: u,
-  fileRow: i,
-  actions: c,
-  leftActions: l,
-  rightActions: e,
-  tooltipHost: a
+  body: r,
+  customContent: u,
+  fileRow: c,
+  actions: e,
+  leftActions: i,
+  rightActions: a,
+  tooltipHost: v
 };
 export {
-  c as actions,
-  u as body,
+  e as actions,
+  r as body,
   _ as bubble,
   s as bubbleAi,
-  n as bubbleHumanTa,
-  d as bubbleHumanTutor,
-  r as default,
-  i as fileRow,
-  l as leftActions,
-  e as rightActions,
-  t as root,
-  b as rootAi,
-  o as rootHuman,
-  a as tooltipHost
+  b as bubbleHumanTa,
+  n as bubbleHumanTutor,
+  u as customContent,
+  m as default,
+  c as fileRow,
+  i as leftActions,
+  a as rightActions,
+  o as root,
+  l as rootAi,
+  t as rootHuman,
+  v as tooltipHost
 };
 //# sourceMappingURL=aiChatMessage.module.scss.js.map

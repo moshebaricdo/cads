@@ -5,6 +5,7 @@ import {
   AiChatFileChip,
   AiChatInput,
   AiChatMessage,
+  Link,
   Tabs,
   cadsManifest,
 } from "@moshebaricdo/cads-react";
@@ -87,9 +88,13 @@ function AssembledChat() {
             <AiChatMessage context="TA" author="Human">
               Can you suggest a warm-up activity for my Unit 3 loops lesson?
             </AiChatMessage>
-            <AiChatMessage context="TA" author="AI">
+            <AiChatMessage
+              context="TA"
+              author="AI"
+              customContent="Warm-up: 10× name loop"
+            >
               Sure! Have students write a loop that prints their name 10 times,
-              then challenge them to add a counter.
+              then challenge them to add a <code>counter</code>.
             </AiChatMessage>
           </div>
           <div className={styles.composer}>
@@ -120,8 +125,12 @@ function AssembledChat() {
               hasDownload={false}
               hasRightActions={false}
             >
-              Good question! Take a look at line 4 — what do you think happens
-              when your loop sets the sprite&apos;s size to 0?
+              Good question! Take a look at{" "}
+              <Link size="small" isExternal={false} href="#line-4">
+                line 4
+              </Link>{" "}
+              — what do you think happens when your loop sets the sprite&apos;s
+              size to <code>0</code>?
             </AiChatMessage>
           </div>
           <div className={styles.composer}>

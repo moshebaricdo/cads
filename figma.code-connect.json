@@ -218,7 +218,7 @@
       "figmaNodeId": "17228:10789",
       "componentKey": "2e5573fb8a81ad428869ea8b04621747b1787a64",
       "source": "@moshebaricdo/cads-react",
-      "snippet": "import { AiChatMessage } from \"@moshebaricdo/cads-react\";\n\n<AiChatMessage context=\"TA\" author=\"AI\">{message}</AiChatMessage>"
+      "snippet": "import { AiChatMessage } from \"@moshebaricdo/cads-react\";\n\n<AiChatMessage context=\"TA\" author=\"AI\" customContent={customContent}>{message}</AiChatMessage>"
     },
     {
       "componentName": "AiChatInput",
