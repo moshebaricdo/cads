@@ -1,6 +1,6 @@
 {
   "name": "@moshebaricdo/cads-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CADS React components (MUI-wrapped) and icons",
   "type": "module",
   "license": "UNLICENSED",
