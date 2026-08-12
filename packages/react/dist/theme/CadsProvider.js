@@ -1,7 +1,7 @@
 import { jsxs as r, jsx as o } from "react/jsx-runtime";
 import m from "@mui/material/CssBaseline";
 import { ThemeProvider as i } from "@mui/material/styles";
-import { createCadsTheme as d } from "@codeai/cads-variables/theme";
+import { createCadsTheme as d } from "@moshebaricdo/cads-variables/theme";
 import { useMemo as n } from "react";
 import { ExperimentalMotionContext as l, EXPERIMENTAL_MOTION_CSS as c } from "./experimentalMotion.js";
 function C({

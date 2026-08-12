@@ -1,5 +1,5 @@
 import ButtonBase from "@mui/material/ButtonBase";
-import { motion as motionVars } from "@codeai/cads-variables";
+import { motion as motionVars } from "@moshebaricdo/cads-variables";
 import { motion, useReducedMotion } from "motion/react";
 import {
   forwardRef,

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Chip, FieldWrapper } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Chip, FieldWrapper } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 const OPTIONS = [
   { slot: "art", value: "art", label: "Art" },

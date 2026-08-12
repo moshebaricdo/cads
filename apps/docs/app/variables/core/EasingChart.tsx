@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Tooltip } from "@codeai/cads-react";
+import { Tooltip } from "@moshebaricdo/cads-react";
 import styles from "./motion.module.scss";
 
 const TRAVEL_MS = 500;

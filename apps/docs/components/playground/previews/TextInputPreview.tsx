@@ -1,7 +1,7 @@
 "use client";
 
-import { TextInput } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { TextInput } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 export default function TextInputPreview({
   values,

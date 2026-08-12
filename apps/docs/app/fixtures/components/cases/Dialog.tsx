@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog } from "@codeai/cads-react";
+import { Dialog } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

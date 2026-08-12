@@ -1,4 +1,4 @@
-import type { CadsPropDef } from "@codeai/cads-react/manifest";
+import type { CadsPropDef } from "@moshebaricdo/cads-react/manifest";
 import ui from "./docs-ui.module.scss";
 
 function TypeCell({ type }: { type: string }) {

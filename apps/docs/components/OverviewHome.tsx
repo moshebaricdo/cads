@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import NextLink from "next/link";
-import { Button, Link } from "@codeai/cads-react";
+import { Button, Link } from "@moshebaricdo/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import overviewStyles from "@/components/ComponentOverview.module.scss";
 import { withBasePath } from "@/lib/basePath";

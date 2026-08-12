@@ -109,7 +109,7 @@
       "geometryOverrides": {},
       "figmaVariant": "sentiment=default, isDisabled=no",
       "notes": [
-        "Default helper uses consumer helperIconName (Figma smile)."
+        "Default helper icon is optional — omit helperIconName for text-only helper (Figma showHelperIcon collapsed into presence)."
       ]
     },
     {

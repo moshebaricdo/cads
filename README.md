@@ -77,3 +77,22 @@ Docs: [`/ai`](https://moshebaricdo.github.io/cads/ai)
 For contributors and agents, start with [`AGENTS.md`](AGENTS.md). Current priorities live in [`docs/STATUS.md`](docs/STATUS.md).
 
 This README’s component table and experiments list are generated — run `pnpm generate:readme` after changing docs nav, component Storybook links, or [`docs/experiments.json`](docs/experiments.json). Docs builds regenerate it automatically.
+
+## Using in a prototype
+
+These packages are not on public npm. Install from GitHub Packages (scope matches this repo’s owner):
+
+```json
+{
+  "dependencies": {
+    "@moshebaricdo/cads-react": "^0.1.0",
+    "@moshebaricdo/cads-variables": "^0.1.0"
+  }
+}
+```
+
+```
+@moshebaricdo:registry=https://npm.pkg.github.com
+```
+
+GitHub Packages needs a token even for public packages (`NODE_AUTH_TOKEN` / PAT with `read:packages`). Imports stay `from "@moshebaricdo/cads-react"`. For local CADS development, a sibling `file:../cads/packages/*` install still works (don’t commit that rewrite on a repo whose CI has no sibling checkout).

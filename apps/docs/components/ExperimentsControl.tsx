@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Popover, Toggle, Tooltip } from "@codeai/cads-react";
+import { Button, Popover, Toggle, Tooltip } from "@moshebaricdo/cads-react";
 import Link from "next/link";
 import {
   Suspense,

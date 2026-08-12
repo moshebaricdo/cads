@@ -1,6 +1,6 @@
 import { jsxs as d, Fragment as W, jsx as e } from "react/jsx-runtime";
 import U from "@mui/material/ButtonBase";
-import { motion as Z } from "@codeai/cads-variables";
+import { motion as Z } from "@moshebaricdo/cads-variables";
 import { useReducedMotion as _, motion as q } from "motion/react";
 import { forwardRef as A, useId as D, useState as J } from "react";
 import { FaIcon as x } from "../../icons/FaIcon.js";

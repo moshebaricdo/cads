@@ -25,14 +25,15 @@
   },
   "geometry": {
     "sizes": {
-      "default": { "width": "300" }
+      "default": { "width": "fit-content; max-width 100%" }
     },
     "layout": {
       "padding": "bubble 12/10",
       "gap": "AI column 4; action icons 2",
       "borderWidth": "0",
       "radius": "tl/tr/bl --shape-md; human missing br cut",
-      "overlap": "0"
+      "overlap": "0",
+      "alignment": "Human align-self end; AI align-self start; bubble hugs content"
     },
     "typography": {
       "family": "Geist",

@@ -1,6 +1,6 @@
 /**
  * Icon catalog for the plugin UI, sourced from the same codepoint maps that
- * power `FaIcon` in @codeai/cads-react — the single source of truth for
+ * power `FaIcon` in @moshebaricdo/cads-react — the single source of truth for
  * which shortcodes exist and what they render.
  *
  * Custom kit icons will be appended here (fetched from the FA API) in a later
@@ -23,6 +23,15 @@ export interface IconEntry {
   fontFamily?: string;
   fontStyle?: string;
   fontWeight?: number;
+  /**
+   * Optional SVG path preview (custom kit API uploads). When set, the picker
+   * draws this instead of relying on the OS kit font.
+   */
+  preview?: {
+    pathData: string[];
+    width: number;
+    height: number;
+  };
 }
 
 function buildEntries(

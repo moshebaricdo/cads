@@ -27,6 +27,10 @@ export interface SliderProps extends Omit<MuiSliderProps, "color" | "size" | "ma
      */
     showLabelRow?: boolean;
     helperText?: ReactNode;
+    /**
+     * Optional icon beside helper text when sentiment is default. Omit for no
+     * icon. Error sentiment always shows a fixed validation icon.
+     */
     helperIconName?: FaIconName | (string & {});
     /**
      * @default true

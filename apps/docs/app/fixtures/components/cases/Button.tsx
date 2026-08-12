@@ -5,7 +5,7 @@ import {
   type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
-} from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react";
 import type { FixtureCase } from "./shared";
 
 const fixture = (

@@ -244,7 +244,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     showDisplayValue = true,
     showLabelRow = true,
     helperText,
-    helperIconName = "face-smile",
+    helperIconName,
     showHelper = true,
     showControls = false,
     showTicks = false,
@@ -281,6 +281,15 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   const numeric = Array.isArray(value) ? value[0] ?? min : value;
   const isError = sentiment === "error" && !disabled;
   const showHelperRow = showHelper && helperText != null;
+  const resolvedHelperIconName =
+    helperIconName != null && String(helperIconName).trim() !== ""
+      ? helperIconName
+      : undefined;
+  const helperIconResolved = isError
+    ? ("circle-xmark" as const)
+    : resolvedHelperIconName
+      ? resolveIconName(resolvedHelperIconName)
+      : undefined;
 
   const resolvedStep: number | null =
     step == null ? null : Number(step) > 0 ? Number(step) : 1;
@@ -390,14 +399,12 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
                 lineHeight: type.helperLineHeight,
               }}
             >
-              <FaIcon
-                name={
-                  isError
-                    ? "circle-xmark"
-                    : resolveIconName(helperIconName)
-                }
-                fontSize={type.helperIconPx}
-              />
+              {helperIconResolved != null ? (
+                <FaIcon
+                  name={helperIconResolved}
+                  fontSize={type.helperIconPx}
+                />
+              ) : null}
               <span>{helperText}</span>
             </div>
           ) : null}

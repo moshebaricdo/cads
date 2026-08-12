@@ -13,7 +13,7 @@ Figma plugin that gives you Font Awesome’s searchable, visual icon browser —
 
 ### Custom kit updates (two paths)
 
-The picker catalog and the OS font are separate. New kit icons need **both** an updated desktop font (for canvas ligatures) and an updated catalog (for search).
+The picker catalog and the OS font are separate. New kit icons need an updated desktop font for **canvas ligatures**. Custom Kit **picker previews** come from FA API SVG `pathData` when you sync via API — they do not depend on the OS OTF (avoids Windows font-cache tofu after kit updates).
 
 | Path | Catalog | When to use |
 |---|---|---|
@@ -25,9 +25,9 @@ The picker catalog and the OS font are separate. New kit icons need **both** an 
 1. Download the kit package from fontawesome.com and unzip.
 2. Run **Install FA Fonts** (`../fa-fonts`) on the `otfs` folder — do not fight Font Book duplicates.
 3. Refresh the catalog (re-add OTF **or** Refresh kit icons).
-4. **Fully quit Figma** (Cmd+Q / Exit) and reopen so the new font binary is loaded.
+4. **Fully quit Figma** (Cmd+Q / Exit) and reopen so the new font binary is loaded for canvas insert.
 
-API sync does **not** install fonts and does **not** skip the Figma relaunch.
+API sync does **not** install fonts and does **not** skip the Figma relaunch for canvas rendering. Custom Kit grid previews update from the API without a reboot.
 
 ## Develop
 

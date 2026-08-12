@@ -1,7 +1,7 @@
 "use client";
 
-import { SegmentedButton } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { SegmentedButton } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 export default function SegmentedButtonPreview({
   values,

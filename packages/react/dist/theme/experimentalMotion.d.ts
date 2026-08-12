@@ -1,4 +1,4 @@
-import { motion as motionVars } from '@codeai/cads-variables';
+import { motion as motionVars } from '@moshebaricdo/cads-variables';
 import { Transition } from 'motion/react';
 /**
  * When true, Press / Surface / Indicator recipes apply.

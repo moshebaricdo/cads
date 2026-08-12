@@ -2,7 +2,7 @@
 name: cads-figma-color-sync
 description: >-
   Sync CADS color variables from the CADS Figma file into
-  @codeai/cads-variables, regenerate CSS/TS, and refresh docs exporters. Use when
+  @moshebaricdo/cads-variables, regenerate CSS/TS, and refresh docs exporters. Use when
   the user asks to sync colors/tokens/variables with Figma, check Figma-vs-code
   color drift, update the palette from design, or refresh color docs/CSS export.
 ---

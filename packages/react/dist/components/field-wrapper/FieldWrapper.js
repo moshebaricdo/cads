@@ -1,23 +1,23 @@
 import { jsx as r, jsxs as f } from "react/jsx-runtime";
-import { createContext as E, forwardRef as H, useId as k, useMemo as N, useContext as P } from "react";
-import { FaIcon as j } from "../../icons/FaIcon.js";
-import { FIELD_WRAPPER_SIZE as z } from "../../shared/controlSize.js";
-const h = E(null);
-function M() {
-  return P(h);
+import { createContext as E, forwardRef as k, useId as P, useMemo as j, useContext as z } from "react";
+import { FaIcon as L } from "../../icons/FaIcon.js";
+import { FIELD_WRAPPER_SIZE as N } from "../../shared/controlSize.js";
+const m = E(null);
+function A() {
+  return z(m);
 }
-const L = {
+const R = {
   success: "circle-check",
   warning: "circle-exclamation",
   error: "circle-xmark"
 };
-function R(u, i) {
+function _(x, i) {
   if (i)
     return {
       text: "var(--text-disabled-neutral)",
       icon: "var(--text-disabled-neutral)"
     };
-  switch (u) {
+  switch (x) {
     case "success":
       return {
         text: "var(--text-success-primary-fixed)",
@@ -40,47 +40,47 @@ function R(u, i) {
       };
   }
 }
-const A = H(
+const G = k(
   function({
     size: i = "medium",
     sentiment: t = "default",
     label: o,
-    required: p = !1,
-    helperText: x,
-    helperIconName: m = "smile",
-    showHelper: y = !0,
-    htmlFor: v,
+    required: y = !1,
+    helperText: p,
+    helperIconName: c,
+    showHelper: v = !0,
+    htmlFor: g,
     disabled: l = !1,
-    children: g,
-    className: I,
-    style: w
-  }, F) {
-    const S = k(), a = v ?? `cads-field-${S}`, c = `${a}-label`, n = `${a}-helper`, e = z[i], d = R(t, l), C = l ? "var(--text-disabled-neutral)" : "var(--text-neutral-primary)", s = !!x && (t !== "default" ? !0 : y), b = N(
+    children: I,
+    className: w,
+    style: F
+  }, S) {
+    const C = P(), n = g ?? `cads-field-${C}`, d = `${n}-label`, a = `${n}-helper`, e = N[i], s = _(t, l), b = l ? "var(--text-disabled-neutral)" : "var(--text-neutral-primary)", u = !!p && (t !== "default" ? !0 : v), H = j(
       () => ({
         size: i,
         sentiment: t,
         disabled: l,
-        labelId: c,
-        helperId: n,
-        controlId: a,
-        describedBy: s ? n : void 0,
+        labelId: d,
+        helperId: a,
+        controlId: n,
+        describedBy: u ? a : void 0,
         error: t === "error"
       }),
       [
         i,
         t,
         l,
-        c,
-        n,
+        d,
         a,
-        s
+        n,
+        u
       ]
-    ), W = t === "default" ? m : L[t];
-    return /* @__PURE__ */ r(h.Provider, { value: b, children: /* @__PURE__ */ f(
+    ), W = c != null && String(c).trim() !== "" ? c : void 0, h = t === "default" ? W : R[t];
+    return /* @__PURE__ */ r(m.Provider, { value: H, children: /* @__PURE__ */ f(
       "div",
       {
-        ref: F,
-        className: I,
+        ref: S,
+        className: w,
         "data-cads-field-wrapper": "",
         "data-disabled": l ? "true" : void 0,
         style: {
@@ -91,44 +91,44 @@ const A = H(
           position: "relative",
           width: "100%",
           fontFamily: "var(--font-family-main)",
-          ...w
+          ...F
         },
         children: [
           o != null && o !== "" ? /* @__PURE__ */ f(
             "label",
             {
-              id: c,
-              htmlFor: a,
+              id: d,
+              htmlFor: n,
               style: {
                 display: "block",
                 fontFamily: "var(--font-family-main)",
                 fontWeight: "var(--font-weight-semi-bold)",
                 fontSize: e.labelFontSize,
                 lineHeight: e.labelLineHeight,
-                color: C,
+                color: b,
                 margin: 0
               },
               children: [
                 o,
-                p ? /* @__PURE__ */ r("span", { "aria-hidden": "true", children: "*" }) : null
+                y ? /* @__PURE__ */ r("span", { "aria-hidden": "true", children: "*" }) : null
               ]
             }
           ) : null,
-          /* @__PURE__ */ r("div", { "data-cads-field-slot": "", style: { width: "100%", minWidth: 0 }, children: g }),
-          s ? /* @__PURE__ */ f(
+          /* @__PURE__ */ r("div", { "data-cads-field-slot": "", style: { width: "100%", minWidth: 0 }, children: I }),
+          u ? /* @__PURE__ */ f(
             "div",
             {
-              id: n,
+              id: a,
               "data-cads-field-helper": "",
               style: {
                 display: "flex",
                 alignItems: "center",
                 gap: e.helperGap,
                 width: "100%",
-                color: d.text
+                color: s.text
               },
               children: [
-                /* @__PURE__ */ r(
+                h != null ? /* @__PURE__ */ r(
                   "span",
                   {
                     "aria-hidden": !0,
@@ -139,11 +139,11 @@ const A = H(
                       width: e.helperIconSlot,
                       height: e.helperIconSlot,
                       flexShrink: 0,
-                      color: d.icon
+                      color: s.icon
                     },
-                    children: /* @__PURE__ */ r(j, { name: W, fontSize: e.helperIconPx })
+                    children: /* @__PURE__ */ r(L, { name: h, fontSize: e.helperIconPx })
                   }
-                ),
+                ) : null,
                 /* @__PURE__ */ r(
                   "span",
                   {
@@ -152,9 +152,9 @@ const A = H(
                       fontWeight: 400,
                       fontSize: e.helperFontSize,
                       lineHeight: e.helperLineHeight,
-                      color: d.text
+                      color: s.text
                     },
-                    children: x
+                    children: p
                   }
                 )
               ]
@@ -166,7 +166,7 @@ const A = H(
   }
 );
 export {
-  A as FieldWrapper,
-  M as useFieldContext
+  G as FieldWrapper,
+  A as useFieldContext
 };
 //# sourceMappingURL=FieldWrapper.js.map

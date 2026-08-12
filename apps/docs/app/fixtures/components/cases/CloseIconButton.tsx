@@ -4,7 +4,7 @@ import {
   CloseIconButton,
   type CloseIconButtonColor,
   type CloseIconButtonSize,
-} from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react";
 import type { FixtureCase } from "./shared";
 
 const fixture = (

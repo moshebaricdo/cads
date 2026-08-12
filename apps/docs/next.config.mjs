@@ -21,49 +21,49 @@ const variablesSrcAbs = path.join(repoRoot, "packages/variables/src");
  * Wildcard `/*` covers subpaths (`/icons`, `/manifest`, …).
  */
 const turbopackSrcAliases = {
-  "@codeai/cads-react/manifest":
+  "@moshebaricdo/cads-react/manifest":
     "../../packages/react/src/manifest/cads.manifest.ts",
-  "@codeai/cads-react/icons/fonts.css":
+  "@moshebaricdo/cads-react/icons/fonts.css":
     "../../packages/react/src/icons/fonts.css",
-  "@codeai/cads-react/icons/fonts-solid.css":
+  "@moshebaricdo/cads-react/icons/fonts-solid.css":
     "../../packages/react/src/icons/fonts-solid.css",
-  "@codeai/cads-react/*": "../../packages/react/src/*",
-  "@codeai/cads-react": "../../packages/react/src/index.ts",
-  "@codeai/cads-variables/theme": "../../packages/variables/src/theme.ts",
-  "@codeai/cads-variables/variables.css":
+  "@moshebaricdo/cads-react/*": "../../packages/react/src/*",
+  "@moshebaricdo/cads-react": "../../packages/react/src/index.ts",
+  "@moshebaricdo/cads-variables/theme": "../../packages/variables/src/theme.ts",
+  "@moshebaricdo/cads-variables/variables.css":
     "../../packages/variables/src/variables.css",
-  "@codeai/cads-variables/data/color-system.json":
+  "@moshebaricdo/cads-variables/data/color-system.json":
     "../../packages/variables/src/data/codeAiColorSystem.json",
-  "@codeai/cads-variables/*": "../../packages/variables/src/*",
-  "@codeai/cads-variables": "../../packages/variables/src/index.ts",
+  "@moshebaricdo/cads-variables/*": "../../packages/variables/src/*",
+  "@moshebaricdo/cads-variables": "../../packages/variables/src/index.ts",
 };
 
 const webpackSrcAliases = {
-  "@codeai/cads-react/manifest$": path.join(
+  "@moshebaricdo/cads-react/manifest$": path.join(
     reactSrcAbs,
     "manifest/cads.manifest.ts",
   ),
-  "@codeai/cads-react/icons/fonts.css$": path.join(
+  "@moshebaricdo/cads-react/icons/fonts.css$": path.join(
     reactSrcAbs,
     "icons/fonts.css",
   ),
-  "@codeai/cads-react/icons/fonts-solid.css$": path.join(
+  "@moshebaricdo/cads-react/icons/fonts-solid.css$": path.join(
     reactSrcAbs,
     "icons/fonts-solid.css",
   ),
-  "@codeai/cads-react$": path.join(reactSrcAbs, "index.ts"),
-  "@codeai/cads-react": reactSrcAbs,
-  "@codeai/cads-variables/theme$": path.join(variablesSrcAbs, "theme.ts"),
-  "@codeai/cads-variables/variables.css$": path.join(
+  "@moshebaricdo/cads-react$": path.join(reactSrcAbs, "index.ts"),
+  "@moshebaricdo/cads-react": reactSrcAbs,
+  "@moshebaricdo/cads-variables/theme$": path.join(variablesSrcAbs, "theme.ts"),
+  "@moshebaricdo/cads-variables/variables.css$": path.join(
     variablesSrcAbs,
     "variables.css",
   ),
-  "@codeai/cads-variables/data/color-system.json$": path.join(
+  "@moshebaricdo/cads-variables/data/color-system.json$": path.join(
     variablesSrcAbs,
     "data/codeAiColorSystem.json",
   ),
-  "@codeai/cads-variables$": path.join(variablesSrcAbs, "index.ts"),
-  "@codeai/cads-variables": variablesSrcAbs,
+  "@moshebaricdo/cads-variables$": path.join(variablesSrcAbs, "index.ts"),
+  "@moshebaricdo/cads-variables": variablesSrcAbs,
 };
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -84,11 +84,11 @@ const nextConfig = {
   devIndicators: {
     position: "bottom-right",
   },
-  transpilePackages: ["@codeai/cads-react", "@codeai/cads-variables"],
+  transpilePackages: ["@moshebaricdo/cads-react", "@moshebaricdo/cads-variables"],
   reactStrictMode: true,
   experimental: {
     /** Turn barrel imports into per-module imports for smaller client graphs. */
-    optimizePackageImports: ["@codeai/cads-react", "@mui/material"],
+    optimizePackageImports: ["@moshebaricdo/cads-react", "@mui/material"],
   },
   ...(isDev
     ? {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import colorSystemJson from "@codeai/cads-variables/data/color-system.json";
-import { Tabs } from "@codeai/cads-react";
+import colorSystemJson from "@moshebaricdo/cads-variables/data/color-system.json";
+import { Tabs } from "@moshebaricdo/cads-react";
 import ui from "@/components/docs-ui.module.scss";
 import shared from "../FoundationPage.module.scss";
 import local from "./color.module.scss";
@@ -40,7 +40,7 @@ const colorSystem = colorSystemJson as {
   semantics: Semantic[];
 };
 
-/** Matches `semanticExportVarName` in `@codeai/cads-variables`. */
+/** Matches `semanticExportVarName` in `@moshebaricdo/cads-variables`. */
 const FLAT_SUBGROUPS = new Set(["sentiment", "state"]);
 const SINGLE_FAMILY_SUBGROUPS = new Set(["brand"]);
 

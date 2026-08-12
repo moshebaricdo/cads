@@ -43,7 +43,7 @@ const U = 1200, ae = L(
       l && ((x = navigator.clipboard) == null || x.writeText(l)), s == null || s(), f(!0), o.current && clearTimeout(o.current), o.current = setTimeout(() => f(!1), U);
     }, G = a ? e.bubbleAi : K ? e.bubbleHumanTa : e.bubbleHumanTutor, J = [
       e.root,
-      a ? e.rootAi : "",
+      a ? e.rootAi : e.rootHuman,
       F ?? ""
     ].filter(Boolean).join(" ");
     return /* @__PURE__ */ r(

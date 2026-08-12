@@ -39,6 +39,10 @@ export interface SliderProps
    */
   showLabelRow?: boolean;
   helperText?: ReactNode;
+  /**
+   * Optional icon beside helper text when sentiment is default. Omit for no
+   * icon. Error sentiment always shows a fixed validation icon.
+   */
   helperIconName?: FaIconName | (string & {});
   /**
    * @default true

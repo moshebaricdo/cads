@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Dialog, Drawer, Modal } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Button, Dialog, Drawer, Modal } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 import type { PreviewProps } from "./shared";
 
 /** Bottom-sheet Drawer via portal — playground shows only a trigger. */

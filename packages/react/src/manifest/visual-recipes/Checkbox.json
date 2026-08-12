@@ -667,7 +667,7 @@
       "id": "checkbox-indeterminate-glyph-dash",
       "figma": "Indeterminate glyph shortcode is FA solid 'dash'.",
       "code": "FaIcon name=\"dash\" (not minus).",
-      "reason": "Match Figma FA shortcode; dash exists in @codeai/cads-react/icons.",
+      "reason": "Match Figma FA shortcode; dash exists in @moshebaricdo/cads-react/icons.",
       "owner": "parity-agent",
       "cases": [
         "checkbox-medium-thin-indeterminate-light"

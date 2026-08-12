@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination, TablePagination } from "@codeai/cads-react";
+import { Pagination, TablePagination } from "@moshebaricdo/cads-react";
 import { type FixtureCase } from "./shared";
 
 export const cases: FixtureCase[] = [

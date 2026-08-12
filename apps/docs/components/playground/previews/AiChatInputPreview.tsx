@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AiChatInput } from "@codeai/cads-react";
+import { AiChatInput } from "@moshebaricdo/cads-react";
 
 export default function AiChatInputPreview({
   values,

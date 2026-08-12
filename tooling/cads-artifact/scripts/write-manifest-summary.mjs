@@ -2,7 +2,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { cadsManifest } from "@codeai/cads-react/manifest";
+import { cadsManifest } from "@moshebaricdo/cads-react/manifest";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const out = join(__dirname, "../skill/references/manifest-summary.md");

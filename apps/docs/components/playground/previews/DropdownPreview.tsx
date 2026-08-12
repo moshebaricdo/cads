@@ -9,8 +9,8 @@ import {
 import {
   Dropdown,
   type DropdownOption,
-} from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+} from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 import {
   DEMO_DROPDOWN_ACTION_OPTIONS,
   DEMO_DROPDOWN_ICON_OPTIONS,
@@ -169,18 +169,18 @@ export default function DropdownPreview({
 
   let dropdown: ReactNode;
   if (role === "action") {
+    const iconOnly = Boolean(v.iconOnly);
+    const startIconName = (String(v.startIconName ?? "").trim() ||
+      (iconOnly ? "ellipsis-vertical" : undefined)) as FaIconName | undefined;
     dropdown = (
       <Dropdown
         role="action"
         size={size}
         menuType="default"
         menuPlacement={menuPlacement}
-        label={String(v.label ?? "Actions")}
-        startIconName={
-          (String(v.startIconName ?? "").trim() || undefined) as
-            | FaIconName
-            | undefined
-        }
+        iconOnly={iconOnly || undefined}
+        label={iconOnly ? undefined : String(v.label ?? "Actions")}
+        startIconName={startIconName}
         buttonVariant={
           v.buttonVariant as "contained" | "outlined" | "text" | undefined
         }
@@ -196,7 +196,9 @@ export default function DropdownPreview({
         disabled={Boolean(v.disabled)}
         {...inspectOpen}
         options={applyOptionEdits(DEMO_DROPDOWN_ACTION_OPTIONS, edits)}
-        aria-label={String(v["aria-label"] || "Actions")}
+        aria-label={String(
+          v["aria-label"] || (iconOnly ? "More actions" : "Actions"),
+        )}
       />
     );
   } else {
@@ -246,7 +248,7 @@ export default function DropdownPreview({
   if (!inspect) return dropdown;
   return (
     <InspectCompositeCenter
-      syncKey={`${role}:${size}:${menuType}:${menuPlacement}:${menuType === "default" && v.demoItemIcons ? "icons" : "text"}:${optionsKey(edits)}`}
+      syncKey={`${role}:${size}:${menuType}:${menuPlacement}:${Boolean(v.iconOnly)}:${menuType === "default" && v.demoItemIcons ? "icons" : "text"}:${optionsKey(edits)}`}
     >
       {dropdown}
     </InspectCompositeCenter>

@@ -1,7 +1,7 @@
 "use client";
 
-import { NotificationBanner } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { NotificationBanner } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 export default function NotificationBannerPreview({
   values,

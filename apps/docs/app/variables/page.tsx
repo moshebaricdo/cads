@@ -8,7 +8,7 @@ import { docsMetadata } from "@/lib/docsMetadata";
 import styles from "./FoundationPage.module.scss";
 
 const VARIABLES_LEAD =
-  "CADS design variables are generated from the Figma file into @codeai/cads-variables and exposed as CSS custom properties with semantic names — no --ds- prefix, no raw hex in consuming code.";
+  "CADS design variables are generated from the Figma file into @moshebaricdo/cads-variables and exposed as CSS custom properties with semantic names — no --ds- prefix, no raw hex in consuming code.";
 
 export const metadata = docsMetadata("Variables", VARIABLES_LEAD);
 
@@ -43,7 +43,7 @@ export default function VariablesIndexPage() {
         lead={
           <>
             CADS design variables are generated from the Figma file into{" "}
-            <code>@codeai/cads-variables</code> and exposed as CSS custom
+            <code>@moshebaricdo/cads-variables</code> and exposed as CSS custom
             properties with semantic names — no <code>--ds-</code> prefix, no
             raw hex in consuming code.
           </>
@@ -66,7 +66,7 @@ export default function VariablesIndexPage() {
           <code>font.scss</code>).
         </p>
         <div style={{ width: "100%" }}>
-          <CodeBlock code={`import "@codeai/cads-variables/variables.css";`} />
+          <CodeBlock code={`import "@moshebaricdo/cads-variables/variables.css";`} />
         </div>
       </section>
 

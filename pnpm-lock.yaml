@@ -17,18 +17,18 @@ importers:
 
   apps/docs:
     dependencies:
-      '@codeai/cads-react':
-        specifier: workspace:*
-        version: link:../../packages/react
-      '@codeai/cads-variables':
-        specifier: workspace:*
-        version: link:../../packages/variables
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.17)(react@19.2.7)
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@moshebaricdo/cads-react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@moshebaricdo/cads-variables':
+        specifier: workspace:*
+        version: link:../../packages/variables
       '@mui/material':
         specifier: ^9.2.0
         version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -67,17 +67,69 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
-  packages/react:
+  apps/sandbox:
     dependencies:
-      '@codeai/cads-variables':
-        specifier: workspace:*
-        version: link:../variables
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.17)(react@19.2.7)
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@moshebaricdo/cads-react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@moshebaricdo/cads-variables':
+        specifier: workspace:*
+        version: link:../../packages/variables
+      '@mui/material':
+        specifier: ^9.2.0
+        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      dialkit:
+        specifier: ^1.4.3
+        version: 1.4.3(motion@12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      motion:
+        specifier: ^12.42.2
+        version: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.4
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.10.0
+        version: 20.19.43
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.17)
+      '@vitejs/plugin-react':
+        specifier: ^4.5.2
+        version: 4.5.2(vite@6.4.3(@types/node@20.19.43)(lightningcss@1.33.0)(sass@1.102.0))
+      sass:
+        specifier: ^1.102.0
+        version: 1.102.0
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.4.3
+        version: 6.4.3(@types/node@20.19.43)(lightningcss@1.33.0)(sass@1.102.0)
+
+  packages/react:
+    dependencies:
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.2.17)(react@19.2.7)
+      '@emotion/styled':
+        specifier: ^11.14.1
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@moshebaricdo/cads-variables':
+        specifier: workspace:*
+        version: link:../variables
       '@mui/material':
         specifier: ^9.2.0
         version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -136,10 +188,10 @@ importers:
 
   tooling/cads-artifact:
     dependencies:
-      '@codeai/cads-react':
+      '@moshebaricdo/cads-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@codeai/cads-variables':
+      '@moshebaricdo/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
       react:
@@ -155,12 +207,12 @@ importers:
 
   tooling/cads-mcp:
     dependencies:
-      '@codeai/cads-react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(zod@4.4.3)
+      '@moshebaricdo/cads-react':
+        specifier: workspace:*
+        version: link:../../packages/react
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -197,7 +249,7 @@ importers:
 
   tooling/figma-sync:
     dependencies:
-      '@codeai/cads-variables':
+      '@moshebaricdo/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
 
@@ -1695,6 +1747,30 @@ packages:
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
+
+  dialkit@1.4.3:
+    resolution: {integrity: sha512-9TFWomDi2J7/tONOkoyTfBop9L9vx6tiSZPBl8sSsKrxAs+YYZJ64P4xP1o7dmXMnBEjvhB42Aopl0GxqkKGnA==}
+    peerDependencies:
+      motion: '>=11.0.0'
+      motion-v: '>=2.0.0'
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+      solid-js: '>=1.6.0'
+      svelte: '>=5.8.0'
+      vue: '>=3.3.0'
+    peerDependenciesMeta:
+      motion-v:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      solid-js:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -4141,6 +4217,13 @@ snapshots:
 
   detect-libc@2.1.2:
     optional: true
+
+  dialkit@1.4.3(motion@12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+    dependencies:
+      motion: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+    optionalDependencies:
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
 
   dir-glob@3.0.1:
     dependencies:

@@ -30,7 +30,8 @@ const FIELD_WRAPPER_PROP_SHEETS: PropSheet[] = [
       {
         name: "helperIconName",
         type: "FaIconName",
-        description: "Optional icon beside helper text.",
+        description:
+          "Optional default-sentiment helper icon. Omit for no icon; success/warning/error always show fixed icons.",
       },
       {
         name: "showHelper",
@@ -112,7 +113,8 @@ const TEXT_INPUT_PROP_SHEETS: PropSheet[] = [
       {
         name: "helperIconName",
         type: "FaIconName",
-        description: "Optional icon beside helper text.",
+        description:
+          "Optional default-sentiment helper icon. Omit for no icon; sentiment overrides use fixed icons.",
       },
       {
         name: "showHelper",
@@ -381,7 +383,8 @@ const SLIDER_PROP_SHEETS: PropSheet[] = [
       {
         name: "helperIconName",
         type: "FaIconName",
-        description: "Optional icon beside helper text.",
+        description:
+          "Optional helper icon when sentiment is default. Omit for no icon; error always shows a fixed icon.",
       },
       {
         name: "showHelper",
@@ -569,7 +572,8 @@ const CHIP_GROUP_PROP_SHEETS: PropSheet[] = [
       {
         name: "helperIconName",
         type: "FaIconName",
-        description: "Optional icon beside helper text.",
+        description:
+          "Optional default-sentiment helper icon. Omit for no icon; sentiment overrides use fixed icons.",
       },
       {
         name: "showHelper",

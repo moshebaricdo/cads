@@ -61,9 +61,9 @@ if (!exists(cssPath)) {
   writeFileSync(cssPath, "/* no separate CSS emitted */\n");
 }
 
-const { cadsManifest } = await import("@codeai/cads-react/manifest");
+const { cadsManifest } = await import("@moshebaricdo/cads-react/manifest");
 const versionInfo = {
-  package: "@codeai/cads-react",
+  package: "@moshebaricdo/cads-react",
   manifestVersion: cadsManifest.version,
   builtAt: new Date().toISOString(),
   formats: ["html-self-contained", "react-module-preferred"],

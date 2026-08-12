@@ -10,7 +10,7 @@ export interface CadsProviderProps {
     experimentalMotion?: boolean;
 }
 /**
- * Provides the CADS MUI theme. Pair with `@codeai/cads-variables/variables.css`
+ * Provides the CADS MUI theme. Pair with `@moshebaricdo/cads-variables/variables.css`
  * and toggle `.dark` on an ancestor for dark mode.
  */
 export declare function CadsProvider({ children, baseline, experimentalMotion, }: CadsProviderProps): import("react").JSX.Element;

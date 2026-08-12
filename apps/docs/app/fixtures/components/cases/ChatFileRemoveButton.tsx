@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatFileRemoveButton } from "@codeai/cads-react";
+import { ChatFileRemoveButton } from "@moshebaricdo/cads-react";
 import type { FixtureCase } from "./shared";
 
 export const cases: FixtureCase[] = [

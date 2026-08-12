@@ -8,8 +8,8 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import type { CadsComponentManifest } from "@codeai/cads-react/manifest";
-import { Button, Tabs, Toggle } from "@codeai/cads-react";
+import type { CadsComponentManifest } from "@moshebaricdo/cads-react/manifest";
+import { Button, Tabs, Toggle } from "@moshebaricdo/cads-react";
 import { ComponentPreview } from "./playground/ComponentPreview";
 import { PlaygroundInspectOverlay } from "./playground/PlaygroundInspectOverlay";
 import { highlightJsx } from "./playground/highlightJsx";

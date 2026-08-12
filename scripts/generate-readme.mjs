@@ -173,6 +173,8 @@ function buildReadme() {
     })
     .join("\n\n");
 
+  const version = JSON.parse(read("packages/react/package.json")).version;
+
   return `# CodeAI Design System
 
 The CodeAI Design System (CADS) is a collection of design primitives and components that power our signed-in product experience.
@@ -212,6 +214,25 @@ ${experimentBlocks}
 For contributors and agents, start with [\`AGENTS.md\`](AGENTS.md). Current priorities live in [\`docs/STATUS.md\`](docs/STATUS.md).
 
 This README’s component table and experiments list are generated — run \`pnpm generate:readme\` after changing docs nav, component Storybook links, or [\`docs/experiments.json\`](docs/experiments.json). Docs builds regenerate it automatically.
+
+## Using in a prototype
+
+These packages are not on public npm. Install from GitHub Packages (scope matches this repo’s owner):
+
+\`\`\`json
+{
+  "dependencies": {
+    "@moshebaricdo/cads-react": "^${version}",
+    "@moshebaricdo/cads-variables": "^${version}"
+  }
+}
+\`\`\`
+
+\`\`\`
+@moshebaricdo:registry=https://npm.pkg.github.com
+\`\`\`
+
+GitHub Packages needs a token even for public packages (\`NODE_AUTH_TOKEN\` / PAT with \`read:packages\`). Imports stay \`from "@moshebaricdo/cads-react"\`. For local CADS development, a sibling \`file:../cads/packages/*\` install still works (don’t commit that rewrite on a repo whose CI has no sibling checkout).
 `;
 }
 

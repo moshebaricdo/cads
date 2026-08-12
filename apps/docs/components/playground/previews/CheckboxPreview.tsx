@@ -1,7 +1,7 @@
 "use client";
 
-import { Checkbox } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Checkbox } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 export default function CheckboxPreview({
   values,

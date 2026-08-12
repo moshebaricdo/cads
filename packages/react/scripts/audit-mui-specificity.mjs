@@ -7,7 +7,7 @@
  * Exempt folders that intentionally style via Emotion `sx` instead of modules.
  *
  * Run: node packages/react/scripts/audit-mui-specificity.mjs
- * Wired into: pnpm --filter @codeai/cads-react typecheck
+ * Wired into: pnpm --filter @moshebaricdo/cads-react typecheck
  */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";

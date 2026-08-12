@@ -94,7 +94,7 @@ export const AiChatMessage = forwardRef<HTMLDivElement, AiChatMessageProps>(
 
     const rootClass = [
       styles.root,
-      isAi ? styles.rootAi : "",
+      isAi ? styles.rootAi : styles.rootHuman,
       className ?? "",
     ]
       .filter(Boolean)

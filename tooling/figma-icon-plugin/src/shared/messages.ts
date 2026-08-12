@@ -38,12 +38,28 @@ export interface FaFont {
   styles: string[];
 }
 
+/**
+ * SVG path preview for a custom kit upload (from FA `iconUploads`).
+ * Used by the picker so previews don't depend on the OS-installed kit OTF
+ * (Windows font cache often serves a stale face after kit updates).
+ */
+export interface GlyphPreview {
+  pathData: string[];
+  width: number;
+  height: number;
+}
+
 /** A font the user pointed the plugin at (parsed from the font file itself). */
 export interface StoredFont {
   family: string;
   style: string;
   /** shortcode → hex codepoint, read from the font's glyph table */
   glyphs: Record<string, string>;
+  /**
+   * shortcode → SVG paths for custom kit uploads (API sync).
+   * When present, the picker renders these instead of unicode + OTF.
+   */
+  previews?: Record<string, GlyphPreview>;
   fileName: string;
   /** Set when this face was populated via FA Kit API sync (not a local OTF). */
   source?: "file" | "api";

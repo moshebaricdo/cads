@@ -1,4 +1,4 @@
-import { motion as v } from "@codeai/cads-variables";
+import { motion as v } from "@moshebaricdo/cads-variables";
 import { createContext as M, useContext as h, useState as n, useRef as r, useLayoutEffect as w } from "react";
 const y = M(!1);
 function S() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Link, Tag, Tooltip } from "@codeai/cads-react";
+import { Button, Link, Tag, Tooltip } from "@moshebaricdo/cads-react";
 import pageStyles from "@/components/DocsTemplatePage.module.scss";
 import overviewStyles from "@/components/ComponentOverview.module.scss";
 import ui from "@/components/docs-ui.module.scss";

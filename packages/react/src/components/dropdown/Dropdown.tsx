@@ -1108,6 +1108,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     }
 
     const ap = props as DropdownActionProps;
+    const actionIconOnly = Boolean(ap.iconOnly);
     return (
       <ClickAwayListener
         onClickAway={() => {
@@ -1127,8 +1128,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             size={size}
             variant={ap.buttonVariant ?? "contained"}
             color={ap.buttonColor ?? "primary"}
+            iconOnly={actionIconOnly}
             startIconName={ap.startIconName}
-            endIconName="chevron-down"
+            endIconName={actionIconOnly ? undefined : "chevron-down"}
             disabled={disabled}
             data-cads-dropdown-trigger="action"
             aria-haspopup="menu"
@@ -1137,7 +1139,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
             aria-label={ariaLabel}
             onClick={toggleOpen}
           >
-            {ap.label ?? "Button"}
+            {actionIconOnly ? undefined : (ap.label ?? "Button")}
           </Button>
           {menu}
         </div>

@@ -12,8 +12,8 @@ export function LivePlayground({ code }: { code: string }) {
   useEffect(() => {
     let alive = true;
     Promise.all([
-      import("@codeai/cads-react"),
-      import("@codeai/cads-react/icons"),
+      import("@moshebaricdo/cads-react"),
+      import("@moshebaricdo/cads-react/icons"),
     ]).then(([cads, icons]) => {
       if (!alive) return;
       setScope({

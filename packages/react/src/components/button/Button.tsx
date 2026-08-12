@@ -190,6 +190,7 @@ function resolveVars(
   color: ResolvedButtonColor,
   size: ButtonProps["size"] & string,
   iconOnly: boolean,
+  fullWidth: boolean,
 ): CSSProperties {
   const c = colorRecipe(color);
   const dims = BUTTON_SIZE[size];
@@ -239,7 +240,9 @@ function resolveVars(
     "--btn-gap": iconOnly ? "0" : dims.gap,
     "--btn-font-size": dims.fontSize,
     "--btn-line-height": dims.lineHeight,
-    "--btn-width": iconOnly ? dims.height : undefined,
+    // Module CSS uses `width: var(--btn-width, auto)`, which beats MUI's
+    // fullWidth class — set the token so fullWidth actually stretches.
+    "--btn-width": iconOnly ? dims.height : fullWidth ? "100%" : undefined,
     "--btn-bg": bg,
     "--btn-fg": fg,
     "--btn-border": border,
@@ -267,6 +270,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       startIconName,
       endIconName,
       loading = false,
+      fullWidth = false,
       children,
       sx,
       disabled,
@@ -290,7 +294,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <FaIcon name={endIconName} fontSize={dims.iconPx} />
     ) : null;
 
-    const chromeVars = resolveVars(variant, resolvedColor, size, iconOnly);
+    const chromeVars = resolveVars(
+      variant,
+      resolvedColor,
+      size,
+      iconOnly,
+      fullWidth,
+    );
     const rootClass = [
       styles.root,
       showLoading && styles.loading,
@@ -304,6 +314,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disableElevation
         disabled={disabled}
+        fullWidth={fullWidth}
         aria-busy={showLoading || undefined}
         onClick={showLoading ? undefined : onClick}
         startIcon={!iconOnly && startIcon ? startIcon : undefined}

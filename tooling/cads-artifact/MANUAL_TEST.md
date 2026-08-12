@@ -16,7 +16,7 @@ Internal-only — the ZIP embeds Font Awesome Pro fonts.
 | Signal | Pass | Fail |
 |---|---|---|
 | Skill loads | Mentions CADS / uses skill files | Invents Tailwind / raw HTML controls |
-| Output | Self-contained HTML with inlined runtime | Asks to `npm install @codeai/cads-react` |
+| Output | Self-contained HTML with inlined runtime | Asks to `npm install @moshebaricdo/cads-react` |
 | Components | TextInput / Dropdown / Button + FA icons | Placeholder lookalikes |
 | Edit loop | Updates JSON and regenerates HTML | Hand-patches minified runtime |
 

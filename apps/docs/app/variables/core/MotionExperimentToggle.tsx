@@ -1,6 +1,6 @@
 "use client";
 
-import { Toggle } from "@codeai/cads-react";
+import { Toggle } from "@moshebaricdo/cads-react";
 import { Suspense } from "react";
 import { useDocsWideMotionFlag } from "@/lib/useDocsWideMotionFlag";
 

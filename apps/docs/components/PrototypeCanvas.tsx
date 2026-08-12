@@ -1,7 +1,7 @@
 "use client";
 
-import * as CadsReact from "@codeai/cads-react";
-import { FaIcon } from "@codeai/cads-react/icons";
+import * as CadsReact from "@moshebaricdo/cads-react";
+import { FaIcon } from "@moshebaricdo/cads-react/icons";
 import type { CSSProperties, ElementType, ReactNode } from "react";
 import { createElement } from "react";
 

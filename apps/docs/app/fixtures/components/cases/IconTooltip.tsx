@@ -4,7 +4,7 @@ import {
   IconTooltip,
   type IconTooltipColor,
   type IconTooltipSize,
-} from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react";
 import type { FixtureCase } from "./shared";
 
 const staticFixture = (

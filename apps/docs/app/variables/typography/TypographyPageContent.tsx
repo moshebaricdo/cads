@@ -6,8 +6,8 @@ import {
   buildTypographyModuleScss,
   pxToRem,
   typography,
-} from "@codeai/cads-variables";
-import { SegmentedButton, Tabs } from "@codeai/cads-react";
+} from "@moshebaricdo/cads-variables";
+import { SegmentedButton, Tabs } from "@moshebaricdo/cads-react";
 import { ExportCssButton } from "@/components/ExportCssButton";
 import ui from "@/components/docs-ui.module.scss";
 import shared from "../FoundationPage.module.scss";

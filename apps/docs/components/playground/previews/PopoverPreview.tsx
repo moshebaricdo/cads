@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Popover } from "@codeai/cads-react";
+import { Button, Popover } from "@moshebaricdo/cads-react";
 import type { PreviewProps } from "./shared";
 
 /** Anchored Popover — playground shows only a trigger until opened. */

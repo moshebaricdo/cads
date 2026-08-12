@@ -1,8 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Link, Tag, Tooltip } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Link, Tag, Tooltip } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 import overviewStyles from "./ComponentOverview.module.scss";
 
 export type FoundationHeaderLink = {

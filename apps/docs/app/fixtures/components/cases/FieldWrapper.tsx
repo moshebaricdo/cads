@@ -1,6 +1,6 @@
 "use client";
 
-import { FieldWrapper, TextInput } from "@codeai/cads-react";
+import { FieldWrapper, TextInput } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

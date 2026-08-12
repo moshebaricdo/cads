@@ -1,12 +1,12 @@
 # CADS — CodeAI Design System
 
-> Package: @codeai/cads-react v0.1.0
+> Package: @moshebaricdo/cads-react v0.1.0
 > Figma: https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-
 
 ## Rules for AI agents
 
-- Import components only from @codeai/cads-react (icons from @codeai/cads-react/icons).
-- Import variables CSS: @codeai/cads-variables/variables.css
+- Import components only from @moshebaricdo/cads-react (icons from @moshebaricdo/cads-react/icons).
+- Import variables CSS: @moshebaricdo/cads-variables/variables.css
 - Wrap the app in <CadsProvider>.
 - Use semantic color CSS variables (e.g. --background-brand-primary) — never hard-coded hex, never --ds- prefix.
 - Use brand tokens for CTAs; selected tokens for filled selected chrome.
@@ -40,7 +40,7 @@ Color language:
 
 Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.
 
-Import: `import { Button } from "@codeai/cads-react"`
+Import: `import { Button } from "@moshebaricdo/cads-react"`
 
 Props:
 - `variant`: "contained" | "outlined" | "text" (default "contained")
@@ -72,7 +72,7 @@ Example:
 
 Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.
 
-Import: `import { CloseIconButton } from "@codeai/cads-react"`
+Import: `import { CloseIconButton } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "large") — Figma close-control geometry: 24 / 18 / 18 / 13px.
@@ -96,7 +96,7 @@ Example:
 
 A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.
 
-Import: `import { SegmentedButton } from "@codeai/cads-react"`
+Import: `import { SegmentedButton } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -129,7 +129,7 @@ Example:
 
 Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).
 
-Import: `import { IconToggle } from "@codeai/cads-react"`
+Import: `import { IconToggle } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -161,14 +161,14 @@ Example:
 
 Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.
 
-Import: `import { FieldWrapper } from "@codeai/cads-react"`
+Import: `import { FieldWrapper } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
 - `sentiment`: "default" | "success" | "warning" | "error" (default "default")
 - `label`: ReactNode
 - `helperText`: ReactNode
-- `helperIconName`: FaIconName
+- `helperIconName`: FaIconName — Optional default-sentiment helper icon. Omit for no icon (Figma showHelperIcon collapsed into presence). Non-default sentiments always use fixed icons.
 - `showHelper`: boolean (default true)
 - `children`: ReactNode [required]
 - `required`: boolean (default false) — Appends * after the label (same type style, no gap).
@@ -178,6 +178,7 @@ Props:
 Usage rules:
 - Nest any CADS control in children (TextInput, Dropdown, Checkbox, etc.).
 - Warning helper text stays tertiary; only the icon uses warning color.
+- Default helper icon is optional via helperIconName presence; sentiment icons are always shown.
 - Non-default sentiments always show helper when helperText is set.
 - disabled applies --text-disabled-neutral to label, helper text, and helper icon (Figma isDisabled).
 - required appends * after the label; pair with native required on the nested control when applicable.
@@ -191,7 +192,7 @@ Example:
 
 Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.
 
-Import: `import { TextInput } from "@codeai/cads-react"`
+Import: `import { TextInput } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -200,7 +201,7 @@ Props:
 - `startIconName`: FaIconName — Leading FA icon inside the field. Field-only; ignored when multiline. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).
 - `label`: string
 - `helperText`: ReactNode
-- `helperIconName`: FaIconName
+- `helperIconName`: FaIconName — Optional default-sentiment helper icon via Field Wrapper. Omit for no icon; sentiment overrides use fixed icons.
 - `showHelper`: boolean (default true)
 - `sentiment`: "default" | "success" | "warning" | "error" (default "default")
 - `error`: boolean
@@ -229,7 +230,7 @@ Example:
 
 Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).
 
-Import: `import { Dropdown } from "@codeai/cads-react"`
+Import: `import { Dropdown } from "@moshebaricdo/cads-react"`
 
 Props:
 - `role`: "input" | "action" [required] — input = form select; action = button menu
@@ -255,12 +256,14 @@ Props:
 - `color`: "primary" | "secondary"
 - `labelStyle`: "thick" | "thin"
 - `startIconName`: FaIconName
+- `iconOnly`: boolean — Action-role only. Square icon-only trigger (hides label + chevron); require aria-label + startIconName.
 - `buttonVariant`: "contained" | "outlined" | "text"
 - `buttonColor`: "primary" | "secondary" | "tertiary" | "orange" | "error"
 - `aria-label`: string
 
 Usage rules:
 - role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
+- role=action iconOnly renders a square icon trigger without label or chevron — set aria-label + startIconName (e.g. ellipsis-vertical overflow).
 - Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.
 - menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.
 - options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
@@ -280,7 +283,7 @@ Example:
 
 Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.
 
-Import: `import { Checkbox } from "@codeai/cads-react"`
+Import: `import { Checkbox } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -306,7 +309,7 @@ Example:
 
 Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.
 
-Import: `import { Radio } from "@codeai/cads-react"`
+Import: `import { Radio } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -331,7 +334,7 @@ Example:
 
 On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.
 
-Import: `import { Toggle } from "@codeai/cads-react"`
+Import: `import { Toggle } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -362,7 +365,7 @@ Example:
 
 Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.
 
-Import: `import { Slider } from "@codeai/cads-react"`
+Import: `import { Slider } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Maps Figma labelSize for label/helper type.
@@ -372,7 +375,7 @@ Props:
 - `showDisplayValue`: boolean (default true)
 - `showLabelRow`: boolean (default true)
 - `helperText`: ReactNode
-- `helperIconName`: FaIconName
+- `helperIconName`: FaIconName — Optional helper icon when sentiment is default. Omit for no icon; error always shows a fixed icon.
 - `showHelper`: boolean (default true)
 - `showControls`: boolean (default false)
 - `showTicks`: boolean (default false) — Show value labels under the track. Discrete step grids label every step; continuous (step=null) labels only min and max.
@@ -405,7 +408,7 @@ Example:
 
 Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).
 
-Import: `import { Chip } from "@codeai/cads-react"`
+Import: `import { Chip } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -434,7 +437,7 @@ Example:
 
 Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.
 
-Import: `import { ChipGroup } from "@codeai/cads-react"`
+Import: `import { ChipGroup } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -442,7 +445,7 @@ Props:
 - `labelStyle`: "thick" | "thin" (default "thick")
 - `label`: ReactNode
 - `helperText`: ReactNode
-- `helperIconName`: FaIconName
+- `helperIconName`: FaIconName — Optional default-sentiment helper icon via Field Wrapper. Omit for no icon; sentiment overrides use fixed icons.
 - `showHelper`: boolean (default true)
 - `options`: ChipGroupOption[] [required]
 - `value`: string[]
@@ -464,7 +467,7 @@ Example:
 
 Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.
 
-Import: `import { Link } from "@codeai/cads-react"`
+Import: `import { Link } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" | "extraExtraSmall" (default "medium") — extraExtraSmall is Link-only (body/xxs).
@@ -488,7 +491,7 @@ Example:
 
 Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.
 
-Import: `import { Breadcrumbs } from "@codeai/cads-react"`
+Import: `import { Breadcrumbs } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -515,7 +518,7 @@ Example:
 
 Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.
 
-Import: `import { Tabs } from "@codeai/cads-react"`
+Import: `import { Tabs } from "@moshebaricdo/cads-react"`
 
 Props:
 - `type`: "primary" | "secondary" (default "primary") — primary = underline; secondary = contained.
@@ -542,7 +545,7 @@ Example:
 
 Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).
 
-Import: `import { Pagination } from "@codeai/cads-react"`
+Import: `import { Pagination } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -576,7 +579,7 @@ Example:
 
 Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.
 
-Import: `import { TablePagination } from "@codeai/cads-react"`
+Import: `import { TablePagination } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -608,7 +611,7 @@ Example:
 
 Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.
 
-Import: `import { Alert } from "@codeai/cads-react"`
+Import: `import { Alert } from "@moshebaricdo/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "large")
@@ -638,7 +641,7 @@ Example:
 
 Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.
 
-Import: `import { Toast } from "@codeai/cads-react"`
+Import: `import { Toast } from "@moshebaricdo/cads-react"`
 
 Props:
 - `sentiment`: "primary" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "primary")
@@ -671,7 +674,7 @@ Example:
 
 Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.
 
-Import: `import { NotificationBanner } from "@codeai/cads-react"`
+Import: `import { NotificationBanner } from "@moshebaricdo/cads-react"`
 
 Props:
 - `sentiment`: "brand" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "brand")
@@ -703,7 +706,7 @@ Example:
 
 Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.
 
-Import: `import { Tag } from "@codeai/cads-react"`
+Import: `import { Tag } from "@moshebaricdo/cads-react"`
 
 Props:
 - `color`: "neutral" | "brand" | "pink" | "orange" | "success" | "error" | "warning" | "info" (default "neutral")
@@ -728,7 +731,7 @@ Example:
 
 Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.
 
-Import: `import { IconTooltip } from "@codeai/cads-react"`
+Import: `import { IconTooltip } from "@moshebaricdo/cads-react"`
 
 Props:
 - `title`: ReactNode [required]
@@ -754,7 +757,7 @@ Example:
 
 Small hover/focus overlay with brief contextual text on an inverse surface.
 
-Import: `import { Tooltip } from "@codeai/cads-react"`
+Import: `import { Tooltip } from "@moshebaricdo/cads-react"`
 
 Props:
 - `title`: ReactNode [required]
@@ -763,6 +766,7 @@ Props:
 - `hasCaret`: boolean (default true)
 - `iconName`: FaIconName | string — Leading FA icon. Omit for no icon (Figma boolean startIcon collapsed into presence of this prop).
 - `surfaceOnly`: boolean — Render bubble (+ caret) inline without Popper / trigger. Used by docs Inspect and static previews.
+- `disableHoverListener`: boolean (default false) — When true, the tooltip opens only on keyboard focus-visible (not hover). MUI already gates focus with isFocusVisible — use this for keyboard-user-specific context.
 
 Usage rules:
 - Child must be able to hold a ref (forwardRef element).
@@ -770,6 +774,7 @@ Usage rules:
 - Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).
 - Icons render only when iconName is set — there is no separate boolean gate.
 - Pass a trigger child for anchored mode, or use surfaceOnly for static previews.
+- Set disableHoverListener for keyboard-only (focus-visible) tooltips; hover stays off while Tab/keyboard focus still opens the bubble.
 - Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret).
 
 Example:
@@ -781,7 +786,7 @@ Example:
 
 Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.
 
-Import: `import { Popover } from "@codeai/cads-react"`
+Import: `import { Popover } from "@moshebaricdo/cads-react"`
 
 Props:
 - `content`: "textOnly" | "textImage" | "custom" (default "textOnly")
@@ -818,7 +823,7 @@ Example:
 
 Bottom sheet that slides over page content without dimming or blocking it.
 
-Import: `import { Drawer } from "@codeai/cads-react"`
+Import: `import { Drawer } from "@moshebaricdo/cads-react"`
 
 Props:
 - `type`: "textOnly" | "customContent" (default "textOnly")
@@ -850,7 +855,7 @@ Example:
 
 Blocking confirmation overlay with short title, message, and usually two actions.
 
-Import: `import { Dialog } from "@codeai/cads-react"`
+Import: `import { Dialog } from "@moshebaricdo/cads-react"`
 
 Props:
 - `type`: "default" | "iconTop" | "customContent" (default "default")
@@ -884,7 +889,7 @@ Example:
 
 Blocking overlay for rich interactive content (forms, media, multi-step flows).
 
-Import: `import { Modal } from "@codeai/cads-react"`
+Import: `import { Modal } from "@moshebaricdo/cads-react"`
 
 Props:
 - `type`: "default" | "verticalImage" | "horizontalImage" (default "default")
@@ -920,7 +925,7 @@ Example:
 
 Compact circular remove control for AI chat file chips in the composer.
 
-Import: `import { ChatFileRemoveButton } from "@codeai/cads-react"`
+Import: `import { ChatFileRemoveButton } from "@moshebaricdo/cads-react"`
 
 Props:
 - `disabled`: boolean
@@ -940,7 +945,7 @@ Example:
 
 Attachment chip for AI chat streams and the composer. File, image, and code-snippet types; inputField use case composes ChatFileRemoveButton.
 
-Import: `import { AiChatFileChip } from "@codeai/cads-react"`
+Import: `import { AiChatFileChip } from "@moshebaricdo/cads-react"`
 
 Props:
 - `type`: "file" | "image" | "codeSnippet" (default "file")
@@ -965,7 +970,7 @@ Example:
 
 Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include file uploads and a feedback action row.
 
-Import: `import { AiChatMessage } from "@codeai/cads-react"`
+Import: `import { AiChatMessage } from "@moshebaricdo/cads-react"`
 
 Props:
 - `context`: "TA" | "Tutor" (default "TA") — Teacher Assistant vs student Tutor product context.
@@ -974,6 +979,7 @@ Props:
 - `fileUploads`: ReactNode — Optional AiChatFileChip row above an AI bubble.
 - `hasActionRow`: boolean (default true)
 - `hasLeftActions`: boolean (default true)
+- `hasDownload`: boolean (default true) — Download control in the left action group.
 - `hasRightActions`: boolean (default true)
 - `hasFlagging`: boolean (default true)
 - `feedbackLabel`: ReactNode (default "Was this helpful?")
@@ -988,6 +994,7 @@ Props:
 
 Usage rules:
 - Human TA bubbles use brand-strong; Tutor human bubbles use info-mid.
+- Bubbles hug short content and grow up to 100% of the chat column; Human aligns end, AI aligns start.
 - Action row (copy/download/feedback/flag) only renders for author=AI.
 - Compose file chips via fileUploads rather than inventing a second message type.
 
@@ -1000,7 +1007,7 @@ Example:
 
 AI chat composer combining a text area, optional attachments, Add file action, and send. Send enables when the field has content.
 
-Import: `import { AiChatInput } from "@codeai/cads-react"`
+Import: `import { AiChatInput } from "@moshebaricdo/cads-react"`
 
 Props:
 - `value`: string
@@ -1028,7 +1035,7 @@ Example:
 
 Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.
 
-Import: `import { FaIcon } from "@codeai/cads-react/icons"`
+Import: `import { FaIcon } from "@moshebaricdo/cads-react/icons"`
 
 Props:
 - `name`: FaIconName | FaBrandIconName [required]
@@ -1037,7 +1044,7 @@ Props:
 - `title`: string
 
 Usage rules:
-- Import @codeai/cads-react/icons/fonts.css once at app root.
+- Import @moshebaricdo/cads-react/icons/fonts.css once at app root.
 - Internal FA Pro license — do not publish fonts publicly.
 
 Example:

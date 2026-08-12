@@ -38,8 +38,9 @@ export interface FieldWrapperProps {
   /** Helper / validation text below the control slot. */
   helperText?: ReactNode;
   /**
-   * Icon for default sentiment helper. Sentiment overrides use fixed icons.
-   * Figma shortcode `smile` is accepted.
+   * Optional icon beside default-sentiment helper text. Omit for no icon
+   * (Figma `showHelperIcon` collapsed into presence of this prop).
+   * Non-default sentiments always use fixed icons and ignore this prop.
    */
   helperIconName?: FaIconName | (string & {});
   /**

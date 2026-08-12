@@ -1,7 +1,7 @@
 "use client";
 
-import { Link, Tag, Tooltip } from "@codeai/cads-react";
-import type { TagProps } from "@codeai/cads-react";
+import { Link, Tag, Tooltip } from "@moshebaricdo/cads-react";
+import type { TagProps } from "@moshebaricdo/cads-react";
 import type { ComponentStatus } from "@/lib/componentExternalLinks";
 import styles from "./ComponentOverview.module.scss";
 

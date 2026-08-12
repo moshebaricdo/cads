@@ -7,7 +7,7 @@ import {
   AiChatMessage,
   Tabs,
   cadsManifest,
-} from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react";
 import { TemplatePlayground } from "@/components/TemplatePlayground";
 import { PropSheets } from "@/components/PropSheets";
 import { withBasePath } from "@/lib/basePath";

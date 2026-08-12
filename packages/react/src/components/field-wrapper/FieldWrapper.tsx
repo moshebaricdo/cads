@@ -80,7 +80,7 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
       label,
       required = false,
       helperText,
-      helperIconName = "smile",
+      helperIconName,
       showHelper = true,
       htmlFor,
       disabled = false,
@@ -126,9 +126,15 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
       ],
     );
 
-    const iconName: FaIconName | (string & {}) =
-      sentiment === "default"
+    // Sentiment icons are fixed; default helper icon is presence-based
+    // (Figma showHelperIcon collapsed into unset helperIconName = no icon).
+    const resolvedHelperIconName =
+      helperIconName != null && String(helperIconName).trim() !== ""
         ? helperIconName
+        : undefined;
+    const iconName: FaIconName | (string & {}) | undefined =
+      sentiment === "default"
+        ? resolvedHelperIconName
         : SENTIMENT_ICON[sentiment];
 
     return (
@@ -184,20 +190,22 @@ export const FieldWrapper = forwardRef<HTMLDivElement, FieldWrapperProps>(
                 color: colors.text,
               }}
             >
-              <span
-                aria-hidden
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: dims.helperIconSlot,
-                  height: dims.helperIconSlot,
-                  flexShrink: 0,
-                  color: colors.icon,
-                }}
-              >
-                <FaIcon name={iconName} fontSize={dims.helperIconPx} />
-              </span>
+              {iconName != null ? (
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: dims.helperIconSlot,
+                    height: dims.helperIconSlot,
+                    flexShrink: 0,
+                    color: colors.icon,
+                  }}
+                >
+                  <FaIcon name={iconName} fontSize={dims.helperIconPx} />
+                </span>
+              ) : null}
               <span
                 style={{
                   fontFamily: "var(--font-family-main)",

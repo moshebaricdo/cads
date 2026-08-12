@@ -1,6 +1,6 @@
 "use client";
 
-import { AiChatInput } from "@codeai/cads-react";
+import { AiChatInput } from "@moshebaricdo/cads-react";
 import type { FixtureCase } from "./shared";
 
 export const cases: FixtureCase[] = [

@@ -29,7 +29,7 @@ export interface FaIconProps {
 /**
  * Renders a glyph from the licensed Font Awesome 7 webfont
  * (Pro Solid / Pro Regular / Brands).
- * Import `@codeai/cads-react/icons/fonts.css` once at app root.
+ * Import `@moshebaricdo/cads-react/icons/fonts.css` once at app root.
  *
  * Unknown names render nothing (no throw) so playgrounds stay resilient
  * while typing shortcodes.

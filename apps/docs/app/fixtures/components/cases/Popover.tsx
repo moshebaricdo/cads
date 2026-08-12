@@ -1,6 +1,6 @@
 "use client";
 
-import { Popover } from "@codeai/cads-react";
+import { Popover } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

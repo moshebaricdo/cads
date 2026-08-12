@@ -84,6 +84,10 @@ export interface DropdownInputProps extends DropdownBaseProps {
      */
     required?: boolean;
     helperText?: ReactNode;
+    /**
+     * Optional Field Wrapper helper icon for default sentiment. Omit for no
+     * icon; non-default sentiments use fixed icons.
+     */
     helperIconName?: FaIconName | (string & {});
     showHelper?: boolean;
     sentiment?: FieldSentiment;
@@ -105,9 +109,14 @@ export interface DropdownInputProps extends DropdownBaseProps {
 }
 export interface DropdownActionProps extends DropdownBaseProps {
     role: "action";
-    /** Button label. */
+    /** Button label. Ignored when `iconOnly` is true. */
     label?: ReactNode;
     startIconName?: FaIconName | (string & {});
+    /**
+     * Square icon-only trigger (e.g. kebab overflow). Hides label + chevron.
+     * Provide `aria-label` and `startIconName` when true.
+     */
+    iconOnly?: boolean;
     buttonVariant?: ButtonVariant;
     buttonColor?: ButtonColor;
     onAction?: (value: string) => void;

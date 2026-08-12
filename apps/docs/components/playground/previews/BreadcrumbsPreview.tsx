@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumbs } from "@codeai/cads-react";
+import { Breadcrumbs } from "@moshebaricdo/cads-react";
 import { buildDemoBreadcrumbItems } from "./shared";
 
 export default function BreadcrumbsPreview({

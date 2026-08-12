@@ -1,0 +1,113 @@
+/* Swatches are strict 1:1 squares — side equals the band height. */
+.swatch {
+  align-self: stretch;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.componentFixed,
+.componentGrow {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.componentFixed > * {
+  flex: 0 0 auto;
+}
+
+.componentGrow {
+  justify-content: stretch;
+
+  /* Fillers stretch both axes to occupy their slot — a deliberate
+     deviation from natural component sizing for the mosaic. min-height is
+     released so components with taller chrome (e.g. Alert) can compress
+     flush to the band instead of overflowing it. */
+  > * {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100% !important;
+    min-height: 0 !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+/* Neutral chrome card around small atoms so every brick in a band
+   shares the band height. */
+.card {
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: var(--background-neutral-secondary);
+  box-shadow: inset 0 0 0 1px var(--border-neutral-primary);
+}
+
+/* AiChatMessage's root stretches but its bubble hugs the text. Stretch the
+   bubble to the band height and center the copy. Targets hashed CSS-module
+   classes by substring — sandbox-only hack. */
+.chatMessageFill {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+
+  > * {
+    height: 100%;
+  }
+
+  [class*="_bubble_"] {
+    height: 100%;
+    justify-content: center;
+  }
+}
+
+/* AiChatInput is naturally two rows (textarea + action row). Flatten it to
+   a single row for the mosaic: field + send button inline, Add file hidden.
+   Targets hashed CSS-module classes by substring — sandbox-only hack. */
+.chatInputSlim {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+
+  > * {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  [class*="_leftActions_"],
+  [class*="_attachments_"] {
+    display: none;
+  }
+
+  [class*="_actions_"] {
+    flex: 0 0 auto;
+    width: auto !important;
+  }
+}
+
+.sliderWrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 6px;
+
+  > * {
+    width: 100%;
+  }
+}

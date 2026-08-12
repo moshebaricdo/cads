@@ -30,10 +30,24 @@ export interface FaKitFace {
   kind: "official" | "custom";
 }
 
-interface FaIconUpload {
+export interface FaIconUpload {
   name: string;
   unicodeHex: string;
   pathData: string[];
+  /** SVG viewBox width (FA defaults to 512 when omitted). */
+  width: number;
+  /** SVG viewBox height (FA defaults to 512 when omitted). */
+  height: number;
+}
+
+/** Glyph map + optional SVG previews for one kit face. */
+export interface FaceGlyphPayload {
+  glyphs: Record<string, string>;
+  /** Custom kit uploads only — pathData for OTF-free picker previews. */
+  previews?: Record<
+    string,
+    { pathData: string[]; width: number; height: number }
+  >;
 }
 
 export class FaKitApiError extends Error {
@@ -76,6 +90,8 @@ interface KitCatalogQueryData {
         name?: string | null;
         unicodeHex?: string;
         pathData?: string[];
+        width?: string | number | null;
+        height?: string | number | null;
       } | null> | null;
       familyStylesPaginated?: {
         totalPageCount?: number;
@@ -378,6 +394,40 @@ function faceLabel(family: string, style: string, apiLabel?: string): string {
   return `${titleCase(family)} ${titleCase(style)}`.trim();
 }
 
+function parseViewBoxDim(value: string | number | null | undefined): number {
+  if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const n = Number.parseFloat(value);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+  return 512;
+}
+
+function parseIconUploads(
+  raw: Array<{
+    name?: string | null;
+    unicodeHex?: string;
+    pathData?: string[];
+    width?: string | number | null;
+    height?: string | number | null;
+  } | null> | null | undefined,
+): FaIconUpload[] {
+  const uploads: FaIconUpload[] = [];
+  for (const upload of raw ?? []) {
+    if (!upload?.name || !upload.unicodeHex) continue;
+    uploads.push({
+      name: upload.name,
+      unicodeHex: upload.unicodeHex.replace(/^0x/i, "").toLowerCase(),
+      pathData: Array.isArray(upload.pathData) ? upload.pathData : [],
+      width: parseViewBoxDim(upload.width),
+      height: parseViewBoxDim(upload.height),
+    });
+  }
+  return uploads;
+}
+
 async function fetchFamilyStylesPage(
   accessToken: string,
   kitToken: string,
@@ -395,6 +445,8 @@ async function fetchFamilyStylesPage(
             name
             unicodeHex
             pathData
+            width
+            height
           }
           familyStylesPaginated(page: $page, pageSize: 50) {
             totalPageCount
@@ -436,15 +488,7 @@ async function loadKitCatalog(
     kitName = node.name?.trim() || kitName;
     version = node.version?.trim() || version;
     if (page === 1) {
-      uploads = [];
-      for (const upload of node.iconUploads ?? []) {
-        if (!upload?.name || !upload.unicodeHex) continue;
-        uploads.push({
-          name: upload.name,
-          unicodeHex: upload.unicodeHex.replace(/^0x/i, "").toLowerCase(),
-          pathData: Array.isArray(upload.pathData) ? upload.pathData : [],
-        });
-      }
+      uploads = parseIconUploads(node.iconUploads);
     }
     totalPages = Math.max(1, node.familyStylesPaginated?.totalPageCount ?? 1);
     for (const entry of node.familyStylesPaginated?.familyStyles ?? []) {
@@ -551,15 +595,7 @@ async function ensureUploads(
   const kitEpoch = kitGlyphEpochs.get(kitToken) ?? 0;
   const accessToken = await exchangeAccessToken(apiToken);
   const data = await fetchFamilyStylesPage(accessToken, kitToken, 1);
-  const uploads: FaIconUpload[] = [];
-  for (const upload of data.me?.kit?.iconUploads ?? []) {
-    if (!upload?.name || !upload.unicodeHex) continue;
-    uploads.push({
-      name: upload.name,
-      unicodeHex: upload.unicodeHex.replace(/^0x/i, "").toLowerCase(),
-      pathData: Array.isArray(upload.pathData) ? upload.pathData : [],
-    });
-  }
+  const uploads = parseIconUploads(data.me?.kit?.iconUploads);
   // Invalidated while in flight — return data but don't re-poison the cache.
   if (
     globalEpoch !== glyphCacheEpoch ||
@@ -725,26 +761,39 @@ export async function prefetchAccountKitGlyphs(
   }
 }
 
-/** Resolve name→hex glyphs for one kit face. */
+/** Resolve name→hex glyphs (and SVG previews for custom uploads) for one kit face. */
 export async function fetchFaceGlyphs(
   apiToken: string,
   face: FaKitFace,
-): Promise<Record<string, string>> {
+): Promise<FaceGlyphPayload> {
   if (face.kind === "custom" || face.family === "kit" || face.family === "kit-duotone") {
     const uploads = await ensureUploads(apiToken, face.kitToken);
     const glyphs: Record<string, string> = {};
+    const previews: NonNullable<FaceGlyphPayload["previews"]> = {};
     const wantDuo = face.family === "kit-duotone";
     for (const upload of uploads) {
       const isDuo = upload.pathData.length >= 2;
       if (isDuo !== wantDuo) continue;
       glyphs[upload.name] = upload.unicodeHex;
+      if (upload.pathData.length > 0) {
+        previews[upload.name] = {
+          pathData: upload.pathData,
+          width: upload.width,
+          height: upload.height,
+        };
+      }
     }
-    return glyphs;
+    return {
+      glyphs,
+      previews: Object.keys(previews).length > 0 ? previews : undefined,
+    };
   }
 
   const byFace = await ensureKitOfficialGlyphs(apiToken, face.kitToken);
   return {
-    ...(byFace.get(`${face.family}|${face.style}`) ?? {}),
+    glyphs: {
+      ...(byFace.get(`${face.family}|${face.style}`) ?? {}),
+    },
   };
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs } from "@codeai/cads-react";
+import { Tabs } from "@moshebaricdo/cads-react";
 
 export default function TabsPreview({
   values,

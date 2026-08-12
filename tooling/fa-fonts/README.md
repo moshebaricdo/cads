@@ -26,7 +26,9 @@ This installer only updates the **OS font**. The Glyphs plugin keeps its own ico
 2. In **FontAwesome Glyphs → Settings**, either:
    - **Refresh kit icons** (if you use optional API sync), or
    - **Add files** and re-select the new kit `.otf` (same family replaces in place).
-3. Fully quit Figma and reopen (step 5 above) before expecting new shortcodes to render as glyphs.
+3. Fully quit Figma and reopen (step 5 above) before expecting new shortcodes to render as glyphs on the canvas.
+
+With API sync, Custom Kit **picker previews** use SVG path data from Font Awesome (not the OTF), so the grid should not show tofu from a stale Windows font cache.
 
 ## What it does
 

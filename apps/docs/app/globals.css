@@ -1,5 +1,5 @@
-@import "@codeai/cads-variables/variables.css";
-@import "@codeai/cads-react/icons/fonts.css";
+@import "@moshebaricdo/cads-variables/variables.css";
+@import "@moshebaricdo/cads-react/icons/fonts.css";
 
 /* Prefer next/font-loaded faces (variable files) over bare family names.
  * Mono: docs specimen override — package/runtime uses system monospace (no brand mono). */

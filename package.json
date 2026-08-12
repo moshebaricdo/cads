@@ -10,9 +10,10 @@
   },
   "scripts": {
     "build": "pnpm -r --filter './packages/*' run build",
-    "build:variables": "pnpm --filter @codeai/cads-variables run build",
-    "build:react": "pnpm --filter @codeai/cads-react run build",
+    "build:variables": "pnpm --filter @moshebaricdo/cads-variables run build",
+    "build:react": "pnpm --filter @moshebaricdo/cads-react run build",
     "dev:docs": "pnpm --filter @codeai/cads-docs run dev",
+    "dev:sandbox": "pnpm --filter @codeai/cads-sandbox run dev",
     "build:docs": "pnpm --filter @codeai/cads-docs run build",
     "mcp:cads": "pnpm --filter @codeai/cads-mcp run start",
     "test:mcp": "pnpm --filter @codeai/cads-mcp run test",
@@ -20,7 +21,7 @@
     "artifact:package": "pnpm --filter @codeai/cads-artifact run build && pnpm --filter @codeai/cads-artifact run package-skill",
     "test:artifact": "pnpm --filter @codeai/cads-artifact run test",
     "typecheck": "pnpm -r --filter './packages/*' run typecheck",
-    "generate:variables": "pnpm --filter @codeai/cads-variables run generate",
+    "generate:variables": "pnpm --filter @moshebaricdo/cads-variables run generate",
     "generate:readme": "node scripts/generate-readme.mjs",
     "figma:sync": "pnpm --filter @codeai/cads-figma-sync run sync",
     "plugin:icons:build": "pnpm --filter @codeai/cads-figma-icon-plugin run build",
@@ -32,6 +33,7 @@
     "figma:audit-props": "pnpm build:react && pnpm --filter @codeai/cads-figma-sync run audit-props",
     "changeset": "changeset",
     "version-packages": "changeset version",
+    "release": "changeset publish",
     "clean": "pnpm -r exec rm -rf dist .turbo"
   },
   "devDependencies": {

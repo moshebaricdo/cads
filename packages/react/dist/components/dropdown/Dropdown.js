@@ -1,23 +1,23 @@
 import { jsx as o, jsxs as L } from "react/jsx-runtime";
-import se from "@mui/material/ClickAwayListener";
-import Me from "@mui/material/Popper";
-import { forwardRef as Re, useId as Ae, useState as U, useRef as Be, useCallback as ue, useMemo as V, useLayoutEffect as Ee, useEffect as He } from "react";
-import { Button as te } from "../button/Button.js";
-import { FieldWrapper as Te } from "../field-wrapper/FieldWrapper.js";
+import ue from "@mui/material/ClickAwayListener";
+import Re from "@mui/material/Popper";
+import { forwardRef as Be, useId as Ae, useState as V, useRef as Ee, useCallback as me, useMemo as _, useLayoutEffect as He, useEffect as Te } from "react";
+import { Button as re } from "../button/Button.js";
+import { FieldWrapper as ze } from "../field-wrapper/FieldWrapper.js";
 import { FaIcon as X } from "../../icons/FaIcon.js";
-import { CONTROL_HEIGHT as Z, TEXT_INPUT_SIZE as ze, BUTTON_SIZE as $e } from "../../shared/controlSize.js";
-import { useExperimentalMotion as Ce, useSurfacePresence as Oe, surfaceMotionStateAttrs as Ue, experimentalMotionHostAttrs as Ve } from "../../theme/experimentalMotion.js";
+import { CONTROL_HEIGHT as Z, TEXT_INPUT_SIZE as Oe, BUTTON_SIZE as $e } from "../../shared/controlSize.js";
+import { useExperimentalMotion as Ce, useSurfacePresence as Ue, surfaceMotionStateAttrs as Ve, experimentalMotionHostAttrs as _e } from "../../theme/experimentalMotion.js";
 import s from "./dropdown.module.scss.js";
 function J(...t) {
   return t.filter(Boolean).join(" ");
 }
-function re(t) {
+function ne(t) {
   return t.type !== "separator" && t.type !== "group";
 }
-function _(t) {
-  return re(t) && !t.disabled;
+function q(t) {
+  return ne(t) && !t.disabled;
 }
-function _e(t = "hug") {
+function qe(t = "hug") {
   return t === "hug" ? {
     rootWidth: "max-content",
     triggerWidth: "auto",
@@ -28,7 +28,7 @@ function _e(t = "hug") {
     maxWidth: "100%"
   };
 }
-function qe(t = "hug", n) {
+function je(t = "hug", n) {
   if (t === "trigger") {
     const d = Math.max(0, n);
     return { width: d, minWidth: d };
@@ -44,7 +44,7 @@ function qe(t = "hug", n) {
     minWidth: Math.max(0, n) || "max-content"
   };
 }
-function je(t) {
+function Fe(t) {
   switch (t) {
     case "bottomRight":
       return "bottom-end";
@@ -57,7 +57,7 @@ function je(t) {
       return "bottom-start";
   }
 }
-function Fe(t) {
+function Ge(t) {
   switch (t) {
     case "bottomRight":
       return "top right";
@@ -70,19 +70,19 @@ function Fe(t) {
       return "top left";
   }
 }
-function Ge(t) {
+function Ke(t) {
   return {
     contextElement: t,
     getBoundingClientRect: () => {
-      const n = t.getBoundingClientRect(), d = t.offsetWidth, l = t.offsetHeight, u = n.left - (d - n.width) / 2, x = n.top - (l - n.height) / 2;
-      return new DOMRect(u, x, d, l);
+      const n = t.getBoundingClientRect(), d = t.offsetWidth, l = t.offsetHeight, u = n.left - (d - n.width) / 2, v = n.top - (l - n.height) / 2;
+      return new DOMRect(u, v, d, l);
     }
   };
 }
-function me(t) {
+function he(t) {
   return t == null ? [] : Array.isArray(t) ? t : [t];
 }
-const he = {
+const fe = {
   // Gaps / padding / iconPx match Figma `896:3791` (icon = body textSize).
   large: {
     height: Z.large,
@@ -156,7 +156,7 @@ const he = {
     // 12
     checkbox: 16
   }
-}, Ke = {
+}, Ze = {
   large: {
     height: 32,
     paddingLeft: "1rem",
@@ -190,10 +190,10 @@ const he = {
     lineHeight: "var(--leading-body-xxs)"
   }
 };
-function Ze(t, n, d, l) {
+function Xe(t, n, d, l) {
   return d ? "var(--border-disabled-neutral)" : n ? "var(--border-error-primary)" : l || t === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
 }
-function Xe({
+function Je({
   label: t,
   hugCandidates: n
 }) {
@@ -249,18 +249,18 @@ function Xe({
     }
   ) : d;
 }
-function Je({
+function Qe({
   size: t,
   color: n,
   labelStyle: d,
   label: l,
   hugCandidates: u,
-  startIconName: x,
+  startIconName: v,
   open: z,
   disabled: c,
   readOnly: p,
-  error: $,
-  required: v,
+  error: O,
+  required: x,
   onClick: y,
   buttonRef: w,
   id: D,
@@ -268,7 +268,7 @@ function Je({
   ariaLabel: M,
   triggerWidth: h
 }) {
-  const W = ze[t], f = $e[t], m = Ze(n, $, c, p), k = !!(u != null && u.length), Q = {
+  const W = Oe[t], f = $e[t], m = Xe(n, O, c, p), k = !!(u != null && u.length), Q = {
     "--dd-height": W.height,
     // Match Button / Figma Dropdown Button padding 16 / 14 / 12 / 8
     "--dd-px": f.paddingInline,
@@ -293,7 +293,7 @@ function Je({
       "aria-haspopup": N ? "listbox" : "menu",
       "aria-expanded": z,
       "aria-controls": N,
-      "aria-required": v || void 0,
+      "aria-required": x || void 0,
       "aria-label": M,
       onClick: y,
       "data-cads-dropdown-trigger": "input",
@@ -302,44 +302,44 @@ function Je({
       style: Q,
       children: [
         /* @__PURE__ */ L("span", { className: s.triggerContent, children: [
-          x ? /* @__PURE__ */ o(X, { name: x, fontSize: f.iconPx }) : null,
-          /* @__PURE__ */ o(Xe, { label: l, hugCandidates: u })
+          v ? /* @__PURE__ */ o(X, { name: v, fontSize: f.iconPx }) : null,
+          /* @__PURE__ */ o(Je, { label: l, hugCandidates: u })
         ] }),
         /* @__PURE__ */ o(X, { name: "chevron-down", fontSize: f.iconPx })
       ]
     }
   );
 }
-function Qe({
+function Ye({
   option: t,
   size: n,
   selected: d,
   menuType: l,
   role: u,
-  active: x,
+  active: v,
   keyboardFocus: z,
   onSelect: c,
   onHighlight: p,
-  id: $
+  id: O
 }) {
-  const v = he[n], y = !!t.destructive && u === "action", w = l === "checklist", D = !w && !!t.iconName, N = !!t.disabled && !w, M = w || D, f = {
+  const x = fe[n], y = !!t.destructive && u === "action", w = l === "checklist", D = !w && !!t.iconName, N = !!t.disabled && !w, M = w || D, f = {
     "--dd-item-bg": N ? d ? "var(--background-disabled-neutral)" : "var(--background-neutral-primary)" : d ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
     "--dd-item-fg": N ? y ? "var(--text-disabled-error)" : d ? "var(--text-disabled-neutral-inverse)" : "var(--text-disabled-neutral)" : y ? "var(--text-error-primary)" : d ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",
     "--dd-item-cursor": t.disabled ? "default" : "pointer",
     "--dd-item-opacity": String(t.disabled && w ? 0.5 : 1),
-    "--dd-item-height": v.height
+    "--dd-item-height": x.height
   };
   return /* @__PURE__ */ o(
     "div",
     {
-      id: $,
+      id: O,
       role: u === "input" ? "option" : "menuitem",
       "aria-selected": u === "input" ? d : void 0,
       "aria-disabled": t.disabled || void 0,
       "data-cads-dropdown-item": "",
       "data-value": t.value,
       "data-destructive": y ? "true" : void 0,
-      "data-active": x ? "true" : void 0,
+      "data-active": v ? "true" : void 0,
       "data-keyboard-focus": z ? "true" : void 0,
       tabIndex: -1,
       onMouseDown: (m) => {
@@ -370,13 +370,13 @@ function Qe({
               }
             ) : null
           }
-        ) : D ? /* @__PURE__ */ o("span", { "aria-hidden": !0, className: s.iconSlot, children: /* @__PURE__ */ o(X, { name: t.iconName, fontSize: v.iconPx }) }) : null,
+        ) : D ? /* @__PURE__ */ o("span", { "aria-hidden": !0, className: s.iconSlot, children: /* @__PURE__ */ o(X, { name: t.iconName, fontSize: x.iconPx }) }) : null,
         /* @__PURE__ */ o("span", { className: s.itemLabel, children: t.label })
       ] })
     }
   );
 }
-function Ye() {
+function Pe() {
   return /* @__PURE__ */ o(
     "div",
     {
@@ -388,7 +388,7 @@ function Ye() {
     }
   );
 }
-function Pe({ label: t }) {
+function et({ label: t }) {
   return /* @__PURE__ */ o(
     "div",
     {
@@ -399,54 +399,54 @@ function Pe({ label: t }) {
     }
   );
 }
-const st = Re(
+const ut = Be(
   function(n, d) {
     const {
       size: l = "medium",
       menuType: u = "default",
-      menuPlacement: x = "bottomLeft",
+      menuPlacement: v = "bottomLeft",
       menuWidth: z = "hug",
       options: c,
       open: p,
-      defaultOpen: $ = !1,
-      onOpenChange: v,
+      defaultOpen: O = !1,
+      onOpenChange: x,
       disabled: y = !1,
       disablePortal: w = !1,
       className: D,
       style: N,
       "aria-label": M
-    } = n, h = n.role === "input", W = Ae(), f = `cads-dropdown-list-${W}`, m = `cads-dropdown-trigger-${W}`, [k, Q] = U(null), Y = Be(null), q = ue((e) => {
+    } = n, h = n.role === "input", W = Ae(), f = `cads-dropdown-list-${W}`, m = `cads-dropdown-trigger-${W}`, [k, Q] = V(null), Y = Ee(null), j = me((e) => {
       e && (Y.current = e, Q((i) => i === e ? i : e));
-    }, []), fe = V(
-      () => k ? Ge(k) : null,
+    }, []), ge = _(
+      () => k ? Ke(k) : null,
       [k]
-    ), [ge, pe] = U($), g = p ?? ge, be = Ce(), {
-      mounted: ye,
+    ), [pe, be] = V(O), g = p ?? pe, ye = Ce(), {
+      mounted: ve,
       exiting: xe,
-      entering: ve
-    } = Oe(g && !!k);
-    Ee(() => {
+      entering: we
+    } = Ue(g && !!k);
+    He(() => {
       if (!g) return;
       const e = Y.current ?? document.getElementById(m);
-      e && q(e);
-    }, [g, m, q]);
-    const [P, A] = U(-1), [we, B] = U(
+      e && j(e);
+    }, [g, m, j]);
+    const [P, B] = V(-1), [ke, A] = V(
       "pointer"
-    ), R = ue(
+    ), R = me(
       (e) => {
-        p === void 0 && pe(e), v == null || v(e), e || (A(-1), B("pointer"));
+        p === void 0 && be(e), x == null || x(e), e || (B(-1), A("pointer"));
       },
-      [p, v]
-    ), r = h ? n : null, S = h && (u === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [ke, Se] = U(
-      () => me(r == null ? void 0 : r.defaultValue)
-    ), E = (r == null ? void 0 : r.value) !== void 0 ? me(r.value) : ke, j = V(
+      [p, x]
+    ), r = h ? n : null, S = h && (u === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [Se, Ie] = V(
+      () => he(r == null ? void 0 : r.defaultValue)
+    ), E = (r == null ? void 0 : r.value) !== void 0 ? he(r.value) : Se, F = _(
       () => new Set(E),
       [E]
-    ), H = V(() => c.filter(re), [c]), Ie = V(() => {
+    ), H = _(() => c.filter(ne), [c]), Ne = _(() => {
       if (!h) return n.label ?? "Button";
       const e = (r == null ? void 0 : r.placeholder) ?? "Dropdown";
       if (E.length === 0) return e;
-      const i = H.filter((a) => j.has(a.value)).map((a) => a.label);
+      const i = H.filter((a) => F.has(a.value)).map((a) => a.label);
       return i.length === 0 ? e : i.length === 1 ? i[0] : `${i.length} selected`;
     }, [
       h,
@@ -454,44 +454,44 @@ const st = Re(
       r == null ? void 0 : r.placeholder,
       E,
       H,
-      j
-    ]), Ne = V(() => {
+      F
+    ]), We = _(() => {
       if (!h) return;
       const e = H.map((i) => i.label);
       return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), S && e.push(`${H.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
-    }, [h, r == null ? void 0 : r.placeholder, H, S]), F = (e) => {
+    }, [h, r == null ? void 0 : r.placeholder, H, S]), G = (e) => {
       var i;
-      r && (r.value === void 0 && Se(e), (i = r.onChange) == null || i.call(r, S ? e : e[0] ?? ""));
-    }, ne = (e) => {
+      r && (r.value === void 0 && Ie(e), (i = r.onChange) == null || i.call(r, S ? e : e[0] ?? ""));
+    }, ae = (e) => {
       var i;
       if (!e.disabled)
         if (h)
           if (S) {
-            const a = j.has(e.value) ? E.filter((b) => b !== e.value) : [...E, e.value];
-            F(a);
+            const a = F.has(e.value) ? E.filter((b) => b !== e.value) : [...E, e.value];
+            G(a);
           } else
-            F([e.value]), R(!1);
+            G([e.value]), R(!1);
         else
           (i = n.onAction) == null || i.call(n, e.value), R(!1);
-    }, We = () => {
-      F(
+    }, Le = () => {
+      G(
         H.filter((e) => !e.disabled).map((e) => e.value)
       );
-    }, Le = () => {
-      F([]);
-    }, ae = () => {
+    }, De = () => {
+      G([]);
+    }, ie = () => {
       y || h && (r != null && r.readOnly) || R(!g);
     };
-    He(() => {
-      g || (A(-1), B("pointer"));
+    Te(() => {
+      g || (B(-1), A("pointer"));
     }, [g]);
-    const G = (e) => {
-      B("keyboard"), A(e);
-    }, ie = (e) => {
-      B("keyboard"), A((i) => {
+    const K = (e) => {
+      A("keyboard"), B(e);
+    }, oe = (e) => {
+      A("keyboard"), B((i) => {
         let b = i < 0 ? e === 1 ? -1 : 0 : i;
-        for (let O = 0; O < c.length; O++)
-          if (b = e === 1 ? (b + 1) % c.length : (b - 1 + c.length) % c.length, _(c[b])) return b;
+        for (let U = 0; U < c.length; U++)
+          if (b = e === 1 ? (b + 1) % c.length : (b - 1 + c.length) % c.length, q(c[b])) return b;
         return i;
       });
     }, ee = (e) => {
@@ -500,13 +500,13 @@ const st = Re(
         if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ")
           if (e.preventDefault(), R(!0), e.key === "ArrowUp") {
             for (let a = c.length - 1; a >= 0; a--)
-              if (_(c[a])) {
-                G(a);
+              if (q(c[a])) {
+                K(a);
                 break;
               }
           } else {
-            const a = c.findIndex(_);
-            a >= 0 && G(a);
+            const a = c.findIndex(q);
+            a >= 0 && K(a);
           }
         return;
       }
@@ -514,27 +514,27 @@ const st = Re(
         e.preventDefault(), R(!1), (i = Y.current) == null || i.focus();
         return;
       }
-      if (e.key === "ArrowDown" && (e.preventDefault(), ie(1)), e.key === "ArrowUp" && (e.preventDefault(), ie(-1)), e.key === "Home") {
+      if (e.key === "ArrowDown" && (e.preventDefault(), oe(1)), e.key === "ArrowUp" && (e.preventDefault(), oe(-1)), e.key === "Home") {
         e.preventDefault();
-        const a = c.findIndex(_);
-        a >= 0 && G(a);
+        const a = c.findIndex(q);
+        a >= 0 && K(a);
       }
       if (e.key === "End") {
         e.preventDefault();
         for (let a = c.length - 1; a >= 0; a--)
-          if (_(c[a])) {
-            G(a);
+          if (q(c[a])) {
+            K(a);
             break;
           }
       }
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         const a = P >= 0 ? c[P] : void 0;
-        a && re(a) && ne(a);
+        a && ne(a) && ae(a);
       }
-    }, oe = h && ((r == null ? void 0 : r.menuType) ?? u) === "checklist" ? "checklist" : "default", T = S ? { width: "max-content", minWidth: "max-content" } : qe(z, (k == null ? void 0 : k.offsetWidth) ?? 0), de = typeof T.minWidth == "number" ? `${T.minWidth}px` : T.minWidth, le = typeof T.width == "number" ? `${T.width}px` : T.width, I = he[l], C = Ke[l], De = {
-      "--dd-panel-width": le,
-      "--dd-panel-min-width": de,
+    }, de = h && ((r == null ? void 0 : r.menuType) ?? u) === "checklist" ? "checklist" : "default", T = S ? { width: "max-content", minWidth: "max-content" } : je(z, (k == null ? void 0 : k.offsetWidth) ?? 0), le = typeof T.minWidth == "number" ? `${T.minWidth}px` : T.minWidth, ce = typeof T.width == "number" ? `${T.width}px` : T.width, I = fe[l], $ = Ze[l], Me = {
+      "--dd-panel-width": ce,
+      "--dd-panel-min-width": le,
       "--dd-panel-py": S ? "0" : "4px",
       "--dd-list-py": S ? "4px" : "0",
       "--dd-item-pl": I.paddingLeft,
@@ -546,24 +546,24 @@ const st = Re(
       "--dd-item-line-height": I.lineHeight,
       "--dd-item-icon-slot": I.iconSlot,
       "--dd-checkbox": `${I.checkbox}px`,
-      "--dd-group-height": `${C.height}px`,
-      "--dd-group-pl": C.paddingLeft,
-      "--dd-group-pr": C.paddingRight,
-      "--dd-group-font-size": C.fontSize,
-      "--dd-group-line-height": C.lineHeight,
+      "--dd-group-height": `${$.height}px`,
+      "--dd-group-pl": $.paddingLeft,
+      "--dd-group-pr": $.paddingRight,
+      "--dd-group-font-size": $.fontSize,
+      "--dd-group-line-height": $.lineHeight,
       "--dd-action-justify": l === "large" ? "space-between" : "flex-start",
-      "--cads-surface-origin": Fe(x)
-    }, ce = /* @__PURE__ */ o(
-      Me,
+      "--cads-surface-origin": Ge(v)
+    }, se = /* @__PURE__ */ o(
+      Re,
       {
-        open: ye,
-        anchorEl: fe,
-        placement: je(x),
+        open: ve,
+        anchorEl: ge,
+        placement: Fe(v),
         disablePortal: w,
         style: {
           zIndex: "var(--z-dropdown)",
-          width: le,
-          minWidth: de
+          width: ce,
+          minWidth: le
         },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } },
@@ -581,26 +581,26 @@ const st = Re(
             "aria-multiselectable": S || void 0,
             "data-cads-dropdown-menu": "",
             "data-cads-surface": "",
-            ...Ve(be),
-            ...Ue(ve, xe),
-            "data-menu-type": oe,
+            ..._e(ye),
+            ...Ve(we, xe),
+            "data-menu-type": de,
             onKeyDown: ee,
             className: s.menuPanel,
-            style: De,
+            style: Me,
             children: [
               /* @__PURE__ */ o(
                 "div",
                 {
                   className: s.optionsList,
                   onMouseLeave: () => {
-                    A(-1), B("pointer");
+                    B(-1), A("pointer");
                   },
                   children: c.map((e, i) => {
                     if (e.type === "separator")
-                      return /* @__PURE__ */ o(Ye, {}, `${f}-sep-${i}`);
+                      return /* @__PURE__ */ o(Pe, {}, `${f}-sep-${i}`);
                     if (e.type === "group")
                       return /* @__PURE__ */ o(
-                        Pe,
+                        et,
                         {
                           label: e.label
                         },
@@ -608,19 +608,19 @@ const st = Re(
                       );
                     const a = i === P;
                     return /* @__PURE__ */ o(
-                      Qe,
+                      Ye,
                       {
                         id: `${f}-opt-${i}`,
                         option: e,
                         size: l,
-                        selected: j.has(e.value),
-                        menuType: oe,
+                        selected: F.has(e.value),
+                        menuType: de,
                         role: n.role,
                         active: a,
-                        keyboardFocus: a && we === "keyboard",
-                        onSelect: () => ne(e),
+                        keyboardFocus: a && ke === "keyboard",
+                        onSelect: () => ae(e),
                         onHighlight: () => {
-                          B("pointer"), A(i);
+                          A("pointer"), B(i);
                         }
                       },
                       e.value
@@ -635,20 +635,7 @@ const st = Re(
                   className: s.actionRow,
                   children: [
                     /* @__PURE__ */ o(
-                      te,
-                      {
-                        variant: "text",
-                        color: "secondary",
-                        size: l,
-                        onMouseDown: (e) => e.preventDefault(),
-                        onClick: (e) => {
-                          e.stopPropagation(), We();
-                        },
-                        children: "Select all"
-                      }
-                    ),
-                    /* @__PURE__ */ o(
-                      te,
+                      re,
                       {
                         variant: "text",
                         color: "secondary",
@@ -656,6 +643,19 @@ const st = Re(
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
                           e.stopPropagation(), Le();
+                        },
+                        children: "Select all"
+                      }
+                    ),
+                    /* @__PURE__ */ o(
+                      re,
+                      {
+                        variant: "text",
+                        color: "secondary",
+                        size: l,
+                        onMouseDown: (e) => e.preventDefault(),
+                        onClick: (e) => {
+                          e.stopPropagation(), De();
                         },
                         children: "Clear all"
                       }
@@ -669,9 +669,9 @@ const st = Re(
       }
     );
     if (h) {
-      const e = n, i = e.error ? "error" : e.sentiment ?? "default", a = e.width ?? "hug", b = _e(a), O = a === "hug";
+      const e = n, i = e.error ? "error" : e.sentiment ?? "default", a = e.width ?? "hug", b = qe(a), U = a === "hug";
       return /* @__PURE__ */ o(
-        se,
+        ue,
         {
           onClickAway: () => {
             g && R(!1);
@@ -687,11 +687,11 @@ const st = Re(
                 ...N
               },
               "data-cads-dropdown": "input",
-              "data-width": O ? "hug" : a === "full" ? "full" : "fixed",
+              "data-width": U ? "hug" : a === "full" ? "full" : "fixed",
               onKeyDown: ee,
               children: [
                 /* @__PURE__ */ o(
-                  Te,
+                  ze,
                   {
                     size: l,
                     sentiment: i,
@@ -703,21 +703,21 @@ const st = Re(
                     htmlFor: m,
                     disabled: y,
                     children: /* @__PURE__ */ o(
-                      Je,
+                      Qe,
                       {
                         size: l,
                         color: e.color ?? "primary",
                         labelStyle: e.labelStyle ?? "thick",
-                        label: Ie,
-                        hugCandidates: O ? Ne : void 0,
+                        label: Ne,
+                        hugCandidates: U ? We : void 0,
                         startIconName: e.startIconName,
                         open: g,
                         disabled: y,
                         readOnly: !!e.readOnly,
                         error: !!e.error || i === "error",
                         required: !!e.required,
-                        onClick: ae,
-                        buttonRef: q,
+                        onClick: ie,
+                        buttonRef: j,
                         id: m,
                         listedBy: g ? f : void 0,
                         triggerWidth: b.triggerWidth,
@@ -726,16 +726,16 @@ const st = Re(
                     )
                   }
                 ),
-                ce
+                se
               ]
             }
           )
         }
       );
     }
-    const K = n;
+    const C = n, te = !!C.iconOnly;
     return /* @__PURE__ */ o(
-      se,
+      ue,
       {
         onClickAway: () => {
           g && R(!1);
@@ -750,26 +750,27 @@ const st = Re(
             onKeyDown: ee,
             children: [
               /* @__PURE__ */ o(
-                te,
+                re,
                 {
-                  ref: q,
+                  ref: j,
                   id: m,
                   size: l,
-                  variant: K.buttonVariant ?? "contained",
-                  color: K.buttonColor ?? "primary",
-                  startIconName: K.startIconName,
-                  endIconName: "chevron-down",
+                  variant: C.buttonVariant ?? "contained",
+                  color: C.buttonColor ?? "primary",
+                  iconOnly: te,
+                  startIconName: C.startIconName,
+                  endIconName: te ? void 0 : "chevron-down",
                   disabled: y,
                   "data-cads-dropdown-trigger": "action",
                   "aria-haspopup": "menu",
                   "aria-expanded": g,
                   "aria-controls": g ? f : void 0,
                   "aria-label": M,
-                  onClick: ae,
-                  children: K.label ?? "Button"
+                  onClick: ie,
+                  children: te ? void 0 : C.label ?? "Button"
                 }
               ),
-              ce
+              se
             ]
           }
         )
@@ -778,6 +779,6 @@ const st = Re(
   }
 );
 export {
-  st as Dropdown
+  ut as Dropdown
 };
 //# sourceMappingURL=Dropdown.js.map

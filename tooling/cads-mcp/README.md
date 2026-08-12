@@ -10,7 +10,7 @@ the model/tool contract can be tested before adding infrastructure.
 - Generated prototype JSON is checked against `cadsManifest`.
 - Invented components, props, enum values, callbacks, hard-coded colors, and
   `--ds-*` variables are rejected.
-- A valid specification renders through the real `@codeai/cads-react` package
+- A valid specification renders through the real `@moshebaricdo/cads-react` package
   at `/prototype`.
 - The resulting controls retain their CADS interactions and accessibility.
 

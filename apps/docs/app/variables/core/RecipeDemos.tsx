@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, CadsProvider, Toggle } from "@codeai/cads-react";
-import { FaIcon } from "@codeai/cads-react/icons";
+import { Button, CadsProvider, Toggle } from "@moshebaricdo/cads-react";
+import { FaIcon } from "@moshebaricdo/cads-react/icons";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";
 import shared from "../FoundationPage.module.scss";

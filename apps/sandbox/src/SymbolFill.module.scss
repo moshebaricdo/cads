@@ -1,0 +1,81 @@
+.viewport {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--text-neutral-primary);
+  transition: background-color 160ms ease;
+}
+
+.themeDark {
+  color-scheme: dark;
+}
+
+.themeLight {
+  color-scheme: light;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+}
+
+.assembly {
+  position: absolute;
+  inset: 0;
+}
+
+/* No overflow clipping: the packer guarantees fit, and clipping was
+   shaving the corners of components sitting flush at band edges. */
+.band {
+  position: absolute;
+}
+
+.bandInner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 0;
+}
+
+.pill {
+  position: absolute;
+  overflow: hidden;
+}
+
+.outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+
+  path {
+    fill: none;
+    stroke: var(--border-neutral-secondary);
+    stroke-width: var(--outline-weight, 1.5);
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.7;
+  }
+}
+
+.caption {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  z-index: 4;
+  font-family: var(--font-family-main, system-ui, sans-serif);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-neutral-tertiary);
+  white-space: nowrap;
+  pointer-events: none;
+}

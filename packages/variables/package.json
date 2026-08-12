@@ -1,11 +1,16 @@
 {
-  "name": "@codeai/cads-variables",
+  "name": "@moshebaricdo/cads-variables",
   "version": "0.1.0",
   "description": "CADS design variables — color, typography, spacing/shape, effects, and generated MUI theme",
   "type": "module",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moshebaricdo/cads.git",
+    "directory": "packages/variables"
+  },
   "publishConfig": {
-    "access": "restricted"
+    "registry": "https://npm.pkg.github.com"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

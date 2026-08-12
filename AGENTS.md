@@ -10,8 +10,8 @@ Standalone **CodeAI Design System (CADS)** platform:
 
 | Path | Package | Role |
 |---|---|---|
-| `packages/variables` | `@codeai/cads-variables` | Design variables (color, type, spacing/shape, elevation, motion) → prod-shaped split CSS + barrel `variables.css` + TS + MUI theme |
-| `packages/react` | `@codeai/cads-react` | MUI-wrapped CADS components + icons (`@codeai/cads-react/icons`) |
+| `packages/variables` | `@moshebaricdo/cads-variables` | Design variables (color, type, spacing/shape, elevation, motion) → prod-shaped split CSS + barrel `variables.css` + TS + MUI theme |
+| `packages/react` | `@moshebaricdo/cads-react` | MUI-wrapped CADS components + icons (`@moshebaricdo/cads-react/icons`) |
 | `apps/docs` | `@codeai/cads-docs` | Designer-grade docs mini-site (Next.js) |
 | `tooling/figma-sync` | `@codeai/cads-figma-sync` | Figma → variables sync |
 | `tooling/cads-artifact` | `@codeai/cads-artifact` | Portable Agent Skills ZIP + self-contained HTML prototype runtime (internal) |
@@ -24,10 +24,10 @@ This is **not** the Lab2 sandbox and **not** the production `code-dot-org` compo
 ## Confirmed decisions (do not re-litigate without the user)
 
 1. **Figma is the design source of truth** — file `DGekOeToRVifvFAhfqpeC1` ([CADS Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-)). Code syncs from Figma; do not hand-fork a parallel palette or component API.
-2. **MUI under the hood, CADS API on top** — consumers import `Button` from `@codeai/cads-react`, never raw MUI. MUI is a regular dependency (caret-pinned major), not a peer dep.
+2. **MUI under the hood, CADS API on top** — consumers import `Button` from `@moshebaricdo/cads-react`, never raw MUI. MUI is a regular dependency (caret-pinned major), not a peer dep. This is a personal/prototype package, not an official CodeAI org publish.
 3. **“Variables,” not “tokens”** — package name and docs language match Figma. Color CSS custom properties use semantic names without a `ds-` prefix (e.g. `--background-brand-primary`).
-4. **Icons live in `@codeai/cads-react`** — subpath `@codeai/cads-react/icons`. FA Pro fonts ship in-package (internal license only — never public npm).
-5. **Distribution** — Git-URL / `file:` installs with committed `dist/`. GitHub Packages later if needed. No public npmjs.org org required.
+4. **Icons live in `@moshebaricdo/cads-react`** — subpath `@moshebaricdo/cads-react/icons`. FA Pro fonts ship in-package (internal license only — never public npm).
+5. **Distribution** — Publish `@moshebaricdo/cads-react` + `@moshebaricdo/cads-variables` to **GitHub Packages** from `moshebaricdo/cads` (scope matches owner). No public npmjs.org. Sibling `file:` checkouts still work for local CADS development. Internal workspace packages (`@codeai/cads-docs`, plugins, MCP, artifact) stay private and unpublished.
 6. **No Figma Enterprise Code Connect publish** — use `cadsManifest` + `figma.code-connect.json` + session MCP maps instead.
 7. **Docs site is custom Next.js**, not Storybook.
 
@@ -39,12 +39,29 @@ Path (typical local checkout): `../web-lab-prototype`
 
 | Fact | Detail |
 |---|---|
-| Role | Consumer of `@codeai/cads-*` via `file:../cads/packages/*` |
+| Role | Consumer of `@moshebaricdo/cads-*` via GitHub Packages (CI / other clones) or `file:../cads/packages/*` (local CADS iteration) |
 | Parity route | `#/design-system/cads` (`CadsParityPage`) |
 | Local `App*` atoms | Stay as Lab2 prototype primitives — **not** the CADS component SoT |
 | Color sandbox | Stays in Lab2 for exploration; promoting colors means updating `packages/variables/src/data/codeAiColorSystem.json` here and running `pnpm generate:variables` |
 
 **Do not** copy Lab2 `App*` implementations into this repo as the design source. Lab2 may be a behavioral reference (focus rings, keyboard) only. Spec from Figma.
+
+### Prototype consumers (Lab2, other sandboxes)
+
+Do not publish to public npm. Install from GitHub Packages:
+
+```json
+"@moshebaricdo/cads-react": "^0.1.0",
+"@moshebaricdo/cads-variables": "^0.1.0"
+```
+
+```
+@moshebaricdo:registry=https://npm.pkg.github.com
+```
+
+GitHub Packages requires a token even for public packages (`NODE_AUTH_TOKEN` / PAT with `read:packages`). Local CADS work can still use `file:../cads/packages/*` (do not commit that rewrite on a repo whose CI has no sibling checkout).
+
+Cut a release: `pnpm changeset` → merge the Version PR (CI runs `pnpm release` → GitHub Packages).
 
 ---
 
@@ -59,7 +76,7 @@ Path (typical local checkout): `../web-lab-prototype`
 | Build/update a component (before coding through “done”) | [`.cursor/skills/cads-parity-qa/SKILL.md`](.cursor/skills/cads-parity-qa/SKILL.md) |
 | Styling rules | [`.cursor/rules/design-system.mdc`](.cursor/rules/design-system.mdc) |
 | Figma color variables sync | [`.cursor/skills/cads-figma-color-sync/SKILL.md`](.cursor/skills/cads-figma-color-sync/SKILL.md) + [`tooling/figma-sync/README.md`](tooling/figma-sync/README.md) |
-| Component catalog for agents | `cadsManifest` in `@codeai/cads-react` / docs `/llms.txt` |
+| Component catalog for agents | `cadsManifest` in `@moshebaricdo/cads-react` / docs `/llms.txt` |
 
 ---
 
@@ -92,13 +109,15 @@ pnpm figma:sync        # needs FIGMA_ACCESS_TOKEN for live fetch
 pnpm figma:audit-props # cadsManifest ↔ Figma prop snapshot (Actions pilot)
 pnpm artifact:build    # Full artifact rebuild + skill ZIP (FA7 Pro inlined)
 pnpm artifact:package  # Runtime + skill ZIP only (packages already built; used by Pages deploy)
+pnpm changeset         # record a version bump for @moshebaricdo/cads-react + cads-variables
+pnpm release           # changeset publish to GitHub Packages (CI on Version PR merge)
 ```
 
 Docs are deployed to GitHub Pages from `main` via `.github/workflows/deploy-docs.yml` → `https://moshebaricdo.github.io/cads/`.
 
 After changing `codeAiColorSystem.json` or non-color variable definitions, always regenerate and rebuild consumers (`pnpm generate:variables` / `pnpm build`). Generated CSS is split for prod ingest — `primitiveColors.css`, `colors.css`, `fontVariables.css`, `shapeAndSpacingVariables.css`, `motionVariables.css` — plus CADS runtime `typographyVariables.css` and exportable `typography.module.scss` (depends on prod’s existing `font.scss`). `variables.css` is an `@import` barrel. Foundation docs pages Export each collection.
 
-Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **source** (Turbopack/webpack aliases in `apps/docs/next.config.mjs`), so component edits hot-reload without rebuilding `dist/`. Still run `pnpm build:react` before commit/publish (committed `dist/`). Production `pnpm build:docs` uses `dist/` via package `exports`. Avoid wiping `packages/*/dist` under a stale server that was started before source aliases — if `.next` corrupts, delete `apps/docs/.next` and restart. For a local static preview, prefer `pnpm build:docs` then serve `apps/docs/out`.
+Docs `next dev` resolves `@moshebaricdo/cads-react` / `@moshebaricdo/cads-variables` from **source** (Turbopack/webpack aliases in `apps/docs/next.config.mjs`), so component edits hot-reload without rebuilding `dist/`. Still run `pnpm build:react` before commit/publish (committed `dist/`). Production `pnpm build:docs` uses `dist/` via package `exports`. Avoid wiping `packages/*/dist` under a stale server that was started before source aliases — if `.next` corrupts, delete `apps/docs/.next` and restart. For a local static preview, prefer `pnpm build:docs` then serve `apps/docs/out`.
 
 ---
 
@@ -111,7 +130,7 @@ Docs `next dev` resolves `@codeai/cads-react` / `@codeai/cads-variables` from **
 - Keep docs props / variable pages generated from source (manifest or TS), not hand-written duplicates that can drift.
 - After changing docs nav, Storybook links in `componentExternalLinks`, or [`docs/experiments.json`](docs/experiments.json), run `pnpm generate:readme` (also runs on `pnpm build:docs`).
 
-### Component folder recipe (`@codeai/cads-react`)
+### Component folder recipe (`@moshebaricdo/cads-react`)
 
 Co-locate each component (source organization — public API is the barrel only):
 
@@ -124,7 +143,7 @@ packages/react/src/components/notification-banner/
 ```
 
 - MUI for structure; **styles in SCSS modules** via `className` (not large `sx` blobs). Dynamic chrome may use CSS custom properties set inline.
-- Public API is the package barrel only (`import { X } from "@codeai/cads-react"`). Do not add `./components/*` export maps or PascalCase deep-import shims.
+- Public API is the package barrel only (`import { X } from "@moshebaricdo/cads-react"`). Do not add `./components/*` export maps or PascalCase deep-import shims.
 - Build: Vite library mode (`pnpm build:react`) with CSS modules; do not use tsup.
 
 #### CSS modules vs MUI Emotion specificity
@@ -144,7 +163,7 @@ To guarantee CADS styles win:
   - `MuiButtonBase-root` → SegmentedButton, Tabs, Toggle, Chip, IconTooltip, CloseIconButton
   - `MuiIconButton-root` → IconToggle
 
-- **Enforced** — `pnpm --filter @codeai/cads-react typecheck` runs `scripts/audit-mui-specificity.mjs`, which fails if a folder imports `@mui/material/{Button,ButtonBase,IconButton}` without the matching double-`:global` in its `*.module.scss`. Exempt sx-only folders in that script’s `EXEMPT_DIRS` (currently `pagination`).
+- **Enforced** — `pnpm --filter @moshebaricdo/cads-react typecheck` runs `scripts/audit-mui-specificity.mjs`, which fails if a folder imports `@mui/material/{Button,ButtonBase,IconButton}` without the matching double-`:global` in its `*.module.scss`. Exempt sx-only folders in that script’s `EXEMPT_DIRS` (currently `pagination`).
 
 - **Never put interactive colors in React `style={{ backgroundColor }}`** — MUI's own hover/active Emotion styles override inline `backgroundColor`. Instead, set CSS custom properties on `style` and consume them in SCSS where pseudo-classes (`:hover`, `:active`) can override per state.
 

@@ -1,11 +1,16 @@
 {
-  "name": "@codeai/cads-react",
+  "name": "@moshebaricdo/cads-react",
   "version": "0.1.0",
   "description": "CADS React components (MUI-wrapped) and icons",
   "type": "module",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moshebaricdo/cads.git",
+    "directory": "packages/react"
+  },
   "publishConfig": {
-    "access": "restricted"
+    "registry": "https://npm.pkg.github.com"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -45,7 +50,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@codeai/cads-variables": "workspace:*",
+    "@moshebaricdo/cads-variables": "workspace:*",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.2.0",

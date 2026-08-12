@@ -1,7 +1,7 @@
 /**
  * Generated MUI theme options mapped to CADS variables.
  * Palette uses resolved light-mode hexes (MUI cannot parse CSS var() in augmentColor).
- * Runtime light/dark still comes from `@codeai/cads-variables/variables.css` + `.dark`.
+ * Runtime light/dark still comes from `@moshebaricdo/cads-variables/variables.css` + `.dark`.
  * Component wrappers should prefer semantic CSS vars (e.g. `--background-brand-primary`) in `sx` for live theme switching.
  */
 import { createTheme, type ThemeOptions } from "@mui/material/styles";

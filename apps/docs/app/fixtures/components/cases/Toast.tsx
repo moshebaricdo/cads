@@ -1,6 +1,6 @@
 "use client";
 
-import { Toast } from "@codeai/cads-react";
+import { Toast } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

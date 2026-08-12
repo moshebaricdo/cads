@@ -1,6 +1,6 @@
 "use client";
 
-import { Drawer } from "@codeai/cads-react";
+import { Drawer } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

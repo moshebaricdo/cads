@@ -18,6 +18,7 @@ import {
   type FaFont,
   type FaGlyphCacheBlob,
   type FaKitCatalogCache,
+  type GlyphPreview,
   type InsertTarget,
   type PluginSettings,
   type StoredFont,
@@ -321,12 +322,21 @@ function displayFamily(family: string, familyList: string[] = families()): strin
   return short || family;
 }
 
-function entriesFromGlyphs(glyphs: Record<string, string>): IconEntry[] {
+function entriesFromGlyphs(
+  glyphs: Record<string, string>,
+  previews?: Record<string, GlyphPreview>,
+): IconEntry[] {
   const entries: IconEntry[] = [];
   for (const [name, codepoint] of Object.entries(glyphs)) {
     if (name.length <= 1) continue; // single letters/digits are font plumbing
     if (name.startsWith(".u") || name.startsWith(".")) continue; // liga scaffolding
-    entries.push({ name, codepoint, aliases: [] });
+    const preview = previews?.[name];
+    entries.push({
+      name,
+      codepoint,
+      aliases: [],
+      ...(preview && preview.pathData.length > 0 ? { preview } : {}),
+    });
   }
   entries.sort((a, b) => a.name.localeCompare(b.name));
   return entries;
@@ -345,6 +355,7 @@ function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
     family: string;
     style: string;
     glyphs: Record<string, string>;
+    previews: Record<string, GlyphPreview>;
     fromApi: boolean;
   };
   const byFace = new Map<string, FaceMerge>();
@@ -352,11 +363,13 @@ function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
   const upsert = (font: StoredFont, fromApi: boolean) => {
     const key = faceIdentityKey(font.family, font.style);
     const existing = byFace.get(key);
+    const incomingPreviews = font.previews ?? {};
     if (!existing) {
       byFace.set(key, {
         family: font.family,
         style: font.style,
         glyphs: { ...font.glyphs },
+        previews: { ...incomingPreviews },
         fromApi,
       });
       return;
@@ -364,13 +377,18 @@ function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
     if (fromApi && !existing.fromApi) {
       // API face replaces a local-only face; keep local-only shortcodes.
       const glyphs = { ...font.glyphs };
+      const previews = { ...incomingPreviews };
       for (const [name, code] of Object.entries(existing.glyphs)) {
         if (!(name in glyphs)) glyphs[name] = code;
+      }
+      for (const [name, preview] of Object.entries(existing.previews)) {
+        if (!(name in previews)) previews[name] = preview;
       }
       byFace.set(key, {
         family: font.family,
         style: font.style,
         glyphs,
+        previews,
         fromApi: true,
       });
       return;
@@ -380,10 +398,14 @@ function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
       for (const [name, code] of Object.entries(font.glyphs)) {
         if (!(name in existing.glyphs)) existing.glyphs[name] = code;
       }
+      for (const [name, preview] of Object.entries(incomingPreviews)) {
+        if (!(name in existing.previews)) existing.previews[name] = preview;
+      }
       return;
     }
     // Same provenance: last write wins per shortcode (refresh / re-add).
     Object.assign(existing.glyphs, font.glyphs);
+    Object.assign(existing.previews, incomingPreviews);
   };
 
   // API first so insertion order favors synced faces, then local fallbacks.
@@ -396,7 +418,7 @@ function sourcesFromStoredFonts(fonts: StoredFont[]): Source[] {
 
   const built: Source[] = [];
   for (const face of byFace.values()) {
-    const entries = entriesFromGlyphs(face.glyphs);
+    const entries = entriesFromGlyphs(face.glyphs, face.previews);
     if (entries.length === 0) continue;
     built.push({
       family: face.family,
@@ -876,6 +898,40 @@ function matches(entry: IconEntry, tokens: string[]): boolean {
   return tokens.every((token) => haystack.includes(token));
 }
 
+function renderGlyphPreview(entry: IconEntry, family?: string, weight?: number): HTMLElement {
+  const glyph = document.createElement("span");
+  glyph.className = "glyph";
+
+  const preview = entry.preview;
+  if (preview && preview.pathData.length > 0) {
+    glyph.classList.add("glyph-svg");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${preview.width} ${preview.height}`);
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    preview.pathData.forEach((d, index) => {
+      if (!d) return;
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      path.setAttribute("fill", "currentColor");
+      // FA duotone secondary layer is conventionally the 2nd path @ ~40% opacity.
+      if (index > 0) path.setAttribute("opacity", "0.4");
+      svg.appendChild(path);
+    });
+    glyph.appendChild(svg);
+    return glyph;
+  }
+
+  if (family) {
+    glyph.style.fontFamily = `"${family}"`;
+  }
+  if (weight != null) {
+    glyph.style.fontWeight = String(weight);
+  }
+  glyph.textContent = String.fromCodePoint(parseInt(entry.codepoint, 16));
+  return glyph;
+}
+
 function renderGrid() {
   const tokens = searchInput.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const all = activeSource?.entries ?? [];
@@ -898,8 +954,6 @@ function renderGrid() {
     button.title = entry.name;
     button.addEventListener("click", () => insert(entry));
 
-    const glyph = document.createElement("span");
-    glyph.className = "glyph";
     // Prefer the entry's own face (set when browsing All); never fall back to
     // the synthetic All family name — that would drop Kit/Brands previews.
     const family =
@@ -913,14 +967,7 @@ function renderGrid() {
       (activeSource && activeSource.family !== ALL_FAMILY
         ? activeSource.weight
         : undefined);
-    if (family) {
-      glyph.style.fontFamily = `"${family}"`;
-    }
-    if (weight != null) {
-      glyph.style.fontWeight = String(weight);
-    }
-    glyph.textContent = String.fromCodePoint(parseInt(entry.codepoint, 16));
-    button.appendChild(glyph);
+    button.appendChild(renderGlyphPreview(entry, family, weight));
     fragment.appendChild(button);
   }
   grid.appendChild(fragment);
@@ -1329,13 +1376,14 @@ async function buildStoredFontFromFace(
   apiToken: string,
   face: FaKitFace,
 ): Promise<StoredFont | null> {
-  const glyphs = await fetchFaceGlyphs(apiToken, face);
-  if (Object.keys(glyphs).length === 0) return null;
+  const payload = await fetchFaceGlyphs(apiToken, face);
+  if (Object.keys(payload.glyphs).length === 0) return null;
   const desktop = resolveDesktopFace(face);
   return {
     family: desktop.family,
     style: desktop.style,
-    glyphs,
+    glyphs: payload.glyphs,
+    ...(payload.previews ? { previews: payload.previews } : {}),
     fileName: `api:${face.kitToken}:${face.family}:${face.style}`,
     source: "api",
     apiKitToken: face.kitToken,
@@ -1526,6 +1574,49 @@ function hydrateGlyphCache(cache: FaGlyphCacheBlob | null | undefined) {
 function hydratePendingCaches() {
   if (pendingKitCatalog !== undefined) hydrateKitCatalog(pendingKitCatalog);
   if (pendingGlyphCache !== undefined) hydrateGlyphCache(pendingGlyphCache);
+}
+
+/**
+ * Older API syncs stored name→hex only. Pull SVG pathData for custom kit
+ * faces so picker previews don't depend on the OS kit OTF (Windows cache).
+ */
+async function backfillCustomPreviewPaths(): Promise<void> {
+  const apiToken = settings.faApiToken?.trim();
+  if (!apiToken) return;
+
+  const needs = settings.fonts.filter((font) => {
+    if (font.source !== "api" || !font.apiKitToken) return false;
+    if (font.apiFamily !== "kit" && font.apiFamily !== "kit-duotone") return false;
+    const previewCount = font.previews ? Object.keys(font.previews).length : 0;
+    return previewCount === 0;
+  });
+  if (needs.length === 0) return;
+
+  let changed = false;
+  for (const font of needs) {
+    try {
+      const payload = await fetchFaceGlyphs(apiToken, {
+        kitToken: font.apiKitToken!,
+        kitName: font.apiKitName ?? font.apiKitToken!,
+        family: font.apiFamily!,
+        style: font.apiStyle ?? "custom",
+        label: font.style,
+        version: "7.x",
+        kind: "custom",
+      });
+      if (!payload.previews || Object.keys(payload.previews).length === 0) {
+        continue;
+      }
+      font.previews = payload.previews;
+      changed = true;
+    } catch {
+      // Best-effort — next Refresh kit icons will populate previews.
+    }
+  }
+
+  if (!changed) return;
+  persistSettings();
+  rebuildSources();
 }
 
 function updateTokenClearVisibility() {
@@ -2725,6 +2816,7 @@ window.onmessage = (event: MessageEvent) => {
     rebuildSources();
     updateTokenClearVisibility();
     if (settingsOpen) renderKitSettings();
+    void backfillCustomPreviewPaths();
   } else if (message.type === "kit-catalog") {
     hydrateKitCatalog(message.catalog);
     if (settingsOpen || accountFaces.length > 0) renderSettingsKitList();

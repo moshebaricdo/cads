@@ -3,8 +3,8 @@
 import type {
   CadsComponentManifest,
   CadsPropDef,
-} from "@codeai/cads-react/manifest";
-import { Dropdown, TextInput, Toggle } from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react/manifest";
+import { Dropdown, TextInput, Toggle } from "@moshebaricdo/cads-react";
 import { buildDemoBreadcrumbItems } from "./previews/shared";
 import inspectorStyles from "./inspector.module.scss";
 
@@ -72,7 +72,11 @@ export const DROPDOWN_INPUT_ONLY = new Set([
 ]);
 
 /** Dropdown props that only apply to role=action. */
-export const DROPDOWN_ACTION_ONLY = new Set(["buttonVariant", "buttonColor"]);
+export const DROPDOWN_ACTION_ONLY = new Set([
+  "buttonVariant",
+  "buttonColor",
+  "iconOnly",
+]);
 
 /* ------------------------------------------------------------------ */
 /* Prop grouping / ordering                                            */
@@ -252,6 +256,15 @@ export function isPropVisible(
     ) {
       return false;
     }
+  }
+  // Action icon-only trigger: label is ignored; startIconName is the glyph.
+  if (
+    exportName === "Dropdown" &&
+    String(values.role ?? "input") === "action" &&
+    Boolean(values.iconOnly) &&
+    prop.name === "label"
+  ) {
+    return false;
   }
   // Preview shows a 3-option group with fixed labels.
   if (exportName === "Radio" && prop.name === "label") {
@@ -684,6 +697,7 @@ export function initialValues(
     values.defaultValue = "recent";
     values.defaultOpen = false;
     values.startIconName = "";
+    values.iconOnly = false;
   }
   if (component.exportName === "Button") {
     values.startIconName = "";
@@ -990,6 +1004,14 @@ export function propsToCode(
     }
     if (dropdownRole === "action" && DROPDOWN_INPUT_ONLY.has(key)) continue;
     if (dropdownRole === "input" && DROPDOWN_ACTION_ONLY.has(key)) continue;
+    // Action icon-only ignores label (trigger is aria-label + startIconName).
+    if (
+      dropdownRole === "action" &&
+      Boolean(values.iconOnly) &&
+      key === "label"
+    ) {
+      continue;
+    }
     if (typeof val === "boolean") {
       if (val) attrs.push(key);
       continue;
@@ -1408,10 +1430,22 @@ export function applyValueUpdate(
     if (next === "action") {
       updated.menuType = "default";
       updated.demoItemIcons = false;
+    } else {
+      updated.iconOnly = false;
     }
   }
   if (exportName === "Dropdown" && name === "menuType" && next === "checklist") {
     updated.demoItemIcons = false;
+  }
+  if (exportName === "Dropdown" && name === "iconOnly" && next) {
+    updated.role = "action";
+    updated.menuType = "default";
+    if (!iconNameValue(updated.startIconName)) {
+      updated.startIconName = "ellipsis-vertical";
+    }
+    if (!String(updated["aria-label"] ?? "").trim()) {
+      updated["aria-label"] = "More actions";
+    }
   }
   // Password type is field-only; clear when switching to a multiline area.
   if (exportName === "TextInput" && name === "multiline" && next) {

@@ -10,8 +10,8 @@
     "start": "next start --port 3100"
   },
   "dependencies": {
-    "@codeai/cads-react": "workspace:*",
-    "@codeai/cads-variables": "workspace:*",
+    "@moshebaricdo/cads-react": "workspace:*",
+    "@moshebaricdo/cads-variables": "workspace:*",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.2.0",

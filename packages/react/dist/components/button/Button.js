@@ -1,17 +1,17 @@
-import { jsx as B, jsxs as q } from "react/jsx-runtime";
-import w from "@mui/material/Button";
-import { forwardRef as S } from "react";
-import { FaIcon as m } from "../../icons/FaIcon.js";
-import { BUTTON_SIZE as D } from "../../shared/controlSize.js";
+import { jsx as B, jsxs as w } from "react/jsx-runtime";
+import S from "@mui/material/Button";
+import { forwardRef as C } from "react";
+import { FaIcon as D } from "../../icons/FaIcon.js";
+import { BUTTON_SIZE as P } from "../../shared/controlSize.js";
 import y from "./button.module.scss.js";
-function C(a, t, s) {
-  return a === "tertiary" ? t === "text" && s ? "tertiary" : (process.env.NODE_ENV !== "production" && console.warn(
-    `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. Falling back to color="secondary" for variant="${t}"${s ? "" : " (labeled)"}.`
+function E(a, t, i) {
+  return a === "tertiary" ? t === "text" && i ? "tertiary" : (process.env.NODE_ENV !== "production" && console.warn(
+    `[CADS Button] color="tertiary" is only defined in Figma for variant="text" + icon-only. Falling back to color="secondary" for variant="${t}"${i ? "" : " (labeled)"}.`
   ), "secondary") : a === "orange" ? t === "contained" ? "orange" : (process.env.NODE_ENV !== "production" && console.warn(
     `[CADS Button] color="orange" is only defined in Figma for variant="contained" (run button). Falling back to color="primary" for variant="${t}".`
   ), "primary") : a;
 }
-function E(a) {
+function z(a) {
   switch (a) {
     case "primary":
       return {
@@ -116,73 +116,83 @@ function E(a) {
       };
   }
 }
-function z(a, t, s, d) {
-  const r = E(t), e = D[s];
-  let n, o, l, g, i, v, u, b, f = "transparent";
-  return a === "contained" ? (n = r.filledBg, o = r.filledFg, l = "transparent", g = r.filledBgHover, i = r.filledBgPressed, u = r.filledDisabledBg, b = r.filledDisabledFg) : a === "outlined" ? (n = "var(--background-neutral-primary)", o = r.outlinedFg, l = r.outlinedBorder, g = r.outlinedHoverBg, i = r.outlinedPressedBg, u = "var(--background-neutral-primary)", b = r.outlinedDisabledFg, f = r.outlinedDisabledBorder) : (n = "transparent", o = r.textFg, l = "transparent", g = r.textHoverBg, i = r.textPressedBg, v = r.textFgPressed, u = "transparent", b = r.textDisabledFg), {
+function I(a, t, i, d, p) {
+  const r = z(t), e = P[i];
+  let s, n, o, g, l, v, u, b, f = "transparent";
+  return a === "contained" ? (s = r.filledBg, n = r.filledFg, o = "transparent", g = r.filledBgHover, l = r.filledBgPressed, u = r.filledDisabledBg, b = r.filledDisabledFg) : a === "outlined" ? (s = "var(--background-neutral-primary)", n = r.outlinedFg, o = r.outlinedBorder, g = r.outlinedHoverBg, l = r.outlinedPressedBg, u = "var(--background-neutral-primary)", b = r.outlinedDisabledFg, f = r.outlinedDisabledBorder) : (s = "transparent", n = r.textFg, o = "transparent", g = r.textHoverBg, l = r.textPressedBg, v = r.textFgPressed, u = "transparent", b = r.textDisabledFg), {
     "--btn-height": e.height,
     "--btn-px": d ? e.iconOnlyPadding : e.paddingInline,
     "--btn-py": d ? e.iconOnlyPadding : e.paddingBlock,
     "--btn-gap": d ? "0" : e.gap,
     "--btn-font-size": e.fontSize,
     "--btn-line-height": e.lineHeight,
-    "--btn-width": d ? e.height : void 0,
-    "--btn-bg": n,
-    "--btn-fg": o,
-    "--btn-border": l,
+    // Module CSS uses `width: var(--btn-width, auto)`, which beats MUI's
+    // fullWidth class — set the token so fullWidth actually stretches.
+    "--btn-width": d ? e.height : p ? "100%" : void 0,
+    "--btn-bg": s,
+    "--btn-fg": n,
+    "--btn-border": o,
     "--btn-bg-hover": g,
-    "--btn-bg-press": i,
+    "--btn-bg-press": l,
     "--btn-fg-press": v,
     "--btn-disabled-bg": u,
     "--btn-disabled-fg": b,
     "--btn-disabled-border": f,
-    "--btn-spinner-fg": o
+    "--btn-spinner-fg": n
   };
 }
-const $ = S(
+const A = C(
   function({
     variant: t = "contained",
-    color: s = "primary",
+    color: i = "primary",
     size: d = "medium",
-    iconOnly: r,
-    startIconName: e,
-    endIconName: n,
-    loading: o = !1,
-    children: l,
+    iconOnly: p,
+    startIconName: r,
+    endIconName: e,
+    loading: s = !1,
+    fullWidth: n = !1,
+    children: o,
     sx: g,
-    disabled: i,
+    disabled: l,
     onClick: v,
     className: u,
     ...b
   }, f) {
-    const p = D[d], c = r ?? (!l && !!(e || n)), P = C(s, t, c), x = !!o && !i, F = e ? /* @__PURE__ */ B(m, { name: e, fontSize: p.iconPx }) : null, k = n ? /* @__PURE__ */ B(m, { name: n, fontSize: p.iconPx }) : null, h = z(t, P, d, c), H = [
+    const F = P[d], c = p ?? (!o && !!(r || e)), h = E(i, t, c), x = !!s && !l, k = r ? /* @__PURE__ */ B(D, { name: r, fontSize: F.iconPx }) : null, m = e ? /* @__PURE__ */ B(D, { name: e, fontSize: F.iconPx }) : null, H = I(
+      t,
+      h,
+      d,
+      c,
+      n
+    ), q = [
       y.root,
       x && y.loading,
       u
     ].filter(Boolean).join(" ");
-    return /* @__PURE__ */ q(
-      w,
+    return /* @__PURE__ */ w(
+      S,
       {
         ref: f,
         disableElevation: !0,
-        disabled: i,
+        disabled: l,
+        fullWidth: n,
         "aria-busy": x || void 0,
         onClick: x ? void 0 : v,
-        startIcon: !c && F ? F : void 0,
-        endIcon: !c && k ? k : void 0,
+        startIcon: !c && k ? k : void 0,
+        endIcon: !c && m ? m : void 0,
         "data-cads-component": "Button",
         "data-cads-press": "",
-        className: H,
-        style: h,
+        className: q,
+        style: H,
         sx: g,
         ...b,
         children: [
-          c ? F || k : l,
+          c ? k || m : o,
           x ? /* @__PURE__ */ B("span", { "aria-hidden": !0, className: y.spinner, children: /* @__PURE__ */ B(
-            m,
+            D,
             {
               name: "spinner",
-              fontSize: p.iconPx,
+              fontSize: F.iconPx,
               className: y.spinnerIcon
             }
           ) }) : null
@@ -192,6 +202,6 @@ const $ = S(
   }
 );
 export {
-  $ as Button
+  A as Button
 };
 //# sourceMappingURL=Button.js.map

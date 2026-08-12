@@ -38,6 +38,10 @@ export interface TextInputProps extends SharedNativeProps {
     required?: boolean;
     /** Helper / validation text via Field Wrapper. */
     helperText?: ReactNode;
+    /**
+     * Optional Field Wrapper helper icon for default sentiment. Omit for no
+     * icon; non-default sentiments use fixed icons.
+     */
     helperIconName?: FaIconName | (string & {});
     showHelper?: boolean;
     /**

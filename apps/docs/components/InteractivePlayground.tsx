@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
-import type { CadsComponentManifest } from "@codeai/cads-react/manifest";
+import type { CadsComponentManifest } from "@moshebaricdo/cads-react/manifest";
 import {
   ComponentPreview,
   hasComponentPreview,

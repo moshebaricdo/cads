@@ -54,7 +54,7 @@ Upload these in the Publish modal. Optional: a short playground file showing a b
 >
 > **Updating a custom kit**
 > 1. Replace the desktop kit font (a simple installer is easier than Font Book).
-> 2. Refresh the catalog (re-add the `.otf`, or Refresh kit icons if you use API sync).
+> 2. Refresh the catalog (re-add the `.otf`, or Refresh kit icons if you use API sync). Custom Kit picker previews use API SVG paths when syncing via API (no reboot needed for the grid); canvas insert still needs the updated desktop font + a full Figma quit after install.
 > 3. Fully quit Figma and reopen so new ligatures load.
 >
 > **Inserts into**

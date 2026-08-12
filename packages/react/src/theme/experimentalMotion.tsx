@@ -1,6 +1,6 @@
 "use client";
 
-import { motion as motionVars } from "@codeai/cads-variables";
+import { motion as motionVars } from "@moshebaricdo/cads-variables";
 import type { Transition } from "motion/react";
 import {
   createContext,

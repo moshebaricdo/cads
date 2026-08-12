@@ -3,9 +3,17 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [["@codeai/cads-variables", "@codeai/cads-react"]],
-  "access": "restricted",
+  "linked": [["@moshebaricdo/cads-variables", "@moshebaricdo/cads-react"]],
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@codeai/cads-docs", "@codeai/cads-figma-sync"]
+  "ignore": [
+    "@codeai/cads-docs",
+    "@codeai/cads-sandbox",
+    "@codeai/cads-figma-sync",
+    "@codeai/cads-figma-icon-plugin",
+    "@codeai/cads-figma-remap-plugin",
+    "@codeai/cads-mcp",
+    "@codeai/cads-artifact"
+  ]
 }

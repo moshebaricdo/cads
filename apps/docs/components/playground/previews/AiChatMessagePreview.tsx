@@ -4,7 +4,7 @@ import {
   AiChatMessage,
   type AiChatMessageAuthor,
   type AiChatMessageContext,
-} from "@codeai/cads-react";
+} from "@moshebaricdo/cads-react";
 
 export default function AiChatMessagePreview({
   values,
@@ -20,16 +20,18 @@ export default function AiChatMessagePreview({
         : "Can you suggest a warm-up activity for my Unit 3 loops lesson?";
 
   return (
-    <AiChatMessage
-      context={(values.context as AiChatMessageContext | undefined) ?? "TA"}
-      author={author}
-      hasActionRow={values.hasActionRow !== false}
-      hasLeftActions={values.hasLeftActions !== false}
-      hasRightActions={values.hasRightActions !== false}
-      hasFlagging={values.hasFlagging !== false}
-      feedbackLabel={String(values.feedbackLabel || "Was this helpful?")}
-    >
-      {body}
-    </AiChatMessage>
+    <div style={{ width: "100%", maxWidth: 420 }}>
+      <AiChatMessage
+        context={(values.context as AiChatMessageContext | undefined) ?? "TA"}
+        author={author}
+        hasActionRow={values.hasActionRow !== false}
+        hasLeftActions={values.hasLeftActions !== false}
+        hasRightActions={values.hasRightActions !== false}
+        hasFlagging={values.hasFlagging !== false}
+        feedbackLabel={String(values.feedbackLabel || "Was this helpful?")}
+      >
+        {body}
+      </AiChatMessage>
+    </div>
   );
 }

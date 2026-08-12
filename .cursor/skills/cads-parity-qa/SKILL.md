@@ -27,7 +27,7 @@ Do not write component code until phases 0–2 below are complete.
 | Design | Figma file `DGekOeToRVifvFAhfqpeC1` |
 | Prop snapshot | `packages/react/src/manifest/figmaComponentPropsSnapshot.json` |
 | Visual recipe | `packages/react/src/manifest/visual-recipes/<Component>.json`, based on `visual-recipe-template.json` beside this skill |
-| Code catalog | `cadsManifest` in `@codeai/cads-react` |
+| Code catalog | `cadsManifest` in `@moshebaricdo/cads-react` |
 | Visual | Figma MCP design context/screenshots vs deterministic docs fixture |
 | Build | `pnpm typecheck` + `pnpm build` (+ `pnpm build:docs` if docs changed) |
 

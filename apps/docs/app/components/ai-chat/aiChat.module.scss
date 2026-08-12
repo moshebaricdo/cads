@@ -78,14 +78,6 @@
   min-height: 0;
   padding: 16px;
   overflow: auto;
-
-  :global([data-cads-component="AiChatMessage"][data-author="Human"]) {
-    align-self: flex-end;
-  }
-
-  :global([data-cads-component="AiChatMessage"][data-author="AI"]) {
-    align-self: flex-start;
-  }
 }
 
 .composer {

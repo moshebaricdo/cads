@@ -9,11 +9,11 @@
     "generate": "node scripts/generate-artifact.mjs",
     "package-skill": "node scripts/package-skill.mjs",
     "test": "node --test src/*.test.mjs",
-    "build:all": "pnpm --filter @codeai/cads-react run build && pnpm --filter @codeai/cads-variables run build && pnpm run build && node scripts/generate-artifact.mjs --example teacher-onboarding && pnpm run package-skill"
+    "build:all": "pnpm --filter @moshebaricdo/cads-react run build && pnpm --filter @moshebaricdo/cads-variables run build && pnpm run build && node scripts/generate-artifact.mjs --example teacher-onboarding && pnpm run package-skill"
   },
   "dependencies": {
-    "@codeai/cads-react": "workspace:*",
-    "@codeai/cads-variables": "workspace:*",
+    "@moshebaricdo/cads-react": "workspace:*",
+    "@moshebaricdo/cads-variables": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

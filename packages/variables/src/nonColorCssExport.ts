@@ -187,7 +187,7 @@ export function buildTypographyVariablesCss(
 ): string {
   return [
     "/* Typography CSS Variables",
-    " * CADS runtime type scale (size / leading / tracking). Used by @codeai/cads-react.",
+    " * CADS runtime type scale (size / leading / tracking). Used by @moshebaricdo/cads-react.",
     " * Prod style recipes live in typography.module.scss instead.",
     " */",
     "",

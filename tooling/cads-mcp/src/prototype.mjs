@@ -1,4 +1,4 @@
-import {cadsManifest} from "@codeai/cads-react/manifest";
+import {cadsManifest} from "@moshebaricdo/cads-react/manifest";
 
 export const PROTOTYPE_SCHEMA = {
   title: "string",

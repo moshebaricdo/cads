@@ -1,7 +1,7 @@
 import type {
   CadsComponentManifest,
   CadsPropDef,
-} from "@codeai/cads-react/manifest";
+} from "@moshebaricdo/cads-react/manifest";
 
 export type PropSheet = {
   title: string;

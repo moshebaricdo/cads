@@ -1,6 +1,6 @@
 "use client";
 
-import type { FaIconName } from "@codeai/cads-react/icons";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 /** Shared props for lazy playground preview chunks. */
 export type PreviewProps = {

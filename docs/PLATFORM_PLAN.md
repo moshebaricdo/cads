@@ -7,7 +7,7 @@ Canonical copy of the platform plan for agents working in this repo. Status of e
 ## Confirmed decisions
 
 - **New standalone repo** (`cads`), consumed as packages; not in `code-dot-org`, not anchored to Lab2 `App*` components.
-- **MUI under the hood, CADS API on top**: consumers import from `@codeai/cads-react`; MUI is an implementation detail that prod’s eventual MUI refactor can converge on.
+- **MUI under the hood, CADS API on top**: consumers import from `@moshebaricdo/cads-react` (never raw MUI). Personal/prototype GitHub Packages publish — not an official CodeAI org package.
 - **Figma CADS file is the design source of truth** (`DGekOeToRVifvFAhfqpeC1`); code artifacts are generated/synced from it, never hand-forked.
 - **Custom Next.js docs mini-site** (MUI/Spectrum-style), not Storybook.
 - **Sequencing:** foundation first, docs second, AI workflows third — but AI-facing artifacts (manifest, Code Connect substitutes) are designed in from day one.
@@ -16,27 +16,27 @@ Canonical copy of the platform plan for agents working in this repo. Status of e
 
 ```mermaid
 flowchart TD
-    figma[CADS Figma File] -->|variables export + snapshot diff| varsPkg["@codeai/cads-variables"]
+    figma[CADS Figma File] -->|variables export + snapshot diff| varsPkg["@moshebaricdo/cads-variables"]
     figma -->|component mapping| ccMap[Local Code Connect map]
-    varsPkg -->|CSS vars + MUI theme| reactPkg["@codeai/cads-react (MUI-wrapped, incl. icons)"]
+    varsPkg -->|CSS vars + MUI theme| reactPkg["@moshebaricdo/cads-react (MUI-wrapped, incl. icons)"]
     reactPkg --> manifest["cads.manifest + llms.txt"]
     reactPkg --> docsSite[Docs mini-site Next.js]
     varsPkg --> docsSite
     manifest --> aiLayer[AI workflows: skills, MCP context, Cursor rules]
     ccMap --> aiLayer
-    reactPkg -->|file or git-url install| sandbox[Lab2 sandbox + team prototypes]
+    reactPkg -->|GitHub Packages @moshebaricdo| sandbox[Lab2 sandbox + other prototypes]
     aiLayer --> sandbox
     docsSite -->|designer prototypes gallery| engineers[Engineers reference props/specs]
 ```
 
 ## Phase 0 — Repo scaffold
 
-- `packages/variables` → `@codeai/cads-variables`
-- `packages/react` → `@codeai/cads-react` (components **and** icons under `/icons`)
+- `packages/variables` → `@moshebaricdo/cads-variables`
+- `packages/react` → `@moshebaricdo/cads-react` (components **and** icons under `/icons`)
 - `apps/docs` → docs mini-site
 - `tooling/figma-sync` → sync scripts + committed Figma snapshots
-- Distribution: Git-URL / `file:` with committed `dist/`; GitHub Packages later under whatever GitHub org owns the repo
-- FA Pro fonts: licensed, internal-only — ship in `@codeai/cads-react`
+- Distribution: GitHub Packages `@moshebaricdo/cads-*` from `moshebaricdo/cads`. Sibling `file:` for local CADS iteration. No public npm.
+- FA Pro fonts: licensed, internal-only — ship in `@moshebaricdo/cads-react`
 
 ## Phase 1 — Variables package
 
@@ -60,7 +60,7 @@ flowchart TD
 
 ## Phase 4 — AI / Figma-parity layer
 
-- `cadsManifest` in `@codeai/cads-react`
+- `cadsManifest` in `@moshebaricdo/cads-react`
 - Docs `/llms.txt`
 - Local Code Connect map (`figma.code-connect.json` + MCP session maps) — no Enterprise publish
 - Distributable Cursor skill: `.cursor/skills/cads-prototyping`
@@ -69,23 +69,22 @@ flowchart TD
 
 ## Phase 5 — Lab2 consumption bridge
 
-- Sibling `web-lab-prototype` installs via `file:`
+- Sibling `web-lab-prototype` installs via GitHub Packages `@moshebaricdo/cads-*` in CI; `file:` remains valid for local CADS iteration
 - Route `/design-system/cads` for parity
 - Do **not** big-bang replace `App*`
 - Color sandbox stays exploratory in Lab2; export target for platform SoT is this repo’s variables document
 
 ## Resolved decisions (2026-07-16)
 
-- FA Pro fonts: ship privately in `@codeai/cads-react`
+- FA Pro fonts: ship privately in `@moshebaricdo/cads-react`
 - Naming: “variables” package; icons not a separate package
-- npm: Git-URL / `file:` first; no official npm org required
+- npm: no official npm org; prototype installs are GitHub Packages `@moshebaricdo/cads-*`
 - Code Connect: manifest + local map (no Enterprise)
-- MUI: latest stable major, caret range, **regular dependency** of `@codeai/cads-react`
-- Distribution: committed build outputs for Git-URL installs
+- MUI: latest stable major, caret range, **regular dependency** of `@moshebaricdo/cads-react`
+- Distribution: committed `dist/` for docs/artifact builds; GitHub Packages for external prototypes
 
 ## Open items
 
-- Which GitHub org hosts the remote (affects eventual Packages scope only)
 - Docs props generation from TS (honesty / anti-drift)
 - Real Figma node IDs on every manifest entry
 - Pixel parity verification of the pilot set against Figma

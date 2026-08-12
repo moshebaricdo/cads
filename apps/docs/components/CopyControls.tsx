@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button, Tooltip } from "@codeai/cads-react";
+import { Button, Tooltip } from "@moshebaricdo/cads-react";
 import ui from "./docs-ui.module.scss";
 
 function useCopied(resetMs = 1400): [boolean, (text: string) => void] {

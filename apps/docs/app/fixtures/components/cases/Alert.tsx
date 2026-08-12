@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert } from "@codeai/cads-react";
+import { Alert } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

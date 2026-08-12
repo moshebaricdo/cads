@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@codeai/cads-react";
+import { Button } from "@moshebaricdo/cads-react";
 import styles from "./ComponentPageNav.module.scss";
 
 export type PageNavItem = {

@@ -1,7 +1,7 @@
 "use client";
 
-import { Toggle } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Toggle } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 export default function TogglePreview({
   values,

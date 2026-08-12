@@ -2,20 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 100%;
+  /* Hug short copy; grow up to the chat column when content needs the space. */
+  width: fit-content;
+  max-width: 100%;
   box-sizing: border-box;
+}
+
+.rootHuman {
+  align-self: flex-end;
+  margin-inline-start: auto;
 }
 
 .rootAi {
   gap: 0.25rem;
-  align-items: stretch;
+  align-self: flex-start;
 }
 
 .bubble {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-p-xs);
-  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   padding: 0.625rem 0.75rem;
   overflow: hidden;

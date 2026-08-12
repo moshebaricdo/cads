@@ -1,43 +1,43 @@
 import { jsxs as p, jsx as s } from "react/jsx-runtime";
-import oe from "@mui/material/Slider";
-import { forwardRef as le, useId as G, useState as se } from "react";
-import { Button as z } from "../button/Button.js";
-import { FaIcon as ue } from "../../icons/FaIcon.js";
-import { SLIDER_CHROME as r, FIELD_WRAPPER_SIZE as ce, TRANSITION_COLORS as de } from "../../shared/controlSize.js";
-import u from "./slider.module.scss.js";
-const A = 300, be = {
+import se from "@mui/material/Slider";
+import { forwardRef as ue, useId as A, useState as de } from "react";
+import { Button as V } from "../button/Button.js";
+import { FaIcon as ce } from "../../icons/FaIcon.js";
+import { SLIDER_CHROME as r, FIELD_WRAPPER_SIZE as be, TRANSITION_COLORS as me } from "../../shared/controlSize.js";
+import d from "./slider.module.scss.js";
+const W = 300, he = {
   min: 0,
   max: 100,
   defaultValue: 50
-}, me = {
+}, fe = {
   min: -100,
   max: 100,
   defaultValue: 0
 };
-function he(e, i) {
-  return i ? "100%" : e == null ? A : typeof e == "number" ? `${e}px` : e;
+function pe(e, i) {
+  return i ? "100%" : e == null ? W : typeof e == "number" ? `${e}px` : e;
 }
-function fe(e) {
+function ge(e) {
   return !e || e === "smile" ? "face-smile" : e;
 }
-function pe(e, i, l) {
-  const t = Number(i), o = Number(l), a = o - t;
-  if (!(a > 0))
+function ve(e, i, l) {
+  const t = Number(i), a = Number(l), o = a - t;
+  if (!(o > 0))
     return { left: "50%", width: "0%", hidden: !0, extendLeft: !1 };
-  const c = t <= 0 && o >= 0 ? 0 : (t + o) / 2, n = (Number(e) - t) / a, d = (c - t) / a;
-  return Math.abs(n - d) < 1e-6 ? {
-    left: `${d * 100}%`,
+  const c = t <= 0 && a >= 0 ? 0 : (t + a) / 2, n = (Number(e) - t) / o, u = (c - t) / o;
+  return Math.abs(n - u) < 1e-6 ? {
+    left: `${u * 100}%`,
     width: "0%",
     hidden: !0,
     extendLeft: !1
-  } : n > d ? {
-    left: `${d * 100}%`,
-    width: `${(n - d) * 100}%`,
+  } : n > u ? {
+    left: `${u * 100}%`,
+    width: `${(n - u) * 100}%`,
     hidden: !1,
     extendLeft: !1
   } : {
     left: `${n * 100}%`,
-    width: `${(d - n) * 100}%`,
+    width: `${(u - n) * 100}%`,
     hidden: !1,
     extendLeft: n < 1e-6
   };
@@ -45,38 +45,38 @@ function pe(e, i, l) {
 function L(e, i) {
   return e != null && Number.isFinite(Number(e)) ? Number(e) : i;
 }
-function ge(e, i, l, t) {
-  const o = e === "center" ? me : be, a = L(i, o.min), c = L(l, o.max);
+function ke(e, i, l, t) {
+  const a = e === "center" ? fe : he, o = L(i, a.min), c = L(l, a.max);
   let n;
   return Array.isArray(t) ? n = t.map(
-    (d) => Number.isFinite(Number(d)) ? Number(d) : o.defaultValue
-  ) : n = L(t, o.defaultValue), {
-    min: a,
+    (u) => Number.isFinite(Number(u)) ? Number(u) : a.defaultValue
+  ) : n = L(t, a.defaultValue), {
+    min: o,
     max: c,
     defaultValue: n
   };
 }
-function ke(e, i, l) {
+function xe(e, i, l) {
   if (!Number.isFinite(e) || !Number.isFinite(i)) return [];
   if (!(i > e)) return [e];
   if (l == null || !(l > 0)) return [e, i];
-  const t = [], o = Math.floor((i - e) / l + 1e-9);
-  for (let a = 0; a <= o; a++) {
-    const c = e + a * l, n = a === o && Math.abs(c - i) <= Math.abs(l) * 1e-6 ? i : c;
+  const t = [], a = Math.floor((i - e) / l + 1e-9);
+  for (let o = 0; o <= a; o++) {
+    const c = e + o * l, n = o === a && Math.abs(c - i) <= Math.abs(l) * 1e-6 ? i : c;
     t.push(Number(n.toPrecision(12)));
   }
   return t.length >= 2 ? t : [e, i];
 }
-function ve(e) {
+function Ne(e) {
   return Number.isFinite(e) ? Math.abs(e - Math.round(e)) < 1e-9 ? String(Math.round(e)) : String(Number(e.toPrecision(6))) : "";
 }
-function xe({
+function Se({
   values: e,
   disabled: i,
   withControlOffsets: l
 }) {
   const t = e.length;
-  return /* @__PURE__ */ p("div", { "aria-hidden": !0, className: u.tickRow, children: [
+  return /* @__PURE__ */ p("div", { "aria-hidden": !0, className: d.tickRow, children: [
     l ? /* @__PURE__ */ s(
       "div",
       {
@@ -90,16 +90,16 @@ function xe({
     /* @__PURE__ */ s(
       "div",
       {
-        className: u.tickInner,
+        className: d.tickInner,
         style: {
           height: `calc(${r.stepperTickHeight} + ${r.stepperTickGap} + ${r.stepperLabelHeight})`
         },
-        children: e.map((o, a) => {
-          const c = t > 1 ? a / (t - 1) : 0, n = ve(o);
+        children: e.map((a, o) => {
+          const c = t > 1 ? o / (t - 1) : 0, n = Ne(a);
           return /* @__PURE__ */ p(
             "div",
             {
-              className: u.tick,
+              className: d.tick,
               style: {
                 left: `calc(${r.knobInset} + (100% - 2 * ${r.knobInset}) * ${c})`,
                 gap: r.stepperTickGap
@@ -108,21 +108,21 @@ function xe({
                 /* @__PURE__ */ s(
                   "div",
                   {
-                    className: `${u.tickMark} ${i ? u.tickMarkDisabled : ""}`,
+                    className: `${d.tickMark} ${i ? d.tickMarkDisabled : ""}`,
                     style: { height: r.stepperTickHeight }
                   }
                 ),
                 /* @__PURE__ */ s(
                   "span",
                   {
-                    className: `${u.tickLabel} ${i ? u.tickLabelDisabled : ""}`,
+                    className: `${d.tickLabel} ${i ? d.tickLabelDisabled : ""}`,
                     style: { height: r.stepperLabelHeight },
                     children: n
                   }
                 )
               ]
             },
-            `${n}-${a}`
+            `${n}-${o}`
           );
         })
       }
@@ -139,67 +139,67 @@ function xe({
     ) : null
   ] });
 }
-const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)", Le = le(function({
+const ye = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)", Ee = ue(function({
   size: i = "medium",
   sentiment: l = "default",
   label: t,
-  displayValue: o,
-  showDisplayValue: a = !0,
+  displayValue: a,
+  showDisplayValue: o = !0,
   showLabelRow: c = !0,
   helperText: n,
-  helperIconName: d = "face-smile",
-  showHelper: V = !0,
+  helperIconName: u,
+  showHelper: B = !0,
   showControls: $ = !1,
-  showTicks: W = !1,
-  startsFrom: w = "side",
-  width: B = A,
-  fullWidth: C = !1,
-  value: R,
-  defaultValue: P,
-  min: U,
-  max: j,
+  showTicks: C = !1,
+  startsFrom: R = "side",
+  width: P = W,
+  fullWidth: U = !1,
+  value: w,
+  defaultValue: j,
+  min: Z,
+  max: q,
   step: M = 1,
   disabled: b,
-  onChange: k,
-  "aria-label": Z,
-  sx: q,
-  ...J
-}, K) {
-  const H = G(), E = G(), v = ce[i], Q = he(B, C), { min: m, max: N, defaultValue: X } = ge(
-    w,
-    U,
-    j,
-    P
-  ), [Y, T] = se(
-    X
-  ), I = R ?? Y, h = Array.isArray(I) ? I[0] ?? m : I, x = l === "error" && !b, D = V && n != null, S = M == null ? null : Number(M) > 0 ? Number(M) : 1, F = W ? ke(m, N, S) : null, ee = S == null || !(S > 0) ? Math.max((N - m) / 100, Number.EPSILON) : S, re = (y, g, ae = 0) => {
-    R === void 0 && T(g), k == null || k(y, g, ae);
-  }, O = (y) => {
+  onChange: v,
+  "aria-label": J,
+  sx: K,
+  ...Q
+}, X) {
+  const H = A(), E = A(), k = be[i], Y = pe(P, U), { min: m, max: N, defaultValue: ee } = ke(
+    R,
+    Z,
+    q,
+    j
+  ), [re, T] = de(
+    ee
+  ), I = w ?? re, h = Array.isArray(I) ? I[0] ?? m : I, x = l === "error" && !b, D = B && n != null, F = u != null && String(u).trim() !== "" ? u : void 0, O = x ? "circle-xmark" : F ? ge(F) : void 0, S = M == null ? null : Number(M) > 0 ? Number(M) : 1, _ = C ? xe(m, N, S) : null, te = S == null || !(S > 0) ? Math.max((N - m) / 100, Number.EPSILON) : S, ie = (y, g, le = 0) => {
+    w === void 0 && T(g), v == null || v(y, g, le);
+  }, G = (y) => {
     if (b) return;
     const g = Math.min(
       Number(N),
-      Math.max(Number(m), Number(h) + y * ee)
+      Math.max(Number(m), Number(h) + y * te)
     );
-    R === void 0 && T(g), k == null || k({}, g, 0);
-  }, _ = x ? "var(--background-error-primary)" : b ? "var(--background-disabled-neutral)" : "var(--background-selected-primary)", te = x ? "var(--border-error-primary)" : b ? "var(--border-disabled-neutral)" : "var(--border-neutral-secondary)", ie = x ? "var(--border-error-primary)" : b ? "var(--border-disabled-neutral)" : "var(--border-neutral-solid)", f = w === "center" ? pe(Number(h), Number(m), Number(N)) : null, ne = o ?? (typeof h == "number" && Number.isFinite(h) ? h.toFixed(1) : String(Number.isFinite(Number(h)) ? Number(h) : m));
+    w === void 0 && T(g), v == null || v({}, g, 0);
+  }, z = x ? "var(--background-error-primary)" : b ? "var(--background-disabled-neutral)" : "var(--background-selected-primary)", ne = x ? "var(--border-error-primary)" : b ? "var(--border-disabled-neutral)" : "var(--border-neutral-secondary)", oe = x ? "var(--border-error-primary)" : b ? "var(--border-disabled-neutral)" : "var(--border-neutral-solid)", f = R === "center" ? ve(Number(h), Number(m), Number(N)) : null, ae = a ?? (typeof h == "number" && Number.isFinite(h) ? h.toFixed(1) : String(Number.isFinite(Number(h)) ? Number(h) : m));
   return /* @__PURE__ */ p(
     "div",
     {
-      className: u.wrapper,
+      className: d.wrapper,
       style: {
         gap: r.stackGap,
-        width: Q
+        width: Y
       },
       children: [
-        c && (t != null || a) ? /* @__PURE__ */ p("div", { className: u.labelRow, children: [
+        c && (t != null || o) ? /* @__PURE__ */ p("div", { className: d.labelRow, children: [
           /* @__PURE__ */ p(
             "div",
             {
-              className: u.labelInner,
+              className: d.labelInner,
               style: {
                 color: b ? "var(--text-disabled-neutral)" : x ? "var(--text-error-primary)" : "var(--text-neutral-primary)",
-                fontSize: v.labelFontSize,
-                lineHeight: v.labelLineHeight
+                fontSize: k.labelFontSize,
+                lineHeight: k.labelLineHeight
               },
               children: [
                 t != null ? /* @__PURE__ */ s(
@@ -210,7 +210,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                     children: t
                   }
                 ) : /* @__PURE__ */ s("span", {}),
-                a ? /* @__PURE__ */ s("span", { style: { fontWeight: "var(--font-weight-regular)" }, children: ne }) : null
+                o ? /* @__PURE__ */ s("span", { style: { fontWeight: "var(--font-weight-regular)" }, children: ae }) : null
               ]
             }
           ),
@@ -218,22 +218,22 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
             "div",
             {
               id: E,
-              className: u.helperRow,
+              className: d.helperRow,
               style: {
-                gap: v.helperGap,
+                gap: k.helperGap,
                 paddingBottom: r.helperPaddingBottom,
                 color: b ? "var(--text-disabled-neutral)" : x ? "var(--text-error-primary)" : "var(--text-neutral-tertiary)",
-                fontSize: v.helperFontSize,
-                lineHeight: v.helperLineHeight
+                fontSize: k.helperFontSize,
+                lineHeight: k.helperLineHeight
               },
               children: [
-                /* @__PURE__ */ s(
-                  ue,
+                O != null ? /* @__PURE__ */ s(
+                  ce,
                   {
-                    name: x ? "circle-xmark" : fe(d),
-                    fontSize: v.helperIconPx
+                    name: O,
+                    fontSize: k.helperIconPx
                   }
-                ),
+                ) : null,
                 /* @__PURE__ */ s("span", { children: n })
               ]
             }
@@ -242,20 +242,20 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
         /* @__PURE__ */ p(
           "div",
           {
-            className: u.barSection,
+            className: d.barSection,
             style: { gap: r.stackGap },
             children: [
               /* @__PURE__ */ p(
                 "div",
                 {
-                  className: u.barRow,
+                  className: d.barRow,
                   style: {
                     gap: r.controlGap,
                     height: r.trackHeight
                   },
                   children: [
                     $ ? /* @__PURE__ */ s(
-                      z,
+                      V,
                       {
                         variant: "outlined",
                         color: "secondary",
@@ -264,24 +264,24 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                         startIconName: "minus",
                         "aria-label": "Decrease",
                         disabled: b,
-                        onClick: () => O(-1),
+                        onClick: () => G(-1),
                         sx: { flexShrink: 0 }
                       }
                     ) : null,
                     /* @__PURE__ */ s(
-                      oe,
+                      se,
                       {
-                        ref: K,
+                        ref: X,
                         value: I,
                         min: m,
                         max: N,
                         step: S,
                         disabled: b,
                         marks: !1,
-                        onChange: (y, g) => re(y, g),
+                        onChange: (y, g) => ie(y, g),
                         "aria-labelledby": t && c ? H : void 0,
                         "aria-describedby": D ? E : void 0,
-                        "aria-label": Z,
+                        "aria-label": J,
                         sx: {
                           color: "transparent",
                           height: r.trackHeight,
@@ -295,7 +295,7 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                             height: r.trackHeight,
                             opacity: 1,
                             backgroundColor: "var(--background-neutral-primary)",
-                            border: `1px solid ${te}`,
+                            border: `1px solid ${ne}`,
                             borderRadius: r.barRadius,
                             boxSizing: "border-box",
                             left: `-${r.knobInset}`,
@@ -304,24 +304,24 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                           "& .MuiSlider-track": {
                             height: r.trackHeight,
                             border: "none",
-                            backgroundColor: _,
+                            backgroundColor: z,
                             borderRadius: r.barRadius,
                             ...f ? {
                               left: `${f.left} !important`,
                               width: `${f.hidden ? "0%" : f.width} !important`,
                               visibility: f.hidden ? "hidden" : "visible"
                             } : {},
-                            ...w === "side" && Number(h) > Number(m) || f != null && f.extendLeft ? {
-                              boxShadow: `-${r.knobInset} 0 0 0 ${_}`
+                            ...R === "side" && Number(h) > Number(m) || f != null && f.extendLeft ? {
+                              boxShadow: `-${r.knobInset} 0 0 0 ${z}`
                             } : { boxShadow: "none" }
                           },
                           "& .MuiSlider-thumb": {
                             width: r.knob,
                             height: r.knob,
                             backgroundColor: "var(--background-neutral-primary)",
-                            border: `2px solid ${ie}`,
+                            border: `2px solid ${oe}`,
                             boxShadow: "none",
-                            transition: de,
+                            transition: me,
                             "&::before": {
                               boxShadow: "none"
                             },
@@ -338,20 +338,20 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                             },
                             "&.Mui-focusVisible": {
                               backgroundColor: "var(--background-neutral-tertiary)",
-                              boxShadow: Ne
+                              boxShadow: ye
                             },
                             "&.Mui-disabled": {
                               backgroundColor: "var(--background-neutral-primary)",
                               border: "2px solid var(--border-disabled-neutral)"
                             }
                           },
-                          ...q ?? {}
+                          ...K ?? {}
                         },
-                        ...J
+                        ...Q
                       }
                     ),
                     $ ? /* @__PURE__ */ s(
-                      z,
+                      V,
                       {
                         variant: "outlined",
                         color: "secondary",
@@ -360,17 +360,17 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
                         startIconName: "plus",
                         "aria-label": "Increase",
                         disabled: b,
-                        onClick: () => O(1),
+                        onClick: () => G(1),
                         sx: { flexShrink: 0 }
                       }
                     ) : null
                   ]
                 }
               ),
-              F ? /* @__PURE__ */ s(
-                xe,
+              _ ? /* @__PURE__ */ s(
+                Se,
                 {
-                  values: F,
+                  values: _,
                   disabled: b,
                   withControlOffsets: $
                 }
@@ -383,10 +383,10 @@ const Ne = "0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-
   );
 });
 export {
-  me as SLIDER_CENTER_RANGE,
-  A as SLIDER_DEFAULT_WIDTH,
-  be as SLIDER_SIDE_RANGE,
-  Le as Slider,
-  ke as resolveSliderTickValues
+  fe as SLIDER_CENTER_RANGE,
+  W as SLIDER_DEFAULT_WIDTH,
+  he as SLIDER_SIDE_RANGE,
+  Ee as Slider,
+  xe as resolveSliderTickValues
 };
 //# sourceMappingURL=Slider.js.map

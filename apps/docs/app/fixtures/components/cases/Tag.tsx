@@ -1,6 +1,6 @@
 "use client";
 
-import { Tag } from "@codeai/cads-react";
+import { Tag } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropdown } from "@codeai/cads-react";
+import { Dropdown } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
   ICON_OPTIONS,
@@ -75,6 +75,27 @@ export const cases: FixtureCase[] = [
           menuType="default"
           menuPlacement="bottomLeft"
           label="Button"
+          defaultOpen
+          disablePortal
+          options={ACTION_OPTIONS}
+        />
+      ),
+    },
+    {
+      id: "dropdown-medium-action-iconOnly-bottomleft-light",
+      mode: "light",
+      viewport: { width: 320, height: 360 },
+      render: () => (
+        <Dropdown
+          role="action"
+          size="medium"
+          menuType="default"
+          menuPlacement="bottomLeft"
+          iconOnly
+          startIconName="ellipsis-vertical"
+          buttonVariant="outlined"
+          buttonColor="secondary"
+          aria-label="More actions"
           defaultOpen
           disablePortal
           options={ACTION_OPTIONS}

@@ -32,7 +32,31 @@ export const DROPDOWN_PROP_SHEETS: PropSheet[] = [
       {
         name: "label",
         type: "ReactNode",
-        description: "Field label above the control.",
+        description:
+          "Input: field label above the control. Action: button label (ignored when iconOnly).",
+      },
+      {
+        name: "startIconName",
+        type: "FaIconName",
+        description:
+          "Leading FA icon on the trigger. Required for action iconOnly (e.g. ellipsis-vertical).",
+      },
+      {
+        name: "iconOnly",
+        type: "boolean",
+        description:
+          "Action-role only. Square icon trigger — hides label and chevron. Pair with aria-label + startIconName.",
+      },
+      {
+        name: "buttonVariant",
+        type: '"contained" | "outlined" | "text"',
+        description: "Action-role only. Button variant for the menu trigger.",
+      },
+      {
+        name: "buttonColor",
+        type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',
+        description:
+          "Action-role only. Same color rules as Button (tertiary/orange restrictions apply).",
       },
       {
         name: "required",
@@ -64,6 +88,12 @@ export const DROPDOWN_PROP_SHEETS: PropSheet[] = [
         default: '"hug"',
         description:
           'Menu sizing: content hug, trigger width, px minimum, or exact trigger-relative percentage.',
+      },
+      {
+        name: "aria-label",
+        type: "string",
+        description:
+          "Accessible name for the trigger. Required when action iconOnly is true.",
       },
     ],
   },

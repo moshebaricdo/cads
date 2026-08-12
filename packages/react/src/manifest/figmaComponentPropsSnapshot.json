@@ -421,7 +421,7 @@
         {
           "name": "helperIconName",
           "category": "content",
-          "reason": "Code identifies the default-sentiment helper icon by CADS icon name; sentiment overrides use fixed icons."
+          "reason": "Code identifies the default-sentiment helper icon by CADS icon name; presence replaces Figma boolean showHelperIcon (unset = no icon). Sentiment overrides use fixed icons."
         },
         {
           "name": "showHelper",

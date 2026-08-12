@@ -32,6 +32,10 @@ export interface ChipGroupProps {
   labelStyle?: ChipGroupLabelStyle;
   label?: ReactNode;
   helperText?: ReactNode;
+  /**
+   * Optional Field Wrapper helper icon for default sentiment. Omit for no
+   * icon; non-default sentiments use fixed icons.
+   */
   helperIconName?: FaIconName | (string & {});
   /**
    * @default true

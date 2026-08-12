@@ -2,7 +2,7 @@
 
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import { createCadsTheme } from "@codeai/cads-variables/theme";
+import { createCadsTheme } from "@moshebaricdo/cads-variables/theme";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import {
@@ -22,7 +22,7 @@ export interface CadsProviderProps {
 }
 
 /**
- * Provides the CADS MUI theme. Pair with `@codeai/cads-variables/variables.css`
+ * Provides the CADS MUI theme. Pair with `@moshebaricdo/cads-variables/variables.css`
  * and toggle `.dark` on an ancestor for dark mode.
  */
 export function CadsProvider({

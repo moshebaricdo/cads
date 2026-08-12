@@ -1,6 +1,6 @@
 ---
 name: cads-prototyping
-description: Prototype UI or build/update CADS components with @codeai/cads-react and @codeai/cads-variables at Figma fidelity. Use for CADS Figma mocks, designer prototypes, and every new or updated CodeAI design-system component.
+description: Prototype UI or build/update CADS components with @moshebaricdo/cads-react and @moshebaricdo/cads-variables at Figma fidelity. Use for CADS Figma mocks, designer prototypes, and every new or updated CodeAI design-system component.
 ---
 
 # CADS Prototyping
@@ -10,16 +10,16 @@ Build UI with the CodeAI Design System packages — never invent components, pro
 ## Sources of truth
 
 1. **Figma:** `https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-` (`fileKey: DGekOeToRVifvFAhfqpeC1`)
-2. **Manifest:** `import { cadsManifest } from "@codeai/cads-react"` (or `@codeai/cads-react/manifest`)
+2. **Manifest:** `import { cadsManifest } from "@moshebaricdo/cads-react"` (or `@moshebaricdo/cads-react/manifest`)
 3. **Docs / llms.txt:** docs site `/llms.txt` for a text catalog of every component
 4. **UI patterns:** `tooling/cads-artifact/skill/references/ui-patterns.md` — territories, app-shell/dashboard/marketing/dialog scaffolds, density, and brand vs selected vs status color rules. Read it before composing any multi-component screen so the result feels like CodeAI, not just "uses CADS".
 
 ## Setup (once per app)
 
 ```tsx
-import "@codeai/cads-variables/variables.css";
-import "@codeai/cads-react/icons/fonts.css";
-import { CadsProvider, Button } from "@codeai/cads-react";
+import "@moshebaricdo/cads-variables/variables.css";
+import "@moshebaricdo/cads-react/icons/fonts.css";
+import { CadsProvider, Button } from "@moshebaricdo/cads-react";
 ```
 
 Toggle dark mode by adding/removing `.dark` on an ancestor.
@@ -31,7 +31,7 @@ Toggle dark mode by adding/removing `.dark` on an ancestor.
 - Style with semantic color vars (e.g. `--background-brand-primary`) and non-color vars (`--shape-sm`, `--spacing-p-m`). **No hex literals. No `--ds-` prefix.**
 - Brand = CTAs / links / primary actions. Selected = filled selected chrome. Never paint selected surfaces with brand fills.
 - Control heights via `size`: `large` 48 / `medium` 40 / `small` 32 / `extraSmall` 24.
-- Icons: `FaIcon` from `@codeai/cads-react/icons` with FA Pro names.
+- Icons: `FaIcon` from `@moshebaricdo/cads-react/icons` with FA Pro names.
 
 ## Figma → code mapping (no Enterprise Code Connect)
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { Slider } from "@codeai/cads-react";
-import type { FaIconName } from "@codeai/cads-react/icons";
+import { Slider } from "@moshebaricdo/cads-react";
+import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 
 function finiteNumber(value: unknown, fallback: number): number {
   if (value == null || value === "") return fallback;

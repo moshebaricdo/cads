@@ -37,13 +37,13 @@ export const cadsManifest: {
   components: CadsComponentManifest[];
 } = {
   version: "0.1.0",
-  package: "@codeai/cads-react",
+  package: "@moshebaricdo/cads-react",
   figmaFileKey: CADS_FIGMA_FILE_KEY,
   components: [
     {
       name: "Button",
       exportName: "Button",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.",
       figma: {
@@ -117,7 +117,7 @@ export const cadsManifest: {
     {
       name: "CloseIconButton",
       exportName: "CloseIconButton",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.",
       figma: {
@@ -177,7 +177,7 @@ export const cadsManifest: {
     {
       name: "SegmentedButton",
       exportName: "SegmentedButton",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.",
       figma: {
@@ -239,7 +239,7 @@ export const cadsManifest: {
     {
       name: "IconToggle",
       exportName: "IconToggle",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).",
       figma: {
@@ -309,7 +309,7 @@ export const cadsManifest: {
     {
       name: "FieldWrapper",
       exportName: "FieldWrapper",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.",
       figma: {
@@ -330,7 +330,12 @@ export const cadsManifest: {
         },
         { name: "label", type: "ReactNode" },
         { name: "helperText", type: "ReactNode" },
-        { name: "helperIconName", type: "FaIconName" },
+        {
+          name: "helperIconName",
+          type: "FaIconName",
+          description:
+            "Optional default-sentiment helper icon. Omit for no icon (Figma showHelperIcon collapsed into presence). Non-default sentiments always use fixed icons.",
+        },
         { name: "showHelper", type: "boolean", default: "true" },
         { name: "children", type: "ReactNode", required: true },
         {
@@ -353,6 +358,7 @@ export const cadsManifest: {
       usageRules: [
         "Nest any CADS control in children (TextInput, Dropdown, Checkbox, etc.).",
         "Warning helper text stays tertiary; only the icon uses warning color.",
+        "Default helper icon is optional via helperIconName presence; sentiment icons are always shown.",
         "Non-default sentiments always show helper when helperText is set.",
         "disabled applies --text-disabled-neutral to label, helper text, and helper icon (Figma isDisabled).",
         "required appends * after the label; pair with native required on the nested control when applicable.",
@@ -362,7 +368,7 @@ export const cadsManifest: {
     {
       name: "TextInput",
       exportName: "TextInput",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.",
       figma: {
@@ -396,7 +402,12 @@ export const cadsManifest: {
         },
         { name: "label", type: "string" },
         { name: "helperText", type: "ReactNode" },
-        { name: "helperIconName", type: "FaIconName" },
+        {
+          name: "helperIconName",
+          type: "FaIconName",
+          description:
+            "Optional default-sentiment helper icon via Field Wrapper. Omit for no icon; sentiment overrides use fixed icons.",
+        },
         { name: "showHelper", type: "boolean", default: "true" },
         {
           name: "sentiment",
@@ -442,7 +453,7 @@ export const cadsManifest: {
     {
       name: "Dropdown",
       exportName: "Dropdown",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).",
       figma: {
@@ -517,6 +528,12 @@ export const cadsManifest: {
         { name: "color", type: '"primary" | "secondary"' },
         { name: "labelStyle", type: '"thick" | "thin"' },
         { name: "startIconName", type: "FaIconName" },
+        {
+          name: "iconOnly",
+          type: "boolean",
+          description:
+            "Action-role only. Square icon-only trigger (hides label + chevron); require aria-label + startIconName.",
+        },
         { name: "buttonVariant", type: '"contained" | "outlined" | "text"' },
         {
           name: "buttonColor",
@@ -542,6 +559,7 @@ export const cadsManifest: {
       ],
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
+        "role=action iconOnly renders a square icon trigger without label or chevron — set aria-label + startIconName (e.g. ellipsis-vertical overflow).",
         "Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.",
         "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
         "options may include {type:\"separator\"} and {type:\"group\",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.",
@@ -557,7 +575,7 @@ export const cadsManifest: {
     {
       name: "Checkbox",
       exportName: "Checkbox",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.",
       figma: {
@@ -608,7 +626,7 @@ export const cadsManifest: {
     {
       name: "Radio",
       exportName: "Radio",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.",
       figma: {
@@ -652,7 +670,7 @@ export const cadsManifest: {
     {
       name: "Toggle",
       exportName: "Toggle",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.",
       figma: {
@@ -725,7 +743,7 @@ export const cadsManifest: {
     {
       name: "Slider",
       exportName: "Slider",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.",
       figma: {
@@ -751,7 +769,12 @@ export const cadsManifest: {
         { name: "showDisplayValue", type: "boolean", default: "true" },
         { name: "showLabelRow", type: "boolean", default: "true" },
         { name: "helperText", type: "ReactNode" },
-        { name: "helperIconName", type: "FaIconName" },
+        {
+          name: "helperIconName",
+          type: "FaIconName",
+          description:
+            "Optional helper icon when sentiment is default. Omit for no icon; error always shows a fixed icon.",
+        },
         { name: "showHelper", type: "boolean", default: "true" },
         { name: "showControls", type: "boolean", default: "false" },
         {
@@ -835,7 +858,7 @@ export const cadsManifest: {
     {
       name: "Chip",
       exportName: "Chip",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).",
       figma: {
@@ -897,7 +920,7 @@ export const cadsManifest: {
     {
       name: "ChipGroup",
       exportName: "ChipGroup",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.",
       figma: {
@@ -923,7 +946,12 @@ export const cadsManifest: {
         },
         { name: "label", type: "ReactNode" },
         { name: "helperText", type: "ReactNode" },
-        { name: "helperIconName", type: "FaIconName" },
+        {
+          name: "helperIconName",
+          type: "FaIconName",
+          description:
+            "Optional default-sentiment helper icon via Field Wrapper. Omit for no icon; sentiment overrides use fixed icons.",
+        },
         { name: "showHelper", type: "boolean", default: "true" },
         {
           name: "options",
@@ -950,7 +978,7 @@ export const cadsManifest: {
     {
       name: "Link",
       exportName: "Link",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.",
       figma: {
@@ -1000,7 +1028,7 @@ export const cadsManifest: {
     {
       name: "Breadcrumbs",
       exportName: "Breadcrumbs",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.",
       figma: {
@@ -1072,7 +1100,7 @@ export const cadsManifest: {
     {
       name: "Tabs",
       exportName: "Tabs",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.",
       figma: {
@@ -1124,7 +1152,7 @@ export const cadsManifest: {
     {
       name: "Pagination",
       exportName: "Pagination",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).",
       figma: {
@@ -1233,7 +1261,7 @@ export const cadsManifest: {
     {
       name: "TablePagination",
       exportName: "TablePagination",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.",
       figma: {
@@ -1311,7 +1339,7 @@ export const cadsManifest: {
     {
       name: "Alert",
       exportName: "Alert",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.",
       figma: {
@@ -1366,7 +1394,7 @@ export const cadsManifest: {
     {
       name: "Toast",
       exportName: "Toast",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.",
       figma: {
@@ -1441,7 +1469,7 @@ export const cadsManifest: {
     {
       name: "NotificationBanner",
       exportName: "NotificationBanner",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.",
       figma: {
@@ -1497,7 +1525,7 @@ export const cadsManifest: {
     {
       name: "Tag",
       exportName: "Tag",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.",
       figma: {
@@ -1547,7 +1575,7 @@ export const cadsManifest: {
     {
       name: "IconTooltip",
       exportName: "IconTooltip",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
       figma: {
@@ -1611,7 +1639,7 @@ export const cadsManifest: {
     {
       name: "Tooltip",
       exportName: "Tooltip",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Small hover/focus overlay with brief contextual text on an inverse surface.",
       figma: {
@@ -1676,7 +1704,7 @@ export const cadsManifest: {
     {
       name: "Popover",
       exportName: "Popover",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.",
       figma: {
@@ -1729,7 +1757,7 @@ export const cadsManifest: {
     {
       name: "Drawer",
       exportName: "Drawer",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Bottom sheet that slides over page content without dimming or blocking it.",
       figma: {
@@ -1777,7 +1805,7 @@ export const cadsManifest: {
     {
       name: "Dialog",
       exportName: "Dialog",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Blocking confirmation overlay with short title, message, and usually two actions.",
       figma: {
@@ -1835,7 +1863,7 @@ export const cadsManifest: {
     {
       name: "Modal",
       exportName: "Modal",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Blocking overlay for rich interactive content (forms, media, multi-step flows).",
       figma: {
@@ -1898,7 +1926,7 @@ export const cadsManifest: {
     {
       name: "ChatFileRemoveButton",
       exportName: "ChatFileRemoveButton",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Compact circular remove control for AI chat file chips in the composer.",
       figma: {
@@ -1935,7 +1963,7 @@ export const cadsManifest: {
     {
       name: "AiChatFileChip",
       exportName: "AiChatFileChip",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Attachment chip for AI chat streams and the composer. File, image, and code-snippet types; inputField use case composes ChatFileRemoveButton.",
       figma: {
@@ -1990,7 +2018,7 @@ export const cadsManifest: {
     {
       name: "AiChatMessage",
       exportName: "AiChatMessage",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include file uploads and a feedback action row.",
       figma: {
@@ -2057,6 +2085,7 @@ export const cadsManifest: {
       ],
       usageRules: [
         "Human TA bubbles use brand-strong; Tutor human bubbles use info-mid.",
+        "Bubbles hug short content and grow up to 100% of the chat column; Human aligns end, AI aligns start.",
         "Action row (copy/download/feedback/flag) only renders for author=AI.",
         "Compose file chips via fileUploads rather than inventing a second message type.",
       ],
@@ -2065,7 +2094,7 @@ export const cadsManifest: {
     {
       name: "AiChatInput",
       exportName: "AiChatInput",
-      importFrom: "@codeai/cads-react",
+      importFrom: "@moshebaricdo/cads-react",
       description:
         "AI chat composer combining a text area, optional attachments, Add file action, and send. Send enables when the field has content.",
       figma: {
@@ -2121,7 +2150,7 @@ export const cadsManifest: {
     {
       name: "FaIcon",
       exportName: "FaIcon",
-      importFrom: "@codeai/cads-react/icons",
+      importFrom: "@moshebaricdo/cads-react/icons",
       description: "Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.",
       props: [
         { name: "name", type: "FaIconName | FaBrandIconName", required: true },
@@ -2139,7 +2168,7 @@ export const cadsManifest: {
       ],
       variableDependencies: ["--font-fa-pro", "--font-fa-brands"],
       usageRules: [
-        "Import @codeai/cads-react/icons/fonts.css once at app root.",
+        "Import @moshebaricdo/cads-react/icons/fonts.css once at app root.",
         "Internal FA Pro license — do not publish fonts publicly.",
       ],
       example: `<FaIcon name="arrow-right" size="medium" />`,

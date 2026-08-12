@@ -1,6 +1,6 @@
 "use client";
 
-import { SegmentedButton, Tabs } from "@codeai/cads-react";
+import { SegmentedButton, Tabs } from "@moshebaricdo/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

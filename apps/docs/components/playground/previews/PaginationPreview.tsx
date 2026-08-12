@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pagination, TablePagination } from "@codeai/cads-react";
+import { Pagination, TablePagination } from "@moshebaricdo/cads-react";
 
 export default function PaginationPreview({
   values: v,
