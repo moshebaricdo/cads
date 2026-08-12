@@ -1545,6 +1545,12 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
           name: "surfaceOnly",
           type: "boolean",
           description: "Render bubble (+ caret) inline without Popper / trigger. Used by docs Inspect and static previews."
+        },
+        {
+          name: "disableHoverListener",
+          type: "boolean",
+          default: "false",
+          description: "When true, the tooltip opens only on keyboard focus-visible (not hover). MUI already gates focus with isFocusVisible — use this for keyboard-user-specific context."
         }
       ],
       variableDependencies: [
@@ -1560,6 +1566,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "Use MUI placement for position (bottom, top-start, etc.). Figma’s caretPlacement maps inverted (Figma top → placement bottom).",
         "Icons render only when iconName is set — there is no separate boolean gate.",
         "Pass a trigger child for anchored mode, or use surfaceOnly for static previews.",
+        "Set disableHoverListener for keyboard-only (focus-visible) tooltips; hover stays off while Tab/keyboard focus still opens the bubble.",
         "Also accepts other MUI Tooltip props (slotProps, open, followCursor, …) except arrow (use hasCaret)."
       ],
       example: '<Tooltip title="Save" placement="bottom"><Button>Save</Button></Tooltip>'

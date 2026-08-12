@@ -37,6 +37,13 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
           description:
             "Leading FA icon. Omit when unset.",
         },
+        {
+          name: "disableHoverListener",
+          type: "boolean",
+          default: "false",
+          description:
+            "Keyboard focus-visible only — tooltip does not open on hover. MUI already gates focus with isFocusVisible.",
+        },
       ],
     },
   ],

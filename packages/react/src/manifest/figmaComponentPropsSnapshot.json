@@ -2437,6 +2437,11 @@
           "name": "surfaceOnly",
           "category": "composition",
           "reason": "Fixture/docs: render bubble chrome without portal/trigger wrapping."
+        },
+        {
+          "name": "disableHoverListener",
+          "category": "accessibility",
+          "reason": "MUI passthrough: keyboard focus-visible only (suppresses hover). Focus already uses isFocusVisible — no CADS fork of the listener."
         }
       ],
       "stateRecipes": [
@@ -2447,7 +2452,8 @@
         "Figma startIcon defaults true; code uses presence of iconName (unset = no icon) so short text tooltips stay compact unless opted in.",
         "Figma axis remains caretPlacement (four edges). Code API uses MUI placement only (Figma top → placement bottom; *-start/*-end pin caret near that edge).",
         "2026-07-23: long labels wrap at maxWidth 256 (left-aligned); start icon stays on the first text line.",
-        "2026-07-23: Figma boolean startIcon collapsed into presence of iconName (unset = no icon)."
+        "2026-07-23: Figma boolean startIcon collapsed into presence of iconName (unset = no icon).",
+        "2026-08-12: disableHoverListener documented for focus-visible-only tooltips (MUI isFocusVisible)."
       ]
     },
     {

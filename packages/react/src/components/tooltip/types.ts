@@ -31,4 +31,11 @@ export interface TooltipProps
    * Used by docs Inspect and static fixtures.
    */
   surfaceOnly?: boolean;
+  /**
+   * When true, suppress hover opens so the tooltip only appears on keyboard
+   * focus-visible (MUI `isFocusVisible`). Inherited from MUI Tooltip — listed
+   * here for discoverability.
+   * @default false
+   */
+  disableHoverListener?: boolean;
 }

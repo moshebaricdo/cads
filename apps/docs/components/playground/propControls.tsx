@@ -218,7 +218,7 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "showFirstButton",
     "showLastButton",
   ],
-  a11y: ["aria-label", "id", "name"],
+  a11y: ["aria-label", "id", "name", "disableHoverListener"],
 };
 
 function groupForProp(prop: CadsPropDef): ControlGroup {
@@ -1278,13 +1278,16 @@ export function propsToCode(
     return `<>\n${lines.join("\n")}\n</>`;
   }
   if (exportName === "Tooltip") {
+    const triggerLabel = values.disableHoverListener
+      ? "Focus me (Tab)"
+      : "Hover me";
     if (!attrs.length) {
       return `<Tooltip>
-  <Button>Hover me</Button>
+  <Button>${triggerLabel}</Button>
 </Tooltip>`;
     }
     return `<Tooltip${indentedAttrs}>
-  <Button>Hover me</Button>
+  <Button>${triggerLabel}</Button>
 </Tooltip>`;
   }
   if (exportName === "Popover") {
