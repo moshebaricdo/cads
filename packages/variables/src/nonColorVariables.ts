@@ -367,6 +367,7 @@ export function nonColorCssVars(): Record<string, string> {
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,
+    /* CADS runtime overlay stacking — not in prod export (Bootstrap z-index). */
     "--z-drawer": String(zIndex.drawer),
     "--z-modal": String(zIndex.modal),
     "--z-dropdown": String(zIndex.dropdown),

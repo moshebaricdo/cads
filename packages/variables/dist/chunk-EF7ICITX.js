@@ -305,6 +305,7 @@ function nonColorCssVars() {
     "--shadow-sm": elevation.shadowSm,
     "--shadow-md": elevation.shadowMd,
     "--shadow-lg": elevation.shadowLg,
+    /* CADS runtime overlay stacking — not in prod export (Bootstrap z-index). */
     "--z-drawer": String(zIndex.drawer),
     "--z-modal": String(zIndex.modal),
     "--z-dropdown": String(zIndex.dropdown),
@@ -665,4 +666,4 @@ export {
   colorVarsLight,
   colorVarsDark
 };
-//# sourceMappingURL=chunk-FKEUIARX.js.map
+//# sourceMappingURL=chunk-EF7ICITX.js.map

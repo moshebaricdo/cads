@@ -392,7 +392,7 @@ declare function resolveColorSystemToCssVars(system: ColorSystemExportDoc, mode:
  * Mirrors the component-library-styles file split:
  *  - fontVariables.css (families, weights, body sizes — prod-shaped)
  *  - typographyVariables.css (CADS runtime type scale — --text-* / --leading-*)
- *  - shapeAndSpacingVariables.css (prod shape/spacing + CADS shadow/z)
+ *  - shapeAndSpacingVariables.css (prod shape/spacing + CADS elevation shadows; no z-index — prod uses Bootstrap)
  *  - motionVariables.css (CADS motion — net-new vs prod)
  */
 type FontVariablesCssOptions = {

@@ -11,7 +11,7 @@ import {
   typography,
   zIndex,
   zIndexLayers
-} from "./chunk-FKEUIARX.js";
+} from "./chunk-EF7ICITX.js";
 
 // src/colorCssExport.ts
 var UNSET_PRIMITIVE_HEX = "#00000000";
@@ -388,13 +388,7 @@ var SHAPE_SPACING_VAR_NAMES = [
   "--spacing-p-xxxl",
   "--shadow-sm",
   "--shadow-md",
-  "--shadow-lg",
-  "--z-drawer",
-  "--z-modal",
-  "--z-dropdown",
-  "--z-popover",
-  "--z-toast",
-  "--z-tooltip"
+  "--shadow-lg"
 ];
 var MOTION_VAR_NAMES = [
   "--duration-instant",
@@ -483,10 +477,8 @@ function buildTypographyVariablesCss(vars = nonColorCssVars()) {
 }
 function buildShapeAndSpacingCss(vars = nonColorCssVars()) {
   return [
-    "/* CADS shape (border-radius) and spacing (padding) ramps, plus elevation",
-    " * shadows and overlay stacking. Shape/spacing match prod",
-    " * shapeAndSpacingVariables.css (mode- and brand-invariant).",
-    " * Generated \u2014 do not hand-edit; re-export from the Shape foundation page.",
+    "/* CADS shape (border-radius) spacing (padding) ramps, and elevation shadows.",
+    " * Generated \u2014 do not hand-edit; check with the design team first, then re-export from the Shape foundation page.",
     " */",
     ":root {",
     ...pickVars(vars, SHAPE_SPACING_VAR_NAMES).map(
@@ -522,6 +514,13 @@ function buildResidualCssVars(vars = nonColorCssVars()) {
     "--control-height-m": vars["--control-height-m"],
     "--control-height-s": vars["--control-height-s"],
     "--control-height-xs": vars["--control-height-xs"],
+    /* Overlay stacking — CADS runtime only; prod uses Bootstrap z-index. */
+    "--z-drawer": vars["--z-drawer"],
+    "--z-modal": vars["--z-modal"],
+    "--z-dropdown": vars["--z-dropdown"],
+    "--z-popover": vars["--z-popover"],
+    "--z-toast": vars["--z-toast"],
+    "--z-tooltip": vars["--z-tooltip"],
     /* FA faces — package-local, not part of prod fontVariables.css */
     "--font-fa-pro": vars["--font-fa-pro"],
     "--font-fa-brands": vars["--font-fa-brands"]

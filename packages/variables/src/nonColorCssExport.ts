@@ -4,7 +4,7 @@
  * Mirrors the component-library-styles file split:
  *  - fontVariables.css (families, weights, body sizes — prod-shaped)
  *  - typographyVariables.css (CADS runtime type scale — --text-* / --leading-*)
- *  - shapeAndSpacingVariables.css (prod shape/spacing + CADS shadow/z)
+ *  - shapeAndSpacingVariables.css (prod shape/spacing + CADS elevation shadows; no z-index — prod uses Bootstrap)
  *  - motionVariables.css (CADS motion — net-new vs prod)
  */
 
@@ -79,12 +79,6 @@ const SHAPE_SPACING_VAR_NAMES = [
   "--shadow-sm",
   "--shadow-md",
   "--shadow-lg",
-  "--z-drawer",
-  "--z-modal",
-  "--z-dropdown",
-  "--z-popover",
-  "--z-toast",
-  "--z-tooltip",
 ] as const;
 
 const MOTION_VAR_NAMES = [
@@ -200,10 +194,8 @@ export function buildShapeAndSpacingCss(
   vars: Record<string, string> = nonColorCssVars(),
 ): string {
   return [
-    "/* CADS shape (border-radius) and spacing (padding) ramps, plus elevation",
-    " * shadows and overlay stacking. Shape/spacing match prod",
-    " * shapeAndSpacingVariables.css (mode- and brand-invariant).",
-    " * Generated — do not hand-edit; re-export from the Shape foundation page.",
+    "/* CADS shape (border-radius) spacing (padding) ramps, and elevation shadows.",
+    " * Generated — do not hand-edit; check with the design team first, then re-export from the Shape foundation page.",
     " */",
     ":root {",
     ...pickVars(vars, SHAPE_SPACING_VAR_NAMES).map(
@@ -246,6 +238,13 @@ export function buildResidualCssVars(
     "--control-height-m": vars["--control-height-m"]!,
     "--control-height-s": vars["--control-height-s"]!,
     "--control-height-xs": vars["--control-height-xs"]!,
+    /* Overlay stacking — CADS runtime only; prod uses Bootstrap z-index. */
+    "--z-drawer": vars["--z-drawer"]!,
+    "--z-modal": vars["--z-modal"]!,
+    "--z-dropdown": vars["--z-dropdown"]!,
+    "--z-popover": vars["--z-popover"]!,
+    "--z-toast": vars["--z-toast"]!,
+    "--z-tooltip": vars["--z-tooltip"]!,
     /* FA faces — package-local, not part of prod fontVariables.css */
     "--font-fa-pro": vars["--font-fa-pro"]!,
     "--font-fa-brands": vars["--font-fa-brands"]!,
