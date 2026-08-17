@@ -1,8 +1,10 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-08-13
+Last updated: 2026-08-17
 
 ## Done (scaffold complete)
+
+- [x] **Breadcrumb Overflow nests Dropdown (2026-08-17)** — Ellipsis host stays at breadcrumb size; menu is the existing Dropdown (`medium` for large, `small` for medium, `extraSmall` for small/extraSmall). Figma Overflow republished `17408:6606` / key `0c72bc56…`. Action-role `trigger` slot on Dropdown for this composition.
 
 - [x] **Dropdown `menuType=custom` (2026-08-13)** — Blank menu canvas (border, shadow, `--shape-sm` only; no padding/gaps/items). `customContent` slot for consumer UI (e.g. swatch grids). Figma Menu List has no custom axis — code-only enum extra. Works on input and action. Docs playground + fixtures cover a flush color-swatch grid.
 - [x] **GitHub Packages `@moshebaricdo/cads-*` (2026-08-12)** — Publishable packages renamed off `@codeai` scaffold names. `@moshebaricdo/cads-react` + `@moshebaricdo/cads-variables` publish to GitHub Packages via changesets/action (`pnpm release`). Lab2 / other prototypes install with `@moshebaricdo:registry=https://npm.pkg.github.com` + `NODE_AUTH_TOKEN`. Sibling `file:` still works for local CADS iteration. First registry version is **0.1.0**.

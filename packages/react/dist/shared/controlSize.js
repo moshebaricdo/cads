@@ -679,8 +679,8 @@ const e = {
     lineHeight: "var(--leading-body-xxs)",
     iconPx: "0.625rem",
     // 10px
-    sepBox: "1.5rem",
-    // 24px
+    sepBox: "1.375rem",
+    // 22px
     sepIconPx: "0.625rem"
     // 10px
   }

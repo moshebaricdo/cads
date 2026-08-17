@@ -168,7 +168,7 @@
     { name: "Chip", key: "388cba2ed6150b2a9b448f1895ed2f04ca90edb2" },
     { name: "Chip Group", key: "65c61f6f006c06e27b293ca8f5e573d650c69c06" },
     { name: "Link", key: "87b099a460c3dad155731d3983e7ccfecefc5975" },
-    { name: "Breadcrumb Overflow", key: "cf5fe5c10ba6e9963eb4415d3527518d282e58fe" },
+    { name: "Breadcrumb Overflow", key: "0c72bc56f292a8ce053884db725c62f836ba7ea5" },
     { name: "Breadcrumb Separators", key: "4dd84636f0acaca75cb5ec10b2619bc8a27017bf" },
     { name: "Breadcrumb Links", key: "316cd105723e39b3784ddea7d5a376d2200f0276" },
     { name: "Breadcrumbs", key: "43afede0abfd158d2c740e2801b46d13e570a8d0" },
@@ -265,8 +265,10 @@
     // AI Support Indicator (removed)
     "2acbc590b735b611c8ba6e6c8a86adb8d3ac9275",
     // AI File Chip Close Button
-    "fe3226e7d739fa31c14ef3ae414ac909c049a77b"
+    "fe3226e7d739fa31c14ef3ae414ac909c049a77b",
     // AI Chat File Item (removed)
+    "cf5fe5c10ba6e9963eb4415d3527518d282e58fe"
+    // Breadcrumb Overflow (pre-2026-08-17 republish)
   ];
   var cadsComponentKeys = /* @__PURE__ */ new Set([
     ...cadsComponents.map((c) => c.key),

@@ -1,15 +1,9 @@
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
 import {
   Fragment,
   forwardRef,
   useId,
   useMemo,
-  useRef,
-  useState,
   type CSSProperties,
-  type KeyboardEvent,
   type MouseEvent,
 } from "react";
 import { FaIcon } from "../../icons/FaIcon";
@@ -17,10 +11,8 @@ import {
   BREADCRUMB_SIZE,
   type ControlSize,
 } from "../../shared/controlSize";
-import {
-  experimentalMotionHostAttrs,
-  useExperimentalMotion,
-} from "../../theme/experimentalMotion";
+import { Dropdown } from "../dropdown/index";
+import type { DropdownSize } from "../dropdown/types";
 import styles from "./breadcrumbs.module.scss";
 import type { BreadcrumbItem, BreadcrumbsProps } from "./types";
 
@@ -76,7 +68,7 @@ function buildTrail(
 /**
  * CADS Breadcrumbs — trail of links with separators and optional overflow.
  * Spec: Figma Breadcrumbs `16381:3339` / key `43afede0abfd158d2c740e2801b46d13e570a8d0`.
- * Internal: Links `6862:5619`, Separators `2434:9333`, Overflow `16398:927`.
+ * Internal: Links `6862:5619`, Separators `2434:9333`, Overflow `17408:6606`.
  */
 export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
   function Breadcrumbs(
@@ -105,9 +97,8 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
     const chromeVars = {
       "--crumb-link-gap": dims.linkGap,
       "--crumb-font-size": dims.fontSize,
-      "--crumb-line-height": dims.lineHeight,
+      "--crumb-row": dims.sepBox,
       "--crumb-trail-gap": dims.trailGap,
-      "--crumb-sep-box": dims.sepBox,
     } as CSSProperties;
 
     return (
@@ -129,7 +120,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
 
             return (
               <Fragment key={slotKey}>
-                <li>
+                <li className={styles.slot}>
                   {slot.kind === "item" ? (
                     <BreadcrumbLink
                       item={slot.item}
@@ -144,7 +135,6 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                     <BreadcrumbOverflow
                       size={size}
                       items={slot.items}
-                      menuId={`${listId}-overflow-menu`}
                       expandText={expandText}
                     />
                   )}
@@ -155,6 +145,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                       name="chevron-right"
                       family="solid"
                       fontSize={dims.sepIconPx}
+                      className={styles.glyph}
                     />
                   </li>
                 ) : null}
@@ -201,6 +192,7 @@ function BreadcrumbLink({
           name={item.iconName!}
           family="solid"
           fontSize={dims.iconPx}
+          className={styles.glyph}
           title={
             item.iconOnly && typeof item.label === "string"
               ? item.label
@@ -213,7 +205,7 @@ function BreadcrumbLink({
           <span style={visuallyHiddenStyle()}>{item.label}</span>
         )
       ) : (
-        item.label
+        <span className={styles.label}>{item.label}</span>
       )}
     </>
   );
@@ -262,80 +254,42 @@ function BreadcrumbLink({
   );
 }
 
-/** Action-menu item geometry (Dropdown `role="action"`), icon slot omitted. */
-const OVERFLOW_MENU_ITEM: Record<
-  BreadcrumbsSize,
-  {
-    paddingLeft: string;
-    paddingRight: string;
-    paddingBlock: string;
-    fontSize: string;
-    lineHeight: string;
-  }
-> = {
-  large: {
-    paddingLeft: "1rem",
-    paddingRight: "1.375rem",
-    paddingBlock: "0.625rem",
-    fontSize: "var(--text-body-lg)",
-    lineHeight: "var(--leading-body-lg)",
-  },
-  medium: {
-    paddingLeft: "0.75rem",
-    paddingRight: "1rem",
-    paddingBlock: "0.5rem",
-    fontSize: "var(--text-body-md)",
-    lineHeight: "var(--leading-body-md)",
-  },
-  small: {
-    paddingLeft: "0.625rem",
-    paddingRight: "0.875rem",
-    paddingBlock: "0.3125rem",
-    fontSize: "var(--text-body-sm)",
-    lineHeight: "var(--leading-body-sm)",
-  },
-  extraSmall: {
-    paddingLeft: "0.5rem",
-    paddingRight: "0.625rem",
-    paddingBlock: "0.125rem",
-    fontSize: "var(--text-body-xs)",
-    lineHeight: "var(--leading-body-xs)",
-  },
-};
+/** Overflow menu: medium for L, small for M, extraSmall for S/XS. */
+function overflowMenuSize(size: BreadcrumbsSize): DropdownSize {
+  if (size === "large") return "medium";
+  if (size === "medium") return "small";
+  return "extraSmall";
+}
+
+function overflowItemValue(
+  item: BreadcrumbItem,
+  index: number,
+): string {
+  return item.key ?? `overflow-${index}`;
+}
 
 function BreadcrumbOverflow({
   size,
   items,
-  menuId,
   expandText,
 }: {
   size: BreadcrumbsSize;
   items: Array<{ item: BreadcrumbItem; index: number }>;
-  menuId: string;
   expandText: string;
 }) {
   const dims = BREADCRUMB_SIZE[size];
-  const menuDims =
-    OVERFLOW_MENU_ITEM[
-      size === "large" || size === "medium" ? "small" : "extraSmall"
-    ];
-  const experimentalMotion = useExperimentalMotion();
-  const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const triggerId = useId();
 
-  const activate = (
-    entry: { item: BreadcrumbItem; index: number },
-    event: MouseEvent<HTMLElement>,
-  ) => {
+  const activate = (value: string) => {
+    const entry = items.find(
+      ({ item, index }) => overflowItemValue(item, index) === value,
+    );
+    if (!entry || entry.item.disabled) return;
     const { item } = entry;
-    if (item.disabled) return;
-    setOpen(false);
-    setActiveIndex(-1);
     if (item.onClick) {
       item.onClick(
-        event as unknown as MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+        undefined as unknown as MouseEvent<
+          HTMLAnchorElement | HTMLButtonElement
+        >,
       );
       return;
     }
@@ -344,160 +298,33 @@ function BreadcrumbOverflow({
     }
   };
 
-  const focusableIndexes = items
-    .map((entry, index) => (entry.item.disabled ? -1 : index))
-    .filter((index) => index >= 0);
-
-  const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!open) return;
-    switch (event.key) {
-      case "Escape":
-        event.stopPropagation();
-        event.preventDefault();
-        setOpen(false);
-        setActiveIndex(-1);
-        anchorRef.current?.focus();
-        break;
-      case "ArrowDown": {
-        event.preventDefault();
-        if (focusableIndexes.length === 0) break;
-        const pos = focusableIndexes.indexOf(activeIndex);
-        const next =
-          focusableIndexes[
-            pos === -1 ? 0 : (pos + 1) % focusableIndexes.length
-          ]!;
-        setActiveIndex(next);
-        break;
-      }
-      case "ArrowUp": {
-        event.preventDefault();
-        if (focusableIndexes.length === 0) break;
-        const pos = focusableIndexes.indexOf(activeIndex);
-        const next =
-          focusableIndexes[
-            pos <= 0
-              ? focusableIndexes.length - 1
-              : (pos - 1 + focusableIndexes.length) % focusableIndexes.length
-          ]!;
-        setActiveIndex(next);
-        break;
-      }
-      case "Enter":
-      case " ": {
-        if (activeIndex < 0) break;
-        event.preventDefault();
-        const entry = items[activeIndex];
-        if (entry && !entry.item.disabled) {
-          activate(entry, event as unknown as MouseEvent<HTMLElement>);
-        }
-        break;
-      }
-      default:
-        break;
-    }
-  };
-
-  const menuItemVars = {
-    "--menu-padding-left": menuDims.paddingLeft,
-    "--menu-padding-right": menuDims.paddingRight,
-    "--menu-padding-block": menuDims.paddingBlock,
-    "--menu-font-size": menuDims.fontSize,
-    "--menu-line-height": menuDims.lineHeight,
-  } as CSSProperties;
-
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (open) {
-          setOpen(false);
-          setActiveIndex(-1);
-        }
-      }}
-    >
-      <div
-        style={{ position: "relative", display: "inline-flex" }}
-        onKeyDown={onMenuKeyDown}
-      >
+    <Dropdown
+      role="action"
+      size={overflowMenuSize(size)}
+      className={styles.overflowHost}
+      aria-label={expandText}
+      options={items.map(({ item, index }) => ({
+        value: overflowItemValue(item, index),
+        label: item.label,
+        disabled: item.disabled,
+      }))}
+      onAction={activate}
+      trigger={
         <button
-          ref={anchorRef}
-          id={triggerId}
           type="button"
           className={styles.overflow}
-          aria-label={expandText}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-controls={open ? menuId : undefined}
           data-cads-breadcrumb-overflow=""
           data-cads-press=""
-          onClick={() => {
-            setOpen((v) => {
-              const next = !v;
-              if (next) setActiveIndex(focusableIndexes[0] ?? -1);
-              else setActiveIndex(-1);
-              return next;
-            });
-          }}
         >
-          <FaIcon name="ellipsis" family="solid" fontSize={dims.sepIconPx} />
+          <FaIcon
+            name="ellipsis"
+            family="solid"
+            fontSize={dims.iconPx}
+            className={styles.glyph}
+          />
         </button>
-        <Popper
-          open={open}
-          anchorEl={anchorRef.current}
-          placement="bottom-start"
-          style={{ zIndex: "var(--z-dropdown)" }}
-          modifiers={[{ name: "offset", options: { offset: [0, 4] } }]}
-        >
-          <Paper
-            id={menuId}
-            role="menu"
-            aria-labelledby={triggerId}
-            data-cads-breadcrumb-overflow-menu=""
-            data-cads-surface=""
-            data-cads-surface-state="enter"
-            {...experimentalMotionHostAttrs(experimentalMotion)}
-            elevation={0}
-            sx={{
-              mt: 0,
-              border: "1px solid var(--border-neutral-primary)",
-              borderRadius: "var(--shape-sm)",
-              backgroundColor: "var(--background-neutral-primary)",
-              boxShadow: "var(--shadow-md)",
-              overflow: "hidden",
-              minWidth: 120,
-              py: "4px",
-              "--cads-surface-origin": "top left",
-            }}
-          >
-            {items.map(({ item, index }) => {
-              const disabled = Boolean(item.disabled);
-              const active = index === activeIndex;
-              return (
-                <div
-                  key={item.key ?? `overflow-${index}`}
-                  role="menuitem"
-                  aria-disabled={disabled || undefined}
-                  data-cads-dropdown-item=""
-                  data-active={active ? "true" : undefined}
-                  tabIndex={-1}
-                  className={styles.overflowMenuItem}
-                  style={menuItemVars}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(event) => {
-                    if (!disabled) activate({ item, index }, event);
-                  }}
-                  onMouseEnter={() => {
-                    if (!disabled) setActiveIndex(index);
-                  }}
-                >
-                  <span className={styles.overflowMenuItemLabel}>
-                    {item.label}
-                  </span>
-                </div>
-              );
-            })}
-          </Paper>
-        </Popper>
-      </div>
-    </ClickAwayListener>
+      }
+    />
   );
 }

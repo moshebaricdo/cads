@@ -1,18 +1,22 @@
-import './breadcrumbs.css';const e = "_link_1x7ck_1", o = "_overflow_1x7ck_44", t = "_trail_1x7ck_75", l = "_separator_1x7ck_85", r = "_overflowMenuItem_1x7ck_96", _ = "_overflowMenuItemLabel_1x7ck_124", n = {
-  link: e,
-  overflow: o,
-  trail: t,
-  separator: l,
-  overflowMenuItem: r,
-  overflowMenuItemLabel: _
+import './breadcrumbs.css';const o = "_link_1f1xq_1", l = "_label_1f1xq_45", t = "_glyph_1f1xq_51", _ = "_overflowHost_1f1xq_58", s = "_overflow_1f1xq_58", r = "_trail_1f1xq_99", e = "_slot_1f1xq_110", f = "_separator_1f1xq_117", a = {
+  link: o,
+  label: l,
+  glyph: t,
+  overflowHost: _,
+  overflow: s,
+  trail: r,
+  slot: e,
+  separator: f
 };
 export {
-  n as default,
-  e as link,
-  o as overflow,
-  r as overflowMenuItem,
-  _ as overflowMenuItemLabel,
-  l as separator,
-  t as trail
+  a as default,
+  t as glyph,
+  l as label,
+  o as link,
+  s as overflow,
+  _ as overflowHost,
+  f as separator,
+  e as slot,
+  r as trail
 };
 //# sourceMappingURL=breadcrumbs.module.scss.js.map

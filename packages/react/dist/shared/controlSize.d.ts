@@ -179,8 +179,10 @@ export declare const TABS_SIZE: Record<ControlSize, {
 }>;
 /**
  * Breadcrumbs trail geometry from Figma Breadcrumbs (`16381:3339`),
- * Breadcrumb Links (`6862:5619`), Separators (`2434:9333`), Overflow (`16398:927`).
+ * Breadcrumb Links (`6862:5619`), Separators (`2434:9333`), Overflow (`17408:6606`).
  * Type scale is one step smaller than Button at each size (body/md → body/xxs).
+ * `sepBox` is the shared row height for Links, Separators, and Overflow
+ * (28 / 26 / 24 / 22) so the trail can share one vertical centerline.
  */
 export declare const BREADCRUMB_SIZE: Record<ControlSize, {
     linkGap: string;

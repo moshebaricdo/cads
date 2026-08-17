@@ -510,7 +510,8 @@ Usage rules:
 - Mark the current page with items[].current — rendered as text, not a link.
 - Optional leading icon via items[].iconName on any crumb (not first-only); iconOnly hides the label.
 - Prefer items[] composition; do not use Breadcrumb Links standalone.
-- Overflow ellipsis opens a dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown).
+- Overflow ellipsis opens a nested Dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown Menu List).
+- Overflow menu size: medium for large breadcrumbs, small for medium, extraSmall for small/extraSmall.
 - Interaction states are CSS recipes — not React props. No underline on hover.
 
 Example:

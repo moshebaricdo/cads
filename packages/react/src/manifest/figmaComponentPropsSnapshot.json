@@ -1614,9 +1614,27 @@
         },
         "breadcrumbOverflow": {
           "figmaName": "Breadcrumb Overflow",
-          "nodeId": "16398:927",
-          "componentKey": "cf5fe5c10ba6e9963eb4415d3527518d282e58fe",
-          "notes": "Ellipsis overflow control composed with Dropdown; opens menu of truncated items on click."
+          "nodeId": "17408:6606",
+          "componentKey": "0c72bc56f292a8ce053884db725c62f836ba7ea5",
+          "variantProperties": {
+            "size": [
+              "large",
+              "medium",
+              "small",
+              "extraSmall"
+            ],
+            "state": [
+              "default",
+              "hover",
+              "focus",
+              "press",
+              "disabled"
+            ]
+          },
+          "designOnlyAxes": [
+            "state"
+          ],
+          "notes": "Ellipsis overflow control. Nests Dropdown Menu List: medium for large breadcrumbs, small for medium, extraSmall for small/extraSmall. Open is interaction, not a React prop."
         }
       },
       "designOnlyAxes": [],
@@ -1665,7 +1683,8 @@
       "escalate": [],
       "notes": [
         "Accepted: slot-vs-items: Accepted code-idiomatic composition (same pattern as SegmentedButton options). (figma: Breadcrumbs uses a scoped slot of Links/Separators/Overflow.; code: Public API uses items[] + maxItems/itemsBeforeCollapse/itemsAfterCollapse; separators/overflow are composed internally.)",
-        "Overflow opens a dropdown of truncated pages (Figma), not MUI's in-place expand-all."
+        "Overflow opens a nested Dropdown of truncated pages (Figma), not MUI's in-place expand-all.",
+        "Overflow menu size maps large → Dropdown medium, medium → small, small/extraSmall → extraSmall."
       ]
     },
     {

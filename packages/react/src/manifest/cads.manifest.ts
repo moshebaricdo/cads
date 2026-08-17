@@ -1094,6 +1094,7 @@ export const cadsManifest: {
       variableDependencies: [
         "--text-neutral-quaternary",
         "--text-neutral-secondary",
+        "--text-neutral-primary",
         "--text-selected-primary-inverse",
         "--text-disabled-neutral",
         "--border-focused-primary",
@@ -1106,7 +1107,8 @@ export const cadsManifest: {
         "Mark the current page with items[].current — rendered as text, not a link.",
         "Optional leading icon via items[].iconName on any crumb (not first-only); iconOnly hides the label.",
         "Prefer items[] composition; do not use Breadcrumb Links standalone.",
-        "Overflow ellipsis opens a dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown).",
+        "Overflow ellipsis opens a nested Dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown Menu List).",
+        "Overflow menu size: medium for large breadcrumbs, small for medium, extraSmall for small/extraSmall.",
         "Interaction states are CSS recipes — not React props. No underline on hover.",
       ],
       example: `<Breadcrumbs size="medium" maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} items={[{label:"Home",href:"/"},{label:"Library",href:"#",iconName:"box-archive"},{label:"A",href:"#"},{label:"B",href:"#"},{label:"Page",current:true}]} />`,

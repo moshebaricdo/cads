@@ -9,20 +9,24 @@
     "relatedNodeIds": [
       "6862:5619",
       "2434:9333",
-      "16398:927"
+      "17408:6606"
     ],
     "relatedComponentKeys": [
       "316cd105723e39b3784ddea7d5a376d2200f0276",
       "4dd84636f0acaca75cb5ec10b2619bc8a27017bf",
-      "cf5fe5c10ba6e9963eb4415d3527518d282e58fe"
+      "0c72bc56f292a8ce053884db725c62f836ba7ea5"
     ],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-08-17",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
-    "figmaChanges": []
+    "taskPath": "figma-update",
+    "previousRecipe": "new (2026-07-17)",
+    "figmaChanges": [
+      "Breadcrumb Overflow republished 16398:927 → 17408:6606 (key 0c72bc56…)",
+      "Overflow nests Dropdown Menu List: medium for large, small for medium, extraSmall for small/extraSmall",
+      "Overflow hover/press text uses --text-neutral-primary; ellipsis glyph uses body textSize (iconPx)"
+    ]
   },
   "axes": {
     "public": {
@@ -47,7 +51,8 @@
         "fontSize": "16px",
         "lineHeight": "24px",
         "iconPx": "16px",
-        "sepBox": "28px"
+        "sepBox": "28px",
+        "rowHeight": "28px"
       },
       "medium": {
         "linkGap": "8px",
@@ -55,7 +60,8 @@
         "fontSize": "14px",
         "lineHeight": "22px",
         "iconPx": "14px",
-        "sepBox": "26px"
+        "sepBox": "26px",
+        "rowHeight": "26px"
       },
       "small": {
         "linkGap": "6px",
@@ -63,7 +69,8 @@
         "fontSize": "12px",
         "lineHeight": "18px",
         "iconPx": "12px",
-        "sepBox": "24px"
+        "sepBox": "24px",
+        "rowHeight": "24px"
       },
       "extraSmall": {
         "linkGap": "6px",
@@ -71,7 +78,8 @@
         "fontSize": "10px",
         "lineHeight": "16px",
         "iconPx": "10px",
-        "sepBox": "24px"
+        "sepBox": "22px",
+        "rowHeight": "22px"
       }
     },
     "layout": {
@@ -91,7 +99,14 @@
       "family": "solid",
       "separator": "chevron-right",
       "overflow": "ellipsis",
-      "size": "size-scaled"
+      "size": "size-scaled",
+      "overflowGlyph": "body textSize (iconPx), not separator chevron size",
+      "overflowMenuSize": {
+        "large": "medium",
+        "medium": "small",
+        "small": "extraSmall",
+        "extraSmall": "extraSmall"
+      }
     }
   },
   "recipes": [
@@ -181,7 +196,7 @@
       },
       {
         "id": "breadcrumbs-medium-overflow-light",
-        "figmaNodeId": "16381:3339",
+        "figmaNodeId": "17408:6606",
         "figmaVariant": "size=medium",
         "mode": "light",
         "props": {
@@ -272,7 +287,21 @@
       }
     ]
   },
-  "acceptedDifferences": [],
+  "acceptedDifferences": [
+    {
+      "caseIds": [
+        "breadcrumbs-large-default-light",
+        "breadcrumbs-medium-overflow-light",
+        "breadcrumbs-small-icon-home-light",
+        "breadcrumbs-xs-default-light",
+        "breadcrumbs-large-default-dark"
+      ],
+      "figmaBehavior": "Breadcrumb Link hugs type line-height (large 24 / medium 22 / small 20 / extraSmall 18). Separators and Overflow are 28 / 26 / 24 / 22.",
+      "codeBehavior": "Links, Separators, Overflow, and each trail slot share the row height 28 / 26 / 24 / 22 with flex-centered contents.",
+      "reason": "Composed trail must share one vertical centerline. Designer: overall height scale for breadcrumbs and building blocks is 28/26/24/22.",
+      "decisionSource": "user 2026-08-17"
+    }
+  ],
   "evidence": {
     "apiAudit": "pnpm figma:audit-props -- --strict → 0 error / 0 warn / 0 escalate",
     "typecheck": "pnpm typecheck — pass",
@@ -283,7 +312,9 @@
       "Link focus ring: &:focus-visible, &.Mui-focusVisible for fixture CDP/Mui focus class",
       "Link hover textDecoration:none to beat docs global a:hover underline",
       "Fixture root CSS: neutralize docs a:hover underline under [data-cads-fixture-root]",
-      "Overflow (maxItems) + home icon + current selected token captures vs figma-breadcrumbs-set.png"
+      "Overflow (maxItems) + home icon + current selected token captures vs figma-breadcrumbs-set.png",
+      "2026-08-17: nest Dropdown for overflow menu (medium L, small M, extraSmall S/XS); custom trigger slot; overflow hover --text-neutral-primary; extraSmall sepBox 22px",
+      "2026-08-17: shared row height 28/26/24/22; links no longer hug type line-height; glyphs and overflow host flex-centered"
     ]
   }
 }
