@@ -91,6 +91,19 @@
   padding-block: var(--dd-panel-py);
 }
 
+/* Blank canvas — chrome only (border / shadow / radius). No padding or gaps. */
+.menuPanelCustom {
+  padding: 0;
+  gap: 0;
+}
+
+.customSlot {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 .optionsList {
   display: flex;
   flex-direction: column;

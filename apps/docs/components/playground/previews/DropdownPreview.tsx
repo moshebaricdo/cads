@@ -12,6 +12,10 @@ import {
 } from "@moshebaricdo/cads-react";
 import type { FaIconName } from "@moshebaricdo/cads-react/icons";
 import {
+  DemoSwatchMenu,
+  SWATCH_OPTIONS,
+} from "../../../app/fixtures/components/cases/shared";
+import {
   DEMO_DROPDOWN_ACTION_OPTIONS,
   DEMO_DROPDOWN_ICON_OPTIONS,
   DEMO_DROPDOWN_OPTIONS,
@@ -151,7 +155,8 @@ export default function DropdownPreview({
     | "extraSmall"
     | undefined;
   const menuType =
-    (v.menuType as "default" | "checklist" | undefined) ?? "default";
+    (v.menuType as "default" | "checklist" | "custom" | undefined) ??
+    "default";
   const menuPlacement = v.menuPlacement as
     | "bottomLeft"
     | "bottomRight"
@@ -167,8 +172,98 @@ export default function DropdownPreview({
     ? ({ open: true as const, disablePortal: true as const } as const)
     : ({ defaultOpen: Boolean(v.defaultOpen) } as const);
 
+  const widthRaw = String(v.width ?? "hug").trim() || "hug";
+  const width =
+    widthRaw === "hug" || widthRaw === "full"
+      ? widthRaw
+      : /^\d+(\.\d+)?$/.test(widthRaw)
+        ? Number(widthRaw)
+        : widthRaw;
+
+  const [swatch, setSwatch] = useState("brand");
+
   let dropdown: ReactNode;
-  if (role === "action") {
+  if (menuType === "custom") {
+    const iconOnly = Boolean(v.iconOnly);
+    const startIconName = (String(v.startIconName ?? "").trim() ||
+      (iconOnly ? "ellipsis-vertical" : undefined)) as FaIconName | undefined;
+    const swatchMenu = (
+      <DemoSwatchMenu
+        value={swatch}
+        onChange={(next) => {
+          setSwatch(next);
+        }}
+      />
+    );
+    if (role === "action") {
+      dropdown = (
+        <Dropdown
+          role="action"
+          size={size}
+          menuType="custom"
+          menuPlacement={menuPlacement}
+          iconOnly={iconOnly || undefined}
+          label={iconOnly ? undefined : String(v.label ?? "Color")}
+          startIconName={startIconName}
+          buttonVariant={
+            v.buttonVariant as "contained" | "outlined" | "text" | undefined
+          }
+          buttonColor={
+            v.buttonColor as
+              | "primary"
+              | "secondary"
+              | "tertiary"
+              | "orange"
+              | "error"
+              | undefined
+          }
+          disabled={Boolean(v.disabled)}
+          {...inspectOpen}
+          customContent={swatchMenu}
+          aria-label={String(
+            v["aria-label"] || (iconOnly ? "More actions" : "Color"),
+          )}
+        />
+      );
+    } else {
+      dropdown = (
+        <Dropdown
+          role="input"
+          size={size}
+          menuType="custom"
+          menuPlacement={menuPlacement}
+          width={width}
+          label={String(v.label ?? "Color")}
+          helperText={v.helperText ? String(v.helperText) : undefined}
+          placeholder={String(v.placeholder ?? "Select…")}
+          color={v.color as "primary" | "secondary" | undefined}
+          labelStyle={v.labelStyle as "thick" | "thin" | undefined}
+          startIconName={
+            (String(v.startIconName ?? "").trim() || undefined) as
+              | FaIconName
+              | undefined
+          }
+          disabled={Boolean(v.disabled)}
+          readOnly={Boolean(v.readOnly)}
+          error={Boolean(v.error)}
+          required={Boolean(v.required)}
+          {...inspectOpen}
+          value={swatch}
+          onChange={(next) => {
+            if (typeof next === "string") setSwatch(next);
+          }}
+          options={SWATCH_OPTIONS}
+          customContent={
+            <DemoSwatchMenu
+              value={swatch}
+              onChange={(next) => setSwatch(next)}
+            />
+          }
+          aria-label={String(v["aria-label"] || "Color")}
+        />
+      );
+    }
+  } else if (role === "action") {
     const iconOnly = Boolean(v.iconOnly);
     const startIconName = (String(v.startIconName ?? "").trim() ||
       (iconOnly ? "ellipsis-vertical" : undefined)) as FaIconName | undefined;
@@ -202,13 +297,6 @@ export default function DropdownPreview({
       />
     );
   } else {
-    const widthRaw = String(v.width ?? "hug").trim() || "hug";
-    const width =
-      widthRaw === "hug" || widthRaw === "full"
-        ? widthRaw
-        : /^\d+(\.\d+)?$/.test(widthRaw)
-          ? Number(widthRaw)
-          : widthRaw;
     const baseOptions: DropdownOption[] =
       menuType === "default" && v.demoItemIcons
         ? DEMO_DROPDOWN_ICON_OPTIONS

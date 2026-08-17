@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { FaIconName } from "../../icons/faProRegularCodepoints";
 import type { ButtonColor, ButtonVariant } from "../button/types";
 import type { FieldSentiment } from "../field-wrapper";
@@ -6,7 +6,7 @@ import type { ControlSize } from "../../shared/controlSize";
 
 export type DropdownSize = ControlSize;
 export type DropdownRole = "input" | "action";
-export type DropdownMenuType = "default" | "checklist";
+export type DropdownMenuType = "default" | "checklist" | "custom";
 export type DropdownMenuPlacement =
   | "bottomLeft"
   | "bottomRight"
@@ -73,14 +73,12 @@ export type DropdownOption =
 
 interface DropdownBaseProps {
   size?: DropdownSize;
-  menuType?: DropdownMenuType;
   menuPlacement?: DropdownMenuPlacement;
   /**
    * Menu panel width behavior.
    * @default "hug"
    */
   menuWidth?: DropdownMenuWidth;
-  options: DropdownOption[];
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -95,7 +93,24 @@ interface DropdownBaseProps {
   "aria-label"?: string;
 }
 
-export interface DropdownInputProps extends DropdownBaseProps {
+/** List menus render `options` as rows (default / checklist). */
+interface DropdownListMenuProps {
+  menuType?: "default" | "checklist";
+  options: DropdownOption[];
+}
+
+/**
+ * Blank menu canvas — keeps panel border, shadow, and radius only.
+ * Consumers own inner padding, gaps, and content (e.g. a swatch grid).
+ * `options` are optional and used only for the input-role trigger label / hug.
+ */
+interface DropdownCustomMenuProps {
+  menuType: "custom";
+  customContent: ReactNode;
+  options?: DropdownOption[];
+}
+
+interface DropdownInputFields extends DropdownBaseProps {
   role: "input";
   label?: ReactNode;
   /**
@@ -128,7 +143,7 @@ export interface DropdownInputProps extends DropdownBaseProps {
   onChange?: (value: string | string[]) => void;
 }
 
-export interface DropdownActionProps extends DropdownBaseProps {
+interface DropdownActionFields extends DropdownBaseProps {
   role: "action";
   /** Button label. Ignored when `iconOnly` is true. */
   label?: ReactNode;
@@ -140,9 +155,26 @@ export interface DropdownActionProps extends DropdownBaseProps {
   iconOnly?: boolean;
   buttonVariant?: ButtonVariant;
   buttonColor?: ButtonColor;
+  /**
+   * Replace the action Button with a custom trigger (composition).
+   * Breadcrumb Overflow uses this so the ellipsis host stays at breadcrumb
+   * size while the nested menu uses Dropdown `medium` / `small` / `extraSmall`.
+   * Must be a button that can receive a ref, onClick, and ARIA attributes.
+   * Ignores `label` / `iconOnly` / `startIconName` / button chrome when set.
+   */
+  trigger?: ReactElement;
   onAction?: (value: string) => void;
-  /** Action menus are non-checklist (`menuType=default`) in Figma. */
-  menuType?: "default";
 }
+
+export type DropdownInputProps =
+  | (DropdownInputFields & DropdownListMenuProps)
+  | (DropdownInputFields & DropdownCustomMenuProps);
+
+export type DropdownActionProps =
+  | (DropdownActionFields & {
+      menuType?: "default";
+      options: DropdownOption[];
+    })
+  | (DropdownActionFields & DropdownCustomMenuProps);
 
 export type DropdownProps = DropdownInputProps | DropdownActionProps;

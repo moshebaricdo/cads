@@ -805,8 +805,28 @@
           "name": "menuWidth",
           "category": "layout",
           "reason": "Menu panel sizing (hug | trigger | px minimum | trigger-relative percentage). Code-only — dense numeric menus vs spacious form selects. Not a Figma variant axis."
+        },
+        {
+          "name": "iconOnly",
+          "category": "composition",
+          "reason": "Action-role square icon trigger (hides label + chevron). Code-owned Button composition; Figma action symbols stay labeled + chevron."
+        },
+        {
+          "name": "trigger",
+          "category": "composition",
+          "reason": "Action-role custom trigger slot. Figma Breadcrumb Overflow nests Dropdown Menu List on an ellipsis host — code replaces the action Button so menu size can differ from the trigger."
+        },
+        {
+          "name": "customContent",
+          "category": "content",
+          "reason": "Slot for menuType=custom. Figma Menu List has no custom axis — code-owned blank canvas (border/shadow/radius only)."
         }
       ],
+      "codeOnlyEnumValues": {
+        "menuType": {
+          "custom": "Blank menu canvas (border, shadow, radius only). Not a Figma menuType value — consumers own inner content (e.g. swatch grids)."
+        }
+      },
       "stateRecipes": [
         "default",
         "hover",

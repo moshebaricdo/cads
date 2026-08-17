@@ -235,11 +235,12 @@ Import: `import { Dropdown } from "@moshebaricdo/cads-react"`
 Props:
 - `role`: "input" | "action" [required] — input = form select; action = button menu
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
-- `menuType`: "default" | "checklist" (default "default") — default = single-select list (item iconName optional); checklist = multi-select (input-only)
+- `menuType`: "default" | "checklist" | "custom" (default "default") — default = single-select list (item iconName optional); checklist = multi-select (input-only); custom = blank menu canvas (border/shadow/radius only)
 - `menuPlacement`: "bottomLeft" | "bottomRight" | "topLeft" | "topRight" (default "bottomLeft")
 - `width`: string (default "hug") — Input-role only. "hug" (default) = static width from longest option/placeholder; "full" = 100%; or any CSS length (12rem, 240px, 50%). Numbers are px.
 - `menuWidth`: "hug" | "trigger" | number | `${number}%` (default "hug") — Menu panel sizing. "hug" fits content (never narrower than the trigger); "trigger" locks to the trigger; a number sets a px minimum; a percentage is an exact trigger-relative width.
-- `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted).
+- `options`: DropdownOption[] [required] — Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted). Optional when menuType=custom (input trigger label / hug only).
+- `customContent`: ReactNode — Required when menuType=custom. Renders inside an unpadded menu panel — own padding, gaps, and density.
 - `label`: ReactNode
 - `helperText`: ReactNode
 - `placeholder`: string
@@ -257,6 +258,7 @@ Props:
 - `labelStyle`: "thick" | "thin"
 - `startIconName`: FaIconName
 - `iconOnly`: boolean — Action-role only. Square icon-only trigger (hides label + chevron); require aria-label + startIconName.
+- `trigger`: ReactElement — Action-role only. Replace the Button with a custom trigger (e.g. Breadcrumb Overflow ellipsis). Menu still sizes from `size`.
 - `buttonVariant`: "contained" | "outlined" | "text"
 - `buttonColor`: "primary" | "secondary" | "tertiary" | "orange" | "error"
 - `aria-label`: string
@@ -264,8 +266,10 @@ Props:
 Usage rules:
 - role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.
 - role=action iconOnly renders a square icon trigger without label or chevron — set aria-label + startIconName (e.g. ellipsis-vertical overflow).
+- role=action trigger replaces the Button for composition (Breadcrumb Overflow ellipsis). Menu size is independent of the host control size.
 - Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.
 - menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.
+- menuType=custom is a blank menu (border, shadow, radius only — no padding or gaps). Pass customContent; options are unused in the panel (optional for the input trigger label).
 - options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.
 - Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.
 - menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.

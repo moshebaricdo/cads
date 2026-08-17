@@ -1,7 +1,9 @@
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Popper from "@mui/material/Popper";
 import {
+  cloneElement,
   forwardRef,
+  isValidElement,
   useCallback,
   useEffect,
   useId,
@@ -11,6 +13,8 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent,
+  type MouseEvent,
+  type ReactElement,
   type ReactNode,
   type SyntheticEvent,
 } from "react";
@@ -399,6 +403,7 @@ function DropdownButtonTrigger({
   id,
   listedBy,
   ariaLabel,
+  ariaHasPopup,
   triggerWidth,
 }: {
   size: DropdownSize;
@@ -417,6 +422,7 @@ function DropdownButtonTrigger({
   id: string;
   listedBy?: string;
   ariaLabel?: string;
+  ariaHasPopup?: "listbox" | "menu" | "dialog";
   triggerWidth: CSSProperties["width"];
 }) {
   const dims = TEXT_INPUT_SIZE[size];
@@ -452,7 +458,7 @@ function DropdownButtonTrigger({
       type="button"
       id={id}
       disabled={disabled || readOnly}
-      aria-haspopup={listedBy ? "listbox" : "menu"}
+      aria-haspopup={ariaHasPopup ?? (listedBy ? "listbox" : "menu")}
       aria-expanded={open}
       aria-controls={listedBy}
       aria-required={required || undefined}
@@ -493,7 +499,7 @@ function MenuItemRow({
   option: DropdownItemOption;
   size: DropdownSize;
   selected: boolean;
-  menuType: DropdownMenuType;
+  menuType: Exclude<DropdownMenuType, "custom">;
   role: DropdownRole;
   active: boolean;
   /** Keyboard highlight — Figma item `state=focus` (distinct from pointer hover). */
@@ -639,7 +645,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       menuType = "default",
       menuPlacement = "bottomLeft",
       menuWidth = "hug",
-      options,
+      options: optionsProp,
       open: openProp,
       defaultOpen = false,
       onOpenChange,
@@ -651,6 +657,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     } = props;
 
     const isInput = props.role === "input";
+    const isCustom = props.menuType === "custom";
+    const options = optionsProp ?? [];
+    const customContent = isCustom ? props.customContent : undefined;
     const reactId = useId();
     const listId = `cads-dropdown-list-${reactId}`;
     const triggerId = `cads-dropdown-trigger-${reactId}`;
@@ -831,6 +840,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         ) {
           event.preventDefault();
           setOpen(true);
+          if (isCustom) return;
           if (event.key === "ArrowUp") {
             for (let i = options.length - 1; i >= 0; i--) {
               if (isSelectableOption(options[i]!)) {
@@ -851,6 +861,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         anchorRef.current?.focus();
         return;
       }
+      if (isCustom) return;
       if (event.key === "ArrowDown") {
         event.preventDefault();
         moveActive(1);
@@ -880,8 +891,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
     };
 
-    const resolvedMenuType: DropdownMenuType =
-      isInput && (inputProps?.menuType ?? menuType) === "checklist"
+    const resolvedMenuType: DropdownMenuType = isCustom
+      ? "custom"
+      : isInput && (inputProps?.menuType ?? menuType) === "checklist"
         ? "checklist"
         : "default";
 
@@ -904,7 +916,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const menuVars = {
       "--dd-panel-width": menuPanelWidthCss,
       "--dd-panel-min-width": menuPanelMinWidthCss,
-      "--dd-panel-py": isChecklist ? "0" : "4px",
+      "--dd-panel-py": isCustom || isChecklist ? "0" : "4px",
       "--dd-list-py": isChecklist ? "4px" : "0",
       "--dd-item-pl": itemDims.paddingLeft,
       "--dd-item-pr": itemDims.paddingRight,
@@ -948,7 +960,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       >
         <div
           id={listId}
-          role={isInput ? "listbox" : "menu"}
+          role={isCustom ? "dialog" : isInput ? "listbox" : "menu"}
           aria-labelledby={triggerId}
           aria-multiselectable={isChecklist || undefined}
           data-cads-dropdown-menu=""
@@ -957,9 +969,12 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           {...surfaceMotionStateAttrs(surfaceEntering, surfaceExiting)}
           data-menu-type={resolvedMenuType}
           onKeyDown={onKeyDown}
-          className={styles.menuPanel}
+          className={cx(styles.menuPanel, isCustom && styles.menuPanelCustom)}
           style={menuVars}
         >
+          {isCustom ? (
+            <div className={styles.customSlot}>{customContent}</div>
+          ) : (
           <div
             className={styles.optionsList}
             onMouseLeave={() => {
@@ -987,7 +1002,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
                   option={option}
                   size={size}
                   selected={selectedSet.has(option.value)}
-                  menuType={resolvedMenuType}
+                  menuType={
+                    resolvedMenuType === "checklist" ? "checklist" : "default"
+                  }
                   role={props.role}
                   active={active}
                   keyboardFocus={active && highlightMode === "keyboard"}
@@ -1000,6 +1017,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               );
             })}
           </div>
+          )}
           {isChecklist ? (
             <div
               data-cads-dropdown-action-row=""
@@ -1091,6 +1109,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
                 buttonRef={setAnchor}
                 id={triggerId}
                 listedBy={open ? listId : undefined}
+                ariaHasPopup={isCustom ? "dialog" : "listbox"}
                 triggerWidth={fieldWidth.triggerWidth}
                 ariaLabel={
                   typeof ariaLabel === "string"
@@ -1109,6 +1128,51 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 
     const ap = props as DropdownActionProps;
     const actionIconOnly = Boolean(ap.iconOnly);
+    const customTrigger = ap.trigger;
+    const actionAriaHasPopup = isCustom ? "dialog" : "menu";
+    const actionTrigger =
+      customTrigger && isValidElement(customTrigger)
+        ? cloneElement(customTrigger as ReactElement<Record<string, unknown>>, {
+            ref: setAnchor,
+            id: triggerId,
+            disabled,
+            "data-cads-dropdown-trigger": "action",
+            "aria-haspopup": actionAriaHasPopup,
+            "aria-expanded": open,
+            "aria-controls": open ? listId : undefined,
+            "aria-label":
+              ariaLabel ??
+              (customTrigger.props as { "aria-label"?: string })["aria-label"],
+            onClick: (event: MouseEvent<HTMLElement>) => {
+              (
+                customTrigger.props as {
+                  onClick?: (e: MouseEvent<HTMLElement>) => void;
+                }
+              ).onClick?.(event);
+              toggleOpen();
+            },
+          })
+        : (
+            <Button
+              ref={setAnchor}
+              id={triggerId}
+              size={size}
+              variant={ap.buttonVariant ?? "contained"}
+              color={ap.buttonColor ?? "primary"}
+              iconOnly={actionIconOnly}
+              startIconName={ap.startIconName}
+              endIconName={actionIconOnly ? undefined : "chevron-down"}
+              disabled={disabled}
+              data-cads-dropdown-trigger="action"
+              aria-haspopup={actionAriaHasPopup}
+              aria-expanded={open}
+              aria-controls={open ? listId : undefined}
+              aria-label={ariaLabel}
+              onClick={toggleOpen}
+            >
+              {actionIconOnly ? undefined : (ap.label ?? "Button")}
+            </Button>
+          );
     return (
       <ClickAwayListener
         onClickAway={() => {
@@ -1122,25 +1186,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           data-cads-dropdown="action"
           onKeyDown={onKeyDown}
         >
-          <Button
-            ref={setAnchor}
-            id={triggerId}
-            size={size}
-            variant={ap.buttonVariant ?? "contained"}
-            color={ap.buttonColor ?? "primary"}
-            iconOnly={actionIconOnly}
-            startIconName={ap.startIconName}
-            endIconName={actionIconOnly ? undefined : "chevron-down"}
-            disabled={disabled}
-            data-cads-dropdown-trigger="action"
-            aria-haspopup="menu"
-            aria-expanded={open}
-            aria-controls={open ? listId : undefined}
-            aria-label={ariaLabel}
-            onClick={toggleOpen}
-          >
-            {actionIconOnly ? undefined : (ap.label ?? "Button")}
-          </Button>
+          {actionTrigger}
           {menu}
         </div>
       </ClickAwayListener>

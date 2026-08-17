@@ -6,6 +6,8 @@ import {
   ICON_OPTIONS,
   ACTION_OPTIONS,
   TEXT_GROUPED_OPTIONS,
+  SWATCH_OPTIONS,
+  DemoSwatchMenu,
 } from "./shared";
 
 export const cases: FixtureCase[] = [
@@ -181,6 +183,44 @@ export const cases: FixtureCase[] = [
           disablePortal
           options={TEXT_GROUPED_OPTIONS}
           defaultValue="a"
+        />
+      ),
+    },
+    {
+      id: "dropdown-medium-input-custom-bottomleft-light",
+      mode: "light",
+      viewport: { width: 360, height: 280 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size="medium"
+          menuType="custom"
+          menuPlacement="bottomLeft"
+          label="Color"
+          defaultOpen
+          disablePortal
+          options={SWATCH_OPTIONS}
+          defaultValue="brand"
+          customContent={<DemoSwatchMenu value="brand" />}
+        />
+      ),
+    },
+    {
+      id: "dropdown-medium-input-custom-bottomleft-dark",
+      mode: "dark",
+      viewport: { width: 360, height: 280 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size="medium"
+          menuType="custom"
+          menuPlacement="bottomLeft"
+          label="Color"
+          defaultOpen
+          disablePortal
+          options={SWATCH_OPTIONS}
+          defaultValue="brand"
+          customContent={<DemoSwatchMenu value="brand" />}
         />
       ),
     },

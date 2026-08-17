@@ -115,7 +115,8 @@ export function InteractivePlayground({
             ))}
             {component.exportName === "Dropdown" &&
             values.role !== "action" &&
-            values.menuType !== "checklist" ? (
+            values.menuType !== "checklist" &&
+            values.menuType !== "custom" ? (
               <section className={s.inspectorSection}>
                 <h4 className={s.inspectorTitle}>
                   Menu items (playground)

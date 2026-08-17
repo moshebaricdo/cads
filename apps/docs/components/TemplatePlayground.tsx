@@ -439,7 +439,8 @@ export function TemplatePlayground({
                     ))}
                     {component.exportName === "Dropdown" &&
                     values.role !== "action" &&
-                    values.menuType !== "checklist" ? (
+                    values.menuType !== "checklist" &&
+                    values.menuType !== "custom" ? (
                       <section className={styles.panelSection}>
                         <h4 className={styles.panelTitle}>
                           Menu items (playground)

@@ -18,16 +18,23 @@ export const DROPDOWN_PROP_SHEETS: PropSheet[] = [
       },
       {
         name: "menuType",
-        type: '"default" | "checklist"',
+        type: '"default" | "checklist" | "custom"',
         default: '"default"',
         description:
-          "default = single-select; checklist = multi-select (input-only)",
+          "default = single-select; checklist = multi-select (input-only); custom = blank menu (border/shadow/radius only)",
       },
       {
         name: "options",
         type: "DropdownOption[]",
         required: true,
-        description: "Items, separators, and group headers.",
+        description:
+          "Items, separators, and group headers. Optional when menuType=custom (trigger label / hug only).",
+      },
+      {
+        name: "customContent",
+        type: "ReactNode",
+        description:
+          "Required when menuType=custom. Unpadded menu slot — own padding and density.",
       },
       {
         name: "label",
@@ -41,17 +48,23 @@ export const DROPDOWN_PROP_SHEETS: PropSheet[] = [
         description:
           "Leading FA icon on the trigger. Required for action iconOnly (e.g. ellipsis-vertical).",
       },
-      {
-        name: "iconOnly",
-        type: "boolean",
-        description:
-          "Action-role only. Square icon trigger — hides label and chevron. Pair with aria-label + startIconName.",
-      },
-      {
-        name: "buttonVariant",
-        type: '"contained" | "outlined" | "text"',
-        description: "Action-role only. Button variant for the menu trigger.",
-      },
+        {
+          name: "iconOnly",
+          type: "boolean",
+          description:
+            "Action-role only. Square icon trigger — hides label and chevron. Pair with aria-label + startIconName.",
+        },
+        {
+          name: "trigger",
+          type: "ReactElement",
+          description:
+            "Action-role only. Custom trigger replacing the Button (used by Breadcrumb Overflow).",
+        },
+        {
+          name: "buttonVariant",
+          type: '"contained" | "outlined" | "text"',
+          description: "Action-role only. Button variant for the menu trigger.",
+        },
       {
         name: "buttonColor",
         type: '"primary" | "secondary" | "tertiary" | "orange" | "error"',

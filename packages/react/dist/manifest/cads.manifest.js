@@ -422,9 +422,9 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         },
         {
           name: "menuType",
-          type: '"default" | "checklist"',
+          type: '"default" | "checklist" | "custom"',
           default: '"default"',
-          description: "default = single-select list (item iconName optional); checklist = multi-select (input-only)"
+          description: "default = single-select list (item iconName optional); checklist = multi-select (input-only); custom = blank menu canvas (border/shadow/radius only)"
         },
         {
           name: "menuPlacement",
@@ -447,7 +447,12 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
           name: "options",
           type: "DropdownOption[]",
           required: !0,
-          description: 'Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted).'
+          description: 'Items, separators ({type:"separator"}), and group headers ({type:"group",label}). Items support iconName (text-only when omitted). Optional when menuType=custom (input trigger label / hug only).'
+        },
+        {
+          name: "customContent",
+          type: "ReactNode",
+          description: "Required when menuType=custom. Renders inside an unpadded menu panel — own padding, gaps, and density."
         },
         { name: "label", type: "ReactNode" },
         { name: "helperText", type: "ReactNode" },
@@ -475,6 +480,11 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
           type: "boolean",
           description: "Action-role only. Square icon-only trigger (hides label + chevron); require aria-label + startIconName."
         },
+        {
+          name: "trigger",
+          type: "ReactElement",
+          description: "Action-role only. Replace the Button with a custom trigger (e.g. Breadcrumb Overflow ellipsis). Menu still sizes from `size`."
+        },
         { name: "buttonVariant", type: '"contained" | "outlined" | "text"' },
         {
           name: "buttonColor",
@@ -501,8 +511,10 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       usageRules: [
         "role=input composes Field Wrapper + Dropdown Button; role=action reuses Button.",
         "role=action iconOnly renders a square icon trigger without label or chevron — set aria-label + startIconName (e.g. ellipsis-vertical overflow).",
+        "role=action trigger replaces the Button for composition (Breadcrumb Overflow ellipsis). Menu size is independent of the host control size.",
         "Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.",
         "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
+        "menuType=custom is a blank menu (border, shadow, radius only — no padding or gaps). Pass customContent; options are unused in the panel (optional for the input trigger label).",
         'options may include {type:"separator"} and {type:"group",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.',
         'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',
         'menuWidth defaults to hug (content + trigger floor). Use "trigger" to match the field, a number for a px minimum, or a percentage for a narrower/wider trigger-relative panel.',
@@ -997,6 +1009,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
       variableDependencies: [
         "--text-neutral-quaternary",
         "--text-neutral-secondary",
+        "--text-neutral-primary",
         "--text-selected-primary-inverse",
         "--text-disabled-neutral",
         "--border-focused-primary",
@@ -1009,7 +1022,8 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         "Mark the current page with items[].current — rendered as text, not a link.",
         "Optional leading icon via items[].iconName on any crumb (not first-only); iconOnly hides the label.",
         "Prefer items[] composition; do not use Breadcrumb Links standalone.",
-        "Overflow ellipsis opens a dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown).",
+        "Overflow ellipsis opens a nested Dropdown of truncated pages (Figma Breadcrumb Overflow + Dropdown Menu List).",
+        "Overflow menu size: medium for large breadcrumbs, small for medium, extraSmall for small/extraSmall.",
         "Interaction states are CSS recipes — not React props. No underline on hover."
       ],
       example: '<Breadcrumbs size="medium" maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} items={[{label:"Home",href:"/"},{label:"Library",href:"#",iconName:"box-archive"},{label:"A",href:"#"},{label:"B",href:"#"},{label:"Page",current:true}]} />'

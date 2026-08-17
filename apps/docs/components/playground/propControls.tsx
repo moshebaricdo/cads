@@ -60,7 +60,6 @@ const CHILDREN_TEXT_COMPONENTS = new Set([
 
 /** Dropdown props that only apply to role=input. */
 export const DROPDOWN_INPUT_ONLY = new Set([
-  "menuType",
   "width",
   "helperText",
   "placeholder",
@@ -1094,7 +1093,15 @@ export function propsToCode(
 
   if (exportName === "Dropdown") {
     const role = String(values.role ?? "input");
-    if (role === "action") {
+    if (values.menuType === "custom") {
+      attrs.push(
+        formatArrayProp("options", [
+          { value: "brand", label: "Brand" },
+          { value: "error", label: "Error" },
+        ]),
+      );
+      attrs.push("customContent={<ColorSwatchGrid />}");
+    } else if (role === "action") {
       attrs.push(
         formatArrayProp("options", [
           { value: "a", label: "Edit", iconName: "pen" },
@@ -1428,14 +1435,20 @@ export function applyValueUpdate(
   if (exportName === "Dropdown" && name === "role") {
     updated.label = next === "action" ? "Actions" : "Sort by";
     if (next === "action") {
-      updated.menuType = "default";
+      if (updated.menuType === "checklist") updated.menuType = "default";
       updated.demoItemIcons = false;
     } else {
       updated.iconOnly = false;
     }
   }
-  if (exportName === "Dropdown" && name === "menuType" && next === "checklist") {
-    updated.demoItemIcons = false;
+  if (exportName === "Dropdown" && name === "menuType") {
+    if (next === "checklist") {
+      updated.demoItemIcons = false;
+      updated.role = "input";
+    }
+    if (next === "custom") {
+      updated.demoItemIcons = false;
+    }
   }
   if (exportName === "Dropdown" && name === "iconOnly" && next) {
     updated.role = "action";

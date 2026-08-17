@@ -192,9 +192,18 @@ function auditComponent(entry, manifestComp) {
       });
     }
 
+    const allowedExtras = Object.keys(
+      entry.codeOnlyEnumValues?.[codeProp] ?? {},
+    ).map((v) => normalizeFigmaValue(v));
     const extraInManifest = enumValues
       .map((e) => e.toLowerCase())
-      .filter((v) => !figmaValues.includes(v) && v !== "true" && v !== "false");
+      .filter(
+        (v) =>
+          !figmaValues.includes(v) &&
+          !allowedExtras.includes(v) &&
+          v !== "true" &&
+          v !== "false",
+      );
     if (extraInManifest.length > 0) {
       findings.push({
         severity: "warn",
