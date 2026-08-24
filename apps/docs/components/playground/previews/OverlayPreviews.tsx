@@ -115,7 +115,14 @@ export function DialogPlaygroundPreview({
           ? String(v.secondaryActionLabel)
           : undefined
       }
-      isDismissable={v.isDismissable !== false}
+      isDismissable={
+        typeof v.isDismissable === "boolean" ? v.isDismissable : undefined
+      }
+      maxWidth={
+        v.maxWidth != null && String(v.maxWidth).trim() !== ""
+          ? (v.maxWidth as number | string)
+          : undefined
+      }
       surfaceOnly={inspect}
     >
       {type === "customContent" ? (
@@ -169,7 +176,14 @@ export function ModalPlaygroundPreview({
           ? String(v.secondaryActionLabel)
           : undefined
       }
-      isDismissable={v.isDismissable !== false}
+      isDismissable={
+        typeof v.isDismissable === "boolean" ? v.isDismissable : undefined
+      }
+      maxWidth={
+        v.maxWidth != null && String(v.maxWidth).trim() !== ""
+          ? (v.maxWidth as number | string)
+          : undefined
+      }
       surfaceOnly={inspect}
     />
   );

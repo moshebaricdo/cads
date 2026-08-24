@@ -1,74 +1,79 @@
-import { jsx as r, jsxs as o } from "react/jsx-runtime";
-import k from "@mui/material/Dialog";
-import { forwardRef as z } from "react";
-import { Button as y } from "../button/Button.js";
-import { CloseIconButton as D } from "../close-icon-button/CloseIconButton.js";
+import { jsx as r, jsxs as n } from "react/jsx-runtime";
+import C from "@mui/material/Dialog";
+import { forwardRef as D } from "react";
+import { resolveOverlayMaxWidth as M, overlayDismissHandler as I } from "../../shared/overlaySurface.js";
+import { Button as N } from "../button/Button.js";
+import { CloseIconButton as S } from "../close-icon-button/CloseIconButton.js";
 import e from "./modal.module.scss.js";
-const I = "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)", M = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
-function S(a, i) {
-  return a ?? /* @__PURE__ */ r("div", { className: e.bodyDefaultText, children: i ?? M });
+const W = "color-mix(in srgb, var(--background-neutral-black-fixed) 80%, transparent)", B = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+function H(a, o) {
+  return a ?? /* @__PURE__ */ r("div", { className: e.bodyDefaultText, children: o ?? B });
 }
-function B({
+function w({
   type: a,
-  title: i,
+  title: o,
   body: c,
-  image: n,
-  children: s,
-  hasSecondaryAction: d,
-  primaryActionLabel: u,
-  secondaryActionLabel: m,
-  onPrimaryAction: f,
-  onSecondaryAction: h,
-  isDismissable: p,
-  onClose: x,
+  image: i,
+  children: u,
+  hasSecondaryAction: m,
+  primaryActionLabel: f,
+  secondaryActionLabel: h,
+  onPrimaryAction: v,
+  onSecondaryAction: p,
+  isDismissable: x,
+  onClose: s,
+  maxWidth: d,
   className: t,
-  surfaceRef: v
+  surfaceRef: y
 }) {
-  const l = S(s, c);
-  return /* @__PURE__ */ o(
+  const l = H(u, c), g = M(d);
+  return /* @__PURE__ */ n(
     "div",
     {
-      ref: v,
+      ref: y,
       className: t ? `${e.surface} ${t}` : e.surface,
       "data-cads-component": "Modal",
       "data-cads-surface": "",
       "data-cads-surface-state": "enter",
       role: "dialog",
       "aria-modal": !0,
-      style: { "--cads-surface-origin": "center" },
+      style: {
+        "--cads-surface-origin": "center",
+        maxWidth: g
+      },
       children: [
-        /* @__PURE__ */ o("div", { className: e.header, children: [
-          /* @__PURE__ */ r("h2", { className: e.title, children: i }),
-          p ? /* @__PURE__ */ r(D, { onClick: x, size: "large", color: "secondary" }) : null
+        /* @__PURE__ */ n("div", { className: e.header, children: [
+          /* @__PURE__ */ r("h2", { className: e.title, children: o }),
+          x ? /* @__PURE__ */ r(S, { onClick: s, size: "large", color: "secondary" }) : null
         ] }),
         a === "default" ? /* @__PURE__ */ r("div", { className: e.bodyDefault, children: l }) : null,
-        a === "verticalImage" ? /* @__PURE__ */ o("div", { className: e.bodyVertical, children: [
-          /* @__PURE__ */ r("div", { className: e.imageSlotVertical, children: n }),
+        a === "verticalImage" ? /* @__PURE__ */ n("div", { className: e.bodyVertical, children: [
+          /* @__PURE__ */ r("div", { className: e.imageSlotVertical, children: i }),
           l
         ] }) : null,
-        a === "horizontalImage" ? /* @__PURE__ */ o("div", { className: e.bodyHorizontal, children: [
-          /* @__PURE__ */ r("div", { className: e.imageSlotHorizontal, children: n }),
+        a === "horizontalImage" ? /* @__PURE__ */ n("div", { className: e.bodyHorizontal, children: [
+          /* @__PURE__ */ r("div", { className: e.imageSlotHorizontal, children: i }),
           /* @__PURE__ */ r("div", { className: e.textSlotHorizontal, children: l })
         ] }) : null,
-        /* @__PURE__ */ o("div", { className: e.footer, children: [
-          d ? /* @__PURE__ */ r(
-            y,
+        /* @__PURE__ */ n("div", { className: e.footer, children: [
+          m ? /* @__PURE__ */ r(
+            N,
             {
               size: "medium",
               variant: "outlined",
               color: "secondary",
-              onClick: h,
-              children: m
+              onClick: p,
+              children: h
             }
           ) : null,
           /* @__PURE__ */ r(
-            y,
+            N,
             {
               size: "medium",
               variant: "contained",
               color: "primary",
-              onClick: f,
-              children: u
+              onClick: v,
+              children: f
             }
           )
         ] })
@@ -76,60 +81,62 @@ function B({
     }
   );
 }
-const j = z(function({
-  type: i = "default",
+const V = D(function({
+  type: o = "default",
   title: c = "Title",
-  body: n,
-  image: s,
-  children: d,
-  hasSecondaryAction: u = !0,
-  primaryActionLabel: m = "Button",
-  secondaryActionLabel: f = "Button",
-  onPrimaryAction: h,
-  onSecondaryAction: p,
-  isDismissable: x = !0,
-  onClose: t,
-  open: v = !1,
+  body: i,
+  image: u,
+  children: m,
+  hasSecondaryAction: f = !0,
+  primaryActionLabel: h = "Button",
+  secondaryActionLabel: v = "Button",
+  onPrimaryAction: p,
+  onSecondaryAction: x,
+  isDismissable: s = !0,
+  onClose: d,
+  maxWidth: t,
+  open: y = !1,
   surfaceOnly: l = !1,
-  className: b
-}, N) {
-  const g = /* @__PURE__ */ r(
-    B,
+  className: g
+}, k) {
+  const z = M(t), b = /* @__PURE__ */ r(
+    w,
     {
-      surfaceRef: N,
-      type: i,
+      surfaceRef: k,
+      type: o,
       title: c,
-      body: n,
-      image: s,
-      hasSecondaryAction: u,
-      primaryActionLabel: m,
-      secondaryActionLabel: f,
-      onPrimaryAction: h,
-      onSecondaryAction: p,
-      isDismissable: x,
-      onClose: t,
-      className: b,
-      children: d
+      body: i,
+      image: u,
+      hasSecondaryAction: f,
+      primaryActionLabel: h,
+      secondaryActionLabel: v,
+      onPrimaryAction: p,
+      onSecondaryAction: x,
+      isDismissable: s,
+      onClose: d,
+      maxWidth: t,
+      className: g,
+      children: m
     }
   );
-  return l ? /* @__PURE__ */ r("div", { className: e.scrim, children: g }) : /* @__PURE__ */ r(
-    k,
+  return l ? /* @__PURE__ */ r("div", { className: e.scrim, children: b }) : /* @__PURE__ */ r(
+    C,
     {
-      open: v,
-      onClose: (w, H) => t == null ? void 0 : t(),
+      open: y,
+      onClose: I(s, d),
       maxWidth: !1,
       fullWidth: !0,
       disableEnforceFocus: !0,
       slotProps: {
         backdrop: {
-          sx: { backgroundColor: I }
+          sx: { backgroundColor: W }
         },
         paper: {
           sx: {
             background: "transparent",
             boxShadow: "none",
             overflow: "hidden",
-            maxWidth: 800,
+            maxWidth: z,
             maxHeight: "calc(100% - 48px)",
             width: "100%",
             m: "24px",
@@ -138,11 +145,11 @@ const j = z(function({
           }
         }
       },
-      children: g
+      children: b
     }
   );
 });
 export {
-  j as Modal
+  V as Modal
 };
 //# sourceMappingURL=Modal.js.map

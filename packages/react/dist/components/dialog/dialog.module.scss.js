@@ -1,33 +1,33 @@
-import './dialog.css';const t = "_scrim_1ea3p_6", o = "_outerWrap_1ea3p_18", c = "_iconBadge_1ea3p_26", e = "_surface_1ea3p_40", _ = "_iconTop_1ea3p_59", n = "_customContent_1ea3p_62", a = "_contentWrap_1ea3p_66", s = "_imageSlot_1ea3p_74", p = "_copy_1ea3p_86", i = "_title_1ea3p_94", r = "_description_1ea3p_104", u = "_actions_1ea3p_112", l = "_customSlot_1ea3p_118", m = {
+import './dialog.css';const t = "_scrim_2d2z7_6", o = "_outerWrap_2d2z7_18", c = "_iconBadge_2d2z7_26", _ = "_surface_2d2z7_40", n = "_iconTop_2d2z7_58", s = "_customContent_2d2z7_61", e = "_contentWrap_2d2z7_65", i = "_imageSlot_2d2z7_73", d = "_copy_2d2z7_85", a = "_title_2d2z7_93", r = "_description_2d2z7_103", p = "_actions_2d2z7_111", u = "_customSlot_2d2z7_117", z = {
   scrim: t,
   outerWrap: o,
   iconBadge: c,
-  surface: e,
-  default: "_default_1ea3p_56",
-  iconTop: _,
-  customContent: n,
-  contentWrap: a,
-  imageSlot: s,
-  copy: p,
-  title: i,
+  surface: _,
+  default: "_default_2d2z7_55",
+  iconTop: n,
+  customContent: s,
+  contentWrap: e,
+  imageSlot: i,
+  copy: d,
+  title: a,
   description: r,
-  actions: u,
-  customSlot: l
+  actions: p,
+  customSlot: u
 };
 export {
-  u as actions,
-  a as contentWrap,
-  p as copy,
-  n as customContent,
-  l as customSlot,
-  m as default,
+  p as actions,
+  e as contentWrap,
+  d as copy,
+  s as customContent,
+  u as customSlot,
+  z as default,
   r as description,
   c as iconBadge,
-  _ as iconTop,
-  s as imageSlot,
+  n as iconTop,
+  i as imageSlot,
   o as outerWrap,
   t as scrim,
-  e as surface,
-  i as title
+  _ as surface,
+  a as title
 };
 //# sourceMappingURL=dialog.module.scss.js.map

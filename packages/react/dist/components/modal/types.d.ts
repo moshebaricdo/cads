@@ -37,6 +37,12 @@ export interface ModalProps {
      */
     isDismissable?: boolean;
     onClose?: () => void;
+    /**
+     * Max surface width. Number is treated as px; strings accept any CSS length.
+     * Surface still fills available width up to this cap.
+     * @default 800
+     */
+    maxWidth?: number | string;
     open?: boolean;
     /**
      * Render surface without portal (fixtures).
