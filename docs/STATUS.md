@@ -1,8 +1,10 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-08-17
+Last updated: 2026-08-24
 
 ## Done (scaffold complete)
+
+- [x] **Release skill (2026-08-24)** — `.cursor/skills/cads-release` documents the Changesets two-step: changeset on `main` → merge **Version packages** (open as [#4](https://github.com/moshebaricdo/cads/pull/4) for 0.1.2) → `pnpm release` to GitHub Packages. Pushing features does not publish.
 
 - [x] **Breadcrumb Overflow nests Dropdown (2026-08-17)** — Ellipsis host stays at breadcrumb size; menu is the existing Dropdown (`medium` for large, `small` for medium, `extraSmall` for small/extraSmall). Figma Overflow republished `17408:6606` / key `0c72bc56…`. Action-role `trigger` slot on Dropdown for this composition.
 

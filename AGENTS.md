@@ -61,7 +61,7 @@ Do not publish to public npm. Install from GitHub Packages:
 
 GitHub Packages requires a token even for public packages (`NODE_AUTH_TOKEN` / PAT with `read:packages`). Local CADS work can still use `file:../cads/packages/*` (do not commit that rewrite on a repo whose CI has no sibling checkout).
 
-Cut a release: `pnpm changeset` → merge the Version PR (CI runs `pnpm release` → GitHub Packages).
+Cut a release: add a `.changeset/*.md` on `main` → merge the **Version packages** PR (CI runs `pnpm release` → GitHub Packages). Pushing features alone does not publish. See [`.cursor/skills/cads-release/SKILL.md`](.cursor/skills/cads-release/SKILL.md).
 
 ---
 
@@ -74,6 +74,7 @@ Cut a release: `pnpm changeset` → merge the Version PR (CI runs `pnpm release`
 | Architecture / roadmap | [`docs/PLATFORM_PLAN.md`](docs/PLATFORM_PLAN.md) |
 | Prototyping / AI fidelity | [`.cursor/skills/cads-prototyping/SKILL.md`](.cursor/skills/cads-prototyping/SKILL.md) |
 | Build/update a component (before coding through “done”) | [`.cursor/skills/cads-parity-qa/SKILL.md`](.cursor/skills/cads-parity-qa/SKILL.md) |
+| Publish `@moshebaricdo/cads-*` | [`.cursor/skills/cads-release/SKILL.md`](.cursor/skills/cads-release/SKILL.md) |
 | Styling rules | [`.cursor/rules/design-system.mdc`](.cursor/rules/design-system.mdc) |
 | Figma color variables sync | [`.cursor/skills/cads-figma-color-sync/SKILL.md`](.cursor/skills/cads-figma-color-sync/SKILL.md) + [`tooling/figma-sync/README.md`](tooling/figma-sync/README.md) |
 | Component catalog for agents | `cadsManifest` in `@moshebaricdo/cads-react` / docs `/llms.txt` |
