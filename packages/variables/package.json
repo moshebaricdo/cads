@@ -1,6 +1,6 @@
 {
   "name": "@moshebaricdo/cads-variables",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "CADS design variables — color, typography, spacing/shape, effects, and generated MUI theme",
   "type": "module",
   "license": "UNLICENSED",
