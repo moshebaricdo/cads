@@ -1,5 +1,9 @@
 import MuiDialog from "@mui/material/Dialog";
-import { forwardRef, type ReactNode } from "react";
+import { forwardRef, type CSSProperties, type ReactNode } from "react";
+import {
+  overlayDismissHandler,
+  resolveOverlayMaxWidth,
+} from "../../shared/overlaySurface";
 import { Button } from "../button/index";
 import { CloseIconButton } from "../close-icon-button";
 import styles from "./modal.module.scss";
@@ -34,12 +38,14 @@ function ModalSurface({
   onSecondaryAction,
   isDismissable,
   onClose,
+  maxWidth,
   className,
   surfaceRef,
 }: Omit<ModalProps, "open" | "surfaceOnly"> & {
   surfaceRef?: React.Ref<HTMLDivElement>;
 }) {
   const content = resolveContent(children, body);
+  const resolvedMaxWidth = resolveOverlayMaxWidth(maxWidth);
 
   return (
     <div
@@ -50,7 +56,12 @@ function ModalSurface({
       data-cads-surface-state="enter"
       role="dialog"
       aria-modal
-      style={{ "--cads-surface-origin": "center" } as React.CSSProperties}
+      style={
+        {
+          "--cads-surface-origin": "center",
+          maxWidth: resolvedMaxWidth,
+        } as CSSProperties
+      }
     >
       <div className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
@@ -119,12 +130,15 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
     onSecondaryAction,
     isDismissable = true,
     onClose,
+    maxWidth,
     open = false,
     surfaceOnly = false,
     className,
   },
   ref,
 ) {
+  const resolvedMaxWidth = resolveOverlayMaxWidth(maxWidth);
+
   const surface = (
     <ModalSurface
       surfaceRef={ref}
@@ -139,6 +153,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
       onSecondaryAction={onSecondaryAction}
       isDismissable={isDismissable}
       onClose={onClose}
+      maxWidth={maxWidth}
       className={className}
     >
       {children}
@@ -153,7 +168,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
   return (
     <MuiDialog
       open={open}
-      onClose={(_e, _reason) => onClose?.()}
+      onClose={overlayDismissHandler(isDismissable, onClose)}
       maxWidth={false}
       fullWidth
       disableEnforceFocus
@@ -166,7 +181,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
             background: "transparent",
             boxShadow: "none",
             overflow: "hidden",
-            maxWidth: 800,
+            maxWidth: resolvedMaxWidth,
             maxHeight: "calc(100% - 48px)",
             width: "100%",
             m: "24px",

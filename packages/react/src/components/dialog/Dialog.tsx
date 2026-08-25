@@ -1,7 +1,11 @@
 import MuiDialog from "@mui/material/Dialog";
-import { forwardRef } from "react";
+import { forwardRef, type CSSProperties } from "react";
 import { FaIcon } from "../../icons/FaIcon";
 import type { FaIconName } from "../../icons/faProRegularCodepoints";
+import {
+  overlayDismissHandler,
+  resolveOverlayMaxWidth,
+} from "../../shared/overlaySurface";
 import { Button } from "../button/index";
 import { CloseIconButton } from "../close-icon-button";
 import styles from "./dialog.module.scss";
@@ -30,6 +34,7 @@ function DialogSurface({
   onSecondaryAction,
   isDismissable,
   onClose,
+  maxWidth,
   children,
   className,
   surfaceRef,
@@ -38,6 +43,7 @@ function DialogSurface({
 }) {
   const isIconTop = type === "iconTop";
   const isCustom = type === "customContent";
+  const resolvedMaxWidth = resolveOverlayMaxWidth(maxWidth);
 
   return (
     <div className={cx(styles.outerWrap, className)}>
@@ -64,7 +70,12 @@ function DialogSurface({
           isIconTop && styles.iconTop,
           isCustom && styles.customContent,
         )}
-        style={{ "--cads-surface-origin": "center" } as React.CSSProperties}
+        style={
+          {
+            "--cads-surface-origin": "center",
+            maxWidth: resolvedMaxWidth,
+          } as CSSProperties
+        }
       >
         {isCustom ? (
           <div className={styles.customSlot}>{children}</div>
@@ -136,8 +147,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
     secondaryActionLabel = "Button",
     onPrimaryAction,
     onSecondaryAction,
-    isDismissable = true,
+    isDismissable = false,
     onClose,
+    maxWidth,
     children,
     open = false,
     surfaceOnly = false,
@@ -145,6 +157,8 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
   },
   ref,
 ) {
+  const resolvedMaxWidth = resolveOverlayMaxWidth(maxWidth);
+
   const surface = (
     <DialogSurface
       surfaceRef={ref}
@@ -161,6 +175,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
       onSecondaryAction={onSecondaryAction}
       isDismissable={isDismissable}
       onClose={onClose}
+      maxWidth={maxWidth}
       className={className}
     >
       {children}
@@ -175,7 +190,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
   return (
     <MuiDialog
       open={open}
-      onClose={(_e, _reason) => onClose?.()}
+      onClose={overlayDismissHandler(isDismissable, onClose)}
       maxWidth={false}
       fullWidth
       disableEnforceFocus
@@ -188,7 +203,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
             background: "transparent",
             boxShadow: "none",
             overflow: "visible",
-            maxWidth: 800,
+            maxWidth: resolvedMaxWidth,
             width: "100%",
             m: "24px",
           },

@@ -216,6 +216,7 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "isDismissible",
     "isDismissable",
     "dismissible",
+    "maxWidth",
     "showClose",
     "dense",
     "showFirstButton",
@@ -528,6 +529,7 @@ export function controlKind(
   // Mixed keyword / number / percentage API; text control accepts hug,
   // trigger, 120, or 70% (propsToCode normalizes numeric strings).
   if (prop.name === "menuWidth") return "text";
+  if (prop.name === "maxWidth") return "text";
   if (prop.type.includes("=>")) return "skip";
   if (prop.type.includes("ReactElement")) return "skip";
   if (prop.name === "children") {

@@ -1740,8 +1740,14 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
           type: "ReactNode",
           default: '"Button"'
         },
-        { name: "isDismissable", type: "boolean", default: "true" },
+        { name: "isDismissable", type: "boolean", default: "false" },
         { name: "onClose", type: "() => void" },
+        {
+          name: "maxWidth",
+          type: "number | string",
+          default: "800",
+          description: "Max surface width. Number is px; strings accept any CSS length. Width stays 100% up to this cap."
+        },
         { name: "open", type: "boolean", default: "false" },
         { name: "children", type: "ReactNode" },
         { name: "surfaceOnly", type: "boolean" }
@@ -1800,6 +1806,12 @@ const e = "DGekOeToRVifvFAhfqpeC1", a = {
         },
         { name: "isDismissable", type: "boolean", default: "true" },
         { name: "onClose", type: "() => void" },
+        {
+          name: "maxWidth",
+          type: "number | string",
+          default: "800",
+          description: "Max surface width. Number is px; strings accept any CSS length. Width stays 100% up to this cap."
+        },
         { name: "open", type: "boolean", default: "false" },
         { name: "surfaceOnly", type: "boolean" }
       ],

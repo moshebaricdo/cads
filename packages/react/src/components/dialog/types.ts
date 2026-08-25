@@ -32,10 +32,17 @@ export interface DialogProps {
   onPrimaryAction?: () => void;
   onSecondaryAction?: () => void;
   /**
-   * @default true
+   * When false, backdrop click, Escape, and the close control do not dismiss.
+   * @default false
    */
   isDismissable?: boolean;
   onClose?: () => void;
+  /**
+   * Max surface width. Number is treated as px; strings accept any CSS length.
+   * Surface still fills available width up to this cap.
+   * @default 800
+   */
+  maxWidth?: number | string;
   /** Custom slot when `type="customContent"`. */
   children?: ReactNode;
   open?: boolean;

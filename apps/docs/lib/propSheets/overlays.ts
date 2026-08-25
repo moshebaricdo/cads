@@ -289,13 +289,21 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
         {
           name: "isDismissable",
           type: "boolean",
-          default: "true",
-          description: "Allow dismiss via close control or backdrop.",
+          default: "false",
+          description:
+            "Allow dismiss via close control, backdrop click, or Escape.",
         },
         {
           name: "onClose",
           type: "() => void",
           description: "Called when the dialog is dismissed.",
+        },
+        {
+          name: "maxWidth",
+          type: "number | string",
+          default: "800",
+          description:
+            "Max surface width (px number or CSS length). Width stays 100% up to this cap.",
         },
         {
           name: "open",
@@ -370,12 +378,20 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
           name: "isDismissable",
           type: "boolean",
           default: "true",
-          description: "Allow dismiss via close control or backdrop.",
+          description:
+            "Allow dismiss via close control, backdrop click, or Escape.",
         },
         {
           name: "onClose",
           type: "() => void",
           description: "Called when the modal is dismissed.",
+        },
+        {
+          name: "maxWidth",
+          type: "number | string",
+          default: "800",
+          description:
+            "Max surface width (px number or CSS length). Width stays 100% up to this cap.",
         },
         {
           name: "open",

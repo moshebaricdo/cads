@@ -2917,6 +2917,11 @@
           "reason": "Dismiss handler."
         },
         {
+          "name": "maxWidth",
+          "category": "composition",
+          "reason": "Optional max surface width (px number or CSS length); default 800."
+        },
+        {
           "name": "children",
           "category": "content",
           "reason": "Maps Figma customContent slot."
@@ -3022,6 +3027,11 @@
           "name": "onClose",
           "category": "event",
           "reason": "Dismiss handler."
+        },
+        {
+          "name": "maxWidth",
+          "category": "composition",
+          "reason": "Optional max surface width (px number or CSS length); default 800."
         },
         {
           "name": "open",
