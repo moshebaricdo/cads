@@ -46,6 +46,9 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
   AiChatFileChip: lazy(() => import("./previews/AiChatFileChipPreview")),
   AiChatMessage: lazy(() => import("./previews/AiChatMessagePreview")),
   AiChatInput: lazy(() => import("./previews/AiChatInputPreview")),
+  ProgressBubble: lazy(() => import("./previews/ProgressBubblePreview")),
+  ProgressWidget: lazy(() => import("./previews/ProgressWidgetPreview")),
+  GlobalHeader: lazy(() => import("./previews/GlobalHeaderPreview")),
 };
 
 export function ComponentPreview({

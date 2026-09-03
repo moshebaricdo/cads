@@ -1,8 +1,10 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-08-24
+Last updated: 2026-09-03
 
 ## Done (scaffold complete)
+
+- [x] **Global Header + Progress Widget + Progress Bubble (2026-09-03)** — New Chrome components from Figma Global Header page: `GlobalHeader` (`17240:2903`, 6 states × desktop / tabletMobile <960px), `ProgressWidget` (`17307:1036`, hug-until-truncate level dropdown, cloud sync tooltip Saved/Offline, bubble rail folding into a nested small `ProgressBubble` dropdown start icon below 960px), `ProgressBubble` (`17307:1165`, levelType × status × isActive × isAssessment). Docs: new **Chrome** sidebar category → Global Header page with a full-screen preview overlay (resize to exercise the 960px fold). Snapshot + visual recipes + code-connect + fixtures + previews wired. Correction (same day): bubbleSlot is dividers-only (Figma’s full slot box doubled the widget stroke); bubble rings/radius now live on the MUI double-`:global` selector so notStarted / inProgress / active chrome actually paints. Intermediate prod breakpoints and Figma componentKeys still open.
 
 - [x] **Release skill + 0.1.2 (2026-08-24)** — `.cursor/skills/cads-release` documents the Changesets two-step: changeset on `main` → merge **Version packages** → `pnpm release` to GitHub Packages. **0.1.2** published via [#4](https://github.com/moshebaricdo/cads/pull/4) (`@moshebaricdo/cads-react` + `cads-variables`). Pushing features does not publish.
 

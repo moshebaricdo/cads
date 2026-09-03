@@ -34,6 +34,9 @@ const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
   AiChatFileChip: () => import("./cases/AiChatFileChip"),
   AiChatMessage: () => import("./cases/AiChatMessage"),
   AiChatInput: () => import("./cases/AiChatInput"),
+  ProgressBubble: () => import("./cases/ProgressBubble"),
+  ProgressWidget: () => import("./cases/ProgressWidget"),
+  GlobalHeader: () => import("./cases/GlobalHeader"),
 };
 
 function FixtureBody() {

@@ -66,6 +66,22 @@ export const DEMO_DROPDOWN_ACTION_OPTIONS = [
   },
 ];
 
+/** Demo lesson rail for ProgressWidget / GlobalHeader previews. */
+export const DEMO_PROGRESS_LEVELS = [
+  { status: "completed" as const },
+  { levelType: "panelLevel" as const, status: "completed" as const },
+  { status: "completed" as const },
+  { status: "completed" as const, isAssessment: true },
+  { status: "completed" as const },
+  { status: "inProgress" as const },
+  { status: "notStarted" as const },
+  { status: "notStarted" as const, isAssessment: true },
+  { levelType: "lessonExtras" as const },
+];
+
+/** Index of the in-progress level above (the widget's active bubble). */
+export const DEMO_PROGRESS_ACTIVE_INDEX = 5;
+
 const DEMO_BREADCRUMB_TRAIL = [
   { label: "Home", href: "#" },
   { label: "Products", href: "#" },

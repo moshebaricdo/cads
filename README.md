@@ -22,7 +22,7 @@ Design lives in [Figma](https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/Code
 
 ### Components
 
-Reusable UI building blocks, grouped by type (Actions, Inputs, Navigation, Messaging, Overlays, AI Components), with a playground/inspector, props sheets, and usage notes.
+Reusable UI building blocks, grouped by type (Actions, Inputs, Navigation, Messaging, Overlays, AI Components, Chrome), with a playground/inspector, props sheets, and usage notes.
 
 ## Components
 
@@ -57,6 +57,7 @@ Status reflects whether a matching component has shipped in the [production Stor
 | Dialog | Overlays | In production |
 | Modal | Overlays | In production |
 | AI Chat | AI Components | Not in production |
+| Global Header | Chrome | Not in production |
 
 ## Experiments
 
@@ -85,8 +86,8 @@ These packages are not on public npm. Install from GitHub Packages (scope matche
 ```json
 {
   "dependencies": {
-    "@moshebaricdo/cads-react": "^0.1.0",
-    "@moshebaricdo/cads-variables": "^0.1.0"
+    "@moshebaricdo/cads-react": "^0.1.2",
+    "@moshebaricdo/cads-variables": "^0.1.2"
   }
 }
 ```

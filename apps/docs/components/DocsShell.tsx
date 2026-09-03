@@ -39,6 +39,7 @@ const DEFAULT_OPEN: Record<ComponentSectionId, boolean> = {
   messaging: false,
   overlays: false,
   ai: false,
+  chrome: false,
 };
 
 const SIDEBAR_STORAGE_KEY = "cads-docs-sidebar-collapsed";

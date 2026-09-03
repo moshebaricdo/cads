@@ -872,8 +872,9 @@ Props:
 - `hasSecondaryAction`: boolean (default true)
 - `primaryActionLabel`: ReactNode (default "Button")
 - `secondaryActionLabel`: ReactNode (default "Button")
-- `isDismissable`: boolean (default true)
+- `isDismissable`: boolean (default false)
 - `onClose`: () => void
+- `maxWidth`: number | string (default 800) — Max surface width. Number is px; strings accept any CSS length. Width stays 100% up to this cap.
 - `open`: boolean (default false)
 - `children`: ReactNode
 - `surfaceOnly`: boolean
@@ -907,6 +908,7 @@ Props:
 - `secondaryActionLabel`: ReactNode (default "Button")
 - `isDismissable`: boolean (default true)
 - `onClose`: () => void
+- `maxWidth`: number | string (default 800) — Max surface width. Number is px; strings accept any CSS length. Width stays 100% up to this cap.
 - `open`: boolean (default false)
 - `surfaceOnly`: boolean
 
@@ -1058,4 +1060,92 @@ Usage rules:
 Example:
 ```tsx
 <FaIcon name="arrow-right" size="medium" />
+```
+
+### ProgressBubble
+
+Level progress bubble from the lab progress widget. Circle and panel-diamond level shapes with status chrome, plus lesson-extras and Tutor+ glyph variants; the active level renders large with its level number.
+
+Import: `import { ProgressBubble } from "@moshebaricdo/cads-react"`
+
+Props:
+- `levelType`: "default" | "panelLevel" | "lessonExtras" | "tutorPlus" (default "default") — Shape family: circle, panel diamond, checkered-flag glyph, Tutor+ mark.
+- `status`: "notStarted" | "inProgress" | "passed" | "completed" | "error" (default "notStarted") — Completion status chrome. Ignored for lessonExtras / tutorPlus (Figma status N/A).
+- `isActive`: boolean (default false) — Current level — renders the 24px bubble with the level number.
+- `isAssessment`: boolean (default false) — Assessment level — inline star (inactive) or top-right star badge (active).
+- `levelNumber`: ReactNode — Level number shown inside the active bubble.
+- `interactive`: boolean (default true) — false renders a non-pressable span (e.g. nested inside the Progress Widget dropdown start icon).
+
+Usage rules:
+- Inactive bubbles are 12px; the active level is 24px (circle) / 24px container (panel diamond). lessonExtras and Tutor+ stay 12px glyphs.
+- Press chrome reuses hover pending a dedicated Figma press spec.
+- Selected/current chrome uses success tokens per Figma — never brand fills.
+- Pass interactive={false} when the bubble is decorative or nested inside another control.
+
+Example:
+```tsx
+<ProgressBubble status="completed" isAssessment aria-label="Level 4" />
+```
+
+### ProgressWidget
+
+Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away and the active level bubble nests inside the dropdown.
+
+Import: `import { ProgressWidget } from "@moshebaricdo/cads-react"`
+
+Props:
+- `levelLabel`: string [required] — Level name in the dropdown trigger.
+- `levels`: ProgressWidgetLevel[] — Levels rendered as progress bubbles in the desktop rail ({ levelType, status, isAssessment, label, onClick }).
+- `activeLevelIndex`: number — Index of the current level; renders large in the rail and nests in the dropdown below 960px.
+- `breakpoint`: "auto" | "desktop" | "tabletMobile" (default "auto") — auto switches at 960px via media query; desktop / tabletMobile force a layout.
+- `saveStatus`: "saved" | "offline" (default "saved") — Cloud icon state: cloud-check (saved) or cloud-slash (offline).
+- `saveStatusLabel`: string — Cloud tooltip label; defaults to "Saved 2 minutes ago" / "Offline".
+- `hasAction`: boolean (default true) — Show the trailing action button.
+- `actionLabel`: string (default "I finished")
+- `onActionClick`: MouseEventHandler
+- `onLevelSelectClick`: MouseEventHandler — Level dropdown trigger click (the CADS trigger opens nothing itself).
+
+Usage rules:
+- The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.
+- Below 960px (or breakpoint=tabletMobile) the bubble rail hides and the active level bubble nests small + non-interactive as the dropdown start icon.
+- The cloud icon always has a hover/focus tooltip: save recency when saved, “Offline” when offline.
+- The action button is the CADS Button (contained secondary extraSmall).
+
+Example:
+```tsx
+<ProgressWidget levelLabel="Lesson 3: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />
+```
+
+### GlobalHeader
+
+Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop and tablet/mobile (<960px) layouts.
+
+Import: `import { GlobalHeader } from "@moshebaricdo/cads-react"`
+
+Props:
+- `state`: "labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus" (default "labLevel") — Which page chrome to render.
+- `breakpoint`: "auto" | "desktop" | "tabletMobile" (default "auto") — auto switches at 960px via media query; desktop / tabletMobile force a layout.
+- `username`: string (default "Username") — Account dropdown label.
+- `progressWidgetProps`: Omit<ProgressWidgetProps, "breakpoint"> — Progress widget props for labLevel / nonLabLesson (breakpoint follows the header).
+- `projectTitle`: string (default "Untitled Project") — standaloneProject title.
+- `projectSaveStatusText`: string (default "Saved a few seconds ago")
+- `tutorLabel`: string (default "Tutor Challenge") — tutorPlus centered label.
+- `navItems`: GlobalHeaderNavItem[] — Dashboard nav links; defaults per state (teacher includes Professional Learning).
+- `onNewProjectClick`: MouseEventHandler
+- `onUsernameClick`: MouseEventHandler
+- `onHelpClick`: MouseEventHandler
+- `onMenuClick`: MouseEventHandler
+- `onShareClick`: MouseEventHandler
+- `onRemixClick`: MouseEventHandler
+- `onRenameClick`: MouseEventHandler
+
+Usage rules:
+- Header buttons (white text/outlined on brand) are surface-specific chrome, not CADS Button variants.
+- labLevel / nonLabLesson center the Progress Widget; it follows the header breakpoint.
+- Below 960px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains.
+- The header always spans full width at 48px height on --background-brand-primary.
+
+Example:
+```tsx
+<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 3: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />
 ```

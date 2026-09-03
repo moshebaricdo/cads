@@ -97,6 +97,14 @@ export const COMPONENT_SECTIONS = [
       { exportName: "AiChatInput", label: "AI Chat", href: "/components/ai-chat" },
     ],
   },
+  {
+    id: "chrome",
+    label: "Chrome",
+    iconName: "browser",
+    items: [
+      { exportName: "GlobalHeader", label: "Global Header" },
+    ],
+  },
 ] as const;
 
 export type ComponentSectionId = (typeof COMPONENT_SECTIONS)[number]["id"];

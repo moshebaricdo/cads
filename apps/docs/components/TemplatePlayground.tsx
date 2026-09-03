@@ -8,6 +8,7 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
+import { createPortal } from "react-dom";
 import type { CadsComponentManifest } from "@moshebaricdo/cads-react/manifest";
 import { Button, Tabs, Toggle } from "@moshebaricdo/cads-react";
 import { ComponentPreview } from "./playground/ComponentPreview";
@@ -48,6 +49,14 @@ function readOptionEdits(
   return {};
 }
 
+/**
+ * Full-bleed chrome components get a "Full screen" preview mode: the
+ * component renders edge-to-edge in a viewport overlay so its responsive
+ * behavior (e.g. the 960px header fold) can be exercised by resizing the
+ * window — impossible inside the constrained playground stage.
+ */
+const FULLSCREEN_PREVIEWS = new Set(["GlobalHeader"]);
+
 /** Nested playground hit-targets (Dropdown menu items + preview wrappers). */
 const NESTED_ITEM_SELECTOR =
   "[data-cads-nested-item], [data-cads-dropdown-item]";
@@ -76,8 +85,24 @@ export function TemplatePlayground({
   const [values, setValues] = useState(() => initialValues(component));
   const [tab, setTab] = useState<Tab>("preview");
   const [inspect, setInspect] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [selection, setSelection] = useState<NestedSelection>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+
+  const supportsFullscreen = FULLSCREEN_PREVIEWS.has(component.exportName);
+
+  useEffect(() => {
+    if (!fullscreen) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setFullscreen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [fullscreen]);
 
   const nestedTargets = NESTED_PLAYGROUND_TARGETS[component.exportName] ?? [];
 
@@ -293,14 +318,16 @@ export function TemplatePlayground({
         />
         <div className={styles.toolbarActions}>
           {tab === "preview" ? (
-            <Toggle
-              size="extraSmall"
-              label="Inspect"
-              hasIcons={false}
-              labelPlacement="right"
-              checked={inspect}
-              onChange={(_e, next) => setInspect(next)}
-            />
+            supportsFullscreen ? null : (
+              <Toggle
+                size="extraSmall"
+                label="Inspect"
+                hasIcons={false}
+                labelPlacement="right"
+                checked={inspect}
+                onChange={(_e, next) => setInspect(next)}
+              />
+            )
           ) : (
             <CopyCodeIconButton text={code} />
           )}
@@ -340,6 +367,25 @@ export function TemplatePlayground({
                   : null),
               }}
             >
+              {supportsFullscreen ? (
+                <div className={styles.fullscreenPlaceholder}>
+                  <h4 className={styles.fullscreenPlaceholderTitle}>
+                    Preview in full screen
+                  </h4>
+                  <p className={styles.fullscreenPlaceholderText}>
+                    This global chrome component is best viewed in full screen.
+                  </p>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    startIconName="expand"
+                    onClick={() => setFullscreen(true)}
+                  >
+                    Full screen
+                  </Button>
+                </div>
+              ) : (
               <div
                 key={`defaultChecked:${String(values.defaultChecked)}:defaultOpen:${String(values.defaultOpen)}:opts:${JSON.stringify(values.optionEdits ?? {})}`}
                 style={
@@ -376,6 +422,7 @@ export function TemplatePlayground({
                   inspect={inspect}
                 />
               </div>
+              )}
               <PlaygroundInspectOverlay stageRef={stageRef} enabled={inspect} />
               {!inspect &&
               (selection || nestedTargets.length > 0) ? (
@@ -618,6 +665,38 @@ export function TemplatePlayground({
           </div>
         )}
       </div>
+
+      {fullscreen && typeof document !== "undefined"
+        ? createPortal(
+            <div
+              className={styles.fullscreenOverlay}
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${component.name} full screen preview`}
+            >
+              <ComponentPreview
+                exportName={component.exportName}
+                values={values}
+              />
+              <div className={styles.fullscreenBody}>
+                <p className={styles.fullscreenHint}>
+                  Resize the window to exercise responsive behavior (folds at
+                  960px).
+                </p>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  startIconName="compress"
+                  onClick={() => setFullscreen(false)}
+                >
+                  Exit full screen
+                </Button>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
