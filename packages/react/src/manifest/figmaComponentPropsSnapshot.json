@@ -3489,12 +3489,33 @@
           "name": "actionLabel",
           "category": "content",
           "reason": "Action button text override."
+        },
+        {
+          "name": "onActionClick",
+          "category": "event",
+          "reason": "Click handler for the trailing action button (code-only)."
+        },
+        {
+          "name": "hasLeftAction",
+          "category": "composition",
+          "reason": "Figma boolean hasLeftAction — leading outlined icon-only back button, tablet/mobile only."
+        },
+        {
+          "name": "onBackClick",
+          "category": "event",
+          "reason": "Click handler for the leading back button (code-only)."
+        },
+        {
+          "name": "onLevelSelectClick",
+          "category": "event",
+          "reason": "Click handler for the level dropdown trigger (code-only; CADS trigger opens nothing)."
         }
       ],
       "notes": [
         "Figma saveStatus3-6 are placeholder variant names for offline/saved at other breakpoints; code collapses to saved | offline.",
         "Figma desktopTruncate is a separate variant because Figma cannot express hug-until-truncate; code handles it with flex-shrink + ellipsis, so breakpoint is only desktop | tabletMobile | auto.",
-        "Figma's tabletMobile start icon is a green FA circle placeholder; code nests a small non-interactive ProgressBubble of the active level per design intent."
+        "Figma's tabletMobile start icon is a green FA circle placeholder; code nests a small non-interactive ProgressBubble of the active level per design intent.",
+        "hasLeftAction is a Figma boolean on tabletMobile variants; desktop symbols omit the slot. Code defaults true and hides the slot on desktop via CSS."
       ]
     },
     {

@@ -2173,7 +2173,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       name: "ProgressWidget",
       exportName: "ProgressWidget",
       importFrom: "@moshebaricdo/cads-react",
-      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away and the active level bubble nests inside the dropdown.",
+      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown.",
       figma: {
         fileKey: e,
         nodeId: "17307:1036"
@@ -2225,6 +2225,17 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         },
         { name: "onActionClick", type: "MouseEventHandler" },
         {
+          name: "hasLeftAction",
+          type: "boolean",
+          default: "true",
+          description: "Show the leading back button. Visible only below 960px / tabletMobile."
+        },
+        {
+          name: "onBackClick",
+          type: "MouseEventHandler",
+          description: "Leading back-button click."
+        },
+        {
           name: "onLevelSelectClick",
           type: "MouseEventHandler",
           description: "Level dropdown trigger click (the CADS trigger opens nothing itself)."
@@ -2245,7 +2256,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       ],
       usageRules: [
         "The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.",
-        "Below 960px (or breakpoint=tabletMobile) the bubble rail hides and the active level bubble nests small + non-interactive as the dropdown start icon.",
+        "Below 960px (or breakpoint=tabletMobile) the bubble rail hides, the active level bubble nests small + non-interactive as the dropdown start icon, and the leading outlined extraSmall back button appears when hasLeftAction.",
         "The cloud icon always has a hover/focus tooltip: save recency when saved, “Offline” when offline.",
         "The action button is the CADS Button (contained secondary extraSmall)."
       ],

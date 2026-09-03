@@ -1,7 +1,8 @@
 /*
  * Progress Widget — CADS Figma node 17307:1036.
- * Desktop shows the bubble rail; below 960px the rail folds away and the
- * active level bubble nests inside the level dropdown as its start icon.
+ * Desktop shows the bubble rail; below 960px the rail folds away, the
+ * active level bubble nests inside the level dropdown as its start icon,
+ * and a leading outlined back button appears (Figma `hasLeftAction`).
  * The dropdown hugs its label and only truncates once the container forces
  * it (flex-shrink + min-width: 0 + ellipsis).
  */
@@ -130,6 +131,17 @@ $tablet-mobile-max: 959.95px;
   padding: 0 3px;
 }
 
+/* Figma `hasLeftAction` — tablet/mobile only. Hidden on desktop so
+   breakpoint=auto can flip via media query without remounting. */
+.leftActionContainer {
+  display: none;
+  align-items: center;
+  flex: none;
+  height: 100%;
+  padding: 0 3px;
+  border-right: 1px solid var(--border-neutral-primary);
+}
+
 /* ----- tablet/mobile layout (<960px or forced) ----- */
 
 @mixin tablet-mobile {
@@ -153,6 +165,10 @@ $tablet-mobile-max: 959.95px;
     display: inline-flex;
   }
 
+  .leftActionContainer {
+    display: flex;
+  }
+
   .bubbleSlot {
     display: none;
   }
@@ -173,6 +189,10 @@ $tablet-mobile-max: 959.95px;
   }
 
   .nestedBubble {
+    display: none;
+  }
+
+  .leftActionContainer {
     display: none;
   }
 

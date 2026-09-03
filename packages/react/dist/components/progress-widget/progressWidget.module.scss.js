@@ -1,32 +1,34 @@
-import './progressWidget.css';const e = "_root_jxbac_9", o = "_dropdownContainer_jxbac_25", c = "_levelSelect_jxbac_37", n = "_levelLabel_jxbac_66", t = "_chevron_jxbac_74", l = "_nestedBubble_jxbac_80", _ = "_cloudSync_jxbac_90", b = "_cloudSyncOffline_jxbac_95", a = "_bubbleSlot_jxbac_99", i = "_withActionDivider_jxbac_114", r = "_actionContainer_jxbac_118", s = "_forceDesktop_jxbac_128", d = "_forceTabletMobile_jxbac_128", x = {
+import './progressWidget.css';const e = "_root_5lqjy_10", o = "_dropdownContainer_5lqjy_26", l = "_levelSelect_5lqjy_38", n = "_levelLabel_5lqjy_67", t = "_chevron_5lqjy_75", c = "_nestedBubble_5lqjy_81", _ = "_cloudSync_5lqjy_91", i = "_cloudSyncOffline_5lqjy_96", r = "_bubbleSlot_5lqjy_100", b = "_withActionDivider_5lqjy_115", s = "_actionContainer_5lqjy_119", y = "_leftActionContainer_5lqjy_129", a = "_forceDesktop_5lqjy_140", d = "_forceTabletMobile_5lqjy_140", f = {
   root: e,
   dropdownContainer: o,
-  levelSelect: c,
+  levelSelect: l,
   levelLabel: n,
   chevron: t,
-  nestedBubble: l,
+  nestedBubble: c,
   cloudSync: _,
-  cloudSyncOffline: b,
-  bubbleSlot: a,
-  withActionDivider: i,
-  actionContainer: r,
-  forceDesktop: s,
+  cloudSyncOffline: i,
+  bubbleSlot: r,
+  withActionDivider: b,
+  actionContainer: s,
+  leftActionContainer: y,
+  forceDesktop: a,
   forceTabletMobile: d
 };
 export {
-  r as actionContainer,
-  a as bubbleSlot,
+  s as actionContainer,
+  r as bubbleSlot,
   t as chevron,
   _ as cloudSync,
-  b as cloudSyncOffline,
-  x as default,
+  i as cloudSyncOffline,
+  f as default,
   o as dropdownContainer,
-  s as forceDesktop,
+  a as forceDesktop,
   d as forceTabletMobile,
+  y as leftActionContainer,
   n as levelLabel,
-  c as levelSelect,
-  l as nestedBubble,
+  l as levelSelect,
+  c as nestedBubble,
   e as root,
-  i as withActionDivider
+  b as withActionDivider
 };
 //# sourceMappingURL=progressWidget.module.scss.js.map

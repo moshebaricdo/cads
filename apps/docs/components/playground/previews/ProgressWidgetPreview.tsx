@@ -37,6 +37,9 @@ export default function ProgressWidgetPreview({
       }
       hasAction={v.hasAction === undefined ? true : Boolean(v.hasAction)}
       actionLabel={String(v.actionLabel ?? "I finished")}
+      hasLeftAction={
+        v.hasLeftAction === undefined ? true : Boolean(v.hasLeftAction)
+      }
       style={
         breakpoint === "tabletMobile" ? { width: 360 } : undefined
       }

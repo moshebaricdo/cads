@@ -79,6 +79,21 @@ export const cases: FixtureCase[] = [
     ),
   },
   {
+    id: "progress-widget-tablet-mobile-no-left-action-light",
+    mode: "light",
+    viewport: { width: 400, height: 80 },
+    render: () => (
+      <ProgressWidget
+        levelLabel={LABEL}
+        levels={LEVELS}
+        activeLevelIndex={5}
+        breakpoint="tabletMobile"
+        hasLeftAction={false}
+        style={{ width: 328 }}
+      />
+    ),
+  },
+  {
     id: "progress-widget-no-action-light",
     mode: "light",
     viewport: { width: 620, height: 80 },

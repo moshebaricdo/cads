@@ -16,8 +16,9 @@ const DEFAULT_OFFLINE_LABEL = "Offline";
  *
  * Desktop (≥960px): level dropdown (hugs its label, truncates when the
  * viewport forces it) + cloud sync status + bubble rail + action button.
- * Tablet/mobile (<960px): the rail folds away and the active level's bubble
- * nests inside the dropdown as a small non-interactive start icon.
+ * Tablet/mobile (<960px): the rail folds away, the active level's bubble
+ * nests inside the dropdown as a small non-interactive start icon, and a
+ * leading outlined back button appears when `hasLeftAction` (Figma default).
  */
 export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
   function ProgressWidget(props, ref) {
@@ -31,6 +32,8 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
       hasAction = true,
       actionLabel = "I finished",
       onActionClick,
+      hasLeftAction = true,
+      onBackClick,
       onLevelSelectClick,
       className = "",
       ...rest
@@ -59,6 +62,19 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
         data-cads-component="ProgressWidget"
         {...rest}
       >
+        {hasLeftAction ? (
+          <div className={styles.leftActionContainer}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="extraSmall"
+              iconOnly
+              startIconName="arrow-left"
+              aria-label="Back"
+              onClick={onBackClick}
+            />
+          </div>
+        ) : null}
         <div
           className={`${styles.dropdownContainer} ${
             hasAction ? styles.withActionDivider : ""

@@ -48,6 +48,14 @@ export interface ProgressWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>
     /** @default "I finished" */
     actionLabel?: string;
     onActionClick?: MouseEventHandler<HTMLButtonElement>;
+    /**
+     * Show the leading back button (Figma `hasLeftAction`). Visible only
+     * below 960px / `breakpoint="tabletMobile"` — desktop never renders the slot.
+     * @default true
+     */
+    hasLeftAction?: boolean;
+    /** Click handler for the leading back button. */
+    onBackClick?: MouseEventHandler<HTMLButtonElement>;
     /** Click handler for the level dropdown trigger (opens nothing in CADS). */
     onLevelSelectClick?: MouseEventHandler<HTMLButtonElement>;
     className?: string;

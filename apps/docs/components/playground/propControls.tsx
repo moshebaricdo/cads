@@ -207,6 +207,7 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
     "showControls",
     "showTicks",
     "hasAction",
+    "hasLeftAction",
     "hasActionRow",
     "hasStepper",
     "hasDescription",

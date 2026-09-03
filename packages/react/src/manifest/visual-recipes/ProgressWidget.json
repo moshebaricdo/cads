@@ -21,7 +21,8 @@
     "previousRecipe": null,
     "figmaChanges": [
       "2026-09-03: initial build from Progress Widget set (17307:1036) — saveStatus × breakpoint (desktop / desktopTruncate / tabletMobile).",
-      "2026-09-03: correction — bubbleSlot uses left/right dividers only (dropdown | bubbles | action). Figma paints a full border around bubbleSlot as a hug/fill workaround; the widget root already owns the outer stroke."
+      "2026-09-03: correction — bubbleSlot uses left/right dividers only (dropdown | bubbles | action). Figma paints a full border around bubbleSlot as a hug/fill workaround; the widget root already owns the outer stroke.",
+      "2026-09-03: Figma update — tabletMobile hasLeftAction leading outlined extraSmall icon-only Back (arrow-left) in a left slot with a right divider (17546:1519). Desktop symbols omit the slot."
     ]
   },
   "axes": {
@@ -36,6 +37,10 @@
         "offline"
       ],
       "hasAction": [
+        true,
+        false
+      ],
+      "hasLeftAction": [
         true,
         false
       ]
@@ -61,6 +66,12 @@
       },
       "action": {
         "heightPx": "24"
+      },
+      "leftAction": {
+        "heightPx": "24",
+        "sizePx": "24",
+        "padding": "0 3px",
+        "icon": "arrow-left"
       }
     },
     "layout": {
@@ -133,7 +144,8 @@
       "notes": [
         "Bubble rail hidden; dropdown fills (flex 1, ellipsis).",
         "Start icon is a small non-interactive ProgressBubble of the active level (design intent; Figma placeholder shows a green FA circle).",
-        "Dropdown container gets a right border divider before the action."
+        "Dropdown container gets a right border divider before the action.",
+        "hasLeftAction (default true) shows an outlined secondary extraSmall icon-only Back (arrow-left) in a left slot with a right divider."
       ]
     }
   ],
@@ -143,6 +155,7 @@
       "breakpoint",
       "saveStatus",
       "hasAction",
+      "hasLeftAction",
       "mode"
     ],
     "cases": [
@@ -252,7 +265,34 @@
         "result": "pending",
         "mismatches": [],
         "notes": [
-          "Nested active-level bubble replaces Figma's green circle placeholder per design intent."
+          "Nested active-level bubble replaces Figma's green circle placeholder per design intent.",
+          "Leading outlined Back button (hasLeftAction default true)."
+        ]
+      },
+      {
+        "id": "progress-widget-tablet-mobile-no-left-action-light",
+        "figmaNodeId": "17545:1660",
+        "figmaVariant": "saveStatus=saveStatus6, breakpoint=tabletMobile, hasLeftAction=false",
+        "mode": "light",
+        "props": {
+          "breakpoint": "tabletMobile",
+          "hasLeftAction": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Boolean off — no leading back slot."
         ]
       },
       {
@@ -317,12 +357,13 @@
     }
   ],
   "evidence": {
-    "apiAudit": "pending — componentKey not yet filled (run pnpm figma:audit-props after mapping keys)",
+    "apiAudit": "2026-09-03 — ProgressWidget invented-prop/event handlers documented; remaining enum-gap warnings are Figma placeholder saveStatus3–6 and desktopTruncate",
     "typecheck": "pass",
     "build": "pass",
-    "docsBuild": "pass",
+    "docsBuild": "llms.txt regenerated; fixtures + playground updated",
     "correctionPasses": [
-      "2026-09-03: fixture + playground captures vs Figma 17307:1035 / 17307:1165. Removed bubbleSlot full box (left/right dividers only). Recaptured desktop + tabletMobile."
+      "2026-09-03: fixture + playground captures vs Figma 17307:1035 / 17307:1165. Removed bubbleSlot full box (left/right dividers only). Recaptured desktop + tabletMobile.",
+      "2026-09-03: added tabletMobile hasLeftAction back slot vs Figma 17545:1660."
     ]
   }
 }
