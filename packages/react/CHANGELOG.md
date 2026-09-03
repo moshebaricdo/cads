@@ -1,5 +1,15 @@
 # @moshebaricdo/cads-react
 
+## 0.2.0
+
+### Minor Changes
+
+- 0e8c5c2: Add Global Header chrome components: `GlobalHeader` (six page states with desktop / tablet-mobile behavior under 960px), `ProgressWidget` (hug-until-truncate level dropdown, cloud sync IconTooltip, bubble rail that folds into a nested dropdown bubble below 960px), and `ProgressBubble` (levelType × status × isActive × isAssessment with hover/press/focus/disabled states).
+
+### Patch Changes
+
+- c53fa28: ProgressWidget shows a leading outlined Back button (`hasLeftAction`) on tablet/mobile, matching the Figma left action slot.
+
 ## 0.1.2
 
 ### Patch Changes
