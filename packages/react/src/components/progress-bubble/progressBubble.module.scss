@@ -1,0 +1,238 @@
+/*
+ * Progress Bubble — CADS Figma node 17307:1165.
+ * Status colors arrive as CSS custom properties from ProgressBubble.tsx
+ * (--pb-bg / --pb-fg / --pb-border / --pb-bg-hover / --pb-fg-hover) so
+ * SCSS pseudo-classes own the state switching (see AGENTS.md).
+ *
+ * Background + border MUST live on the same high-specificity selector as
+ * the MUI reset (`border: 0`). A plain `.circle { border }` loses to
+ * `.root.MuiButtonBase-root.MuiButtonBase-root` and the notStarted /
+ * inProgress rings vanish.
+ */
+
+@mixin bubble-chrome {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  font-family: var(--font-family-main, inherit);
+  color: var(--pb-fg, var(--text-neutral-primary));
+  background-color: var(--pb-bg, transparent);
+  border: var(--pb-border-width, 0px) solid var(--pb-border, transparent);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+@mixin unfilled-shape {
+  background-color: transparent;
+  border-color: transparent;
+  border-width: 0;
+}
+
+@mixin bubble-interaction-states {
+  &:hover:not(:global(.Mui-disabled)),
+  :global([data-cads-force-pseudo="hover"]) &:not(:global(.Mui-disabled)) {
+    background-color: var(--pb-bg-hover);
+    color: var(--pb-fg-hover);
+    --pb-bg: var(--pb-bg-hover);
+    --pb-fg: var(--pb-fg-hover);
+  }
+
+  &:active:not(:global(.Mui-disabled)),
+  :global([data-cads-force-pseudo="press"]) &:not(:global(.Mui-disabled)) {
+    background-color: var(--pb-bg-hover);
+    color: var(--pb-fg-hover);
+    --pb-bg: var(--pb-bg-hover);
+    --pb-fg: var(--pb-fg-hover);
+  }
+
+  /* Panel fill lives on the rotated diamond, not the square hit box. */
+  &.panel {
+    &:hover:not(:global(.Mui-disabled)),
+    :global([data-cads-force-pseudo="hover"]) &:not(:global(.Mui-disabled)),
+    &:active:not(:global(.Mui-disabled)),
+    :global([data-cads-force-pseudo="press"]) &:not(:global(.Mui-disabled)) {
+      background-color: transparent;
+
+      .diamond {
+        background-color: var(--pb-bg-hover);
+      }
+    }
+  }
+
+  /* Glyph types only shift foreground color. */
+  &.glyph {
+    &:hover:not(:global(.Mui-disabled)),
+    :global([data-cads-force-pseudo="hover"]) &:not(:global(.Mui-disabled)),
+    &:active:not(:global(.Mui-disabled)),
+    :global([data-cads-force-pseudo="press"]) &:not(:global(.Mui-disabled)) {
+      background-color: transparent;
+      color: var(--pb-fg-hover);
+    }
+  }
+}
+
+/* Double :global specificity bump beats MUI ButtonBase Emotion styles. */
+.root:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
+  @include bubble-chrome;
+  @include bubble-interaction-states;
+
+  &:global(.Mui-focusVisible) {
+    box-shadow:
+      0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  /* Diamond focus follows the rotated square, not the 12/24px hit box. */
+  &.panel:global(.Mui-focusVisible) {
+    box-shadow: none;
+
+    .diamond {
+      box-shadow:
+        0 0 0 2px var(--background-neutral-primary),
+        0 0 0 4px var(--border-focused-primary);
+    }
+  }
+
+  &:global(.Mui-disabled) {
+    --pb-bg: var(--background-disabled-neutral);
+    --pb-fg: var(--text-disabled-neutral-inverse);
+    --pb-border: transparent;
+    --pb-border-width: 0px;
+  }
+
+  &.panel {
+    @include unfilled-shape;
+  }
+
+  &.glyph {
+    @include unfilled-shape;
+  }
+
+  &.glyph:global(.Mui-disabled) {
+    --pb-fg: var(--text-disabled-neutral);
+  }
+
+  &.circle {
+    border-radius: 50%;
+  }
+}
+
+.static {
+  @include bubble-chrome;
+
+  &.panel,
+  &.glyph {
+    @include unfilled-shape;
+  }
+
+  &.glyph[aria-disabled="true"] {
+    --pb-fg: var(--text-disabled-neutral);
+  }
+
+  &.circle {
+    border-radius: 50%;
+  }
+}
+
+/* ----- circle (levelType=default) ----- */
+
+.circle {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 50%;
+
+  &.active {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+}
+
+/* ----- panel level (diamond) ----- */
+
+.panel {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+
+  .diamond {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    background-color: var(--pb-bg);
+    border: var(--pb-border-width, 0px) solid var(--pb-border, transparent);
+  }
+
+  &.active {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+
+    .diamond {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+  }
+}
+
+/* ----- glyph types (lessonExtras / tutorPlus) ----- */
+
+.glyph {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 2px;
+}
+
+/* ----- content ----- */
+
+.levelNumber {
+  position: relative;
+  z-index: 1;
+  font-size: 0.75rem; /* 12px */
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 1;
+  color: inherit;
+  user-select: none;
+}
+
+.inlineStar {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+.starBadge {
+  position: absolute;
+  top: -3.5px;
+  right: -3px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--background-neutral-primary);
+  border: 1.25px solid var(--border-neutral-solid);
+  color: var(--text-neutral-primary);
+}

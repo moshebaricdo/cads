@@ -226,6 +226,24 @@
       "componentKey": "21631db16f6743b826a673366f733746b019284f",
       "source": "@moshebaricdo/cads-react",
       "snippet": "import { AiChatInput } from \"@moshebaricdo/cads-react\";\n\n<AiChatInput placeholder=\"Type something\" onSubmit={onSend} />"
+    },
+    {
+      "componentName": "ProgressBubble",
+      "figmaNodeId": "17307:1165",
+      "source": "@moshebaricdo/cads-react",
+      "snippet": "import { ProgressBubble } from \"@moshebaricdo/cads-react\";\n\n<ProgressBubble status=\"completed\" isAssessment aria-label=\"Level 4\" />"
+    },
+    {
+      "componentName": "ProgressWidget",
+      "figmaNodeId": "17307:1036",
+      "source": "@moshebaricdo/cads-react",
+      "snippet": "import { ProgressWidget } from \"@moshebaricdo/cads-react\";\n\n<ProgressWidget levelLabel=\"Lesson 3: Introduction to Online Puzzles\" levels={levels} activeLevelIndex={5} saveStatus=\"saved\" />"
+    },
+    {
+      "componentName": "GlobalHeader",
+      "figmaNodeId": "17240:2903",
+      "source": "@moshebaricdo/cads-react",
+      "snippet": "import { GlobalHeader } from \"@moshebaricdo/cads-react\";\n\n<GlobalHeader state=\"labLevel\" progressWidgetProps={{ levelLabel: \"Lesson 3: Introduction to Online Puzzles\", levels, activeLevelIndex: 5 }} />"
     }
   ]
 }

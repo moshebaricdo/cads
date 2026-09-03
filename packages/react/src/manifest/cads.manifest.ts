@@ -2217,6 +2217,265 @@ export const cadsManifest: {
       ],
       example: `<FaIcon name="arrow-right" size="medium" />`,
     },
+    {
+      name: "ProgressBubble",
+      exportName: "ProgressBubble",
+      importFrom: "@moshebaricdo/cads-react",
+      description:
+        "Level progress bubble from the lab progress widget. Circle and panel-diamond level shapes with status chrome, plus lesson-extras and Tutor+ glyph variants; the active level renders large with its level number.",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17307:1165",
+      },
+      props: [
+        {
+          name: "levelType",
+          type: '"default" | "panelLevel" | "lessonExtras" | "tutorPlus"',
+          default: '"default"',
+          description:
+            "Shape family: circle, panel diamond, checkered-flag glyph, Tutor+ mark.",
+        },
+        {
+          name: "status",
+          type: '"notStarted" | "inProgress" | "passed" | "completed" | "error"',
+          default: '"notStarted"',
+          description:
+            "Completion status chrome. Ignored for lessonExtras / tutorPlus (Figma status N/A).",
+        },
+        {
+          name: "isActive",
+          type: "boolean",
+          default: "false",
+          description:
+            "Current level — renders the 24px bubble with the level number.",
+        },
+        {
+          name: "isAssessment",
+          type: "boolean",
+          default: "false",
+          description:
+            "Assessment level — inline star (inactive) or top-right star badge (active).",
+        },
+        {
+          name: "levelNumber",
+          type: "ReactNode",
+          description: "Level number shown inside the active bubble.",
+        },
+        {
+          name: "interactive",
+          type: "boolean",
+          default: "true",
+          description:
+            "false renders a non-pressable span (e.g. nested inside the Progress Widget dropdown start icon).",
+        },
+      ],
+      variableDependencies: [
+        "--background-neutral-primary",
+        "--background-neutral-tertiary",
+        "--background-success-light",
+        "--background-success-mid",
+        "--background-success-primary",
+        "--background-success-strong",
+        "--background-error-primary",
+        "--background-error-strong",
+        "--background-disabled-neutral",
+        "--border-neutral-secondary",
+        "--border-neutral-solid",
+        "--border-success-strong",
+        "--border-focused-primary",
+        "--text-neutral-primary",
+        "--text-neutral-quaternary",
+        "--text-neutral-white-fixed",
+        "--text-disabled-neutral",
+        "--text-disabled-neutral-inverse",
+        "--font-family-main",
+        "--font-weight-bold",
+      ],
+      usageRules: [
+        "Inactive bubbles are 12px; the active level is 24px (circle) / 24px container (panel diamond). lessonExtras and Tutor+ stay 12px glyphs.",
+        "Press chrome reuses hover pending a dedicated Figma press spec.",
+        "Selected/current chrome uses success tokens per Figma — never brand fills.",
+        "Pass interactive={false} when the bubble is decorative or nested inside another control.",
+      ],
+      example: `<ProgressBubble status="completed" isAssessment aria-label="Level 4" />`,
+    },
+    {
+      name: "ProgressWidget",
+      exportName: "ProgressWidget",
+      importFrom: "@moshebaricdo/cads-react",
+      description:
+        "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away and the active level bubble nests inside the dropdown.",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17307:1036",
+      },
+      props: [
+        {
+          name: "levelLabel",
+          type: "string",
+          required: true,
+          description: "Level name in the dropdown trigger.",
+        },
+        {
+          name: "levels",
+          type: "ProgressWidgetLevel[]",
+          description:
+            "Levels rendered as progress bubbles in the desktop rail ({ levelType, status, isAssessment, label, onClick }).",
+        },
+        {
+          name: "activeLevelIndex",
+          type: "number",
+          description:
+            "Index of the current level; renders large in the rail and nests in the dropdown below 960px.",
+        },
+        {
+          name: "breakpoint",
+          type: '"auto" | "desktop" | "tabletMobile"',
+          default: '"auto"',
+          description:
+            "auto switches at 960px via media query; desktop / tabletMobile force a layout.",
+        },
+        {
+          name: "saveStatus",
+          type: '"saved" | "offline"',
+          default: '"saved"',
+          description:
+            "Cloud icon state: cloud-check (saved) or cloud-slash (offline).",
+        },
+        {
+          name: "saveStatusLabel",
+          type: "string",
+          description:
+            'Cloud tooltip label; defaults to "Saved 2 minutes ago" / "Offline".',
+        },
+        {
+          name: "hasAction",
+          type: "boolean",
+          default: "true",
+          description: "Show the trailing action button.",
+        },
+        {
+          name: "actionLabel",
+          type: "string",
+          default: '"I finished"',
+        },
+        { name: "onActionClick", type: "MouseEventHandler" },
+        {
+          name: "onLevelSelectClick",
+          type: "MouseEventHandler",
+          description:
+            "Level dropdown trigger click (the CADS trigger opens nothing itself).",
+        },
+      ],
+      variableDependencies: [
+        "--background-neutral-primary",
+        "--background-neutral-secondary",
+        "--border-neutral-primary",
+        "--border-neutral-secondary",
+        "--border-focused-primary",
+        "--text-neutral-primary",
+        "--text-neutral-tertiary",
+        "--shape-sm",
+        "--shape-md",
+        "--font-family-main",
+        "--font-size-body-xs",
+      ],
+      usageRules: [
+        "The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.",
+        "Below 960px (or breakpoint=tabletMobile) the bubble rail hides and the active level bubble nests small + non-interactive as the dropdown start icon.",
+        "The cloud icon always has a hover/focus tooltip: save recency when saved, \u201cOffline\u201d when offline.",
+        "The action button is the CADS Button (contained secondary extraSmall).",
+      ],
+      example: `<ProgressWidget levelLabel="Lesson 3: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />`,
+    },
+    {
+      name: "GlobalHeader",
+      exportName: "GlobalHeader",
+      importFrom: "@moshebaricdo/cads-react",
+      description:
+        "Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop and tablet/mobile (<960px) layouts.",
+      figma: {
+        fileKey: CADS_FIGMA_FILE_KEY,
+        nodeId: "17240:2903",
+      },
+      props: [
+        {
+          name: "state",
+          type: '"labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus"',
+          default: '"labLevel"',
+          description: "Which page chrome to render.",
+        },
+        {
+          name: "breakpoint",
+          type: '"auto" | "desktop" | "tabletMobile"',
+          default: '"auto"',
+          description:
+            "auto switches at 960px via media query; desktop / tabletMobile force a layout.",
+        },
+        {
+          name: "username",
+          type: "string",
+          default: '"Username"',
+          description: "Account dropdown label.",
+        },
+        {
+          name: "progressWidgetProps",
+          type: "Omit<ProgressWidgetProps, \"breakpoint\">",
+          description:
+            "Progress widget props for labLevel / nonLabLesson (breakpoint follows the header).",
+        },
+        {
+          name: "projectTitle",
+          type: "string",
+          default: '"Untitled Project"',
+          description: "standaloneProject title.",
+        },
+        {
+          name: "projectSaveStatusText",
+          type: "string",
+          default: '"Saved a few seconds ago"',
+        },
+        {
+          name: "tutorLabel",
+          type: "string",
+          default: '"Tutor Challenge"',
+          description: "tutorPlus centered label.",
+        },
+        {
+          name: "navItems",
+          type: "GlobalHeaderNavItem[]",
+          description:
+            "Dashboard nav links; defaults per state (teacher includes Professional Learning).",
+        },
+        { name: "onNewProjectClick", type: "MouseEventHandler" },
+        { name: "onUsernameClick", type: "MouseEventHandler" },
+        { name: "onHelpClick", type: "MouseEventHandler" },
+        { name: "onMenuClick", type: "MouseEventHandler" },
+        { name: "onShareClick", type: "MouseEventHandler" },
+        { name: "onRemixClick", type: "MouseEventHandler" },
+        { name: "onRenameClick", type: "MouseEventHandler" },
+      ],
+      variableDependencies: [
+        "--background-brand-primary",
+        "--border-neutral-white-fixed",
+        "--text-neutral-white-fixed",
+        "--neutral-white-alpha-10",
+        "--shape-sm",
+        "--spacing-p-xs",
+        "--spacing-p-xxs",
+        "--font-family-main",
+        "--font-size-body-xs",
+        "--font-size-body-sm",
+        "--font-weight-semi-bold",
+      ],
+      usageRules: [
+        "Header buttons (white text/outlined on brand) are surface-specific chrome, not CADS Button variants.",
+        "labLevel / nonLabLesson center the Progress Widget; it follows the header breakpoint.",
+        "Below 960px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains.",
+        "The header always spans full width at 48px height on --background-brand-primary.",
+      ],
+      example: `<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 3: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />`,
+    },
   ],
 };
 

@@ -1,0 +1,238 @@
+/*
+ * Global Header — CADS Figma node 17240:2903.
+ * Brand-purple chrome bar; white-on-brand text/outlined buttons are
+ * surface-specific primitives (not CADS Button variants).
+ */
+
+$tablet-mobile-max: 959.95px;
+
+.root {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-p-xxs);
+  height: 48px;
+  width: 100%;
+  padding: 0 var(--spacing-p-xs);
+  overflow: hidden;
+  background-color: var(--background-brand-primary);
+  font-family: var(--font-family-main);
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-p-xxs);
+  flex: none;
+  min-width: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding-right: 12px;
+}
+
+.leftActions {
+  align-items: center;
+  gap: var(--spacing-p-xxs);
+}
+
+.navLinks {
+  align-items: center;
+  gap: var(--spacing-p-xxs);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: var(--spacing-p-xxs);
+}
+
+.widget {
+  /* Let the level label hug, then shrink/truncate inside the center slot. */
+  max-width: 100%;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: none;
+  height: 40px;
+}
+
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ----- header chrome buttons (white on brand) ----- */
+
+.headerButton {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 24px;
+  max-height: 24px;
+  min-width: 24px;
+  padding: 2px 8px;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--shape-sm);
+  color: var(--text-neutral-white-fixed);
+  font-family: inherit;
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-semi-bold, 600);
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  /* White overlay hover on the brand surface (no semantic var for this). */
+  &:hover {
+    background-color: var(--neutral-white-alpha-10);
+  }
+
+  &:active {
+    background-color: var(--neutral-white-alpha-20, var(--neutral-white-alpha-10));
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--background-brand-primary),
+      0 0 0 4px var(--border-neutral-white-fixed);
+  }
+}
+
+.outlinedButton {
+  border: 1px solid var(--border-neutral-white-fixed);
+}
+
+.iconButton {
+  width: 24px;
+  max-width: 24px;
+  padding: 4px;
+}
+
+.headerButtonLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.textButton {
+  border: 0;
+}
+
+.usernameDropdown {
+  /* Hug the username; truncate only past 120px. */
+  max-width: 120px;
+  justify-content: space-between;
+}
+
+.usernameLabel {
+  min-width: 0;
+  flex: 1 1 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.usernameChevron {
+  flex: none;
+  width: 16px;
+  justify-content: center;
+}
+
+/* ----- standalone project title block ----- */
+
+.projectText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  color: var(--text-neutral-white-fixed);
+}
+
+.projectTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-semi-bold, 600);
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.projectTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.projectSaveStatus {
+  font-size: 0.625rem; /* 10px — Figma Body 5 */
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+/* ----- tutorPlus center label ----- */
+
+.tutorLabel {
+  color: var(--text-neutral-white-fixed);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semi-bold, 600);
+  line-height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ----- responsive visibility ----- */
+
+.desktopOnly {
+  display: inline-flex;
+}
+
+nav.desktopOnly,
+div.desktopOnly {
+  display: flex;
+}
+
+.tabletMobileOnly {
+  display: none;
+}
+
+@mixin tablet-mobile {
+  .desktopOnly {
+    display: none !important;
+  }
+
+  .tabletMobileOnly {
+    display: flex;
+  }
+}
+
+.root:not(.forceDesktop):not(.forceTabletMobile) {
+  @media (max-width: $tablet-mobile-max) {
+    @include tablet-mobile;
+  }
+}
+
+.forceTabletMobile {
+  @include tablet-mobile;
+}

@@ -1,0 +1,501 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "ProgressBubble",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17307:1165",
+    "componentKey": null,
+    "relatedNodeIds": [
+      "17307:1036",
+      "17543:1192",
+      "17453:855"
+    ],
+    "retrievedAt": "2026-09-03",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-09-03: initial build from Progress Bubbles set (17307:1165) — levelType × status × isActive × isAssessment × state.",
+      "2026-09-03: correction — status rings (notStarted / inProgress 1.5px) were losing to the MUI ButtonBase border:0 reset; chrome now lives on the double-:global selector. Glyph fg is --text-neutral-quaternary (hover --text-neutral-primary). Passed hover fill is --background-success-strong (was --background-success-primary)."
+    ]
+  },
+  "axes": {
+    "public": {
+      "levelType": [
+        "default",
+        "panelLevel",
+        "lessonExtras",
+        "tutorPlus"
+      ],
+      "status": [
+        "notStarted",
+        "inProgress",
+        "passed",
+        "completed",
+        "error"
+      ],
+      "isActive": [
+        true,
+        false
+      ],
+      "isAssessment": [
+        true,
+        false
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": [
+      "status is ignored for levelType=lessonExtras / tutorPlus (Figma status N/A).",
+      "isActive is ignored for levelType=lessonExtras / tutorPlus (always 12px glyphs)."
+    ]
+  },
+  "geometry": {
+    "sizes": {
+      "inactive": {
+        "bubblePx": "12"
+      },
+      "active": {
+        "bubblePx": "24",
+        "numberFontPx": "12"
+      },
+      "panelInactive": {
+        "containerPx": "12",
+        "diamondPx": "10",
+        "diamondRadius": "2"
+      },
+      "panelActive": {
+        "containerPx": "24",
+        "diamondPx": "20",
+        "diamondRadius": "4"
+      },
+      "glyph": {
+        "containerPx": "12",
+        "glyphPx": "11-12"
+      }
+    },
+    "layout": {
+      "padding": "0",
+      "gap": "0",
+      "borderWidth": "1.5 (notStarted / inProgress ring)",
+      "radius": "50% circle (pinned on the MUI double-:global selector) / 2-4px diamond",
+      "overlap": "assessment badge: 10px circle pinned top -3.5 / right -3"
+    },
+    "typography": {
+      "family": "var(--font-family-main)",
+      "size": "12px",
+      "weight": "var(--font-weight-bold)",
+      "lineHeight": "1"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "6 (inline star) / 5 (badge star) / 11 (flag-checkered)"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "status": "notStarted",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-secondary)",
+        "fg": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=notStarted, isActive=false",
+      "notes": [
+        "1.5px ring."
+      ]
+    },
+    {
+      "when": {
+        "status": "notStarted",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=notStarted, state=hover",
+      "notes": []
+    },
+    {
+      "when": {
+        "status": "inProgress",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-neutral-primary)",
+        "border": "var(--border-success-strong)",
+        "fg": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=inProgress",
+      "notes": [
+        "Green 1.5px ring; hover bg var(--background-success-light)."
+      ]
+    },
+    {
+      "when": {
+        "status": "passed",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-success-mid)",
+        "fg": "var(--text-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=passed",
+      "notes": [
+        "Hover: bg var(--background-success-strong) + fg var(--text-neutral-white-fixed)."
+      ]
+    },
+    {
+      "when": {
+        "status": "completed",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-success-primary)",
+        "fg": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=completed",
+      "notes": [
+        "Hover: bg var(--background-success-strong)."
+      ]
+    },
+    {
+      "when": {
+        "status": "error",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-error-primary)",
+        "fg": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=default, status=error",
+      "notes": [
+        "Hover: bg var(--background-error-strong)."
+      ]
+    },
+    {
+      "when": {
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "bg": "var(--background-disabled-neutral)",
+        "fg": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {
+        "borderWidth": "0"
+      },
+      "figmaVariant": "state=disabled",
+      "notes": [
+        "Glyph types instead use fg var(--text-disabled-neutral), no fill."
+      ]
+    },
+    {
+      "when": {
+        "levelType": "lessonExtras",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "fg": "var(--text-neutral-quaternary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=lessonExtras, status=N/A",
+      "notes": [
+        "FA solid flag-checkered 11px, no bubble fill."
+      ]
+    },
+    {
+      "when": {
+        "levelType": "tutorPlus",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "fg": "var(--text-neutral-quaternary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "levelType=tutorPlus, status=N/A",
+      "notes": [
+        "Inline TutorPlusMark SVG (T + sparkle) using currentColor."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "levelType",
+      "status",
+      "isActive",
+      "isAssessment",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "progress-bubble-not-started-light",
+        "figmaNodeId": "17307:1205",
+        "figmaVariant": "levelType=default, status=notStarted, isActive=false",
+        "mode": "light",
+        "props": {
+          "status": "notStarted"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "bubblePx": "12"
+        },
+        "expectedVariables": [
+          "--border-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-completed-light",
+        "figmaNodeId": "17307:1164",
+        "figmaVariant": "levelType=default, status=completed, isActive=false",
+        "mode": "light",
+        "props": {
+          "status": "completed"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "bubblePx": "12"
+        },
+        "expectedVariables": [
+          "--background-success-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-active-in-progress-light",
+        "figmaNodeId": "17312:1325",
+        "figmaVariant": "levelType=default, status=inProgress, isActive=true",
+        "mode": "light",
+        "props": {
+          "status": "inProgress",
+          "isActive": true,
+          "levelNumber": "6"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "bubblePx": "24",
+          "numberFontPx": "12"
+        },
+        "expectedVariables": [
+          "--border-success-strong",
+          "--font-weight-bold"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-active-assessment-light",
+        "figmaNodeId": "17312:1390",
+        "figmaVariant": "levelType=default, status=inProgress, isActive=true, isAssessment=true",
+        "mode": "light",
+        "props": {
+          "status": "inProgress",
+          "isActive": true,
+          "isAssessment": true,
+          "levelNumber": "6"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "badgePx": "10",
+          "badgeStarPx": "5"
+        },
+        "expectedVariables": [
+          "--border-neutral-solid"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-panel-completed-light",
+        "figmaNodeId": "17312:1543",
+        "figmaVariant": "levelType=panelLevel, status=completed, isActive=false",
+        "mode": "light",
+        "props": {
+          "levelType": "panelLevel",
+          "status": "completed"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "diamondPx": "10",
+          "diamondRadius": "2"
+        },
+        "expectedVariables": [
+          "--background-success-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-lesson-extras-light",
+        "figmaNodeId": "17453:855",
+        "figmaVariant": "levelType=lessonExtras, status=N/A",
+        "mode": "light",
+        "props": {
+          "levelType": "lessonExtras"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "glyphPx": "11"
+        },
+        "expectedVariables": [
+          "--text-neutral-quaternary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-tutor-plus-light",
+        "figmaNodeId": "17543:1192",
+        "figmaVariant": "levelType=tutorPlus, status=N/A",
+        "mode": "light",
+        "props": {
+          "levelType": "tutorPlus"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "glyphPx": "12"
+        },
+        "expectedVariables": [
+          "--text-neutral-quaternary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-bubble-disabled-light",
+        "figmaNodeId": "17307:1176",
+        "figmaVariant": "levelType=default, status=completed, state=disabled",
+        "mode": "light",
+        "props": {
+          "status": "completed",
+          "disabled": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 96,
+          "height": 96,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--background-disabled-neutral",
+          "--text-disabled-neutral-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressBubble.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "description": "Press (active) chrome reuses hover values.",
+      "reason": "No dedicated press variant was captured from the Figma set in this pass; hover reuse keeps the state visible without inventing chrome.",
+      "owner": "agent build session (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    },
+    {
+      "description": "12px bubbles are below minimum touch-target size.",
+      "reason": "Matches Figma exactly; prod wraps bubbles in larger link hit areas — revisit if the rail becomes the primary touch surface.",
+      "owner": "agent build session (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pending — componentKey not yet filled (run pnpm figma:audit-props after mapping keys)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": [
+      "2026-09-03: rings were losing to MUI ButtonBase border:0 (notStarted / inProgress / active-6 vanished). Chrome + 50% radius now on the double-:global selector. Glyph fg quaternary. Passed hover → success-strong. Recaptured notStarted, inProgress, active, passed, assessment, lessonExtras, widget rail.",
+      "2026-09-03: hover/press invisible — MUI ButtonBase :hover background-color overrode var(--pb-bg). Now sets background-color/color explicitly on :hover/:active (+ data-cads-force-pseudo). Panel diamonds + glyph fg handled separately."
+    ]
+  }
+}

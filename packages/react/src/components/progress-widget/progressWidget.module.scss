@@ -1,0 +1,196 @@
+/*
+ * Progress Widget — CADS Figma node 17307:1036.
+ * Desktop shows the bubble rail; below 960px the rail folds away and the
+ * active level bubble nests inside the level dropdown as its start icon.
+ * The dropdown hugs its label and only truncates once the container forces
+ * it (flex-shrink + min-width: 0 + ellipsis).
+ */
+
+$tablet-mobile-max: 959.95px;
+
+.root {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: var(--background-neutral-secondary);
+  border: 1px solid var(--border-neutral-primary);
+  border-radius: var(--shape-md);
+  font-family: var(--font-family-main);
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.dropdownContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  min-width: 0;
+  flex: 0 1 auto;
+  padding-left: 3px;
+  padding-right: 6px;
+}
+
+/* Figma "Dropdown Button" — mirrors the Dropdown trigger, opens nothing. */
+.levelSelect {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 0 1 auto;
+  min-height: 24px;
+  max-height: 24px;
+  padding: 2px 8px;
+  background-color: var(--background-neutral-primary);
+  border: 1px solid var(--border-neutral-secondary);
+  border-radius: var(--shape-sm);
+  color: var(--text-neutral-primary);
+  font-family: inherit;
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 18px;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background-color: var(--background-neutral-secondary);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+}
+
+.levelLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.chevron {
+  flex: none;
+  width: 16px;
+  justify-content: center;
+}
+
+.nestedBubble {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+}
+
+/* IconTooltip trigger — override Figma cloud fg (tertiary token, not
+   IconTooltip's quaternary "tertiary" color role). */
+.cloudSync {
+  flex: none;
+  --it-color: var(--text-neutral-tertiary);
+}
+
+.cloudSyncOffline {
+  --it-color: var(--text-neutral-placeholder);
+}
+
+.bubbleSlot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+  flex: none;
+  padding: 0 8px;
+  background-color: var(--background-neutral-primary);
+  /* Vertical dividers only — the widget root already owns the outer border.
+     Figma paints a full box around bubbleSlot (its hug/fill workaround);
+     code uses left/right rules between dropdown | bubbles | action. */
+  border: 0;
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+.bubbleSlot.withActionDivider {
+  border-right: 1px solid var(--border-neutral-primary);
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 100%;
+  padding: 0 3px;
+}
+
+/* ----- tablet/mobile layout (<960px or forced) ----- */
+
+@mixin tablet-mobile {
+  .dropdownContainer {
+    flex: 1 1 0;
+  }
+
+  .dropdownContainer.withActionDivider {
+    border-right: 1px solid var(--border-neutral-primary);
+  }
+
+  .levelSelect {
+    flex: 1 1 0;
+  }
+
+  .levelLabel {
+    flex: 1 1 0;
+  }
+
+  .nestedBubble {
+    display: inline-flex;
+  }
+
+  .bubbleSlot {
+    display: none;
+  }
+}
+
+@mixin desktop {
+  .dropdownContainer {
+    flex: 0 1 auto;
+    border-right: none;
+  }
+
+  .levelSelect {
+    flex: 0 1 auto;
+  }
+
+  .levelLabel {
+    flex: 0 1 auto;
+  }
+
+  .nestedBubble {
+    display: none;
+  }
+
+  .bubbleSlot {
+    display: flex;
+  }
+}
+
+.root:not(.forceDesktop):not(.forceTabletMobile) {
+  @media (max-width: $tablet-mobile-max) {
+    @include tablet-mobile;
+  }
+}
+
+.forceDesktop {
+  @include desktop;
+}
+
+.forceTabletMobile {
+  @include tablet-mobile;
+}

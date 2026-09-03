@@ -1,0 +1,388 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "GlobalHeader",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17240:2903",
+    "componentKey": null,
+    "relatedNodeIds": [
+      "17240:2947",
+      "17240:3364",
+      "17240:2904",
+      "17240:3323",
+      "17240:3100",
+      "17240:3516",
+      "17240:3138",
+      "17240:3175",
+      "17406:627",
+      "17406:664",
+      "17307:1036"
+    ],
+    "retrievedAt": "2026-09-03",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-09-03: initial build from Global Header set (17240:2903) — state (6) × breakpoint (biggest 1440 / smallest 960)."
+    ]
+  },
+  "axes": {
+    "public": {
+      "state": [
+        "labLevel",
+        "nonLabLesson",
+        "standaloneProject",
+        "teacherDashboard",
+        "studentDashboard",
+        "tutorPlus"
+      ],
+      "breakpoint": [
+        "auto",
+        "desktop",
+        "tabletMobile"
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": [
+      "progressWidgetProps only applies to labLevel / nonLabLesson.",
+      "projectTitle / projectSaveStatusText only apply to standaloneProject.",
+      "tutorLabel only applies to tutorPlus.",
+      "navItems only apply to teacherDashboard / studentDashboard (desktop)."
+    ]
+  },
+  "geometry": {
+    "sizes": {
+      "root": {
+        "heightPx": "48",
+        "paddingX": "var(--spacing-p-xs)"
+      },
+      "logo": {
+        "heightPx": "24",
+        "widthPx": "141.876",
+        "paddingRight": "12"
+      },
+      "chromeButton": {
+        "heightPx": "24",
+        "padding": "2px 8px",
+        "radius": "var(--shape-sm)"
+      },
+      "iconButton": {
+        "sizePx": "24",
+        "padding": "4"
+      },
+      "usernameDropdown": {
+        "widthPx": "95"
+      },
+      "rightCluster": {
+        "heightPx": "40",
+        "gap": "8"
+      }
+    },
+    "layout": {
+      "padding": "0 var(--spacing-p-xs)",
+      "gap": "var(--spacing-p-xxs) clusters; 4px icon group",
+      "borderWidth": "1 (outlined chrome buttons)",
+      "radius": "var(--shape-sm)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-family-main)",
+      "size": "var(--font-size-body-xs) chrome / var(--font-size-body-sm) tutor label",
+      "weight": "var(--font-weight-semi-bold)",
+      "lineHeight": "18px chrome / 22px tutor label"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "12"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "state": "labLevel",
+        "breakpoint": "desktop",
+        "mode": "light"
+      },
+      "variables": {
+        "surface": "var(--background-brand-primary)",
+        "chromeText": "var(--text-neutral-white-fixed)",
+        "chromeBorder": "var(--border-neutral-white-fixed)",
+        "chromeHover": "var(--neutral-white-alpha-10)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=labLevel, breakpoint=biggest",
+      "notes": [
+        "Left: logo + Share / Remix outlined buttons. Center: Progress Widget (flex 1, centered). Right: Username dropdown + help + hamburger.",
+        "Figma binds chrome borders to border/neutral/solid which is white in the brand context; code uses --border-neutral-white-fixed so dark mode cannot flip it."
+      ]
+    },
+    {
+      "when": {
+        "state": "labLevel",
+        "breakpoint": "tabletMobile",
+        "mode": "light"
+      },
+      "variables": {},
+      "geometryOverrides": {},
+      "figmaVariant": "state=labLevel, breakpoint=smallest",
+      "notes": [
+        "Share / Remix collapse to icon-only outlined buttons (share / rotate).",
+        "Widget switches to tabletMobile fold; help icon hides; hamburger remains."
+      ]
+    },
+    {
+      "when": {
+        "state": "standaloneProject",
+        "breakpoint": "desktop",
+        "mode": "light"
+      },
+      "variables": {},
+      "geometryOverrides": {},
+      "figmaVariant": "state=standaloneProject, breakpoint=biggest",
+      "notes": [
+        "Left adds title block: 12/18 semibold title + pencil glyph, 10/16 regular save line; Rename / Share / Remix outlined buttons.",
+        "Right adds New project (endIcon plus). No center content."
+      ]
+    },
+    {
+      "when": {
+        "state": "teacherDashboard",
+        "breakpoint": "desktop",
+        "mode": "light"
+      },
+      "variables": {},
+      "geometryOverrides": {},
+      "figmaVariant": "state=teacherDashboard, breakpoint=biggest",
+      "notes": [
+        "Nav text buttons (no border): My Dashboard, Course Catalog, Professional Learning, Projects, Incubator.",
+        "studentDashboard omits Professional Learning."
+      ]
+    },
+    {
+      "when": {
+        "state": "tutorPlus",
+        "breakpoint": "desktop",
+        "mode": "light"
+      },
+      "variables": {
+        "label": "var(--text-neutral-white-fixed)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "state=tutorPlus, breakpoint=biggest",
+      "notes": [
+        "Centered 14/22 semibold tutorLabel; no left actions."
+      ]
+    },
+    {
+      "when": {
+        "breakpoint": "tabletMobile",
+        "mode": "light"
+      },
+      "variables": {},
+      "geometryOverrides": {},
+      "figmaVariant": "breakpoint=smallest",
+      "notes": [
+        "Shared fold: dashboard nav, New project, and help icon hide; Username + hamburger remain."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "state",
+      "breakpoint",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "global-header-lab-desktop-light",
+        "figmaNodeId": "17240:2947",
+        "figmaVariant": "state=labLevel, breakpoint=biggest",
+        "mode": "light",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-mobile-light",
+        "figmaNodeId": "17240:3364",
+        "figmaVariant": "state=labLevel, breakpoint=smallest",
+        "mode": "light",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "tabletMobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 960,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-standalone-desktop-light",
+        "figmaNodeId": "17240:2904",
+        "figmaVariant": "state=standaloneProject, breakpoint=biggest",
+        "mode": "light",
+        "props": {
+          "state": "standaloneProject",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-teacher-desktop-light",
+        "figmaNodeId": "17240:3100",
+        "figmaVariant": "state=teacherDashboard, breakpoint=biggest",
+        "mode": "light",
+        "props": {
+          "state": "teacherDashboard",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-teacher-mobile-light",
+        "figmaNodeId": "17240:3516",
+        "figmaVariant": "state=teacherDashboard, breakpoint=smallest",
+        "mode": "light",
+        "props": {
+          "state": "teacherDashboard",
+          "breakpoint": "tabletMobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 960,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-tutor-desktop-light",
+        "figmaNodeId": "17406:627",
+        "figmaVariant": "state=tutorPlus, breakpoint=biggest",
+        "mode": "light",
+        "props": {
+          "state": "tutorPlus",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "description": "Header buttons are private chrome primitives, not CADS Button variants.",
+      "reason": "White text / white-outlined-on-brand styling with alpha hover exists nowhere in the Button variant matrix; promoting it would pollute the public API.",
+      "owner": "agent build session (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    },
+    {
+      "description": "Hover/press chrome (white alpha overlays) is code-only.",
+      "reason": "Figma header variants model no interaction states; overlays follow prod convention pending explicit spec.",
+      "owner": "agent build session (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    },
+    {
+      "description": "Only desktop (≥960px) and tabletMobile (<960px) are implemented; intermediate prod breakpoints deferred.",
+      "reason": "Explicit scope from the component owner — fill gaps later.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    },
+    {
+      "description": "Remix icon-only glyph uses FA “rotate”.",
+      "reason": "Figma smallest variant names the glyph “sync”, which is the FA5 alias of rotate; the FA7 Pro set in-package ships rotate.",
+      "owner": "agent build session (2026-09-03)",
+      "affectedCases": [
+        "global-header-lab-mobile-light"
+      ]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pending — componentKey not yet filled (run pnpm figma:audit-props after mapping keys)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": []
+  }
+}

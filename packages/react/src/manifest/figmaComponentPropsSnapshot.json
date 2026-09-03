@@ -3366,6 +3366,199 @@
         "Composer surface: padding 8/10/10, gap 8, radius --shape-sm, border --border-neutral-secondary. Send is Button contained primary icon-only arrow-up; disabled brand fill when empty. Focus uses shared double-ring.",
         "Figma isFilled axis is design-only; code derives filled chrome from value/defaultValue content length."
       ]
+    },
+    {
+      "cadsName": "ProgressBubble",
+      "figmaName": "Progress Bubbles",
+      "nodeId": "17307:1165",
+      "componentKey": null,
+      "pageId": null,
+      "symbolCount": null,
+      "variantProperties": {
+        "levelType": [
+          "default",
+          "panelLevel",
+          "lessonExtras",
+          "tutorPlus"
+        ],
+        "status": [
+          "notStarted",
+          "inProgress",
+          "passed",
+          "completed",
+          "error",
+          "N/A"
+        ],
+        "isActive": [
+          "true",
+          "false"
+        ],
+        "isAssessment": [
+          "true",
+          "false"
+        ],
+        "state": [
+          "default",
+          "hover",
+          "active",
+          "focus",
+          "disabled"
+        ]
+      },
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "levelType": "levelType",
+        "status": "status",
+        "isActive": "isActive",
+        "isAssessment": "isAssessment",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "levelNumber",
+          "category": "content",
+          "reason": "Level number inside the active bubble; Figma text prop, not a variant axis."
+        },
+        {
+          "name": "interactive",
+          "category": "composition",
+          "reason": "false renders a non-pressable span for nesting (Progress Widget dropdown start icon); Figma models only the pressable bubble."
+        }
+      ],
+      "notes": [
+        "Figma status N/A applies to lessonExtras / tutorPlus; in code status is simply ignored for those levelTypes.",
+        "Press chrome reuses hover pending a dedicated Figma press spec."
+      ]
+    },
+    {
+      "cadsName": "ProgressWidget",
+      "figmaName": "Progress Widget",
+      "nodeId": "17307:1036",
+      "componentKey": null,
+      "pageId": null,
+      "symbolCount": 6,
+      "variantProperties": {
+        "saveStatus": [
+          "saved",
+          "offline",
+          "saveStatus3",
+          "saveStatus4",
+          "saveStatus5",
+          "saveStatus6"
+        ],
+        "breakpoint": [
+          "desktop",
+          "desktopTruncate",
+          "tabletMobile"
+        ]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "saveStatus": "saveStatus",
+        "breakpoint": "breakpoint"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "levelLabel",
+          "category": "content",
+          "reason": "Dropdown label text; Figma text override."
+        },
+        {
+          "name": "levels",
+          "category": "composition",
+          "reason": "Bubble rail is a children slot in Figma; code takes structured level data."
+        },
+        {
+          "name": "activeLevelIndex",
+          "category": "composition",
+          "reason": "Marks the current level; drives both the large rail bubble and the nested tabletMobile start icon."
+        },
+        {
+          "name": "saveStatusLabel",
+          "category": "content",
+          "reason": "Cloud tooltip label; tooltip is code-only (Figma shows no hover surface)."
+        },
+        {
+          "name": "hasAction",
+          "category": "composition",
+          "reason": "Figma boolean prop for the trailing action button."
+        },
+        {
+          "name": "actionLabel",
+          "category": "content",
+          "reason": "Action button text override."
+        }
+      ],
+      "notes": [
+        "Figma saveStatus3-6 are placeholder variant names for offline/saved at other breakpoints; code collapses to saved | offline.",
+        "Figma desktopTruncate is a separate variant because Figma cannot express hug-until-truncate; code handles it with flex-shrink + ellipsis, so breakpoint is only desktop | tabletMobile | auto.",
+        "Figma's tabletMobile start icon is a green FA circle placeholder; code nests a small non-interactive ProgressBubble of the active level per design intent."
+      ]
+    },
+    {
+      "cadsName": "GlobalHeader",
+      "figmaName": "Global Header",
+      "nodeId": "17240:2903",
+      "componentKey": null,
+      "pageId": null,
+      "symbolCount": 12,
+      "variantProperties": {
+        "state": [
+          "standaloneProject",
+          "labLevel",
+          "teacherDashboard",
+          "studentDashboard",
+          "tutorPlus",
+          "nonLabLesson"
+        ],
+        "breakpoint": [
+          "biggest",
+          "smallest"
+        ]
+      },
+      "designOnlyAxes": [],
+      "axisToCodeProp": {
+        "state": "state",
+        "breakpoint": "breakpoint"
+      },
+      "codeOnlyProps": [
+        {
+          "name": "username",
+          "category": "content",
+          "reason": "Account dropdown label; Figma text override."
+        },
+        {
+          "name": "progressWidgetProps",
+          "category": "composition",
+          "reason": "Nested Progress Widget instance props for labLevel / nonLabLesson."
+        },
+        {
+          "name": "projectTitle",
+          "category": "content",
+          "reason": "standaloneProject title; Figma text override."
+        },
+        {
+          "name": "projectSaveStatusText",
+          "category": "content",
+          "reason": "standaloneProject save line; Figma text override."
+        },
+        {
+          "name": "tutorLabel",
+          "category": "content",
+          "reason": "tutorPlus center label; Figma text prop tutorLabel."
+        },
+        {
+          "name": "navItems",
+          "category": "composition",
+          "reason": "Dashboard nav links; Figma hard-codes per-state button rows."
+        }
+      ],
+      "notes": [
+        "Figma breakpoint biggest=1440 / smallest=960 map to code desktop / tabletMobile; code adds auto (media query at 960px).",
+        "Intermediate prod breakpoints intentionally deferred - desktop and <960px behavior first."
+      ]
     }
   ]
 }

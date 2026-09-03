@@ -1,0 +1,328 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "ProgressWidget",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17307:1036",
+    "componentKey": null,
+    "relatedNodeIds": [
+      "17307:1035",
+      "17545:1660",
+      "17545:1574",
+      "17432:2068",
+      "17545:1644"
+    ],
+    "retrievedAt": "2026-09-03",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-09-03: initial build from Progress Widget set (17307:1036) — saveStatus × breakpoint (desktop / desktopTruncate / tabletMobile).",
+      "2026-09-03: correction — bubbleSlot uses left/right dividers only (dropdown | bubbles | action). Figma paints a full border around bubbleSlot as a hug/fill workaround; the widget root already owns the outer stroke."
+    ]
+  },
+  "axes": {
+    "public": {
+      "breakpoint": [
+        "auto",
+        "desktop",
+        "tabletMobile"
+      ],
+      "saveStatus": [
+        "saved",
+        "offline"
+      ],
+      "hasAction": [
+        true,
+        false
+      ]
+    },
+    "designOnly": [],
+    "restrictedCombinations": []
+  },
+  "geometry": {
+    "sizes": {
+      "root": {
+        "heightPx": "30",
+        "radius": "var(--shape-md)"
+      },
+      "dropdown": {
+        "heightPx": "24",
+        "radius": "var(--shape-sm)",
+        "padding": "2px 8px",
+        "gap": "4"
+      },
+      "bubbleSlot": {
+        "padding": "0 8px",
+        "gap": "4"
+      },
+      "action": {
+        "heightPx": "24"
+      }
+    },
+    "layout": {
+      "padding": "dropdown container pl 3 / pr 6, gap 6; action container px 3",
+      "gap": "0 between slots (borders act as dividers)",
+      "borderWidth": "1",
+      "radius": "var(--shape-md)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-family-main)",
+      "size": "var(--font-size-body-xs)",
+      "weight": "var(--font-weight-regular)",
+      "lineHeight": "18px"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "12 (chevron-down, cloud-check/cloud-slash)"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "breakpoint": "desktop",
+        "saveStatus": "saved",
+        "mode": "light"
+      },
+      "variables": {
+        "rootBg": "var(--background-neutral-secondary)",
+        "rootBorder": "var(--border-neutral-primary)",
+        "dropdownBg": "var(--background-neutral-primary)",
+        "dropdownBorder": "var(--border-neutral-secondary)",
+        "label": "var(--text-neutral-primary)",
+        "cloud": "var(--text-neutral-tertiary)",
+        "slotBg": "var(--background-neutral-primary)",
+        "slotDivider": "var(--border-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "saveStatus=saved, breakpoint=desktop",
+      "notes": [
+        "Dropdown hugs its label (flex: 0 1 auto); truncation only under constraint (Figma desktopTruncate variant collapses into this rule).",
+        "Action is CADS Button contained secondary extraSmall with endIcon arrow-right."
+      ]
+    },
+    {
+      "when": {
+        "breakpoint": "desktop",
+        "saveStatus": "offline",
+        "mode": "light"
+      },
+      "variables": {
+        "cloud": "var(--text-neutral-tertiary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "saveStatus=offline, breakpoint=desktop",
+      "notes": [
+        "Icon swaps cloud-check → cloud-slash; tooltip shows “Offline”."
+      ]
+    },
+    {
+      "when": {
+        "breakpoint": "tabletMobile",
+        "mode": "light"
+      },
+      "variables": {
+        "divider": "var(--border-neutral-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "saveStatus=saveStatus6, breakpoint=tabletMobile",
+      "notes": [
+        "Bubble rail hidden; dropdown fills (flex 1, ellipsis).",
+        "Start icon is a small non-interactive ProgressBubble of the active level (design intent; Figma placeholder shows a green FA circle).",
+        "Dropdown container gets a right border divider before the action."
+      ]
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "breakpoint",
+      "saveStatus",
+      "hasAction",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "progress-widget-desktop-saved-light",
+        "figmaNodeId": "17307:1035",
+        "figmaVariant": "saveStatus=saved, breakpoint=desktop",
+        "mode": "light",
+        "props": {
+          "breakpoint": "desktop",
+          "saveStatus": "saved"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 620,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-desktop-offline-light",
+        "figmaNodeId": "17432:2068",
+        "figmaVariant": "saveStatus=offline, breakpoint=desktop",
+        "mode": "light",
+        "props": {
+          "breakpoint": "desktop",
+          "saveStatus": "offline"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 620,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [
+          "--text-neutral-tertiary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-desktop-truncate-light",
+        "figmaNodeId": "17545:1574",
+        "figmaVariant": "saveStatus=saveStatus4, breakpoint=desktopTruncate",
+        "mode": "light",
+        "props": {
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 480,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "widthPx": "416"
+        },
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Label truncates with ellipsis at constrained width — no overflow."
+        ]
+      },
+      {
+        "id": "progress-widget-tablet-mobile-light",
+        "figmaNodeId": "17545:1660",
+        "figmaVariant": "saveStatus=saveStatus6, breakpoint=tabletMobile",
+        "mode": "light",
+        "props": {
+          "breakpoint": "tabletMobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "widthPx": "328"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Nested active-level bubble replaces Figma's green circle placeholder per design intent."
+        ]
+      },
+      {
+        "id": "progress-widget-no-action-light",
+        "figmaNodeId": null,
+        "figmaVariant": "hasAction=false",
+        "mode": "light",
+        "props": {
+          "breakpoint": "desktop",
+          "hasAction": false
+        },
+        "state": "default",
+        "viewport": {
+          "width": 620,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": []
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "description": "Figma's tabletMobile dropdown start icon is a green FA circle; code nests a small non-interactive ProgressBubble of the active level.",
+      "reason": "Explicit design intent from the component owner — Figma used a placeholder because nesting the live bubble set was impractical.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "progress-widget-tablet-mobile-light"
+      ]
+    },
+    {
+      "description": "Figma desktopTruncate is a discrete variant; code has no separate breakpoint value.",
+      "reason": "Figma cannot express hug-until-truncate; code uses flex-shrink + min-width: 0 + ellipsis so truncation emerges from container width.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "progress-widget-desktop-truncate-light"
+      ]
+    },
+    {
+      "description": "Figma bubbleSlot paints a full 1px box; code uses left/right dividers only (dropdown | bubbles | action).",
+      "reason": "The widget root already owns the outer stroke. Figma’s full slot border is a hug/fill workaround and doubled up in code. Explicit owner request.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "progress-widget-desktop-saved-light",
+        "progress-widget-desktop-offline-light",
+        "progress-widget-desktop-truncate-light"
+      ]
+    },
+    {
+      "description": "Cloud tooltip (Saved X minutes ago / Offline) is code-only.",
+      "reason": "Requested behavior; Figma models no hover surface for the cloud icon.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "all"
+      ]
+    }
+  ],
+  "evidence": {
+    "apiAudit": "pending — componentKey not yet filled (run pnpm figma:audit-props after mapping keys)",
+    "typecheck": "pass",
+    "build": "pass",
+    "docsBuild": "pass",
+    "correctionPasses": [
+      "2026-09-03: fixture + playground captures vs Figma 17307:1035 / 17307:1165. Removed bubbleSlot full box (left/right dividers only). Recaptured desktop + tabletMobile."
+    ]
+  }
+}
