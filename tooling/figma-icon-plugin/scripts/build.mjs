@@ -2,7 +2,7 @@
 /**
  * Build the FontAwesome Glyphs Figma plugin:
  *  - dist/code.js + dist/ui.html  (default / --public: no FA fonts inlined)
- *  - Optional --with-fonts for local CADS testing (inlines FA Pro — never publish)
+ *  - Optional --with-fonts for local CADS testing (inlines FA7 Pro OTFs)
  *
  * Public build is safe for Figma Community (no Pro font binaries redistributed).
  * Previews use OS-installed fonts + FontFace from Settings → Add files.

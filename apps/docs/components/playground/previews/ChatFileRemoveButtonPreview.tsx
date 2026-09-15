@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatFileRemoveButton } from "@moshebaricdo/cads-react";
+import { ChatFileRemoveButton } from "@moshebari/cads-react";
 
 export default function ChatFileRemoveButtonPreview({
   values,

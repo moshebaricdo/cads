@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+import { Button } from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 
 export default function ButtonPreview({
   values,

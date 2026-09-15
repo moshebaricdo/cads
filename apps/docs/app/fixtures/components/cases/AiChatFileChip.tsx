@@ -1,6 +1,6 @@
 "use client";
 
-import { AiChatFileChip } from "@moshebaricdo/cads-react";
+import { AiChatFileChip } from "@moshebari/cads-react";
 import type { FixtureCase } from "./shared";
 
 const thumb =

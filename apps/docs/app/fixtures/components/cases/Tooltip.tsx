@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Tooltip } from "@moshebaricdo/cads-react";
+import { Button, Tooltip } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

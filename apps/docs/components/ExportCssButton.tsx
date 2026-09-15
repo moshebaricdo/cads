@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@moshebaricdo/cads-react";
+import { Button } from "@moshebari/cads-react";
 
 export type ExportFileSpec = {
   filename: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { buildShapeAndSpacingCss } from "@moshebaricdo/cads-variables";
+import { buildShapeAndSpacingCss } from "@moshebari/cads-variables";
 import { ExportCssButton } from "@/components/ExportCssButton";
 
 export function ShapeExportButton() {

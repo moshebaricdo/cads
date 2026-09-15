@@ -1,6 +1,6 @@
 "use client";
 
-import { Toggle } from "@moshebaricdo/cads-react";
+import { Toggle } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

@@ -16,10 +16,22 @@ const DEFAULT_OFFLINE_LABEL = "Offline";
  *
  * Desktop (≥960px): level dropdown (hugs its label, truncates when the
  * viewport forces it) + cloud sync status + bubble rail + action button.
- * Tablet/mobile (<960px): the rail folds away, the active level's bubble
+ * Tablet (600–959px): the rail folds away, the active level's bubble
  * nests inside the dropdown as a small non-interactive start icon, and a
  * leading outlined back button appears when `hasLeftAction` (Figma default).
+ * Phone (<600px): same fold, dropdown label is the lesson number instead
+ * of the full name (cloud stays).
  */
+
+function resolveLevelNumber(
+  levelLabel: string,
+  activeLevelIndex?: number,
+): string {
+  const fromLabel = levelLabel.match(/\d+/)?.[0];
+  if (fromLabel) return fromLabel;
+  if (activeLevelIndex != null) return String(activeLevelIndex + 1);
+  return "";
+}
 export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
   function ProgressWidget(props, ref) {
     const {
@@ -46,10 +58,13 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
       saveStatusLabel ??
       (saveStatus === "offline" ? DEFAULT_OFFLINE_LABEL : DEFAULT_SAVED_LABEL);
 
+    const levelNumber = resolveLevelNumber(levelLabel, activeLevelIndex);
+
     const rootClasses = [
       styles.root,
       breakpoint === "desktop" ? styles.forceDesktop : "",
       breakpoint === "tabletMobile" ? styles.forceTabletMobile : "",
+      breakpoint === "mobile" ? styles.forceMobile : "",
       className,
     ]
       .filter(Boolean)
@@ -97,6 +112,11 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
               </span>
             ) : null}
             <span className={styles.levelLabel}>{levelLabel}</span>
+            {levelNumber ? (
+              <span className={styles.levelNumber} aria-hidden="true">
+                {levelNumber}
+              </span>
+            ) : null}
             <FaIcon
               name="chevron-down"
               family="solid"
@@ -104,25 +124,27 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
               className={styles.chevron}
             />
           </button>
-          <IconTooltip
-            iconName={saveStatus === "offline" ? "cloud-slash" : "cloud-check"}
-            title={tooltipLabel}
-            placement="bottom"
-            size="extraSmall"
-            aria-label={
-              saveStatus === "offline"
-                ? "Sync status: offline"
-                : `Sync status: ${tooltipLabel}`
-            }
-            triggerProps={{
-              className: [
-                styles.cloudSync,
-                saveStatus === "offline" ? styles.cloudSyncOffline : "",
-              ]
-                .filter(Boolean)
-                .join(" "),
-            }}
-          />
+          <span className={styles.cloudSlot}>
+            <IconTooltip
+              iconName={saveStatus === "offline" ? "cloud-slash" : "cloud-check"}
+              title={tooltipLabel}
+              placement="bottom"
+              size="extraSmall"
+              aria-label={
+                saveStatus === "offline"
+                  ? "Sync status: offline"
+                  : `Sync status: ${tooltipLabel}`
+              }
+              triggerProps={{
+                className: [
+                  styles.cloudSync,
+                  saveStatus === "offline" ? styles.cloudSyncOffline : "",
+                ]
+                  .filter(Boolean)
+                  .join(" "),
+              }}
+            />
+          </span>
         </div>
 
         {levels.length > 0 ? (

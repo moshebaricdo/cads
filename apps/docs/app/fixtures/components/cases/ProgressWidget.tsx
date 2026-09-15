@@ -3,7 +3,7 @@
 import {
   ProgressWidget,
   type ProgressWidgetLevel,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import type { FixtureCase } from "./shared";
 
 const LEVELS: ProgressWidgetLevel[] = [
@@ -18,7 +18,7 @@ const LEVELS: ProgressWidgetLevel[] = [
   { levelType: "lessonExtras" },
 ];
 
-const LABEL = "Lesson 3: Introduction to Online Puzzles";
+const LABEL = "Lesson 6: Introduction to Online Puzzles";
 
 export const cases: FixtureCase[] = [
   {
@@ -90,6 +90,19 @@ export const cases: FixtureCase[] = [
         breakpoint="tabletMobile"
         hasLeftAction={false}
         style={{ width: 328 }}
+      />
+    ),
+  },
+  {
+    id: "progress-widget-phone-light",
+    mode: "light",
+    viewport: { width: 390, height: 80 },
+    render: () => (
+      <ProgressWidget
+        levelLabel={LABEL}
+        levels={LEVELS}
+        activeLevelIndex={5}
+        breakpoint="mobile"
       />
     ),
   },

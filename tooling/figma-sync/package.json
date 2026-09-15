@@ -10,6 +10,6 @@
     "audit-props": "node src/audit-component-props.mjs"
   },
   "dependencies": {
-    "@moshebaricdo/cads-variables": "workspace:*"
+    "@moshebari/cads-variables": "workspace:*"
   }
 }

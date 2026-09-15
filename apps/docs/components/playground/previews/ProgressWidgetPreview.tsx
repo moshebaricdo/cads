@@ -1,10 +1,10 @@
 "use client";
 
-import { ProgressWidget } from "@moshebaricdo/cads-react";
+import { ProgressWidget } from "@moshebari/cads-react";
 import type {
   ProgressWidgetBreakpoint,
   ProgressWidgetSaveStatus,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import {
   DEMO_PROGRESS_ACTIVE_INDEX,
   DEMO_PROGRESS_LEVELS,
@@ -20,7 +20,7 @@ export default function ProgressWidgetPreview({
   return (
     <ProgressWidget
       levelLabel={String(
-        v.levelLabel ?? "Lesson 3: Introduction to Online Puzzles",
+        v.levelLabel ?? "Lesson 6: Introduction to Online Puzzles",
       )}
       levels={DEMO_PROGRESS_LEVELS}
       activeLevelIndex={
@@ -41,7 +41,11 @@ export default function ProgressWidgetPreview({
         v.hasLeftAction === undefined ? true : Boolean(v.hasLeftAction)
       }
       style={
-        breakpoint === "tabletMobile" ? { width: 360 } : undefined
+        breakpoint === "tabletMobile"
+          ? { width: 360 }
+          : breakpoint === "mobile"
+            ? { width: "100%", maxWidth: 280 }
+            : undefined
       }
     />
   );

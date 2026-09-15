@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMotionCss } from "@moshebaricdo/cads-variables";
+import { buildMotionCss } from "@moshebari/cads-variables";
 import { ExportCssButton } from "@/components/ExportCssButton";
 
 export function MotionExportButton() {

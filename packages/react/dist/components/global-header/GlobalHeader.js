@@ -1,60 +1,54 @@
-import { jsx as a, jsxs as o, Fragment as R } from "react/jsx-runtime";
-import { forwardRef as w } from "react";
-import { FaIcon as b } from "../../icons/FaIcon.js";
-import { ProgressWidget as D } from "../progress-widget/ProgressWidget.js";
-import { CodeAiLogo as M } from "./CodeAiLogo.js";
+import { jsxs as o, jsx as a, Fragment as D } from "react/jsx-runtime";
+import { forwardRef as L } from "react";
+import { FaIcon as u } from "../../icons/FaIcon.js";
+import { Dropdown as R } from "../dropdown/Dropdown.js";
+import { ProgressWidget as T } from "../progress-widget/ProgressWidget.js";
+import { CodeAiLogo as H } from "./CodeAiLogo.js";
+import { CodeAiMark as z } from "./CodeAiMark.js";
 import e from "./globalHeader.module.scss.js";
-const T = [
+const I = [
   { label: "My Dashboard" },
   { label: "Course Catalog" },
   { label: "Professional Learning" },
   { label: "Projects" },
   { label: "Incubator" }
-], A = [
+], U = [
   { label: "My Dashboard" },
   { label: "Course Catalog" },
   { label: "Projects" },
   { label: "Incubator" }
-];
-function n({
-  variant: t,
-  icon: i,
-  endIcon: c,
-  label: l,
-  onClick: s,
-  className: m = "",
-  ariaLabel: r
-}) {
-  const h = t === "outlined" ? e.outlinedButton : t === "iconOutlined" ? `${e.outlinedButton} ${e.iconButton}` : t === "icon" ? e.iconButton : e.textButton;
+], n = L(function({ variant: i, icon: b, endIcon: l, label: t, onClick: p, className: d = "", ariaLabel: v }, N) {
+  const f = i === "outlined" ? e.outlinedButton : i === "iconOutlined" ? `${e.outlinedButton} ${e.iconButton}` : i === "icon" ? e.iconButton : e.textButton;
   return /* @__PURE__ */ o(
     "button",
     {
+      ref: N,
       type: "button",
-      className: `${e.headerButton} ${h} ${m}`,
-      onClick: s,
-      "aria-label": r,
+      className: `${e.headerButton} ${f} ${d}`,
+      onClick: p,
+      "aria-label": v,
       children: [
-        i ? /* @__PURE__ */ a(b, { name: i, family: "solid", fontSize: "12px" }) : null,
-        l ? /* @__PURE__ */ a("span", { className: e.headerButtonLabel, children: l }) : null,
-        c ? /* @__PURE__ */ a(b, { name: c, family: "solid", fontSize: "12px" }) : null
+        b ? /* @__PURE__ */ a(u, { name: b, family: "solid", fontSize: "12px" }) : null,
+        t ? /* @__PURE__ */ a("span", { className: e.headerButtonLabel, children: t }) : null,
+        l ? /* @__PURE__ */ a(u, { name: l, family: "solid", fontSize: "12px" }) : null
       ]
     }
   );
-}
-function H({
-  username: t,
+});
+function E({
+  username: h,
   onClick: i
 }) {
   return /* @__PURE__ */ o(
     "button",
     {
       type: "button",
-      className: `${e.headerButton} ${e.outlinedButton} ${e.usernameDropdown}`,
+      className: `${e.headerButton} ${e.outlinedButton} ${e.usernameDropdown} ${e.hideOnMobile}`,
       onClick: i,
       children: [
-        /* @__PURE__ */ a("span", { className: e.usernameLabel, children: t }),
+        /* @__PURE__ */ a("span", { className: e.usernameLabel, children: h }),
         /* @__PURE__ */ a(
-          b,
+          u,
           {
             name: "chevron-down",
             family: "solid",
@@ -66,55 +60,87 @@ function H({
     }
   );
 }
-const V = w(
-  function(i, c) {
+const X = L(
+  function(i, b) {
     const {
       state: l = "labLevel",
-      breakpoint: s = "auto",
-      username: m = "Username",
-      progressWidgetProps: r,
-      projectTitle: h = "Untitled Project",
+      breakpoint: t = "auto",
+      username: p = "Username",
+      progressWidgetProps: d,
+      projectTitle: v = "Untitled Project",
       projectSaveStatusText: N = "Saved a few seconds ago",
       tutorLabel: f = "Tutor Challenge",
-      navItems: L,
-      onNewProjectClick: $,
+      navItems: $,
+      onNewProjectClick: x,
       onUsernameClick: j,
-      onHelpClick: y,
-      onMenuClick: x,
-      onShareClick: d,
-      onRemixClick: u,
-      onRenameClick: v,
-      className: S = "",
-      ...O
-    } = i, g = [
+      onHelpClick: O,
+      onMenuClick: y,
+      onShareClick: r,
+      onRemixClick: s,
+      onRenameClick: m,
+      className: w = "",
+      ...g
+    } = i, M = [
       e.root,
-      s === "desktop" ? e.forceDesktop : "",
-      s === "tabletMobile" ? e.forceTabletMobile : "",
-      S
-    ].filter(Boolean).join(" "), k = l === "teacherDashboard" || l === "studentDashboard", C = l === "labLevel" || l === "nonLabLesson", B = L ?? (l === "teacherDashboard" ? T : A), P = C ? /* @__PURE__ */ a(
-      D,
+      t === "desktop" ? e.forceDesktop : "",
+      t === "tabletMobile" ? e.forceTabletMobile : "",
+      t === "mobile" ? e.forceMobile : "",
+      w
+    ].filter(Boolean).join(" "), k = l === "teacherDashboard" || l === "studentDashboard", C = l === "labLevel" || l === "nonLabLesson", S = $ ?? (l === "teacherDashboard" ? I : U), P = C ? /* @__PURE__ */ a(
+      T,
       {
-        levelLabel: "Lesson 3: Introduction to Online Puzzles",
-        ...r,
-        breakpoint: s === "auto" ? "auto" : s === "tabletMobile" ? "tabletMobile" : "desktop",
-        className: `${e.widget} ${(r == null ? void 0 : r.className) ?? ""}`
+        levelLabel: "Lesson 6: Introduction to Online Puzzles",
+        ...d,
+        breakpoint: t === "auto" ? "auto" : t === "mobile" ? "mobile" : t === "tabletMobile" ? "tabletMobile" : "desktop",
+        className: `${e.widget} ${(d == null ? void 0 : d.className) ?? ""}`
       }
-    ) : null;
+    ) : null, B = l === "standaloneProject" ? [
+      { value: "rename", label: "Rename", iconName: "pencil" },
+      { value: "share", label: "Share", iconName: "share" },
+      { value: "remix", label: "Remix", iconName: "rotate" }
+    ] : [
+      { value: "share", label: "Share", iconName: "share" },
+      { value: "remix", label: "Remix", iconName: "rotate" }
+    ], A = /* @__PURE__ */ a("div", { className: `${e.leftActions} ${e.overflowOnly}`, children: /* @__PURE__ */ a(
+      R,
+      {
+        role: "action",
+        size: "extraSmall",
+        menuPlacement: "bottomLeft",
+        "aria-label": "More actions",
+        disablePortal: !0,
+        options: B,
+        onAction: (c) => {
+          c === "share" && (r == null || r({})), c === "remix" && (s == null || s({})), c === "rename" && (m == null || m({}));
+        },
+        trigger: /* @__PURE__ */ a(
+          n,
+          {
+            variant: "iconOutlined",
+            icon: "ellipsis",
+            ariaLabel: "More actions"
+          }
+        )
+      }
+    ) });
     return /* @__PURE__ */ o(
       "header",
       {
-        ref: c,
-        className: g,
+        ref: b,
+        className: M,
         "data-cads-component": "GlobalHeader",
         "data-state": l,
-        ...O,
+        ...g,
         children: [
           /* @__PURE__ */ o("div", { className: e.left, children: [
-            /* @__PURE__ */ a("div", { className: e.logo, children: /* @__PURE__ */ a(M, {}) }),
-            l === "standaloneProject" ? /* @__PURE__ */ o("div", { className: e.projectText, children: [
+            /* @__PURE__ */ o("div", { className: e.logo, children: [
+              /* @__PURE__ */ a("span", { className: e.wordmark, children: /* @__PURE__ */ a(H, {}) }),
+              /* @__PURE__ */ a("span", { className: e.mark, children: /* @__PURE__ */ a(z, {}) })
+            ] }),
+            l === "standaloneProject" ? /* @__PURE__ */ o("div", { className: `${e.projectText} ${e.hideOnMobile}`, children: [
               /* @__PURE__ */ o("span", { className: e.projectTitleRow, children: [
-                /* @__PURE__ */ a("span", { className: e.projectTitle, children: h }),
-                /* @__PURE__ */ a(b, { name: "pencil", family: "solid", fontSize: "10px" })
+                /* @__PURE__ */ a("span", { className: e.projectTitle, children: v }),
+                /* @__PURE__ */ a(u, { name: "pencil", family: "solid", fontSize: "10px" })
               ] }),
               /* @__PURE__ */ a("span", { className: e.projectSaveStatus, children: N })
             ] }) : null,
@@ -124,7 +150,7 @@ const V = w(
                 {
                   variant: "outlined",
                   label: "Share",
-                  onClick: d
+                  onClick: r
                 }
               ),
               /* @__PURE__ */ a(
@@ -132,7 +158,7 @@ const V = w(
                 {
                   variant: "outlined",
                   label: "Remix",
-                  onClick: u
+                  onClick: s
                 }
               )
             ] }) : null,
@@ -143,7 +169,7 @@ const V = w(
                   variant: "iconOutlined",
                   icon: "share",
                   ariaLabel: "Share",
-                  onClick: d
+                  onClick: r
                 }
               ),
               /* @__PURE__ */ a(
@@ -152,18 +178,19 @@ const V = w(
                   variant: "iconOutlined",
                   icon: "rotate",
                   ariaLabel: "Remix",
-                  onClick: u
+                  onClick: s
                 }
               )
             ] }) : null,
-            l === "standaloneProject" ? /* @__PURE__ */ o(R, { children: [
+            l === "labLevel" || l === "standaloneProject" ? A : null,
+            l === "standaloneProject" ? /* @__PURE__ */ o(D, { children: [
               /* @__PURE__ */ o("div", { className: `${e.leftActions} ${e.desktopOnly}`, children: [
                 /* @__PURE__ */ a(
                   n,
                   {
                     variant: "outlined",
                     label: "Rename",
-                    onClick: v
+                    onClick: m
                   }
                 ),
                 /* @__PURE__ */ a(
@@ -171,7 +198,7 @@ const V = w(
                   {
                     variant: "outlined",
                     label: "Share",
-                    onClick: d
+                    onClick: r
                   }
                 ),
                 /* @__PURE__ */ a(
@@ -179,7 +206,7 @@ const V = w(
                   {
                     variant: "outlined",
                     label: "Remix",
-                    onClick: u
+                    onClick: s
                   }
                 )
               ] }),
@@ -194,7 +221,7 @@ const V = w(
                         variant: "iconOutlined",
                         icon: "pencil",
                         ariaLabel: "Rename",
-                        onClick: v
+                        onClick: m
                       }
                     ),
                     /* @__PURE__ */ a(
@@ -203,7 +230,7 @@ const V = w(
                         variant: "iconOutlined",
                         icon: "share",
                         ariaLabel: "Share",
-                        onClick: d
+                        onClick: r
                       }
                     ),
                     /* @__PURE__ */ a(
@@ -212,7 +239,7 @@ const V = w(
                         variant: "iconOutlined",
                         icon: "rotate",
                         ariaLabel: "Remix",
-                        onClick: u
+                        onClick: s
                       }
                     )
                   ]
@@ -224,14 +251,14 @@ const V = w(
               {
                 className: `${e.navLinks} ${e.desktopOnly}`,
                 "aria-label": "Primary",
-                children: B.map((p) => /* @__PURE__ */ a(
+                children: S.map((c) => /* @__PURE__ */ a(
                   n,
                   {
                     variant: "text",
-                    label: p.label,
-                    onClick: p.onClick
+                    label: c.label,
+                    onClick: c.onClick
                   },
-                  p.label
+                  c.label
                 ))
               }
             ) : null
@@ -245,11 +272,11 @@ const V = w(
                 variant: "outlined",
                 label: "New project",
                 endIcon: "plus",
-                onClick: $,
+                onClick: x,
                 className: e.desktopOnly
               }
             ) : null,
-            /* @__PURE__ */ a(H, { username: m, onClick: j }),
+            /* @__PURE__ */ a(E, { username: p, onClick: j }),
             /* @__PURE__ */ o("div", { className: e.rightIcons, children: [
               /* @__PURE__ */ a(
                 n,
@@ -257,7 +284,7 @@ const V = w(
                   variant: "icon",
                   icon: "circle-question",
                   ariaLabel: "Help",
-                  onClick: y,
+                  onClick: O,
                   className: e.desktopOnly
                 }
               ),
@@ -267,7 +294,7 @@ const V = w(
                   variant: "icon",
                   icon: "bars",
                   ariaLabel: "Menu",
-                  onClick: x
+                  onClick: y
                 }
               )
             ] })
@@ -278,6 +305,6 @@ const V = w(
   }
 );
 export {
-  V as GlobalHeader
+  X as GlobalHeader
 };
 //# sourceMappingURL=GlobalHeader.js.map

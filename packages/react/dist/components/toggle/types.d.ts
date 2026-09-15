@@ -34,12 +34,12 @@ export interface ToggleProps extends Omit<ButtonBaseProps, "onChange" | "childre
      */
     hasIcons?: boolean;
     /**
-     * FA Pro icon shown on the track when on (left slot).
+     * FA icon shown on the track when on (left slot).
      * @default "check"
      */
     onIcon?: FaIconName | (string & {});
     /**
-     * FA Pro icon shown on the track when off (right slot).
+     * FA icon shown on the track when off (right slot).
      * @default "xmark"
      */
     offIcon?: FaIconName | (string & {});

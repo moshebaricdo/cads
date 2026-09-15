@@ -26,7 +26,8 @@
     "taskPath": "new",
     "previousRecipe": null,
     "figmaChanges": [
-      "2026-09-03: initial build from Global Header set (17240:2903) — state (6) × breakpoint (biggest 1440 / smallest 960)."
+      "2026-09-03: initial build from Global Header set (17240:2903) — state (6) × breakpoint (biggest 1440 / smallest 960).",
+      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) from owner screenshot — favicon mark, ellipsis overflow, username into hamburger, widget number-only (cloud stays). Figma has no phone variant."
     ]
   },
   "axes": {
@@ -42,7 +43,8 @@
       "breakpoint": [
         "auto",
         "desktop",
-        "tabletMobile"
+        "tabletMobile",
+        "mobile"
       ]
     },
     "designOnly": [],
@@ -249,6 +251,36 @@
         "mismatches": []
       },
       {
+        "id": "global-header-lab-phone-light",
+        "figmaNodeId": null,
+        "figmaVariant": "code-only phone fold",
+        "mode": "light",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 390,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Favicon mark, ellipsis overflow, number-only widget (cloud stays), username hidden."
+        ]
+      },
+      {
         "id": "global-header-standalone-desktop-light",
         "figmaNodeId": "17240:2904",
         "figmaVariant": "state=standaloneProject, breakpoint=biggest",
@@ -362,11 +394,11 @@
       ]
     },
     {
-      "description": "Only desktop (≥960px) and tabletMobile (<960px) are implemented; intermediate prod breakpoints deferred.",
-      "reason": "Explicit scope from the component owner — fill gaps later.",
+      "description": "Phone fold (<600 / breakpoint=mobile) is code-only — Figma Global Header has no phone variant.",
+      "reason": "Owner screenshot (2026-09-03): favicon mark, ellipsis overflow for Share/Remix, username into hamburger, widget number-only (cloud stays). 600px chosen so 600–959 keeps the Figma smallest (960) tablet chrome.",
       "owner": "user request (2026-09-03)",
       "affectedCases": [
-        "all"
+        "global-header-lab-phone-light"
       ]
     },
     {
@@ -383,6 +415,8 @@
     "typecheck": "pass",
     "build": "pass",
     "docsBuild": "pass",
-    "correctionPasses": []
+    "correctionPasses": [
+      "2026-09-03: phone fixture capture vs owner screenshot — favicon, ellipsis overflow, number-only widget, hamburger-only right cluster."
+    ]
   }
 }

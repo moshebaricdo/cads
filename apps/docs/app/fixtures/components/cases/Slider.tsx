@@ -1,6 +1,6 @@
 "use client";
 
-import { Slider } from "@moshebaricdo/cads-react";
+import { Slider } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

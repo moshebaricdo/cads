@@ -2,10 +2,11 @@ import { CSSProperties, HTMLAttributes, MouseEventHandler } from 'react';
 import { ProgressBubbleLevelType, ProgressBubbleStatus } from '../progress-bubble/types';
 /**
  * Responsive mode.
- * - `auto` — media-query driven: bubble rail ≥960px, folded dropdown below.
- * - `desktop` / `tabletMobile` — force one layout (docs/playground).
+ * - `auto` — media-query driven: rail ≥960px, folded dropdown 600–959,
+ *   number-only dropdown below 600px (cloud stays).
+ * - `desktop` / `tabletMobile` / `mobile` — force one layout (docs/playground).
  */
-export type ProgressWidgetBreakpoint = "auto" | "desktop" | "tabletMobile";
+export type ProgressWidgetBreakpoint = "auto" | "desktop" | "tabletMobile" | "mobile";
 /** Autosave/sync state shown by the cloud icon + tooltip. */
 export type ProgressWidgetSaveStatus = "saved" | "offline";
 /** One level in the progress rail. */

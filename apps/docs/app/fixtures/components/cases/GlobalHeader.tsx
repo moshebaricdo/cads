@@ -4,7 +4,7 @@ import {
   GlobalHeader,
   type GlobalHeaderState,
   type ProgressWidgetLevel,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import type { FixtureCase } from "./shared";
 
 const LEVELS: ProgressWidgetLevel[] = [
@@ -20,7 +20,7 @@ const LEVELS: ProgressWidgetLevel[] = [
 ];
 
 const WIDGET_PROPS = {
-  levelLabel: "Lesson 3: Introduction to Online Puzzles",
+  levelLabel: "Lesson 6: Introduction to Online Puzzles",
   levels: LEVELS,
   activeLevelIndex: 5,
 };
@@ -28,13 +28,14 @@ const WIDGET_PROPS = {
 const header = (
   id: string,
   state: GlobalHeaderState,
-  breakpoint: "desktop" | "tabletMobile",
+  breakpoint: "desktop" | "tabletMobile" | "mobile",
   mode: "light" | "dark" = "light",
 ): FixtureCase => ({
   id,
   mode,
   viewport: {
-    width: breakpoint === "desktop" ? 1440 : 960,
+    width:
+      breakpoint === "desktop" ? 1440 : breakpoint === "mobile" ? 390 : 960,
     height: 80,
   },
   render: () => (
@@ -49,6 +50,7 @@ const header = (
 export const cases: FixtureCase[] = [
   header("global-header-lab-desktop-light", "labLevel", "desktop"),
   header("global-header-lab-mobile-light", "labLevel", "tabletMobile"),
+  header("global-header-lab-phone-light", "labLevel", "mobile"),
   header("global-header-non-lab-desktop-light", "nonLabLesson", "desktop"),
   header("global-header-non-lab-mobile-light", "nonLabLesson", "tabletMobile"),
   header(

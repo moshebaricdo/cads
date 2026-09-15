@@ -1,10 +1,10 @@
 "use client";
 
-import { ProgressBubble } from "@moshebaricdo/cads-react";
+import { ProgressBubble } from "@moshebari/cads-react";
 import type {
   ProgressBubbleLevelType,
   ProgressBubbleStatus,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 
 export default function ProgressBubblePreview({
   values,

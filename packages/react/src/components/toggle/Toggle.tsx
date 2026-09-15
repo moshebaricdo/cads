@@ -1,7 +1,7 @@
 import ButtonBase, {
   type ButtonBaseProps,
 } from "@mui/material/ButtonBase";
-import { motion as motionVars } from "@moshebaricdo/cads-variables";
+import { motion as motionVars } from "@moshebari/cads-variables";
 import { motion, useReducedMotion } from "motion/react";
 import {
   forwardRef,

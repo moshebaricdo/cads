@@ -407,6 +407,7 @@ export function nonColorCssVars(): Record<string, string> {
     "--transition-surface": `opacity var(--motion-surface-duration) var(--motion-surface-easing), transform var(--motion-surface-duration) var(--motion-surface-easing)`,
     "--transition-indicator": `left var(--motion-indicator-duration) var(--motion-indicator-easing), width var(--motion-indicator-duration) var(--motion-indicator-easing), transform var(--motion-indicator-duration) var(--motion-indicator-easing), background-color var(--duration-short) var(--easing-standard)`,
     "--transition-highlight-chase": `top var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), height var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing), opacity var(--motion-highlight-chase-duration) var(--motion-highlight-chase-easing)`,
+    "--font-fa-free": '"Font Awesome 7 Free"',
     "--font-fa-pro": '"Font Awesome 7 Pro"',
     "--font-fa-brands": '"Font Awesome 7 Brands"',
   };

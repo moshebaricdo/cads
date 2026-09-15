@@ -23,10 +23,10 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
-      '@moshebaricdo/cads-react':
+      '@moshebari/cads-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@moshebaricdo/cads-variables':
+      '@moshebari/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
       '@mui/material':
@@ -75,10 +75,10 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
-      '@moshebaricdo/cads-react':
+      '@moshebari/cads-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@moshebaricdo/cads-variables':
+      '@moshebari/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
       '@mui/material':
@@ -127,7 +127,7 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
-      '@moshebaricdo/cads-variables':
+      '@moshebari/cads-variables':
         specifier: workspace:*
         version: link:../variables
       '@mui/material':
@@ -188,10 +188,10 @@ importers:
 
   tooling/cads-artifact:
     dependencies:
-      '@moshebaricdo/cads-react':
+      '@moshebari/cads-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@moshebaricdo/cads-variables':
+      '@moshebari/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
       react:
@@ -210,7 +210,7 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(zod@4.4.3)
-      '@moshebaricdo/cads-react':
+      '@moshebari/cads-react':
         specifier: workspace:*
         version: link:../../packages/react
       zod:
@@ -249,7 +249,7 @@ importers:
 
   tooling/figma-sync:
     dependencies:
-      '@moshebaricdo/cads-variables':
+      '@moshebari/cads-variables':
         specifier: workspace:*
         version: link:../../packages/variables
 

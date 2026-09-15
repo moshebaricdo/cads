@@ -1,43 +1,50 @@
-import { jsxs as d, jsx as t } from "react/jsx-runtime";
-import { forwardRef as T } from "react";
-import { FaIcon as w } from "../../icons/FaIcon.js";
-import { Button as v } from "../button/Button.js";
-import { IconTooltip as I } from "../icon-tooltip/IconTooltip.js";
-import { ProgressBubble as p } from "../progress-bubble/ProgressBubble.js";
+import { jsxs as v, jsx as l } from "react/jsx-runtime";
+import { forwardRef as $ } from "react";
+import { FaIcon as D } from "../../icons/FaIcon.js";
+import { Button as N } from "../button/Button.js";
+import { IconTooltip as E } from "../icon-tooltip/IconTooltip.js";
+import { ProgressBubble as L } from "../progress-bubble/ProgressBubble.js";
 import e from "./progressWidget.module.scss.js";
-const $ = "Saved 2 minutes ago", D = "Offline", W = T(
-  function(b, h) {
+const I = "Saved 2 minutes ago", F = "Offline";
+function P(b, a) {
+  var t;
+  const n = (t = b.match(/\d+/)) == null ? void 0 : t[0];
+  return n || (a != null ? String(a + 1) : "");
+}
+const U = $(
+  function(a, n) {
     const {
-      levelLabel: m,
-      levels: n = [],
-      activeLevelIndex: i,
-      breakpoint: u = "auto",
-      saveStatus: o = "saved",
-      saveStatusLabel: L,
-      hasAction: r = !0,
+      levelLabel: t,
+      levels: m = [],
+      activeLevelIndex: s,
+      breakpoint: d = "auto",
+      saveStatus: i = "saved",
+      saveStatusLabel: S,
+      hasAction: u = !0,
       actionLabel: A = "I finished",
-      onActionClick: N,
-      hasLeftAction: S = !0,
-      onBackClick: k,
-      onLevelSelectClick: y,
-      className: C = "",
-      ...g
-    } = b, a = i != null ? n[i] : void 0, f = L ?? (o === "offline" ? D : $), B = [
+      onActionClick: k,
+      hasLeftAction: y = !0,
+      onBackClick: g,
+      onLevelSelectClick: C,
+      className: B = "",
+      ...T
+    } = a, r = s != null ? m[s] : void 0, p = S ?? (i === "offline" ? F : I), h = P(t, s), w = [
       e.root,
-      u === "desktop" ? e.forceDesktop : "",
-      u === "tabletMobile" ? e.forceTabletMobile : "",
-      C
+      d === "desktop" ? e.forceDesktop : "",
+      d === "tabletMobile" ? e.forceTabletMobile : "",
+      d === "mobile" ? e.forceMobile : "",
+      B
     ].filter(Boolean).join(" ");
-    return /* @__PURE__ */ d(
+    return /* @__PURE__ */ v(
       "div",
       {
-        ref: h,
-        className: B,
+        ref: n,
+        className: w,
         "data-cads-component": "ProgressWidget",
-        ...g,
+        ...T,
         children: [
-          S ? /* @__PURE__ */ t("div", { className: e.leftActionContainer, children: /* @__PURE__ */ t(
-            v,
+          y ? /* @__PURE__ */ l("div", { className: e.leftActionContainer, children: /* @__PURE__ */ l(
+            N,
             {
               variant: "outlined",
               color: "secondary",
@@ -45,34 +52,35 @@ const $ = "Saved 2 minutes ago", D = "Offline", W = T(
               iconOnly: !0,
               startIconName: "arrow-left",
               "aria-label": "Back",
-              onClick: k
+              onClick: g
             }
           ) }) : null,
-          /* @__PURE__ */ d(
+          /* @__PURE__ */ v(
             "div",
             {
-              className: `${e.dropdownContainer} ${r ? e.withActionDivider : ""}`,
+              className: `${e.dropdownContainer} ${u ? e.withActionDivider : ""}`,
               children: [
-                /* @__PURE__ */ d(
+                /* @__PURE__ */ v(
                   "button",
                   {
                     type: "button",
                     className: e.levelSelect,
-                    onClick: y,
-                    "aria-label": `Current level: ${m}`,
+                    onClick: C,
+                    "aria-label": `Current level: ${t}`,
                     children: [
-                      a ? /* @__PURE__ */ t("span", { className: e.nestedBubble, "aria-hidden": "true", children: /* @__PURE__ */ t(
-                        p,
+                      r ? /* @__PURE__ */ l("span", { className: e.nestedBubble, "aria-hidden": "true", children: /* @__PURE__ */ l(
+                        L,
                         {
                           interactive: !1,
-                          levelType: a.levelType,
-                          status: a.status,
-                          isAssessment: a.isAssessment
+                          levelType: r.levelType,
+                          status: r.status,
+                          isAssessment: r.isAssessment
                         }
                       ) }) : null,
-                      /* @__PURE__ */ t("span", { className: e.levelLabel, children: m }),
-                      /* @__PURE__ */ t(
-                        w,
+                      /* @__PURE__ */ l("span", { className: e.levelLabel, children: t }),
+                      h ? /* @__PURE__ */ l("span", { className: e.levelNumber, "aria-hidden": "true", children: h }) : null,
+                      /* @__PURE__ */ l(
+                        D,
                         {
                           name: "chevron-down",
                           family: "solid",
@@ -83,56 +91,56 @@ const $ = "Saved 2 minutes ago", D = "Offline", W = T(
                     ]
                   }
                 ),
-                /* @__PURE__ */ t(
-                  I,
+                /* @__PURE__ */ l("span", { className: e.cloudSlot, children: /* @__PURE__ */ l(
+                  E,
                   {
-                    iconName: o === "offline" ? "cloud-slash" : "cloud-check",
-                    title: f,
+                    iconName: i === "offline" ? "cloud-slash" : "cloud-check",
+                    title: p,
                     placement: "bottom",
                     size: "extraSmall",
-                    "aria-label": o === "offline" ? "Sync status: offline" : `Sync status: ${f}`,
+                    "aria-label": i === "offline" ? "Sync status: offline" : `Sync status: ${p}`,
                     triggerProps: {
                       className: [
                         e.cloudSync,
-                        o === "offline" ? e.cloudSyncOffline : ""
+                        i === "offline" ? e.cloudSyncOffline : ""
                       ].filter(Boolean).join(" ")
                     }
                   }
-                )
+                ) })
               ]
             }
           ),
-          n.length > 0 ? /* @__PURE__ */ t(
+          m.length > 0 ? /* @__PURE__ */ l(
             "div",
             {
-              className: `${e.bubbleSlot} ${r ? e.withActionDivider : ""}`,
-              children: n.map((l, s) => {
-                const c = s === i;
-                return /* @__PURE__ */ t(
-                  p,
+              className: `${e.bubbleSlot} ${u ? e.withActionDivider : ""}`,
+              children: m.map((o, c) => {
+                const f = c === s;
+                return /* @__PURE__ */ l(
+                  L,
                   {
-                    levelType: l.levelType,
-                    status: l.status,
-                    isAssessment: l.isAssessment,
-                    isActive: c,
-                    levelNumber: c ? s + 1 : void 0,
-                    onClick: l.onClick,
-                    "aria-label": l.label ?? `Level ${s + 1}`,
-                    "aria-current": c ? "step" : void 0
+                    levelType: o.levelType,
+                    status: o.status,
+                    isAssessment: o.isAssessment,
+                    isActive: f,
+                    levelNumber: f ? c + 1 : void 0,
+                    onClick: o.onClick,
+                    "aria-label": o.label ?? `Level ${c + 1}`,
+                    "aria-current": f ? "step" : void 0
                   },
-                  s
+                  c
                 );
               })
             }
           ) : null,
-          r ? /* @__PURE__ */ t("div", { className: e.actionContainer, children: /* @__PURE__ */ t(
-            v,
+          u ? /* @__PURE__ */ l("div", { className: e.actionContainer, children: /* @__PURE__ */ l(
+            N,
             {
               variant: "contained",
               color: "secondary",
               size: "extraSmall",
               endIconName: "arrow-right",
-              onClick: N,
+              onClick: k,
               children: A
             }
           ) }) : null
@@ -142,6 +150,6 @@ const $ = "Saved 2 minutes ago", D = "Offline", W = T(
   }
 );
 export {
-  W as ProgressWidget
+  U as ProgressWidget
 };
 //# sourceMappingURL=ProgressWidget.js.map

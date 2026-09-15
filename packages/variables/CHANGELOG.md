@@ -1,4 +1,4 @@
-# @moshebaricdo/cads-variables
+# @moshebari/cads-variables
 
 ## 0.1.2
 

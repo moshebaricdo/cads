@@ -1,7 +1,7 @@
 "use client";
 
-import type { DropdownOption } from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+import type { DropdownOption } from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 import type { ReactNode } from "react";
 
 export interface FixtureCase {

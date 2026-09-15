@@ -1,9 +1,15 @@
 "use client";
 
-import { forwardRef, type MouseEventHandler, type ReactNode } from "react";
+import {
+  forwardRef,
+  type MouseEventHandler,
+  type ReactNode,
+} from "react";
 import { FaIcon } from "../../icons/FaIcon";
+import { Dropdown } from "../dropdown";
 import { ProgressWidget } from "../progress-widget";
 import { CodeAiLogo } from "./CodeAiLogo";
+import { CodeAiMark } from "./CodeAiMark";
 import styles from "./globalHeader.module.scss";
 import type { GlobalHeaderNavItem, GlobalHeaderProps } from "./types";
 
@@ -27,23 +33,21 @@ const STUDENT_NAV: GlobalHeaderNavItem[] = [
  * (white-on-brand outlined / text styles specific to this surface), so they
  * are private primitives rather than Button usages.
  */
-function HeaderButton({
-  variant,
-  icon,
-  endIcon,
-  label,
-  onClick,
-  className = "",
-  ariaLabel,
-}: {
-  variant: "text" | "outlined" | "iconOutlined" | "icon";
-  icon?: string;
-  endIcon?: string;
-  label?: ReactNode;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  className?: string;
-  ariaLabel?: string;
-}) {
+const HeaderButton = forwardRef<
+  HTMLButtonElement,
+  {
+    variant: "text" | "outlined" | "iconOutlined" | "icon";
+    icon?: string;
+    endIcon?: string;
+    label?: ReactNode;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+    ariaLabel?: string;
+  }
+>(function HeaderButton(
+  { variant, icon, endIcon, label, onClick, className = "", ariaLabel },
+  ref,
+) {
   const variantClass =
     variant === "outlined"
       ? styles.outlinedButton
@@ -54,6 +58,7 @@ function HeaderButton({
           : styles.textButton;
   return (
     <button
+      ref={ref}
       type="button"
       className={`${styles.headerButton} ${variantClass} ${className}`}
       onClick={onClick}
@@ -66,7 +71,7 @@ function HeaderButton({
       ) : null}
     </button>
   );
-}
+});
 
 function UsernameDropdown({
   username,
@@ -78,7 +83,7 @@ function UsernameDropdown({
   return (
     <button
       type="button"
-      className={`${styles.headerButton} ${styles.outlinedButton} ${styles.usernameDropdown}`}
+      className={`${styles.headerButton} ${styles.outlinedButton} ${styles.usernameDropdown} ${styles.hideOnMobile}`}
       onClick={onClick}
     >
       <span className={styles.usernameLabel}>{username}</span>
@@ -94,9 +99,11 @@ function UsernameDropdown({
 
 /**
  * Studio Global Header — persistent header chrome for all studio pages.
- * Six page states × desktop / tablet-mobile (<960px) behavior.
+ * Six page states × desktop / tablet (<960px) / phone (<600px) behavior.
  *
- * Figma: Global Header (17240:2903).
+ * Figma: Global Header (17240:2903) covers desktop + tablet. Phone chrome
+ * is a code-only fold (favicon, overflow, number-only widget, username
+ * into the hamburger).
  */
 export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
   function GlobalHeader(props, ref) {
@@ -124,6 +131,7 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
       styles.root,
       breakpoint === "desktop" ? styles.forceDesktop : "",
       breakpoint === "tabletMobile" ? styles.forceTabletMobile : "",
+      breakpoint === "mobile" ? styles.forceMobile : "",
       className,
     ]
       .filter(Boolean)
@@ -135,20 +143,60 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
     const resolvedNav =
       navItems ?? (state === "teacherDashboard" ? TEACHER_NAV : STUDENT_NAV);
 
+    const widgetBreakpoint =
+      breakpoint === "auto"
+        ? "auto"
+        : breakpoint === "mobile"
+          ? "mobile"
+          : breakpoint === "tabletMobile"
+            ? "tabletMobile"
+            : "desktop";
+
     const widget = isLesson ? (
       <ProgressWidget
-        levelLabel="Lesson 3: Introduction to Online Puzzles"
+        levelLabel="Lesson 6: Introduction to Online Puzzles"
         {...progressWidgetProps}
-        breakpoint={
-          breakpoint === "auto"
-            ? "auto"
-            : breakpoint === "tabletMobile"
-              ? "tabletMobile"
-              : "desktop"
-        }
+        breakpoint={widgetBreakpoint}
         className={`${styles.widget} ${progressWidgetProps?.className ?? ""}`}
       />
     ) : null;
+
+    const overflowOptions =
+      state === "standaloneProject"
+        ? [
+            { value: "rename", label: "Rename", iconName: "pencil" as const },
+            { value: "share", label: "Share", iconName: "share" as const },
+            { value: "remix", label: "Remix", iconName: "rotate" as const },
+          ]
+        : [
+            { value: "share", label: "Share", iconName: "share" as const },
+            { value: "remix", label: "Remix", iconName: "rotate" as const },
+          ];
+
+    const overflow = (
+      <div className={`${styles.leftActions} ${styles.overflowOnly}`}>
+        <Dropdown
+          role="action"
+          size="extraSmall"
+          menuPlacement="bottomLeft"
+          aria-label="More actions"
+          disablePortal
+          options={overflowOptions}
+          onAction={(value) => {
+            if (value === "share") onShareClick?.({} as never);
+            if (value === "remix") onRemixClick?.({} as never);
+            if (value === "rename") onRenameClick?.({} as never);
+          }}
+          trigger={
+            <HeaderButton
+              variant="iconOutlined"
+              icon="ellipsis"
+              ariaLabel="More actions"
+            />
+          }
+        />
+      </div>
+    );
 
     return (
       <header
@@ -161,11 +209,16 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
         {/* ----- left cluster ----- */}
         <div className={styles.left}>
           <div className={styles.logo}>
-            <CodeAiLogo />
+            <span className={styles.wordmark}>
+              <CodeAiLogo />
+            </span>
+            <span className={styles.mark}>
+              <CodeAiMark />
+            </span>
           </div>
 
           {state === "standaloneProject" ? (
-            <div className={styles.projectText}>
+            <div className={`${styles.projectText} ${styles.hideOnMobile}`}>
               <span className={styles.projectTitleRow}>
                 <span className={styles.projectTitle}>{projectTitle}</span>
                 <FaIcon name="pencil" family="solid" fontSize="10px" />
@@ -206,6 +259,9 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
               />
             </div>
           ) : null}
+          {state === "labLevel" || state === "standaloneProject"
+            ? overflow
+            : null}
 
           {state === "standaloneProject" ? (
             <>
@@ -278,7 +334,7 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
 
         {/* ----- right cluster ----- */}
         <div className={styles.right}>
-          {(isDashboard || state === "standaloneProject") ? (
+          {isDashboard || state === "standaloneProject" ? (
             <HeaderButton
               variant="outlined"
               label="New project"

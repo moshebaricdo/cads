@@ -5,6 +5,7 @@
  */
 
 $tablet-mobile-max: 959.95px;
+$mobile-max: 599.95px;
 
 .root {
   box-sizing: border-box;
@@ -15,7 +16,7 @@ $tablet-mobile-max: 959.95px;
   height: 48px;
   width: 100%;
   padding: 0 var(--spacing-p-xs);
-  overflow: hidden;
+  overflow: visible;
   background-color: var(--background-brand-primary);
   font-family: var(--font-family-main);
 
@@ -37,6 +38,14 @@ $tablet-mobile-max: 959.95px;
   align-items: center;
   flex: none;
   padding-right: 12px;
+}
+
+.wordmark {
+  display: flex;
+}
+
+.mark {
+  display: none;
 }
 
 .leftActions {
@@ -217,6 +226,12 @@ div.desktopOnly {
   display: none;
 }
 
+.overflowOnly {
+  display: none;
+  position: relative;
+  z-index: 2;
+}
+
 @mixin tablet-mobile {
   .desktopOnly {
     display: none !important;
@@ -227,12 +242,48 @@ div.desktopOnly {
   }
 }
 
-.root:not(.forceDesktop):not(.forceTabletMobile) {
+@mixin mobile {
+  @include tablet-mobile;
+
+  .logo {
+    padding-right: 0;
+  }
+
+  .wordmark {
+    display: none;
+  }
+
+  .mark {
+    display: flex;
+  }
+
+  .tabletMobileOnly {
+    display: none !important;
+  }
+
+  .overflowOnly {
+    display: flex;
+  }
+
+  .hideOnMobile {
+    display: none !important;
+  }
+}
+
+.root:not(.forceDesktop):not(.forceTabletMobile):not(.forceMobile) {
   @media (max-width: $tablet-mobile-max) {
     @include tablet-mobile;
+  }
+
+  @media (max-width: $mobile-max) {
+    @include mobile;
   }
 }
 
 .forceTabletMobile {
   @include tablet-mobile;
+}
+
+.forceMobile {
+  @include mobile;
 }

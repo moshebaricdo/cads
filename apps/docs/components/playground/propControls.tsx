@@ -3,8 +3,8 @@
 import type {
   CadsComponentManifest,
   CadsPropDef,
-} from "@moshebaricdo/cads-react/manifest";
-import { Dropdown, TextInput, Toggle } from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react/manifest";
+import { Dropdown, TextInput, Toggle } from "@moshebari/cads-react";
 import { buildDemoBreadcrumbItems } from "./previews/shared";
 import inspectorStyles from "./inspector.module.scss";
 

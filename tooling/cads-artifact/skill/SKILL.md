@@ -2,14 +2,13 @@
 name: cads-prototyping
 description: Build CADS UI prototypes with real components. Use for CodeAI/CADS mocks, Figma-aligned screens, or when the user asks for design-system prototypes.
 license: UNLICENSED
-compatibility: Requires code execution or file output. Internal CodeAI use only (embeds FA Pro fonts).
+compatibility: Requires code execution or file output. Embeds Font Awesome 7 Free webfonts.
 ---
 
 # CADS prototyping
 
 Create **self-contained HTML prototypes** that embed the real CADS runtime.
-No npm install, hosting, or package registry required. Intended for
-**organization-only / internal** sharing.
+No npm install, hosting, or package registry required.
 
 ## Workflow
 

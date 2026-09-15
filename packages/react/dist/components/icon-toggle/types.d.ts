@@ -6,7 +6,7 @@ export type IconToggleSize = ControlSize;
 /** Figma Icon Toggle `color`: primary / secondary / brand / error / success. */
 export type IconToggleColor = "primary" | "secondary" | "brand" | "success" | "error";
 export type IconToggleSecondProps = {
-    /** FA Pro icon (kebab-case); Figma `smile` alias accepted. */
+    /** FA icon (kebab-case); Figma `smile` alias accepted. */
     iconName: FaIconName | (string & {});
     pressed?: boolean;
     defaultPressed?: boolean;
@@ -31,7 +31,7 @@ export interface IconToggleProps extends Omit<IconButtonProps, "color" | "size" 
     /** Uncontrolled default. */
     defaultPressed?: boolean;
     onPressedChange?: (pressed: boolean) => void;
-    /** FA Pro icon name (kebab-case); Figma `smile` alias accepted. */
+    /** FA icon name (kebab-case); Figma `smile` alias accepted. */
     iconName: FaIconName | (string & {});
     /**
      * Optional group label (Figma Icon Toggle + Label).

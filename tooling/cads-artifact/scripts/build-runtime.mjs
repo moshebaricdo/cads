@@ -41,6 +41,16 @@ const result = await esbuild.build({
     ".woff": "dataurl",
     ".woff2": "dataurl",
   },
+  alias: {
+    "@moshebari/cads-react/icons/fonts.css": join(
+      repoRoot,
+      "packages/react/src/icons/fonts.css",
+    ),
+    "@moshebari/cads-react/icons/fonts-solid.css": join(
+      repoRoot,
+      "packages/react/src/icons/fonts-solid.css",
+    ),
+  },
   define: {
     "process.env.NODE_ENV": '"production"',
   },
@@ -61,9 +71,9 @@ if (!exists(cssPath)) {
   writeFileSync(cssPath, "/* no separate CSS emitted */\n");
 }
 
-const { cadsManifest } = await import("@moshebaricdo/cads-react/manifest");
+const { cadsManifest } = await import("@moshebari/cads-react/manifest");
 const versionInfo = {
-  package: "@moshebaricdo/cads-react",
+  package: "@moshebari/cads-react",
   manifestVersion: cadsManifest.version,
   builtAt: new Date().toISOString(),
   formats: ["html-self-contained", "react-module-preferred"],

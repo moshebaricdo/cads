@@ -4,7 +4,7 @@ import {
   AiChatMessage,
   type AiChatMessageAuthor,
   type AiChatMessageContext,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 
 export default function AiChatMessagePreview({
   values,

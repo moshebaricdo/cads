@@ -3,7 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [["@moshebaricdo/cads-variables", "@moshebaricdo/cads-react"]],
+  "linked": [["@moshebari/cads-variables", "@moshebari/cads-react"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

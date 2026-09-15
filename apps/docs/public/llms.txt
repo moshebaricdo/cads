@@ -1,12 +1,12 @@
 # CADS — CodeAI Design System
 
-> Package: @moshebaricdo/cads-react v0.1.0
+> Package: @moshebari/cads-react v0.1.0
 > Figma: https://www.figma.com/design/DGekOeToRVifvFAhfqpeC1/CodeAI-Design-System--CADS-
 
 ## Rules for AI agents
 
-- Import components only from @moshebaricdo/cads-react (icons from @moshebaricdo/cads-react/icons).
-- Import variables CSS: @moshebaricdo/cads-variables/variables.css
+- Import components only from @moshebari/cads-react (icons from @moshebari/cads-react/icons).
+- Import variables CSS: @moshebari/cads-variables/variables.css
 - Wrap the app in <CadsProvider>.
 - Use semantic color CSS variables (e.g. --background-brand-primary) — never hard-coded hex, never --ds- prefix.
 - Use brand tokens for CTAs; selected tokens for filled selected chrome.
@@ -40,7 +40,7 @@ Color language:
 
 Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.
 
-Import: `import { Button } from "@moshebaricdo/cads-react"`
+Import: `import { Button } from "@moshebari/cads-react"`
 
 Props:
 - `variant`: "contained" | "outlined" | "text" (default "contained")
@@ -72,7 +72,7 @@ Example:
 
 Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.
 
-Import: `import { CloseIconButton } from "@moshebaricdo/cads-react"`
+Import: `import { CloseIconButton } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "large") — Figma close-control geometry: 24 / 18 / 18 / 13px.
@@ -96,7 +96,7 @@ Example:
 
 A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.
 
-Import: `import { SegmentedButton } from "@moshebaricdo/cads-react"`
+Import: `import { SegmentedButton } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -129,7 +129,7 @@ Example:
 
 Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).
 
-Import: `import { IconToggle } from "@moshebaricdo/cads-react"`
+Import: `import { IconToggle } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -161,7 +161,7 @@ Example:
 
 Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.
 
-Import: `import { FieldWrapper } from "@moshebaricdo/cads-react"`
+Import: `import { FieldWrapper } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -192,7 +192,7 @@ Example:
 
 Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.
 
-Import: `import { TextInput } from "@moshebaricdo/cads-react"`
+Import: `import { TextInput } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -230,7 +230,7 @@ Example:
 
 Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).
 
-Import: `import { Dropdown } from "@moshebaricdo/cads-react"`
+Import: `import { Dropdown } from "@moshebari/cads-react"`
 
 Props:
 - `role`: "input" | "action" [required] — input = form select; action = button menu
@@ -287,7 +287,7 @@ Example:
 
 Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.
 
-Import: `import { Checkbox } from "@moshebaricdo/cads-react"`
+Import: `import { Checkbox } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -313,7 +313,7 @@ Example:
 
 Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.
 
-Import: `import { Radio } from "@moshebaricdo/cads-react"`
+Import: `import { Radio } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -338,7 +338,7 @@ Example:
 
 On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.
 
-Import: `import { Toggle } from "@moshebaricdo/cads-react"`
+Import: `import { Toggle } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -369,7 +369,7 @@ Example:
 
 Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.
 
-Import: `import { Slider } from "@moshebaricdo/cads-react"`
+Import: `import { Slider } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium") — Maps Figma labelSize for label/helper type.
@@ -412,7 +412,7 @@ Example:
 
 Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).
 
-Import: `import { Chip } from "@moshebaricdo/cads-react"`
+Import: `import { Chip } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -441,7 +441,7 @@ Example:
 
 Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.
 
-Import: `import { ChipGroup } from "@moshebaricdo/cads-react"`
+Import: `import { ChipGroup } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -471,7 +471,7 @@ Example:
 
 Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.
 
-Import: `import { Link } from "@moshebaricdo/cads-react"`
+Import: `import { Link } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" | "extraExtraSmall" (default "medium") — extraExtraSmall is Link-only (body/xxs).
@@ -495,7 +495,7 @@ Example:
 
 Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.
 
-Import: `import { Breadcrumbs } from "@moshebaricdo/cads-react"`
+Import: `import { Breadcrumbs } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -523,7 +523,7 @@ Example:
 
 Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.
 
-Import: `import { Tabs } from "@moshebaricdo/cads-react"`
+Import: `import { Tabs } from "@moshebari/cads-react"`
 
 Props:
 - `type`: "primary" | "secondary" (default "primary") — primary = underline; secondary = contained.
@@ -550,7 +550,7 @@ Example:
 
 Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).
 
-Import: `import { Pagination } from "@moshebaricdo/cads-react"`
+Import: `import { Pagination } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -584,7 +584,7 @@ Example:
 
 Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.
 
-Import: `import { TablePagination } from "@moshebaricdo/cads-react"`
+Import: `import { TablePagination } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "medium")
@@ -616,7 +616,7 @@ Example:
 
 Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.
 
-Import: `import { Alert } from "@moshebaricdo/cads-react"`
+Import: `import { Alert } from "@moshebari/cads-react"`
 
 Props:
 - `size`: "large" | "medium" | "small" | "extraSmall" (default "large")
@@ -646,7 +646,7 @@ Example:
 
 Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.
 
-Import: `import { Toast } from "@moshebaricdo/cads-react"`
+Import: `import { Toast } from "@moshebari/cads-react"`
 
 Props:
 - `sentiment`: "primary" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "primary")
@@ -679,7 +679,7 @@ Example:
 
 Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.
 
-Import: `import { NotificationBanner } from "@moshebaricdo/cads-react"`
+Import: `import { NotificationBanner } from "@moshebari/cads-react"`
 
 Props:
 - `sentiment`: "brand" | "pink" | "success" | "error" | "warning" | "info" | "neutral" (default "brand")
@@ -711,7 +711,7 @@ Example:
 
 Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.
 
-Import: `import { Tag } from "@moshebaricdo/cads-react"`
+Import: `import { Tag } from "@moshebari/cads-react"`
 
 Props:
 - `color`: "neutral" | "brand" | "pink" | "orange" | "success" | "error" | "warning" | "info" (default "neutral")
@@ -736,7 +736,7 @@ Example:
 
 Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.
 
-Import: `import { IconTooltip } from "@moshebaricdo/cads-react"`
+Import: `import { IconTooltip } from "@moshebari/cads-react"`
 
 Props:
 - `title`: ReactNode [required]
@@ -762,7 +762,7 @@ Example:
 
 Small hover/focus overlay with brief contextual text on an inverse surface.
 
-Import: `import { Tooltip } from "@moshebaricdo/cads-react"`
+Import: `import { Tooltip } from "@moshebari/cads-react"`
 
 Props:
 - `title`: ReactNode [required]
@@ -791,7 +791,7 @@ Example:
 
 Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.
 
-Import: `import { Popover } from "@moshebaricdo/cads-react"`
+Import: `import { Popover } from "@moshebari/cads-react"`
 
 Props:
 - `content`: "textOnly" | "textImage" | "custom" (default "textOnly")
@@ -828,7 +828,7 @@ Example:
 
 Bottom sheet that slides over page content without dimming or blocking it.
 
-Import: `import { Drawer } from "@moshebaricdo/cads-react"`
+Import: `import { Drawer } from "@moshebari/cads-react"`
 
 Props:
 - `type`: "textOnly" | "customContent" (default "textOnly")
@@ -860,7 +860,7 @@ Example:
 
 Blocking confirmation overlay with short title, message, and usually two actions.
 
-Import: `import { Dialog } from "@moshebaricdo/cads-react"`
+Import: `import { Dialog } from "@moshebari/cads-react"`
 
 Props:
 - `type`: "default" | "iconTop" | "customContent" (default "default")
@@ -895,7 +895,7 @@ Example:
 
 Blocking overlay for rich interactive content (forms, media, multi-step flows).
 
-Import: `import { Modal } from "@moshebaricdo/cads-react"`
+Import: `import { Modal } from "@moshebari/cads-react"`
 
 Props:
 - `type`: "default" | "verticalImage" | "horizontalImage" (default "default")
@@ -932,7 +932,7 @@ Example:
 
 Compact circular remove control for AI chat file chips in the composer.
 
-Import: `import { ChatFileRemoveButton } from "@moshebaricdo/cads-react"`
+Import: `import { ChatFileRemoveButton } from "@moshebari/cads-react"`
 
 Props:
 - `disabled`: boolean
@@ -952,7 +952,7 @@ Example:
 
 Attachment chip for AI chat streams and the composer. File, image, and code-snippet types; inputField use case composes ChatFileRemoveButton.
 
-Import: `import { AiChatFileChip } from "@moshebaricdo/cads-react"`
+Import: `import { AiChatFileChip } from "@moshebari/cads-react"`
 
 Props:
 - `type`: "file" | "image" | "codeSnippet" (default "file")
@@ -977,7 +977,7 @@ Example:
 
 Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include inline rich body content, an optional customContent slot, file uploads, and a feedback action row.
 
-Import: `import { AiChatMessage } from "@moshebaricdo/cads-react"`
+Import: `import { AiChatMessage } from "@moshebari/cads-react"`
 
 Props:
 - `context`: "TA" | "Tutor" (default "TA") — Teacher Assistant vs student Tutor product context.
@@ -1017,7 +1017,7 @@ Example:
 
 AI chat composer combining a text area, optional attachments, Add file action, and send. Send enables when the field has content.
 
-Import: `import { AiChatInput } from "@moshebaricdo/cads-react"`
+Import: `import { AiChatInput } from "@moshebari/cads-react"`
 
 Props:
 - `value`: string
@@ -1043,9 +1043,9 @@ Example:
 
 ### FaIcon
 
-Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.
+Font Awesome 7 webfont glyph (solid/regular/brands). Docs use Pro; the published package ships Free.
 
-Import: `import { FaIcon } from "@moshebaricdo/cads-react/icons"`
+Import: `import { FaIcon } from "@moshebari/cads-react/icons"`
 
 Props:
 - `name`: FaIconName | FaBrandIconName [required]
@@ -1054,8 +1054,8 @@ Props:
 - `title`: string
 
 Usage rules:
-- Import @moshebaricdo/cads-react/icons/fonts.css once at app root.
-- Internal FA Pro license — do not publish fonts publicly.
+- Import @moshebari/cads-react/icons/fonts.css once at app root.
+- Public npm ships Font Awesome 7 Free. CADS Docs loads Pro OTFs. Pro-only names have no glyph on npm.
 
 Example:
 ```tsx
@@ -1066,7 +1066,7 @@ Example:
 
 Level progress bubble from the lab progress widget. Circle and panel-diamond level shapes with status chrome, plus lesson-extras and Tutor+ glyph variants; the active level renders large with its level number.
 
-Import: `import { ProgressBubble } from "@moshebaricdo/cads-react"`
+Import: `import { ProgressBubble } from "@moshebari/cads-react"`
 
 Props:
 - `levelType`: "default" | "panelLevel" | "lessonExtras" | "tutorPlus" (default "default") — Shape family: circle, panel diamond, checkered-flag glyph, Tutor+ mark.
@@ -1089,15 +1089,15 @@ Example:
 
 ### ProgressWidget
 
-Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown.
+Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown. Below 600px the dropdown shows the lesson number (cloud stays).
 
-Import: `import { ProgressWidget } from "@moshebaricdo/cads-react"`
+Import: `import { ProgressWidget } from "@moshebari/cads-react"`
 
 Props:
 - `levelLabel`: string [required] — Level name in the dropdown trigger.
 - `levels`: ProgressWidgetLevel[] — Levels rendered as progress bubbles in the desktop rail ({ levelType, status, isAssessment, label, onClick }).
 - `activeLevelIndex`: number — Index of the current level; renders large in the rail and nests in the dropdown below 960px.
-- `breakpoint`: "auto" | "desktop" | "tabletMobile" (default "auto") — auto switches at 960px via media query; desktop / tabletMobile force a layout.
+- `breakpoint`: "auto" | "desktop" | "tabletMobile" | "mobile" (default "auto") — auto: rail ≥960, folded name 600–959, number-only <600 (cloud stays). desktop / tabletMobile / mobile force a layout.
 - `saveStatus`: "saved" | "offline" (default "saved") — Cloud icon state: cloud-check (saved) or cloud-slash (offline).
 - `saveStatusLabel`: string — Cloud tooltip label; defaults to "Saved 2 minutes ago" / "Offline".
 - `hasAction`: boolean (default true) — Show the trailing action button.
@@ -1110,23 +1110,24 @@ Props:
 Usage rules:
 - The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.
 - Below 960px (or breakpoint=tabletMobile) the bubble rail hides, the active level bubble nests small + non-interactive as the dropdown start icon, and the leading outlined extraSmall back button appears when hasLeftAction.
+- Below 600px (or breakpoint=mobile) the dropdown label becomes the first number in levelLabel (e.g. Lesson 6 → 6); the cloud stays.
 - The cloud icon always has a hover/focus tooltip: save recency when saved, “Offline” when offline.
 - The action button is the CADS Button (contained secondary extraSmall).
 
 Example:
 ```tsx
-<ProgressWidget levelLabel="Lesson 3: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />
+<ProgressWidget levelLabel="Lesson 6: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />
 ```
 
 ### GlobalHeader
 
-Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop and tablet/mobile (<960px) layouts.
+Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop (≥960px), tablet (600–959), and phone (<600) layouts.
 
-Import: `import { GlobalHeader } from "@moshebaricdo/cads-react"`
+Import: `import { GlobalHeader } from "@moshebari/cads-react"`
 
 Props:
 - `state`: "labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus" (default "labLevel") — Which page chrome to render.
-- `breakpoint`: "auto" | "desktop" | "tabletMobile" (default "auto") — auto switches at 960px via media query; desktop / tabletMobile force a layout.
+- `breakpoint`: "auto" | "desktop" | "tabletMobile" | "mobile" (default "auto") — auto: desktop ≥960, tablet 600–959, phone <600. Named values force a layout.
 - `username`: string (default "Username") — Account dropdown label.
 - `progressWidgetProps`: Omit<ProgressWidgetProps, "breakpoint"> — Progress widget props for labLevel / nonLabLesson (breakpoint follows the header).
 - `projectTitle`: string (default "Untitled Project") — standaloneProject title.
@@ -1145,9 +1146,10 @@ Usage rules:
 - Header buttons (white text/outlined on brand) are surface-specific chrome, not CADS Button variants.
 - labLevel / nonLabLesson center the Progress Widget; it follows the header breakpoint.
 - Below 960px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains.
+- Below 600px (or breakpoint=mobile): favicon mark replaces the wordmark, Share/Remix (and Rename) collapse into an ellipsis overflow menu, username hides (hamburger hosts it), Progress Widget goes number-only (cloud stays).
 - The header always spans full width at 48px height on --background-brand-primary.
 
 Example:
 ```tsx
-<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 3: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />
+<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 6: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />
 ```

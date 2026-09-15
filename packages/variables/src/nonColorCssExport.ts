@@ -181,7 +181,7 @@ export function buildTypographyVariablesCss(
 ): string {
   return [
     "/* Typography CSS Variables",
-    " * CADS runtime type scale (size / leading / tracking). Used by @moshebaricdo/cads-react.",
+    " * CADS runtime type scale (size / leading / tracking). Used by @moshebari/cads-react.",
     " * Prod style recipes live in typography.module.scss instead.",
     " */",
     "",
@@ -246,6 +246,7 @@ export function buildResidualCssVars(
     "--z-toast": vars["--z-toast"]!,
     "--z-tooltip": vars["--z-tooltip"]!,
     /* FA faces — package-local, not part of prod fontVariables.css */
+    "--font-fa-free": vars["--font-fa-free"]!,
     "--font-fa-pro": vars["--font-fa-pro"]!,
     "--font-fa-brands": vars["--font-fa-brands"]!,
   };

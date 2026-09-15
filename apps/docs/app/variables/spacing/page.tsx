@@ -3,7 +3,7 @@ import {
   shape,
   spacing,
   zIndexLayers,
-} from "@moshebaricdo/cads-variables";
+} from "@moshebari/cads-variables";
 import type { CSSProperties } from "react";
 import { FoundationHeader } from "@/components/FoundationHeader";
 import { ComponentPageNav } from "@/components/ComponentPageNav";

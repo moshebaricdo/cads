@@ -8,7 +8,7 @@ import {
   Link,
   Tabs,
   cadsManifest,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import { TemplatePlayground } from "@/components/TemplatePlayground";
 import { PropSheets } from "@/components/PropSheets";
 import { withBasePath } from "@/lib/basePath";

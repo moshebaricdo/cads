@@ -4,7 +4,7 @@ import {
   ProgressBubble,
   type ProgressBubbleLevelType,
   type ProgressBubbleStatus,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import type { FixtureCase } from "./shared";
 
 const bubble = (

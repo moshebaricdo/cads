@@ -1,12 +1,12 @@
-const e = "DGekOeToRVifvFAhfqpeC1", t = {
+const e = "DGekOeToRVifvFAhfqpeC1", a = {
   version: "0.1.0",
-  package: "@moshebaricdo/cads-react",
+  package: "@moshebari/cads-react",
   figmaFileKey: e,
   components: [
     {
       name: "Button",
       exportName: "Button",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Triggers an action with a single tap or click. Contained, outlined, and text styles across primary, secondary, tertiary, orange, and error colors.",
       figma: {
         fileKey: e,
@@ -77,7 +77,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "CloseIconButton",
       exportName: "CloseIconButton",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Icon-only close action for dismissible components such as alerts, popovers, dialogs, drawers, and tabs.",
       figma: {
         fileKey: e,
@@ -136,7 +136,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "SegmentedButton",
       exportName: "SegmentedButton",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "A group of connected buttons for choosing one option from a small mutually exclusive set. Selected segment uses selected tokens.",
       figma: {
         fileKey: e,
@@ -196,7 +196,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "IconToggle",
       exportName: "IconToggle",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Icon-only binary on/off control. Optional label + secondToggle covers Figma Icon Toggle + Label (up to 2 toggles).",
       figma: {
         fileKey: e,
@@ -263,7 +263,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "FieldWrapper",
       exportName: "FieldWrapper",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.",
       figma: {
         fileKey: e,
@@ -320,7 +320,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "TextInput",
       exportName: "TextInput",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Single-line field or multiline area with Field Wrapper label/helper. Figma name: Text Input.",
       figma: {
         fileKey: e,
@@ -401,7 +401,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Dropdown",
       exportName: "Dropdown",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Reveals options in a collapsible panel. Works as a form select (role=input) or as an action menu (role=action).",
       figma: {
         fileKey: e,
@@ -528,7 +528,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Checkbox",
       exportName: "Checkbox",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Binary or indeterminate checkbox. Public API maps Figma Checkbox + Label; box chrome from the Checkbox building block.",
       figma: {
         fileKey: e,
@@ -578,7 +578,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Radio",
       exportName: "Radio",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Single-select radio. Public API maps Figma Radio Button + Label; circle chrome from Radio Buttons Block.",
       figma: {
         fileKey: e,
@@ -621,7 +621,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Toggle",
       exportName: "Toggle",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "On/off switch with optional track icons (defaults check/xmark). Heights match Checkbox/Radio (22/20/18/16). Public API maps Figma Toggle + Label; track chrome from Toggle building block. Distinct from IconToggle.",
       figma: {
         fileKey: e,
@@ -691,7 +691,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Slider",
       exportName: "Slider",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Continuous or stepped value control with optional ± buttons, display value, and stepper ticks. Track fill uses selected tokens.",
       figma: {
         fileKey: e,
@@ -797,7 +797,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Chip",
       exportName: "Chip",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Selectable pill for options or quick actions. Prefer ChipGroup for labeled multi-select sets. Distinct from Tag (status/category label).",
       figma: {
         fileKey: e,
@@ -856,7 +856,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "ChipGroup",
       exportName: "ChipGroup",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Labeled multi-select group of Chips with Field Wrapper chrome. Preferred over composing Chip alone.",
       figma: {
         fileKey: e,
@@ -912,7 +912,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Link",
       exportName: "Link",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Navigates to another page or resource. Primary (brand) and secondary (neutral) types with optional external icon.",
       figma: {
         fileKey: e,
@@ -961,7 +961,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Breadcrumbs",
       exportName: "Breadcrumbs",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Trail of breadcrumb links with chevron separators. When maxItems is exceeded, middle crumbs collapse into Breadcrumb Overflow (ellipsis → dropdown of truncated pages). Composes Figma Links / Separators / Overflow.",
       figma: {
         fileKey: e,
@@ -1031,7 +1031,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Tabs",
       exportName: "Tabs",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Tab Group — primary (underline) or secondary (contained) tablist. Tab Item is an internal building block.",
       figma: {
         fileKey: e,
@@ -1082,7 +1082,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Pagination",
       exportName: "Pagination",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Page pagination — segmented page numbers with optional first/last. Figma Pagination type=page. Table pagination is TablePagination (same docs page).",
       figma: {
         fileKey: e,
@@ -1189,7 +1189,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "TablePagination",
       exportName: "TablePagination",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Table footer pagination — rows-per-page Dropdown, range label, and prev/next. Figma Pagination type=table. Docs live on the Pagination page.",
       figma: {
         fileKey: e,
@@ -1266,7 +1266,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Alert",
       exportName: "Alert",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Inline banner for contextual status within a page. Supports sentiment variants, icons, optional action and dismiss.",
       figma: {
         fileKey: e,
@@ -1319,7 +1319,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Toast",
       exportName: "Toast",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Brief elevated notification for lightweight feedback. Dismisses automatically in product UIs; chrome matches Figma Toast.",
       figma: {
         fileKey: e,
@@ -1389,7 +1389,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "NotificationBanner",
       exportName: "NotificationBanner",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Persistent page-level banner with title, description, icon, and optional actions. Expanded cousin of Alert.",
       figma: {
         fileKey: e,
@@ -1444,7 +1444,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Tag",
       exportName: "Tag",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Compact badge / status label (distinct from selectable Chip). Optionally dismissible for removable filters.",
       figma: {
         fileKey: e,
@@ -1491,7 +1491,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "IconTooltip",
       exportName: "IconTooltip",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Info-style icon that is purely a Tooltip affordance — no button chrome (fill/border/press scale), just a focusable glyph. Messaging trigger for a specific help use case.",
       figma: {
         fileKey: e,
@@ -1552,7 +1552,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Tooltip",
       exportName: "Tooltip",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Small hover/focus overlay with brief contextual text on an inverse surface.",
       figma: {
         fileKey: e,
@@ -1611,7 +1611,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Popover",
       exportName: "Popover",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Dismissible anchored card with title, body, optional image/custom content, stepper, and actions.",
       figma: {
         fileKey: e,
@@ -1663,7 +1663,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Drawer",
       exportName: "Drawer",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Bottom sheet that slides over page content without dimming or blocking it.",
       figma: {
         fileKey: e,
@@ -1710,7 +1710,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Dialog",
       exportName: "Dialog",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Blocking confirmation overlay with short title, message, and usually two actions.",
       figma: {
         fileKey: e,
@@ -1772,7 +1772,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "Modal",
       exportName: "Modal",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Blocking overlay for rich interactive content (forms, media, multi-step flows).",
       figma: {
         fileKey: e,
@@ -1838,7 +1838,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "ChatFileRemoveButton",
       exportName: "ChatFileRemoveButton",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Compact circular remove control for AI chat file chips in the composer.",
       figma: {
         fileKey: e,
@@ -1874,7 +1874,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "AiChatFileChip",
       exportName: "AiChatFileChip",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Attachment chip for AI chat streams and the composer. File, image, and code-snippet types; inputField use case composes ChatFileRemoveButton.",
       figma: {
         fileKey: e,
@@ -1928,7 +1928,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "AiChatMessage",
       exportName: "AiChatMessage",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Chat bubble for human and AI turns. TA vs Tutor contexts restyle the human bubble; AI messages can include inline rich body content, an optional customContent slot, file uploads, and a feedback action row.",
       figma: {
         fileKey: e,
@@ -2015,7 +2015,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "AiChatInput",
       exportName: "AiChatInput",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "AI chat composer combining a text area, optional attachments, Add file action, and send. Send enables when the field has content.",
       figma: {
         fileKey: e,
@@ -2070,8 +2070,8 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "FaIcon",
       exportName: "FaIcon",
-      importFrom: "@moshebaricdo/cads-react/icons",
-      description: "Font Awesome 7 Pro (solid/regular) / Brands webfont glyph.",
+      importFrom: "@moshebari/cads-react/icons",
+      description: "Font Awesome 7 webfont glyph (solid/regular/brands). Docs use Pro; the published package ships Free.",
       props: [
         { name: "name", type: "FaIconName | FaBrandIconName", required: !0 },
         {
@@ -2086,17 +2086,21 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         },
         { name: "title", type: "string" }
       ],
-      variableDependencies: ["--font-fa-pro", "--font-fa-brands"],
+      variableDependencies: [
+        "--font-fa-free",
+        "--font-fa-pro",
+        "--font-fa-brands"
+      ],
       usageRules: [
-        "Import @moshebaricdo/cads-react/icons/fonts.css once at app root.",
-        "Internal FA Pro license — do not publish fonts publicly."
+        "Import @moshebari/cads-react/icons/fonts.css once at app root.",
+        "Public npm ships Font Awesome 7 Free. CADS Docs loads Pro OTFs. Pro-only names have no glyph on npm."
       ],
       example: '<FaIcon name="arrow-right" size="medium" />'
     },
     {
       name: "ProgressBubble",
       exportName: "ProgressBubble",
-      importFrom: "@moshebaricdo/cads-react",
+      importFrom: "@moshebari/cads-react",
       description: "Level progress bubble from the lab progress widget. Circle and panel-diamond level shapes with status chrome, plus lesson-extras and Tutor+ glyph variants; the active level renders large with its level number.",
       figma: {
         fileKey: e,
@@ -2172,8 +2176,8 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
     {
       name: "ProgressWidget",
       exportName: "ProgressWidget",
-      importFrom: "@moshebaricdo/cads-react",
-      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown.",
+      importFrom: "@moshebari/cads-react",
+      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown. Below 600px the dropdown shows the lesson number (cloud stays).",
       figma: {
         fileKey: e,
         nodeId: "17307:1036"
@@ -2197,9 +2201,9 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         },
         {
           name: "breakpoint",
-          type: '"auto" | "desktop" | "tabletMobile"',
+          type: '"auto" | "desktop" | "tabletMobile" | "mobile"',
           default: '"auto"',
-          description: "auto switches at 960px via media query; desktop / tabletMobile force a layout."
+          description: "auto: rail ≥960, folded name 600–959, number-only <600 (cloud stays). desktop / tabletMobile / mobile force a layout."
         },
         {
           name: "saveStatus",
@@ -2257,16 +2261,17 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       usageRules: [
         "The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.",
         "Below 960px (or breakpoint=tabletMobile) the bubble rail hides, the active level bubble nests small + non-interactive as the dropdown start icon, and the leading outlined extraSmall back button appears when hasLeftAction.",
+        "Below 600px (or breakpoint=mobile) the dropdown label becomes the first number in levelLabel (e.g. Lesson 6 → 6); the cloud stays.",
         "The cloud icon always has a hover/focus tooltip: save recency when saved, “Offline” when offline.",
         "The action button is the CADS Button (contained secondary extraSmall)."
       ],
-      example: '<ProgressWidget levelLabel="Lesson 3: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />'
+      example: '<ProgressWidget levelLabel="Lesson 6: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />'
     },
     {
       name: "GlobalHeader",
       exportName: "GlobalHeader",
-      importFrom: "@moshebaricdo/cads-react",
-      description: "Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop and tablet/mobile (<960px) layouts.",
+      importFrom: "@moshebari/cads-react",
+      description: "Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop (≥960px), tablet (600–959), and phone (<600) layouts.",
       figma: {
         fileKey: e,
         nodeId: "17240:2903"
@@ -2280,9 +2285,9 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         },
         {
           name: "breakpoint",
-          type: '"auto" | "desktop" | "tabletMobile"',
+          type: '"auto" | "desktop" | "tabletMobile" | "mobile"',
           default: '"auto"',
-          description: "auto switches at 960px via media query; desktop / tabletMobile force a layout."
+          description: "auto: desktop ≥960, tablet 600–959, phone <600. Named values force a layout."
         },
         {
           name: "username",
@@ -2342,15 +2347,16 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         "Header buttons (white text/outlined on brand) are surface-specific chrome, not CADS Button variants.",
         "labLevel / nonLabLesson center the Progress Widget; it follows the header breakpoint.",
         "Below 960px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains.",
+        "Below 600px (or breakpoint=mobile): favicon mark replaces the wordmark, Share/Remix (and Rename) collapse into an ellipsis overflow menu, username hides (hamburger hosts it), Progress Widget goes number-only (cloud stays).",
         "The header always spans full width at 48px height on --background-brand-primary."
       ],
-      example: '<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 3: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />'
+      example: '<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 6: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />'
     }
   ]
 };
 export {
   e as CADS_FIGMA_FILE_KEY,
-  t as cadsManifest,
-  t as default
+  a as cadsManifest,
+  a as default
 };
 //# sourceMappingURL=cads.manifest.js.map

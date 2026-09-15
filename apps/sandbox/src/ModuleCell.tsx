@@ -11,7 +11,7 @@ import {
   Tag,
   TextInput,
   Toggle,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import type { CSSProperties } from "react";
 import type { PackedComponent, PackedItem, Tone } from "./shapeGrid";
 import styles from "./ModuleCell.module.scss";

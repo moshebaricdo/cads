@@ -1,4 +1,4 @@
-import { cadsManifest } from "@moshebaricdo/cads-react/manifest";
+import { cadsManifest } from "@moshebari/cads-react/manifest";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TemplatePlayground } from "@/components/TemplatePlayground";

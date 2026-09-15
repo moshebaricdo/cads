@@ -3513,7 +3513,8 @@
       ],
       "notes": [
         "Figma saveStatus3-6 are placeholder variant names for offline/saved at other breakpoints; code collapses to saved | offline.",
-        "Figma desktopTruncate is a separate variant because Figma cannot express hug-until-truncate; code handles it with flex-shrink + ellipsis, so breakpoint is only desktop | tabletMobile | auto.",
+        "Figma desktopTruncate is a separate variant because Figma cannot express hug-until-truncate; code handles it with flex-shrink + ellipsis.",
+        "Code breakpoint adds auto (960 + 600 media queries) and mobile (<600 number-only; cloud stays). Figma has no phone variant.",
         "Figma's tabletMobile start icon is a green FA circle placeholder; code nests a small non-interactive ProgressBubble of the active level per design intent.",
         "hasLeftAction is a Figma boolean on tabletMobile variants; desktop symbols omit the slot. Code defaults true and hides the slot on desktop via CSS."
       ]
@@ -3577,8 +3578,8 @@
         }
       ],
       "notes": [
-        "Figma breakpoint biggest=1440 / smallest=960 map to code desktop / tabletMobile; code adds auto (media query at 960px).",
-        "Intermediate prod breakpoints intentionally deferred - desktop and <960px behavior first."
+        "Figma breakpoint biggest=1440 / smallest=960 map to code desktop / tabletMobile; code adds auto (960 + 600 media queries) and mobile (phone fold, not in Figma).",
+        "Phone <600 is code-only from the owner screenshot: favicon mark, ellipsis overflow for Share/Remix, username into hamburger, widget number-only (cloud stays)."
       ]
     }
   ]

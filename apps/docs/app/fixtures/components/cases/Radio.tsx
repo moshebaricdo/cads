@@ -1,6 +1,6 @@
 "use client";
 
-import { Radio } from "@moshebaricdo/cads-react";
+import { Radio } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

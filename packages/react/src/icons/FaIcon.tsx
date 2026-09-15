@@ -65,9 +65,10 @@ function resolveCodepoint(
 }
 
 /**
- * Renders a glyph from the licensed Font Awesome 7 webfont
- * (Pro Solid / Pro Regular / Brands).
- * Import `@moshebaricdo/cads-react/icons/fonts.css` once at app root.
+ * Renders a glyph from Font Awesome 7 (solid / regular / brands).
+ * Import `@moshebari/cads-react/icons/fonts.css` once at app root.
+ * CADS Docs loads Pro OTFs; the public npm export is FA7 Free webfonts
+ * registered under the same family names (Pro-only glyphs are empty there).
  *
  * Unknown names render nothing (no throw) so playgrounds stay resilient
  * while typing shortcodes.

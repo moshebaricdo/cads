@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "@moshebaricdo/cads-variables";
-import { Tabs, Tooltip } from "@moshebaricdo/cads-react";
-import { FaIcon } from "@moshebaricdo/cads-react/icons";
+import { motion } from "@moshebari/cads-variables";
+import { Tabs, Tooltip } from "@moshebari/cads-react";
+import { FaIcon } from "@moshebari/cads-react/icons";
 import { motion as m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CopyName } from "../spacing/CopyName";

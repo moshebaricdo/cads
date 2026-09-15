@@ -1,4 +1,4 @@
-# @moshebaricdo/cads-react
+# @moshebari/cads-react
 
 ## 0.1.2
 
@@ -7,7 +7,7 @@
 - a1f1641: Dialog and Modal honor `isDismissable` (no forced close chrome) and accept `maxWidth`.
 - cf973a2: Dropdown adds menuType=custom (blank canvas + customContent) and an action trigger slot. Breadcrumb Overflow now nests that Dropdown menu.
 - Updated dependencies [a1f1641]
-  - @moshebaricdo/cads-variables@0.1.2
+  - @moshebari/cads-variables@0.1.2
 
 ## 0.1.1
 

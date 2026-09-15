@@ -5,8 +5,8 @@ import {
   type IconTooltipColor,
   type IconTooltipSize,
   type TooltipProps,
-} from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+} from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 
 export default function IconTooltipPreview({
   values,

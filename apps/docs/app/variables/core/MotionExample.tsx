@@ -11,8 +11,8 @@ import {
   Tabs,
   TextInput,
   Toggle,
-} from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+} from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 import { useEffect, useState } from "react";
 import { DEMO_DROPDOWN_OPTIONS } from "@/components/playground/previews/shared";
 import styles from "./MotionExample.module.scss";

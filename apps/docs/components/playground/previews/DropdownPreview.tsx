@@ -9,8 +9,8 @@ import {
 import {
   Dropdown,
   type DropdownOption,
-} from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+} from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 import {
   DemoSwatchMenu,
   SWATCH_OPTIONS,

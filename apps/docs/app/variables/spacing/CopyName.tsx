@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Tooltip, type TooltipProps } from "@moshebaricdo/cads-react";
+import { Tooltip, type TooltipProps } from "@moshebari/cads-react";
 
 /** Click-to-copy label with an icon-only tooltip (copy / check), not the variable name. */
 export function CopyName({

@@ -1,10 +1,12 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-09-03
+Last updated: 2026-09-15
 
 ## Done (scaffold complete)
 
-- [x] **Global Header + Progress Widget + Progress Bubble (2026-09-03)** — New Chrome components from Figma Global Header page: `GlobalHeader` (`17240:2903`, 6 states × desktop / tabletMobile <960px), `ProgressWidget` (`17307:1036`, hug-until-truncate level dropdown, cloud sync tooltip Saved/Offline, bubble rail folding into a nested small `ProgressBubble` dropdown start icon below 960px; tablet/mobile `hasLeftAction` leading outlined extraSmall Back), `ProgressBubble` (`17307:1165`, levelType × status × isActive × isAssessment). Docs: new **Chrome** sidebar category → Global Header page with a full-screen preview overlay (resize to exercise the 960px fold). Snapshot + visual recipes + code-connect + fixtures + previews wired. Correction (same day): bubbleSlot is dividers-only (Figma’s full slot box doubled the widget stroke); bubble rings/radius now live on the MUI double-`:global` selector so notStarted / inProgress / active chrome actually paints. Intermediate prod breakpoints and Figma componentKeys still open.
+- [x] **Public npm `@moshebari/cads-*` + FA7 Free (2026-09-15)** — Publish target is npmjs.org (tokenless `npm i` for vibe-coding). Scope `@moshebari`. Public tarball ships Font Awesome 7 Free webfonts; CADS Docs (local + GitHub Pages) keep loading in-repo FA7 Pro OTFs. Changesets/release CI uses `NPM_TOKEN`.
+
+- [x] **Global Header + Progress Widget + Progress Bubble (2026-09-03)** — New Chrome components from Figma Global Header page: `GlobalHeader` (`17240:2903`, 6 states × desktop / tablet 600–959 / phone <600), `ProgressWidget` (`17307:1036`, hug-until-truncate level dropdown, cloud sync tooltip Saved/Offline, bubble rail folding into a nested small `ProgressBubble` dropdown start icon below 960px; tablet/mobile `hasLeftAction` leading outlined extraSmall Back; phone swaps the dropdown label to the lesson number and keeps the cloud), `ProgressBubble` (`17307:1165`, levelType × status × isActive × isAssessment). Phone fold is code-only (Figma has no <960 variant below `smallest`): favicon mark, ellipsis overflow for Share/Remix, username into the hamburger. Docs: **Chrome** sidebar → Global Header full-screen preview. Snapshot + visual recipes + code-connect + fixtures + previews wired. Intermediate prod breakpoints between 600 and 960, and Figma componentKeys, still open.
 
 - [x] **Release skill + 0.1.2 (2026-08-24)** — `.cursor/skills/cads-release` documents the Changesets two-step: changeset on `main` → merge **Version packages** → `pnpm release` to GitHub Packages. **0.1.2** published via [#4](https://github.com/moshebaricdo/cads/pull/4) (`@moshebaricdo/cads-react` + `cads-variables`). Pushing features does not publish.
 
@@ -501,13 +503,12 @@ Priority order for the next agent sessions:
 4. **End-to-end portable skill hosts** — download from Pages `/ai` (or local ZIP) and run the host matrix in `tooling/cads-artifact/MANUAL_TEST.md` (Claude org-share, ChatGPT Skills/Work, Gemini Spark, Cursor skill folder). Later: when prod publishes FA7 on `dsco.code.org`, switch runtime/`@font-face` to those CDN assets and stop inlining OTFs.
 5. **Expand catalog** — next wave from Content and Media (Divider, Video, Carousel, Action Block) once design status is green. **Each batch:** snapshot axes → implement → `pnpm figma:audit-props` → rubric in `cads-parity-qa` before “done.”
 6. **Variables completeness** — pull typography / spacing-shape / effects from Figma into the variables document (non-color values are currently ported from Lab2 globals, not live-synced).
-7. **Lab2 off `file:` in CI** — after the first GitHub Packages version exists, pin `@moshebaricdo/cads-*` in `web-lab-prototype` (and other prototypes), add `.npmrc` + `NODE_AUTH_TOKEN`; keep `file:` only for local CADS iteration.
+7. **Lab2 off `file:` in CI** — pin `@moshebari/cads-*` from public npm in `web-lab-prototype` (and other prototypes); keep `file:` only for local CADS iteration.
 8. **Prototype gallery** — replace the placeholder with real inspectable prototypes.
 9. **Harness automation (later)** — REST snapshot refresh/change fingerprint with PAT; CI strict audit; Playwright pairwise fixture generation and normalized pixel baselines.
 
 ## Explicit non-goals (for now)
 
 - Replacing Lab2 `App*` atoms wholesale
-- Publishing to public npm
 - Published Figma Enterprise Code Connect
 - Matching production `code-dot-org` Storybook APIs 1:1 (prod may later converge on MUI + this CADS API)

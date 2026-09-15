@@ -1,7 +1,7 @@
 "use client";
 
-import { Link } from "@moshebaricdo/cads-react";
-import type { CadsPropDef } from "@moshebaricdo/cads-react/manifest";
+import { Link } from "@moshebari/cads-react";
+import type { CadsPropDef } from "@moshebari/cads-react/manifest";
 import type { PropSheet } from "@/lib/propSheets";
 import ui from "./docs-ui.module.scss";
 import styles from "./PropSheets.module.scss";

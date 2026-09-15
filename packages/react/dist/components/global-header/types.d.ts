@@ -4,10 +4,10 @@ import { ProgressWidgetProps } from '../progress-widget/types';
 export type GlobalHeaderState = "labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus";
 /**
  * Responsive mode.
- * - `auto` — media-query driven: desktop chrome ≥960px, tablet/mobile below.
- * - `desktop` / `tabletMobile` — force one layout (docs/playground).
+ * - `auto` — media-query driven: desktop ≥960px, tablet 600–959, phone <600.
+ * - `desktop` / `tabletMobile` / `mobile` — force one layout (docs/playground).
  */
-export type GlobalHeaderBreakpoint = "auto" | "desktop" | "tabletMobile";
+export type GlobalHeaderBreakpoint = "auto" | "desktop" | "tabletMobile" | "mobile";
 /** Nav link in the dashboard states' left cluster. */
 export interface GlobalHeaderNavItem {
     label: string;

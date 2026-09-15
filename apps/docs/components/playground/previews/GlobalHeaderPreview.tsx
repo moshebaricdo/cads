@@ -1,10 +1,10 @@
 "use client";
 
-import { GlobalHeader } from "@moshebaricdo/cads-react";
+import { GlobalHeader } from "@moshebari/cads-react";
 import type {
   GlobalHeaderBreakpoint,
   GlobalHeaderState,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 import {
   DEMO_PROGRESS_ACTIVE_INDEX,
   DEMO_PROGRESS_LEVELS,
@@ -27,7 +27,7 @@ export default function GlobalHeaderPreview({
       )}
       tutorLabel={String(v.tutorLabel ?? "Tutor Challenge")}
       progressWidgetProps={{
-        levelLabel: "Lesson 3: Introduction to Online Puzzles",
+        levelLabel: "Lesson 6: Introduction to Online Puzzles",
         levels: DEMO_PROGRESS_LEVELS,
         activeLevelIndex: DEMO_PROGRESS_ACTIVE_INDEX,
       }}

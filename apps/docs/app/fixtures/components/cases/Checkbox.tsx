@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox } from "@moshebaricdo/cads-react";
+import { Checkbox } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

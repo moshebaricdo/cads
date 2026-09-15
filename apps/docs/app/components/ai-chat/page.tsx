@@ -1,4 +1,4 @@
-import { cadsManifest } from "@moshebaricdo/cads-react/manifest";
+import { cadsManifest } from "@moshebari/cads-react/manifest";
 import { ComponentOverview } from "@/components/ComponentOverview";
 import { ComponentPageNav } from "@/components/ComponentPageNav";
 import { adjacentComponents, componentCategory } from "@/lib/nav";

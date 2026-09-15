@@ -20,31 +20,31 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: "@moshebaricdo/cads-react/icons/fonts.css",
+        find: "@moshebari/cads-react/icons/fonts.css",
         replacement: path.join(reactSrc, "icons/fonts.css"),
       },
       {
-        find: "@moshebaricdo/cads-react/icons/fonts-solid.css",
+        find: "@moshebari/cads-react/icons/fonts-solid.css",
         replacement: path.join(reactSrc, "icons/fonts-solid.css"),
       },
       {
-        find: "@moshebaricdo/cads-react/icons",
+        find: "@moshebari/cads-react/icons",
         replacement: path.join(reactSrc, "icons/index.ts"),
       },
       {
-        find: "@moshebaricdo/cads-react",
+        find: "@moshebari/cads-react",
         replacement: path.join(reactSrc, "index.ts"),
       },
       {
-        find: "@moshebaricdo/cads-variables/theme",
+        find: "@moshebari/cads-variables/theme",
         replacement: path.join(variablesSrc, "theme.ts"),
       },
       {
-        find: "@moshebaricdo/cads-variables/variables.css",
+        find: "@moshebari/cads-variables/variables.css",
         replacement: path.join(variablesSrc, "variables.css"),
       },
       {
-        find: "@moshebaricdo/cads-variables",
+        find: "@moshebari/cads-variables",
         replacement: path.join(variablesSrc, "index.ts"),
       },
     ],

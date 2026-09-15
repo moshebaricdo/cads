@@ -1,1 +1,1 @@
-{"version":3,"file":"ProgressWidget.d.ts","sourceRoot":"","sources":["../../../src/components/progress-widget/ProgressWidget.tsx"],"names":[],"mappings":"AAQA,OAAO,KAAK,EAAE,mBAAmB,EAAE,MAAM,SAAS,CAAC;AAKnD;;;;;;;;GAQG;AACH,eAAO,MAAM,cAAc,gHAkJ1B,CAAC"}
+{"version":3,"file":"ProgressWidget.d.ts","sourceRoot":"","sources":["../../../src/components/progress-widget/ProgressWidget.tsx"],"names":[],"mappings":"AAQA,OAAO,KAAK,EAAE,mBAAmB,EAAE,MAAM,SAAS,CAAC;AA0BnD,eAAO,MAAM,cAAc,gHA4J1B,CAAC"}

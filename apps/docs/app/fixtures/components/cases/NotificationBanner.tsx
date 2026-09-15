@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationBanner } from "@moshebaricdo/cads-react";
+import { NotificationBanner } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

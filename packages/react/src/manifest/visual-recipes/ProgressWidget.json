@@ -22,7 +22,8 @@
     "figmaChanges": [
       "2026-09-03: initial build from Progress Widget set (17307:1036) — saveStatus × breakpoint (desktop / desktopTruncate / tabletMobile).",
       "2026-09-03: correction — bubbleSlot uses left/right dividers only (dropdown | bubbles | action). Figma paints a full border around bubbleSlot as a hug/fill workaround; the widget root already owns the outer stroke.",
-      "2026-09-03: Figma update — tabletMobile hasLeftAction leading outlined extraSmall icon-only Back (arrow-left) in a left slot with a right divider (17546:1519). Desktop symbols omit the slot."
+      "2026-09-03: Figma update — tabletMobile hasLeftAction leading outlined extraSmall icon-only Back (arrow-left) in a left slot with a right divider (17546:1519). Desktop symbols omit the slot.",
+      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) — dropdown label is the lesson number; cloud stays. Figma has no phone Progress Widget variant."
     ]
   },
   "axes": {
@@ -30,7 +31,8 @@
       "breakpoint": [
         "auto",
         "desktop",
-        "tabletMobile"
+        "tabletMobile",
+        "mobile"
       ],
       "saveStatus": [
         "saved",
@@ -296,6 +298,31 @@
         ]
       },
       {
+        "id": "progress-widget-phone-light",
+        "figmaNodeId": null,
+        "figmaVariant": "code-only phone fold",
+        "mode": "light",
+        "props": {
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 390,
+          "height": 80,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {},
+        "expectedVariables": [],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": null,
+        "result": "pending",
+        "mismatches": [],
+        "notes": [
+          "Dropdown shows lesson number from levelLabel (6); cloud stays."
+        ]
+      },
+      {
         "id": "progress-widget-no-action-light",
         "figmaNodeId": null,
         "figmaVariant": "hasAction=false",
@@ -345,6 +372,14 @@
         "progress-widget-desktop-saved-light",
         "progress-widget-desktop-offline-light",
         "progress-widget-desktop-truncate-light"
+      ]
+    },
+    {
+      "description": "Phone fold (<600 / breakpoint=mobile) is code-only — Figma Progress Widget has no phone variant.",
+      "reason": "Owner request: dropdown shows the lesson number from levelLabel; cloud stays. Same 600px cut as Global Header.",
+      "owner": "user request (2026-09-03)",
+      "affectedCases": [
+        "progress-widget-phone-light"
       ]
     },
     {

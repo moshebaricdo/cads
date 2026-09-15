@@ -1,7 +1,7 @@
 "use client";
 
-import { Tag } from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+import { Tag } from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 
 export default function TagPreview({
   values,

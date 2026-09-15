@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Toast, type ToastPlacement } from "@moshebaricdo/cads-react";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+import { Button, Toast, type ToastPlacement } from "@moshebari/cads-react";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 import type { PreviewProps } from "./shared";
 
 /**

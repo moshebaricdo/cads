@@ -1,6 +1,6 @@
 "use client";
 
-import { CadsProvider } from "@moshebaricdo/cads-react";
+import { CadsProvider } from "@moshebari/cads-react";
 import {
   MOTION_FLAG_EVENT,
   MOTION_FLAG_PARAM,

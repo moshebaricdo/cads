@@ -9,7 +9,7 @@ export type IconTooltipSize = ControlSize;
 export interface IconTooltipProps
   extends Omit<TooltipProps, "children" | "surfaceOnly" | "iconName"> {
   /**
-   * FA Pro icon rendered as the tooltip trigger affordance.
+   * FA icon rendered as the tooltip trigger affordance.
    * @default "circle-info"
    */
   iconName?: FaIconName | (string & {});

@@ -1,6 +1,6 @@
 "use client";
 
-import { Tag } from "@moshebaricdo/cads-react";
+import { Tag } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

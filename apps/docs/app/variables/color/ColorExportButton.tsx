@@ -1,11 +1,11 @@
 "use client";
 
-import colorSystemJson from "@moshebaricdo/cads-variables/data/color-system.json";
+import colorSystemJson from "@moshebari/cads-variables/data/color-system.json";
 import {
   buildPrimitiveColorsCss,
   buildSemanticColorsCss,
   type ColorSystemExportDoc,
-} from "@moshebaricdo/cads-variables";
+} from "@moshebari/cads-variables";
 import { ExportCssButton } from "@/components/ExportCssButton";
 
 const colorSystem = colorSystemJson as ColorSystemExportDoc;

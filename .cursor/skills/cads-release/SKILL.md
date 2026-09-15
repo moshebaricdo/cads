@@ -1,8 +1,8 @@
 ---
 name: cads-release
 description: >-
-  Cut and publish @moshebaricdo/cads-react and @moshebaricdo/cads-variables
-  via Changesets to GitHub Packages. Use when the user asks to release,
+  Cut and publish @moshebari/cads-react and @moshebari/cads-variables
+  via Changesets to the public npm registry. Use when the user asks to release,
   publish, bump versions, cut a Version PR, or when publishable packages
   changed without a changeset.
 ---
@@ -14,13 +14,13 @@ Pushing `main` does **not** publish. Registry versions move only when a
 
 ```text
 changeset on main → Release workflow opens/updates Version PR
-                 → merge that PR → pnpm release → GitHub Packages
+                 → merge that PR → pnpm release → npmjs.org
 ```
 
 Published packages (linked; always version together):
 
-- `@moshebaricdo/cads-react`
-- `@moshebaricdo/cads-variables`
+- `@moshebari/cads-react`
+- `@moshebari/cads-variables`
 
 Ignored (never a changeset): docs, sandbox, Figma plugins, figma-sync, MCP,
 artifact. See `.changeset/config.json`.
@@ -28,12 +28,15 @@ artifact. See `.changeset/config.json`.
 Do not run interactive `pnpm changeset`. Do not run `pnpm release` locally
 unless CI cannot publish and the user explicitly asks.
 
+CI publish needs repo secret **`NPM_TOKEN`** (npm automation token for
+`@moshebari`, with permission to publish public packages).
+
 ## Diagnose first
 
 In parallel:
 
 1. Current versions: `packages/react/package.json` and `packages/variables/package.json`
-2. Git tags: `@moshebaricdo/cads-react@*`
+2. Git tags: `@moshebari/cads-react@*` (historical GitHub Packages tags used `@moshebaricdo/cads-react@*`)
 3. Commits since the last version commit (`chore: version packages`)
 4. Pending `.changeset/*.md` (not README / config)
 5. Open **Version packages** PR (`changeset-release/main`)
@@ -47,7 +50,7 @@ Typical “lots of main commits, no new package”:
 | Feature landed after Version PR last updated | Add a changeset for it; Release workflow refreshes the PR |
 | Release workflow failed before `changesets/action` | Fix `pnpm build` / generate on `main` |
 
-Last successful registry cut: **0.1.1** (`cads-react`; `cads-variables` stayed **0.1.0** until the next linked bump).
+Last GitHub Packages cut: **0.1.2**. First public npm cut is the next Version PR (scope `@moshebari`).
 
 ## Write a changeset
 
@@ -55,7 +58,7 @@ Last successful registry cut: **0.1.1** (`cads-react`; `cads-variables` stayed *
 
 ```markdown
 ---
-"@moshebaricdo/cads-react": patch
+"@moshebari/cads-react": patch
 ---
 
 One sentence of user-facing change.
@@ -84,12 +87,12 @@ Commit with the feature, or as `chore: add changeset for …`.
    changesets.
 5. Merge the Version PR (not squash if the repo prefers merge commits —
    either is fine). CI runs `pnpm release` (`changeset publish`) with
-   `NODE_AUTH_TOKEN` = `GITHUB_TOKEN`.
-6. Confirm tags `@moshebaricdo/cads-react@x.y.z` and
-   `@moshebaricdo/cads-variables@x.y.z`, and that package.json on `main`
+   `NODE_AUTH_TOKEN` = `NPM_TOKEN`.
+6. Confirm tags `@moshebari/cads-react@x.y.z` and
+   `@moshebari/cads-variables@x.y.z`, and that package.json on `main`
    matches.
-7. Tell consumers: GitHub Packages `@moshebaricdo:registry=https://npm.pkg.github.com`
-   + `NODE_AUTH_TOKEN` (`read:packages`). Local CADS iteration can stay on
+7. Tell consumers: `npm i @moshebari/cads-react @moshebari/cads-variables`
+   (public npm; no `.npmrc` / PAT). Local CADS iteration can stay on
    `file:../cads/packages/*`.
 
 If `gh` is not authenticated, stop after preparing changesets. Give the
@@ -101,5 +104,4 @@ Version PR URL and ask the user to merge it (or run `gh auth login`).
 `pnpm generate:variables` → `pnpm build` → `changesets/action@v1`
 (`version: pnpm version-packages`, `publish: pnpm release`).
 
-Needs `contents: write`, `packages: write`, `pull-requests: write`.
-)
+Needs `contents: write`, `pull-requests: write`, and secret `NPM_TOKEN`.

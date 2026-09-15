@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropdown } from "@moshebaricdo/cads-react";
+import { Dropdown } from "@moshebari/cads-react";
 import {
   type FixtureCase,
   ICON_OPTIONS,

@@ -9,8 +9,8 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from "react";
 import { createPortal } from "react-dom";
-import type { CadsComponentManifest } from "@moshebaricdo/cads-react/manifest";
-import { Button, Tabs, Toggle } from "@moshebaricdo/cads-react";
+import type { CadsComponentManifest } from "@moshebari/cads-react/manifest";
+import { Button, Tabs, Toggle } from "@moshebari/cads-react";
 import { ComponentPreview } from "./playground/ComponentPreview";
 import { PlaygroundInspectOverlay } from "./playground/PlaygroundInspectOverlay";
 import { highlightJsx } from "./playground/highlightJsx";
@@ -681,7 +681,7 @@ export function TemplatePlayground({
               <div className={styles.fullscreenBody}>
                 <p className={styles.fullscreenHint}>
                   Resize the window to exercise responsive behavior (folds at
-                  960px).
+                  960px and 600px).
                 </p>
                 <Button
                   variant="outlined"

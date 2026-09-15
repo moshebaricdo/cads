@@ -3,11 +3,13 @@
  * Desktop shows the bubble rail; below 960px the rail folds away, the
  * active level bubble nests inside the level dropdown as its start icon,
  * and a leading outlined back button appears (Figma `hasLeftAction`).
+ * Below 600px the dropdown shows the lesson number; the cloud stays.
  * The dropdown hugs its label and only truncates once the container forces
  * it (flex-shrink + min-width: 0 + ellipsis).
  */
 
 $tablet-mobile-max: 959.95px;
+$mobile-max: 599.95px;
 
 .root {
   box-sizing: border-box;
@@ -77,6 +79,19 @@ $tablet-mobile-max: 959.95px;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: left;
+}
+
+.levelNumber {
+  display: none;
+  flex: none;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.cloudSlot {
+  display: flex;
+  flex: none;
+  align-items: center;
 }
 
 .chevron {
@@ -174,6 +189,26 @@ $tablet-mobile-max: 959.95px;
   }
 }
 
+@mixin mobile {
+  @include tablet-mobile;
+
+  .dropdownContainer {
+    flex: 0 1 auto;
+  }
+
+  .levelSelect {
+    flex: 0 0 auto;
+  }
+
+  .levelLabel {
+    display: none;
+  }
+
+  .levelNumber {
+    display: block;
+  }
+}
+
 @mixin desktop {
   .dropdownContainer {
     flex: 0 1 auto;
@@ -201,9 +236,13 @@ $tablet-mobile-max: 959.95px;
   }
 }
 
-.root:not(.forceDesktop):not(.forceTabletMobile) {
+.root:not(.forceDesktop):not(.forceTabletMobile):not(.forceMobile) {
   @media (max-width: $tablet-mobile-max) {
     @include tablet-mobile;
+  }
+
+  @media (max-width: $mobile-max) {
+    @include mobile;
   }
 }
 
@@ -213,4 +252,8 @@ $tablet-mobile-max: 959.95px;
 
 .forceTabletMobile {
   @include tablet-mobile;
+}
+
+.forceMobile {
+  @include mobile;
 }

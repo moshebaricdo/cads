@@ -1,6 +1,6 @@
 /**
  * Icon catalog for the plugin UI, sourced from the same codepoint maps that
- * power `FaIcon` in @moshebaricdo/cads-react — the single source of truth for
+ * power `FaIcon` in @moshebari/cads-react — the single source of truth for
  * which shortcodes exist and what they render.
  *
  * Custom kit icons will be appended here (fetched from the FA API) in a later

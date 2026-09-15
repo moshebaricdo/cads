@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Tooltip } from "@moshebaricdo/cads-react";
+import { Tooltip } from "@moshebari/cads-react";
 
 export function ShapeSample({
   className,

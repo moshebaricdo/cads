@@ -4,7 +4,7 @@ import {
   AiChatFileChip,
   type AiChatFileChipType,
   type AiChatFileChipUseCase,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 
 export default function AiChatFileChipPreview({
   values,

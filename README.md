@@ -81,19 +81,16 @@ This README’s component table and experiments list are generated — run `pnpm
 
 ## Using in a prototype
 
-These packages are not on public npm. Install from GitHub Packages (scope matches this repo’s owner):
+Public npm — no token, PAT, or `.npmrc`:
 
-```json
-{
-  "dependencies": {
-    "@moshebaricdo/cads-react": "^0.1.2",
-    "@moshebaricdo/cads-variables": "^0.1.2"
-  }
-}
+```bash
+npm i @moshebari/cads-react @moshebari/cads-variables
 ```
 
-```
-@moshebaricdo:registry=https://npm.pkg.github.com
+```tsx
+import "@moshebari/cads-variables/variables.css";
+import "@moshebari/cads-react/icons/fonts.css";
+import { CadsProvider, Button } from "@moshebari/cads-react";
 ```
 
-GitHub Packages needs a token even for public packages (`NODE_AUTH_TOKEN` / PAT with `read:packages`). Imports stay `from "@moshebaricdo/cads-react"`. For local CADS development, a sibling `file:../cads/packages/*` install still works (don’t commit that rewrite on a repo whose CI has no sibling checkout).
+Icons ship Font Awesome 7 **Free**. For local CADS development, a sibling `file:../cads/packages/*` install still works (don’t commit that rewrite on a repo whose CI has no sibling checkout).

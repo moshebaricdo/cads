@@ -13,7 +13,8 @@ const variablesSrcAbs = path.join(repoRoot, "packages/variables/src");
 
 /**
  * Dev-only: resolve workspace packages from source.
- * Production/export keeps package.json `exports` → committed `dist/`.
+ * Production/export keeps package.json `exports` → committed `dist/`,
+ * except icon fonts: always the in-repo Pro OTFs (npm ships Free).
  * This stops `vite build` / `pnpm build:react` from deleting modules out from
  * under a live Turbopack server (Module not found → .next cache corruption).
  *
@@ -21,49 +22,56 @@ const variablesSrcAbs = path.join(repoRoot, "packages/variables/src");
  * Wildcard `/*` covers subpaths (`/icons`, `/manifest`, …).
  */
 const turbopackSrcAliases = {
-  "@moshebaricdo/cads-react/manifest":
+  "@moshebari/cads-react/manifest":
     "../../packages/react/src/manifest/cads.manifest.ts",
-  "@moshebaricdo/cads-react/icons/fonts.css":
-    "../../packages/react/src/icons/fonts.css",
-  "@moshebaricdo/cads-react/icons/fonts-solid.css":
-    "../../packages/react/src/icons/fonts-solid.css",
-  "@moshebaricdo/cads-react/*": "../../packages/react/src/*",
-  "@moshebaricdo/cads-react": "../../packages/react/src/index.ts",
-  "@moshebaricdo/cads-variables/theme": "../../packages/variables/src/theme.ts",
-  "@moshebaricdo/cads-variables/variables.css":
+  "@moshebari/cads-react/*": "../../packages/react/src/*",
+  "@moshebari/cads-react": "../../packages/react/src/index.ts",
+  "@moshebari/cads-variables/theme": "../../packages/variables/src/theme.ts",
+  "@moshebari/cads-variables/variables.css":
     "../../packages/variables/src/variables.css",
-  "@moshebaricdo/cads-variables/data/color-system.json":
+  "@moshebari/cads-variables/data/color-system.json":
     "../../packages/variables/src/data/codeAiColorSystem.json",
-  "@moshebaricdo/cads-variables/*": "../../packages/variables/src/*",
-  "@moshebaricdo/cads-variables": "../../packages/variables/src/index.ts",
+  "@moshebari/cads-variables/*": "../../packages/variables/src/*",
+  "@moshebari/cads-variables": "../../packages/variables/src/index.ts",
+};
+
+/** Always Pro OTFs for docs (dev + GitHub Pages). npm exports Free instead. */
+const turbopackFontAliases = {
+  "@moshebari/cads-react/icons/fonts.css":
+    "../../packages/react/src/icons/fonts.css",
+  "@moshebari/cads-react/icons/fonts-solid.css":
+    "../../packages/react/src/icons/fonts-solid.css",
 };
 
 const webpackSrcAliases = {
-  "@moshebaricdo/cads-react/manifest$": path.join(
+  "@moshebari/cads-react/manifest$": path.join(
     reactSrcAbs,
     "manifest/cads.manifest.ts",
   ),
-  "@moshebaricdo/cads-react/icons/fonts.css$": path.join(
-    reactSrcAbs,
-    "icons/fonts.css",
-  ),
-  "@moshebaricdo/cads-react/icons/fonts-solid.css$": path.join(
-    reactSrcAbs,
-    "icons/fonts-solid.css",
-  ),
-  "@moshebaricdo/cads-react$": path.join(reactSrcAbs, "index.ts"),
-  "@moshebaricdo/cads-react": reactSrcAbs,
-  "@moshebaricdo/cads-variables/theme$": path.join(variablesSrcAbs, "theme.ts"),
-  "@moshebaricdo/cads-variables/variables.css$": path.join(
+  "@moshebari/cads-react$": path.join(reactSrcAbs, "index.ts"),
+  "@moshebari/cads-react": reactSrcAbs,
+  "@moshebari/cads-variables/theme$": path.join(variablesSrcAbs, "theme.ts"),
+  "@moshebari/cads-variables/variables.css$": path.join(
     variablesSrcAbs,
     "variables.css",
   ),
-  "@moshebaricdo/cads-variables/data/color-system.json$": path.join(
+  "@moshebari/cads-variables/data/color-system.json$": path.join(
     variablesSrcAbs,
     "data/codeAiColorSystem.json",
   ),
-  "@moshebaricdo/cads-variables$": path.join(variablesSrcAbs, "index.ts"),
-  "@moshebaricdo/cads-variables": variablesSrcAbs,
+  "@moshebari/cads-variables$": path.join(variablesSrcAbs, "index.ts"),
+  "@moshebari/cads-variables": variablesSrcAbs,
+};
+
+const webpackFontAliases = {
+  "@moshebari/cads-react/icons/fonts.css$": path.join(
+    reactSrcAbs,
+    "icons/fonts.css",
+  ),
+  "@moshebari/cads-react/icons/fonts-solid.css$": path.join(
+    reactSrcAbs,
+    "icons/fonts-solid.css",
+  ),
 };
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -84,28 +92,25 @@ const nextConfig = {
   devIndicators: {
     position: "bottom-right",
   },
-  transpilePackages: ["@moshebaricdo/cads-react", "@moshebaricdo/cads-variables"],
+  transpilePackages: ["@moshebari/cads-react", "@moshebari/cads-variables"],
   reactStrictMode: true,
   experimental: {
     /** Turn barrel imports into per-module imports for smaller client graphs. */
-    optimizePackageImports: ["@moshebaricdo/cads-react", "@mui/material"],
+    optimizePackageImports: ["@moshebari/cads-react", "@mui/material"],
   },
-  ...(isDev
-    ? {
-        // Aliases are relative to apps/docs. Lockfile at repo root already
-        // makes Turbopack treat the monorepo as the watch root.
-        turbopack: {
-          resolveAlias: turbopackSrcAliases,
-        },
-      }
-    : {}),
+  turbopack: {
+    // Font aliases last so they win over `@moshebari/cads-react/*`.
+    resolveAlias: {
+      ...(isDev ? turbopackSrcAliases : {}),
+      ...turbopackFontAliases,
+    },
+  },
   webpack: (config, { dev }) => {
-    if (dev) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        ...webpackSrcAliases,
-      };
-    }
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      ...webpackFontAliases,
+      ...(dev ? webpackSrcAliases : {}),
+    };
     return config;
   },
 };

@@ -1,5 +1,5 @@
 {
-  "name": "@moshebaricdo/cads-variables",
+  "name": "@moshebari/cads-variables",
   "version": "0.1.2",
   "description": "CADS design variables — color, typography, spacing/shape, effects, and generated MUI theme",
   "type": "module",
@@ -10,7 +10,8 @@
     "directory": "packages/variables"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

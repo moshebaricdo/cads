@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import type { ReactElement, ReactNode } from "react";
-import { Tooltip } from "@moshebaricdo/cads-react";
-import { FaIcon } from "@moshebaricdo/cads-react/icons";
-import type { FaIconName } from "@moshebaricdo/cads-react/icons";
+import { Tooltip } from "@moshebari/cads-react";
+import { FaIcon } from "@moshebari/cads-react/icons";
+import type { FaIconName } from "@moshebari/cads-react/icons";
 import s from "./DocsNavItem.module.scss";
 
 /** Maps to Figma `resourceItem` type: topLevel | subItem (+ collapsible group). */

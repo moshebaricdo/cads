@@ -11,7 +11,7 @@ import {
   typography,
   zIndex,
   zIndexLayers
-} from "./chunk-EF7ICITX.js";
+} from "./chunk-E5G4FLK5.js";
 
 // src/colorCssExport.ts
 var UNSET_PRIMITIVE_HEX = "#00000000";
@@ -467,7 +467,7 @@ function buildFontVariablesCss(_vars = nonColorCssVars(), options = {}) {
 function buildTypographyVariablesCss(vars = nonColorCssVars()) {
   return [
     "/* Typography CSS Variables",
-    " * CADS runtime type scale (size / leading / tracking). Used by @moshebaricdo/cads-react.",
+    " * CADS runtime type scale (size / leading / tracking). Used by @moshebari/cads-react.",
     " * Prod style recipes live in typography.module.scss instead.",
     " */",
     "",
@@ -522,6 +522,7 @@ function buildResidualCssVars(vars = nonColorCssVars()) {
     "--z-toast": vars["--z-toast"],
     "--z-tooltip": vars["--z-tooltip"],
     /* FA faces — package-local, not part of prod fontVariables.css */
+    "--font-fa-free": vars["--font-fa-free"],
     "--font-fa-pro": vars["--font-fa-pro"],
     "--font-fa-brands": vars["--font-fa-brands"]
   };

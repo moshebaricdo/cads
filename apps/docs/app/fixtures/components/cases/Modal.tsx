@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@moshebaricdo/cads-react";
+import { Modal } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";

@@ -4,7 +4,7 @@ import {
   CloseIconButton,
   type CloseIconButtonColor,
   type CloseIconButtonSize,
-} from "@moshebaricdo/cads-react";
+} from "@moshebari/cads-react";
 
 export default function CloseIconButtonPreview({
   values,

@@ -1,6 +1,6 @@
 "use client";
 
-import { TextInput } from "@moshebaricdo/cads-react";
+import { TextInput } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";
