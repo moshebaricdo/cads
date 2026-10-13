@@ -66,6 +66,45 @@ export const cases: FixtureCase[] = [
         />
       ),
     },
+    ...(["large", "small", "extraSmall"] as const).map((size) => ({
+      id: `dropdown-${size}-input-checklist-bottomleft-light`,
+      mode: "light" as const,
+      viewport: { width: 360, height: 400 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size={size}
+          menuType="checklist"
+          menuPlacement="bottomLeft"
+          label="Field label"
+          defaultOpen
+          disablePortal
+          options={ICON_OPTIONS}
+        />
+      ),
+    })),
+    {
+      id: "dropdown-medium-input-checklist-allselected-dark",
+      mode: "dark",
+      viewport: { width: 360, height: 360 },
+      render: () => (
+        <Dropdown
+          role="input"
+          size="medium"
+          menuType="checklist"
+          menuPlacement="bottomLeft"
+          label="Field label"
+          defaultOpen
+          disablePortal
+          options={ICON_OPTIONS}
+          defaultValue={ICON_OPTIONS.flatMap((o) =>
+            o.type === "separator" || o.type === "group" || o.disabled
+              ? []
+              : [o.value],
+          )}
+        />
+      ),
+    },
     {
       id: "dropdown-large-action-icon-bottomleft-light",
       mode: "light",

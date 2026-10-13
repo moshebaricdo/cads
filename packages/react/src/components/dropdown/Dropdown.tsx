@@ -263,6 +263,14 @@ const MENU_ITEM_SIZE: Record<
   },
 };
 
+/** Checklist Action Row buttons step down one size from the menu (Figma `971:4280`). */
+const ACTION_ROW_BUTTON_SIZE: Record<ControlSize, ControlSize> = {
+  large: "medium",
+  medium: "small",
+  small: "extraSmall",
+  extraSmall: "extraSmall",
+};
+
 /** Optgroup label geometry from Figma menuOptGroup `16847:69853`. */
 const MENU_GROUP_SIZE: Record<
   ControlSize,
@@ -635,7 +643,8 @@ function MenuGroupRow({ label }: { label: ReactNode }) {
 /**
  * CADS Dropdown — form select (input) or action menu.
  * Spec: `15857:100676` / key `d3660d988bcb4702c24ce921128e32cadb6618db`.
- * Internal: Dropdown Button `964:10677`, Menu List `971:4280`, Menu Item `896:3791`,
+ * Internal: Dropdown Button `964:10677`, Menu List `971:4280` (checklist Action
+ * Row: bi-state Select all / Clear all + Done), Menu Item `896:3791`,
  * menuSeparator `16847:69841`, menuOptGroup `16847:69853`.
  */
 export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
@@ -787,13 +796,19 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
     };
 
-    const handleSelectAll = () => {
-      commitSelection(
-        itemOptions.filter((o) => !o.disabled).map((o) => o.value),
-      );
+    const enabledValues = itemOptions
+      .filter((o) => !o.disabled)
+      .map((o) => o.value);
+    const allSelected =
+      enabledValues.length > 0 &&
+      enabledValues.every((v) => selectedSet.has(v));
+
+    const handleToggleAll = () => {
+      commitSelection(allSelected ? [] : enabledValues);
     };
-    const handleClearAll = () => {
-      commitSelection([]);
+    const handleDone = () => {
+      setOpen(false);
+      anchorRef.current?.focus();
     };
 
     const toggleOpen = () => {
@@ -885,6 +900,13 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         }
       }
       if (event.key === "Enter" || event.key === " ") {
+        if (
+          (event.target as HTMLElement).closest?.(
+            "[data-cads-dropdown-action-row]",
+          )
+        ) {
+          return;
+        }
         event.preventDefault();
         const opt = activeIndex >= 0 ? options[activeIndex] : undefined;
         if (opt && isItemOption(opt)) handleItemSelect(opt);
@@ -932,8 +954,6 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       "--dd-group-pr": groupDims.paddingRight,
       "--dd-group-font-size": groupDims.fontSize,
       "--dd-group-line-height": groupDims.lineHeight,
-      "--dd-action-justify":
-        size === "large" ? "space-between" : "flex-start",
       "--cads-surface-origin": placementToSurfaceOrigin(menuPlacement),
     } as CSSProperties;
 
@@ -1023,29 +1043,42 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               data-cads-dropdown-action-row=""
               className={styles.actionRow}
             >
+              <div className={styles.actionRowLeft}>
+                <Button
+                  variant="text"
+                  color="secondary"
+                  size={ACTION_ROW_BUTTON_SIZE[size]}
+                  data-cads-dropdown-toggle-all={
+                    allSelected ? "clear" : "select"
+                  }
+                  onMouseDown={(e: SyntheticEvent) => e.preventDefault()}
+                  onClick={(e: SyntheticEvent) => {
+                    e.stopPropagation();
+                    handleToggleAll();
+                  }}
+                >
+                  <span className={styles.toggleAllLabel}>
+                    <span aria-hidden={allSelected || undefined}>
+                      Select all
+                    </span>
+                    <span aria-hidden={!allSelected || undefined}>
+                      Clear all
+                    </span>
+                  </span>
+                </Button>
+              </div>
               <Button
-                variant="text"
+                variant="contained"
                 color="secondary"
-                size={size}
+                size={ACTION_ROW_BUTTON_SIZE[size]}
+                data-cads-dropdown-done=""
                 onMouseDown={(e: SyntheticEvent) => e.preventDefault()}
                 onClick={(e: SyntheticEvent) => {
                   e.stopPropagation();
-                  handleSelectAll();
+                  handleDone();
                 }}
               >
-                Select all
-              </Button>
-              <Button
-                variant="text"
-                color="secondary"
-                size={size}
-                onMouseDown={(e: SyntheticEvent) => e.preventDefault()}
-                onClick={(e: SyntheticEvent) => {
-                  e.stopPropagation();
-                  handleClearAll();
-                }}
-              >
-                Clear all
+                Done
               </Button>
             </div>
           ) : null}

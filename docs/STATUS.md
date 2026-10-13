@@ -1,8 +1,10 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-09-15
+Last updated: 2026-10-12
 
 ## Done (scaffold complete)
+
+- [x] **Dropdown checklist Action Row (2026-10-12)** — Matches Figma Menu List `971:4280`: one bi-state text button (Select all → Clear all once every enabled option is checked; labels stacked so the panel never resizes) + contained secondary **Done** (closes, refocuses trigger), `space-between` at every size. Action Row buttons step down one size (L→M, M→S, S/XS→XS). Figma now also ships `menuType=custom`; snapshot updated. Switch rule for the bi-state is a code choice pending design confirmation.
 
 - [x] **Public npm `@moshebari/cads-*` + FA7 Free (2026-09-15)** — Publish target is npmjs.org (tokenless `npm i` for vibe-coding). Scope `@moshebari`. Public tarball ships Font Awesome 7 Free webfonts; CADS Docs (local + GitHub Pages) keep loading in-repo FA7 Pro OTFs. Changesets/release CI uses `NPM_TOKEN`.
 

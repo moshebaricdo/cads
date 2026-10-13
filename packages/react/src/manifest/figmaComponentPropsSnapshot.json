@@ -627,6 +627,7 @@
         ],
         "menuType": [
           "checklist",
+          "custom",
           "default"
         ],
         "menuPlacement": [
@@ -647,7 +648,7 @@
           "figmaName": "Dropdown Menu List",
           "nodeId": "971:4280",
           "componentKey": "70c564795ec93c0c6877771cbb277d12698b9481",
-          "notes": "Internal menu panel. Checklist includes Select all / Clear all action row."
+          "notes": "Internal menu panel. 2026-10-12: checklist Action Row = leftAction (bi-state text secondary Select all / Clear all, pr 4) + contained secondary Done, space-between, p 4. Buttons step down one size (L→M, M→S, S→XS, XS→XS). Figma showActionRow boolean is internal-only (always shown for checklist in code)."
         },
         "menuItem": {
           "figmaName": "Dropdown Menu Item",

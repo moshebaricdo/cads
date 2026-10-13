@@ -291,8 +291,8 @@
 .actionRow {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: var(--dd-action-justify, flex-start);
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   border-top: 1px solid var(--border-neutral-primary);
   padding: 4px;
   gap: 4px;
@@ -306,5 +306,26 @@
     min-width: max-content;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+// Figma leftAction frame: 4px trailing pad before the Done button
+.actionRowLeft {
+  display: flex;
+  flex-shrink: 0;
+  padding-right: 4px;
+}
+
+// Stack both labels so toggling Select all ↔ Clear all never resizes the panel
+.toggleAllLabel {
+  display: inline-grid;
+
+  > * {
+    grid-area: 1 / 1;
+    text-align: center;
+  }
+
+  > [aria-hidden="true"] {
+    visibility: hidden;
   }
 }

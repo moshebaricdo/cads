@@ -14,21 +14,23 @@
       "16847:69841",
       "16847:69853"
     ],
-    "retrievedAt": "2026-08-13",
+    "retrievedAt": "2026-10-12",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "code-only",
+    "taskPath": "figma-update",
     "previousRecipe": null,
     "figmaChanges": [
-      "Menu Item itemType icon\u2192default, iconError\u2192defaultError; hasStartIcon boolean for text-only",
+      "Menu Item itemType icon→default, iconError→defaultError; hasStartIcon boolean for text-only",
       "Added menuSeparator (16847:69841) and menuOptGroup (16847:69853)",
-      "menuType icon\u2192default (item icons are per-option, not list-level)",
-      "2026-07-24: default/defaultError state recipes \u2014 destructive press stays error-light + text-error-secondary; selected press returns to selected-primary (not strong); disabled uses text/background-disabled-* tokens (no opacity fade). Checklist itemType deferred.",
+      "menuType icon→default (item icons are per-option, not list-level)",
+      "2026-07-24: default/defaultError state recipes — destructive press stays error-light + text-error-secondary; selected press returns to selected-primary (not strong); disabled uses text/background-disabled-* tokens (no opacity fade). Checklist itemType deferred.",
       "2026-07-24: Dropdown Button state=press shares tertiary fill with hover (aligns with outlined Button press).",
       "CADS 4.1: menu item gaps/paddingRight/icon slots aligned to standardized pattern; icons use body textSize; default label Item; Button M padding 14px fixes action trigger hug width",
       "CADS 4.1: input Dropdown Button trigger padding 16/14/12/8 (match Button); drop extra triggerContent padding-right",
-      "2026-08-13: code-only menuType=custom — blank menu canvas (border/shadow/radius only). Figma Menu List 971:4280 has no custom axis."
+      "2026-08-13: code-only menuType=custom — blank menu canvas (border/shadow/radius only). Figma Menu List 971:4280 has no custom axis.",
+      "2026-10-12: Figma now ships menuType=custom on the public set (15857:100676) and Menu List (17370:18621 etc.) — unstyled slot, matches code.",
+      "2026-10-12: checklist Action Row (971:4269 / 971:4271 / 971:4268 / 971:4275) — leftAction bi-state text secondary Select all/Clear all (pr 4) + contained secondary Done; row space-between, p 4, gap 4, border-top border-neutral-primary at every size. Buttons step down one size: L→M (40), M→S (32), S→XS (24), XS→XS (24)."
     ]
   },
   "axes": {
@@ -71,7 +73,7 @@
         "when": {
           "menuType": "custom"
         },
-        "reason": "Code-only blank menu. Figma Menu List has default|checklist only; custom keeps border/shadow/radius and drops padding/gaps/items."
+        "reason": "Blank menu: custom keeps border/shadow/radius and drops padding/gaps/items (Figma customContent slot has no styling)."
       }
     ]
   },
@@ -254,7 +256,7 @@
       "geometryOverrides": {},
       "figmaVariant": "state=hover, selected=no",
       "notes": [
-        "Pointer hover only \u2014 distinct from keyboard focus."
+        "Pointer hover only — distinct from keyboard focus."
       ]
     },
     {
@@ -318,7 +320,7 @@
       "geometryOverrides": {},
       "figmaVariant": "state=focus, selected=no",
       "notes": [
-        "Keyboard highlight via data-keyboard-focus; Figma uses a 2px border \u2014 code uses outline + -2px offset to avoid layout shift.",
+        "Keyboard highlight via data-keyboard-focus; Figma uses a 2px border — code uses outline + -2px offset to avoid layout shift.",
         "Not the outer FOCUS_RING used on the trigger."
       ]
     },
@@ -352,7 +354,7 @@
       "geometryOverrides": {},
       "figmaVariant": "state=disabled, selected=no",
       "notes": [
-        "Default/defaultError only \u2014 uses disabled text token, not opacity fade. Checklist deferred."
+        "Default/defaultError only — uses disabled text token, not opacity fade. Checklist deferred."
       ]
     },
     {
@@ -463,7 +465,30 @@
       },
       "figmaVariant": "hasStartIcon=false",
       "notes": [
-        "Text-only item \u2014 no leading icon slot reserved."
+        "Text-only item — no leading icon slot reserved."
+      ]
+    },
+    {
+      "when": {
+        "menuType": "checklist",
+        "entry": "actionRow",
+        "mode": "light"
+      },
+      "variables": {
+        "border": "var(--border-neutral-primary)",
+        "toggleAll": "Button variant=text color=secondary (--text-neutral-primary)",
+        "done": "Button variant=contained color=secondary (--background-neutral-primary-inverse / --text-neutral-primary-inverse)"
+      },
+      "geometryOverrides": {
+        "padding": "4px",
+        "gap": "4px",
+        "leftActionPaddingRight": "4px",
+        "buttonSize": "large→medium, medium→small, small→extraSmall, extraSmall→extraSmall"
+      },
+      "figmaVariant": "Menu List menuType=checklist, showActionRow=true",
+      "notes": [
+        "Bi-state toggle: Select all until every enabled option is checked, then Clear all. Both labels are stacked in one grid cell so the panel width never shifts.",
+        "Done closes the menu and returns focus to the trigger."
       ]
     },
     {
@@ -601,6 +626,136 @@
         "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-medium-input-checklist-bottomright-light",
         "referenceScreenshot": "captures/figma-dropdown-large-input.png",
         "browserScreenshot": "captures/browser-dropdown-checklist.png",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-large-input-checklist-bottomleft-light",
+        "figmaNodeId": "971:4269",
+        "figmaVariant": "Menu List size=large, role=input, menuType=checklist",
+        "mode": "light",
+        "props": {
+          "size": "large",
+          "role": "input",
+          "menuType": "checklist",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "actionButtonHeight": "40px",
+          "actionRowPadding": "4px"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary",
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-large-input-checklist-bottomleft-light",
+        "referenceScreenshot": "figma:971:4269",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-large-input-checklist-bottomleft-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-small-input-checklist-bottomleft-light",
+        "figmaNodeId": "971:4268",
+        "figmaVariant": "Menu List size=small, role=input, menuType=checklist",
+        "mode": "light",
+        "props": {
+          "size": "small",
+          "role": "input",
+          "menuType": "checklist",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "actionButtonHeight": "24px"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary",
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-small-input-checklist-bottomleft-light",
+        "referenceScreenshot": "figma:971:4268",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-small-input-checklist-bottomleft-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-extraSmall-input-checklist-bottomleft-light",
+        "figmaNodeId": "971:4275",
+        "figmaVariant": "Menu List size=extraSmall, role=input, menuType=checklist",
+        "mode": "light",
+        "props": {
+          "size": "extraSmall",
+          "role": "input",
+          "menuType": "checklist",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 400,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "actionButtonHeight": "24px"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary",
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-extraSmall-input-checklist-bottomleft-light",
+        "referenceScreenshot": "figma:971:4275",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-extraSmall-input-checklist-bottomleft-light",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "dropdown-medium-input-checklist-allselected-dark",
+        "figmaNodeId": "971:4271",
+        "figmaVariant": "Menu List size=medium, role=input, menuType=checklist (all selected → Clear all)",
+        "mode": "dark",
+        "props": {
+          "size": "medium",
+          "role": "input",
+          "menuType": "checklist",
+          "menuPlacement": "bottomLeft",
+          "label": "Field label",
+          "defaultOpen": true,
+          "defaultValue": "all enabled"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 360,
+          "height": 360,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "actionButtonHeight": "32px"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--background-neutral-primary-inverse"
+        ],
+        "fixturePath": "/fixtures/components?component=Dropdown&case=dropdown-medium-input-checklist-allselected-dark&mode=dark",
+        "referenceScreenshot": "figma:971:4271",
+        "browserScreenshot": "fixture:/fixtures/components?component=Dropdown&case=dropdown-medium-input-checklist-allselected-dark&mode=dark",
         "result": "pass",
         "mismatches": []
       },
@@ -835,32 +990,32 @@
   },
   "acceptedDifferences": [
     {
-      "id": "custom-menu-no-figma-axis",
-      "figmaBehavior": "Dropdown and Menu List expose menuType=default|checklist only; default list has 4px block padding.",
-      "codeBehavior": "menuType=custom renders an unpadded blank canvas (border, shadow, radius preserved). customContent owns density.",
-      "reason": "Code-idiomatic slot for consumer UI (e.g. swatch grids). Same pattern as Popover content=custom padding 0 vs Figma 20px.",
-      "owner": "code",
+      "id": "checklist-toggle-all-rule",
+      "figmaBehavior": "Action Row shows a single leftAction text button labeled Select all; Figma has no Clear all variant or annotation describing the switch.",
+      "codeBehavior": "Label reads Select all until every enabled option is checked, then Clear all (clears selection).",
+      "reason": "Designer described the button as bi-state Select all / Clear all; switch condition chosen in code pending design confirmation.",
+      "owner": "code (confirm with design)",
       "cases": [
-        "dropdown-medium-input-custom-bottomleft-light",
-        "dropdown-medium-input-custom-bottomleft-dark"
+        "dropdown-medium-input-checklist-allselected-dark"
       ]
     }
   ],
   "evidence": {
-    "apiAudit": "pnpm figma:audit-props -- --strict \u2192 0 error, 0 warn, 0 escalate (info: state-recipes) 2026-08-13",
-    "typecheck": "pnpm typecheck \u2192 pass",
-    "build": "pnpm build \u2192 pass",
-    "docsBuild": "pnpm generate-llms-txt + docs tsc \u2192 pass (full build:docs not required for this API add)",
+    "apiAudit": "pnpm figma:audit-props -- --strict (2026-10-12) — see final run",
+    "typecheck": "pnpm typecheck → pass",
+    "build": "pnpm build → pass",
+    "docsBuild": "pnpm generate-llms-txt + docs tsc → pass (full build:docs not required for this API add)",
     "correctionPasses": [
       "Portal menus by default (overflow-safe); fixtures pass disablePortal for capture regions",
       "Fixed Popper anchorEl via callback state so defaultOpen opens on first paint",
       "Recaptured checklist (select-all/clear-all) and action destructive menu vs Figma 15857:100676 / item set 896:3791",
       "Checklist menu width/minWidth max-content so Action Row labels never wrap; option labels ellipsize; options list pb 4; pressed states (neutral tertiary / error primary)",
       "2026-07-20: text-only items (optional startIcon), menuSeparator, menuOptGroup; itemType default/defaultError",
-      "2026-07-21: focus/hover parity \u2014 trigger outline:none + tertiary hover; keyboard item focus outline 2px / offset -2px (brand-light / selected-inverse / error) distinct from pointer hover tertiary; suppress trigger ring while item has keyboard focus",
-      "2026-07-24: Menu Item default/defaultError states vs 896:3791 \u2014 destructive press error-light + text-error-secondary; selected hover:not(:active)=strong / :active=primary; disabled tokens (no opacity). Checklist deferred.",
+      "2026-07-21: focus/hover parity — trigger outline:none + tertiary hover; keyboard item focus outline 2px / offset -2px (brand-light / selected-inverse / error) distinct from pointer hover tertiary; suppress trigger ring while item has keyboard focus",
+      "2026-07-24: Menu Item default/defaultError states vs 896:3791 — destructive press error-light + text-error-secondary; selected hover:not(:active)=strong / :active=primary; disabled tokens (no opacity). Checklist deferred.",
       "2026-07-24: Dropdown Button trigger :active + force-pseudo press uses tertiary (parity with outlined Button).",
-      "2026-08-13: menuType=custom blank canvas \u2014 fixture swatch grid flush to border (0 padding/gap); chrome matches Menu List 971:4278 (border-neutral-primary, shadow-md, shape-sm); default list fixture still has item padding."
+      "2026-08-13: menuType=custom blank canvas — fixture swatch grid flush to border (0 padding/gap); chrome matches Menu List 971:4278 (border-neutral-primary, shadow-md, shape-sm); default list fixture still has item padding.",
+      "2026-10-12: checklist Action Row vs Menu List 971:4269/4271/4268/4275 — measured L 40px/14px pad/16px, M 32/12/14, S+XS 24/8/12; space-between; Done contained secondary (inverse fill, flips in dark). Clicked Select all → Clear all (panel width unchanged, a11y name swaps); Done closes + focuses trigger. No mismatches."
     ]
   }
 }

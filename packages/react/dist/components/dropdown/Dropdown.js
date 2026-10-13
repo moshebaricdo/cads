@@ -1,23 +1,23 @@
-import { jsx as o, jsxs as M } from "react/jsx-runtime";
-import ge from "@mui/material/ClickAwayListener";
-import Ce from "@mui/material/Popper";
-import { forwardRef as ze, useId as Oe, useState as F, useRef as $e, useCallback as pe, useMemo as G, useLayoutEffect as Ue, useEffect as Ve, isValidElement as _e, cloneElement as qe } from "react";
-import { Button as oe } from "../button/Button.js";
-import { FieldWrapper as je } from "../field-wrapper/FieldWrapper.js";
-import { FaIcon as ee } from "../../icons/FaIcon.js";
-import { CONTROL_HEIGHT as Y, TEXT_INPUT_SIZE as Fe, BUTTON_SIZE as Ge } from "../../shared/controlSize.js";
-import { useExperimentalMotion as Ke, useSurfacePresence as Ze, surfaceMotionStateAttrs as Pe, experimentalMotionHostAttrs as Xe } from "../../theme/experimentalMotion.js";
+import { jsx as i, jsxs as W } from "react/jsx-runtime";
+import be from "@mui/material/ClickAwayListener";
+import $e from "@mui/material/Popper";
+import { forwardRef as Ue, useId as _e, useState as j, useRef as Ve, useCallback as ye, useMemo as G, useLayoutEffect as qe, useEffect as Fe, isValidElement as Ze, cloneElement as je } from "react";
+import { Button as de } from "../button/Button.js";
+import { FieldWrapper as Ge } from "../field-wrapper/FieldWrapper.js";
+import { FaIcon as te } from "../../icons/FaIcon.js";
+import { CONTROL_HEIGHT as ee, TEXT_INPUT_SIZE as Ke, BUTTON_SIZE as Pe } from "../../shared/controlSize.js";
+import { useExperimentalMotion as Xe, useSurfacePresence as Je, surfaceMotionStateAttrs as Qe, experimentalMotionHostAttrs as Ye } from "../../theme/experimentalMotion.js";
 import s from "./dropdown.module.scss.js";
-function Z(...t) {
+function P(...t) {
   return t.filter(Boolean).join(" ");
 }
-function le(t) {
+function ce(t) {
   return t.type !== "separator" && t.type !== "group";
 }
 function K(t) {
-  return le(t) && !t.disabled;
+  return ce(t) && !t.disabled;
 }
-function Je(t = "hug") {
+function et(t = "hug") {
   return t === "hug" ? {
     rootWidth: "max-content",
     triggerWidth: "auto",
@@ -28,15 +28,15 @@ function Je(t = "hug") {
     maxWidth: "100%"
   };
 }
-function Qe(t = "hug", n) {
+function tt(t = "hug", n) {
   if (t === "trigger") {
-    const l = Math.max(0, n);
-    return { width: l, minWidth: l };
+    const o = Math.max(0, n);
+    return { width: o, minWidth: o };
   }
   if (typeof t == "number")
     return { width: "max-content", minWidth: Math.max(t, n) };
   if (t.endsWith("%")) {
-    const l = Number.parseFloat(t) / 100, d = Math.max(0, n * l);
+    const o = Number.parseFloat(t) / 100, d = Math.max(0, n * o);
     return { width: d, minWidth: d };
   }
   return {
@@ -44,7 +44,7 @@ function Qe(t = "hug", n) {
     minWidth: Math.max(0, n) || "max-content"
   };
 }
-function Ye(t) {
+function rt(t) {
   switch (t) {
     case "bottomRight":
       return "bottom-end";
@@ -57,7 +57,7 @@ function Ye(t) {
       return "bottom-start";
   }
 }
-function et(t) {
+function nt(t) {
   switch (t) {
     case "bottomRight":
       return "top right";
@@ -70,22 +70,22 @@ function et(t) {
       return "top left";
   }
 }
-function tt(t) {
+function at(t) {
   return {
     contextElement: t,
     getBoundingClientRect: () => {
-      const n = t.getBoundingClientRect(), l = t.offsetWidth, d = t.offsetHeight, u = n.left - (l - n.width) / 2, v = n.top - (d - n.height) / 2;
-      return new DOMRect(u, v, l, d);
+      const n = t.getBoundingClientRect(), o = t.offsetWidth, d = t.offsetHeight, m = n.left - (o - n.width) / 2, x = n.top - (d - n.height) / 2;
+      return new DOMRect(m, x, o, d);
     }
   };
 }
-function be(t) {
+function ve(t) {
   return t == null ? [] : Array.isArray(t) ? t : [t];
 }
-const ye = {
+const we = {
   // Gaps / padding / iconPx match Figma `896:3791` (icon = body textSize).
   large: {
-    height: Y.large,
+    height: ee.large,
     paddingLeft: "1rem",
     // 16
     paddingRight: "1.125rem",
@@ -103,7 +103,7 @@ const ye = {
     checkbox: 22
   },
   medium: {
-    height: Y.medium,
+    height: ee.medium,
     paddingLeft: "0.75rem",
     // 12
     paddingRight: "0.875rem",
@@ -121,7 +121,7 @@ const ye = {
     checkbox: 20
   },
   small: {
-    height: Y.small,
+    height: ee.small,
     paddingLeft: "0.625rem",
     // 10
     paddingRight: "0.75rem",
@@ -139,7 +139,7 @@ const ye = {
     checkbox: 18
   },
   extraSmall: {
-    height: Y.extraSmall,
+    height: ee.extraSmall,
     paddingLeft: "0.5rem",
     // 8
     paddingRight: "0.625rem",
@@ -156,7 +156,12 @@ const ye = {
     // 12
     checkbox: 16
   }
-}, rt = {
+}, xe = {
+  large: "medium",
+  medium: "small",
+  small: "extraSmall",
+  extraSmall: "extraSmall"
+}, it = {
   large: {
     height: 32,
     paddingLeft: "1rem",
@@ -190,14 +195,14 @@ const ye = {
     lineHeight: "var(--leading-body-xxs)"
   }
 };
-function nt(t, n, l, d) {
-  return l ? "var(--border-disabled-neutral)" : n ? "var(--border-error-primary)" : d || t === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
+function ot(t, n, o, d) {
+  return o ? "var(--border-disabled-neutral)" : n ? "var(--border-error-primary)" : d || t === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
 }
-function at({
+function lt({
   label: t,
   hugCandidates: n
 }) {
-  const l = /* @__PURE__ */ o(
+  const o = /* @__PURE__ */ i(
     "span",
     {
       style: {
@@ -209,7 +214,7 @@ function at({
       children: t
     }
   );
-  return n != null && n.length ? /* @__PURE__ */ M(
+  return n != null && n.length ? /* @__PURE__ */ W(
     "span",
     {
       style: {
@@ -219,7 +224,7 @@ function at({
         minWidth: 0
       },
       children: [
-        n.map((d, u) => /* @__PURE__ */ o(
+        n.map((d, m) => /* @__PURE__ */ i(
           "span",
           {
             "aria-hidden": !0,
@@ -231,9 +236,9 @@ function at({
             },
             children: d
           },
-          u
+          m
         )),
-        /* @__PURE__ */ o(
+        /* @__PURE__ */ i(
           "span",
           {
             style: {
@@ -242,390 +247,393 @@ function at({
               maxWidth: "100%",
               display: "block"
             },
-            children: l
+            children: o
           }
         )
       ]
     }
-  ) : l;
+  ) : o;
 }
-function it({
+function dt({
   size: t,
   color: n,
-  labelStyle: l,
+  labelStyle: o,
   label: d,
-  hugCandidates: u,
-  startIconName: v,
-  open: $,
-  disabled: W,
-  readOnly: p,
-  error: U,
-  required: x,
-  onClick: b,
-  buttonRef: w,
-  id: R,
-  listedBy: L,
-  ariaLabel: D,
-  ariaHasPopup: h,
-  triggerWidth: f
+  hugCandidates: m,
+  startIconName: x,
+  open: U,
+  disabled: D,
+  readOnly: y,
+  error: _,
+  required: w,
+  onClick: v,
+  buttonRef: k,
+  id: B,
+  listedBy: R,
+  ariaLabel: M,
+  ariaHasPopup: g,
+  triggerWidth: p
 }) {
-  const c = Fe[t], g = Ge[t], P = nt(n, U, W, p), k = !!(u != null && u.length), S = {
+  const c = Ke[t], b = Pe[t], X = ot(n, _, D, y), S = !!(m != null && m.length), I = {
     "--dd-height": c.height,
     // Match Button / Figma Dropdown Button padding 16 / 14 / 12 / 8
-    "--dd-px": g.paddingInline,
+    "--dd-px": b.paddingInline,
     "--dd-py": c.paddingBlock,
-    "--dd-gap": g.gap,
+    "--dd-gap": b.gap,
     "--dd-font-size": c.fontSize,
     "--dd-line-height": c.lineHeight,
-    "--dd-font-weight": String(l === "thin" ? 400 : 600),
-    "--dd-border": P,
-    "--dd-bg": p ? "var(--background-neutral-secondary)" : "var(--background-neutral-primary)",
-    "--dd-fg": W ? "var(--text-disabled-neutral)" : p ? "var(--text-neutral-quaternary)" : "var(--text-neutral-primary)",
-    "--dd-cursor": W || p ? "default" : "pointer",
-    "--dd-trigger-width": f
+    "--dd-font-weight": String(o === "thin" ? 400 : 600),
+    "--dd-border": X,
+    "--dd-bg": y ? "var(--background-neutral-secondary)" : "var(--background-neutral-primary)",
+    "--dd-fg": D ? "var(--text-disabled-neutral)" : y ? "var(--text-neutral-quaternary)" : "var(--text-neutral-primary)",
+    "--dd-cursor": D || y ? "default" : "pointer",
+    "--dd-trigger-width": p
   };
-  return /* @__PURE__ */ M(
+  return /* @__PURE__ */ W(
     "button",
     {
-      ref: w,
+      ref: k,
       type: "button",
-      id: R,
-      disabled: W || p,
-      "aria-haspopup": h ?? (L ? "listbox" : "menu"),
-      "aria-expanded": $,
-      "aria-controls": L,
-      "aria-required": x || void 0,
-      "aria-label": D,
-      onClick: b,
+      id: B,
+      disabled: D || y,
+      "aria-haspopup": g ?? (R ? "listbox" : "menu"),
+      "aria-expanded": U,
+      "aria-controls": R,
+      "aria-required": w || void 0,
+      "aria-label": M,
+      onClick: v,
       "data-cads-dropdown-trigger": "input",
-      ...k ? { "data-hug": "" } : {},
+      ...S ? { "data-hug": "" } : {},
       className: s.trigger,
-      style: S,
+      style: I,
       children: [
-        /* @__PURE__ */ M("span", { className: s.triggerContent, children: [
-          v ? /* @__PURE__ */ o(ee, { name: v, fontSize: g.iconPx }) : null,
-          /* @__PURE__ */ o(at, { label: d, hugCandidates: u })
+        /* @__PURE__ */ W("span", { className: s.triggerContent, children: [
+          x ? /* @__PURE__ */ i(te, { name: x, fontSize: b.iconPx }) : null,
+          /* @__PURE__ */ i(lt, { label: d, hugCandidates: m })
         ] }),
-        /* @__PURE__ */ o(ee, { name: "chevron-down", fontSize: g.iconPx })
+        /* @__PURE__ */ i(te, { name: "chevron-down", fontSize: b.iconPx })
       ]
     }
   );
 }
-function ot({
+function ct({
   option: t,
   size: n,
-  selected: l,
+  selected: o,
   menuType: d,
-  role: u,
-  active: v,
-  keyboardFocus: $,
-  onSelect: W,
-  onHighlight: p,
-  id: U
+  role: m,
+  active: x,
+  keyboardFocus: U,
+  onSelect: D,
+  onHighlight: y,
+  id: _
 }) {
-  const x = ye[n], b = !!t.destructive && u === "action", w = d === "checklist", R = !w && !!t.iconName, L = !!t.disabled && !w, D = w || R, c = {
-    "--dd-item-bg": L ? l ? "var(--background-disabled-neutral)" : "var(--background-neutral-primary)" : l ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
-    "--dd-item-fg": L ? b ? "var(--text-disabled-error)" : l ? "var(--text-disabled-neutral-inverse)" : "var(--text-disabled-neutral)" : b ? "var(--text-error-primary)" : l ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",
+  const w = we[n], v = !!t.destructive && m === "action", k = d === "checklist", B = !k && !!t.iconName, R = !!t.disabled && !k, M = k || B, c = {
+    "--dd-item-bg": R ? o ? "var(--background-disabled-neutral)" : "var(--background-neutral-primary)" : o ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
+    "--dd-item-fg": R ? v ? "var(--text-disabled-error)" : o ? "var(--text-disabled-neutral-inverse)" : "var(--text-disabled-neutral)" : v ? "var(--text-error-primary)" : o ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",
     "--dd-item-cursor": t.disabled ? "default" : "pointer",
-    "--dd-item-opacity": String(t.disabled && w ? 0.5 : 1),
-    "--dd-item-height": x.height
+    "--dd-item-opacity": String(t.disabled && k ? 0.5 : 1),
+    "--dd-item-height": w.height
   };
-  return /* @__PURE__ */ o(
+  return /* @__PURE__ */ i(
     "div",
     {
-      id: U,
-      role: u === "input" ? "option" : "menuitem",
-      "aria-selected": u === "input" ? l : void 0,
+      id: _,
+      role: m === "input" ? "option" : "menuitem",
+      "aria-selected": m === "input" ? o : void 0,
       "aria-disabled": t.disabled || void 0,
       "data-cads-dropdown-item": "",
       "data-value": t.value,
-      "data-destructive": b ? "true" : void 0,
-      "data-active": v ? "true" : void 0,
-      "data-keyboard-focus": $ ? "true" : void 0,
+      "data-destructive": v ? "true" : void 0,
+      "data-active": x ? "true" : void 0,
+      "data-keyboard-focus": U ? "true" : void 0,
       tabIndex: -1,
-      onMouseDown: (g) => {
-        g.preventDefault();
+      onMouseDown: (b) => {
+        b.preventDefault();
       },
-      onClick: (g) => {
-        g.preventDefault(), !(g.metaKey || g.ctrlKey) && (g.stopPropagation(), t.disabled || W());
+      onClick: (b) => {
+        b.preventDefault(), !(b.metaKey || b.ctrlKey) && (b.stopPropagation(), t.disabled || D());
       },
       onMouseEnter: () => {
-        t.disabled || p();
+        t.disabled || y();
       },
       className: s.item,
       style: c,
-      children: /* @__PURE__ */ M("span", { className: Z(s.itemInner, D && s.itemInnerGap), children: [
-        d === "checklist" ? /* @__PURE__ */ o(
+      children: /* @__PURE__ */ W("span", { className: P(s.itemInner, M && s.itemInnerGap), children: [
+        d === "checklist" ? /* @__PURE__ */ i(
           "span",
           {
             "aria-hidden": !0,
-            className: Z(
+            className: P(
               s.checkbox,
-              l && s.checkboxSelected
+              o && s.checkboxSelected
             ),
-            children: l ? /* @__PURE__ */ o(
-              ee,
+            children: o ? /* @__PURE__ */ i(
+              te,
               {
                 name: "check",
                 fontSize: n === "large" ? "0.875rem" : n === "extraSmall" ? "0.625rem" : "0.75rem"
               }
             ) : null
           }
-        ) : R ? /* @__PURE__ */ o("span", { "aria-hidden": !0, className: s.iconSlot, children: /* @__PURE__ */ o(ee, { name: t.iconName, fontSize: x.iconPx }) }) : null,
-        /* @__PURE__ */ o("span", { className: s.itemLabel, children: t.label })
+        ) : B ? /* @__PURE__ */ i("span", { "aria-hidden": !0, className: s.iconSlot, children: /* @__PURE__ */ i(te, { name: t.iconName, fontSize: w.iconPx }) }) : null,
+        /* @__PURE__ */ i("span", { className: s.itemLabel, children: t.label })
       ] })
     }
   );
 }
-function lt() {
-  return /* @__PURE__ */ o(
+function st() {
+  return /* @__PURE__ */ i(
     "div",
     {
       role: "separator",
       "aria-hidden": !0,
       "data-cads-dropdown-separator": "",
       className: s.separator,
-      children: /* @__PURE__ */ o("div", { className: s.separatorLine })
+      children: /* @__PURE__ */ i("div", { className: s.separatorLine })
     }
   );
 }
-function dt({ label: t }) {
-  return /* @__PURE__ */ o(
+function ut({ label: t }) {
+  return /* @__PURE__ */ i(
     "div",
     {
       role: "presentation",
       "data-cads-dropdown-group": "",
       className: s.group,
-      children: /* @__PURE__ */ o("span", { className: s.groupLabel, children: t })
+      children: /* @__PURE__ */ i("span", { className: s.groupLabel, children: t })
     }
   );
 }
-const vt = ze(
-  function(n, l) {
+const kt = Ue(
+  function(n, o) {
     const {
       size: d = "medium",
-      menuType: u = "default",
-      menuPlacement: v = "bottomLeft",
-      menuWidth: $ = "hug",
-      options: W,
-      open: p,
-      defaultOpen: U = !1,
-      onOpenChange: x,
-      disabled: b = !1,
-      disablePortal: w = !1,
-      className: R,
-      style: L,
-      "aria-label": D
-    } = n, h = n.role === "input", f = n.menuType === "custom", c = W ?? [], g = f ? n.customContent : void 0, P = Oe(), k = `cads-dropdown-list-${P}`, S = `cads-dropdown-trigger-${P}`, [A, ve] = F(null), te = $e(null), V = pe((e) => {
-      e && (te.current = e, ve((i) => i === e ? i : e));
-    }, []), xe = G(
-      () => A ? tt(A) : null,
-      [A]
-    ), [we, ke] = F(U), m = p ?? we, Se = Ke(), {
-      mounted: Ie,
-      exiting: Ne,
-      entering: We
-    } = Ze(m && !!A);
-    Ue(() => {
-      if (!m) return;
-      const e = te.current ?? document.getElementById(S);
+      menuType: m = "default",
+      menuPlacement: x = "bottomLeft",
+      menuWidth: U = "hug",
+      options: D,
+      open: y,
+      defaultOpen: _ = !1,
+      onOpenChange: w,
+      disabled: v = !1,
+      disablePortal: k = !1,
+      className: B,
+      style: R,
+      "aria-label": M
+    } = n, g = n.role === "input", p = n.menuType === "custom", c = D ?? [], b = p ? n.customContent : void 0, X = _e(), S = `cads-dropdown-list-${X}`, I = `cads-dropdown-trigger-${X}`, [E, ke] = j(null), J = Ve(null), V = ye((e) => {
+      e && (J.current = e, ke((a) => a === e ? a : e));
+    }, []), Se = G(
+      () => E ? at(E) : null,
+      [E]
+    ), [Ie, Ne] = j(_), h = y ?? Ie, Le = Xe(), {
+      mounted: We,
+      exiting: De,
+      entering: Re
+    } = Je(h && !!E);
+    qe(() => {
+      if (!h) return;
+      const e = J.current ?? document.getElementById(I);
       e && V(e);
-    }, [m, S, V]);
-    const [re, E] = F(-1), [Le, H] = F(
+    }, [h, I, V]);
+    const [re, T] = j(-1), [Me, H] = j(
       "pointer"
-    ), B = pe(
+    ), A = ye(
       (e) => {
-        p === void 0 && ke(e), x == null || x(e), e || (E(-1), H("pointer"));
+        y === void 0 && Ne(e), w == null || w(e), e || (T(-1), H("pointer"));
       },
-      [p, x]
-    ), r = h ? n : null, I = h && (u === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [De, Me] = F(
-      () => be(r == null ? void 0 : r.defaultValue)
-    ), T = (r == null ? void 0 : r.value) !== void 0 ? be(r.value) : De, X = G(
-      () => new Set(T),
-      [T]
-    ), C = G(() => c.filter(le), [c]), Re = G(() => {
-      if (!h) return n.label ?? "Button";
+      [y, w]
+    ), r = g ? n : null, N = g && (m === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [Ae, Be] = j(
+      () => ve(r == null ? void 0 : r.defaultValue)
+    ), z = (r == null ? void 0 : r.value) !== void 0 ? ve(r.value) : Ae, q = G(
+      () => new Set(z),
+      [z]
+    ), C = G(() => c.filter(ce), [c]), Ee = G(() => {
+      if (!g) return n.label ?? "Button";
       const e = (r == null ? void 0 : r.placeholder) ?? "Dropdown";
-      if (T.length === 0) return e;
-      const i = C.filter((a) => X.has(a.value)).map((a) => a.label);
-      return i.length === 0 ? e : i.length === 1 ? i[0] : `${i.length} selected`;
+      if (z.length === 0) return e;
+      const a = C.filter((u) => q.has(u.value)).map((u) => u.label);
+      return a.length === 0 ? e : a.length === 1 ? a[0] : `${a.length} selected`;
     }, [
-      h,
+      g,
       n,
       r == null ? void 0 : r.placeholder,
-      T,
+      z,
       C,
-      X
-    ]), Ae = G(() => {
-      if (!h) return;
-      const e = C.map((i) => i.label);
-      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), I && e.push(`${C.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
-    }, [h, r == null ? void 0 : r.placeholder, C, I]), J = (e) => {
-      var i;
-      r && (r.value === void 0 && Me(e), (i = r.onChange) == null || i.call(r, I ? e : e[0] ?? ""));
-    }, de = (e) => {
-      var i;
+      q
+    ]), Te = G(() => {
+      if (!g) return;
+      const e = C.map((a) => a.label);
+      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), N && e.push(`${C.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
+    }, [g, r == null ? void 0 : r.placeholder, C, N]), ne = (e) => {
+      var a;
+      r && (r.value === void 0 && Be(e), (a = r.onChange) == null || a.call(r, N ? e : e[0] ?? ""));
+    }, se = (e) => {
+      var a;
       if (!e.disabled)
-        if (h)
-          if (I) {
-            const a = X.has(e.value) ? T.filter((y) => y !== e.value) : [...T, e.value];
-            J(a);
+        if (g)
+          if (N) {
+            const u = q.has(e.value) ? z.filter((f) => f !== e.value) : [...z, e.value];
+            ne(u);
           } else
-            J([e.value]), B(!1);
+            ne([e.value]), A(!1);
         else
-          (i = n.onAction) == null || i.call(n, e.value), B(!1);
-    }, Be = () => {
-      J(
-        C.filter((e) => !e.disabled).map((e) => e.value)
-      );
-    }, Ee = () => {
-      J([]);
-    }, ne = () => {
-      b || h && (r != null && r.readOnly) || B(!m);
+          (a = n.onAction) == null || a.call(n, e.value), A(!1);
+    }, ae = C.filter((e) => !e.disabled).map((e) => e.value), Q = ae.length > 0 && ae.every((e) => q.has(e)), He = () => {
+      ne(Q ? [] : ae);
+    }, ze = () => {
+      var e;
+      A(!1), (e = J.current) == null || e.focus();
+    }, ie = () => {
+      v || g && (r != null && r.readOnly) || A(!h);
     };
-    Ve(() => {
-      m || (E(-1), H("pointer"));
-    }, [m]);
-    const Q = (e) => {
-      H("keyboard"), E(e);
-    }, ce = (e) => {
-      H("keyboard"), E((i) => {
-        let y = i < 0 ? e === 1 ? -1 : 0 : i;
-        for (let j = 0; j < c.length; j++)
-          if (y = e === 1 ? (y + 1) % c.length : (y - 1 + c.length) % c.length, K(c[y])) return y;
-        return i;
+    Fe(() => {
+      h || (T(-1), H("pointer"));
+    }, [h]);
+    const Y = (e) => {
+      H("keyboard"), T(e);
+    }, ue = (e) => {
+      H("keyboard"), T((a) => {
+        let f = a < 0 ? e === 1 ? -1 : 0 : a;
+        for (let l = 0; l < c.length; l++)
+          if (f = e === 1 ? (f + 1) % c.length : (f - 1 + c.length) % c.length, K(c[f])) return f;
+        return a;
       });
-    }, ae = (e) => {
-      var i;
-      if (!m) {
+    }, oe = (e) => {
+      var a, u, f;
+      if (!h) {
         if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ") {
-          if (e.preventDefault(), B(!0), f) return;
+          if (e.preventDefault(), A(!0), p) return;
           if (e.key === "ArrowUp") {
-            for (let a = c.length - 1; a >= 0; a--)
-              if (K(c[a])) {
-                Q(a);
+            for (let l = c.length - 1; l >= 0; l--)
+              if (K(c[l])) {
+                Y(l);
                 break;
               }
           } else {
-            const a = c.findIndex(K);
-            a >= 0 && Q(a);
+            const l = c.findIndex(K);
+            l >= 0 && Y(l);
           }
         }
         return;
       }
       if (e.key === "Escape") {
-        e.preventDefault(), B(!1), (i = te.current) == null || i.focus();
+        e.preventDefault(), A(!1), (a = J.current) == null || a.focus();
         return;
       }
-      if (!f) {
-        if (e.key === "ArrowDown" && (e.preventDefault(), ce(1)), e.key === "ArrowUp" && (e.preventDefault(), ce(-1)), e.key === "Home") {
+      if (!p) {
+        if (e.key === "ArrowDown" && (e.preventDefault(), ue(1)), e.key === "ArrowUp" && (e.preventDefault(), ue(-1)), e.key === "Home") {
           e.preventDefault();
-          const a = c.findIndex(K);
-          a >= 0 && Q(a);
+          const l = c.findIndex(K);
+          l >= 0 && Y(l);
         }
         if (e.key === "End") {
           e.preventDefault();
-          for (let a = c.length - 1; a >= 0; a--)
-            if (K(c[a])) {
-              Q(a);
+          for (let l = c.length - 1; l >= 0; l--)
+            if (K(c[l])) {
+              Y(l);
               break;
             }
         }
         if (e.key === "Enter" || e.key === " ") {
+          if ((f = (u = e.target).closest) != null && f.call(
+            u,
+            "[data-cads-dropdown-action-row]"
+          ))
+            return;
           e.preventDefault();
-          const a = re >= 0 ? c[re] : void 0;
-          a && le(a) && de(a);
+          const l = re >= 0 ? c[re] : void 0;
+          l && ce(l) && se(l);
         }
       }
-    }, se = f ? "custom" : h && ((r == null ? void 0 : r.menuType) ?? u) === "checklist" ? "checklist" : "default", z = I ? { width: "max-content", minWidth: "max-content" } : Qe($, (A == null ? void 0 : A.offsetWidth) ?? 0), ue = typeof z.minWidth == "number" ? `${z.minWidth}px` : z.minWidth, me = typeof z.width == "number" ? `${z.width}px` : z.width, N = ye[d], _ = rt[d], He = {
-      "--dd-panel-width": me,
-      "--dd-panel-min-width": ue,
-      "--dd-panel-py": f || I ? "0" : "4px",
-      "--dd-list-py": I ? "4px" : "0",
-      "--dd-item-pl": N.paddingLeft,
-      "--dd-item-pr": N.paddingRight,
-      "--dd-item-py": N.paddingBlock,
-      "--dd-item-height": N.height,
-      "--dd-item-gap": N.gap,
-      "--dd-item-font-size": N.fontSize,
-      "--dd-item-line-height": N.lineHeight,
-      "--dd-item-icon-slot": N.iconSlot,
-      "--dd-checkbox": `${N.checkbox}px`,
-      "--dd-group-height": `${_.height}px`,
-      "--dd-group-pl": _.paddingLeft,
-      "--dd-group-pr": _.paddingRight,
-      "--dd-group-font-size": _.fontSize,
-      "--dd-group-line-height": _.lineHeight,
-      "--dd-action-justify": d === "large" ? "space-between" : "flex-start",
-      "--cads-surface-origin": et(v)
-    }, he = /* @__PURE__ */ o(
-      Ce,
+    }, me = p ? "custom" : g && ((r == null ? void 0 : r.menuType) ?? m) === "checklist" ? "checklist" : "default", O = N ? { width: "max-content", minWidth: "max-content" } : tt(U, (E == null ? void 0 : E.offsetWidth) ?? 0), he = typeof O.minWidth == "number" ? `${O.minWidth}px` : O.minWidth, ge = typeof O.width == "number" ? `${O.width}px` : O.width, L = we[d], F = it[d], Ce = {
+      "--dd-panel-width": ge,
+      "--dd-panel-min-width": he,
+      "--dd-panel-py": p || N ? "0" : "4px",
+      "--dd-list-py": N ? "4px" : "0",
+      "--dd-item-pl": L.paddingLeft,
+      "--dd-item-pr": L.paddingRight,
+      "--dd-item-py": L.paddingBlock,
+      "--dd-item-height": L.height,
+      "--dd-item-gap": L.gap,
+      "--dd-item-font-size": L.fontSize,
+      "--dd-item-line-height": L.lineHeight,
+      "--dd-item-icon-slot": L.iconSlot,
+      "--dd-checkbox": `${L.checkbox}px`,
+      "--dd-group-height": `${F.height}px`,
+      "--dd-group-pl": F.paddingLeft,
+      "--dd-group-pr": F.paddingRight,
+      "--dd-group-font-size": F.fontSize,
+      "--dd-group-line-height": F.lineHeight,
+      "--cads-surface-origin": nt(x)
+    }, fe = /* @__PURE__ */ i(
+      $e,
       {
-        open: Ie,
-        anchorEl: xe,
-        placement: Ye(v),
-        disablePortal: w,
+        open: We,
+        anchorEl: Se,
+        placement: rt(x),
+        disablePortal: k,
         style: {
           zIndex: "var(--z-dropdown)",
-          width: me,
-          minWidth: ue
+          width: ge,
+          minWidth: he
         },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } },
-          ...w ? [
+          ...k ? [
             { name: "flip", enabled: !1 },
             { name: "preventOverflow", enabled: !1 }
           ] : []
         ],
-        children: /* @__PURE__ */ M(
+        children: /* @__PURE__ */ W(
           "div",
           {
-            id: k,
-            role: f ? "dialog" : h ? "listbox" : "menu",
-            "aria-labelledby": S,
-            "aria-multiselectable": I || void 0,
+            id: S,
+            role: p ? "dialog" : g ? "listbox" : "menu",
+            "aria-labelledby": I,
+            "aria-multiselectable": N || void 0,
             "data-cads-dropdown-menu": "",
             "data-cads-surface": "",
-            ...Xe(Se),
-            ...Pe(We, Ne),
-            "data-menu-type": se,
-            onKeyDown: ae,
-            className: Z(s.menuPanel, f && s.menuPanelCustom),
-            style: He,
+            ...Ye(Le),
+            ...Qe(Re, De),
+            "data-menu-type": me,
+            onKeyDown: oe,
+            className: P(s.menuPanel, p && s.menuPanelCustom),
+            style: Ce,
             children: [
-              f ? /* @__PURE__ */ o("div", { className: s.customSlot, children: g }) : /* @__PURE__ */ o(
+              p ? /* @__PURE__ */ i("div", { className: s.customSlot, children: b }) : /* @__PURE__ */ i(
                 "div",
                 {
                   className: s.optionsList,
                   onMouseLeave: () => {
-                    E(-1), H("pointer");
+                    T(-1), H("pointer");
                   },
-                  children: c.map((e, i) => {
+                  children: c.map((e, a) => {
                     if (e.type === "separator")
-                      return /* @__PURE__ */ o(lt, {}, `${k}-sep-${i}`);
+                      return /* @__PURE__ */ i(st, {}, `${S}-sep-${a}`);
                     if (e.type === "group")
-                      return /* @__PURE__ */ o(
-                        dt,
+                      return /* @__PURE__ */ i(
+                        ut,
                         {
                           label: e.label
                         },
-                        `${k}-group-${i}`
+                        `${S}-group-${a}`
                       );
-                    const a = i === re;
-                    return /* @__PURE__ */ o(
-                      ot,
+                    const u = a === re;
+                    return /* @__PURE__ */ i(
+                      ct,
                       {
-                        id: `${k}-opt-${i}`,
+                        id: `${S}-opt-${a}`,
                         option: e,
                         size: d,
-                        selected: X.has(e.value),
-                        menuType: se === "checklist" ? "checklist" : "default",
+                        selected: q.has(e.value),
+                        menuType: me === "checklist" ? "checklist" : "default",
                         role: n.role,
-                        active: a,
-                        keyboardFocus: a && Le === "keyboard",
-                        onSelect: () => de(e),
+                        active: u,
+                        keyboardFocus: u && Me === "keyboard",
+                        onSelect: () => se(e),
                         onHighlight: () => {
-                          H("pointer"), E(i);
+                          H("pointer"), T(a);
                         }
                       },
                       e.value
@@ -633,36 +641,41 @@ const vt = ze(
                   })
                 }
               ),
-              I ? /* @__PURE__ */ M(
+              N ? /* @__PURE__ */ W(
                 "div",
                 {
                   "data-cads-dropdown-action-row": "",
                   className: s.actionRow,
                   children: [
-                    /* @__PURE__ */ o(
-                      oe,
+                    /* @__PURE__ */ i("div", { className: s.actionRowLeft, children: /* @__PURE__ */ i(
+                      de,
                       {
                         variant: "text",
                         color: "secondary",
-                        size: d,
+                        size: xe[d],
+                        "data-cads-dropdown-toggle-all": Q ? "clear" : "select",
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
-                          e.stopPropagation(), Be();
+                          e.stopPropagation(), He();
                         },
-                        children: "Select all"
+                        children: /* @__PURE__ */ W("span", { className: s.toggleAllLabel, children: [
+                          /* @__PURE__ */ i("span", { "aria-hidden": Q || void 0, children: "Select all" }),
+                          /* @__PURE__ */ i("span", { "aria-hidden": !Q || void 0, children: "Clear all" })
+                        ] })
                       }
-                    ),
-                    /* @__PURE__ */ o(
-                      oe,
+                    ) }),
+                    /* @__PURE__ */ i(
+                      de,
                       {
-                        variant: "text",
+                        variant: "contained",
                         color: "secondary",
-                        size: d,
+                        size: xe[d],
+                        "data-cads-dropdown-done": "",
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
-                          e.stopPropagation(), Ee();
+                          e.stopPropagation(), ze();
                         },
-                        children: "Clear all"
+                        children: "Done"
                       }
                     )
                   ]
@@ -673,123 +686,123 @@ const vt = ze(
         )
       }
     );
-    if (h) {
-      const e = n, i = e.error ? "error" : e.sentiment ?? "default", a = e.width ?? "hug", y = Je(a), j = a === "hug";
-      return /* @__PURE__ */ o(
-        ge,
+    if (g) {
+      const e = n, a = e.error ? "error" : e.sentiment ?? "default", u = e.width ?? "hug", f = et(u), l = u === "hug";
+      return /* @__PURE__ */ i(
+        be,
         {
           onClickAway: () => {
-            m && B(!1);
+            h && A(!1);
           },
-          children: /* @__PURE__ */ M(
+          children: /* @__PURE__ */ W(
             "div",
             {
-              ref: l,
-              className: Z(s.root, R),
+              ref: o,
+              className: P(s.root, B),
               style: {
-                width: y.rootWidth,
-                maxWidth: y.maxWidth,
-                ...L
+                width: f.rootWidth,
+                maxWidth: f.maxWidth,
+                ...R
               },
               "data-cads-dropdown": "input",
-              "data-width": j ? "hug" : a === "full" ? "full" : "fixed",
-              onKeyDown: ae,
+              "data-width": l ? "hug" : u === "full" ? "full" : "fixed",
+              onKeyDown: oe,
               children: [
-                /* @__PURE__ */ o(
-                  je,
+                /* @__PURE__ */ i(
+                  Ge,
                   {
                     size: d,
-                    sentiment: i,
+                    sentiment: a,
                     label: e.label,
                     required: e.required,
                     helperText: e.helperText,
                     helperIconName: e.helperIconName,
                     showHelper: e.showHelper,
-                    htmlFor: S,
-                    disabled: b,
-                    children: /* @__PURE__ */ o(
-                      it,
+                    htmlFor: I,
+                    disabled: v,
+                    children: /* @__PURE__ */ i(
+                      dt,
                       {
                         size: d,
                         color: e.color ?? "primary",
                         labelStyle: e.labelStyle ?? "thick",
-                        label: Re,
-                        hugCandidates: j ? Ae : void 0,
+                        label: Ee,
+                        hugCandidates: l ? Te : void 0,
                         startIconName: e.startIconName,
-                        open: m,
-                        disabled: b,
+                        open: h,
+                        disabled: v,
                         readOnly: !!e.readOnly,
-                        error: !!e.error || i === "error",
+                        error: !!e.error || a === "error",
                         required: !!e.required,
-                        onClick: ne,
+                        onClick: ie,
                         buttonRef: V,
-                        id: S,
-                        listedBy: m ? k : void 0,
-                        ariaHasPopup: f ? "dialog" : "listbox",
-                        triggerWidth: y.triggerWidth,
-                        ariaLabel: typeof D == "string" ? D : typeof e.label == "string" ? void 0 : "Dropdown"
+                        id: I,
+                        listedBy: h ? S : void 0,
+                        ariaHasPopup: p ? "dialog" : "listbox",
+                        triggerWidth: f.triggerWidth,
+                        ariaLabel: typeof M == "string" ? M : typeof e.label == "string" ? void 0 : "Dropdown"
                       }
                     )
                   }
                 ),
-                he
+                fe
               ]
             }
           )
         }
       );
     }
-    const O = n, ie = !!O.iconOnly, q = O.trigger, fe = f ? "dialog" : "menu", Te = q && _e(q) ? qe(q, {
+    const $ = n, le = !!$.iconOnly, Z = $.trigger, pe = p ? "dialog" : "menu", Oe = Z && Ze(Z) ? je(Z, {
       ref: V,
-      id: S,
-      disabled: b,
+      id: I,
+      disabled: v,
       "data-cads-dropdown-trigger": "action",
-      "aria-haspopup": fe,
-      "aria-expanded": m,
-      "aria-controls": m ? k : void 0,
-      "aria-label": D ?? q.props["aria-label"],
+      "aria-haspopup": pe,
+      "aria-expanded": h,
+      "aria-controls": h ? S : void 0,
+      "aria-label": M ?? Z.props["aria-label"],
       onClick: (e) => {
-        var i, a;
-        (a = (i = q.props).onClick) == null || a.call(i, e), ne();
+        var a, u;
+        (u = (a = Z.props).onClick) == null || u.call(a, e), ie();
       }
-    }) : /* @__PURE__ */ o(
-      oe,
+    }) : /* @__PURE__ */ i(
+      de,
       {
         ref: V,
-        id: S,
+        id: I,
         size: d,
-        variant: O.buttonVariant ?? "contained",
-        color: O.buttonColor ?? "primary",
-        iconOnly: ie,
-        startIconName: O.startIconName,
-        endIconName: ie ? void 0 : "chevron-down",
-        disabled: b,
+        variant: $.buttonVariant ?? "contained",
+        color: $.buttonColor ?? "primary",
+        iconOnly: le,
+        startIconName: $.startIconName,
+        endIconName: le ? void 0 : "chevron-down",
+        disabled: v,
         "data-cads-dropdown-trigger": "action",
-        "aria-haspopup": fe,
-        "aria-expanded": m,
-        "aria-controls": m ? k : void 0,
-        "aria-label": D,
-        onClick: ne,
-        children: ie ? void 0 : O.label ?? "Button"
+        "aria-haspopup": pe,
+        "aria-expanded": h,
+        "aria-controls": h ? S : void 0,
+        "aria-label": M,
+        onClick: ie,
+        children: le ? void 0 : $.label ?? "Button"
       }
     );
-    return /* @__PURE__ */ o(
-      ge,
+    return /* @__PURE__ */ i(
+      be,
       {
         onClickAway: () => {
-          m && B(!1);
+          h && A(!1);
         },
-        children: /* @__PURE__ */ M(
+        children: /* @__PURE__ */ W(
           "div",
           {
-            ref: l,
-            className: Z(s.root, R),
-            style: { display: "inline-flex", ...L },
+            ref: o,
+            className: P(s.root, B),
+            style: { display: "inline-flex", ...R },
             "data-cads-dropdown": "action",
-            onKeyDown: ae,
+            onKeyDown: oe,
             children: [
-              Te,
-              he
+              Oe,
+              fe
             ]
           }
         )
@@ -798,6 +811,6 @@ const vt = ze(
   }
 );
 export {
-  vt as Dropdown
+  kt as Dropdown
 };
 //# sourceMappingURL=Dropdown.js.map
