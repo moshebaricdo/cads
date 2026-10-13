@@ -1,5 +1,12 @@
 # @moshebari/cads-react
 
+## 0.2.1
+
+### Patch Changes
+
+- fcd0e19: Dropdown checklist menus now show a single Select all / Clear all toggle plus a Done button that closes the menu, with Action Row buttons one size smaller than the menu (matches Figma Menu List).
+- b692cd8: Dropdown checklist Done button shows the selected count, e.g. "Done (3)".
+
 ## 0.2.0
 
 ### Minor Changes
