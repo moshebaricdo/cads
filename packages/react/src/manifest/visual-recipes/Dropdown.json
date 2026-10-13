@@ -488,7 +488,8 @@
       "figmaVariant": "Menu List menuType=checklist, showActionRow=true",
       "notes": [
         "Bi-state toggle: Select all until every enabled option is checked, then Clear all. Both labels are stacked in one grid cell so the panel width never shifts.",
-        "Done closes the menu and returns focus to the trigger."
+        "Done closes the menu and returns focus to the trigger.",
+        "Done label appends the selected count — Done (3); plain Done when nothing is selected. Width reserved for Done (total options) so the panel never resizes."
       ]
     },
     {

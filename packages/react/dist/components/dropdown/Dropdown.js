@@ -1,13 +1,13 @@
-import { jsx as i, jsxs as W } from "react/jsx-runtime";
-import be from "@mui/material/ClickAwayListener";
-import $e from "@mui/material/Popper";
-import { forwardRef as Ue, useId as _e, useState as j, useRef as Ve, useCallback as ye, useMemo as G, useLayoutEffect as qe, useEffect as Fe, isValidElement as Ze, cloneElement as je } from "react";
+import { jsx as i, jsxs as x } from "react/jsx-runtime";
+import ye from "@mui/material/ClickAwayListener";
+import Ue from "@mui/material/Popper";
+import { forwardRef as _e, useId as Ve, useState as j, useRef as qe, useCallback as ve, useMemo as G, useLayoutEffect as Fe, useEffect as Ze, isValidElement as je, cloneElement as Ge } from "react";
 import { Button as de } from "../button/Button.js";
-import { FieldWrapper as Ge } from "../field-wrapper/FieldWrapper.js";
+import { FieldWrapper as Ke } from "../field-wrapper/FieldWrapper.js";
 import { FaIcon as te } from "../../icons/FaIcon.js";
-import { CONTROL_HEIGHT as ee, TEXT_INPUT_SIZE as Ke, BUTTON_SIZE as Pe } from "../../shared/controlSize.js";
-import { useExperimentalMotion as Xe, useSurfacePresence as Je, surfaceMotionStateAttrs as Qe, experimentalMotionHostAttrs as Ye } from "../../theme/experimentalMotion.js";
-import s from "./dropdown.module.scss.js";
+import { CONTROL_HEIGHT as ee, TEXT_INPUT_SIZE as Pe, BUTTON_SIZE as Xe } from "../../shared/controlSize.js";
+import { useExperimentalMotion as Je, useSurfacePresence as Qe, surfaceMotionStateAttrs as Ye, experimentalMotionHostAttrs as et } from "../../theme/experimentalMotion.js";
+import c from "./dropdown.module.scss.js";
 function P(...t) {
   return t.filter(Boolean).join(" ");
 }
@@ -17,7 +17,7 @@ function ce(t) {
 function K(t) {
   return ce(t) && !t.disabled;
 }
-function et(t = "hug") {
+function tt(t = "hug") {
   return t === "hug" ? {
     rootWidth: "max-content",
     triggerWidth: "auto",
@@ -28,7 +28,7 @@ function et(t = "hug") {
     maxWidth: "100%"
   };
 }
-function tt(t = "hug", n) {
+function rt(t = "hug", n) {
   if (t === "trigger") {
     const o = Math.max(0, n);
     return { width: o, minWidth: o };
@@ -44,7 +44,7 @@ function tt(t = "hug", n) {
     minWidth: Math.max(0, n) || "max-content"
   };
 }
-function rt(t) {
+function nt(t) {
   switch (t) {
     case "bottomRight":
       return "bottom-end";
@@ -57,7 +57,7 @@ function rt(t) {
       return "bottom-start";
   }
 }
-function nt(t) {
+function at(t) {
   switch (t) {
     case "bottomRight":
       return "top right";
@@ -70,19 +70,19 @@ function nt(t) {
       return "top left";
   }
 }
-function at(t) {
+function it(t) {
   return {
     contextElement: t,
     getBoundingClientRect: () => {
-      const n = t.getBoundingClientRect(), o = t.offsetWidth, d = t.offsetHeight, m = n.left - (o - n.width) / 2, x = n.top - (d - n.height) / 2;
-      return new DOMRect(m, x, o, d);
+      const n = t.getBoundingClientRect(), o = t.offsetWidth, d = t.offsetHeight, m = n.left - (o - n.width) / 2, w = n.top - (d - n.height) / 2;
+      return new DOMRect(m, w, o, d);
     }
   };
 }
-function ve(t) {
+function xe(t) {
   return t == null ? [] : Array.isArray(t) ? t : [t];
 }
-const we = {
+const ke = {
   // Gaps / padding / iconPx match Figma `896:3791` (icon = body textSize).
   large: {
     height: ee.large,
@@ -156,12 +156,12 @@ const we = {
     // 12
     checkbox: 16
   }
-}, xe = {
+}, we = {
   large: "medium",
   medium: "small",
   small: "extraSmall",
   extraSmall: "extraSmall"
-}, it = {
+}, ot = {
   large: {
     height: 32,
     paddingLeft: "1rem",
@@ -195,10 +195,10 @@ const we = {
     lineHeight: "var(--leading-body-xxs)"
   }
 };
-function ot(t, n, o, d) {
+function lt(t, n, o, d) {
   return o ? "var(--border-disabled-neutral)" : n ? "var(--border-error-primary)" : d || t === "secondary" ? "var(--border-neutral-secondary)" : "var(--border-neutral-solid)";
 }
-function lt({
+function dt({
   label: t,
   hugCandidates: n
 }) {
@@ -214,7 +214,7 @@ function lt({
       children: t
     }
   );
-  return n != null && n.length ? /* @__PURE__ */ W(
+  return n != null && n.length ? /* @__PURE__ */ x(
     "span",
     {
       style: {
@@ -254,119 +254,119 @@ function lt({
     }
   ) : o;
 }
-function dt({
+function ct({
   size: t,
   color: n,
   labelStyle: o,
   label: d,
   hugCandidates: m,
-  startIconName: x,
-  open: U,
-  disabled: D,
+  startIconName: w,
+  open: _,
+  disabled: W,
   readOnly: y,
-  error: _,
-  required: w,
+  error: V,
+  required: k,
   onClick: v,
-  buttonRef: k,
-  id: B,
+  buttonRef: S,
+  id: E,
   listedBy: R,
   ariaLabel: M,
   ariaHasPopup: g,
   triggerWidth: p
 }) {
-  const c = Ke[t], b = Pe[t], X = ot(n, _, D, y), S = !!(m != null && m.length), I = {
-    "--dd-height": c.height,
+  const s = Pe[t], b = Xe[t], X = lt(n, V, W, y), I = !!(m != null && m.length), N = {
+    "--dd-height": s.height,
     // Match Button / Figma Dropdown Button padding 16 / 14 / 12 / 8
     "--dd-px": b.paddingInline,
-    "--dd-py": c.paddingBlock,
+    "--dd-py": s.paddingBlock,
     "--dd-gap": b.gap,
-    "--dd-font-size": c.fontSize,
-    "--dd-line-height": c.lineHeight,
+    "--dd-font-size": s.fontSize,
+    "--dd-line-height": s.lineHeight,
     "--dd-font-weight": String(o === "thin" ? 400 : 600),
     "--dd-border": X,
     "--dd-bg": y ? "var(--background-neutral-secondary)" : "var(--background-neutral-primary)",
-    "--dd-fg": D ? "var(--text-disabled-neutral)" : y ? "var(--text-neutral-quaternary)" : "var(--text-neutral-primary)",
-    "--dd-cursor": D || y ? "default" : "pointer",
+    "--dd-fg": W ? "var(--text-disabled-neutral)" : y ? "var(--text-neutral-quaternary)" : "var(--text-neutral-primary)",
+    "--dd-cursor": W || y ? "default" : "pointer",
     "--dd-trigger-width": p
   };
-  return /* @__PURE__ */ W(
+  return /* @__PURE__ */ x(
     "button",
     {
-      ref: k,
+      ref: S,
       type: "button",
-      id: B,
-      disabled: D || y,
+      id: E,
+      disabled: W || y,
       "aria-haspopup": g ?? (R ? "listbox" : "menu"),
-      "aria-expanded": U,
+      "aria-expanded": _,
       "aria-controls": R,
-      "aria-required": w || void 0,
+      "aria-required": k || void 0,
       "aria-label": M,
       onClick: v,
       "data-cads-dropdown-trigger": "input",
-      ...S ? { "data-hug": "" } : {},
-      className: s.trigger,
-      style: I,
+      ...I ? { "data-hug": "" } : {},
+      className: c.trigger,
+      style: N,
       children: [
-        /* @__PURE__ */ W("span", { className: s.triggerContent, children: [
-          x ? /* @__PURE__ */ i(te, { name: x, fontSize: b.iconPx }) : null,
-          /* @__PURE__ */ i(lt, { label: d, hugCandidates: m })
+        /* @__PURE__ */ x("span", { className: c.triggerContent, children: [
+          w ? /* @__PURE__ */ i(te, { name: w, fontSize: b.iconPx }) : null,
+          /* @__PURE__ */ i(dt, { label: d, hugCandidates: m })
         ] }),
         /* @__PURE__ */ i(te, { name: "chevron-down", fontSize: b.iconPx })
       ]
     }
   );
 }
-function ct({
+function st({
   option: t,
   size: n,
   selected: o,
   menuType: d,
   role: m,
-  active: x,
-  keyboardFocus: U,
-  onSelect: D,
+  active: w,
+  keyboardFocus: _,
+  onSelect: W,
   onHighlight: y,
-  id: _
+  id: V
 }) {
-  const w = we[n], v = !!t.destructive && m === "action", k = d === "checklist", B = !k && !!t.iconName, R = !!t.disabled && !k, M = k || B, c = {
+  const k = ke[n], v = !!t.destructive && m === "action", S = d === "checklist", E = !S && !!t.iconName, R = !!t.disabled && !S, M = S || E, s = {
     "--dd-item-bg": R ? o ? "var(--background-disabled-neutral)" : "var(--background-neutral-primary)" : o ? "var(--background-selected-primary)" : "var(--background-neutral-primary)",
     "--dd-item-fg": R ? v ? "var(--text-disabled-error)" : o ? "var(--text-disabled-neutral-inverse)" : "var(--text-disabled-neutral)" : v ? "var(--text-error-primary)" : o ? "var(--text-selected-primary)" : "var(--text-neutral-primary)",
     "--dd-item-cursor": t.disabled ? "default" : "pointer",
-    "--dd-item-opacity": String(t.disabled && k ? 0.5 : 1),
-    "--dd-item-height": w.height
+    "--dd-item-opacity": String(t.disabled && S ? 0.5 : 1),
+    "--dd-item-height": k.height
   };
   return /* @__PURE__ */ i(
     "div",
     {
-      id: _,
+      id: V,
       role: m === "input" ? "option" : "menuitem",
       "aria-selected": m === "input" ? o : void 0,
       "aria-disabled": t.disabled || void 0,
       "data-cads-dropdown-item": "",
       "data-value": t.value,
       "data-destructive": v ? "true" : void 0,
-      "data-active": x ? "true" : void 0,
-      "data-keyboard-focus": U ? "true" : void 0,
+      "data-active": w ? "true" : void 0,
+      "data-keyboard-focus": _ ? "true" : void 0,
       tabIndex: -1,
       onMouseDown: (b) => {
         b.preventDefault();
       },
       onClick: (b) => {
-        b.preventDefault(), !(b.metaKey || b.ctrlKey) && (b.stopPropagation(), t.disabled || D());
+        b.preventDefault(), !(b.metaKey || b.ctrlKey) && (b.stopPropagation(), t.disabled || W());
       },
       onMouseEnter: () => {
         t.disabled || y();
       },
-      className: s.item,
-      style: c,
-      children: /* @__PURE__ */ W("span", { className: P(s.itemInner, M && s.itemInnerGap), children: [
+      className: c.item,
+      style: s,
+      children: /* @__PURE__ */ x("span", { className: P(c.itemInner, M && c.itemInnerGap), children: [
         d === "checklist" ? /* @__PURE__ */ i(
           "span",
           {
             "aria-hidden": !0,
             className: P(
-              s.checkbox,
-              o && s.checkboxSelected
+              c.checkbox,
+              o && c.checkboxSelected
             ),
             children: o ? /* @__PURE__ */ i(
               te,
@@ -376,110 +376,112 @@ function ct({
               }
             ) : null
           }
-        ) : B ? /* @__PURE__ */ i("span", { "aria-hidden": !0, className: s.iconSlot, children: /* @__PURE__ */ i(te, { name: t.iconName, fontSize: w.iconPx }) }) : null,
-        /* @__PURE__ */ i("span", { className: s.itemLabel, children: t.label })
+        ) : E ? /* @__PURE__ */ i("span", { "aria-hidden": !0, className: c.iconSlot, children: /* @__PURE__ */ i(te, { name: t.iconName, fontSize: k.iconPx }) }) : null,
+        /* @__PURE__ */ i("span", { className: c.itemLabel, children: t.label })
       ] })
     }
   );
 }
-function st() {
+function ut() {
   return /* @__PURE__ */ i(
     "div",
     {
       role: "separator",
       "aria-hidden": !0,
       "data-cads-dropdown-separator": "",
-      className: s.separator,
-      children: /* @__PURE__ */ i("div", { className: s.separatorLine })
+      className: c.separator,
+      children: /* @__PURE__ */ i("div", { className: c.separatorLine })
     }
   );
 }
-function ut({ label: t }) {
+function mt({ label: t }) {
   return /* @__PURE__ */ i(
     "div",
     {
       role: "presentation",
       "data-cads-dropdown-group": "",
-      className: s.group,
-      children: /* @__PURE__ */ i("span", { className: s.groupLabel, children: t })
+      className: c.group,
+      children: /* @__PURE__ */ i("span", { className: c.groupLabel, children: t })
     }
   );
 }
-const kt = Ue(
+const St = _e(
   function(n, o) {
     const {
       size: d = "medium",
       menuType: m = "default",
-      menuPlacement: x = "bottomLeft",
-      menuWidth: U = "hug",
-      options: D,
+      menuPlacement: w = "bottomLeft",
+      menuWidth: _ = "hug",
+      options: W,
       open: y,
-      defaultOpen: _ = !1,
-      onOpenChange: w,
+      defaultOpen: V = !1,
+      onOpenChange: k,
       disabled: v = !1,
-      disablePortal: k = !1,
-      className: B,
+      disablePortal: S = !1,
+      className: E,
       style: R,
       "aria-label": M
-    } = n, g = n.role === "input", p = n.menuType === "custom", c = D ?? [], b = p ? n.customContent : void 0, X = _e(), S = `cads-dropdown-list-${X}`, I = `cads-dropdown-trigger-${X}`, [E, ke] = j(null), J = Ve(null), V = ye((e) => {
-      e && (J.current = e, ke((a) => a === e ? a : e));
-    }, []), Se = G(
-      () => E ? at(E) : null,
-      [E]
-    ), [Ie, Ne] = j(_), h = y ?? Ie, Le = Xe(), {
+    } = n, g = n.role === "input", p = n.menuType === "custom", s = W ?? [], b = p ? n.customContent : void 0, X = Ve(), I = `cads-dropdown-list-${X}`, N = `cads-dropdown-trigger-${X}`, [T, Se] = j(null), J = qe(null), q = ve((e) => {
+      e && (J.current = e, Se((a) => a === e ? a : e));
+    }, []), Ie = G(
+      () => T ? it(T) : null,
+      [T]
+    ), [Ne, De] = j(V), h = y ?? Ne, Le = Je(), {
       mounted: We,
-      exiting: De,
-      entering: Re
-    } = Je(h && !!E);
-    qe(() => {
+      exiting: Re,
+      entering: Me
+    } = Qe(h && !!T);
+    Fe(() => {
       if (!h) return;
-      const e = J.current ?? document.getElementById(I);
-      e && V(e);
-    }, [h, I, V]);
-    const [re, T] = j(-1), [Me, H] = j(
+      const e = J.current ?? document.getElementById(N);
+      e && q(e);
+    }, [h, N, q]);
+    const [re, H] = j(-1), [Ae, C] = j(
       "pointer"
-    ), A = ye(
+    ), A = ve(
       (e) => {
-        y === void 0 && Ne(e), w == null || w(e), e || (T(-1), H("pointer"));
+        y === void 0 && De(e), k == null || k(e), e || (H(-1), C("pointer"));
       },
-      [y, w]
-    ), r = g ? n : null, N = g && (m === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [Ae, Be] = j(
-      () => ve(r == null ? void 0 : r.defaultValue)
-    ), z = (r == null ? void 0 : r.value) !== void 0 ? ve(r.value) : Ae, q = G(
+      [y, k]
+    ), r = g ? n : null, D = g && (m === "checklist" || (r == null ? void 0 : r.menuType) === "checklist"), [Be, Ee] = j(
+      () => xe(r == null ? void 0 : r.defaultValue)
+    ), z = (r == null ? void 0 : r.value) !== void 0 ? xe(r.value) : Be, O = G(
       () => new Set(z),
       [z]
-    ), C = G(() => c.filter(ce), [c]), Ee = G(() => {
+    ), B = G(() => s.filter(ce), [s]), Te = G(() => {
       if (!g) return n.label ?? "Button";
       const e = (r == null ? void 0 : r.placeholder) ?? "Dropdown";
       if (z.length === 0) return e;
-      const a = C.filter((u) => q.has(u.value)).map((u) => u.label);
+      const a = B.filter((u) => O.has(u.value)).map((u) => u.label);
       return a.length === 0 ? e : a.length === 1 ? a[0] : `${a.length} selected`;
     }, [
       g,
       n,
       r == null ? void 0 : r.placeholder,
       z,
-      C,
-      q
-    ]), Te = G(() => {
+      B,
+      O
+    ]), He = G(() => {
       if (!g) return;
-      const e = C.map((a) => a.label);
-      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), N && e.push(`${C.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
-    }, [g, r == null ? void 0 : r.placeholder, C, N]), ne = (e) => {
+      const e = B.map((a) => a.label);
+      return (r == null ? void 0 : r.placeholder) != null && r.placeholder !== "" && e.push(r.placeholder), D && e.push(`${B.length} selected`), e.length === 0 && e.push((r == null ? void 0 : r.placeholder) ?? "Dropdown"), e;
+    }, [g, r == null ? void 0 : r.placeholder, B, D]), ne = (e) => {
       var a;
-      r && (r.value === void 0 && Be(e), (a = r.onChange) == null || a.call(r, N ? e : e[0] ?? ""));
+      r && (r.value === void 0 && Ee(e), (a = r.onChange) == null || a.call(r, D ? e : e[0] ?? ""));
     }, se = (e) => {
       var a;
       if (!e.disabled)
         if (g)
-          if (N) {
-            const u = q.has(e.value) ? z.filter((f) => f !== e.value) : [...z, e.value];
+          if (D) {
+            const u = O.has(e.value) ? z.filter((f) => f !== e.value) : [...z, e.value];
             ne(u);
           } else
             ne([e.value]), A(!1);
         else
           (a = n.onAction) == null || a.call(n, e.value), A(!1);
-    }, ae = C.filter((e) => !e.disabled).map((e) => e.value), Q = ae.length > 0 && ae.every((e) => q.has(e)), He = () => {
+    }, ae = B.filter((e) => !e.disabled).map((e) => e.value), Q = ae.length > 0 && ae.every((e) => O.has(e)), ue = B.filter(
+      (e) => O.has(e.value)
+    ).length, Ce = () => {
       ne(Q ? [] : ae);
     }, ze = () => {
       var e;
@@ -487,16 +489,16 @@ const kt = Ue(
     }, ie = () => {
       v || g && (r != null && r.readOnly) || A(!h);
     };
-    Fe(() => {
-      h || (T(-1), H("pointer"));
+    Ze(() => {
+      h || (H(-1), C("pointer"));
     }, [h]);
     const Y = (e) => {
-      H("keyboard"), T(e);
-    }, ue = (e) => {
-      H("keyboard"), T((a) => {
+      C("keyboard"), H(e);
+    }, me = (e) => {
+      C("keyboard"), H((a) => {
         let f = a < 0 ? e === 1 ? -1 : 0 : a;
-        for (let l = 0; l < c.length; l++)
-          if (f = e === 1 ? (f + 1) % c.length : (f - 1 + c.length) % c.length, K(c[f])) return f;
+        for (let l = 0; l < s.length; l++)
+          if (f = e === 1 ? (f + 1) % s.length : (f - 1 + s.length) % s.length, K(s[f])) return f;
         return a;
       });
     }, oe = (e) => {
@@ -505,13 +507,13 @@ const kt = Ue(
         if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ") {
           if (e.preventDefault(), A(!0), p) return;
           if (e.key === "ArrowUp") {
-            for (let l = c.length - 1; l >= 0; l--)
-              if (K(c[l])) {
+            for (let l = s.length - 1; l >= 0; l--)
+              if (K(s[l])) {
                 Y(l);
                 break;
               }
           } else {
-            const l = c.findIndex(K);
+            const l = s.findIndex(K);
             l >= 0 && Y(l);
           }
         }
@@ -522,15 +524,15 @@ const kt = Ue(
         return;
       }
       if (!p) {
-        if (e.key === "ArrowDown" && (e.preventDefault(), ue(1)), e.key === "ArrowUp" && (e.preventDefault(), ue(-1)), e.key === "Home") {
+        if (e.key === "ArrowDown" && (e.preventDefault(), me(1)), e.key === "ArrowUp" && (e.preventDefault(), me(-1)), e.key === "Home") {
           e.preventDefault();
-          const l = c.findIndex(K);
+          const l = s.findIndex(K);
           l >= 0 && Y(l);
         }
         if (e.key === "End") {
           e.preventDefault();
-          for (let l = c.length - 1; l >= 0; l--)
-            if (K(c[l])) {
+          for (let l = s.length - 1; l >= 0; l--)
+            if (K(s[l])) {
               Y(l);
               break;
             }
@@ -542,15 +544,15 @@ const kt = Ue(
           ))
             return;
           e.preventDefault();
-          const l = re >= 0 ? c[re] : void 0;
+          const l = re >= 0 ? s[re] : void 0;
           l && ce(l) && se(l);
         }
       }
-    }, me = p ? "custom" : g && ((r == null ? void 0 : r.menuType) ?? m) === "checklist" ? "checklist" : "default", O = N ? { width: "max-content", minWidth: "max-content" } : tt(U, (E == null ? void 0 : E.offsetWidth) ?? 0), he = typeof O.minWidth == "number" ? `${O.minWidth}px` : O.minWidth, ge = typeof O.width == "number" ? `${O.width}px` : O.width, L = we[d], F = it[d], Ce = {
-      "--dd-panel-width": ge,
-      "--dd-panel-min-width": he,
-      "--dd-panel-py": p || N ? "0" : "4px",
-      "--dd-list-py": N ? "4px" : "0",
+    }, he = p ? "custom" : g && ((r == null ? void 0 : r.menuType) ?? m) === "checklist" ? "checklist" : "default", $ = D ? { width: "max-content", minWidth: "max-content" } : rt(_, (T == null ? void 0 : T.offsetWidth) ?? 0), ge = typeof $.minWidth == "number" ? `${$.minWidth}px` : $.minWidth, fe = typeof $.width == "number" ? `${$.width}px` : $.width, L = ke[d], F = ot[d], Oe = {
+      "--dd-panel-width": fe,
+      "--dd-panel-min-width": ge,
+      "--dd-panel-py": p || D ? "0" : "4px",
+      "--dd-list-py": D ? "4px" : "0",
       "--dd-item-pl": L.paddingLeft,
       "--dd-item-pr": L.paddingRight,
       "--dd-item-py": L.paddingBlock,
@@ -565,75 +567,75 @@ const kt = Ue(
       "--dd-group-pr": F.paddingRight,
       "--dd-group-font-size": F.fontSize,
       "--dd-group-line-height": F.lineHeight,
-      "--cads-surface-origin": nt(x)
-    }, fe = /* @__PURE__ */ i(
-      $e,
+      "--cads-surface-origin": at(w)
+    }, pe = /* @__PURE__ */ i(
+      Ue,
       {
         open: We,
-        anchorEl: Se,
-        placement: rt(x),
-        disablePortal: k,
+        anchorEl: Ie,
+        placement: nt(w),
+        disablePortal: S,
         style: {
           zIndex: "var(--z-dropdown)",
-          width: ge,
-          minWidth: he
+          width: fe,
+          minWidth: ge
         },
         modifiers: [
           { name: "offset", options: { offset: [0, 4] } },
-          ...k ? [
+          ...S ? [
             { name: "flip", enabled: !1 },
             { name: "preventOverflow", enabled: !1 }
           ] : []
         ],
-        children: /* @__PURE__ */ W(
+        children: /* @__PURE__ */ x(
           "div",
           {
-            id: S,
+            id: I,
             role: p ? "dialog" : g ? "listbox" : "menu",
-            "aria-labelledby": I,
-            "aria-multiselectable": N || void 0,
+            "aria-labelledby": N,
+            "aria-multiselectable": D || void 0,
             "data-cads-dropdown-menu": "",
             "data-cads-surface": "",
-            ...Ye(Le),
-            ...Qe(Re, De),
-            "data-menu-type": me,
+            ...et(Le),
+            ...Ye(Me, Re),
+            "data-menu-type": he,
             onKeyDown: oe,
-            className: P(s.menuPanel, p && s.menuPanelCustom),
-            style: Ce,
+            className: P(c.menuPanel, p && c.menuPanelCustom),
+            style: Oe,
             children: [
-              p ? /* @__PURE__ */ i("div", { className: s.customSlot, children: b }) : /* @__PURE__ */ i(
+              p ? /* @__PURE__ */ i("div", { className: c.customSlot, children: b }) : /* @__PURE__ */ i(
                 "div",
                 {
-                  className: s.optionsList,
+                  className: c.optionsList,
                   onMouseLeave: () => {
-                    T(-1), H("pointer");
+                    H(-1), C("pointer");
                   },
-                  children: c.map((e, a) => {
+                  children: s.map((e, a) => {
                     if (e.type === "separator")
-                      return /* @__PURE__ */ i(st, {}, `${S}-sep-${a}`);
+                      return /* @__PURE__ */ i(ut, {}, `${I}-sep-${a}`);
                     if (e.type === "group")
                       return /* @__PURE__ */ i(
-                        ut,
+                        mt,
                         {
                           label: e.label
                         },
-                        `${S}-group-${a}`
+                        `${I}-group-${a}`
                       );
                     const u = a === re;
                     return /* @__PURE__ */ i(
-                      ct,
+                      st,
                       {
-                        id: `${S}-opt-${a}`,
+                        id: `${I}-opt-${a}`,
                         option: e,
                         size: d,
-                        selected: q.has(e.value),
-                        menuType: me === "checklist" ? "checklist" : "default",
+                        selected: O.has(e.value),
+                        menuType: he === "checklist" ? "checklist" : "default",
                         role: n.role,
                         active: u,
-                        keyboardFocus: u && Me === "keyboard",
+                        keyboardFocus: u && Ae === "keyboard",
                         onSelect: () => se(e),
                         onHighlight: () => {
-                          H("pointer"), T(a);
+                          C("pointer"), H(a);
                         }
                       },
                       e.value
@@ -641,24 +643,24 @@ const kt = Ue(
                   })
                 }
               ),
-              N ? /* @__PURE__ */ W(
+              D ? /* @__PURE__ */ x(
                 "div",
                 {
                   "data-cads-dropdown-action-row": "",
-                  className: s.actionRow,
+                  className: c.actionRow,
                   children: [
-                    /* @__PURE__ */ i("div", { className: s.actionRowLeft, children: /* @__PURE__ */ i(
+                    /* @__PURE__ */ i("div", { className: c.actionRowLeft, children: /* @__PURE__ */ i(
                       de,
                       {
                         variant: "text",
                         color: "secondary",
-                        size: xe[d],
+                        size: we[d],
                         "data-cads-dropdown-toggle-all": Q ? "clear" : "select",
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
-                          e.stopPropagation(), He();
+                          e.stopPropagation(), Ce();
                         },
-                        children: /* @__PURE__ */ W("span", { className: s.toggleAllLabel, children: [
+                        children: /* @__PURE__ */ x("span", { className: c.toggleAllLabel, children: [
                           /* @__PURE__ */ i("span", { "aria-hidden": Q || void 0, children: "Select all" }),
                           /* @__PURE__ */ i("span", { "aria-hidden": !Q || void 0, children: "Clear all" })
                         ] })
@@ -669,13 +671,16 @@ const kt = Ue(
                       {
                         variant: "contained",
                         color: "secondary",
-                        size: xe[d],
+                        size: we[d],
                         "data-cads-dropdown-done": "",
                         onMouseDown: (e) => e.preventDefault(),
                         onClick: (e) => {
                           e.stopPropagation(), ze();
                         },
-                        children: "Done"
+                        children: /* @__PURE__ */ x("span", { className: c.toggleAllLabel, children: [
+                          /* @__PURE__ */ i("span", { "aria-hidden": !0, children: `Done (${B.length})` }),
+                          /* @__PURE__ */ i("span", { children: ue > 0 ? `Done (${ue})` : "Done" })
+                        ] })
                       }
                     )
                   ]
@@ -687,18 +692,18 @@ const kt = Ue(
       }
     );
     if (g) {
-      const e = n, a = e.error ? "error" : e.sentiment ?? "default", u = e.width ?? "hug", f = et(u), l = u === "hug";
+      const e = n, a = e.error ? "error" : e.sentiment ?? "default", u = e.width ?? "hug", f = tt(u), l = u === "hug";
       return /* @__PURE__ */ i(
-        be,
+        ye,
         {
           onClickAway: () => {
             h && A(!1);
           },
-          children: /* @__PURE__ */ W(
+          children: /* @__PURE__ */ x(
             "div",
             {
               ref: o,
-              className: P(s.root, B),
+              className: P(c.root, E),
               style: {
                 width: f.rootWidth,
                 maxWidth: f.maxWidth,
@@ -709,7 +714,7 @@ const kt = Ue(
               onKeyDown: oe,
               children: [
                 /* @__PURE__ */ i(
-                  Ge,
+                  Ke,
                   {
                     size: d,
                     sentiment: a,
@@ -718,16 +723,16 @@ const kt = Ue(
                     helperText: e.helperText,
                     helperIconName: e.helperIconName,
                     showHelper: e.showHelper,
-                    htmlFor: I,
+                    htmlFor: N,
                     disabled: v,
                     children: /* @__PURE__ */ i(
-                      dt,
+                      ct,
                       {
                         size: d,
                         color: e.color ?? "primary",
                         labelStyle: e.labelStyle ?? "thick",
-                        label: Ee,
-                        hugCandidates: l ? Te : void 0,
+                        label: Te,
+                        hugCandidates: l ? He : void 0,
                         startIconName: e.startIconName,
                         open: h,
                         disabled: v,
@@ -735,9 +740,9 @@ const kt = Ue(
                         error: !!e.error || a === "error",
                         required: !!e.required,
                         onClick: ie,
-                        buttonRef: V,
-                        id: I,
-                        listedBy: h ? S : void 0,
+                        buttonRef: q,
+                        id: N,
+                        listedBy: h ? I : void 0,
                         ariaHasPopup: p ? "dialog" : "listbox",
                         triggerWidth: f.triggerWidth,
                         ariaLabel: typeof M == "string" ? M : typeof e.label == "string" ? void 0 : "Dropdown"
@@ -745,21 +750,21 @@ const kt = Ue(
                     )
                   }
                 ),
-                fe
+                pe
               ]
             }
           )
         }
       );
     }
-    const $ = n, le = !!$.iconOnly, Z = $.trigger, pe = p ? "dialog" : "menu", Oe = Z && Ze(Z) ? je(Z, {
-      ref: V,
-      id: I,
+    const U = n, le = !!U.iconOnly, Z = U.trigger, be = p ? "dialog" : "menu", $e = Z && je(Z) ? Ge(Z, {
+      ref: q,
+      id: N,
       disabled: v,
       "data-cads-dropdown-trigger": "action",
-      "aria-haspopup": pe,
+      "aria-haspopup": be,
       "aria-expanded": h,
-      "aria-controls": h ? S : void 0,
+      "aria-controls": h ? I : void 0,
       "aria-label": M ?? Z.props["aria-label"],
       onClick: (e) => {
         var a, u;
@@ -768,41 +773,41 @@ const kt = Ue(
     }) : /* @__PURE__ */ i(
       de,
       {
-        ref: V,
-        id: I,
+        ref: q,
+        id: N,
         size: d,
-        variant: $.buttonVariant ?? "contained",
-        color: $.buttonColor ?? "primary",
+        variant: U.buttonVariant ?? "contained",
+        color: U.buttonColor ?? "primary",
         iconOnly: le,
-        startIconName: $.startIconName,
+        startIconName: U.startIconName,
         endIconName: le ? void 0 : "chevron-down",
         disabled: v,
         "data-cads-dropdown-trigger": "action",
-        "aria-haspopup": pe,
+        "aria-haspopup": be,
         "aria-expanded": h,
-        "aria-controls": h ? S : void 0,
+        "aria-controls": h ? I : void 0,
         "aria-label": M,
         onClick: ie,
-        children: le ? void 0 : $.label ?? "Button"
+        children: le ? void 0 : U.label ?? "Button"
       }
     );
     return /* @__PURE__ */ i(
-      be,
+      ye,
       {
         onClickAway: () => {
           h && A(!1);
         },
-        children: /* @__PURE__ */ W(
+        children: /* @__PURE__ */ x(
           "div",
           {
             ref: o,
-            className: P(s.root, B),
+            className: P(c.root, E),
             style: { display: "inline-flex", ...R },
             "data-cads-dropdown": "action",
             onKeyDown: oe,
             children: [
-              Oe,
-              fe
+              $e,
+              pe
             ]
           }
         )
@@ -811,6 +816,6 @@ const kt = Ue(
   }
 );
 export {
-  kt as Dropdown
+  St as Dropdown
 };
 //# sourceMappingURL=Dropdown.js.map

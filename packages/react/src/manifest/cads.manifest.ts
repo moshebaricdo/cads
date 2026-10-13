@@ -575,7 +575,7 @@ export const cadsManifest: {
         "role=action trigger replaces the Button for composition (Breadcrumb Overflow ellipsis). Menu size is independent of the host control size.",
         "Triggers skip Press scale when experimentalMotion is on — open motion belongs to the menu Surface.",
         "menuType=checklist is input-only; menuType=default is single-select — item icons are per-option (iconName), not a list-level mode.",
-        "Checklist Action Row: one bi-state text button (Select all → Clear all once every enabled option is checked) + contained secondary Done that closes the menu. Action Row buttons step down one size from the menu (large→medium, medium→small, small/extraSmall→extraSmall).",
+        "Checklist Action Row: one bi-state text button (Select all → Clear all once every enabled option is checked) + contained secondary Done (n) that closes the menu (n = selected count; plain Done when none). Action Row buttons step down one size from the menu (large→medium, medium→small, small/extraSmall→extraSmall).",
         "menuType=custom is a blank menu (border, shadow, radius only — no padding or gaps). Pass customContent; options are unused in the panel (optional for the input trigger label).",
         "options may include {type:\"separator\"} and {type:\"group\",label} (non-selectable; skipped in keyboard nav). Destructive is action-only.",
         'Input-role width defaults to hug (static width from the longest option/placeholder — selection does not resize the field). Use "full" or a CSS length otherwise.',

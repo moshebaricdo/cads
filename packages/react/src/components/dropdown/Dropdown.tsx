@@ -802,6 +802,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const allSelected =
       enabledValues.length > 0 &&
       enabledValues.every((v) => selectedSet.has(v));
+    const selectedCount = itemOptions.filter((o) =>
+      selectedSet.has(o.value),
+    ).length;
 
     const handleToggleAll = () => {
       commitSelection(allSelected ? [] : enabledValues);
@@ -1078,7 +1081,12 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
                   handleDone();
                 }}
               >
-                Done
+                <span className={styles.toggleAllLabel}>
+                  <span aria-hidden>{`Done (${itemOptions.length})`}</span>
+                  <span>
+                    {selectedCount > 0 ? `Done (${selectedCount})` : "Done"}
+                  </span>
+                </span>
               </Button>
             </div>
           ) : null}
