@@ -157,6 +157,41 @@ Example:
 <IconToggle label="Was this helpful?" iconName="thumbs-up" color="success" exclusive aria-label="Thumbs up" secondToggle={{ iconName: "thumbs-down", color: "error", "aria-label": "Thumbs down" }} />
 ```
 
+### CardButton
+
+Clickable card for actions, navigation, and choices that need more presence than a Button. Leading icon, title, optional description, optional trailing icon; horizontal rows or vertical tiles; selected state for single-select groups.
+
+Import: `import { CardButton } from "@moshebari/cads-react"`
+
+Props:
+- `layout`: "horizontal" | "vertical" (default "horizontal") — Horizontal list row or vertical centered tile.
+- `size`: "medium" | "small" (default "medium")
+- `title`: ReactNode [required]
+- `description`: ReactNode — Supporting text under the title (presence = Figma showDescription).
+- `startIconName`: FaIconName — Leading icon (presence = Figma startIcon).
+- `startContent`: ReactNode — Custom leading content instead of the icon, e.g. a section avatar (Figma startContent slot; presence = hasStartContent). Hugs content, min icon-box size; wins over startIconName.
+- `endIconName`: FaIconName — Trailing icon, e.g. chevron-right / arrow-right. Horizontal only (presence = Figma endIcon).
+- `selected`: boolean — Selected chrome (Figma selected=Yes). On buttons, passing a boolean sets aria-pressed.
+- `fullWidth`: boolean (default false) — Stretch to the container width. Default hugs content (like Button).
+- `disabled`: boolean
+- `href`: string — Renders the card as a link (navigation cards).
+- `onClick`: (event) => void
+
+Usage rules:
+- Hugs its content by default (like Button). Use fullWidth for stacked lists and equal-width tiles (grid cells / flex: 1 parents). Figma's 360 / 200 widths are canvas widths, not a size spec.
+- Horizontal for list-style actions and navigation rows; vertical for side-by-side choice tiles.
+- endIconName is horizontal-only (chevron-right for drill-in, arrow-right for links).
+- Selected uses selected chrome tokens (--background-selected-*), never brand fills. Use selected only for chosen options in a single-select group.
+- Leading icon defaults to --text-brand-primary; title/description are neutral primary/secondary.
+- Pass href for navigation cards (renders <a>); omit selected on links.
+- Prefer startIconName; use startContent only for custom leading visuals (section avatars, images). The slot is not recolored for selected/disabled — the consumer owns its visuals.
+- Experimental Motion: participates in the Press recipe (data-cads-press → --motion-press-scale on :active) only when CadsProvider experimentalMotion is on; reduced motion disables it.
+
+Example:
+```tsx
+<CardButton startIconName="lightbulb" title="Help me create a plan for my idea" onClick={() => {}} />
+```
+
 ### FieldWrapper
 
 Generic container that pairs any input with a label and helper text, including validation messaging for errors and warnings.

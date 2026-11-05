@@ -32,6 +32,13 @@
       "snippet": "import { IconToggle } from \"@moshebari/cads-react\";\n\n<IconToggle iconName=\"heart\" color=\"brand\" aria-label=\"Favorite\" />"
     },
     {
+      "componentName": "CardButton",
+      "figmaNodeId": "17848:283",
+      "componentKey": "4fc80d40c4c83bd1e1c4dc7f5e3a097471ba5703",
+      "source": "@moshebari/cads-react",
+      "snippet": "import { CardButton } from \"@moshebari/cads-react\";\n\n<CardButton layout=\"horizontal\" size=\"medium\" startIconName=\"lightbulb\" title={title} onClick={onClick} />"
+    },
+    {
       "componentName": "FieldWrapper",
       "figmaNodeId": "15857:99804",
       "componentKey": "a76313f790928233bb8afabe35bd6f76f6e9a473",

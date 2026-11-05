@@ -1,0 +1,1090 @@
+{
+  "$schema": "../../../../../.cursor/skills/cads-parity-qa/visual-recipe.schema.json",
+  "schemaVersion": 1,
+  "component": "CardButton",
+  "figma": {
+    "fileKey": "DGekOeToRVifvFAhfqpeC1",
+    "publicNodeId": "17848:283",
+    "componentKey": "4fc80d40c4c83bd1e1c4dc7f5e3a097471ba5703",
+    "relatedNodeIds": [],
+    "retrievedAt": "2026-11-05",
+    "designContextCaptured": true
+  },
+  "change": {
+    "taskPath": "new",
+    "previousRecipe": null,
+    "figmaChanges": [
+      "2026-11-05: vertical layout bottom padding −2px for optical balance (medium 24→22, small 16→14); heights 114→112, 88→86",
+      "2026-11-05: added startContent SLOT + hasStartContent BOOLEAN (all 40 variants); slot hugs content with min = start icon box"
+    ]
+  },
+  "axes": {
+    "public": {
+      "layout": [
+        "horizontal",
+        "vertical"
+      ],
+      "size": [
+        "medium",
+        "small"
+      ],
+      "selected": [
+        "No",
+        "Yes"
+      ]
+    },
+    "designOnly": [
+      "state"
+    ],
+    "restrictedCombinations": [
+      {
+        "when": {
+          "layout": "vertical"
+        },
+        "reason": "No end icon slot in Figma vertical variants; endIconName is ignored with a dev warning."
+      }
+    ]
+  },
+  "geometry": {
+    "sizes": {
+      "horizontal/medium": {
+        "figmaWidth": "360",
+        "height": "54 (title only)",
+        "paddingBlock": "14",
+        "paddingInline": "16 (--spacing-p-xs)",
+        "gap": "12",
+        "startIconBox": "20",
+        "startGlyph": "18 (--text-body-lg)",
+        "endIconBox": "20",
+        "endGlyph": "16 (--text-body-md)",
+        "title": "16/24 semi-bold",
+        "description": "14/22 regular"
+      },
+      "horizontal/small": {
+        "figmaWidth": "360",
+        "height": "40 (title only)",
+        "paddingBlock": "8 (--spacing-p-xxs)",
+        "paddingInline": "12",
+        "gap": "8 (--spacing-p-xxs)",
+        "startIconBox": "18",
+        "startGlyph": "16 (--text-body-md)",
+        "endIconBox": "18",
+        "endGlyph": "14 (--text-body-sm)",
+        "title": "14/22 semi-bold",
+        "description": "12/18 regular"
+      },
+      "vertical/medium": {
+        "figmaWidth": "200",
+        "height": "112 (title only)",
+        "padding": "24 top/inline (--spacing-p-s), 22 bottom (optical)",
+        "gap": "8 (--spacing-p-xxs)",
+        "startIconBox": "32",
+        "startGlyph": "24 (--text-heading-md)",
+        "title": "16/24 semi-bold centered",
+        "description": "14/22 regular centered"
+      },
+      "vertical/small": {
+        "figmaWidth": "200",
+        "height": "86 (title only)",
+        "padding": "16 top/inline (--spacing-p-xs), 14 bottom (optical)",
+        "gap": "8 (--spacing-p-xxs)",
+        "startIconBox": "24",
+        "startGlyph": "20 (--text-heading-xs)",
+        "title": "14/22 semi-bold centered",
+        "description": "12/18 regular centered"
+      }
+    },
+    "layout": {
+      "padding": "layout×size-scaled",
+      "gap": "layout×size-scaled",
+      "borderWidth": "1 (included in layout)",
+      "radius": "var(--shape-md)",
+      "overlap": "0"
+    },
+    "typography": {
+      "family": "var(--font-family-main)",
+      "size": "size-scaled",
+      "weight": "600 title / 400 description",
+      "lineHeight": "size-scaled"
+    },
+    "icon": {
+      "family": "solid",
+      "size": "layout×size-scaled"
+    }
+  },
+  "recipes": [
+    {
+      "when": {
+        "selected": "No",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)",
+        "text": "var(--text-neutral-primary)",
+        "description": "var(--text-neutral-secondary)",
+        "icon": "var(--text-brand-primary)",
+        "endIcon": "var(--text-neutral-secondary)",
+        "focus": ""
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=No, state=default",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": "No",
+        "state": "hover",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-secondary)",
+        "border": "var(--border-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=No, state=hover",
+      "notes": [
+        "Text/icon colors unchanged"
+      ]
+    },
+    {
+      "when": {
+        "selected": "No",
+        "state": "pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-tertiary)",
+        "border": "var(--border-neutral-secondary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=No, state=pressed",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": "No",
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-neutral-primary)",
+        "focus": "Shadows/Focus Ring: 0 0 0 2px var(--background-neutral-primary), 0 0 0 4px var(--border-focused-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=No, state=focus",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": "No",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-neutral-primary)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral)",
+        "icon": "var(--text-disabled-neutral)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=No, state=disabled",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": "Yes",
+        "state": "default",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "text": "var(--text-selected-primary)",
+        "icon": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=Yes, state=default",
+      "notes": [
+        "Description + end icon also --text-selected-primary"
+      ]
+    },
+    {
+      "when": {
+        "selected": "Yes",
+        "state": "hover|pressed",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-strong)",
+        "border": "var(--border-selected-strong)",
+        "text": "var(--text-selected-primary)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=Yes, state=hover / pressed",
+      "notes": [
+        "Hover and pressed share selected-strong in Figma"
+      ]
+    },
+    {
+      "when": {
+        "selected": "Yes",
+        "state": "focus",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-selected-primary)",
+        "border": "var(--border-selected-primary)",
+        "focus": "Shadows/Focus Ring"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=Yes, state=focus",
+      "notes": []
+    },
+    {
+      "when": {
+        "selected": "Yes",
+        "state": "disabled",
+        "mode": "light"
+      },
+      "variables": {
+        "background": "var(--background-disabled-neutral)",
+        "border": "var(--border-disabled-neutral)",
+        "text": "var(--text-disabled-neutral-inverse)",
+        "icon": "var(--text-disabled-neutral-inverse)"
+      },
+      "geometryOverrides": {},
+      "figmaVariant": "selected=Yes, state=disabled",
+      "notes": []
+    }
+  ],
+  "coverage": {
+    "strategy": "pairwise-plus-risk",
+    "requiredDimensions": [
+      "layout",
+      "size",
+      "state",
+      "selected",
+      "mode"
+    ],
+    "cases": [
+      {
+        "id": "cardbutton-h-medium-default-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-default-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-default-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-description-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "AIF Test",
+          "description": "Lesson 1: Prompting AI",
+          "startIconName": "fire",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-description-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-description-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-small-default-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=small, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "small",
+          "title": "View progress",
+          "startIconName": "chart-line",
+          "endIconName": "arrow-right",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-small-default-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-small-default-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-medium-default-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 280,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "112",
+          "width": "200",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-medium-default-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-medium-default-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-small-description-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=small, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "small",
+          "title": "Card button title",
+          "description": "Supporting description text",
+          "startIconName": "smile",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 280,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "200",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-small-description-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-small-description-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-hover-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=hover, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-hover-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-hover-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-press-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=pressed, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "pressed",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-tertiary",
+          "--border-neutral-secondary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-press-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-press-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-focus-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=focus, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "focus",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--border-focused-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-focus-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-focus-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-disabled-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=disabled, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "disabled": true,
+          "fullWidth": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--border-disabled-neutral",
+          "--text-disabled-neutral"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-disabled-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-disabled-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-selected-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=Yes",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "selected": true,
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-selected-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-selected-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-medium-selected-hover-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=medium, state=hover, selected=Yes",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "selected": true,
+          "fullWidth": true
+        },
+        "state": "hover",
+        "viewport": {
+          "width": 280,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "112",
+          "width": "200",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-selected-strong",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-medium-selected-hover-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-medium-selected-hover-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-small-selected-disabled-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=small, state=disabled, selected=Yes",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "small",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "selected": true,
+          "disabled": true,
+          "fullWidth": true
+        },
+        "state": "disabled",
+        "viewport": {
+          "width": 280,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "86",
+          "width": "200",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-disabled-neutral",
+          "--text-disabled-neutral-inverse"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-small-selected-disabled-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-small-selected-disabled-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-default-dark",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No",
+        "mode": "dark",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Card button title",
+          "startIconName": "smile",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "54",
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-default-dark",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-default-dark.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-medium-selected-dark",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=medium, state=default, selected=Yes",
+        "mode": "dark",
+        "props": {
+          "layout": "vertical",
+          "size": "medium",
+          "title": "Text",
+          "startIconName": "pen",
+          "selected": true,
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 280,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "112",
+          "width": "200",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-selected-primary",
+          "--text-selected-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-medium-selected-dark",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-medium-selected-dark.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-long-title-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Help me turn my rough idea into a step-by-step project plan",
+          "startIconName": "lightbulb",
+          "endIconName": "chevron-right",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "360",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-long-title-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-long-title-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-hug-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Help me make a starter project",
+          "startIconName": "wand-magic-sparkles"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "hug (content + padding)",
+          "height": "54",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-hug-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-hug-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-v-medium-hug-light",
+        "figmaNodeId": "17848:283",
+        "figmaVariant": "layout=vertical, size=medium, state=default, selected=No",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "medium",
+          "title": "I want to practice",
+          "startIconName": "dumbbell"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 240,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "hug (content + padding)",
+          "height": "112",
+          "radius": "8"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary",
+          "--text-brand-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-v-medium-hug-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-v-medium-hug-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-start-content-light",
+        "figmaNodeId": "17861:73",
+        "figmaVariant": "layout=horizontal, size=medium, state=default, selected=No (hasStartContent=true, startIcon=false)",
+        "mode": "light",
+        "props": {
+          "layout": "horizontal",
+          "size": "medium",
+          "title": "Test 4-8",
+          "description": "Lesson 1: Welcome to Web Apps",
+          "endIconName": "chevron-right",
+          "startContent": "<48px section avatar>",
+          "fullWidth": true
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 200,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "width": "360",
+          "height": "78",
+          "radius": "8",
+          "startContent": "48x48"
+        },
+        "expectedVariables": [
+          "--background-neutral-primary",
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/page.tsx#CardButton/cardbutton-h-medium-start-content-light",
+        "result": "pass",
+        "mismatches": [],
+        "browserScreenshot": "captures/browser-cardbutton-h-medium-start-content-light.png",
+        "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      }
+    ]
+  },
+  "acceptedDifferences": [
+    {
+      "caseIds": [
+        "cardbutton-h-medium-default-light",
+        "cardbutton-h-medium-description-light",
+        "cardbutton-h-small-default-light",
+        "cardbutton-v-medium-default-light",
+        "cardbutton-v-small-description-light",
+        "cardbutton-h-medium-hover-light",
+        "cardbutton-h-medium-press-light",
+        "cardbutton-h-medium-focus-light",
+        "cardbutton-h-medium-disabled-light",
+        "cardbutton-h-medium-selected-light",
+        "cardbutton-v-medium-selected-hover-light",
+        "cardbutton-v-small-selected-disabled-light",
+        "cardbutton-h-medium-default-dark",
+        "cardbutton-v-medium-selected-dark",
+        "cardbutton-h-medium-long-title-light",
+        "cardbutton-h-medium-hug-light",
+        "cardbutton-v-medium-hug-light",
+        "cardbutton-h-medium-start-content-light"
+      ],
+      "figmaBehavior": "Fixed component widths (360 horizontal / 200 vertical); Figma has no hug/fill width axis.",
+      "codeBehavior": "Hugs content by default (Button parity); fullWidth stretches to the container. Parity fixtures use fullWidth inside a Figma-width wrapper.",
+      "reason": "Figma widths are canvas widths, not a size spec; cards should size like Button in product layouts.",
+      "decisionSource": "Design review 2026-11-05 (CardButton should behave like Button: hug or fullWidth)"
+    },
+    {
+      "caseIds": [
+        "cardbutton-h-medium-default-light",
+        "cardbutton-h-medium-description-light",
+        "cardbutton-h-small-default-light",
+        "cardbutton-v-medium-default-light",
+        "cardbutton-v-small-description-light",
+        "cardbutton-h-medium-hover-light",
+        "cardbutton-h-medium-press-light",
+        "cardbutton-h-medium-focus-light",
+        "cardbutton-h-medium-disabled-light",
+        "cardbutton-h-medium-selected-light",
+        "cardbutton-v-medium-selected-hover-light",
+        "cardbutton-v-small-selected-disabled-light",
+        "cardbutton-h-medium-default-dark",
+        "cardbutton-v-medium-selected-dark",
+        "cardbutton-h-medium-long-title-light",
+        "cardbutton-h-medium-hug-light",
+        "cardbutton-v-medium-hug-light",
+        "cardbutton-h-medium-start-content-light"
+      ],
+      "figmaBehavior": "Boolean showDescription / startIcon / endIcon / hasStartContent gate text props and the startContent slot.",
+      "codeBehavior": "Presence of description / startIconName / endIconName / startContent.",
+      "reason": "CADS presence API convention for optional icons/content.",
+      "decisionSource": "docs/STATUS.md — Icon boolean → presence API (2026-07-23)"
+    }
+  ],
+  "evidence": {
+    "apiAudit": {
+      "command": "pnpm figma:audit-props -- --strict",
+      "cardButton": "0 error / 0 warn / 0 escalate / 1 info",
+      "repoWide": "7 error / 6 warn (pre-existing GlobalHeader / ProgressBubble / ProgressWidget)"
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "result": "pass (incl. audit-mui-specificity)"
+    },
+    "build": {
+      "command": "pnpm build",
+      "result": "pass"
+    },
+    "docsBuild": {
+      "command": "pnpm build:docs",
+      "result": "pass"
+    },
+    "correctionPasses": [
+      {
+        "caseIds": [
+          "cardbutton-h-medium-default-light",
+          "cardbutton-h-medium-description-light",
+          "cardbutton-h-small-default-light",
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-h-medium-hover-light",
+          "cardbutton-h-medium-press-light",
+          "cardbutton-h-medium-focus-light",
+          "cardbutton-h-medium-disabled-light",
+          "cardbutton-h-medium-selected-light",
+          "cardbutton-v-medium-selected-hover-light",
+          "cardbutton-v-small-selected-disabled-light",
+          "cardbutton-h-medium-default-dark",
+          "cardbutton-v-medium-selected-dark",
+          "cardbutton-h-medium-long-title-light"
+        ],
+        "mismatchesFound": [
+          "Fixture viewport (width + 40) clipped the right edge and focus ring — capture-region issue, not component"
+        ],
+        "fixesMade": [
+          "Fixture viewports widened to width + 80; vertical/description cases 240px tall"
+        ],
+        "recaptured": true
+      },
+      {
+        "caseIds": [
+          "cardbutton-h-medium-default-light",
+          "cardbutton-h-medium-description-light",
+          "cardbutton-h-small-default-light",
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-h-medium-hover-light",
+          "cardbutton-h-medium-press-light",
+          "cardbutton-h-medium-focus-light",
+          "cardbutton-h-medium-disabled-light",
+          "cardbutton-h-medium-selected-light",
+          "cardbutton-v-medium-selected-hover-light",
+          "cardbutton-v-small-selected-disabled-light",
+          "cardbutton-h-medium-default-dark",
+          "cardbutton-v-medium-selected-dark",
+          "cardbutton-h-medium-long-title-light"
+        ],
+        "mismatchesFound": [],
+        "fixesMade": [],
+        "recaptured": true
+      },
+      {
+        "caseIds": [
+          "cardbutton-h-medium-default-light",
+          "cardbutton-h-medium-description-light",
+          "cardbutton-h-small-default-light",
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-h-medium-hover-light",
+          "cardbutton-h-medium-press-light",
+          "cardbutton-h-medium-focus-light",
+          "cardbutton-h-medium-disabled-light",
+          "cardbutton-h-medium-selected-light",
+          "cardbutton-v-medium-selected-hover-light",
+          "cardbutton-v-small-selected-disabled-light",
+          "cardbutton-h-medium-default-dark",
+          "cardbutton-v-medium-selected-dark",
+          "cardbutton-h-medium-long-title-light",
+          "cardbutton-h-medium-hug-light",
+          "cardbutton-v-medium-hug-light"
+        ],
+        "mismatchesFound": [
+          "Width model: always 100% of container — design review asked for Button parity (hug | fullWidth)"
+        ],
+        "fixesMade": [
+          "Default inline-flex hug + max-width 100%; fullWidth prop → width 100%; parity fixtures use fullWidth in a Figma-width wrapper; hug cases added"
+        ],
+        "recaptured": true
+      },
+      {
+        "caseIds": [
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-v-medium-selected-hover-light",
+          "cardbutton-v-small-selected-disabled-light",
+          "cardbutton-v-medium-selected-dark",
+          "cardbutton-v-medium-hug-light"
+        ],
+        "mismatchesFound": [
+          "Figma update: vertical bottom padding 24→22 (medium) / 16→14 (small)"
+        ],
+        "fixesMade": [
+          "--cb-pb bottom-padding token: calc(--spacing-p-s − 2px) / calc(--spacing-p-xs − 2px); horizontal unchanged"
+        ],
+        "recaptured": true
+      },
+      {
+        "caseIds": [
+          "cardbutton-h-medium-default-light",
+          "cardbutton-h-medium-description-light",
+          "cardbutton-h-small-default-light",
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-h-medium-hover-light",
+          "cardbutton-h-medium-press-light",
+          "cardbutton-h-medium-focus-light",
+          "cardbutton-h-medium-disabled-light",
+          "cardbutton-h-medium-selected-light",
+          "cardbutton-v-medium-selected-hover-light",
+          "cardbutton-v-small-selected-disabled-light",
+          "cardbutton-h-medium-default-dark",
+          "cardbutton-v-medium-selected-dark",
+          "cardbutton-h-medium-long-title-light",
+          "cardbutton-h-medium-hug-light",
+          "cardbutton-v-medium-hug-light",
+          "cardbutton-h-medium-start-content-light"
+        ],
+        "mismatchesFound": [
+          "Figma update: startContent SLOT + hasStartContent added"
+        ],
+        "fixesMade": [
+          "startContent ReactNode slot (hug, min = icon box, wins over startIconName); new slot case 360×78 / 48×48 matches Figma instance 17861:73; all prior cases unchanged"
+        ],
+        "recaptured": true
+      }
+    ]
+  }
+}

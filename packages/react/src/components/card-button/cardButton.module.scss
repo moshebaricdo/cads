@@ -1,0 +1,212 @@
+// CADS Card Button — Figma `17848:283`.
+// Figma includes the 1px stroke in layout, so CSS border + Figma padding
+// reproduces the exact box (e.g. horizontal/medium = 14 + 1 + 24 + 1 + 14 = 54).
+
+.root:global(.MuiButtonBase-root):global(.MuiButtonBase-root) {
+  // Geometry (horizontal / medium defaults; overridden below).
+  --cb-py: 0.875rem; // 14
+  --cb-px: var(--spacing-p-xs); // 16
+  --cb-gap: 0.75rem; // 12
+  --cb-start-box: 1.25rem; // 20
+  --cb-end-box: 1.25rem; // 20
+  --cb-title-size: var(--text-body-md);
+  --cb-title-leading: var(--leading-body-md);
+  --cb-desc-size: var(--text-body-sm);
+  --cb-desc-leading: var(--leading-body-sm);
+
+  // Color recipe (unselected / default).
+  --cb-bg: var(--background-neutral-primary);
+  --cb-border: var(--border-neutral-primary);
+  --cb-title: var(--text-neutral-primary);
+  --cb-desc: var(--text-neutral-secondary);
+  --cb-start: var(--text-brand-primary);
+  --cb-end: var(--text-neutral-secondary);
+
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: top;
+  box-sizing: border-box;
+  margin: 0;
+  // --cb-pb lets vertical tiles trim the bottom for optical balance.
+  padding: var(--cb-py) var(--cb-px) var(--cb-pb, var(--cb-py));
+  gap: var(--cb-gap);
+  border: 1px solid var(--cb-border);
+  border-radius: var(--shape-md);
+  background-color: var(--cb-bg);
+  color: var(--cb-title);
+  font-family: var(--font-family-main);
+  text-align: left;
+  text-decoration: none;
+  overflow: hidden;
+  // Include --transition-press so the experimental Motion Press scale eases
+  // (this 0,3,0 rule would otherwise override the motion stylesheet's
+  // transition). Inert when motion is off — nothing transforms — and
+  // reduced motion zeroes --motion-press-duration / --motion-press-scale.
+  transition: var(--transition-colors), var(--transition-press);
+
+  &[data-full-width] {
+    display: flex;
+    width: 100%;
+  }
+
+  &[data-size="small"] {
+    --cb-py: var(--spacing-p-xxs); // 8
+    --cb-px: 0.75rem; // 12
+    --cb-gap: var(--spacing-p-xxs); // 8
+    --cb-start-box: 1.125rem; // 18
+    --cb-end-box: 1.125rem; // 18
+    --cb-title-size: var(--text-body-sm);
+    --cb-title-leading: var(--leading-body-sm);
+    --cb-desc-size: var(--text-body-xs);
+    --cb-desc-leading: var(--leading-body-xs);
+  }
+
+  &[data-layout="vertical"] {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    --cb-py: var(--spacing-p-s); // 24
+    --cb-px: var(--spacing-p-s);
+    // Figma: bottom 2px shorter than top (optical balance under the text).
+    --cb-pb: calc(var(--spacing-p-s) - 0.125rem); // 22
+    --cb-gap: var(--spacing-p-xxs); // 8
+    --cb-start-box: 2rem; // 32
+
+    &[data-size="small"] {
+      --cb-py: var(--spacing-p-xs); // 16
+      --cb-px: var(--spacing-p-xs);
+      --cb-pb: calc(var(--spacing-p-xs) - 0.125rem); // 14
+      --cb-start-box: 1.5rem; // 24
+    }
+
+    .content {
+      align-self: stretch;
+      align-items: center;
+    }
+  }
+
+  // ---- Interaction (unselected) -------------------------------------------
+  &:hover,
+  :global([data-cads-force-pseudo="hover"]) & {
+    --cb-bg: var(--background-neutral-secondary);
+    --cb-border: var(--border-neutral-secondary);
+  }
+
+  &:active,
+  :global([data-cads-force-pseudo="press"]) & {
+    --cb-bg: var(--background-neutral-tertiary);
+    --cb-border: var(--border-neutral-secondary);
+  }
+
+  // ---- Selected (selected chrome — never brand fills) ---------------------
+  &[data-selected] {
+    --cb-bg: var(--background-selected-primary);
+    --cb-border: var(--border-selected-primary);
+    --cb-title: var(--text-selected-primary);
+    --cb-desc: var(--text-selected-primary);
+    --cb-start: var(--text-selected-primary);
+    --cb-end: var(--text-selected-primary);
+
+    &:hover,
+    :global([data-cads-force-pseudo="hover"]) &,
+    &:active,
+    :global([data-cads-force-pseudo="press"]) & {
+      --cb-bg: var(--background-selected-strong);
+      --cb-border: var(--border-selected-strong);
+    }
+  }
+
+  // ---- Focus (Shadows/Focus Ring) ------------------------------------------
+  &:global(.Mui-focusVisible) {
+    box-shadow: 0 0 0 2px var(--background-neutral-primary),
+      0 0 0 4px var(--border-focused-primary);
+  }
+
+  // ---- Disabled -------------------------------------------------------------
+  &:global(.Mui-disabled) {
+    opacity: 1;
+    --cb-bg: var(--background-neutral-primary);
+    --cb-border: var(--border-disabled-neutral);
+    --cb-title: var(--text-disabled-neutral);
+    --cb-desc: var(--text-disabled-neutral);
+    --cb-start: var(--text-disabled-neutral);
+    --cb-end: var(--text-disabled-neutral);
+
+    &[data-selected] {
+      --cb-bg: var(--background-disabled-neutral);
+      --cb-border: var(--border-disabled-neutral);
+      --cb-title: var(--text-disabled-neutral-inverse);
+      --cb-desc: var(--text-disabled-neutral-inverse);
+      --cb-start: var(--text-disabled-neutral-inverse);
+      --cb-end: var(--text-disabled-neutral-inverse);
+    }
+  }
+}
+
+.startIcon,
+.endIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-colors);
+}
+
+// Figma `startContent` slot: hugs content, never smaller than the icon box.
+.startContent {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--cb-start-box);
+  min-height: var(--cb-start-box);
+  color: var(--cb-start);
+}
+
+.startIcon {
+  width: var(--cb-start-box);
+  height: var(--cb-start-box);
+  color: var(--cb-start);
+}
+
+.endIcon {
+  width: var(--cb-end-box);
+  height: var(--cb-end-box);
+  color: var(--cb-end);
+}
+
+.content {
+  display: flex;
+  // Hug: size to the text; fullWidth: grow so the end icon pins right.
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.title,
+.description {
+  display: block;
+  width: 100%;
+  overflow-wrap: break-word;
+  transition: var(--transition-colors);
+}
+
+.title {
+  font-size: var(--cb-title-size);
+  line-height: var(--cb-title-leading);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--cb-title);
+}
+
+.description {
+  font-size: var(--cb-desc-size);
+  line-height: var(--cb-desc-leading);
+  font-weight: var(--font-weight-regular);
+  color: var(--cb-desc);
+}

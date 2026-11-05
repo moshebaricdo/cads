@@ -46,6 +46,7 @@ export function InteractivePlayground({
         if (role === "input" && DROPDOWN_ACTION_ONLY.has(p.name)) return false;
         return true;
       }),
+      component.exportName,
     );
   }, [component, values.role]);
   const code = propsToCode(component.exportName, values);

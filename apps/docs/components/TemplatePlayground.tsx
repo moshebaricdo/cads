@@ -122,7 +122,7 @@ export function TemplatePlayground({
       }),
       ...extras,
     ];
-    return orderedControls(props);
+    return orderedControls(props, component.exportName);
   }, [component, values]);
 
   const code = propsToCode(component.exportName, values);

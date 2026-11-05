@@ -42,6 +42,10 @@ export const COMPONENT_EXTERNAL_LINKS: Record<string, ComponentExternalLinks> =
       muiDocsUrl: "https://mui.com/material-ui/api/icon-button/",
       // No dedicated Storybook story yet.
     },
+    CardButton: {
+      muiDocsUrl: "https://mui.com/material-ui/api/button-base/",
+      // New CADS component — not in production Storybook yet.
+    },
     FieldWrapper: {
       muiDocsUrl: "https://mui.com/material-ui/api/form-control/",
       storybookId: "designsystem-formfieldwrapper--docs",

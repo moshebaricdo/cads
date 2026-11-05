@@ -10,6 +10,8 @@ export { SegmentedButton } from './components/segmented-button';
 export type { SegmentedButtonProps, SegmentedButtonOption, SegmentedButtonSize, } from './components/segmented-button';
 export { IconToggle } from './components/icon-toggle';
 export type { IconToggleProps, IconToggleSize, IconToggleColor, IconToggleSecondProps, } from './components/icon-toggle';
+export { CardButton } from './components/card-button';
+export type { CardButtonProps, CardButtonLayout, CardButtonSize, } from './components/card-button';
 export { FieldWrapper, useFieldContext } from './components/field-wrapper/index';
 export type { FieldWrapperProps, FieldWrapperSize, FieldSentiment, FieldContextValue, } from './components/field-wrapper/index';
 export { TextInput } from './components/text-input/index';

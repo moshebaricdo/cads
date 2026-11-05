@@ -41,6 +41,8 @@ export const SKIP_PROPS = new Set([
   "surfaceOnly",
   "image",
   "customContent",
+  // CardButton slot — driven by the playground-only hasStartContent gate.
+  "startContent",
   // Legacy boolean icon gates — no longer in the public API; skip if present.
   "startIcon",
   "endIcon",
@@ -226,7 +228,18 @@ const GROUP_MEMBERS: Record<ControlGroup, string[]> = {
   a11y: ["aria-label", "id", "name", "disableHoverListener"],
 };
 
-function groupForProp(prop: CadsPropDef): ControlGroup {
+/**
+ * Per-component group overrides (prop → group). Overridden props lead their
+ * section, in listed order — e.g. CardButton `layout` is a primary visual axis,
+ * while Pagination `layout` stays under Layout & behavior.
+ */
+const GROUP_OVERRIDES: Record<string, Record<string, ControlGroup>> = {
+  CardButton: { layout: "appearance" },
+};
+
+function groupForProp(prop: CadsPropDef, exportName?: string): ControlGroup {
+  const override = exportName && GROUP_OVERRIDES[exportName]?.[prop.name];
+  if (override) return override;
   for (const group of GROUP_ORDER) {
     if (GROUP_MEMBERS[group].includes(prop.name)) return group;
   }
@@ -270,6 +283,13 @@ export function isPropVisible(
   // Preview shows a 3-option group with fixed labels.
   if (exportName === "Radio" && prop.name === "label") {
     return false;
+  }
+  if (exportName === "CardButton" && prop.name === "startIconName") {
+    return !Boolean(values.hasStartContent);
+  }
+  // Figma vertical Card Button has no end icon slot.
+  if (exportName === "CardButton" && prop.name === "endIconName") {
+    return String(values.layout ?? "horizontal") === "horizontal";
   }
   if (exportName === "TextInput" && prop.name === "startIconName") {
     return !Boolean(values.multiline);
@@ -381,6 +401,18 @@ export function playgroundExtraProps(
       },
     ];
   }
+  // CardButton: Figma hasStartContent → preview drops a demo avatar into startContent.
+  if (exportName === "CardButton") {
+    return [
+      {
+        name: "hasStartContent",
+        type: "boolean",
+        default: "false",
+        description:
+          "Playground gate for the startContent slot (renders a demo section avatar in place of the start icon).",
+      },
+    ];
+  }
   // Pagination: Figma type axis — switches page vs table export in one playground.
   if (exportName === "Pagination") {
     const extras: CadsPropDef[] = [
@@ -413,13 +445,19 @@ export function playgroundExtraProps(
   return [];
 }
 
-export function orderedControls(props: CadsPropDef[]): {
+export function orderedControls(
+  props: CadsPropDef[],
+  exportName?: string,
+): {
   group: ControlGroup;
   props: CadsPropDef[];
 }[] {
+  const overrides = Object.keys(
+    (exportName && GROUP_OVERRIDES[exportName]) || {},
+  );
   const buckets = new Map<ControlGroup, CadsPropDef[]>();
   for (const prop of props) {
-    const group = groupForProp(prop);
+    const group = groupForProp(prop, exportName);
     const bucket = buckets.get(group) ?? [];
     bucket.push(prop);
     buckets.set(group, bucket);
@@ -434,6 +472,13 @@ export function orderedControls(props: CadsPropDef[]): {
       const aBool = isBooleanType(a.type) ? 1 : 0;
       const bBool = isBooleanType(b.type) ? 1 : 0;
       if (aBool !== bBool) return aBool - bBool;
+      const ao = overrides.indexOf(a.name);
+      const bo = overrides.indexOf(b.name);
+      if (ao !== -1 || bo !== -1) {
+        if (ao === -1) return 1;
+        if (bo === -1) return -1;
+        return ao - bo;
+      }
       const ai = priority.indexOf(a.name);
       const bi = priority.indexOf(b.name);
       if (ai !== -1 && bi !== -1) return ai - bi;
@@ -650,6 +695,12 @@ export function initialValues(
     if (values.label == null || values.label === "Label") {
       values.label = "";
     }
+  }
+  if (component.exportName === "CardButton") {
+    values.title = "Card button title";
+    values.description = "";
+    values.startIconName = "smile";
+    values.endIconName = "chevron-right";
   }
   if (component.exportName === "Radio" && values.value == null) {
     values.value = "a";
@@ -956,7 +1007,9 @@ export function propsToCode(
       key === "startIcon" ||
       key === "endIcon" ||
       // Playground-only gate for Alert/Toast → emitted as iconName={false}.
-      key === "hasIcon"
+      key === "hasIcon" ||
+      // CardButton slot gate → emitted as startContent={…} below.
+      (exportName === "CardButton" && key === "hasStartContent")
     ) {
       continue;
     }
@@ -1205,6 +1258,16 @@ export function propsToCode(
         ? ""
         : `\n${tableAttrs.map((a) => `  ${a}`).join("\n")}\n`;
     return `<TablePagination${indented}/>`;
+  }
+
+  if (exportName === "CardButton" && values.hasStartContent) {
+    const i = attrs.findIndex((a) => a.startsWith("startIconName="));
+    if (i >= 0) attrs.splice(i, 1);
+    attrs.push("startContent={<SectionAvatar />}");
+  }
+  if (exportName === "CardButton" && values.layout === "vertical") {
+    const i = attrs.findIndex((a) => a.startsWith("endIconName="));
+    if (i >= 0) attrs.splice(i, 1);
   }
 
   if (exportName === "Link") {

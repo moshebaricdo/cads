@@ -7,6 +7,7 @@ import type { FixtureCase } from "./cases/shared";
 const CASE_LOADERS: Record<string, () => Promise<{ cases: FixtureCase[] }>> = {
   Button: () => import("./cases/Button"),
   CloseIconButton: () => import("./cases/CloseIconButton"),
+  CardButton: () => import("./cases/CardButton"),
   FieldWrapper: () => import("./cases/FieldWrapper"),
   TextInput: () => import("./cases/TextInput"),
   Dropdown: () => import("./cases/Dropdown"),

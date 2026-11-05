@@ -378,6 +378,104 @@
       "escalate": []
     },
     {
+      "cadsName": "CardButton",
+      "figmaName": "Card Button",
+      "nodeId": "17848:283",
+      "componentKey": "4fc80d40c4c83bd1e1c4dc7f5e3a097471ba5703",
+      "symbolCount": 40,
+      "variantProperties": {
+        "layout": [
+          "horizontal",
+          "vertical"
+        ],
+        "size": [
+          "medium",
+          "small"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "focus",
+          "hover",
+          "pressed"
+        ],
+        "selected": [
+          "No",
+          "Yes"
+        ]
+      },
+      "related": {},
+      "designOnlyAxes": [
+        "state"
+      ],
+      "axisToCodeProp": {
+        "layout": "layout",
+        "size": "size",
+        "selected": "selected",
+        "state": null
+      },
+      "codeOnlyProps": [
+        {
+          "name": "title",
+          "category": "content",
+          "reason": "Maps Figma text property title."
+        },
+        {
+          "name": "description",
+          "category": "content",
+          "reason": "Maps Figma text description; presence replaces Figma boolean showDescription."
+        },
+        {
+          "name": "startIconName",
+          "category": "content",
+          "reason": "Maps Figma text startIconName; presence replaces Figma boolean startIcon."
+        },
+        {
+          "name": "startContent",
+          "category": "composition",
+          "reason": "Maps Figma SLOT startContent; presence replaces Figma boolean hasStartContent (custom leading visual, e.g. section avatar)."
+        },
+        {
+          "name": "endIconName",
+          "category": "content",
+          "reason": "Maps Figma text endIconName; presence replaces Figma boolean endIcon (horizontal variants only)."
+        },
+        {
+          "name": "fullWidth",
+          "category": "layout",
+          "reason": "Figma has no hug/fill axis (fixed canvas widths); code hugs by default like Button and stretches to the container with fullWidth."
+        },
+        {
+          "name": "disabled",
+          "category": "controlled-state",
+          "reason": "Consumers need to select the Figma disabled state semantically."
+        },
+        {
+          "name": "href",
+          "category": "composition",
+          "reason": "Navigation cards render as links (ButtonBase href); Figma draws the same chrome for actions and links."
+        },
+        {
+          "name": "onClick",
+          "category": "event",
+          "reason": "Activation handler for action cards."
+        }
+      ],
+      "stateRecipes": [
+        "default",
+        "hover",
+        "focus",
+        "pressed",
+        "disabled"
+      ],
+      "escalate": [],
+      "notes": [
+        "2026-11-05: New component authored in Figma (page 17845:1065) then implemented in code.",
+        "Figma fixed widths (360 horizontal / 200 vertical) are canvas widths; code hugs content by default and fills the container with fullWidth (Button parity).",
+        "Figma strokes are included in layout \u2014 CSS 1px border + Figma padding reproduces the box."
+      ]
+    },
+    {
       "cadsName": "FieldWrapper",
       "figmaName": "Field Wrapper",
       "nodeId": "15857:99804",

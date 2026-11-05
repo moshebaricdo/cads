@@ -1,8 +1,35 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-10-12
+Last updated: 2026-11-05
 
 ## Done (scaffold complete)
+
+- [x] **Card Button (2026-11-05)** — New Actions component, designed in Figma first (page `17845:1065`, set `17848:283`, 40 variants: layout horizontal|vertical × size medium|small × state × selected) then built as `CardButton` on MUI `ButtonBase`. Presence API for `description` / `startIconName` / `endIconName` (end icon horizontal-only); `selected` uses selected chrome and sets `aria-pressed`; `href` renders a link card. Experimental Motion Press (scale on `:active`) when the motion flag is on. `startContent` slot (Figma `startContent` SLOT + `hasStartContent`) for custom leading visuals like section avatars. Hugs content by default like Button; `fullWidth` stretches to the container (Figma 360/200 widths are canvas widths). Docs: **Actions → Card Button**. Snapshot + visual recipe (18 cases, all pass, light + dark, hug + fullWidth) + code-connect + fixtures + preview wired. See evidence summary below.
+
+## Card Button — evidence summary
+
+```text
+Task path: new component
+Components: CardButton
+Figma evidence (2026-11-05, file DGekOeToRVifvFAhfqpeC1):
+  - page ↪ 🛠 Card Button 17845:1065; set Card Button 17848:283 key 4fc80d40…
+  - get_design_context on 17848:23 (horizontal/medium) + 17848:163 (vertical/medium)
+  - use_figma bound-variable dump across all layout × size × state × selected variants
+Spec artifacts:
+  - packages/react/src/manifest/figmaComponentPropsSnapshot.json (CardButton entry)
+  - packages/react/src/manifest/visual-recipes/CardButton.json (+ captures/browser-cardbutton-*.png, figma-cardbutton-set.png)
+Coverage: 18/18 pass — every layout × size, all 5 states, selected (+hover, +disabled), light + dark, description + long-title stress, hug width, startContent slot (section avatar)
+Correction loop: pass 1 found fixture viewport clipping (capture region, not component) → widened; pass 2 clean.
+  pass 3 (design review): width model → Button parity (hug default, fullWidth); hug cases added, all recaptured.
+  pass 4 (Figma update): vertical bottom padding −2px for optical balance (24→22 / 16→14).
+  CDP-measured boxes (fullWidth in Figma-width wrapper) match Figma exactly (360×54 / 360×40 / 200×112 / 200×86), plus padding, gaps, glyph sizes, and resolved colors.
+API audit: CardButton 0 error / 0 warn / 0 escalate (pnpm figma:audit-props -- --strict;
+  repo-wide strict still fails on pre-existing GlobalHeader / ProgressBubble / ProgressWidget findings)
+Verification: pnpm typecheck (incl. MUI specificity audit); pnpm build; pnpm build:docs
+Accepted differences:
+  - Figma fixed widths (no hug/fill axis) → hug by default, fullWidth fills the container (Button parity)
+  - Figma showDescription / startIcon / endIcon booleans → presence of description / startIconName / endIconName
+```
 
 - [x] **Dropdown checklist Action Row (2026-10-12)** — Matches Figma Menu List `971:4280`: one bi-state text button (Select all → Clear all once every enabled option is checked; labels stacked so the panel never resizes) + contained secondary **Done** (closes, refocuses trigger), `space-between` at every size. Action Row buttons step down one size (L→M, M→S, S/XS→XS). Figma now also ships `menuType=custom`; snapshot updated. Switch rule for the bi-state is a code choice pending design confirmation.
 

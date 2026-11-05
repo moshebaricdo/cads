@@ -20,6 +20,7 @@ export function LivePlayground({ code }: { code: string }) {
         Button: cads.Button,
         SegmentedButton: cads.SegmentedButton,
         IconToggle: cads.IconToggle,
+        CardButton: cads.CardButton,
         FieldWrapper: cads.FieldWrapper,
         TextInput: cads.TextInput,
         TextField: cads.TextField,

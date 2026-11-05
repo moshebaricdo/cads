@@ -36,6 +36,7 @@ export const COMPONENT_SECTIONS = [
       { exportName: "Button", label: "Button" },
       { exportName: "SegmentedButton", label: "Segmented Button" },
       { exportName: "IconToggle", label: "Icon Toggle" },
+      { exportName: "CardButton", label: "Card Button" },
       { exportName: "CloseIconButton", label: "Close Button" },
     ],
   },

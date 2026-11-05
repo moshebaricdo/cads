@@ -17,6 +17,7 @@ const PREVIEWS: Record<string, LazyExoticComponent<PreviewComp>> = {
   ),
   SegmentedButton: lazy(() => import("./previews/SegmentedButtonPreview")),
   IconToggle: lazy(() => import("./previews/IconTogglePreview")),
+  CardButton: lazy(() => import("./previews/CardButtonPreview")),
   FieldWrapper: lazy(() => import("./previews/FieldWrapperPreview")),
   TextInput: lazy(() => import("./previews/TextInputPreview")),
   Dropdown: lazy(() => import("./previews/DropdownPreview")),

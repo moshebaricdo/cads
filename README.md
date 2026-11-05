@@ -33,6 +33,7 @@ Status reflects whether a matching component has shipped in the [production Stor
 | Button | Actions | In production |
 | Segmented Button | Actions | In production |
 | Icon Toggle | Actions | Not in production |
+| Card Button | Actions | Not in production |
 | Close Button | Actions | In production |
 | Field Wrapper | Inputs | In production |
 | Text Input | Inputs | In production |
