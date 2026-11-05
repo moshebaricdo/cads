@@ -1,5 +1,11 @@
 # @moshebari/cads-react
 
+## 0.3.0
+
+### Minor Changes
+
+- 5da3db8: Add `CardButton`: a clickable card with horizontal/vertical layout, medium/small size, title + optional description, start icon or `startContent` slot, end icon, selected state, `fullWidth`, link cards via `href`, and experimental Motion Press.
+
 ## 0.2.1
 
 ### Patch Changes
