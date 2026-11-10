@@ -33,6 +33,14 @@ export interface CardButtonProps
    */
   startIconName?: FaIconName | (string & {});
   /**
+   * Custom start icon color — any CSS color; prefer a CADS semantic
+   * variable, e.g. `"var(--text-success-primary)"`. Replaces the default
+   * `--text-brand-primary` in the unselected default / hover / pressed
+   * states. Selected and disabled keep their recipe colors so state stays
+   * legible. Also applies as the `color` of `startContent`.
+   */
+  startIconColor?: string;
+  /**
    * Custom leading content in place of the start icon — e.g. a section
    * avatar or image (Figma `startContent` slot; presence replaces
    * `hasStartContent`). Hugs its content, min the icon box size, and is

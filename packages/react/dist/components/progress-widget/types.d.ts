@@ -1,14 +1,30 @@
-import { CSSProperties, HTMLAttributes, MouseEventHandler } from 'react';
+import { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
+import { DropdownOption } from '../dropdown/types';
 import { ProgressBubbleLevelType, ProgressBubbleStatus } from '../progress-bubble/types';
 /**
- * Responsive mode.
- * - `auto` — media-query driven: rail ≥960px, folded dropdown 600–959,
- *   number-only dropdown below 600px (cloud stays).
- * - `desktop` / `tabletMobile` / `mobile` — force one layout (docs/playground).
+ * Responsive mode (Figma Progress Widget `breakpoint`: >992px / <992px / <768px).
+ * - `auto` — media-query driven: rail ≥992px, folded 768–991, compact <768.
+ * - `desktop` — rail (Figma `>992px`).
+ * - `tablet` — back · level dropdown + cloud · active bubble · action
+ *   (Figma `<992px`).
+ * - `smallTablet` / `mobile` — compact: back + ellipsis "More" menu ·
+ *   active bubble · action; no dropdown or cloud (Figma `<768px`). Both
+ *   exist so the widget can follow every GlobalHeader breakpoint.
+ * - `tabletMobile` — **deprecated** alias of `tablet`.
  */
-export type ProgressWidgetBreakpoint = "auto" | "desktop" | "tabletMobile" | "mobile";
-/** Autosave/sync state shown by the cloud icon + tooltip. */
-export type ProgressWidgetSaveStatus = "saved" | "offline";
+export type ProgressWidgetBreakpoint = "auto" | "desktop" | "tablet" | "smallTablet" | "mobile"
+/** @deprecated Use `"tablet"`. */
+ | "tabletMobile";
+/**
+ * Autosave/sync state shown by the cloud icon + tooltip (Figma `saveStatus`
+ * saved / unsaved; Figma `n/a` is the compact layout, which has no cloud).
+ * `offline` is a **deprecated** alias of `unsaved`.
+ */
+export type ProgressWidgetSaveStatus = "saved" | "unsaved"
+/** @deprecated Use `"unsaved"`. */
+ | "offline";
+/** Figma `version` — `template` swaps the lesson UI for three blank slots. */
+export type ProgressWidgetVersion = "default" | "template";
 /** One level in the progress rail. */
 export interface ProgressWidgetLevel {
     /** @default "default" */
@@ -22,14 +38,19 @@ export interface ProgressWidgetLevel {
     onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 export interface ProgressWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-    /** Level name shown in the dropdown trigger. */
-    levelLabel: string;
+    /**
+     * `default` — lesson widget. `template` — blank start / middle / end
+     * slots in the same 30px chrome (Figma `version=template`).
+     * @default "default"
+     */
+    version?: ProgressWidgetVersion;
+    /** Level name shown in the dropdown trigger (and as the More menu heading). */
+    levelLabel?: string;
     /** Levels rendered as progress bubbles in the desktop rail. */
     levels?: ProgressWidgetLevel[];
     /**
      * Index into `levels` of the current level. Renders as the large active
-     * bubble in the rail; below 960px it nests (small, non-interactive) as
-     * the dropdown start icon.
+     * bubble in the rail; below 992px it gets its own slot after the dropdown.
      */
     activeLevelIndex?: number;
     /** @default "auto" */
@@ -37,8 +58,14 @@ export interface ProgressWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>
     /** @default "saved" */
     saveStatus?: ProgressWidgetSaveStatus;
     /**
-     * Cloud tooltip label. Defaults to "Saved 2 minutes ago" when saved and
-     * "Offline" when offline.
+     * Show the cloud sync icon (Figma `showSaveStatus`). Never shown in the
+     * compact (<768) layout.
+     * @default true
+     */
+    showSaveStatus?: boolean;
+    /**
+     * Cloud tooltip label. Defaults to "Saved 2 minutes ago" when saved,
+     * "Unsaved changes" when unsaved, "Offline" for the deprecated `offline`.
      */
     saveStatusLabel?: string;
     /**
@@ -51,7 +78,7 @@ export interface ProgressWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>
     onActionClick?: MouseEventHandler<HTMLButtonElement>;
     /**
      * Show the leading back button (Figma `hasLeftAction`). Visible only
-     * below 960px / `breakpoint="tabletMobile"` — desktop never renders the slot.
+     * below 992px — desktop never renders the slot.
      * @default true
      */
     hasLeftAction?: boolean;
@@ -59,6 +86,20 @@ export interface ProgressWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>
     onBackClick?: MouseEventHandler<HTMLButtonElement>;
     /** Click handler for the level dropdown trigger (opens nothing in CADS). */
     onLevelSelectClick?: MouseEventHandler<HTMLButtonElement>;
+    /**
+     * Items for the compact (<768) ellipsis "More" menu, listed under a
+     * `levelLabel` heading. GlobalHeader adds Share / Remix here below 576px
+     * for `labLevel` (Figma annotation).
+     */
+    moreMenuOptions?: DropdownOption[];
+    /** Fires with the chosen `moreMenuOptions` value. */
+    onMoreMenuAction?: (value: string) => void;
+    /** `version="template"` start slot (Figma `startSlot`; presence = `hasStartSlot`). */
+    startSlot?: ReactNode;
+    /** `version="template"` middle slot (Figma `middleSlot`). */
+    middleSlot?: ReactNode;
+    /** `version="template"` end slot (Figma `endSlot`; presence = `hasEndSlot`). */
+    endSlot?: ReactNode;
     className?: string;
     style?: CSSProperties;
 }

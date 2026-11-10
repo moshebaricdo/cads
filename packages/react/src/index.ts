@@ -250,6 +250,7 @@ export type {
   ProgressWidgetProps,
   ProgressWidgetBreakpoint,
   ProgressWidgetSaveStatus,
+  ProgressWidgetVersion,
   ProgressWidgetLevel,
 } from "./components/progress-widget";
 

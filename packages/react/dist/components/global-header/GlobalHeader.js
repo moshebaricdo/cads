@@ -1,54 +1,64 @@
-import { jsxs as o, jsx as a, Fragment as D } from "react/jsx-runtime";
-import { forwardRef as L } from "react";
-import { FaIcon as u } from "../../icons/FaIcon.js";
-import { Dropdown as R } from "../dropdown/Dropdown.js";
-import { ProgressWidget as T } from "../progress-widget/ProgressWidget.js";
-import { CodeAiLogo as H } from "./CodeAiLogo.js";
-import { CodeAiMark as z } from "./CodeAiMark.js";
+import { jsxs as l, jsx as a, Fragment as $ } from "react/jsx-runtime";
+import { forwardRef as x, useState as U, useEffect as g } from "react";
+import { FaIcon as f } from "../../icons/FaIcon.js";
+import { ProgressWidget as G } from "../progress-widget/ProgressWidget.js";
+import { CodeAiLogo as _ } from "./CodeAiLogo.js";
+import { CodeAiMark as F } from "./CodeAiMark.js";
+import { TutorIcon as Q } from "./TutorIcon.js";
 import e from "./globalHeader.module.scss.js";
-const I = [
+const V = [
   { label: "My Dashboard" },
   { label: "Course Catalog" },
   { label: "Professional Learning" },
   { label: "Projects" },
   { label: "Incubator" }
-], U = [
+], q = [
   { label: "My Dashboard" },
   { label: "Course Catalog" },
   { label: "Projects" },
   { label: "Incubator" }
-], n = L(function({ variant: i, icon: b, endIcon: l, label: t, onClick: p, className: d = "", ariaLabel: v }, N) {
-  const f = i === "outlined" ? e.outlinedButton : i === "iconOutlined" ? `${e.outlinedButton} ${e.iconButton}` : i === "icon" ? e.iconButton : e.textButton;
-  return /* @__PURE__ */ o(
+], Y = "(max-width: 575.98px)";
+function J(b, i) {
+  const [h, n] = U(!1);
+  return g(() => {
+    if (!i || typeof window > "u" || !window.matchMedia)
+      return;
+    const s = window.matchMedia(b), c = () => n(s.matches);
+    return c(), s.addEventListener("change", c), () => s.removeEventListener("change", c);
+  }, [b, i]), i && h;
+}
+const o = x(function({ variant: i, icon: h, endIcon: n, label: s, onClick: c, className: p = "", ariaLabel: v }, t) {
+  const N = i === "outlined" ? e.outlinedButton : i === "iconOutlined" ? `${e.outlinedButton} ${e.iconButton}` : i === "icon" ? e.iconButton : e.textButton, k = i === "icon" ? "16px" : "12px";
+  return /* @__PURE__ */ l(
     "button",
     {
-      ref: N,
+      ref: t,
       type: "button",
-      className: `${e.headerButton} ${f} ${d}`,
-      onClick: p,
+      className: `${e.headerButton} ${N} ${p}`,
+      onClick: c,
       "aria-label": v,
       children: [
-        b ? /* @__PURE__ */ a(u, { name: b, family: "solid", fontSize: "12px" }) : null,
-        t ? /* @__PURE__ */ a("span", { className: e.headerButtonLabel, children: t }) : null,
-        l ? /* @__PURE__ */ a(u, { name: l, family: "solid", fontSize: "12px" }) : null
+        h ? /* @__PURE__ */ a(f, { name: h, family: "solid", fontSize: k }) : null,
+        s ? /* @__PURE__ */ a("span", { className: e.headerButtonLabel, children: s }) : null,
+        n ? /* @__PURE__ */ a(f, { name: n, family: "solid", fontSize: "12px" }) : null
       ]
     }
   );
 });
-function E({
-  username: h,
+function K({
+  username: b,
   onClick: i
 }) {
-  return /* @__PURE__ */ o(
+  return /* @__PURE__ */ l(
     "button",
     {
       type: "button",
       className: `${e.headerButton} ${e.outlinedButton} ${e.usernameDropdown} ${e.hideOnMobile}`,
       onClick: i,
       children: [
-        /* @__PURE__ */ a("span", { className: e.usernameLabel, children: h }),
+        /* @__PURE__ */ a("span", { className: e.usernameLabel, children: b }),
         /* @__PURE__ */ a(
-          u,
+          f,
           {
             name: "chevron-down",
             family: "solid",
@@ -60,172 +70,106 @@ function E({
     }
   );
 }
-const X = L(
-  function(i, b) {
+const se = x(
+  function(i, h) {
     const {
-      state: l = "labLevel",
-      breakpoint: t = "auto",
-      username: p = "Username",
-      progressWidgetProps: d,
-      projectTitle: v = "Untitled Project",
-      projectSaveStatusText: N = "Saved a few seconds ago",
-      tutorLabel: f = "Tutor Challenge",
-      navItems: $,
-      onNewProjectClick: x,
-      onUsernameClick: j,
-      onHelpClick: O,
-      onMenuClick: y,
+      state: n = "labLevel",
+      breakpoint: s = "auto",
+      username: c = "Username",
+      startContent: p,
+      centerContent: v,
+      progressWidgetProps: t,
+      projectTitle: N = "Untitled Project",
+      projectSaveStatusText: k = "Saved a few seconds ago",
+      tutorLabel: O = "Tutor Challenge",
+      navItems: S,
+      onNewProjectClick: j,
+      onUsernameClick: y,
+      onHelpClick: B,
+      onMenuClick: T,
       onShareClick: r,
-      onRemixClick: s,
-      onRenameClick: m,
-      className: w = "",
-      ...g
-    } = i, M = [
+      onRemixClick: d,
+      onRenameClick: C,
+      className: A = "",
+      ...D
+    } = i, m = s === "tabletMobile" ? "tablet" : s, R = [
       e.root,
-      t === "desktop" ? e.forceDesktop : "",
-      t === "tabletMobile" ? e.forceTabletMobile : "",
-      t === "mobile" ? e.forceMobile : "",
-      w
-    ].filter(Boolean).join(" "), k = l === "teacherDashboard" || l === "studentDashboard", C = l === "labLevel" || l === "nonLabLesson", S = $ ?? (l === "teacherDashboard" ? I : U), P = C ? /* @__PURE__ */ a(
-      T,
+      m === "desktop" ? e.forceDesktop : "",
+      m === "tablet" || m === "smallTablet" ? e.forceTablet : "",
+      m === "mobile" ? e.forceMobile : "",
+      A
+    ].filter(Boolean).join(" "), L = n === "teacherDashboard" || n === "studentDashboard", M = n === "labLevel" || n === "nonLabLesson", E = S ?? (n === "teacherDashboard" ? V : q), H = J(
+      Y,
+      m === "auto" && n === "labLevel"
+    ), I = M ? /* @__PURE__ */ a(
+      G,
       {
         levelLabel: "Lesson 6: Introduction to Online Puzzles",
-        ...d,
-        breakpoint: t === "auto" ? "auto" : t === "mobile" ? "mobile" : t === "tabletMobile" ? "tabletMobile" : "desktop",
-        className: `${e.widget} ${(d == null ? void 0 : d.className) ?? ""}`
-      }
-    ) : null, B = l === "standaloneProject" ? [
-      { value: "rename", label: "Rename", iconName: "pencil" },
-      { value: "share", label: "Share", iconName: "share" },
-      { value: "remix", label: "Remix", iconName: "rotate" }
-    ] : [
-      { value: "share", label: "Share", iconName: "share" },
-      { value: "remix", label: "Remix", iconName: "rotate" }
-    ], A = /* @__PURE__ */ a("div", { className: `${e.leftActions} ${e.overflowOnly}`, children: /* @__PURE__ */ a(
-      R,
-      {
-        role: "action",
-        size: "extraSmall",
-        menuPlacement: "bottomLeft",
-        "aria-label": "More actions",
-        disablePortal: !0,
-        options: B,
-        onAction: (c) => {
-          c === "share" && (r == null || r({})), c === "remix" && (s == null || s({})), c === "rename" && (m == null || m({}));
+        ...t,
+        moreMenuOptions: [
+          ...n === "labLevel" && (m === "mobile" || H) ? [
+            { value: "share", label: "Share", iconName: "share" },
+            { value: "remix", label: "Remix", iconName: "arrows-rotate" }
+          ] : [],
+          ...(t == null ? void 0 : t.moreMenuOptions) ?? []
+        ],
+        onMoreMenuAction: (u) => {
+          var w;
+          n === "labLevel" && u === "share" ? r == null || r(void 0) : n === "labLevel" && u === "remix" && (d == null || d(void 0)), (w = t == null ? void 0 : t.onMoreMenuAction) == null || w.call(t, u);
         },
-        trigger: /* @__PURE__ */ a(
-          n,
-          {
-            variant: "iconOutlined",
-            icon: "ellipsis",
-            ariaLabel: "More actions"
-          }
-        )
+        breakpoint: m,
+        className: `${e.widget} ${(t == null ? void 0 : t.className) ?? ""}`
       }
-    ) });
-    return /* @__PURE__ */ o(
+    ) : null, z = n === "template" && p != null && p !== !1, P = n === "template" && v != null && v !== !1;
+    return /* @__PURE__ */ l(
       "header",
       {
-        ref: b,
-        className: M,
+        ref: h,
+        className: R,
         "data-cads-component": "GlobalHeader",
-        "data-state": l,
-        ...g,
+        "data-state": n,
+        ...D,
         children: [
-          /* @__PURE__ */ o("div", { className: e.left, children: [
-            /* @__PURE__ */ o("div", { className: e.logo, children: [
-              /* @__PURE__ */ a("span", { className: e.wordmark, children: /* @__PURE__ */ a(H, {}) }),
-              /* @__PURE__ */ a("span", { className: e.mark, children: /* @__PURE__ */ a(z, {}) })
-            ] }),
-            l === "standaloneProject" ? /* @__PURE__ */ o("div", { className: `${e.projectText} ${e.hideOnMobile}`, children: [
-              /* @__PURE__ */ o("span", { className: e.projectTitleRow, children: [
-                /* @__PURE__ */ a("span", { className: e.projectTitle, children: v }),
-                /* @__PURE__ */ a(u, { name: "pencil", family: "solid", fontSize: "10px" })
-              ] }),
-              /* @__PURE__ */ a("span", { className: e.projectSaveStatus, children: N })
-            ] }) : null,
-            l === "labLevel" ? /* @__PURE__ */ o("div", { className: `${e.leftActions} ${e.desktopOnly}`, children: [
-              /* @__PURE__ */ a(
-                n,
-                {
-                  variant: "outlined",
-                  label: "Share",
-                  onClick: r
-                }
-              ),
-              /* @__PURE__ */ a(
-                n,
-                {
-                  variant: "outlined",
-                  label: "Remix",
-                  onClick: s
-                }
-              )
-            ] }) : null,
-            l === "labLevel" ? /* @__PURE__ */ o("div", { className: `${e.leftActions} ${e.tabletMobileOnly}`, children: [
-              /* @__PURE__ */ a(
-                n,
-                {
-                  variant: "iconOutlined",
-                  icon: "share",
-                  ariaLabel: "Share",
-                  onClick: r
-                }
-              ),
-              /* @__PURE__ */ a(
-                n,
-                {
-                  variant: "iconOutlined",
-                  icon: "rotate",
-                  ariaLabel: "Remix",
-                  onClick: s
-                }
-              )
-            ] }) : null,
-            l === "labLevel" || l === "standaloneProject" ? A : null,
-            l === "standaloneProject" ? /* @__PURE__ */ o(D, { children: [
-              /* @__PURE__ */ o("div", { className: `${e.leftActions} ${e.desktopOnly}`, children: [
-                /* @__PURE__ */ a(
-                  n,
-                  {
-                    variant: "outlined",
-                    label: "Rename",
-                    onClick: m
-                  }
-                ),
-                /* @__PURE__ */ a(
-                  n,
-                  {
-                    variant: "outlined",
-                    label: "Share",
-                    onClick: r
-                  }
-                ),
-                /* @__PURE__ */ a(
-                  n,
-                  {
-                    variant: "outlined",
-                    label: "Remix",
-                    onClick: s
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ o(
-                "div",
-                {
-                  className: `${e.leftActions} ${e.tabletMobileOnly}`,
-                  children: [
+          /* @__PURE__ */ l(
+            "div",
+            {
+              className: e.left,
+              "data-gap": n === "standaloneProject" || n === "template" ? "wide" : n === "labLevel" ? "wideExceptMobile" : void 0,
+              children: [
+                /* @__PURE__ */ l("div", { className: e.logo, children: [
+                  /* @__PURE__ */ a("span", { className: e.wordmark, children: /* @__PURE__ */ a(_, {}) }),
+                  /* @__PURE__ */ a("span", { className: e.mark, children: /* @__PURE__ */ a(F, {}) })
+                ] }),
+                z ? /* @__PURE__ */ a("div", { className: e.startContent, "data-slot": "start-content", children: p }) : null,
+                n === "standaloneProject" ? /* @__PURE__ */ l("div", { className: `${e.projectText} ${e.hideOnMobile}`, children: [
+                  /* @__PURE__ */ l("span", { className: e.projectTitleRow, children: [
+                    /* @__PURE__ */ a("span", { className: e.projectTitle, children: N }),
+                    /* @__PURE__ */ a(f, { name: "pencil", family: "solid", fontSize: "10px" })
+                  ] }),
+                  /* @__PURE__ */ a("span", { className: e.projectSaveStatus, children: k })
+                ] }) : null,
+                n === "labLevel" ? /* @__PURE__ */ l($, { children: [
+                  /* @__PURE__ */ l("div", { className: `${e.leftActions} ${e.desktopOnly}`, children: [
                     /* @__PURE__ */ a(
-                      n,
+                      o,
                       {
-                        variant: "iconOutlined",
-                        icon: "pencil",
-                        ariaLabel: "Rename",
-                        onClick: m
+                        variant: "outlined",
+                        label: "Share",
+                        onClick: r
                       }
                     ),
                     /* @__PURE__ */ a(
-                      n,
+                      o,
+                      {
+                        variant: "outlined",
+                        label: "Remix",
+                        onClick: d
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ l("div", { className: `${e.leftActions} ${e.tabletOnly}`, children: [
+                    /* @__PURE__ */ a(
+                      o,
                       {
                         variant: "iconOutlined",
                         icon: "share",
@@ -234,67 +178,134 @@ const X = L(
                       }
                     ),
                     /* @__PURE__ */ a(
-                      n,
+                      o,
                       {
                         variant: "iconOutlined",
-                        icon: "rotate",
+                        icon: "arrows-rotate",
                         ariaLabel: "Remix",
-                        onClick: s
+                        onClick: d
                       }
                     )
-                  ]
-                }
-              )
-            ] }) : null,
-            k ? /* @__PURE__ */ a(
-              "nav",
-              {
-                className: `${e.navLinks} ${e.desktopOnly}`,
-                "aria-label": "Primary",
-                children: S.map((c) => /* @__PURE__ */ a(
-                  n,
+                  ] })
+                ] }) : null,
+                n === "standaloneProject" ? /* @__PURE__ */ l($, { children: [
+                  /* @__PURE__ */ l("div", { className: `${e.leftActions} ${e.desktopOnly}`, children: [
+                    /* @__PURE__ */ a(
+                      o,
+                      {
+                        variant: "outlined",
+                        label: "Rename",
+                        onClick: C
+                      }
+                    ),
+                    /* @__PURE__ */ a(
+                      o,
+                      {
+                        variant: "outlined",
+                        label: "Share",
+                        onClick: r
+                      }
+                    ),
+                    /* @__PURE__ */ a(
+                      o,
+                      {
+                        variant: "outlined",
+                        label: "Remix",
+                        onClick: d
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ l(
+                    "div",
+                    {
+                      className: `${e.leftActions} ${e.belowDesktop}`,
+                      children: [
+                        /* @__PURE__ */ a(
+                          o,
+                          {
+                            variant: "iconOutlined",
+                            icon: "pencil",
+                            ariaLabel: "Rename",
+                            onClick: C
+                          }
+                        ),
+                        /* @__PURE__ */ a(
+                          o,
+                          {
+                            variant: "iconOutlined",
+                            icon: "share",
+                            ariaLabel: "Share",
+                            onClick: r
+                          }
+                        ),
+                        /* @__PURE__ */ a(
+                          o,
+                          {
+                            variant: "iconOutlined",
+                            icon: "arrows-rotate",
+                            ariaLabel: "Remix",
+                            onClick: d
+                          }
+                        )
+                      ]
+                    }
+                  )
+                ] }) : null,
+                L ? /* @__PURE__ */ a(
+                  "nav",
                   {
-                    variant: "text",
-                    label: c.label,
-                    onClick: c.onClick
-                  },
-                  c.label
-                ))
-              }
-            ) : null
-          ] }),
-          C ? /* @__PURE__ */ a("div", { className: e.center, children: P }) : null,
-          l === "tutorPlus" ? /* @__PURE__ */ a("div", { className: e.center, children: /* @__PURE__ */ a("span", { className: e.tutorLabel, children: f }) }) : null,
-          /* @__PURE__ */ o("div", { className: e.right, children: [
-            k || l === "standaloneProject" ? /* @__PURE__ */ a(
-              n,
+                    className: `${e.navLinks} ${e.desktopOnly}`,
+                    "aria-label": "Primary",
+                    children: E.map((u) => /* @__PURE__ */ a(
+                      o,
+                      {
+                        variant: "text",
+                        label: u.label,
+                        onClick: u.onClick
+                      },
+                      u.label
+                    ))
+                  }
+                ) : null
+              ]
+            }
+          ),
+          M ? /* @__PURE__ */ a("div", { className: e.center, children: I }) : null,
+          n === "tutorPlus" ? /* @__PURE__ */ a("div", { className: e.center, children: /* @__PURE__ */ l("span", { className: e.tutorLabelWrap, children: [
+            /* @__PURE__ */ a(Q, {}),
+            /* @__PURE__ */ a("span", { className: e.tutorLabel, children: O })
+          ] }) }) : null,
+          P ? /* @__PURE__ */ a("div", { className: e.center, "data-slot": "center-content", children: v }) : null,
+          /* @__PURE__ */ l("div", { className: e.right, children: [
+            L || n === "standaloneProject" || n === "template" ? /* @__PURE__ */ a(
+              o,
               {
                 variant: "outlined",
                 label: "New project",
                 endIcon: "plus",
-                onClick: x,
+                onClick: j,
                 className: e.desktopOnly
               }
             ) : null,
-            /* @__PURE__ */ a(E, { username: p, onClick: j }),
-            /* @__PURE__ */ o("div", { className: e.rightIcons, children: [
+            /* @__PURE__ */ a(K, { username: c, onClick: y }),
+            /* @__PURE__ */ l("div", { className: e.rightIcons, children: [
               /* @__PURE__ */ a(
-                n,
+                o,
                 {
                   variant: "icon",
                   icon: "circle-question",
                   ariaLabel: "Help",
-                  onClick: O,
+                  onClick: B,
                   className: e.desktopOnly
                 }
               ),
               /* @__PURE__ */ a(
-                n,
+                o,
                 {
                   variant: "icon",
                   icon: "bars",
                   ariaLabel: "Menu",
-                  onClick: y
+                  onClick: T
                 }
               )
             ] })
@@ -305,6 +316,6 @@ const X = L(
   }
 );
 export {
-  X as GlobalHeader
+  se as GlobalHeader
 };
 //# sourceMappingURL=GlobalHeader.js.map

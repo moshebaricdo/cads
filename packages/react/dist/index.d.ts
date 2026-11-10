@@ -75,7 +75,7 @@ export type { BreadcrumbsProps, BreadcrumbItem, BreadcrumbsSize, } from './compo
 export { ProgressBubble } from './components/progress-bubble';
 export type { ProgressBubbleProps, ProgressBubbleLevelType, ProgressBubbleStatus, } from './components/progress-bubble';
 export { ProgressWidget } from './components/progress-widget';
-export type { ProgressWidgetProps, ProgressWidgetBreakpoint, ProgressWidgetSaveStatus, ProgressWidgetLevel, } from './components/progress-widget';
+export type { ProgressWidgetProps, ProgressWidgetBreakpoint, ProgressWidgetSaveStatus, ProgressWidgetVersion, ProgressWidgetLevel, } from './components/progress-widget';
 export { GlobalHeader } from './components/global-header';
 export type { GlobalHeaderProps, GlobalHeaderState, GlobalHeaderBreakpoint, GlobalHeaderNavItem, } from './components/global-header';
 export type { ControlSize } from './shared/controlSize';

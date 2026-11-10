@@ -2,14 +2,17 @@
 
 import {
   forwardRef,
+  useEffect,
+  useState,
   type MouseEventHandler,
   type ReactNode,
 } from "react";
 import { FaIcon } from "../../icons/FaIcon";
-import { Dropdown } from "../dropdown";
 import { ProgressWidget } from "../progress-widget";
+import type { DropdownOption } from "../dropdown/types";
 import { CodeAiLogo } from "./CodeAiLogo";
 import { CodeAiMark } from "./CodeAiMark";
+import { TutorIcon } from "./TutorIcon";
 import styles from "./globalHeader.module.scss";
 import type { GlobalHeaderNavItem, GlobalHeaderProps } from "./types";
 
@@ -27,6 +30,25 @@ const STUDENT_NAV: GlobalHeaderNavItem[] = [
   { label: "Projects" },
   { label: "Incubator" },
 ];
+
+/** Same edge as the SCSS `mobile` media query (Figma `<576`). */
+const MOBILE_QUERY = "(max-width: 575.98px)";
+
+/** SSR-safe media query flag (false until mounted). */
+function useMediaQuery(query: string, enabled: boolean): boolean {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    if (!enabled || typeof window === "undefined" || !window.matchMedia) {
+      return;
+    }
+    const mql = window.matchMedia(query);
+    const update = () => setMatches(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, [query, enabled]);
+  return enabled && matches;
+}
 
 /**
  * Header chrome buttons intentionally deviate from the CADS Button variants
@@ -56,6 +78,9 @@ const HeaderButton = forwardRef<
         : variant === "icon"
           ? styles.iconButton
           : styles.textButton;
+  // Figma: text icon buttons (help / menu) use a 16px glyph; outlined
+  // icon buttons and inline icons use 12px.
+  const iconSize = variant === "icon" ? "16px" : "12px";
   return (
     <button
       ref={ref}
@@ -64,7 +89,7 @@ const HeaderButton = forwardRef<
       onClick={onClick}
       aria-label={ariaLabel}
     >
-      {icon ? <FaIcon name={icon} family="solid" fontSize="12px" /> : null}
+      {icon ? <FaIcon name={icon} family="solid" fontSize={iconSize} /> : null}
       {label ? <span className={styles.headerButtonLabel}>{label}</span> : null}
       {endIcon ? (
         <FaIcon name={endIcon} family="solid" fontSize="12px" />
@@ -99,11 +124,8 @@ function UsernameDropdown({
 
 /**
  * Studio Global Header — persistent header chrome for all studio pages.
- * Six page states × desktop / tablet (<960px) / phone (<600px) behavior.
- *
- * Figma: Global Header (17240:2903) covers desktop + tablet. Phone chrome
- * is a code-only fold (favicon, overflow, number-only widget, username
- * into the hamburger).
+ * Seven page states × four breakpoints (Figma 17240:2903):
+ * desktop ≥992 · tablet 768–991 · smallTablet 576–767 · mobile <576.
  */
 export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
   function GlobalHeader(props, ref) {
@@ -111,6 +133,8 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
       state = "labLevel",
       breakpoint = "auto",
       username = "Username",
+      startContent,
+      centerContent,
       progressWidgetProps,
       projectTitle = "Untitled Project",
       projectSaveStatusText = "Saved a few seconds ago",
@@ -127,11 +151,16 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
       ...rest
     } = props;
 
+    const resolvedBreakpoint =
+      breakpoint === "tabletMobile" ? "tablet" : breakpoint;
+
     const rootClasses = [
       styles.root,
-      breakpoint === "desktop" ? styles.forceDesktop : "",
-      breakpoint === "tabletMobile" ? styles.forceTabletMobile : "",
-      breakpoint === "mobile" ? styles.forceMobile : "",
+      resolvedBreakpoint === "desktop" ? styles.forceDesktop : "",
+      resolvedBreakpoint === "tablet" || resolvedBreakpoint === "smallTablet"
+        ? styles.forceTablet
+        : "",
+      resolvedBreakpoint === "mobile" ? styles.forceMobile : "",
       className,
     ]
       .filter(Boolean)
@@ -143,60 +172,46 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
     const resolvedNav =
       navItems ?? (state === "teacherDashboard" ? TEACHER_NAV : STUDENT_NAV);
 
-    const widgetBreakpoint =
-      breakpoint === "auto"
-        ? "auto"
-        : breakpoint === "mobile"
-          ? "mobile"
-          : breakpoint === "tabletMobile"
-            ? "tabletMobile"
-            : "desktop";
+    // Figma annotation (labLevel <576): Share / Remix move into the
+    // Progress Widget "More" menu.
+    const autoMobile = useMediaQuery(
+      MOBILE_QUERY,
+      resolvedBreakpoint === "auto" && state === "labLevel",
+    );
+    const isMobile = resolvedBreakpoint === "mobile" || autoMobile;
+    const labMoreOptions: DropdownOption[] =
+      state === "labLevel" && isMobile
+        ? [
+            { value: "share", label: "Share", iconName: "share" },
+            { value: "remix", label: "Remix", iconName: "arrows-rotate" },
+          ]
+        : [];
 
     const widget = isLesson ? (
       <ProgressWidget
         levelLabel="Lesson 6: Introduction to Online Puzzles"
         {...progressWidgetProps}
-        breakpoint={widgetBreakpoint}
+        moreMenuOptions={[
+          ...labMoreOptions,
+          ...(progressWidgetProps?.moreMenuOptions ?? []),
+        ]}
+        onMoreMenuAction={(value) => {
+          if (state === "labLevel" && value === "share") {
+            onShareClick?.(undefined as never);
+          } else if (state === "labLevel" && value === "remix") {
+            onRemixClick?.(undefined as never);
+          }
+          progressWidgetProps?.onMoreMenuAction?.(value);
+        }}
+        breakpoint={resolvedBreakpoint}
         className={`${styles.widget} ${progressWidgetProps?.className ?? ""}`}
       />
     ) : null;
 
-    const overflowOptions =
-      state === "standaloneProject"
-        ? [
-            { value: "rename", label: "Rename", iconName: "pencil" as const },
-            { value: "share", label: "Share", iconName: "share" as const },
-            { value: "remix", label: "Remix", iconName: "rotate" as const },
-          ]
-        : [
-            { value: "share", label: "Share", iconName: "share" as const },
-            { value: "remix", label: "Remix", iconName: "rotate" as const },
-          ];
-
-    const overflow = (
-      <div className={`${styles.leftActions} ${styles.overflowOnly}`}>
-        <Dropdown
-          role="action"
-          size="extraSmall"
-          menuPlacement="bottomLeft"
-          aria-label="More actions"
-          disablePortal
-          options={overflowOptions}
-          onAction={(value) => {
-            if (value === "share") onShareClick?.({} as never);
-            if (value === "remix") onRemixClick?.({} as never);
-            if (value === "rename") onRenameClick?.({} as never);
-          }}
-          trigger={
-            <HeaderButton
-              variant="iconOutlined"
-              icon="ellipsis"
-              ariaLabel="More actions"
-            />
-          }
-        />
-      </div>
-    );
+    const hasStartSlot =
+      state === "template" && startContent != null && startContent !== false;
+    const hasCenterSlot =
+      state === "template" && centerContent != null && centerContent !== false;
 
     return (
       <header
@@ -206,8 +221,17 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
         data-state={state}
         {...rest}
       >
-        {/* ----- left cluster ----- */}
-        <div className={styles.left}>
+        {/* ----- navStartContent ----- */}
+        <div
+          className={styles.left}
+          data-gap={
+            state === "standaloneProject" || state === "template"
+              ? "wide"
+              : state === "labLevel"
+                ? "wideExceptMobile"
+                : undefined
+          }
+        >
           <div className={styles.logo}>
             <span className={styles.wordmark}>
               <CodeAiLogo />
@@ -216,6 +240,12 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
               <CodeAiMark />
             </span>
           </div>
+
+          {hasStartSlot ? (
+            <div className={styles.startContent} data-slot="start-content">
+              {startContent}
+            </div>
+          ) : null}
 
           {state === "standaloneProject" ? (
             <div className={`${styles.projectText} ${styles.hideOnMobile}`}>
@@ -230,38 +260,35 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
           ) : null}
 
           {state === "labLevel" ? (
-            <div className={`${styles.leftActions} ${styles.desktopOnly}`}>
-              <HeaderButton
-                variant="outlined"
-                label="Share"
-                onClick={onShareClick}
-              />
-              <HeaderButton
-                variant="outlined"
-                label="Remix"
-                onClick={onRemixClick}
-              />
-            </div>
+            <>
+              <div className={`${styles.leftActions} ${styles.desktopOnly}`}>
+                <HeaderButton
+                  variant="outlined"
+                  label="Share"
+                  onClick={onShareClick}
+                />
+                <HeaderButton
+                  variant="outlined"
+                  label="Remix"
+                  onClick={onRemixClick}
+                />
+              </div>
+              <div className={`${styles.leftActions} ${styles.tabletOnly}`}>
+                <HeaderButton
+                  variant="iconOutlined"
+                  icon="share"
+                  ariaLabel="Share"
+                  onClick={onShareClick}
+                />
+                <HeaderButton
+                  variant="iconOutlined"
+                  icon="arrows-rotate"
+                  ariaLabel="Remix"
+                  onClick={onRemixClick}
+                />
+              </div>
+            </>
           ) : null}
-          {state === "labLevel" ? (
-            <div className={`${styles.leftActions} ${styles.tabletMobileOnly}`}>
-              <HeaderButton
-                variant="iconOutlined"
-                icon="share"
-                ariaLabel="Share"
-                onClick={onShareClick}
-              />
-              <HeaderButton
-                variant="iconOutlined"
-                icon="rotate"
-                ariaLabel="Remix"
-                onClick={onRemixClick}
-              />
-            </div>
-          ) : null}
-          {state === "labLevel" || state === "standaloneProject"
-            ? overflow
-            : null}
 
           {state === "standaloneProject" ? (
             <>
@@ -283,7 +310,7 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
                 />
               </div>
               <div
-                className={`${styles.leftActions} ${styles.tabletMobileOnly}`}
+                className={`${styles.leftActions} ${styles.belowDesktop}`}
               >
                 <HeaderButton
                   variant="iconOutlined"
@@ -299,7 +326,7 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
                 />
                 <HeaderButton
                   variant="iconOutlined"
-                  icon="rotate"
+                  icon="arrows-rotate"
                   ariaLabel="Remix"
                   onClick={onRemixClick}
                 />
@@ -324,17 +351,27 @@ export const GlobalHeader = forwardRef<HTMLElement, GlobalHeaderProps>(
           ) : null}
         </div>
 
-        {/* ----- center cluster ----- */}
+        {/* ----- navCenterContent ----- */}
         {isLesson ? <div className={styles.center}>{widget}</div> : null}
         {state === "tutorPlus" ? (
           <div className={styles.center}>
-            <span className={styles.tutorLabel}>{tutorLabel}</span>
+            <span className={styles.tutorLabelWrap}>
+              <TutorIcon />
+              <span className={styles.tutorLabel}>{tutorLabel}</span>
+            </span>
+          </div>
+        ) : null}
+        {hasCenterSlot ? (
+          <div className={styles.center} data-slot="center-content">
+            {centerContent}
           </div>
         ) : null}
 
-        {/* ----- right cluster ----- */}
+        {/* ----- navEndContent ----- */}
         <div className={styles.right}>
-          {isDashboard || state === "standaloneProject" ? (
+          {isDashboard ||
+          state === "standaloneProject" ||
+          state === "template" ? (
             <HeaderButton
               variant="outlined"
               label="New project"

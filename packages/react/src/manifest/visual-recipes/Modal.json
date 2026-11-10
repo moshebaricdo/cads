@@ -9,13 +9,15 @@
     "relatedNodeIds": [
       "6368:7269"
     ],
-    "retrievedAt": "2026-07-17",
+    "retrievedAt": "2026-11-10",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "Figma update",
     "previousRecipe": null,
-    "figmaChanges": []
+    "figmaChanges": [
+      "2026-11-10: actionRow now justify-between with actionGroup SLOT on the left (Figma placeholder 168×40) and actionGroupRight (secondary + primary, gap 8); items centered. Code prop footerStartContent."
+    ]
   },
   "axes": {
     "public": {
@@ -36,6 +38,13 @@
         "bodyPadding": "24",
         "footerPadding": "18 20 18 24",
         "radius": "12"
+      },
+      "footer": {
+        "padding": "18 20 18 24",
+        "height": "77 incl. 1px top border",
+        "layout": "space-between, items center",
+        "startSlot": "hugs (Figma placeholder 168×40)",
+        "endGroupGap": "8"
       }
     },
     "layout": {
@@ -215,6 +224,60 @@
         "mismatches": [],
         "browserScreenshot": "captures/browser-modal-primary-only-light.png",
         "figmaScreenshot": "captures/figma-modal-set.png"
+      },
+      {
+        "id": "modal-footer-start-light",
+        "figmaNodeId": "3027:4741",
+        "figmaVariant": "type=default + actionGroup",
+        "mode": "light",
+        "props": {
+          "type": "default",
+          "footerStartContent": "<Button variant=text>"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "footerHeight": "77"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Modal.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "modal-footer-start-vertical-dark",
+        "figmaNodeId": "16463:18333",
+        "figmaVariant": "type=verticalImage + actionGroup",
+        "mode": "dark",
+        "props": {
+          "type": "verticalImage",
+          "footerStartContent": "<Button variant=text>"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 840,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "footerHeight": "77"
+        },
+        "expectedVariables": [
+          "--border-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/Modal.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pending",
+        "mismatches": []
       }
     ]
   },
@@ -224,6 +287,8 @@
     "typecheck": "pass",
     "build": "pass",
     "docsBuild": null,
-    "correctionPasses": []
+    "correctionPasses": [
+      "2026-11-10: DOM-measured footer 758×77 (pad 18/20/18/24); start slot at left edge (x=89, 81×40); end group right-aligned with and without start content."
+    ]
   }
 }

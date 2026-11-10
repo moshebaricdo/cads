@@ -20,9 +20,7 @@ const DEFAULT_BODY =
 /** Custom content (`children`) replaces the body text slot across all types. */
 function resolveContent(children: ReactNode, body: ReactNode): ReactNode {
   if (children != null) return children;
-  return (
-    <div className={styles.bodyDefaultText}>{body ?? DEFAULT_BODY}</div>
-  );
+  return <div className={styles.bodyDefaultText}>{body ?? DEFAULT_BODY}</div>;
 }
 
 function ModalSurface({
@@ -31,6 +29,7 @@ function ModalSurface({
   body,
   image,
   children,
+  footerStartContent,
   hasSecondaryAction,
   primaryActionLabel,
   secondaryActionLabel,
@@ -89,24 +88,31 @@ function ModalSurface({
       ) : null}
 
       <div className={styles.footer}>
-        {hasSecondaryAction ? (
+        {footerStartContent != null && footerStartContent !== false ? (
+          <div className={styles.footerStart} data-slot="footer-start">
+            {footerStartContent}
+          </div>
+        ) : null}
+        <div className={styles.footerEnd}>
+          {hasSecondaryAction ? (
+            <Button
+              size="medium"
+              variant="outlined"
+              color="secondary"
+              onClick={onSecondaryAction}
+            >
+              {secondaryActionLabel}
+            </Button>
+          ) : null}
           <Button
             size="medium"
-            variant="outlined"
-            color="secondary"
-            onClick={onSecondaryAction}
+            variant="contained"
+            color="primary"
+            onClick={onPrimaryAction}
           >
-            {secondaryActionLabel}
+            {primaryActionLabel}
           </Button>
-        ) : null}
-        <Button
-          size="medium"
-          variant="contained"
-          color="primary"
-          onClick={onPrimaryAction}
-        >
-          {primaryActionLabel}
-        </Button>
+        </div>
       </div>
     </div>
   );
@@ -123,6 +129,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
     body,
     image,
     children,
+    footerStartContent,
     hasSecondaryAction = true,
     primaryActionLabel = "Button",
     secondaryActionLabel = "Button",
@@ -135,7 +142,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
     surfaceOnly = false,
     className,
   },
-  ref,
+  ref
 ) {
   const resolvedMaxWidth = resolveOverlayMaxWidth(maxWidth);
 
@@ -146,6 +153,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
       title={title}
       body={body}
       image={image}
+      footerStartContent={footerStartContent}
       hasSecondaryAction={hasSecondaryAction}
       primaryActionLabel={primaryActionLabel}
       secondaryActionLabel={secondaryActionLabel}

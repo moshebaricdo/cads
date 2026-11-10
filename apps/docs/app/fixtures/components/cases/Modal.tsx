@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@moshebari/cads-react";
+import { Button, Modal } from "@moshebari/cads-react";
 import {
   type FixtureCase,
 } from "./shared";
@@ -36,6 +36,38 @@ export const cases: FixtureCase[] = [
       viewport: { width: 840, height: 400 },
       render: () => (
         <Modal type="default" hasSecondaryAction={false} surfaceOnly />
+      ),
+    },
+    {
+      id: "modal-footer-start-light",
+      mode: "light",
+      viewport: { width: 840, height: 420 },
+      render: () => (
+        <Modal
+          type="default"
+          surfaceOnly
+          footerStartContent={
+            <Button size="medium" variant="text" color="secondary">
+              Button
+            </Button>
+          }
+        />
+      ),
+    },
+    {
+      id: "modal-footer-start-vertical-dark",
+      mode: "dark",
+      viewport: { width: 840, height: 560 },
+      render: () => (
+        <Modal
+          type="verticalImage"
+          surfaceOnly
+          footerStartContent={
+            <Button size="medium" variant="text" color="secondary">
+              Button
+            </Button>
+          }
+        />
       ),
     },
   ];

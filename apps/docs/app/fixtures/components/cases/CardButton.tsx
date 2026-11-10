@@ -206,4 +206,34 @@ export const cases: FixtureCase[] = [
       </div>
     ),
   },
+  {
+    id: "cardbutton-h-medium-start-icon-color-light",
+    mode: "light",
+    viewport: { width: 440, height: 160 },
+    render: () => (
+      <div style={{ width: 360 }}>
+        <CardButton fullWidth layout="horizontal" size="medium" title="Card button title" startIconName="smile" startIconColor="var(--text-success-primary)" endIconName="chevron-right" />
+      </div>
+    ),
+  },
+  {
+    id: "cardbutton-v-small-start-icon-color-selected-light",
+    mode: "light",
+    viewport: { width: 280, height: 200 },
+    render: () => (
+      <div style={{ width: 200 }}>
+        <CardButton fullWidth layout="vertical" size="small" title="Card button title" startIconName="smile" startIconColor="var(--text-success-primary)" selected />
+      </div>
+    ),
+  },
+  {
+    id: "cardbutton-h-small-start-icon-color-dark",
+    mode: "dark",
+    viewport: { width: 440, height: 160 },
+    render: () => (
+      <div style={{ width: 360 }}>
+        <CardButton fullWidth layout="horizontal" size="small" title="Card button title" description="Supporting description text" startIconName="smile" startIconColor="var(--text-success-primary)" endIconName="chevron-right" />
+      </div>
+    ),
+  },
 ];

@@ -357,6 +357,12 @@ export const OVERLAYS_PROP_SHEETS: Record<string, PropSheet[]> = {
             "Custom content for the body text slot. Replaces body for every type; image layouts keep the fixed image slot.",
         },
         {
+          name: "footerStartContent",
+          type: "ReactNode",
+          description:
+            "Left-hand footer slot (Figma actionGroup) — e.g. a tertiary text Button or a Checkbox. Hugs and is vertically centered; the built-in buttons stay right-aligned.",
+        },
+        {
           name: "hasSecondaryAction",
           type: "boolean",
           default: "true",

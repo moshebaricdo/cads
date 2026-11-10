@@ -431,6 +431,11 @@
           "reason": "Maps Figma text startIconName; presence replaces Figma boolean startIcon."
         },
         {
+          "name": "startIconColor",
+          "category": "content",
+          "reason": "Code-only override of the start icon fill (Figma binds text/brand/primary). Applies to unselected default/hover/pressed; selected and disabled recipes win. Requested by design owner 2026-11-10."
+        },
+        {
           "name": "startContent",
           "category": "composition",
           "reason": "Maps Figma SLOT startContent; presence replaces Figma boolean hasStartContent (custom leading visual, e.g. section avatar)."
@@ -472,7 +477,8 @@
       "notes": [
         "2026-11-05: New component authored in Figma (page 17845:1065) then implemented in code.",
         "Figma fixed widths (360 horizontal / 200 vertical) are canvas widths; code hugs content by default and fills the container with fullWidth (Button parity).",
-        "Figma strokes are included in layout \u2014 CSS 1px border + Figma padding reproduces the box."
+        "Figma strokes are included in layout \u2014 CSS 1px border + Figma padding reproduces the box.",
+        "2026-11-10: Figma update \u2014 horizontal/medium padding 16 (was 14 vertical), small 10/12 with 10 gap, title\u2194description gap 4, title leading body/sm (medium) / body/xs (small), description leading body/xs / body/xxs, vertical top +2 (26/24, 18/16) instead of bottom \u22122."
       ]
     },
     {
@@ -3090,7 +3096,12 @@
         {
           "name": "children",
           "category": "content",
-          "reason": "Maps Figma customContent — body text slot for every type (image layouts keep fixed image)."
+          "reason": "Maps Figma customContent \u2014 body text slot for every type (image layouts keep fixed image)."
+        },
+        {
+          "name": "footerStartContent",
+          "category": "composition",
+          "reason": "Maps Figma SLOT actionGroup (left of actionRow, Figma placeholder 168\u00d740); hugs in code. Renamed for clarity \u2014 Figma's buttons live in actionGroupRight."
         },
         {
           "name": "hasSecondaryAction",
@@ -3148,7 +3159,8 @@
       ],
       "escalate": [],
       "notes": [
-        "Richer than Dialog: header bar + body + footer actions; image layouts for media-heavy flows."
+        "Richer than Dialog: header bar + body + footer actions; image layouts for media-heavy flows.",
+        "2026-11-10: Figma actionRow is now justify-between: actionGroup slot (left) + actionGroupRight (secondary + primary buttons), items centered."
       ]
     },
     {
@@ -3541,28 +3553,71 @@
       "variantProperties": {
         "saveStatus": [
           "saved",
-          "offline",
-          "saveStatus3",
-          "saveStatus4",
-          "saveStatus5",
-          "saveStatus6"
+          "n/a",
+          "unsaved"
         ],
         "breakpoint": [
-          "desktop",
-          "desktopTruncate",
-          "tabletMobile"
+          ">992px",
+          "<992px",
+          "<768px"
+        ],
+        "version": [
+          "default",
+          "template"
         ]
       },
-      "designOnlyAxes": [],
+      "designOnlyAxes": [
+        "breakpoint",
+        "saveStatus"
+      ],
       "axisToCodeProp": {
-        "saveStatus": "saveStatus",
-        "breakpoint": "breakpoint"
+        "version": "version"
       },
       "codeOnlyProps": [
         {
+          "name": "breakpoint",
+          "category": "layout",
+          "reason": "Figma breakpoint is a canvas-width axis (>992px / <992px / <768px). Code is responsive via media queries (auto, default) and the prop only forces a layout: desktop \u2194 >992px, tablet \u2194 <992px, smallTablet | mobile \u2194 <768px (two values so it follows every GlobalHeader breakpoint). tabletMobile is a deprecated alias of tablet."
+        },
+        {
+          "name": "saveStatus",
+          "category": "controlled-state",
+          "reason": "Maps Figma saveStatus saved | unsaved. Figma n/a only marks the <768px variant (no cloud) \u2014 code derives that from the layout. offline is a deprecated alias of unsaved."
+        },
+        {
+          "name": "showSaveStatus",
+          "category": "composition",
+          "reason": "Maps Figma boolean showSaveStatus."
+        },
+        {
+          "name": "moreMenuOptions",
+          "category": "composition",
+          "reason": "Items for the <768px ellipsis button (Figma annotation: Opens \"More\" menu). GlobalHeader adds Share / Remix below 576px for labLevel (Figma annotation)."
+        },
+        {
+          "name": "onMoreMenuAction",
+          "category": "event",
+          "reason": "More menu selection handler (code-only)."
+        },
+        {
+          "name": "startSlot",
+          "category": "composition",
+          "reason": "Maps Figma SLOT startSlot (version=template); presence = hasStartSlot."
+        },
+        {
+          "name": "middleSlot",
+          "category": "composition",
+          "reason": "Maps Figma SLOT middleSlot (version=template)."
+        },
+        {
+          "name": "endSlot",
+          "category": "composition",
+          "reason": "Maps Figma SLOT endSlot (version=template); presence = hasEndSlot."
+        },
+        {
           "name": "levelLabel",
           "category": "content",
-          "reason": "Dropdown label text; Figma text override."
+          "reason": "Dropdown label text (Figma text override) and the More menu heading; unused by version=template."
         },
         {
           "name": "levels",
@@ -3572,7 +3627,7 @@
         {
           "name": "activeLevelIndex",
           "category": "composition",
-          "reason": "Marks the current level; drives both the large rail bubble and the nested tabletMobile start icon."
+          "reason": "Marks the current level; drives the large rail bubble and the <992px active-bubble slot (Figma bubbleSlot3)."
         },
         {
           "name": "saveStatusLabel",
@@ -3597,7 +3652,7 @@
         {
           "name": "hasLeftAction",
           "category": "composition",
-          "reason": "Figma boolean hasLeftAction — leading outlined icon-only back button, tablet/mobile only."
+          "reason": "Figma boolean hasLeftAction \u2014 leading outlined icon-only back button, tablet/mobile only."
         },
         {
           "name": "onBackClick",
@@ -3611,12 +3666,24 @@
         }
       ],
       "notes": [
-        "Figma saveStatus3-6 are placeholder variant names for offline/saved at other breakpoints; code collapses to saved | offline.",
-        "Figma desktopTruncate is a separate variant because Figma cannot express hug-until-truncate; code handles it with flex-shrink + ellipsis.",
-        "Code breakpoint adds auto (960 + 600 media queries) and mobile (<600 number-only; cloud stays). Figma has no phone variant.",
-        "Figma's tabletMobile start icon is a green FA circle placeholder; code nests a small non-interactive ProgressBubble of the active level per design intent.",
-        "hasLeftAction is a Figma boolean on tabletMobile variants; desktop symbols omit the slot. Code defaults true and hides the slot on desktop via CSS."
-      ]
+        "2026-11-10: Figma refresh \u2014 breakpoints >992px / <992px / <768px (were desktop / desktopTruncate / tabletMobile); saveStatus saved | n/a | unsaved; new version=template with start/middle/end slots; new showSaveStatus.",
+        "<992px: back | dropdown + cloud | active bubble in its own 32px white slot | action (the active bubble no longer nests inside the dropdown).",
+        "<768px: back + ellipsis More menu | active bubble | action; dropdown and cloud fold away. The previous code-only phone fold (lesson-number dropdown) is retired.",
+        "Hug-until-truncate is still handled with flex-shrink + ellipsis (Figma has no separate truncate variant anymore).",
+        "hasLeftAction: Figma boolean; desktop symbols omit the slot. Code defaults true and hides the slot on desktop via CSS."
+      ],
+      "related": {
+        "progressBubble": {
+          "figmaName": "Progress Bubbles",
+          "nodeId": "17307:1165",
+          "notes": "Rail + active-slot bubbles."
+        },
+        "dropdown": {
+          "figmaName": "Menu List",
+          "nodeId": "971:4280",
+          "notes": "More menu (<768px) reuses the CADS Dropdown action role."
+        }
+      }
     },
     {
       "cadsName": "GlobalHeader",
@@ -3624,25 +3691,29 @@
       "nodeId": "17240:2903",
       "componentKey": null,
       "pageId": null,
-      "symbolCount": 12,
+      "symbolCount": 28,
       "variantProperties": {
         "state": [
+          "template",
           "standaloneProject",
+          "nonLabLesson",
           "labLevel",
           "teacherDashboard",
           "studentDashboard",
-          "tutorPlus",
-          "nonLabLesson"
+          "tutorPlus"
         ],
         "breakpoint": [
-          "biggest",
-          "smallest"
+          ">992",
+          "<992",
+          "<768",
+          "<576"
         ]
       },
-      "designOnlyAxes": [],
+      "designOnlyAxes": [
+        "breakpoint"
+      ],
       "axisToCodeProp": {
-        "state": "state",
-        "breakpoint": "breakpoint"
+        "state": "state"
       },
       "codeOnlyProps": [
         {
@@ -3674,12 +3745,73 @@
           "name": "navItems",
           "category": "composition",
           "reason": "Dashboard nav links; Figma hard-codes per-state button rows."
+        },
+        {
+          "name": "breakpoint",
+          "category": "layout",
+          "reason": "Figma breakpoint is a canvas-width axis (>992 / <992 / <768 / <576). Code is responsive via media queries (auto, default); the prop only forces a layout: desktop \u2194 >992, tablet \u2194 <992, smallTablet \u2194 <768, mobile \u2194 <576. tabletMobile is a deprecated alias of tablet."
+        },
+        {
+          "name": "startContent",
+          "category": "composition",
+          "reason": "Maps Figma SLOT startContent (template state); presence = hasStartContent."
+        },
+        {
+          "name": "centerContent",
+          "category": "composition",
+          "reason": "Maps Figma SLOT centerContent (template state); presence = hasCenterContent."
+        },
+        {
+          "name": "onNewProjectClick",
+          "category": "event",
+          "reason": "New project button handler."
+        },
+        {
+          "name": "onUsernameClick",
+          "category": "event",
+          "reason": "Account dropdown handler."
+        },
+        {
+          "name": "onHelpClick",
+          "category": "event",
+          "reason": "Help icon handler."
+        },
+        {
+          "name": "onMenuClick",
+          "category": "event",
+          "reason": "Hamburger handler."
+        },
+        {
+          "name": "onShareClick",
+          "category": "event",
+          "reason": "Share handler (header buttons; Progress Widget More menu for labLevel <576)."
+        },
+        {
+          "name": "onRemixClick",
+          "category": "event",
+          "reason": "Remix handler (header buttons; Progress Widget More menu for labLevel <576)."
+        },
+        {
+          "name": "onRenameClick",
+          "category": "event",
+          "reason": "Rename handler (standaloneProject)."
         }
       ],
       "notes": [
-        "Figma breakpoint biggest=1440 / smallest=960 map to code desktop / tabletMobile; code adds auto (960 + 600 media queries) and mobile (phone fold, not in Figma).",
-        "Phone <600 is code-only from the owner screenshot: favicon mark, ellipsis overflow for Share/Remix, username into hamburger, widget number-only (cloud stays)."
-      ]
+        "2026-11-10: Figma refresh \u2014 28 symbols: 7 states (new template with startContent / centerContent slots) \u00d7 4 breakpoints (>992 / <992 / <768 / <576; were biggest / smallest). Phone layout is now specified in Figma, replacing the earlier code-only fold.",
+        "<576: CodeAI mark (36.7\u00d723.5) replaces the wordmark; username hides; standaloneProject keeps icon-only Rename / Share / Remix but drops the title block; labLevel Share / Remix move into the Progress Widget More menu (Figma annotation). The previous ellipsis overflow is retired.",
+        "<992 and <768 header chrome is identical; only the nested Progress Widget differs.",
+        "navStartContent gap 12 for standaloneProject / template and labLevel below 992; 8 elsewhere. Logo has no trailing padding.",
+        "tutorPlus label leads with the FA custom-kit 'tutor' glyph (kit ea2d9d4413, 12px, gap 6) \u2014 exported from Figma as SVG (TutorIcon) because the kit font is not shipped.",
+        "Help / menu icon buttons use 16px glyphs (body/md); outlined icon buttons 12px."
+      ],
+      "related": {
+        "progressWidget": {
+          "figmaName": "Progress Widget",
+          "nodeId": "17307:1036",
+          "notes": "Centered for labLevel / nonLabLesson; follows the header breakpoint."
+        }
+      }
     }
   ]
 }

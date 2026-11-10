@@ -1,147 +1,190 @@
-import { jsxs as v, jsx as l } from "react/jsx-runtime";
-import { forwardRef as $ } from "react";
-import { FaIcon as D } from "../../icons/FaIcon.js";
+import { jsx as t, jsxs as d } from "react/jsx-runtime";
+import { forwardRef as _ } from "react";
+import { FaIcon as z } from "../../icons/FaIcon.js";
 import { Button as N } from "../button/Button.js";
-import { IconTooltip as E } from "../icon-tooltip/IconTooltip.js";
-import { ProgressBubble as L } from "../progress-bubble/ProgressBubble.js";
+import { Dropdown as j } from "../dropdown/Dropdown.js";
+import { IconTooltip as W } from "../icon-tooltip/IconTooltip.js";
+import { ProgressBubble as A } from "../progress-bubble/ProgressBubble.js";
 import e from "./progressWidget.module.scss.js";
-const I = "Saved 2 minutes ago", F = "Offline";
-function P(b, a) {
-  var t;
-  const n = (t = b.match(/\d+/)) == null ? void 0 : t[0];
-  return n || (a != null ? String(a + 1) : "");
-}
-const U = $(
-  function(a, n) {
+const M = "Saved 2 minutes ago", V = "Unsaved changes", R = "Offline", ee = _(
+  function(k, p) {
     const {
-      levelLabel: t,
+      version: C = "default",
+      levelLabel: i = "",
       levels: m = [],
       activeLevelIndex: s,
-      breakpoint: d = "auto",
-      saveStatus: i = "saved",
-      saveStatusLabel: S,
-      hasAction: u = !0,
-      actionLabel: A = "I finished",
-      onActionClick: k,
-      hasLeftAction: y = !0,
-      onBackClick: g,
-      onLevelSelectClick: C,
-      className: B = "",
-      ...T
-    } = a, r = s != null ? m[s] : void 0, p = S ?? (i === "offline" ? F : I), h = P(t, s), w = [
+      breakpoint: v = "auto",
+      saveStatus: r = "saved",
+      showSaveStatus: g = !0,
+      saveStatusLabel: y,
+      hasAction: B = !0,
+      actionLabel: T = "I finished",
+      onActionClick: E,
+      hasLeftAction: b = !0,
+      onBackClick: w,
+      onLevelSelectClick: I,
+      moreMenuOptions: $,
+      onMoreMenuAction: u,
+      startSlot: D,
+      middleSlot: P,
+      endSlot: U,
+      className: f = "",
+      ...h
+    } = k, c = v === "tabletMobile" ? "tablet" : v, x = [
       e.root,
-      d === "desktop" ? e.forceDesktop : "",
-      d === "tabletMobile" ? e.forceTabletMobile : "",
-      d === "mobile" ? e.forceMobile : "",
-      B
+      c === "desktop" ? e.forceDesktop : "",
+      c === "tablet" ? e.forceTablet : "",
+      c === "smallTablet" || c === "mobile" ? e.forceCompact : "",
+      b ? e.withLeftAction : "",
+      f
     ].filter(Boolean).join(" ");
-    return /* @__PURE__ */ v(
+    if (C === "template") {
+      const l = [
+        ["start", D],
+        ["middle", P],
+        ["end", U]
+      ];
+      return /* @__PURE__ */ t(
+        "div",
+        {
+          ref: p,
+          className: `${e.root} ${f}`,
+          "data-cads-component": "ProgressWidget",
+          "data-version": "template",
+          ...h,
+          children: l.map(
+            ([o, a]) => o === "middle" || a != null && a !== !1 ? /* @__PURE__ */ t(
+              "div",
+              {
+                className: `${e.templateSlot} ${o === "middle" ? e.templateMiddle : ""}`,
+                "data-slot": o,
+                children: a
+              },
+              o
+            ) : null
+          )
+        }
+      );
+    }
+    const n = s != null ? m[s] : void 0, S = r === "unsaved" || r === "offline", L = y ?? (r === "offline" ? R : r === "unsaved" ? V : M), F = [
+      ...i ? [{ type: "group", label: i }] : [],
+      ...$ ?? []
+    ], O = /* @__PURE__ */ t(
+      N,
+      {
+        variant: "outlined",
+        color: "secondary",
+        size: "extraSmall",
+        iconOnly: !0,
+        startIconName: "arrow-left",
+        "aria-label": "Back",
+        onClick: w
+      }
+    );
+    return /* @__PURE__ */ d(
       "div",
       {
-        ref: n,
-        className: w,
+        ref: p,
+        className: x,
         "data-cads-component": "ProgressWidget",
-        ...T,
+        ...h,
         children: [
-          y ? /* @__PURE__ */ l("div", { className: e.leftActionContainer, children: /* @__PURE__ */ l(
-            N,
+          /* @__PURE__ */ d("div", { className: e.leftActionContainer, children: [
+            b ? O : null,
+            /* @__PURE__ */ t("span", { className: e.moreMenu, children: /* @__PURE__ */ t(
+              j,
+              {
+                role: "action",
+                size: "extraSmall",
+                iconOnly: !0,
+                startIconName: "ellipsis",
+                buttonVariant: "outlined",
+                buttonColor: "secondary",
+                "aria-label": "More",
+                menuPlacement: "bottomLeft",
+                options: F,
+                onAction: (l) => u == null ? void 0 : u(l)
+              }
+            ) })
+          ] }),
+          /* @__PURE__ */ d("div", { className: e.dropdownContainer, children: [
+            /* @__PURE__ */ d(
+              "button",
+              {
+                type: "button",
+                className: e.levelSelect,
+                onClick: I,
+                "aria-label": `Current level: ${i}`,
+                children: [
+                  /* @__PURE__ */ t("span", { className: e.levelLabel, children: i }),
+                  /* @__PURE__ */ t(
+                    z,
+                    {
+                      name: "chevron-down",
+                      family: "solid",
+                      fontSize: "12px",
+                      className: e.chevron
+                    }
+                  )
+                ]
+              }
+            ),
+            g ? /* @__PURE__ */ t("span", { className: e.cloudSlot, children: /* @__PURE__ */ t(
+              W,
+              {
+                iconName: S ? "cloud-slash" : "cloud-check",
+                title: L,
+                placement: "bottom",
+                size: "extraSmall",
+                "aria-label": `Sync status: ${L}`,
+                triggerProps: {
+                  className: [
+                    e.cloudSync,
+                    S ? e.cloudSyncUnsaved : ""
+                  ].filter(Boolean).join(" ")
+                }
+              }
+            ) }) : null
+          ] }),
+          m.length > 0 ? /* @__PURE__ */ t("div", { className: e.bubbleSlot, children: m.map((l, o) => {
+            const a = o === s;
+            return /* @__PURE__ */ t(
+              A,
+              {
+                levelType: l.levelType,
+                status: l.status,
+                isAssessment: l.isAssessment,
+                isActive: a,
+                levelNumber: a ? o + 1 : void 0,
+                onClick: l.onClick,
+                "aria-label": l.label ?? `Level ${o + 1}`,
+                "aria-current": a ? "step" : void 0
+              },
+              o
+            );
+          }) }) : null,
+          n && s != null ? /* @__PURE__ */ t("div", { className: e.activeBubbleSlot, children: /* @__PURE__ */ t(
+            A,
             {
-              variant: "outlined",
-              color: "secondary",
-              size: "extraSmall",
-              iconOnly: !0,
-              startIconName: "arrow-left",
-              "aria-label": "Back",
-              onClick: g
+              levelType: n.levelType,
+              status: n.status,
+              isAssessment: n.isAssessment,
+              isActive: !0,
+              levelNumber: s + 1,
+              onClick: n.onClick,
+              "aria-label": n.label ?? `Level ${s + 1}`,
+              "aria-current": "step"
             }
           ) }) : null,
-          /* @__PURE__ */ v(
-            "div",
-            {
-              className: `${e.dropdownContainer} ${u ? e.withActionDivider : ""}`,
-              children: [
-                /* @__PURE__ */ v(
-                  "button",
-                  {
-                    type: "button",
-                    className: e.levelSelect,
-                    onClick: C,
-                    "aria-label": `Current level: ${t}`,
-                    children: [
-                      r ? /* @__PURE__ */ l("span", { className: e.nestedBubble, "aria-hidden": "true", children: /* @__PURE__ */ l(
-                        L,
-                        {
-                          interactive: !1,
-                          levelType: r.levelType,
-                          status: r.status,
-                          isAssessment: r.isAssessment
-                        }
-                      ) }) : null,
-                      /* @__PURE__ */ l("span", { className: e.levelLabel, children: t }),
-                      h ? /* @__PURE__ */ l("span", { className: e.levelNumber, "aria-hidden": "true", children: h }) : null,
-                      /* @__PURE__ */ l(
-                        D,
-                        {
-                          name: "chevron-down",
-                          family: "solid",
-                          fontSize: "12px",
-                          className: e.chevron
-                        }
-                      )
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ l("span", { className: e.cloudSlot, children: /* @__PURE__ */ l(
-                  E,
-                  {
-                    iconName: i === "offline" ? "cloud-slash" : "cloud-check",
-                    title: p,
-                    placement: "bottom",
-                    size: "extraSmall",
-                    "aria-label": i === "offline" ? "Sync status: offline" : `Sync status: ${p}`,
-                    triggerProps: {
-                      className: [
-                        e.cloudSync,
-                        i === "offline" ? e.cloudSyncOffline : ""
-                      ].filter(Boolean).join(" ")
-                    }
-                  }
-                ) })
-              ]
-            }
-          ),
-          m.length > 0 ? /* @__PURE__ */ l(
-            "div",
-            {
-              className: `${e.bubbleSlot} ${u ? e.withActionDivider : ""}`,
-              children: m.map((o, c) => {
-                const f = c === s;
-                return /* @__PURE__ */ l(
-                  L,
-                  {
-                    levelType: o.levelType,
-                    status: o.status,
-                    isAssessment: o.isAssessment,
-                    isActive: f,
-                    levelNumber: f ? c + 1 : void 0,
-                    onClick: o.onClick,
-                    "aria-label": o.label ?? `Level ${c + 1}`,
-                    "aria-current": f ? "step" : void 0
-                  },
-                  c
-                );
-              })
-            }
-          ) : null,
-          u ? /* @__PURE__ */ l("div", { className: e.actionContainer, children: /* @__PURE__ */ l(
+          B ? /* @__PURE__ */ t("div", { className: e.actionContainer, children: /* @__PURE__ */ t(
             N,
             {
               variant: "contained",
               color: "secondary",
               size: "extraSmall",
               endIconName: "arrow-right",
-              onClick: k,
-              children: A
+              onClick: E,
+              children: T
             }
           ) }) : null
         ]
@@ -150,6 +193,6 @@ const U = $(
   }
 );
 export {
-  U as ProgressWidget
+  ee as ProgressWidget
 };
 //# sourceMappingURL=ProgressWidget.js.map

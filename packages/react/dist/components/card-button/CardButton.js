@@ -1,9 +1,9 @@
-import { jsxs as f, jsx as t } from "react/jsx-runtime";
+import { jsxs as p, jsx as t } from "react/jsx-runtime";
 import C from "@mui/material/ButtonBase";
-import { forwardRef as b } from "react";
-import { FaIcon as p } from "../../icons/FaIcon.js";
+import { forwardRef as z } from "react";
+import { FaIcon as h } from "../../icons/FaIcon.js";
 import a from "./cardButton.module.scss.js";
-const B = {
+const E = {
   horizontal: {
     medium: { start: "var(--text-body-lg)", end: "var(--text-body-md)" },
     small: { start: "var(--text-body-md)", end: "var(--text-body-sm)" }
@@ -12,53 +12,56 @@ const B = {
     medium: { start: "var(--text-heading-md)", end: "var(--text-body-md)" },
     small: { start: "var(--text-heading-xs)", end: "var(--text-body-sm)" }
   }
-}, _ = b(
+}, F = z(
   function({
     layout: n = "horizontal",
     size: d = "medium",
-    title: u,
+    title: v,
     description: r,
     startIconName: o,
+    startIconColor: l,
     startContent: e,
     endIconName: s,
     selected: i,
-    fullWidth: h = !1,
-    className: v,
-    disabled: x,
-    ...l
-  }, N) {
-    const c = B[n][d], g = l.href != null, y = n === "horizontal" && !!s, m = e != null && e !== !1;
-    return process.env.NODE_ENV !== "production" && m && o && console.warn(
+    fullWidth: x = !1,
+    className: N,
+    style: c,
+    disabled: b,
+    ...m
+  }, g) {
+    const f = E[n][d], y = m.href != null, B = n === "horizontal" && !!s, u = e != null && e !== !1;
+    return process.env.NODE_ENV !== "production" && u && o && console.warn(
       `[CADS CardButton] startContent and startIconName are both set; rendering startContent and ignoring startIconName="${o}".`
     ), process.env.NODE_ENV !== "production" && n === "vertical" && s && console.warn(
       `[CADS CardButton] endIconName is only defined in Figma for layout="horizontal"; ignoring "${s}".`
-    ), /* @__PURE__ */ f(
+    ), /* @__PURE__ */ p(
       C,
       {
-        ref: N,
+        ref: g,
         disableRipple: !0,
-        disabled: x,
+        disabled: b,
         "data-layout": n,
         "data-size": d,
         "data-selected": i ? "" : void 0,
-        "data-full-width": h ? "" : void 0,
+        "data-full-width": x ? "" : void 0,
         "data-cads-press": "",
-        "aria-pressed": !g && i !== void 0 ? i : void 0,
-        className: [a.root, v].filter(Boolean).join(" "),
-        ...l,
+        "aria-pressed": !y && i !== void 0 ? i : void 0,
+        className: [a.root, N].filter(Boolean).join(" "),
+        style: l ? { ...c, "--cb-start-custom": l } : c,
+        ...m,
         children: [
-          m ? /* @__PURE__ */ t("span", { className: a.startContent, "data-slot": "start-content", children: e }) : o ? /* @__PURE__ */ t("span", { className: a.startIcon, "data-slot": "start-icon", children: /* @__PURE__ */ t(p, { name: o, family: "solid", fontSize: c.start }) }) : null,
-          /* @__PURE__ */ f("span", { className: a.content, children: [
-            /* @__PURE__ */ t("span", { className: a.title, children: u }),
+          u ? /* @__PURE__ */ t("span", { className: a.startContent, "data-slot": "start-content", children: e }) : o ? /* @__PURE__ */ t("span", { className: a.startIcon, "data-slot": "start-icon", children: /* @__PURE__ */ t(h, { name: o, family: "solid", fontSize: f.start }) }) : null,
+          /* @__PURE__ */ p("span", { className: a.content, children: [
+            /* @__PURE__ */ t("span", { className: a.title, children: v }),
             r != null && r !== "" ? /* @__PURE__ */ t("span", { className: a.description, children: r }) : null
           ] }),
-          y ? /* @__PURE__ */ t("span", { className: a.endIcon, "data-slot": "end-icon", children: /* @__PURE__ */ t(p, { name: s, family: "solid", fontSize: c.end }) }) : null
+          B ? /* @__PURE__ */ t("span", { className: a.endIcon, "data-slot": "end-icon", children: /* @__PURE__ */ t(h, { name: s, family: "solid", fontSize: f.end }) }) : null
         ]
       }
     );
   }
 );
 export {
-  _ as CardButton
+  F as CardButton
 };
 //# sourceMappingURL=CardButton.js.map

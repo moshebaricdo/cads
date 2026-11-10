@@ -8,46 +8,49 @@
     "componentKey": null,
     "relatedNodeIds": [
       "17307:1035",
+      "17949:1033",
       "17545:1660",
-      "17545:1574",
+      "17600:1380",
       "17432:2068",
-      "17545:1644"
+      "17545:1644",
+      "17307:1165"
     ],
-    "retrievedAt": "2026-09-03",
+    "retrievedAt": "2026-11-10",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
+    "taskPath": "Figma update",
+    "previousRecipe": "2026-09-03 (desktop / desktopTruncate / tabletMobile + code-only phone)",
     "figmaChanges": [
       "2026-09-03: initial build from Progress Widget set (17307:1036) — saveStatus × breakpoint (desktop / desktopTruncate / tabletMobile).",
       "2026-09-03: correction — bubbleSlot uses left/right dividers only (dropdown | bubbles | action). Figma paints a full border around bubbleSlot as a hug/fill workaround; the widget root already owns the outer stroke.",
       "2026-09-03: Figma update — tabletMobile hasLeftAction leading outlined extraSmall icon-only Back (arrow-left) in a left slot with a right divider (17546:1519). Desktop symbols omit the slot.",
-      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) — dropdown label is the lesson number; cloud stays. Figma has no phone Progress Widget variant."
+      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) — dropdown label is the lesson number; cloud stays. Figma has no phone Progress Widget variant.",
+      "2026-11-10: Figma refresh — breakpoints >992px / <992px / <768px; saveStatus saved | n/a | unsaved; version default | template (start/middle/end slots); showSaveStatus. <992: active bubble in its own 32px slot (no longer nested in the dropdown). <768: back + ellipsis More menu; dropdown + cloud fold away. Dropdown container gap 3 / px 3; cloud box 20 wide."
     ]
   },
   "axes": {
     "public": {
+      "version": [
+        "default",
+        "template"
+      ],
       "breakpoint": [
         "auto",
         "desktop",
-        "tabletMobile",
+        "tablet",
+        "smallTablet",
         "mobile"
       ],
       "saveStatus": [
         "saved",
-        "offline"
-      ],
-      "hasAction": [
-        true,
-        false
-      ],
-      "hasLeftAction": [
-        true,
-        false
+        "unsaved"
       ]
     },
-    "designOnly": [],
+    "designOnly": [
+      "breakpoint (canvas width)",
+      "saveStatus n/a (compact layout marker)"
+    ],
     "restrictedCombinations": []
   },
   "geometry": {
@@ -74,6 +77,22 @@
         "sizePx": "24",
         "padding": "0 3px",
         "icon": "arrow-left"
+      },
+      "desktop": {
+        "widthPx": "548 (Figma sample)",
+        "sections": "dropdown 287 (gap 3, px 3, cloud box 20) | rail 170 (px 8, gap 4) | action 91 (px 3)"
+      },
+      "tablet": {
+        "widthPx": "303",
+        "sections": "back 31 | dropdown 149 | active bubble 32 (px 2, white) | action 91"
+      },
+      "compact": {
+        "widthPx": "180",
+        "sections": "back + More 57 (gap 2) | active bubble 32 | action 91"
+      },
+      "template": {
+        "widthPx": "350",
+        "sections": "start (px 3, gap 3) | middle (white) | end"
       }
     },
     "layout": {
@@ -162,18 +181,17 @@
     ],
     "cases": [
       {
-        "id": "progress-widget-desktop-saved-light",
+        "id": "progress-widget-gt992-saved-light",
         "figmaNodeId": "17307:1035",
-        "figmaVariant": "saveStatus=saved, breakpoint=desktop",
+        "figmaVariant": "saveStatus=saved, breakpoint=>992px",
         "mode": "light",
         "props": {
-          "breakpoint": "desktop",
-          "saveStatus": "saved"
+          "breakpoint": "desktop"
         },
         "state": "default",
         "viewport": {
           "width": 620,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
@@ -181,43 +199,49 @@
         },
         "expectedVariables": [
           "--background-neutral-secondary",
-          "--border-neutral-primary"
+          "--border-neutral-primary",
+          "--background-neutral-primary"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
         "mismatches": []
       },
       {
-        "id": "progress-widget-desktop-offline-light",
+        "id": "progress-widget-gt992-unsaved-light",
         "figmaNodeId": "17432:2068",
-        "figmaVariant": "saveStatus=offline, breakpoint=desktop",
+        "figmaVariant": "saveStatus=unsaved, breakpoint=>992px",
         "mode": "light",
         "props": {
           "breakpoint": "desktop",
-          "saveStatus": "offline"
+          "saveStatus": "unsaved"
         },
         "state": "default",
         "viewport": {
           "width": 620,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
         "expectedVariables": [
-          "--text-neutral-tertiary"
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary",
+          "--text-neutral-placeholder"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
         "mismatches": []
       },
       {
-        "id": "progress-widget-desktop-truncate-light",
-        "figmaNodeId": "17545:1574",
-        "figmaVariant": "saveStatus=saveStatus4, breakpoint=desktopTruncate",
+        "id": "progress-widget-gt992-truncate-light",
+        "figmaNodeId": "17307:1035",
+        "figmaVariant": "saveStatus=saved, breakpoint=>992px (constrained)",
         "mode": "light",
         "props": {
           "breakpoint": "desktop"
@@ -225,106 +249,173 @@
         "state": "default",
         "viewport": {
           "width": 480,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
+          "heightPx": "30",
           "widthPx": "416"
         },
-        "expectedVariables": [],
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": [],
-        "notes": [
-          "Label truncates with ellipsis at constrained width — no overflow."
-        ]
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
       },
       {
-        "id": "progress-widget-tablet-mobile-light",
+        "id": "progress-widget-lt992-saved-light",
         "figmaNodeId": "17545:1660",
-        "figmaVariant": "saveStatus=saveStatus6, breakpoint=tabletMobile",
+        "figmaVariant": "saveStatus=saved, breakpoint=<992px",
         "mode": "light",
         "props": {
-          "breakpoint": "tabletMobile"
+          "breakpoint": "tablet"
         },
         "state": "default",
         "viewport": {
           "width": 400,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
-          "widthPx": "328"
+          "heightPx": "30",
+          "widthPx": "303",
+          "activeSlot": "32"
         },
         "expectedVariables": [
-          "--border-neutral-primary"
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": [],
-        "notes": [
-          "Nested active-level bubble replaces Figma's green circle placeholder per design intent.",
-          "Leading outlined Back button (hasLeftAction default true)."
-        ]
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
       },
       {
-        "id": "progress-widget-tablet-mobile-no-left-action-light",
-        "figmaNodeId": "17545:1660",
-        "figmaVariant": "saveStatus=saveStatus6, breakpoint=tabletMobile, hasLeftAction=false",
+        "id": "progress-widget-lt992-unsaved-light",
+        "figmaNodeId": "17545:1644",
+        "figmaVariant": "saveStatus=unsaved, breakpoint=<992px",
         "mode": "light",
         "props": {
-          "breakpoint": "tabletMobile",
+          "breakpoint": "tablet",
+          "saveStatus": "unsaved"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-lt992-no-left-action-light",
+        "figmaNodeId": "17545:1660",
+        "figmaVariant": "hasLeftAction=false, breakpoint=<992px",
+        "mode": "light",
+        "props": {
+          "breakpoint": "tablet",
           "hasLeftAction": false
         },
         "state": "default",
         "viewport": {
           "width": 400,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
-        "expectedVariables": [],
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": [],
-        "notes": [
-          "Boolean off — no leading back slot."
-        ]
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
       },
       {
-        "id": "progress-widget-phone-light",
-        "figmaNodeId": null,
-        "figmaVariant": "code-only phone fold",
+        "id": "progress-widget-lt768-light",
+        "figmaNodeId": "17600:1380",
+        "figmaVariant": "saveStatus=n/a, breakpoint=<768px",
         "mode": "light",
         "props": {
           "breakpoint": "mobile"
         },
         "state": "default",
         "viewport": {
-          "width": 390,
-          "height": 80,
+          "width": 260,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
-        "expectedVariables": [],
+        "expectedGeometry": {
+          "heightPx": "30",
+          "widthPx": "180"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": [],
-        "notes": [
-          "Dropdown shows lesson number from levelLabel (6); cloud stays."
-        ]
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-template-light",
+        "figmaNodeId": "17949:1033",
+        "figmaVariant": "version=template",
+        "mode": "light",
+        "props": {
+          "version": "template"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 400,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "30",
+          "widthPx": "350"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
       },
       {
         "id": "progress-widget-no-action-light",
-        "figmaNodeId": null,
+        "figmaNodeId": "17307:1035",
         "figmaVariant": "hasAction=false",
         "mode": "light",
         "props": {
@@ -334,28 +425,82 @@
         "state": "default",
         "viewport": {
           "width": 620,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
-        "expectedVariables": [],
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
         "referenceScreenshot": null,
-        "browserScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-gt992-saved-dark",
+        "figmaNodeId": "17307:1035",
+        "figmaVariant": "saveStatus=saved, breakpoint=>992px",
+        "mode": "dark",
+        "props": {
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 620,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pending",
+        "mismatches": []
+      },
+      {
+        "id": "progress-widget-lt768-dark",
+        "figmaNodeId": "17600:1380",
+        "figmaVariant": "breakpoint=<768px",
+        "mode": "dark",
+        "props": {
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 260,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "30"
+        },
+        "expectedVariables": [
+          "--background-neutral-secondary",
+          "--border-neutral-primary",
+          "--background-neutral-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/ProgressWidget.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
         "result": "pending",
         "mismatches": []
       }
     ]
   },
   "acceptedDifferences": [
-    {
-      "description": "Figma's tabletMobile dropdown start icon is a green FA circle; code nests a small non-interactive ProgressBubble of the active level.",
-      "reason": "Explicit design intent from the component owner — Figma used a placeholder because nesting the live bubble set was impractical.",
-      "owner": "user request (2026-09-03)",
-      "affectedCases": [
-        "progress-widget-tablet-mobile-light"
-      ]
-    },
     {
       "description": "Figma desktopTruncate is a discrete variant; code has no separate breakpoint value.",
       "reason": "Figma cannot express hug-until-truncate; code uses flex-shrink + min-width: 0 + ellipsis so truncation emerges from container width.",
@@ -375,30 +520,31 @@
       ]
     },
     {
-      "description": "Phone fold (<600 / breakpoint=mobile) is code-only — Figma Progress Widget has no phone variant.",
-      "reason": "Owner request: dropdown shows the lesson number from levelLabel; cloud stays. Same 600px cut as Global Header.",
-      "owner": "user request (2026-09-03)",
-      "affectedCases": [
-        "progress-widget-phone-light"
-      ]
-    },
-    {
       "description": "Cloud tooltip (Saved X minutes ago / Offline) is code-only.",
       "reason": "Requested behavior; Figma models no hover surface for the cloud icon.",
       "owner": "user request (2026-09-03)",
       "affectedCases": [
         "all"
       ]
+    },
+    {
+      "description": "More menu contents are code-defined (levelLabel heading + moreMenuOptions); Figma only annotates 'Opens \"More\" menu.'",
+      "reason": "No menu spec in Figma; GlobalHeader feeds Share/Remix below 576 per the header annotation.",
+      "owner": "agent (2026-11-10) — confirm with design",
+      "affectedCases": [
+        "progress-widget-lt768-light"
+      ]
     }
   ],
   "evidence": {
-    "apiAudit": "2026-09-03 — ProgressWidget invented-prop/event handlers documented; remaining enum-gap warnings are Figma placeholder saveStatus3–6 and desktopTruncate",
+    "apiAudit": "pnpm figma:audit-props -- --strict → ProgressWidget 0 error / 0 warn / 0 escalate",
     "typecheck": "pass",
     "build": "pass",
-    "docsBuild": "llms.txt regenerated; fixtures + playground updated",
+    "docsBuild": "pass",
     "correctionPasses": [
       "2026-09-03: fixture + playground captures vs Figma 17307:1035 / 17307:1165. Removed bubbleSlot full box (left/right dividers only). Recaptured desktop + tabletMobile.",
-      "2026-09-03: added tabletMobile hasLeftAction back slot vs Figma 17545:1660."
+      "2026-09-03: added tabletMobile hasLeftAction back slot vs Figma 17545:1660.",
+      "2026-11-10: DOM-measured sections — desktop 287.6 | 169 (+1 rule) | 92.9; tablet 30 | 146 (fixture-constrained) | 32 | 92.9; compact 56 | 32 | 92.9 (=182.9 incl. root border vs Figma 180 incl. inside stroke); template 117/118/118. Continue Button +0.9px vs Figma is text rendering."
     ]
   }
 }

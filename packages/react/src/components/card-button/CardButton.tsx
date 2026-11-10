@@ -1,5 +1,5 @@
 import ButtonBase from "@mui/material/ButtonBase";
-import { forwardRef } from "react";
+import { forwardRef, type CSSProperties } from "react";
 import { FaIcon } from "../../icons/FaIcon";
 import styles from "./cardButton.module.scss";
 import type { CardButtonLayout, CardButtonProps, CardButtonSize } from "./types";
@@ -41,11 +41,13 @@ export const CardButton = forwardRef<HTMLButtonElement, CardButtonProps>(
       title,
       description,
       startIconName,
+      startIconColor,
       startContent,
       endIconName,
       selected,
       fullWidth = false,
       className,
+      style,
       disabled,
       ...rest
     },
@@ -86,6 +88,11 @@ export const CardButton = forwardRef<HTMLButtonElement, CardButtonProps>(
         data-cads-press=""
         aria-pressed={!isLink && selected !== undefined ? selected : undefined}
         className={[styles.root, className].filter(Boolean).join(" ")}
+        style={
+          startIconColor
+            ? ({ ...style, "--cb-start-custom": startIconColor } as CSSProperties)
+            : style
+        }
         {...rest}
       >
         {hasStartContent ? (

@@ -1,45 +1,40 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, type ReactNode } from "react";
 import { FaIcon } from "../../icons/FaIcon";
 import { Button } from "../button";
+import { Dropdown } from "../dropdown";
+import type { DropdownOption } from "../dropdown/types";
 import { IconTooltip } from "../icon-tooltip";
 import { ProgressBubble } from "../progress-bubble";
 import styles from "./progressWidget.module.scss";
 import type { ProgressWidgetProps } from "./types";
 
 const DEFAULT_SAVED_LABEL = "Saved 2 minutes ago";
+const DEFAULT_UNSAVED_LABEL = "Unsaved changes";
 const DEFAULT_OFFLINE_LABEL = "Offline";
 
 /**
  * Lab progress widget from the CADS Global Header (Figma 17307:1036).
  *
- * Desktop (≥960px): level dropdown (hugs its label, truncates when the
+ * Desktop (≥992px): level dropdown (hugs its label, truncates when the
  * viewport forces it) + cloud sync status + bubble rail + action button.
- * Tablet (600–959px): the rail folds away, the active level's bubble
- * nests inside the dropdown as a small non-interactive start icon, and a
- * leading outlined back button appears when `hasLeftAction` (Figma default).
- * Phone (<600px): same fold, dropdown label is the lesson number instead
- * of the full name (cloud stays).
+ * Tablet (768–991px): leading back button · dropdown + cloud · the active
+ * level bubble in its own slot · action.
+ * Compact (<768px): back + ellipsis "More" menu · active bubble · action —
+ * the dropdown and cloud fold away (Figma `<768px`, saveStatus `n/a`).
+ * `version="template"` renders three blank slots in the same chrome.
  */
-
-function resolveLevelNumber(
-  levelLabel: string,
-  activeLevelIndex?: number,
-): string {
-  const fromLabel = levelLabel.match(/\d+/)?.[0];
-  if (fromLabel) return fromLabel;
-  if (activeLevelIndex != null) return String(activeLevelIndex + 1);
-  return "";
-}
 export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
   function ProgressWidget(props, ref) {
     const {
-      levelLabel,
+      version = "default",
+      levelLabel = "",
       levels = [],
       activeLevelIndex,
       breakpoint = "auto",
       saveStatus = "saved",
+      showSaveStatus = true,
       saveStatusLabel,
       hasAction = true,
       actionLabel = "I finished",
@@ -47,28 +42,90 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
       hasLeftAction = true,
       onBackClick,
       onLevelSelectClick,
+      moreMenuOptions,
+      onMoreMenuAction,
+      startSlot,
+      middleSlot,
+      endSlot,
       className = "",
       ...rest
     } = props;
 
-    const activeLevel =
-      activeLevelIndex != null ? levels[activeLevelIndex] : undefined;
-
-    const tooltipLabel =
-      saveStatusLabel ??
-      (saveStatus === "offline" ? DEFAULT_OFFLINE_LABEL : DEFAULT_SAVED_LABEL);
-
-    const levelNumber = resolveLevelNumber(levelLabel, activeLevelIndex);
+    const resolvedBreakpoint =
+      breakpoint === "tabletMobile" ? "tablet" : breakpoint;
 
     const rootClasses = [
       styles.root,
-      breakpoint === "desktop" ? styles.forceDesktop : "",
-      breakpoint === "tabletMobile" ? styles.forceTabletMobile : "",
-      breakpoint === "mobile" ? styles.forceMobile : "",
+      resolvedBreakpoint === "desktop" ? styles.forceDesktop : "",
+      resolvedBreakpoint === "tablet" ? styles.forceTablet : "",
+      resolvedBreakpoint === "smallTablet" || resolvedBreakpoint === "mobile"
+        ? styles.forceCompact
+        : "",
+      hasLeftAction ? styles.withLeftAction : "",
       className,
     ]
       .filter(Boolean)
       .join(" ");
+
+    if (version === "template") {
+      const slots: [string, ReactNode][] = [
+        ["start", startSlot],
+        ["middle", middleSlot],
+        ["end", endSlot],
+      ];
+      return (
+        <div
+          ref={ref}
+          className={`${styles.root} ${className}`}
+          data-cads-component="ProgressWidget"
+          data-version="template"
+          {...rest}
+        >
+          {slots.map(([name, content]) =>
+            name === "middle" || (content != null && content !== false) ? (
+              <div
+                key={name}
+                className={`${styles.templateSlot} ${
+                  name === "middle" ? styles.templateMiddle : ""
+                }`}
+                data-slot={name}
+              >
+                {content}
+              </div>
+            ) : null,
+          )}
+        </div>
+      );
+    }
+
+    const activeLevel =
+      activeLevelIndex != null ? levels[activeLevelIndex] : undefined;
+
+    const isUnsaved = saveStatus === "unsaved" || saveStatus === "offline";
+    const tooltipLabel =
+      saveStatusLabel ??
+      (saveStatus === "offline"
+        ? DEFAULT_OFFLINE_LABEL
+        : saveStatus === "unsaved"
+          ? DEFAULT_UNSAVED_LABEL
+          : DEFAULT_SAVED_LABEL);
+
+    const moreOptions: DropdownOption[] = [
+      ...(levelLabel ? [{ type: "group" as const, label: levelLabel }] : []),
+      ...(moreMenuOptions ?? []),
+    ];
+
+    const backButton = (
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="extraSmall"
+        iconOnly
+        startIconName="arrow-left"
+        aria-label="Back"
+        onClick={onBackClick}
+      />
+    );
 
     return (
       <div
@@ -77,46 +134,33 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
         data-cads-component="ProgressWidget"
         {...rest}
       >
-        {hasLeftAction ? (
-          <div className={styles.leftActionContainer}>
-            <Button
-              variant="outlined"
-              color="secondary"
+        {/* Tablet: back only. Compact: back + More. Desktop: hidden. */}
+        <div className={styles.leftActionContainer}>
+          {hasLeftAction ? backButton : null}
+          <span className={styles.moreMenu}>
+            <Dropdown
+              role="action"
               size="extraSmall"
               iconOnly
-              startIconName="arrow-left"
-              aria-label="Back"
-              onClick={onBackClick}
+              startIconName="ellipsis"
+              buttonVariant="outlined"
+              buttonColor="secondary"
+              aria-label="More"
+              menuPlacement="bottomLeft"
+              options={moreOptions}
+              onAction={(value) => onMoreMenuAction?.(value)}
             />
-          </div>
-        ) : null}
-        <div
-          className={`${styles.dropdownContainer} ${
-            hasAction ? styles.withActionDivider : ""
-          }`}
-        >
+          </span>
+        </div>
+
+        <div className={styles.dropdownContainer}>
           <button
             type="button"
             className={styles.levelSelect}
             onClick={onLevelSelectClick}
             aria-label={`Current level: ${levelLabel}`}
           >
-            {activeLevel ? (
-              <span className={styles.nestedBubble} aria-hidden="true">
-                <ProgressBubble
-                  interactive={false}
-                  levelType={activeLevel.levelType}
-                  status={activeLevel.status}
-                  isAssessment={activeLevel.isAssessment}
-                />
-              </span>
-            ) : null}
             <span className={styles.levelLabel}>{levelLabel}</span>
-            {levelNumber ? (
-              <span className={styles.levelNumber} aria-hidden="true">
-                {levelNumber}
-              </span>
-            ) : null}
             <FaIcon
               name="chevron-down"
               family="solid"
@@ -124,35 +168,29 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
               className={styles.chevron}
             />
           </button>
-          <span className={styles.cloudSlot}>
-            <IconTooltip
-              iconName={saveStatus === "offline" ? "cloud-slash" : "cloud-check"}
-              title={tooltipLabel}
-              placement="bottom"
-              size="extraSmall"
-              aria-label={
-                saveStatus === "offline"
-                  ? "Sync status: offline"
-                  : `Sync status: ${tooltipLabel}`
-              }
-              triggerProps={{
-                className: [
-                  styles.cloudSync,
-                  saveStatus === "offline" ? styles.cloudSyncOffline : "",
-                ]
-                  .filter(Boolean)
-                  .join(" "),
-              }}
-            />
-          </span>
+          {showSaveStatus ? (
+            <span className={styles.cloudSlot}>
+              <IconTooltip
+                iconName={isUnsaved ? "cloud-slash" : "cloud-check"}
+                title={tooltipLabel}
+                placement="bottom"
+                size="extraSmall"
+                aria-label={`Sync status: ${tooltipLabel}`}
+                triggerProps={{
+                  className: [
+                    styles.cloudSync,
+                    isUnsaved ? styles.cloudSyncUnsaved : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" "),
+                }}
+              />
+            </span>
+          ) : null}
         </div>
 
         {levels.length > 0 ? (
-          <div
-            className={`${styles.bubbleSlot} ${
-              hasAction ? styles.withActionDivider : ""
-            }`}
-          >
+          <div className={styles.bubbleSlot}>
             {levels.map((level, index) => {
               const isActive = index === activeLevelIndex;
               return (
@@ -169,6 +207,21 @@ export const ProgressWidget = forwardRef<HTMLDivElement, ProgressWidgetProps>(
                 />
               );
             })}
+          </div>
+        ) : null}
+
+        {activeLevel && activeLevelIndex != null ? (
+          <div className={styles.activeBubbleSlot}>
+            <ProgressBubble
+              levelType={activeLevel.levelType}
+              status={activeLevel.status}
+              isAssessment={activeLevel.isAssessment}
+              isActive
+              levelNumber={activeLevelIndex + 1}
+              onClick={activeLevel.onClick}
+              aria-label={activeLevel.label ?? `Level ${activeLevelIndex + 1}`}
+              aria-current="step"
+            />
           </div>
         ) : null}
 

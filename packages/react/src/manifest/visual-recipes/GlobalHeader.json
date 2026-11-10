@@ -7,32 +7,52 @@
     "publicNodeId": "17240:2903",
     "componentKey": null,
     "relatedNodeIds": [
-      "17240:2947",
-      "17240:3364",
+      "17956:2170",
+      "17956:2305",
+      "17956:2371",
+      "17956:2431",
       "17240:2904",
       "17240:3323",
+      "17600:1709",
+      "17600:2350",
+      "17240:3175",
+      "17240:3576",
+      "17600:1881",
+      "17600:2479",
+      "17240:2947",
+      "17240:3364",
+      "17600:1750",
+      "17600:2383",
       "17240:3100",
       "17240:3516",
+      "17600:1789",
+      "17600:2411",
       "17240:3138",
-      "17240:3175",
+      "17240:3546",
+      "17600:1819",
+      "17600:2433",
       "17406:627",
       "17406:664",
+      "17600:1849",
+      "17600:2455",
       "17307:1036"
     ],
-    "retrievedAt": "2026-09-03",
+    "retrievedAt": "2026-11-10",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
-    "previousRecipe": null,
+    "taskPath": "Figma update",
+    "previousRecipe": "2026-09-03 (6 states × biggest/smallest + code-only phone fold)",
     "figmaChanges": [
       "2026-09-03: initial build from Global Header set (17240:2903) — state (6) × breakpoint (biggest 1440 / smallest 960).",
-      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) from owner screenshot — favicon mark, ellipsis overflow, username into hamburger, widget number-only (cloud stays). Figma has no phone variant."
+      "2026-09-03: code-only phone fold (<600 / breakpoint=mobile) from owner screenshot — favicon mark, ellipsis overflow, username into hamburger, widget number-only (cloud stays). Figma has no phone variant.",
+      "2026-11-10: Figma refresh — 28 symbols: new template state (startContent / centerContent slots) × breakpoints >992 / <992 / <768 / <576. Phone now specified in Figma (mark logo, menu-only end cluster, standalone icon actions without title, labLevel Share/Remix → Progress Widget More menu). Overflow ellipsis retired. tutorPlus gains kit 'tutor' glyph. navStart gap 12 for standalone/template/labLevel (lab 0 on <576; user-confirmed 2026-11-10 — the lab >992 Figma symbol's 8px was an outlier). Logo padding-right removed. Help/menu glyphs 16px."
     ]
   },
   "axes": {
     "public": {
       "state": [
+        "template",
         "labLevel",
         "nonLabLesson",
         "standaloneProject",
@@ -43,16 +63,20 @@
       "breakpoint": [
         "auto",
         "desktop",
-        "tabletMobile",
+        "tablet",
+        "smallTablet",
         "mobile"
       ]
     },
-    "designOnly": [],
+    "designOnly": [
+      "breakpoint (Figma canvas width; code prop forces a layout)"
+    ],
     "restrictedCombinations": [
       "progressWidgetProps only applies to labLevel / nonLabLesson.",
       "projectTitle / projectSaveStatusText only apply to standaloneProject.",
       "tutorLabel only applies to tutorPlus.",
-      "navItems only apply to teacherDashboard / studentDashboard (desktop)."
+      "navItems only apply to teacherDashboard / studentDashboard (desktop).",
+      "startContent / centerContent only apply to template."
     ]
   },
   "geometry": {
@@ -64,7 +88,8 @@
       "logo": {
         "heightPx": "24",
         "widthPx": "141.876",
-        "paddingRight": "12"
+        "paddingRight": "0",
+        "mobile": "CodeAI mark 36.689×23.533 (<576)"
       },
       "chromeButton": {
         "heightPx": "24",
@@ -73,7 +98,8 @@
       },
       "iconButton": {
         "sizePx": "24",
-        "padding": "4"
+        "padding": "4",
+        "glyph": "16 text icon buttons (help / menu); 12 outlined icon buttons"
       },
       "usernameDropdown": {
         "widthPx": "95"
@@ -81,6 +107,14 @@
       "rightCluster": {
         "heightPx": "40",
         "gap": "8"
+      },
+      "navStartContent": {
+        "gap": "8; 12 for standaloneProject / template / labLevel; 0 when only the mark (lab <576)"
+      },
+      "tutorLabel": {
+        "gap": "6",
+        "glyph": "FA kit tutor 12px → SVG 18×12",
+        "label": "14/22 semi-bold"
       }
     },
     "layout": {
@@ -200,9 +234,96 @@
     ],
     "cases": [
       {
-        "id": "global-header-lab-desktop-light",
+        "id": "global-header-template-gt992-light",
+        "figmaNodeId": "17956:2170",
+        "figmaVariant": "state=template, breakpoint=>992",
+        "mode": "light",
+        "props": {
+          "state": "template",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-standalone-gt992-light",
+        "figmaNodeId": "17240:2904",
+        "figmaVariant": "state=standaloneProject, breakpoint=>992",
+        "mode": "light",
+        "props": {
+          "state": "standaloneProject",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-non-lab-gt992-light",
+        "figmaNodeId": "17240:3175",
+        "figmaVariant": "state=nonLabLesson, breakpoint=>992",
+        "mode": "light",
+        "props": {
+          "state": "nonLabLesson",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-gt992-light",
         "figmaNodeId": "17240:2947",
-        "figmaVariant": "state=labLevel, breakpoint=biggest",
+        "figmaVariant": "state=labLevel, breakpoint=>992",
         "mode": "light",
         "props": {
           "state": "labLevel",
@@ -211,7 +332,7 @@
         "state": "default",
         "viewport": {
           "width": 1440,
-          "height": 80,
+          "height": 160,
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
@@ -219,41 +340,599 @@
         },
         "expectedVariables": [
           "--background-brand-primary",
-          "--border-neutral-white-fixed"
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
         "mismatches": []
       },
       {
-        "id": "global-header-lab-mobile-light",
-        "figmaNodeId": "17240:3364",
-        "figmaVariant": "state=labLevel, breakpoint=smallest",
+        "id": "global-header-teacher-gt992-light",
+        "figmaNodeId": "17240:3100",
+        "figmaVariant": "state=teacherDashboard, breakpoint=>992",
         "mode": "light",
         "props": {
-          "state": "labLevel",
-          "breakpoint": "tabletMobile"
+          "state": "teacherDashboard",
+          "breakpoint": "desktop"
         },
         "state": "default",
         "viewport": {
-          "width": 960,
-          "height": 80,
+          "width": 1440,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
-        "expectedVariables": [],
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
         "mismatches": []
       },
       {
-        "id": "global-header-lab-phone-light",
-        "figmaNodeId": null,
-        "figmaVariant": "code-only phone fold",
+        "id": "global-header-student-gt992-light",
+        "figmaNodeId": "17240:3138",
+        "figmaVariant": "state=studentDashboard, breakpoint=>992",
+        "mode": "light",
+        "props": {
+          "state": "studentDashboard",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-tutor-gt992-light",
+        "figmaNodeId": "17406:627",
+        "figmaVariant": "state=tutorPlus, breakpoint=>992",
+        "mode": "light",
+        "props": {
+          "state": "tutorPlus",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-template-lt992-light",
+        "figmaNodeId": "17956:2305",
+        "figmaVariant": "state=template, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "template",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-standalone-lt992-light",
+        "figmaNodeId": "17240:3323",
+        "figmaVariant": "state=standaloneProject, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "standaloneProject",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-non-lab-lt992-light",
+        "figmaNodeId": "17240:3576",
+        "figmaVariant": "state=nonLabLesson, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "nonLabLesson",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-lt992-light",
+        "figmaNodeId": "17240:3364",
+        "figmaVariant": "state=labLevel, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-teacher-lt992-light",
+        "figmaNodeId": "17240:3516",
+        "figmaVariant": "state=teacherDashboard, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "teacherDashboard",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-student-lt992-light",
+        "figmaNodeId": "17240:3546",
+        "figmaVariant": "state=studentDashboard, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "studentDashboard",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-tutor-lt992-light",
+        "figmaNodeId": "17406:664",
+        "figmaVariant": "state=tutorPlus, breakpoint=<992",
+        "mode": "light",
+        "props": {
+          "state": "tutorPlus",
+          "breakpoint": "tablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 992,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-template-lt768-light",
+        "figmaNodeId": "17956:2371",
+        "figmaVariant": "state=template, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "template",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-standalone-lt768-light",
+        "figmaNodeId": "17600:1709",
+        "figmaVariant": "state=standaloneProject, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "standaloneProject",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-non-lab-lt768-light",
+        "figmaNodeId": "17600:1881",
+        "figmaVariant": "state=nonLabLesson, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "nonLabLesson",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-lt768-light",
+        "figmaNodeId": "17600:1750",
+        "figmaVariant": "state=labLevel, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-teacher-lt768-light",
+        "figmaNodeId": "17600:1789",
+        "figmaVariant": "state=teacherDashboard, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "teacherDashboard",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-student-lt768-light",
+        "figmaNodeId": "17600:1819",
+        "figmaVariant": "state=studentDashboard, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "studentDashboard",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-tutor-lt768-light",
+        "figmaNodeId": "17600:1849",
+        "figmaVariant": "state=tutorPlus, breakpoint=<768",
+        "mode": "light",
+        "props": {
+          "state": "tutorPlus",
+          "breakpoint": "smallTablet"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 768,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-template-lt576-light",
+        "figmaNodeId": "17956:2431",
+        "figmaVariant": "state=template, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "template",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-standalone-lt576-light",
+        "figmaNodeId": "17600:2350",
+        "figmaVariant": "state=standaloneProject, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "standaloneProject",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-non-lab-lt576-light",
+        "figmaNodeId": "17600:2479",
+        "figmaVariant": "state=nonLabLesson, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "nonLabLesson",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-lt576-light",
+        "figmaNodeId": "17600:2383",
+        "figmaVariant": "state=labLevel, breakpoint=<576",
         "mode": "light",
         "props": {
           "state": "labLevel",
@@ -261,8 +940,124 @@
         },
         "state": "default",
         "viewport": {
-          "width": 390,
-          "height": 80,
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-teacher-lt576-light",
+        "figmaNodeId": "17600:2411",
+        "figmaVariant": "state=teacherDashboard, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "teacherDashboard",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-student-lt576-light",
+        "figmaNodeId": "17600:2433",
+        "figmaVariant": "state=studentDashboard, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "studentDashboard",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-tutor-lt576-light",
+        "figmaNodeId": "17600:2455",
+        "figmaVariant": "state=tutorPlus, breakpoint=<576",
+        "mode": "light",
+        "props": {
+          "state": "tutorPlus",
+          "breakpoint": "mobile"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 576,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
+        "expectedVariables": [
+          "--background-brand-primary",
+          "--border-neutral-white-fixed",
+          "--text-neutral-white-fixed"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "global-header-lab-gt992-dark",
+        "figmaNodeId": "17240:2947",
+        "figmaVariant": "state=labLevel, breakpoint=>992",
+        "mode": "dark",
+        "props": {
+          "state": "labLevel",
+          "breakpoint": "desktop"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 160,
           "deviceScaleFactor": 1
         },
         "expectedGeometry": {
@@ -272,105 +1067,35 @@
           "--background-brand-primary"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
         "result": "pending",
-        "mismatches": [],
-        "notes": [
-          "Favicon mark, ellipsis overflow, number-only widget (cloud stays), username hidden."
-        ]
+        "mismatches": []
       },
       {
-        "id": "global-header-standalone-desktop-light",
-        "figmaNodeId": "17240:2904",
-        "figmaVariant": "state=standaloneProject, breakpoint=biggest",
-        "mode": "light",
+        "id": "global-header-lab-lt576-dark",
+        "figmaNodeId": "17600:2383",
+        "figmaVariant": "state=labLevel, breakpoint=<576",
+        "mode": "dark",
         "props": {
-          "state": "standaloneProject",
-          "breakpoint": "desktop"
+          "state": "labLevel",
+          "breakpoint": "mobile"
         },
         "state": "default",
         "viewport": {
-          "width": 1440,
-          "height": 80,
+          "width": 576,
+          "height": 160,
           "deviceScaleFactor": 1
         },
-        "expectedGeometry": {},
+        "expectedGeometry": {
+          "heightPx": "48"
+        },
         "expectedVariables": [
-          "--text-neutral-white-fixed"
+          "--background-brand-primary"
         ],
         "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": []
-      },
-      {
-        "id": "global-header-teacher-desktop-light",
-        "figmaNodeId": "17240:3100",
-        "figmaVariant": "state=teacherDashboard, breakpoint=biggest",
-        "mode": "light",
-        "props": {
-          "state": "teacherDashboard",
-          "breakpoint": "desktop"
-        },
-        "state": "default",
-        "viewport": {
-          "width": 1440,
-          "height": 80,
-          "deviceScaleFactor": 1
-        },
-        "expectedGeometry": {},
-        "expectedVariables": [],
-        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": []
-      },
-      {
-        "id": "global-header-teacher-mobile-light",
-        "figmaNodeId": "17240:3516",
-        "figmaVariant": "state=teacherDashboard, breakpoint=smallest",
-        "mode": "light",
-        "props": {
-          "state": "teacherDashboard",
-          "breakpoint": "tabletMobile"
-        },
-        "state": "default",
-        "viewport": {
-          "width": 960,
-          "height": 80,
-          "deviceScaleFactor": 1
-        },
-        "expectedGeometry": {},
-        "expectedVariables": [],
-        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
-        "result": "pending",
-        "mismatches": []
-      },
-      {
-        "id": "global-header-tutor-desktop-light",
-        "figmaNodeId": "17406:627",
-        "figmaVariant": "state=tutorPlus, breakpoint=biggest",
-        "mode": "light",
-        "props": {
-          "state": "tutorPlus",
-          "breakpoint": "desktop"
-        },
-        "state": "default",
-        "viewport": {
-          "width": 1440,
-          "height": 80,
-          "deviceScaleFactor": 1
-        },
-        "expectedGeometry": {},
-        "expectedVariables": [],
-        "fixturePath": "apps/docs/app/fixtures/components/cases/GlobalHeader.tsx",
-        "referenceScreenshot": null,
-        "browserScreenshot": null,
+        "referenceScreenshot": "figma get_screenshot 17240:2903 (2026-11-10)",
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
         "result": "pending",
         "mismatches": []
       }
@@ -394,29 +1119,51 @@
       ]
     },
     {
-      "description": "Phone fold (<600 / breakpoint=mobile) is code-only — Figma Global Header has no phone variant.",
-      "reason": "Owner screenshot (2026-09-03): favicon mark, ellipsis overflow for Share/Remix, username into hamburger, widget number-only (cloud stays). 600px chosen so 600–959 keeps the Figma smallest (960) tablet chrome.",
-      "owner": "user request (2026-09-03)",
-      "affectedCases": [
-        "global-header-lab-phone-light"
-      ]
-    },
-    {
       "description": "Remix icon-only glyph uses FA “rotate”.",
       "reason": "Figma smallest variant names the glyph “sync”, which is the FA5 alias of rotate; the FA7 Pro set in-package ships rotate.",
       "owner": "agent build session (2026-09-03)",
       "affectedCases": [
         "global-header-lab-mobile-light"
       ]
+    },
+    {
+      "description": "standaloneProject title pencil is rendered; the Figma Font Awesome instance in that slot (10×12) has no visible glyph.",
+      "reason": "Slot geometry is still in Figma and the pencil was the prior spec; ambiguous whether blank is intentional. Escalated to design owner.",
+      "owner": "agent (2026-11-10) — pending design confirmation",
+      "affectedCases": [
+        "global-header-standalone-gt992-light",
+        "global-header-standalone-lt992-light",
+        "global-header-standalone-lt768-light"
+      ]
+    },
+    {
+      "description": "Mobile mark renders 37×24 vs Figma 36.689×23.533.",
+      "reason": "Existing CodeAiMark asset; sub-pixel.",
+      "owner": "agent (2026-11-10)",
+      "affectedCases": [
+        "*-lt576-*"
+      ]
+    },
+    {
+      "description": "Figma lab <992 projectActions pr-8 and navEndContent pl-8 are not reproduced as padding.",
+      "reason": "They act as minimum spacing between the clusters and the centered widget; the root's 8px flex gap provides the same minimum.",
+      "owner": "agent (2026-11-10)",
+      "affectedCases": [
+        "global-header-lab-lt992-light",
+        "global-header-non-lab-lt992-light",
+        "global-header-lab-lt768-light",
+        "global-header-non-lab-lt768-light"
+      ]
     }
   ],
   "evidence": {
-    "apiAudit": "pending — componentKey not yet filled (run pnpm figma:audit-props after mapping keys)",
+    "apiAudit": "pnpm figma:audit-props -- --strict → GlobalHeader 0 error / 0 warn / 0 escalate (repo: 0 error, 1 pre-existing ProgressBubble warn)",
     "typecheck": "pass",
     "build": "pass",
     "docsBuild": "pass",
     "correctionPasses": [
-      "2026-09-03: phone fixture capture vs owner screenshot — favicon, ellipsis overflow, number-only widget, hamburger-only right cluster."
+      "2026-09-03: phone fixture capture vs owner screenshot — favicon, ellipsis overflow, number-only widget, hamburger-only right cluster.",
+      "2026-11-10: full 28-case light matrix captured (headless Chrome) and compared with Figma set screenshot; first pass showed FA glyph tofu in 4 dashboard cases → recaptured with longer font budget, all glyphs render (rendering noise, no code change). DOM-measured: logo 141.9×24 / mark 37×24, navStart gap 12/8/12/0 per state×breakpoint, tutor glyph 18×12, help/menu glyph 16px, header 48px."
     ]
   }
 }

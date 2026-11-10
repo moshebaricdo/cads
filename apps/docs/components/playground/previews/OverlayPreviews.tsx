@@ -165,6 +165,15 @@ export function ModalPlaygroundPreview({
       }
       title={v.title != null ? String(v.title) : undefined}
       body={v.body != null ? String(v.body) : undefined}
+      footerStartContent={
+        v.footerStartContent != null && String(v.footerStartContent).trim()
+          ? (
+              <Button size="medium" variant="text" color="secondary">
+                {String(v.footerStartContent)}
+              </Button>
+            )
+          : undefined
+      }
       hasSecondaryAction={v.hasSecondaryAction !== false}
       primaryActionLabel={
         v.primaryActionLabel != null

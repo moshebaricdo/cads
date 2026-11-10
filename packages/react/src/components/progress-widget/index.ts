@@ -3,5 +3,6 @@ export type {
   ProgressWidgetProps,
   ProgressWidgetBreakpoint,
   ProgressWidgetSaveStatus,
+  ProgressWidgetVersion,
   ProgressWidgetLevel,
 } from "./types";

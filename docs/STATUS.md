@@ -1,8 +1,36 @@
 # CADS — Status & next priorities
 
-Last updated: 2026-11-05
+Last updated: 2026-11-10
 
 ## Done (scaffold complete)
+
+- [x] **Figma drift realignment (2026-11-10)** — GlobalHeader + ProgressWidget + CardButton + Modal re-pulled from Figma. **GlobalHeader**: 28 symbols (new `template` state with `startContent` / `centerContent` slots × >992 / <992 / <768 / <576); phone is now Figma-specified (mark, menu-only, standalone icon actions, labLevel Share/Remix → widget More menu; overflow ellipsis retired); Tutor+ kit glyph as SVG; `tabletMobile` deprecated → `tablet`, new `smallTablet`. **ProgressWidget**: active bubble in its own slot <992; back + ellipsis More menu <768 (`moreMenuOptions`); `saveStatus` saved | unsaved (`offline` deprecated); `showSaveStatus`; `version="template"` slots. **CardButton**: geometry refresh + code-only `startIconColor`. **Modal**: `footerStartContent` (Figma `actionGroup`). Strict audit now 0 error (was failing on GlobalHeader / ProgressWidget). See evidence summary below.
+
+## Figma drift realignment — evidence summary
+
+```text
+Task path: Figma update
+Components: GlobalHeader, ProgressWidget, CardButton, Modal
+Figma evidence (2026-11-10, file DGekOeToRVifvFAhfqpeC1):
+  - Global Header set 17240:2903 (28 variants) — get_design_context on 17240:2904, 17406:627,
+    17240:2947, 17240:3100, 17600:1750, 17600:2350, 17600:2383; use_figma structure dump of all 28
+  - Progress Widget set 17307:1036 (6 variants) — use_figma dump incl. annotations
+  - Card Button set 17848:283; Modal set 2190:8284 — get_design_context
+  - Tutor kit glyph 17406:1108 exported as SVG
+Spec artifacts: figmaComponentPropsSnapshot.json (4 entries) + visual-recipes/{GlobalHeader,ProgressWidget,CardButton,Modal}.json
+Coverage: GlobalHeader 28/28 light matrix pass (+2 dark pending); ProgressWidget 8/11 pass (3 pending);
+  CardButton 7 re-measured + 2 new pass (1 dark pending); Modal 1 new pass (1 dark pending)
+Correction loop: pass 1 — 4 header captures showed FA tofu (headless font timing) → recaptured, clean.
+  Audit pass 1 caught footerStartContent inserted on Dialog (manifest / sheet / preview) → moved to Modal.
+  DOM-measured geometry matches Figma (see recipes).
+API audit: pnpm figma:audit-props -- --strict → 0 error / 1 warn (pre-existing ProgressBubble status N/A) / 0 escalate
+Verification: pnpm typecheck (+ docs tsc); pnpm build; pnpm build:docs
+Accepted differences / escalations:
+  - Standalone title pencil kept; Figma's icon instance in that slot renders blank (ask design)
+  - More menu contents are code-defined (Figma only annotates "Opens More menu")
+  - CardButton startIconColor is code-only (owner request); selected / disabled recipes win
+  - Mark logo 37×24 vs Figma 36.7×23.5 (existing asset)
+```
 
 - [x] **Card Button (2026-11-05)** — New Actions component, designed in Figma first (page `17845:1065`, set `17848:283`, 40 variants: layout horizontal|vertical × size medium|small × state × selected) then built as `CardButton` on MUI `ButtonBase`. Presence API for `description` / `startIconName` / `endIconName` (end icon horizontal-only); `selected` uses selected chrome and sets `aria-pressed`; `href` renders a link card. Experimental Motion Press (scale on `:active`) when the motion flag is on. `startContent` slot (Figma `startContent` SLOT + `hasStartContent`) for custom leading visuals like section avatars. Hugs content by default like Button; `fullWidth` stretches to the container (Figma 360/200 widths are canvas widths). Docs: **Actions → Card Button**. Snapshot + visual recipe (18 cases, all pass, light + dark, hug + fullWidth) + code-connect + fixtures + preview wired. See evidence summary below.
 

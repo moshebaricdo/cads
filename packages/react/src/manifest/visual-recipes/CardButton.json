@@ -7,15 +7,16 @@
     "publicNodeId": "17848:283",
     "componentKey": "4fc80d40c4c83bd1e1c4dc7f5e3a097471ba5703",
     "relatedNodeIds": [],
-    "retrievedAt": "2026-11-05",
+    "retrievedAt": "2026-11-10",
     "designContextCaptured": true
   },
   "change": {
-    "taskPath": "new",
+    "taskPath": "Figma update",
     "previousRecipe": null,
     "figmaChanges": [
       "2026-11-05: vertical layout bottom padding −2px for optical balance (medium 24→22, small 16→14); heights 114→112, 88→86",
-      "2026-11-05: added startContent SLOT + hasStartContent BOOLEAN (all 40 variants); slot hugs content with min = start icon box"
+      "2026-11-05: added startContent SLOT + hasStartContent BOOLEAN (all 40 variants); slot hugs content with min = start icon box",
+      "2026-11-10: horizontal/medium padding 16 all sides (56 tall); small padding 10/12 + gap 10 (40 tall); title↔description gap 4; title leading 22 (medium) / 18 (small); description leading 18 / 16; vertical padding top 26/18, bottom 24/16 (was 24/22, 16/14). Code-only startIconColor added at owner request."
     ]
   },
   "axes": {
@@ -49,49 +50,53 @@
     "sizes": {
       "horizontal/medium": {
         "figmaWidth": "360",
-        "height": "54 (title only)",
-        "paddingBlock": "14",
+        "height": "56 (title only)",
+        "paddingBlock": "16",
         "paddingInline": "16 (--spacing-p-xs)",
         "gap": "12",
         "startIconBox": "20",
         "startGlyph": "18 (--text-body-lg)",
         "endIconBox": "20",
         "endGlyph": "16 (--text-body-md)",
-        "title": "16/24 semi-bold",
-        "description": "14/22 regular"
+        "title": "16/22 semi-bold",
+        "description": "14/18 regular",
+        "contentGap": "4"
       },
       "horizontal/small": {
         "figmaWidth": "360",
         "height": "40 (title only)",
-        "paddingBlock": "8 (--spacing-p-xxs)",
+        "paddingBlock": "10",
         "paddingInline": "12",
-        "gap": "8 (--spacing-p-xxs)",
+        "gap": "10",
         "startIconBox": "18",
         "startGlyph": "16 (--text-body-md)",
         "endIconBox": "18",
         "endGlyph": "14 (--text-body-sm)",
-        "title": "14/22 semi-bold",
-        "description": "12/18 regular"
+        "title": "14/18 semi-bold",
+        "description": "12/16 regular",
+        "contentGap": "4"
       },
       "vertical/medium": {
         "figmaWidth": "200",
-        "height": "112 (title only)",
-        "padding": "24 top/inline (--spacing-p-s), 22 bottom (optical)",
+        "height": "114 (title only)",
+        "padding": "26 top, 24 inline/bottom (--spacing-p-s)",
         "gap": "8 (--spacing-p-xxs)",
         "startIconBox": "32",
         "startGlyph": "24 (--text-heading-md)",
-        "title": "16/24 semi-bold centered",
-        "description": "14/22 regular centered"
+        "title": "16/22 semi-bold centered",
+        "description": "14/18 regular centered",
+        "contentGap": "4"
       },
       "vertical/small": {
         "figmaWidth": "200",
         "height": "86 (title only)",
-        "padding": "16 top/inline (--spacing-p-xs), 14 bottom (optical)",
+        "padding": "18 top, 16 inline/bottom (--spacing-p-xs)",
         "gap": "8 (--spacing-p-xxs)",
         "startIconBox": "24",
         "startGlyph": "20 (--text-heading-xs)",
-        "title": "14/22 semi-bold centered",
-        "description": "12/18 regular centered"
+        "title": "14/18 semi-bold centered",
+        "description": "12/16 regular centered",
+        "contentGap": "4"
       }
     },
     "layout": {
@@ -887,6 +892,88 @@
         "mismatches": [],
         "browserScreenshot": "captures/browser-cardbutton-h-medium-start-content-light.png",
         "referenceScreenshot": "captures/figma-cardbutton-set.png"
+      },
+      {
+        "id": "cardbutton-h-medium-start-icon-color-light",
+        "figmaNodeId": "17848:23",
+        "figmaVariant": "layout=horizontal, size=medium + startIconColor",
+        "mode": "light",
+        "props": {
+          "startIconColor": "var(--text-success-primary)"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "56"
+        },
+        "expectedVariables": [
+          "--text-success-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/CardButton.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "cardbutton-v-small-start-icon-color-selected-light",
+        "figmaNodeId": "17848:253",
+        "figmaVariant": "layout=vertical, size=small, selected=Yes + startIconColor",
+        "mode": "light",
+        "props": {
+          "layout": "vertical",
+          "size": "small",
+          "selected": true,
+          "startIconColor": "var(--text-success-primary)"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 280,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "86"
+        },
+        "expectedVariables": [
+          "--text-selected-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/CardButton.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pass",
+        "mismatches": []
+      },
+      {
+        "id": "cardbutton-h-small-start-icon-color-dark",
+        "figmaNodeId": "17848:93",
+        "figmaVariant": "layout=horizontal, size=small + startIconColor",
+        "mode": "dark",
+        "props": {
+          "size": "small",
+          "startIconColor": "var(--text-success-primary)"
+        },
+        "state": "default",
+        "viewport": {
+          "width": 440,
+          "height": 160,
+          "deviceScaleFactor": 1
+        },
+        "expectedGeometry": {
+          "height": "40 + description"
+        },
+        "expectedVariables": [
+          "--text-success-primary"
+        ],
+        "fixturePath": "apps/docs/app/fixtures/components/cases/CardButton.tsx",
+        "referenceScreenshot": null,
+        "browserScreenshot": "headless Chrome capture (scratch, not committed)",
+        "result": "pending",
+        "mismatches": []
       }
     ]
   },
@@ -942,13 +1029,21 @@
       "codeBehavior": "Presence of description / startIconName / endIconName / startContent.",
       "reason": "CADS presence API convention for optional icons/content.",
       "decisionSource": "docs/STATUS.md — Icon boolean → presence API (2026-07-23)"
+    },
+    {
+      "description": "startIconColor is code-only (Figma binds --text-brand-primary).",
+      "reason": "Requested by design owner 2026-11-10 for color-coded cards; selected/disabled recipes still win.",
+      "owner": "design owner (2026-11-10)",
+      "affectedCases": [
+        "cardbutton-*-start-icon-color-*"
+      ]
     }
   ],
   "evidence": {
     "apiAudit": {
       "command": "pnpm figma:audit-props -- --strict",
-      "cardButton": "0 error / 0 warn / 0 escalate / 1 info",
-      "repoWide": "7 error / 6 warn (pre-existing GlobalHeader / ProgressBubble / ProgressWidget)"
+      "cardButton": "0 error / 0 warn / 0 escalate",
+      "repoWide": "0 error / 1 warn (pre-existing ProgressBubble status N/A)"
     },
     "typecheck": {
       "command": "pnpm typecheck",
@@ -1084,6 +1179,19 @@
           "startContent ReactNode slot (hug, min = icon box, wins over startIconName); new slot case 360×78 / 48×48 matches Figma instance 17861:73; all prior cases unchanged"
         ],
         "recaptured": true
+      },
+      {
+        "date": "2026-11-10",
+        "caseIds": [
+          "cardbutton-h-medium-default-light",
+          "cardbutton-h-medium-description-light",
+          "cardbutton-h-small-default-light",
+          "cardbutton-v-medium-default-light",
+          "cardbutton-v-small-description-light",
+          "cardbutton-h-medium-start-icon-color-light",
+          "cardbutton-v-small-start-icon-color-selected-light"
+        ],
+        "result": "DOM-measured boxes 360×56 / 360×40 / 200×114 / 200×86(+desc 106); padding 16 · 10/12 · 26/24/24 · 18/16/16; gaps 12/10/8; content gap 4; start icon rgb(37,136,48) with startIconColor, selected → --text-selected-primary. All pass."
       }
     ]
   }

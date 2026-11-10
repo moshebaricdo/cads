@@ -2,10 +2,13 @@
  * Global Header — CADS Figma node 17240:2903.
  * Brand-purple chrome bar; white-on-brand text/outlined buttons are
  * surface-specific primitives (not CADS Button variants).
+ * Figma breakpoints: >992 desktop · <992 tablet · <768 smallTablet · <576
+ * mobile. Header chrome is identical for tablet and smallTablet — only the
+ * nested Progress Widget changes (it follows the breakpoint itself).
  */
 
-$tablet-mobile-max: 959.95px;
-$mobile-max: 599.95px;
+$tablet-max: 991.98px;
+$mobile-max: 575.98px;
 
 .root {
   box-sizing: border-box;
@@ -25,19 +28,35 @@ $mobile-max: 599.95px;
   }
 }
 
+/* Figma navStartContent: 8px gap; 12px for standalone / template /
+   labLevel (labLevel drops to 0 on mobile, where Share / Remix move into
+   the Progress Widget More menu). */
 .left {
   display: flex;
   align-items: center;
   gap: var(--spacing-p-xxs);
   flex: none;
   min-width: 0;
+
+  &[data-gap="wide"],
+  &[data-gap="wideExceptMobile"] {
+    gap: 12px;
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
   flex: none;
-  padding-right: 12px;
+}
+
+/* Figma template startContent slot — hugs, 8px between children. */
+.startContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-p-xxs);
+  flex: none;
+  min-width: 0;
 }
 
 .wordmark {
@@ -201,6 +220,18 @@ $mobile-max: 599.95px;
 
 /* ----- tutorPlus center label ----- */
 
+.tutorLabelWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--text-neutral-white-fixed);
+
+  svg {
+    flex: none;
+  }
+}
+
 .tutorLabel {
   color: var(--text-neutral-white-fixed);
   font-size: var(--font-size-body-sm);
@@ -222,32 +253,24 @@ div.desktopOnly {
   display: flex;
 }
 
-.tabletMobileOnly {
+.tabletOnly,
+.belowDesktop {
   display: none;
 }
 
-.overflowOnly {
-  display: none;
-  position: relative;
-  z-index: 2;
-}
-
-@mixin tablet-mobile {
+@mixin tablet {
   .desktopOnly {
     display: none !important;
   }
 
-  .tabletMobileOnly {
+  .tabletOnly,
+  .belowDesktop {
     display: flex;
   }
 }
 
 @mixin mobile {
-  @include tablet-mobile;
-
-  .logo {
-    padding-right: 0;
-  }
+  @include tablet;
 
   .wordmark {
     display: none;
@@ -257,12 +280,13 @@ div.desktopOnly {
     display: flex;
   }
 
-  .tabletMobileOnly {
+  /* labLevel Share / Remix move into the Progress Widget More menu. */
+  .tabletOnly {
     display: none !important;
   }
 
-  .overflowOnly {
-    display: flex;
+  .left[data-gap="wideExceptMobile"] {
+    gap: 0;
   }
 
   .hideOnMobile {
@@ -270,9 +294,9 @@ div.desktopOnly {
   }
 }
 
-.root:not(.forceDesktop):not(.forceTabletMobile):not(.forceMobile) {
-  @media (max-width: $tablet-mobile-max) {
-    @include tablet-mobile;
+.root:not(.forceDesktop):not(.forceTablet):not(.forceMobile) {
+  @media (max-width: $tablet-max) {
+    @include tablet;
   }
 
   @media (max-width: $mobile-max) {
@@ -280,8 +304,8 @@ div.desktopOnly {
   }
 }
 
-.forceTabletMobile {
-  @include tablet-mobile;
+.forceTablet {
+  @include tablet;
 }
 
 .forceMobile {

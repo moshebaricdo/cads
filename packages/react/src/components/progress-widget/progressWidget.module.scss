@@ -1,15 +1,16 @@
 /*
  * Progress Widget — CADS Figma node 17307:1036.
- * Desktop shows the bubble rail; below 960px the rail folds away, the
- * active level bubble nests inside the level dropdown as its start icon,
- * and a leading outlined back button appears (Figma `hasLeftAction`).
- * Below 600px the dropdown shows the lesson number; the cloud stays.
+ * Figma breakpoints >992px / <992px / <768px:
+ *   desktop  : [dropdown + cloud] | [bubble rail] | [action]
+ *   tablet   : [back] | [dropdown + cloud] | [active bubble] | [action]
+ *   compact  : [back + More] | [active bubble] | [action]
+ * Sections are separated by 1px left rules; the root owns the outer border.
  * The dropdown hugs its label and only truncates once the container forces
  * it (flex-shrink + min-width: 0 + ellipsis).
  */
 
-$tablet-mobile-max: 959.95px;
-$mobile-max: 599.95px;
+$tablet-max: 991.98px;
+$compact-max: 767.98px;
 
 .root {
   box-sizing: border-box;
@@ -28,18 +29,66 @@ $mobile-max: 599.95px;
   }
 }
 
+/* ----- sections ----- */
+
+.leftActionContainer {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+  height: 100%;
+  padding: 0 3px;
+}
+
+.moreMenu {
+  display: none;
+}
+
 .dropdownContainer {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   height: 100%;
   min-width: 0;
   flex: 0 1 auto;
-  padding-left: 3px;
-  padding-right: 6px;
+  padding: 0 3px;
 }
 
-/* Figma "Dropdown Button" — mirrors the Dropdown trigger, opens nothing. */
+.bubbleSlot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+  flex: none;
+  padding: 0 8px;
+  background-color: var(--background-neutral-primary);
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+/* Figma bubbleSlot3 — the active level on its own below 992px. */
+.activeBubbleSlot {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex: none;
+  width: 32px;
+  padding: 0 2px;
+  background-color: var(--background-neutral-primary);
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 100%;
+  padding: 0 3px;
+  border-left: 1px solid var(--border-neutral-primary);
+}
+
+/* ----- level dropdown (Figma "Dropdown Button", thin label) ----- */
+
 .levelSelect {
   appearance: none;
   display: inline-flex;
@@ -81,31 +130,21 @@ $mobile-max: 599.95px;
   text-align: left;
 }
 
-.levelNumber {
-  display: none;
-  flex: none;
-  white-space: nowrap;
-  text-align: left;
-}
-
-.cloudSlot {
-  display: flex;
-  flex: none;
-  align-items: center;
-}
-
 .chevron {
   flex: none;
   width: 16px;
   justify-content: center;
 }
 
-.nestedBubble {
-  display: none;
+/* Figma saveStatus box: 20px wide, 1px bottom inset. */
+.cloudSlot {
+  display: flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 16px;
+  width: 20px;
+  height: 100%;
+  padding-bottom: 1px;
 }
 
 /* IconTooltip trigger — override Figma cloud fg (tertiary token, not
@@ -115,120 +154,75 @@ $mobile-max: 599.95px;
   --it-color: var(--text-neutral-tertiary);
 }
 
-.cloudSyncOffline {
+.cloudSyncUnsaved {
   --it-color: var(--text-neutral-placeholder);
 }
 
-.bubbleSlot {
+/* ----- template version ----- */
+
+.templateSlot {
   display: flex;
   align-items: center;
-  gap: 4px;
-  align-self: stretch;
-  flex: none;
-  padding: 0 8px;
+  gap: 3px;
+  height: 100%;
+  min-width: 0;
+  padding: 0 3px;
+
+  & + & {
+    border-left: 1px solid var(--border-neutral-primary);
+  }
+}
+
+.templateMiddle {
   background-color: var(--background-neutral-primary);
-  /* Vertical dividers only — the widget root already owns the outer border.
-     Figma paints a full box around bubbleSlot (its hug/fill workaround);
-     code uses left/right rules between dropdown | bubbles | action. */
-  border: 0;
-  border-left: 1px solid var(--border-neutral-primary);
 }
 
-.bubbleSlot.withActionDivider {
-  border-right: 1px solid var(--border-neutral-primary);
-}
+/* ----- breakpoints ----- */
 
-.actionContainer {
-  display: flex;
-  align-items: center;
-  flex: none;
-  height: 100%;
-  padding: 0 3px;
-}
-
-/* Figma `hasLeftAction` — tablet/mobile only. Hidden on desktop so
-   breakpoint=auto can flip via media query without remounting. */
-.leftActionContainer {
-  display: none;
-  align-items: center;
-  flex: none;
-  height: 100%;
-  padding: 0 3px;
-  border-right: 1px solid var(--border-neutral-primary);
-}
-
-/* ----- tablet/mobile layout (<960px or forced) ----- */
-
-@mixin tablet-mobile {
-  .dropdownContainer {
-    flex: 1 1 0;
-  }
-
-  .dropdownContainer.withActionDivider {
-    border-right: 1px solid var(--border-neutral-primary);
-  }
-
-  .levelSelect {
-    flex: 1 1 0;
-  }
-
-  .levelLabel {
-    flex: 1 1 0;
-  }
-
-  .nestedBubble {
-    display: inline-flex;
-  }
-
+@mixin tablet {
   .leftActionContainer {
     display: flex;
   }
 
-  .bubbleSlot {
-    display: none;
+  /* Back is the first section; without it the dropdown leads (no rule). */
+  &.withLeftAction .dropdownContainer {
+    border-left: 1px solid var(--border-neutral-primary);
   }
-}
-
-@mixin mobile {
-  @include tablet-mobile;
 
   .dropdownContainer {
     flex: 0 1 auto;
   }
 
-  .levelSelect {
-    flex: 0 0 auto;
-  }
-
-  .levelLabel {
+  .bubbleSlot {
     display: none;
   }
 
-  .levelNumber {
-    display: block;
+  .activeBubbleSlot {
+    display: flex;
+  }
+}
+
+@mixin compact {
+  @include tablet;
+
+  .moreMenu {
+    display: inline-flex;
+  }
+
+  .dropdownContainer {
+    display: none;
   }
 }
 
 @mixin desktop {
+  .leftActionContainer,
+  .activeBubbleSlot {
+    display: none;
+  }
+
   .dropdownContainer {
-    flex: 0 1 auto;
-    border-right: none;
-  }
-
-  .levelSelect {
-    flex: 0 1 auto;
-  }
-
-  .levelLabel {
-    flex: 0 1 auto;
-  }
-
-  .nestedBubble {
-    display: none;
-  }
-
-  .leftActionContainer {
-    display: none;
+    display: flex;
+    border-left: 0;
   }
 
   .bubbleSlot {
@@ -236,13 +230,13 @@ $mobile-max: 599.95px;
   }
 }
 
-.root:not(.forceDesktop):not(.forceTabletMobile):not(.forceMobile) {
-  @media (max-width: $tablet-mobile-max) {
-    @include tablet-mobile;
+.root:not(.forceDesktop):not(.forceTablet):not(.forceCompact) {
+  @media (max-width: $tablet-max) {
+    @include tablet;
   }
 
-  @media (max-width: $mobile-max) {
-    @include mobile;
+  @media (max-width: $compact-max) {
+    @include compact;
   }
 }
 
@@ -250,10 +244,10 @@ $mobile-max: 599.95px;
   @include desktop;
 }
 
-.forceTabletMobile {
-  @include tablet-mobile;
+.forceTablet {
+  @include tablet;
 }
 
-.forceMobile {
-  @include mobile;
+.forceCompact {
+  @include compact;
 }

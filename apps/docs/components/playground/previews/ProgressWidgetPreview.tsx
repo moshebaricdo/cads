@@ -28,6 +28,10 @@ export default function ProgressWidgetPreview({
           ? v.activeLevelIndex
           : DEMO_PROGRESS_ACTIVE_INDEX
       }
+      version={v.version === "template" ? "template" : "default"}
+      startSlot={<span style={{ width: 80 }} />}
+      middleSlot={<span style={{ width: 80 }} />}
+      endSlot={<span style={{ width: 80 }} />}
       breakpoint={breakpoint}
       saveStatus={v.saveStatus as ProgressWidgetSaveStatus | undefined}
       saveStatusLabel={
@@ -40,12 +44,13 @@ export default function ProgressWidgetPreview({
       hasLeftAction={
         v.hasLeftAction === undefined ? true : Boolean(v.hasLeftAction)
       }
+      showSaveStatus={
+        v.showSaveStatus === undefined ? true : Boolean(v.showSaveStatus)
+      }
       style={
-        breakpoint === "tabletMobile"
-          ? { width: 360 }
-          : breakpoint === "mobile"
-            ? { width: "100%", maxWidth: 280 }
-            : undefined
+        breakpoint === "tablet" || breakpoint === "tabletMobile"
+          ? { width: 303 }
+          : undefined
       }
     />
   );

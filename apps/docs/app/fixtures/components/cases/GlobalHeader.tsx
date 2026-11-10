@@ -2,6 +2,8 @@
 
 import {
   GlobalHeader,
+  ProgressWidget,
+  type GlobalHeaderBreakpoint,
   type GlobalHeaderState,
   type ProgressWidgetLevel,
 } from "@moshebari/cads-react";
@@ -20,57 +22,92 @@ const LEVELS: ProgressWidgetLevel[] = [
 ];
 
 const WIDGET_PROPS = {
-  levelLabel: "Lesson 6: Introduction to Online Puzzles",
+  levelLabel: "Lesson 3: Introduction to Online Puzzles",
   levels: LEVELS,
   activeLevelIndex: 5,
+  actionLabel: "Continue",
+};
+
+/** Figma frame widths per breakpoint symbol. */
+const WIDTH: Record<Exclude<GlobalHeaderBreakpoint, "auto" | "tabletMobile">, number> = {
+  desktop: 1440,
+  tablet: 992,
+  smallTablet: 768,
+  mobile: 576,
+};
+
+const BP_ID: Record<keyof typeof WIDTH, string> = {
+  desktop: "gt992",
+  tablet: "lt992",
+  smallTablet: "lt768",
+  mobile: "lt576",
+};
+
+const STATE_ID: Record<GlobalHeaderState, string> = {
+  template: "template",
+  standaloneProject: "standalone",
+  nonLabLesson: "non-lab",
+  labLevel: "lab",
+  teacherDashboard: "teacher",
+  studentDashboard: "student",
+  tutorPlus: "tutor",
+};
+
+const templateSlots = {
+  startContent: (
+    <span
+      style={{
+        color: "var(--text-neutral-white-fixed)",
+        fontSize: "var(--text-body-xs)",
+        fontWeight: 600,
+        lineHeight: "18px",
+      }}
+    >
+      Custom start content
+    </span>
+  ),
+  centerContent: (
+    <ProgressWidget
+      version="template"
+      startSlot={<span style={{ width: 111 }} />}
+      middleSlot={<span style={{ width: 111 }} />}
+      endSlot={<span style={{ width: 111 }} />}
+    />
+  ),
 };
 
 const header = (
-  id: string,
   state: GlobalHeaderState,
-  breakpoint: "desktop" | "tabletMobile" | "mobile",
+  breakpoint: keyof typeof WIDTH,
   mode: "light" | "dark" = "light",
 ): FixtureCase => ({
-  id,
+  id: `global-header-${STATE_ID[state]}-${BP_ID[breakpoint]}-${mode}`,
   mode,
-  viewport: {
-    width:
-      breakpoint === "desktop" ? 1440 : breakpoint === "mobile" ? 390 : 960,
-    height: 80,
-  },
+  viewport: { width: WIDTH[breakpoint], height: 80 },
   render: () => (
     <GlobalHeader
       state={state}
       breakpoint={breakpoint}
       progressWidgetProps={WIDGET_PROPS}
+      {...(state === "template" ? templateSlots : {})}
     />
   ),
 });
 
+const STATES: GlobalHeaderState[] = [
+  "template",
+  "standaloneProject",
+  "nonLabLesson",
+  "labLevel",
+  "teacherDashboard",
+  "studentDashboard",
+  "tutorPlus",
+];
+
 export const cases: FixtureCase[] = [
-  header("global-header-lab-desktop-light", "labLevel", "desktop"),
-  header("global-header-lab-mobile-light", "labLevel", "tabletMobile"),
-  header("global-header-lab-phone-light", "labLevel", "mobile"),
-  header("global-header-non-lab-desktop-light", "nonLabLesson", "desktop"),
-  header("global-header-non-lab-mobile-light", "nonLabLesson", "tabletMobile"),
-  header(
-    "global-header-standalone-desktop-light",
-    "standaloneProject",
-    "desktop",
+  ...(Object.keys(WIDTH) as (keyof typeof WIDTH)[]).flatMap((bp) =>
+    STATES.map((state) => header(state, bp)),
   ),
-  header(
-    "global-header-standalone-mobile-light",
-    "standaloneProject",
-    "tabletMobile",
-  ),
-  header("global-header-teacher-desktop-light", "teacherDashboard", "desktop"),
-  header(
-    "global-header-teacher-mobile-light",
-    "teacherDashboard",
-    "tabletMobile",
-  ),
-  header("global-header-student-desktop-light", "studentDashboard", "desktop"),
-  header("global-header-tutor-desktop-light", "tutorPlus", "desktop"),
-  header("global-header-tutor-mobile-light", "tutorPlus", "tabletMobile"),
-  header("global-header-lab-desktop-dark", "labLevel", "desktop", "dark"),
+  header("labLevel", "desktop", "dark"),
+  header("labLevel", "mobile", "dark"),
 ];

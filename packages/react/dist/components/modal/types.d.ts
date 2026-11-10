@@ -22,6 +22,13 @@ export interface ModalProps {
      */
     children?: ReactNode;
     /**
+     * Left-hand footer slot (Figma `actionGroup` SLOT) — e.g. a tertiary
+     * text Button, a "Don't show again" Checkbox, or a step indicator.
+     * Hugs its content and is vertically centered; the built-in secondary /
+     * primary buttons stay right-aligned whether or not it is set.
+     */
+    footerStartContent?: ReactNode;
+    /**
      * @default true
      */
     hasSecondaryAction?: boolean;

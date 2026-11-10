@@ -294,6 +294,11 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
           description: "Leading icon (presence = Figma startIcon)."
         },
         {
+          name: "startIconColor",
+          type: "string",
+          description: 'Custom start icon color (any CSS color; prefer a semantic var, e.g. "var(--text-success-primary)"). Replaces --text-brand-primary in unselected default/hover/pressed; selected and disabled keep their recipe colors.'
+        },
+        {
           name: "startContent",
           type: "ReactNode",
           description: "Custom leading content instead of the icon, e.g. a section avatar (Figma startContent slot; presence = hasStartContent). Hugs content, min icon-box size; wins over startIconName."
@@ -355,6 +360,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         "endIconName is horizontal-only (chevron-right for drill-in, arrow-right for links).",
         "Selected uses selected chrome tokens (--background-selected-*), never brand fills. Use selected only for chosen options in a single-select group.",
         "Leading icon defaults to --text-brand-primary; title/description are neutral primary/secondary.",
+        "startIconColor recolors only the unselected icon (e.g. category color-coding); selected / disabled chrome always wins. Pass a semantic variable, not a hex.",
         "Pass href for navigation cards (renders <a>); omit selected on links.",
         "Prefer startIconName; use startContent only for custom leading visuals (section avatars, images). The slot is not recolored for selected/disabled — the consumer owns its visuals.",
         "Experimental Motion: participates in the Press recipe (data-cads-press → --motion-press-scale on :active) only when CadsProvider experimentalMotion is on; reduced motion disables it."
@@ -1899,6 +1905,11 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
           type: "ReactNode",
           description: "Custom content for the body text slot (Figma customContent). Replaces body for every type; image layouts keep the fixed image slot."
         },
+        {
+          name: "footerStartContent",
+          type: "ReactNode",
+          description: "Left-hand footer slot (Figma actionGroup) — e.g. a tertiary text Button or a Checkbox. Hugs, vertically centered; built-in buttons stay right-aligned."
+        },
         { name: "hasSecondaryAction", type: "boolean", default: "true" },
         { name: "primaryActionLabel", type: "ReactNode", default: '"Button"' },
         {
@@ -1928,7 +1939,8 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         "Unlike Dialog, Modal holds richer layouts with a header bar and footer actions.",
         "Long content scrolls inside the body; header and footer stay fixed.",
         "Pass children for custom body content (forms, media controls); body is the text pre-seed when children is omitted.",
-        "Spelling isDismissable matches Figma."
+        "Spelling isDismissable matches Figma.",
+        "Use footerStartContent for a secondary-tier footer control (text Button, Checkbox, step count). Never put the primary action there."
       ],
       example: `<>
   <Button onClick={() => setOpen(true)}>Open modal</Button>
@@ -2279,17 +2291,22 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       name: "ProgressWidget",
       exportName: "ProgressWidget",
       importFrom: "@moshebari/cads-react",
-      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. Below 960px the rail folds away, a leading back button appears, and the active level bubble nests inside the dropdown. Below 600px the dropdown shows the lesson number (cloud stays).",
+      description: "Lab progress widget from the Global Header: level dropdown + cloud sync status + progress-bubble rail + action button. 768–991px: back · dropdown + cloud · active bubble · action. Below 768px: back + ellipsis More menu · active bubble · action (no dropdown / cloud). version=template renders three blank slots.",
       figma: {
         fileKey: e,
         nodeId: "17307:1036"
       },
       props: [
         {
+          name: "version",
+          type: '"default" | "template"',
+          default: '"default"',
+          description: "template swaps the lesson UI for startSlot / middleSlot / endSlot in the same 30px chrome."
+        },
+        {
           name: "levelLabel",
           type: "string",
-          required: !0,
-          description: "Level name in the dropdown trigger."
+          description: "Level name in the dropdown trigger and the More menu heading."
         },
         {
           name: "levels",
@@ -2299,24 +2316,30 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         {
           name: "activeLevelIndex",
           type: "number",
-          description: "Index of the current level; renders large in the rail and nests in the dropdown below 960px."
+          description: "Index of the current level; renders large in the rail and in its own slot below 992px."
         },
         {
           name: "breakpoint",
-          type: '"auto" | "desktop" | "tabletMobile" | "mobile"',
+          type: '"auto" | "desktop" | "tablet" | "smallTablet" | "mobile"',
           default: '"auto"',
-          description: "auto: rail ≥960, folded name 600–959, number-only <600 (cloud stays). desktop / tabletMobile / mobile force a layout."
+          description: "auto: rail ≥992, tablet 768–991, compact <768. smallTablet and mobile both force the compact layout. tabletMobile is a deprecated alias of tablet."
         },
         {
           name: "saveStatus",
-          type: '"saved" | "offline"',
+          type: '"saved" | "unsaved"',
           default: '"saved"',
-          description: "Cloud icon state: cloud-check (saved) or cloud-slash (offline)."
+          description: "Cloud icon state: cloud-check (saved) or cloud-slash (unsaved). offline is a deprecated alias of unsaved."
+        },
+        {
+          name: "showSaveStatus",
+          type: "boolean",
+          default: "true",
+          description: "Show the cloud icon (never shown in the compact layout)."
         },
         {
           name: "saveStatusLabel",
           type: "string",
-          description: 'Cloud tooltip label; defaults to "Saved 2 minutes ago" / "Offline".'
+          description: 'Cloud tooltip label; defaults to "Saved 2 minutes ago" / "Unsaved changes".'
         },
         {
           name: "hasAction",
@@ -2334,7 +2357,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
           name: "hasLeftAction",
           type: "boolean",
           default: "true",
-          description: "Show the leading back button. Visible only below 960px / tabletMobile."
+          description: "Show the leading back button. Visible only below 992px."
         },
         {
           name: "onBackClick",
@@ -2345,7 +2368,20 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
           name: "onLevelSelectClick",
           type: "MouseEventHandler",
           description: "Level dropdown trigger click (the CADS trigger opens nothing itself)."
-        }
+        },
+        {
+          name: "moreMenuOptions",
+          type: "DropdownOption[]",
+          description: "Items for the compact (<768) ellipsis More menu, listed under a levelLabel heading."
+        },
+        {
+          name: "onMoreMenuAction",
+          type: "(value: string) => void",
+          description: "Fires with the chosen More menu value."
+        },
+        { name: "startSlot", type: "ReactNode", description: "version=template start slot." },
+        { name: "middleSlot", type: "ReactNode", description: "version=template middle slot." },
+        { name: "endSlot", type: "ReactNode", description: "version=template end slot." }
       ],
       variableDependencies: [
         "--background-neutral-primary",
@@ -2358,13 +2394,14 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         "--shape-sm",
         "--shape-md",
         "--font-family-main",
-        "--font-size-body-xs"
+        "--font-size-body-xs",
+        "--text-neutral-placeholder"
       ],
       usageRules: [
         "The level dropdown hugs its label and only truncates (ellipsis) when the container forces it — never overflow.",
-        "Below 960px (or breakpoint=tabletMobile) the bubble rail hides, the active level bubble nests small + non-interactive as the dropdown start icon, and the leading outlined extraSmall back button appears when hasLeftAction.",
-        "Below 600px (or breakpoint=mobile) the dropdown label becomes the first number in levelLabel (e.g. Lesson 6 → 6); the cloud stays.",
-        "The cloud icon always has a hover/focus tooltip: save recency when saved, “Offline” when offline.",
+        "Below 992px (or breakpoint=tablet) the bubble rail hides, the active level bubble moves to its own 32px slot after the dropdown, and the leading outlined extraSmall back button appears when hasLeftAction.",
+        "Below 768px (or breakpoint=smallTablet / mobile) the dropdown and cloud fold into an ellipsis More menu next to Back (levelLabel heads the menu; add items with moreMenuOptions).",
+        "The cloud icon always has a hover/focus tooltip: save recency when saved, “Unsaved changes” when unsaved.",
         "The action button is the CADS Button (contained secondary extraSmall)."
       ],
       example: '<ProgressWidget levelLabel="Lesson 6: Introduction to Online Puzzles" levels={levels} activeLevelIndex={5} saveStatus="saved" />'
@@ -2373,7 +2410,7 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       name: "GlobalHeader",
       exportName: "GlobalHeader",
       importFrom: "@moshebari/cads-react",
-      description: "Persistent Studio header chrome. Six page states (lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) with desktop (≥960px), tablet (600–959), and phone (<600) layouts.",
+      description: "Persistent Studio header chrome. Seven page states (template, lab level, non-lab lesson, standalone project, teacher/student dashboard, Tutor+) across desktop (≥992px), tablet (768–991), small tablet (576–767), and mobile (<576).",
       figma: {
         fileKey: e,
         nodeId: "17240:2903"
@@ -2381,15 +2418,25 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       props: [
         {
           name: "state",
-          type: '"labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus"',
+          type: '"template" | "labLevel" | "nonLabLesson" | "standaloneProject" | "teacherDashboard" | "studentDashboard" | "tutorPlus"',
           default: '"labLevel"',
           description: "Which page chrome to render."
         },
         {
           name: "breakpoint",
-          type: '"auto" | "desktop" | "tabletMobile" | "mobile"',
+          type: '"auto" | "desktop" | "tablet" | "smallTablet" | "mobile"',
           default: '"auto"',
-          description: "auto: desktop ≥960, tablet 600–959, phone <600. Named values force a layout."
+          description: "auto: desktop ≥992, tablet 768–991, smallTablet 576–767, mobile <576. Named values force a layout; tabletMobile is a deprecated alias of tablet."
+        },
+        {
+          name: "startContent",
+          type: "ReactNode",
+          description: "template state: content after the logo (Figma startContent slot). Hugs; 8px gap."
+        },
+        {
+          name: "centerContent",
+          type: "ReactNode",
+          description: "template state: centered content between the start and end clusters (Figma centerContent slot)."
         },
         {
           name: "username",
@@ -2428,8 +2475,16 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
         { name: "onUsernameClick", type: "MouseEventHandler" },
         { name: "onHelpClick", type: "MouseEventHandler" },
         { name: "onMenuClick", type: "MouseEventHandler" },
-        { name: "onShareClick", type: "MouseEventHandler" },
-        { name: "onRemixClick", type: "MouseEventHandler" },
+        {
+          name: "onShareClick",
+          type: "MouseEventHandler",
+          description: "Also fires (event undefined) from the Progress Widget More menu in labLevel below 576px."
+        },
+        {
+          name: "onRemixClick",
+          type: "MouseEventHandler",
+          description: "Also fires (event undefined) from the Progress Widget More menu in labLevel below 576px."
+        },
         { name: "onRenameClick", type: "MouseEventHandler" }
       ],
       variableDependencies: [
@@ -2448,8 +2503,10 @@ const e = "DGekOeToRVifvFAhfqpeC1", t = {
       usageRules: [
         "Header buttons (white text/outlined on brand) are surface-specific chrome, not CADS Button variants.",
         "labLevel / nonLabLesson center the Progress Widget; it follows the header breakpoint.",
-        "Below 960px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains.",
-        "Below 600px (or breakpoint=mobile): favicon mark replaces the wordmark, Share/Remix (and Rename) collapse into an ellipsis overflow menu, username hides (hamburger hosts it), Progress Widget goes number-only (cloud stays).",
+        "Below 992px: text actions become icon-only, dashboard nav and New project / help icon hide, hamburger remains. 576–767 matches 768–991 except the Progress Widget folds to its compact More-menu layout.",
+        "Below 576px (or breakpoint=mobile): the CodeAI mark replaces the wordmark, username hides (hamburger hosts it), standaloneProject keeps its icon actions but drops the title block, and labLevel Share / Remix move into the Progress Widget More menu.",
+        "template is the escape hatch for pages that need custom chrome: pass startContent / centerContent; the end cluster matches the dashboards (New project desktop-only, username, help desktop-only, menu).",
+        "tutorPlus shows the Tutor+ kit glyph before tutorLabel.",
         "The header always spans full width at 48px height on --background-brand-primary."
       ],
       example: '<GlobalHeader state="labLevel" progressWidgetProps={{ levelLabel: "Lesson 6: Introduction to Online Puzzles", levels, activeLevelIndex: 5 }} />'

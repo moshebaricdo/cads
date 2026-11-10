@@ -37,6 +37,7 @@ export default function CardButtonPreview({
     : String(v.startIconName ?? "").trim();
   const endIconName = String(v.endIconName ?? "").trim();
   const description = String(v.description ?? "").trim();
+  const startIconColor = String(v.startIconColor ?? "").trim();
   return (
     <div style={{ width: v.fullWidth ? "100%" : undefined, maxWidth: "100%" }}>
       <CardButton
@@ -45,6 +46,7 @@ export default function CardButtonPreview({
         title={String(v.title ?? "") || "Card button title"}
         description={description || undefined}
         startIconName={(startIconName || undefined) as FaIconName | undefined}
+        startIconColor={startIconColor || undefined}
         startContent={
           v.hasStartContent ? (
             <SectionAvatar size={v.size === "small" ? 32 : 48} />

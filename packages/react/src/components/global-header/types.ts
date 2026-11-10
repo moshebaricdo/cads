@@ -1,8 +1,14 @@
-import type { CSSProperties, HTMLAttributes, MouseEventHandler } from "react";
+import type {
+  CSSProperties,
+  HTMLAttributes,
+  MouseEventHandler,
+  ReactNode,
+} from "react";
 import type { ProgressWidgetProps } from "../progress-widget/types";
 
 /** Figma Global Header `state` — which page chrome to render. */
 export type GlobalHeaderState =
+  | "template"
   | "labLevel"
   | "nonLabLesson"
   | "standaloneProject"
@@ -11,15 +17,20 @@ export type GlobalHeaderState =
   | "tutorPlus";
 
 /**
- * Responsive mode.
- * - `auto` — media-query driven: desktop ≥960px, tablet 600–959, phone <600.
- * - `desktop` / `tabletMobile` / `mobile` — force one layout (docs/playground).
+ * Responsive mode (Figma `breakpoint`: >992 / <992 / <768 / <576).
+ * - `auto` — media-query driven across all four.
+ * - `desktop` (≥992) / `tablet` (768–991) / `smallTablet` (576–767) /
+ *   `mobile` (<576) — force one layout (docs/playground).
+ * - `tabletMobile` — **deprecated** alias of `tablet`.
  */
 export type GlobalHeaderBreakpoint =
   | "auto"
   | "desktop"
-  | "tabletMobile"
-  | "mobile";
+  | "tablet"
+  | "smallTablet"
+  | "mobile"
+  /** @deprecated Use `"tablet"`. */
+  | "tabletMobile";
 
 /** Nav link in the dashboard states' left cluster. */
 export interface GlobalHeaderNavItem {
@@ -35,6 +46,16 @@ export interface GlobalHeaderProps
   breakpoint?: GlobalHeaderBreakpoint;
   /** Account dropdown label. @default "Username" */
   username?: string;
+  /**
+   * `template` state: content after the logo (Figma `startContent` SLOT;
+   * presence = `hasStartContent`). Hugs; 8px gap between children.
+   */
+  startContent?: ReactNode;
+  /**
+   * `template` state: centered content filling the space between the start
+   * and end clusters (Figma `centerContent` SLOT; presence = `hasCenterContent`).
+   */
+  centerContent?: ReactNode;
   /**
    * Progress widget props for labLevel / nonLabLesson (breakpoint is
    * injected to follow the header's).
@@ -55,6 +76,10 @@ export interface GlobalHeaderProps
   onUsernameClick?: MouseEventHandler<HTMLButtonElement>;
   onHelpClick?: MouseEventHandler<HTMLButtonElement>;
   onMenuClick?: MouseEventHandler<HTMLButtonElement>;
+  /**
+   * Share / Remix also fire from the Progress Widget "More" menu in
+   * `labLevel` below 576px (the event argument is then `undefined`).
+   */
   onShareClick?: MouseEventHandler<HTMLButtonElement>;
   onRemixClick?: MouseEventHandler<HTMLButtonElement>;
   onRenameClick?: MouseEventHandler<HTMLButtonElement>;

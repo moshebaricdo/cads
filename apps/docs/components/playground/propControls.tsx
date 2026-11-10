@@ -42,7 +42,13 @@ export const SKIP_PROPS = new Set([
   "image",
   "customContent",
   // CardButton slot — driven by the playground-only hasStartContent gate.
+  // GlobalHeader template slots + ProgressWidget template slots: previews
+  // inject demo content.
   "startContent",
+  "centerContent",
+  "startSlot",
+  "middleSlot",
+  "endSlot",
   // Legacy boolean icon gates — no longer in the public API; skip if present.
   "startIcon",
   "endIcon",

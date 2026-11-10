@@ -1,3 +1,3 @@
 export { ProgressWidget } from './ProgressWidget';
-export type { ProgressWidgetProps, ProgressWidgetBreakpoint, ProgressWidgetSaveStatus, ProgressWidgetLevel, } from './types';
+export type { ProgressWidgetProps, ProgressWidgetBreakpoint, ProgressWidgetSaveStatus, ProgressWidgetVersion, ProgressWidgetLevel, } from './types';
 //# sourceMappingURL=index.d.ts.map
