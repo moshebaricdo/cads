@@ -547,6 +547,10 @@ function buildAllSource(parts: Source[]): Source {
 /**
  * Union every added face that shares `styleName` (e.g. all Solid fonts) so the
  * All family can still filter by style without locking the style picker.
+ *
+ * A custom kit has no Solid/Regular/Light style — its desktop face is usually
+ * Regular — so those glyphs are merged into every All-family style. A stock
+ * shortcode of the same name keeps the selected style.
  */
 function buildAllStyleSource(parts: Source[], styleName: string): Source {
   const matching = parts.filter((source) =>
@@ -565,11 +569,18 @@ function buildAllStyleSource(parts: Source[], styleName: string): Source {
   });
 
   const byName = new Map<string, IconEntry>();
-  for (const source of ordered) {
+  const take = (source: Source) => {
     for (const entry of source.entries) {
       if (byName.has(entry.name)) continue;
       byName.set(entry.name, stampEntryFace(entry, source));
     }
+  };
+  for (const source of ordered) take(source);
+
+  const matched = new Set(matching);
+  for (const source of preferApiSources(parts)) {
+    if (!isKitFamily(source.family) || matched.has(source)) continue;
+    take(source);
   }
 
   const entries = Array.from(byName.values()).sort((a, b) =>
@@ -935,16 +946,28 @@ function renderGlyphPreview(entry: IconEntry, family?: string, weight?: number):
 function renderGrid() {
   const tokens = searchInput.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const all = activeSource?.entries ?? [];
-  const results: IconEntry[] = [];
+  const pinCustom = activeFamily === ALL_FAMILY;
+  const custom: IconEntry[] = [];
+  const rest: IconEntry[] = [];
+
   for (const entry of all) {
-    if (matches(entry, tokens)) {
-      results.push(entry);
-      if (results.length > MAX_RESULTS) break;
+    if (tokens.length > 0 && !matches(entry, tokens)) continue;
+    // Custom kit icons have no style. On Kits = All they stay visible even
+    // when Solid fills the result cap.
+    if (pinCustom && entry.fontFamily && isKitFamily(entry.fontFamily)) {
+      custom.push(entry);
+    } else {
+      rest.push(entry);
     }
+    if (!pinCustom && rest.length > MAX_RESULTS) break;
   }
 
-  const truncated = results.length > MAX_RESULTS;
-  const shown = truncated ? results.slice(0, MAX_RESULTS) : results;
+  const customShown = custom.slice(0, MAX_RESULTS);
+  const room = MAX_RESULTS - customShown.length;
+  const restShown = rest.slice(0, room);
+  const shown = pinCustom ? [...customShown, ...restShown] : restShown;
+  const truncated =
+    custom.length > customShown.length || rest.length > restShown.length;
 
   grid.textContent = "";
   const fragment = document.createDocumentFragment();
